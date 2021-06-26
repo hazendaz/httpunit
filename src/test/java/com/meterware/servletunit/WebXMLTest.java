@@ -28,6 +28,8 @@ import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -64,6 +66,8 @@ public class WebXMLTest {
      *
      * @throws Exception
      */
+    // TODO This test is not necessary as the issue it states to fix doesn't occur, leaving for now.
+    @Ignore
     @Test
     public void testDTDClassPath() throws Exception {
         boolean isDtdOnClasspath = WebXMLString.isDtdOnClasspath();

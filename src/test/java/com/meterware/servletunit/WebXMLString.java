@@ -66,7 +66,7 @@ class WebXMLString {
     private static URL dtdStream = null;
 
     //  Document type definition to be used - should be one of the dtds available in META-INF
-    public static String dtd = "web-app_2_3.dtd";
+    public static String dtd = "javax/servlet/resources/web-app_2_3.dtd";
 
     /**
      * check that the dtd is on the CLASSPATH

@@ -168,11 +168,6 @@
                 <version>3.2.0</version>
             </plugin>
 		</plugins>
-		<testResources>
-			<testResource>
-				<directory>META-INF</directory>
-			</testResource>
-		</testResources>
 	</build>
 
 	<reporting>

@@ -21,8 +21,8 @@ package com.meterware.servletunit;
  *******************************************************************************************************************/
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -63,7 +63,7 @@ class WebXMLString {
     }
 
     // the stream for testing the dtd file
-    public static InputStream dtdStream = null;
+    private static URL dtdStream = null;
 
     //  Document type definition to be used - should be one of the dtds available in META-INF
     public static String dtd = "web-app_2_3.dtd";
@@ -75,7 +75,7 @@ class WebXMLString {
      */
     public static boolean isDtdOnClasspath() {
         if (dtdStream == null) {
-            dtdStream = WebXMLString.class.getClassLoader().getResourceAsStream(dtd);
+            dtdStream = WebXMLString.class.getClassLoader().getResource(dtd);
         }
         return dtdStream != null;
     }

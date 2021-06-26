@@ -61,8 +61,8 @@ public class JavaScript {
      * Initiates JavaScript execution for the specified web response.
      */
     public static void run( WebResponse response ) throws IllegalAccessException, InstantiationException,
-            InvocationTargetException, ClassDefinitionException, NotAFunctionException,
-            PropertyException, SAXException, JavaScriptException {
+            InvocationTargetException, EvaluatorException, EvaluatorException,
+            SAXException, JavaScriptException {
         Context context = Context.enter();
         // suggest bug fix for large java scripts see
         // bug report [ 1216567 ] Exception for large javascripts
@@ -81,14 +81,14 @@ public class JavaScript {
     /**
      * Runs the onload event for the specified web response.
      */
-    public static void load( WebResponse response ) throws ClassDefinitionException, InstantiationException, IllegalAccessException, InvocationTargetException, PropertyException, JavaScriptException, SAXException, NotAFunctionException {
+    public static void load( WebResponse response ) throws EvaluatorException, InstantiationException, IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
         if (!(response.getScriptableObject().getScriptEngine() instanceof JavaScriptEngine)) run( response );
         response.getScriptableObject().load();
     }
 
 
     private static void initHTMLObjects( Scriptable scope ) throws IllegalAccessException, InstantiationException,
-            InvocationTargetException, ClassDefinitionException, PropertyException {
+            InvocationTargetException, EvaluatorException {
         ScriptableObject.defineClass( scope, Window.class );
         ScriptableObject.defineClass( scope, Document.class );
         ScriptableObject.defineClass( scope, Style.class );
@@ -123,7 +123,7 @@ public class JavaScript {
          * @scriptable - the scriptable object to do the initialization for
          */
         void initialize( JavaScriptEngine parent, ScriptableDelegate scriptable )
-                throws SAXException, PropertyException, JavaScriptException, NotAFunctionException {
+                throws SAXException, JavaScriptException, EvaluatorException {
             _scriptable = scriptable;
             _scriptable.setScriptEngine( this );
             _parent = parent;
@@ -368,7 +368,7 @@ public class JavaScript {
         }
 
 
-        public Scriptable jsGet_frames() throws SAXException, PropertyException, JavaScriptException, NotAFunctionException {
+        public Scriptable jsGet_frames() throws SAXException, JavaScriptException, EvaluatorException {
             if (_frames == null) {
                 WebResponse.Scriptable scriptables[] = getDelegate().getFrames();
                 Window[] frames = new Window[ scriptables.length ];
@@ -413,7 +413,7 @@ public class JavaScript {
          * @scriptable - the scriptable object to do the initialization for
          */
         void initialize( JavaScriptEngine parent, ScriptableDelegate scriptable )
-                throws JavaScriptException, NotAFunctionException, PropertyException, SAXException {
+                throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize( parent, scriptable );
 
             _location = (Location) Context.getCurrentContext().newObject( this, "Location" );
@@ -476,7 +476,7 @@ public class JavaScript {
 
 
         public Window jsFunction_open( Object url, String name, String features, boolean replace )
-                throws PropertyException, JavaScriptException, NotAFunctionException, IOException, SAXException {
+                throws JavaScriptException, EvaluatorException, IOException, SAXException {
             WebResponse.Scriptable delegate = getDelegate().open( toStringIfNotUndefined( url ), name, features, replace );
             return delegate == null ? null : (Window) toScriptable( delegate );
         }
@@ -871,9 +871,7 @@ public class JavaScript {
         static ElementArray newElementArray( Scriptable parent ) {
             try {
                 return (ElementArray) Context.getCurrentContext().newObject( parent, "ElementArray" );
-            } catch (PropertyException e) {
-                throw new RhinoException( e );
-            } catch (NotAFunctionException e) {
+            } catch (EvaluatorException e) {
                 throw new RhinoException( e );
             } catch (JavaScriptException e) {
                 throw new RhinoException( e );
@@ -960,7 +958,7 @@ public class JavaScript {
         }
 
         void initialize( JavaScriptEngine parent, ScriptableDelegate scriptable )
-                throws JavaScriptException, NotAFunctionException, PropertyException, SAXException {
+                throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize( parent, scriptable );
             _document = (Document) parent;
             _style = (Style) Context.getCurrentContext().newObject( this, "Style" );
@@ -1025,7 +1023,7 @@ public class JavaScript {
         }
 
 
-        public Scriptable jsGet_elements() throws PropertyException, NotAFunctionException, JavaScriptException {
+        public Scriptable jsGet_elements() throws EvaluatorException, JavaScriptException {
             if (_controls == null) {
                 initializeControls();
             }
@@ -1048,7 +1046,7 @@ public class JavaScript {
         }
 
 
-        private void initializeControls() throws PropertyException, NotAFunctionException, JavaScriptException {
+        private void initializeControls() throws EvaluatorException, JavaScriptException {
             ScriptableDelegate scriptables[] = getDelegate().getElementDelegates();
             Control[] controls = new Control[ scriptables.length ];
             for (int i = 0; i < controls.length; i++) {
@@ -1124,7 +1122,7 @@ public class JavaScript {
         }
 
         void initialize( JavaScriptEngine parent, ScriptableDelegate scriptable )
-                throws JavaScriptException, NotAFunctionException, PropertyException, SAXException {
+                throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize( parent, scriptable );
             if (parent instanceof Form) _form = (Form) parent;
         }

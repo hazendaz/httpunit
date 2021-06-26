@@ -94,12 +94,6 @@
 			<groupId>nekohtml</groupId>
 			<artifactId>nekohtml</artifactId>
 			<version>0.9.5</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

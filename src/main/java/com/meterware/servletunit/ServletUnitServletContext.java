@@ -514,8 +514,8 @@ public class ServletUnitServletContext implements ServletContext {
   }
 
   public boolean setInitParameter(String name, String value) {
-    // TODO Auto-generated method stub
-    return false;
+    getContextParams().put(name, value);
+    return true;
   }
 
   public Dynamic addServlet(String servletName, String className) {

@@ -1378,8 +1378,9 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
                     return _defaultEncoding = DEFAULT_ENCODING_CANDIDATES[i];
                 }
             }
+            _defaultEncoding = System.getProperty( "file.encoding" );
         }
-        return (_defaultEncoding = System.getProperty( "file.encoding" ));
+        return _defaultEncoding;
     }
 
 

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import org.cyberneko.html.HTMLConfiguration;
+import org.cyberneko.html.HTMLScanner;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLParseException;
@@ -74,6 +75,8 @@ class NekoDOMParser extends org.apache.xerces.parsers.DOMParser implements Scrip
      */
     static NekoDOMParser newParser( DocumentAdapter adapter, URL url ) {
         final HTMLConfiguration configuration = new HTMLConfiguration();
+        // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't solve issue with <noscript> needs.
+        // configuration.setFeature(HTMLScanner.PARSE_NOSCRIPT_CONTENT, false);
         if (!HTMLParserFactory.getHTMLParserListeners().isEmpty() || HTMLParserFactory.isParserWarningsEnabled()) {
             configuration.setErrorHandler( new ErrorHandler( url ) );
             configuration.setFeature( REPORT_ERRORS, true);

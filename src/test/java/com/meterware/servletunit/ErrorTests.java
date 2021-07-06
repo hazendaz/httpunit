@@ -22,7 +22,8 @@ package com.meterware.servletunit;
  *******************************************************************************************************************/
 
 import junit.framework.TestCase;
-import org.junit.Test;
+
+import org.junit.Ignore;
 
 
 /**
@@ -30,6 +31,8 @@ import org.junit.Test;
  *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
+// XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly nor any IDE
+@Ignore
 public class ErrorTests extends TestCase {
 
     public ErrorTests(String s) {

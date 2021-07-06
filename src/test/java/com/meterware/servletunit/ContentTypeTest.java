@@ -1,6 +1,5 @@
 package com.meterware.servletunit;
 /********************************************************************************************************************
- * $Id: ErrorTests.java 1081 2012-09-09 17:16:39Z russgold $
  *
  * Copyright (c) 2012, Russell Gold
  * Copyright (c) 2011, NeoMedia Technologies, Inc.. All Rights Reserved except see below.

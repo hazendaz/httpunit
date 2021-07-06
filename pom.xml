@@ -30,7 +30,7 @@
         <relativePath />
     </parent>
 
-    <groupId>com.github.httpunit</groupId>
+    <groupId>com.github.hazendaz.httpunit</groupId>
     <artifactId>httpunit</artifactId>
     <version>1.7.5-SNAPSHOT</version>
 

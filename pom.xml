@@ -87,8 +87,8 @@
     </issueManagement>
 
     <properties>
-        <java.version>1.6</java.version>
-        <java.release.version>6</java.release.version>
+        <java.version>1.7</java.version>
+        <java.release.version>7</java.release.version>
     </properties>
 
     <dependencies>

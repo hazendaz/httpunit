@@ -112,11 +112,10 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
         </dependency>
-        <!-- Java port of html tidy http://jtidy.sourceforge.net/ -->
         <dependency>
-            <groupId>net.sf.jtidy</groupId>
+            <groupId>com.github.jtidy</groupId>
             <artifactId>jtidy</artifactId>
-            <version>r938</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>

@@ -213,4 +213,10 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
         if (attributeName.equals( "charoff" )) return "choff";
         return attributeName;
     }
+
+    public void setCellIndex(int cellIndex) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

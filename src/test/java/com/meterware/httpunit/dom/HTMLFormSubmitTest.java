@@ -109,7 +109,7 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("text", "age", "12");
         HTMLSelectElement select = addSelect("color");
         addOption(select, "red", null);
-        addOption(select, "blue", "azure").setSelected(true);
+        addOption(select, "blue", "azure").setAttribute("selected", "selected");
         addOption(select, "green", null);
         _form.submit();
         assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age=12&color=blue, null, null )", TestWindowProxy.popProxyCall());
@@ -126,8 +126,8 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         select.setMultiple(true);
         select.setSize(2);
         addOption(select, null, "red");
-        addOption(select, null, "blue").setSelected(true);
-        addOption(select, null, "green").setSelected(true);
+        addOption(select, null, "blue").setAttribute("selected", "selected");
+        addOption(select, null, "green").setAttribute("selected", "selected");
         _form.submit();
         assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age=12&color=blue&color=green, null, null )", TestWindowProxy.popProxyCall());
     }

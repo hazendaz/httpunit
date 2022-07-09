@@ -69,7 +69,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * have this method return the integer 2.
 	 **/
 	public int getMajorVersion() {
-		return 2;
+		return 3;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * method return the integer 4.
 	 **/
 	public int getMinorVersion() {
-		return 4;
+		return 1;
 	}
 
 	/**

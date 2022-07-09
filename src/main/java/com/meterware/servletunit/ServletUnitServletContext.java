@@ -69,7 +69,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * have this method return the integer 2.
 	 **/
 	public int getMajorVersion() {
-		return 3;
+		return 4;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * method return the integer 4.
 	 **/
 	public int getMinorVersion() {
-		return 1;
+		return 0;
 	}
 
 	/**
@@ -635,5 +635,40 @@ public class ServletUnitServletContext implements ServletContext {
   public String getVirtualServerName() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public Dynamic addJspFile(String servletName, String jspFile) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public int getSessionTimeout() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  public void setSessionTimeout(int sessionTimeout) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public String getRequestCharacterEncoding() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void setRequestCharacterEncoding(String encoding) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public String getResponseCharacterEncoding() {
+      // TODO Auto-generated method stub
+      return null;
+  }
+
+  public void setResponseCharacterEncoding(String encoding) {
+    // TODO Auto-generated method stub
+    
   }
 }

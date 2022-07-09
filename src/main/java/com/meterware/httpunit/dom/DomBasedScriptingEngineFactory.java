@@ -31,7 +31,6 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.HTMLElement;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLDocument;
@@ -43,13 +42,17 @@ import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.Scriptable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The scripting engine factory which relies directly on the DOM.
  */
 public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
-	
+
+    private final static Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);
+
 		/**
 		 * check whether this ScriptingEngineFactory is enabled
 		 */
@@ -58,7 +61,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
             Class.forName( "org.mozilla.javascript.Context" );
             return true;
         } catch (Exception e) {
-            Logger.getLogger( "httpunit.org" ).warning( "Rhino classes (js.jar) not found - Javascript disabled" );
+            logger.warn( "Rhino classes (js.jar) not found - Javascript disabled" );
             return false;
         }
     }

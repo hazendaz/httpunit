@@ -631,4 +631,9 @@ public class ServletUnitServletContext implements ServletContext {
     // TODO Auto-generated method stub
     
   }
+
+  public String getVirtualServerName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

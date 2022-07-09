@@ -9,3 +9,13 @@ A library for testing websites
 
 ### Stack Overflow Questions & Answers
 http://stackoverflow.com/questions/tagged/http-unit
+
+### Servlet 3.1.0 and jsp initializer
+
+After getting ServletRunner to establish the Instance Manager, add the following to your code to use tomcat 8 and better
+
+```
+    // Initializer Jasper
+    final JasperInitializer jsp = new JasperInitializer();
+    jsp.onStartup(null, this.runner.getSession(true).getServletContext());
+```

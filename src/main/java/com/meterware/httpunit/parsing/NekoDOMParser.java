@@ -20,14 +20,15 @@ package com.meterware.httpunit.parsing;
  *
  *******************************************************************************************************************/
 import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
+
 import com.meterware.httpunit.dom.HTMLDocumentImpl;
 
 import java.net.URL;
 import java.io.IOException;
 import java.util.Enumeration;
 
-import org.cyberneko.html.HTMLConfiguration;
-import org.cyberneko.html.HTMLScanner;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLParseException;

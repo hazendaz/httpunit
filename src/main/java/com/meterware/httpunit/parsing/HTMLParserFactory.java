@@ -267,7 +267,7 @@ abstract public class HTMLParserFactory {
 
     static {
         _jtidyParser = loadParserIfSupported( "org.w3c.tidy.Parser", "com.meterware.httpunit.parsing.JTidyHTMLParser" );
-        _nekoParser  = loadParserIfSupported( "org.cyberneko.html.HTMLConfiguration", "com.meterware.httpunit.parsing.NekoHTMLParser" );
+        _nekoParser  = loadParserIfSupported( "net.sourceforge.htmlunit.cyberneko.HTMLConfiguration", "com.meterware.httpunit.parsing.NekoHTMLParser" );
         reset();
     }
 

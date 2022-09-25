@@ -21,10 +21,17 @@ package com.meterware.httpunit.parsing;
  *******************************************************************************************************************/
 
 import com.meterware.httpunit.HttpUnitOptions;
-import org.apache.xerces.xni.*;
+
+import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
+import net.sourceforge.htmlunit.cyberneko.filters.DefaultFilter;
+
+import org.apache.xerces.xni.Augmentations;
+import org.apache.xerces.xni.QName;
+import org.apache.xerces.xni.XMLAttributes;
+import org.apache.xerces.xni.XMLLocator;
+import org.apache.xerces.xni.XMLString;
+import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.cyberneko.html.HTMLConfiguration;
-import org.cyberneko.html.filters.DefaultFilter;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -70,7 +77,7 @@ class ScriptFilter extends DefaultFilter {
         _activeScriptBlock = null;
         _systemID = (locator == null) ? "" : (locator.getLiteralSystemId() + "_");
         _scriptIndex = 0;
-        super.startDocument( locator, encoding, augs );
+        super.startDocument( locator, encoding, null, augs );
     }
 
 

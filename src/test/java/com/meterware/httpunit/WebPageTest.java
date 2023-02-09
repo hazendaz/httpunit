@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -505,7 +506,7 @@ public class WebPageTest extends HttpUnitTest {
                 + "<base href=\"" + mainBaseURL.toExternalForm() + "\">\n"
                 + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"
                 + "</body>\n</html>\n";
-        WebResponse.ByteTagParser parser = new WebResponse.ByteTagParser(document.getBytes());
+        WebResponse.ByteTagParser parser = new WebResponse.ByteTagParser(document.getBytes(StandardCharsets.UTF_8));
 
         String[] expectedTags = {"html", "head", "title", "/title", "script", "/script", "base", "/head",
                 "body", "a", "/a", "/body", "/html"};

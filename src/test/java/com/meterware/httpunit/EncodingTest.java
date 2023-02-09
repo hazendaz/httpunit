@@ -25,6 +25,7 @@ import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
@@ -170,7 +171,7 @@ public class EncodingTest extends HttpUnitTest {
                 try {
                     String name = getParameter("name")[0];
                     WebResource result = new WebResource("<html><body><table><tr><td>Hello, " +
-                            new String(name.getBytes("iso-8859-1"), "iso-8859-8") +
+                            new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8") +
                             "</td></tr></table></body></html>");
                     result.setCharacterSet("iso-8859-8");
                     result.setSendCharacterSet(true);
@@ -203,7 +204,7 @@ public class EncodingTest extends HttpUnitTest {
                 try {
                     String name = getParameter("name")[0];
                     WebResource result = new WebResource("<html><body><table><tr><td>Hello, " +
-                            new String(name.getBytes("iso-8859-1"), "iso-8859-8") +
+                            new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8") +
                             "</td></tr></table></body></html>");
                     result.setCharacterSet("iso-8859-8");
                     result.setSendCharacterSet(true);

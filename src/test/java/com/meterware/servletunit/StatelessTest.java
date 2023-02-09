@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -200,7 +201,7 @@ public class StatelessTest {
         sr.registerServlet("ReportData", BodyEcho.class.getName());
 
         String sourceData = "This is an interesting test\nWith two lines";
-        InputStream source = new ByteArrayInputStream(sourceData.getBytes("iso-8859-1"));
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
 
         WebClient wc = sr.newClient();
         WebRequest wr = new PostMethodWebRequest("http://localhost/ReportData", source, "text/sample");

@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -88,7 +89,7 @@ public class RequestContextTest extends HttpUnitTest {
     @Test
     public void testPostParameterParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
-        rc.setMessageBody("param=red&param1=old&param=blue".getBytes());
+        rc.setMessageBody("param=red&param1=old&param=blue".getBytes(StandardCharsets.UTF_8));
         assertMatchingSet("parameter names", new String[]{"param", "param1"}, rc.getParameterNames());
         assertMatchingSet("param values", new String[]{"red", "blue"}, rc.getParameterValues("param"));
         assertEquals("param1 value", "old", ((String[]) rc.getParameterMap().get("param1"))[0]);
@@ -103,7 +104,7 @@ public class RequestContextTest extends HttpUnitTest {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param=red&param1=%E0%E1%E2%E3&param=blue";
-        rc.setMessageBody(paramString.getBytes("iso-8859-1"));
+        rc.setMessageBody(paramString.getBytes(StandardCharsets.ISO_8859_1));
         rc.setMessageEncoding("iso-8859-8");
         assertMatchingSet("parameter names", new String[]{"param", "param1"}, rc.getParameterNames());
         assertMatchingSet("param values", new String[]{"red", "blue"}, rc.getParameterValues("param"));

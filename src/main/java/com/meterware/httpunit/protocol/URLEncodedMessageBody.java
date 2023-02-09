@@ -23,6 +23,7 @@ import com.meterware.httpunit.HttpUnitOptions;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A POST method request message body which uses the default URL encoding.
@@ -49,7 +50,7 @@ class URLEncodedMessageBody extends MessageBody {
      * Transmits the body of this request as a sequence of bytes.
      **/
     public void writeTo( OutputStream outputStream, ParameterCollection parameters ) throws IOException {
-        outputStream.write( getParameterString( parameters ).getBytes() );
+        outputStream.write( getParameterString( parameters ).getBytes(StandardCharsets.UTF_8) );
     }
 
 

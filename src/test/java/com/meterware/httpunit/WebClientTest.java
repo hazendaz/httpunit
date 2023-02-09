@@ -33,6 +33,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -436,7 +437,7 @@ public class WebClientTest extends HttpUnitTest {
         });
 
         String body = "something";
-        InputStream bodyStream = new ByteArrayInputStream(body.getBytes("UTF-8"));
+        InputStream bodyStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         PostMethodWebRequest request = new PostMethodWebRequest(getHostPath()
                 + "/postRequiringAuthentication", bodyStream, "text/plain");
 
@@ -1075,7 +1076,7 @@ public class WebClientTest extends HttpUnitTest {
 
         public WebResource getGetResponse() throws IOException {
             if (!userAcceptsGZIP()) {
-                return new WebResource(_responseText.getBytes(), "text/plain");
+                return new WebResource(_responseText.getBytes(StandardCharsets.UTF_8), "text/plain");
             } else {
                 WebResource result = new WebResource(getCompressedContents(), "text/plain");
                 if (_suppressLengthHeader) result.suppressAutomaticLengthHeader();

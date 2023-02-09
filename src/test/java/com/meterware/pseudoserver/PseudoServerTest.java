@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.After;
 import org.junit.Before;
@@ -107,7 +108,7 @@ public class PseudoServerTest {
         OutputStream os = socket.getOutputStream();
         InputStream is = new BufferedInputStream(socket.getInputStream());
 
-        os.write("GET /sample HTTP/1.0".getBytes());
+        os.write("GET /sample HTTP/1.0".getBytes(StandardCharsets.UTF_8));
 
         StringBuilder sb = new StringBuilder();
         int b;
@@ -142,7 +143,7 @@ public class PseudoServerTest {
 
 
     private void sendHTTPLine(OutputStream os, final String line) throws IOException {
-        os.write(line.getBytes());
+        os.write(line.getBytes(StandardCharsets.UTF_8));
         os.write(13);
         os.write(10);
     }
@@ -437,7 +438,7 @@ public class PseudoServerTest {
         sock.setSoTimeout(5000);
 
         byte[] requestData = null;
-        requestData = generateLongMIMEPostData().getBytes();
+        requestData = generateLongMIMEPostData().getBytes(StandardCharsets.UTF_8);
 
         String requestLine = "POST /largeRequest HTTP/1.1\r\n";
         String hostHeader = "localhost:" + valueOf(getHostPort()) + "\r\n";
@@ -450,15 +451,15 @@ public class PseudoServerTest {
         String eoh = "\r\n";
 
         BufferedOutputStream out = new BufferedOutputStream(sock.getOutputStream());
-        out.write(requestLine.getBytes());
-        out.write(hostHeader.getBytes());
-        out.write(conHeader.getBytes());
-        out.write(teHeader.getBytes());
-        out.write(accHeader.getBytes());
-        out.write(soapHeader.getBytes());
-        out.write(ctHeader.getBytes());
-        out.write(clHeader.getBytes());
-        out.write(eoh.getBytes());
+        out.write(requestLine.getBytes(StandardCharsets.UTF_8));
+        out.write(hostHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(conHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(teHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(accHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(soapHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(ctHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(clHeader.getBytes(StandardCharsets.UTF_8));
+        out.write(eoh.getBytes(StandardCharsets.UTF_8));
 
         // Send some of the request data
         out.write(requestData, 0, 200);

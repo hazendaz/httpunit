@@ -22,6 +22,7 @@ package com.meterware.httpunit;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -177,7 +178,7 @@ class AuthenticationChallenge extends HttpHeader {
 
             final protected String H( String data ) throws NoSuchAlgorithmException, UnsupportedEncodingException {
                 MessageDigest digest = MessageDigest.getInstance( "MD5" );
-                digest.update( data.getBytes( "UTF8" ) );
+                digest.update( data.getBytes( StandardCharsets.UTF_8 ) );
                 byte[] bytes = digest.digest();
                 StringBuffer sb = new StringBuffer();
                 for (int i = 0; i < bytes.length; i++) {

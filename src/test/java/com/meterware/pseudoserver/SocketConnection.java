@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -68,7 +69,7 @@ class SocketConnection {
         sendHTTPLine( "Connection: Keep-Alive" );
         sendHTTPLine( "Content-Length: " + body.length() );
         sendHTTPLine( "" );
-        _os.write( body.getBytes() );
+        _os.write( body.getBytes(StandardCharsets.UTF_8) );
         return new SocketResponse( _is );
     }
 
@@ -101,7 +102,7 @@ class SocketConnection {
 
 
     private void sendHTTPLine( final String line ) throws IOException {
-        _os.write( line.getBytes() );
+        _os.write( line.getBytes(StandardCharsets.UTF_8) );
         _os.write( 13 );
         _os.write( 10 );
     }

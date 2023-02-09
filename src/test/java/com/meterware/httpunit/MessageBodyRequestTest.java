@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
@@ -49,7 +50,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 	public WebRequest makeRequest(String resourceName,String sourceData, String contentType) throws UnsupportedEncodingException{
         defineResource(resourceName, new BodyEcho());
 		InputStream source = new ByteArrayInputStream(sourceData
-				.getBytes("iso-8859-1"));
+				.getBytes(StandardCharsets.ISO_8859_1));
 		WebRequest wr = new PostMethodWebRequest(getHostPath() + "/"+resourceName,
 				source, contentType);
 		return wr;
@@ -87,7 +88,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
         defineResource("ReportData", new BodyEcho());
 		String sourceData = "This is an interesting test\nWith two lines";
 		InputStream source = new ByteArrayInputStream(sourceData
-				.getBytes("iso-8859-1"));
+				.getBytes(StandardCharsets.ISO_8859_1));
 
 		WebConversation wc = new WebConversation();
 		WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
@@ -114,7 +115,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     	WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random" );
     	WebResponse response = wc.getResponse( wr );
     	// currently the following line does not work:
-    	byte[] download = response.getText().getBytes();
+    	byte[] download = response.getText().getBytes(StandardCharsets.UTF_8);
     	// 	currently the following line works:
     	// byte[] download = getDownload( response );
     	// and this one is now available ...

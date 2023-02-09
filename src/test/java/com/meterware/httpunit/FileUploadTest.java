@@ -29,6 +29,7 @@ import com.meterware.pseudoserver.WebResource;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 import javax.activation.DataSource;
@@ -246,7 +247,7 @@ public class FileUploadTest extends HttpUnitTest {
 
     @Test
     public void testInputStreamAsFile() throws Exception {
-        ByteArrayInputStream bais = new ByteArrayInputStream("Not much text\nBut two lines\n".getBytes());
+        ByteArrayInputStream bais = new ByteArrayInputStream("Not much text\nBut two lines\n".getBytes(StandardCharsets.UTF_8));
 
         defineResource("ListParams", new MimeEcho());
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> " +
@@ -265,7 +266,7 @@ public class FileUploadTest extends HttpUnitTest {
 
     @Test
     public void testFileUploadWithoutForm() throws Exception {
-        ByteArrayInputStream bais = new ByteArrayInputStream("Not much text\nBut two lines\n".getBytes());
+        ByteArrayInputStream bais = new ByteArrayInputStream("Not much text\nBut two lines\n".getBytes(StandardCharsets.UTF_8));
 
         defineResource("ListParams", new MimeEcho());
         WebConversation wc = new WebConversation();

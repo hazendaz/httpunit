@@ -35,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
@@ -318,7 +319,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      **/
     public InputStream getInputStream() throws IOException {
         if (_inputStream == null)
-        	_inputStream = new ByteArrayInputStream( getText().getBytes() );
+        	_inputStream = new ByteArrayInputStream( getText().getBytes(StandardCharsets.UTF_8) );
         return _inputStream;
     }
 
@@ -1045,7 +1046,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
         _refreshHeader = null;
 
         try {
-            readTags( text.getBytes() );
+            readTags( text.getBytes(StandardCharsets.UTF_8) );
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException( "Failure while attempting to reparse text: " + e );
         } catch (MalformedURLException e) {

@@ -36,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -337,9 +338,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     public void testRequestMessageBody() throws Exception {
         String body = "12345678901234567890";
-        InputStream stream = new ByteArrayInputStream(body.getBytes("UTF-8"));
+        InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PutMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes());
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes(StandardCharsets.UTF_8));
 
         assertEquals("Request content length", body.length(), request.getContentLength());
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
@@ -731,9 +732,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     public void testGetInputStream() throws Exception {
         String body = "12345678901234567890";
-        InputStream stream = new ByteArrayInputStream(body.getBytes("UTF-8"));
+        InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes());
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes(StandardCharsets.UTF_8));
 
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
         byte[] buffer = new byte[request.getContentLength()];
@@ -777,7 +778,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(HttpUnitUtils.DEFAULT_CHARACTER_SET));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes());
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes(StandardCharsets.UTF_8));
 
         char[] buffer = new char[body.length()];
         request.getReader().read(buffer);
@@ -792,9 +793,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
      */
     public void xtestGetReaderSpecificCharset() throws Exception {
         String body = "\u05d0\u05d1\u05d2\u05d3";
-        InputStream stream = new ByteArrayInputStream(body.getBytes("UTF-8"));
+        InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain; charset=UTF-8");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes());
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes(StandardCharsets.UTF_8));
 
         char[] buffer = new char[body.length()];
         request.getReader().read(buffer);
@@ -814,7 +815,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         String paramString = "param1=red&param2=%E0%E1%E2%E3";  // use iso-8859-8 to encode the data
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Content-Type", "application/x-www-form-urlencoded; charset=ISO-8859-8");
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes("iso-8859-1"));
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes(StandardCharsets.ISO_8859_1));
         assertEquals("param1 value", "red", request.getParameter("param1"));
         assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
     }
@@ -851,7 +852,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param1=red&param2=%E0%E1%E2%E3";  // use iso-8859-8 to encode the data, then string is URL encoded
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes("ISO-8859-1"));
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes(StandardCharsets.ISO_8859_1));
         request.setCharacterEncoding("ISO-8859-8");
         assertEquals("param1 value", "red", request.getParameter("param1"));
         assertEquals("param2 value", hebrewValue, request.getParameter("param2"));

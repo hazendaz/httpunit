@@ -23,8 +23,8 @@ import com.meterware.httpunit.dom.HTMLDocumentImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -41,18 +41,14 @@ class JTidyHTMLParser implements HTMLParser {
 
 
     public void parse( URL pageURL, String pageText, DocumentAdapter adapter ) throws IOException, SAXException {
-        try {
-            Document jtidyDocument = getParser( pageURL ).parseDOM( new ByteArrayInputStream( pageText.getBytes( UTF_ENCODING ) ), null );
-            HTMLDocument htmlDocument = new HTMLDocumentImpl();
-            NodeList nl = jtidyDocument.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                Node importedNode = nl.item(i);
-                if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE) htmlDocument.appendChild( htmlDocument.importNode( importedNode, true ) );
-            }
-            adapter.setDocument( htmlDocument );
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException( "UTF-8 encoding failed" );
+        Document jtidyDocument = getParser( pageURL ).parseDOM( new ByteArrayInputStream( pageText.getBytes( StandardCharsets.UTF_8 ) ), null );
+        HTMLDocument htmlDocument = new HTMLDocumentImpl();
+        NodeList nl = jtidyDocument.getChildNodes();
+        for (int i = 0; i < nl.getLength(); i++) {
+            Node importedNode = nl.item(i);
+            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE) htmlDocument.appendChild( htmlDocument.importNode( importedNode, true ) );
         }
+        adapter.setDocument( htmlDocument );
     }
 
 
@@ -80,9 +76,6 @@ class JTidyHTMLParser implements HTMLParser {
 
 
     final private static char NBSP = (char) 160;   // non-breaking space, defined by JTidy
-
-    final private static String UTF_ENCODING = "UTF-8";
-
 
     /**
      * get the parser of the given url

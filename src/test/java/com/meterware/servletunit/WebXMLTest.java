@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -129,7 +130,7 @@ public class WebXMLTest {
         dir.mkdirs();
         File webXml = new File(dir, "web.xml");
         FileOutputStream fos = new FileOutputStream(webXml);
-        fos.write(wxs.asText().getBytes());
+        fos.write(wxs.asText().getBytes(StandardCharsets.UTF_8));
         fos.close();
         return webXml;
     }
@@ -286,7 +287,7 @@ public class WebXMLTest {
 
 
     private ByteArrayInputStream toInputStream(String contents) throws UnsupportedEncodingException {
-        return new ByteArrayInputStream(contents.getBytes("UTF-8"));
+        return new ByteArrayInputStream(contents.getBytes(StandardCharsets.UTF_8));
     }
 
 

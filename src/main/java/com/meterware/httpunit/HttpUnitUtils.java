@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -142,7 +143,7 @@ public class HttpUnitUtils {
         try {
             if (string == null) return null;
 
-            return new String( decodeUrl( string.getBytes( "US-ASCII" ) ), charset );
+            return new String( decodeUrl( string.getBytes( StandardCharsets.US_ASCII ) ), charset );
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException( e.toString() );
         }

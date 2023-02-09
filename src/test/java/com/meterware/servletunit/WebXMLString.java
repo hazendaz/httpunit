@@ -22,6 +22,7 @@ package com.meterware.servletunit;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -57,7 +58,7 @@ class WebXMLString {
 
 
     ByteArrayInputStream asInputStream() throws UnsupportedEncodingException {
-        return new ByteArrayInputStream(asText().getBytes("UTF-8"));
+        return new ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
     }
 
     // the stream for testing the dtd file

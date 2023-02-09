@@ -138,11 +138,11 @@ class ScriptingSupport {
         if (!(value instanceof Number) || !isNumericParameter( targetValueClass )) return value;
 
         if (targetValueClass.getName().equals("int")) return Integer.valueOf( ((Number) value).intValue() );
-        if (targetValueClass.getName().equals("byte")) return new Byte( ((Number) value).byteValue() );
-        if (targetValueClass.getName().equals("long")) return new Long( ((Number) value).longValue() );
-        if (targetValueClass.getName().equals("short")) return new Short( ((Number) value).shortValue() );
-        if (targetValueClass.getName().equals("float")) return new Float( ((Number) value).intValue() );
-        if (targetValueClass.getName().equals("double")) return new Double( ((Number) value).intValue() );
+        if (targetValueClass.getName().equals("byte")) return Byte.valueOf( ((Number) value).byteValue() );
+        if (targetValueClass.getName().equals("long")) return Long.valueOf( ((Number) value).longValue() );
+        if (targetValueClass.getName().equals("short")) return Short.valueOf( ((Number) value).shortValue() );
+        if (targetValueClass.getName().equals("float")) return Float.valueOf( ((Number) value).intValue() );
+        if (targetValueClass.getName().equals("double")) return Double.valueOf( ((Number) value).intValue() );
         return value;
     }
 

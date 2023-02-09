@@ -1,8 +1,7 @@
-package com.meterware.servletunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2001-2004,2006,2008 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,8 +16,10 @@ package com.meterware.servletunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.servletunit;
+
+import static org.junit.Assert.*;
 
 import com.meterware.httpunit.AuthorizationRequiredException;
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -29,17 +30,6 @@ import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,8 +41,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Ignore;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * Tests for Web xml access

@@ -1,8 +1,7 @@
-package com.meterware.httpunit.dom;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2004,2006-2007, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,16 +16,18 @@ package com.meterware.httpunit.dom;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import org.w3c.dom.html.HTMLSelectElement;
-import org.w3c.dom.html.HTMLElement;
-import org.w3c.dom.html.HTMLCollection;
-import org.w3c.dom.html.HTMLOptionElement;
-import org.w3c.dom.DOMException;
+ */
+package com.meterware.httpunit.dom;
+
 import com.meterware.httpunit.protocol.ParameterProcessor;
 
 import java.io.IOException;
+
+import org.w3c.dom.DOMException;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLOptionElement;
+import org.w3c.dom.html.HTMLSelectElement;
 
 /**
  *

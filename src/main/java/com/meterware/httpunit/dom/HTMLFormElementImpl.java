@@ -1,8 +1,7 @@
-package com.meterware.httpunit.dom;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2006-2007, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,23 +16,24 @@ package com.meterware.httpunit.dom;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import org.w3c.dom.html.HTMLFormElement;
-import org.w3c.dom.html.HTMLCollection;
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Element;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+ */
+package com.meterware.httpunit.dom;
 
+import com.meterware.httpunit.protocol.URLEncodedString;
+import com.meterware.httpunit.scripting.FormScriptable;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.net.URL;
-import java.io.IOException;
 
-import com.meterware.httpunit.scripting.FormScriptable;
-import com.meterware.httpunit.protocol.URLEncodedString;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLFormElement;
 
 /**
  *

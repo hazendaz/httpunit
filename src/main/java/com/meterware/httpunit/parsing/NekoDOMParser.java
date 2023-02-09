@@ -1,8 +1,7 @@
-package com.meterware.httpunit.parsing;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2002-2008, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,26 +16,26 @@ package com.meterware.httpunit.parsing;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.httpunit.parsing;
+
+import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 
-import com.meterware.httpunit.dom.HTMLDocumentImpl;
-
-import java.net.URL;
-import java.io.IOException;
-import java.util.Enumeration;
-
+import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLParseException;
-import org.apache.xerces.xni.XNIException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLDocument;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 /**
  * 

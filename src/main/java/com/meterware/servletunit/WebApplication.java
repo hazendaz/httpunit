@@ -1,8 +1,7 @@
-package com.meterware.servletunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2001-2004, 2006,2008 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,8 +16,9 @@ package com.meterware.servletunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.servletunit;
+
 import com.meterware.httpunit.HttpInternalErrorException;
 import com.meterware.httpunit.HttpNotFoundException;
 import com.meterware.httpunit.HttpUnitUtils;
@@ -36,7 +36,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 
 /**
  * This class represents the information recorded about a single web

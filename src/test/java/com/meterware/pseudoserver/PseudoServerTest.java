@@ -1,8 +1,7 @@
-package com.meterware.pseudoserver;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2000-2004, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,20 +16,20 @@ package com.meterware.pseudoserver;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.pseudoserver;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static java.lang.String.valueOf;
+
+import static org.junit.Assert.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 
-import static java.lang.String.valueOf;
-import static org.junit.Assert.*;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PseudoServerTest {
 

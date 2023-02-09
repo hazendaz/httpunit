@@ -1,8 +1,7 @@
-package com.meterware.httpunit.dom;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2006-2007,2008 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,22 +16,22 @@ package com.meterware.httpunit.dom;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-
-import org.junit.Test;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.html.HTMLBodyElement;
-import org.w3c.dom.html.HTMLAnchorElement;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.Context;
-
-import java.net.URL;
+ */
+package com.meterware.httpunit.dom;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.net.URL;
+
+import org.junit.Test;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.html.HTMLAnchorElement;
+import org.w3c.dom.html.HTMLBodyElement;
 
 /**
  * Tests basic scripting via the DOM.

@@ -1,8 +1,7 @@
-package com.meterware.pseudoserver;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2002-2012, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,20 +16,18 @@ package com.meterware.pseudoserver;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import java.util.Vector;
+ */
+package com.meterware.pseudoserver;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
-import java.io.IOException;
+import java.util.Vector;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
-
 
 /**
  * A base class for test cases that use the pseudo server.

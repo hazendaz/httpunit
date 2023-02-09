@@ -1,9 +1,7 @@
-package com.meterware.httpunit;
-
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2006-2008, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -18,14 +16,15 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import org.w3c.dom.Node;
-
-import java.net.URL;
+ */
+package com.meterware.httpunit;
 
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.net.URL;
+
+import org.w3c.dom.Node;
 
 /**
  * Represents a block-level element such as a paragraph or table cell, which can

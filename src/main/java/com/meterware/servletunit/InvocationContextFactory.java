@@ -1,8 +1,7 @@
-package com.meterware.servletunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2001-2004, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,16 +16,17 @@ package com.meterware.servletunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.FrameSelector;
+ */
+package com.meterware.servletunit;
 
-import javax.servlet.http.HttpSession;
+import com.meterware.httpunit.FrameSelector;
+import com.meterware.httpunit.WebRequest;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Dictionary;
 
+import javax.servlet.http.HttpSession;
 
 /**
  * An interface for an object which acts as a factory of InvocationContexts

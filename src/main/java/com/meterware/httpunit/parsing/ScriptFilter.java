@@ -1,8 +1,7 @@
-package com.meterware.httpunit.parsing;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2002, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,10 +16,13 @@ package com.meterware.httpunit.parsing;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.httpunit.parsing;
 
 import com.meterware.httpunit.HttpUnitOptions;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 import net.sourceforge.htmlunit.cyberneko.filters.DefaultFilter;
@@ -32,9 +34,6 @@ import org.apache.xerces.xni.XMLLocator;
 import org.apache.xerces.xni.XMLString;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLInputSource;
-
-import java.io.IOException;
-import java.io.StringReader;
 
 /**
  * A filter to interpret JavaScript script blocks, based on the sample Scripts program provided by NekoHTML.

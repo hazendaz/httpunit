@@ -1,9 +1,7 @@
-package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
- * $URL$*
+/*
+ * MIT License
  *
- * Copyright (c) 2002-2009,2012 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -18,14 +16,14 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
+package com.meterware.httpunit;
+
+import static org.junit.Assert.*;
 
 import com.meterware.httpunit.cookies.Cookie;
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,8 +40,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
 
-import static org.junit.Assert.*;
-
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>

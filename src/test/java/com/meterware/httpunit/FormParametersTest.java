@@ -1,9 +1,7 @@
-package com.meterware.httpunit;
-
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2000-2012, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -18,9 +16,10 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import java.io.File;
+ */
+package com.meterware.httpunit;
+
+import static org.junit.Assert.*;
 
 import com.meterware.httpunit.FormParameter.UnusedParameterValueException;
 import com.meterware.httpunit.FormParameter.UnusedUploadFileException;
@@ -28,10 +27,11 @@ import com.meterware.httpunit.WebForm.InvalidFileParameterException;
 import com.meterware.httpunit.WebForm.NoSuchParameterException;
 import com.meterware.httpunit.controls.IllegalParameterValueException;
 import com.meterware.httpunit.protocol.UploadFileSpec;
+
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * A test of the parameter validation functionality.

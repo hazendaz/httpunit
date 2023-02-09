@@ -1,8 +1,7 @@
-package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2000-2004,2007 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,18 +16,18 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.net.HttpURLConnection;
+ */
+package com.meterware.httpunit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.net.HttpURLConnection;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * A test of the web frame functionality.

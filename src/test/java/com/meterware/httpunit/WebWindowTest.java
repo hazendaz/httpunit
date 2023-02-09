@@ -1,8 +1,7 @@
-package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2002-2004, 2007, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,15 +16,15 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.io.IOException;
+ */
+package com.meterware.httpunit;
 
 import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.junit.Test;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>

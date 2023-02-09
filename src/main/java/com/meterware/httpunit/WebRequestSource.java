@@ -1,7 +1,7 @@
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2001-2008, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -16,20 +16,19 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
+ */
 package com.meterware.httpunit;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import java.net.URL;
-import java.util.StringTokenizer;
-import java.io.IOException;
 
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.StringTokenizer;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  * Base class for objects which can be clicked to generate new web requests.

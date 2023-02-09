@@ -1,8 +1,7 @@
-package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2002-2007, Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,14 +16,14 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-import com.meterware.httpunit.protocol.UploadFileSpec;
-import com.meterware.httpunit.protocol.ParameterProcessor;
+ */
+package com.meterware.httpunit;
+
 import com.meterware.httpunit.protocol.ParameterCollection;
+import com.meterware.httpunit.protocol.ParameterProcessor;
+import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
-
 
 /**
  * This abstract class is extended by classes which hold parameters for web requests. Note that it is an abstract class

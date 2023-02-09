@@ -1,8 +1,7 @@
-package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
+/*
+ * MIT License
  *
- * Copyright (c) 2000-2002, 2007, 2012 Russell Gold
+ * Copyright 2011-2023 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,27 +16,27 @@ package com.meterware.httpunit;
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-
-import com.meterware.pseudoserver.PseudoServlet;
-import com.meterware.pseudoserver.WebResource;
-import com.meterware.httpunit.protocol.UploadFileSpec;
-import org.junit.Test;
-
-import java.io.*;
-import java.util.StringTokenizer;
-import java.net.URLEncoder;
-
-import javax.activation.DataSource;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMultipart;
+ */
+package com.meterware.httpunit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+
+import com.meterware.httpunit.protocol.UploadFileSpec;
+import com.meterware.pseudoserver.PseudoServlet;
+import com.meterware.pseudoserver.WebResource;
+
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.StringTokenizer;
+
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
+
+import org.junit.Test;
 
 /**
  * A unit test of the file upload simulation capability.

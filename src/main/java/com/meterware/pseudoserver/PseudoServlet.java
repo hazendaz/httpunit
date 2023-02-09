@@ -33,8 +33,8 @@ public class PseudoServlet {
 
 
     /**
-     * Returns a resource object as a result of a get request. 
-     **/ 
+     * Returns a resource object as a result of a get request.
+     **/
     public WebResource getResponse( String methodType ) throws IOException {
         if (methodType.equalsIgnoreCase( "GET" )) {
             return getGetResponse();
@@ -51,32 +51,32 @@ public class PseudoServlet {
 
 
     /**
-     * Returns a resource object as a result of a get request. 
-     **/ 
+     * Returns a resource object as a result of a get request.
+     **/
     public WebResource getGetResponse() throws IOException {
         throw new UnknownMethodException( "GET" );
     }
 
 
     /*
-     * Returns a resource object as a result of a post request. 
-     **/ 
+     * Returns a resource object as a result of a post request.
+     **/
     public WebResource getPostResponse() throws IOException {
         throw new UnknownMethodException( "POST" );
     }
 
 
     /*
-     * Returns a resource object as a result of a put request. 
-     **/ 
+     * Returns a resource object as a result of a put request.
+     **/
     public WebResource getPutResponse() throws IOException {
         throw new UnknownMethodException( "PUT" );
     }
 
 
     /*
-     * Returns a resource object as a result of a delete request. 
-     **/ 
+     * Returns a resource object as a result of a delete request.
+     **/
     public WebResource getDeleteResponse() throws IOException {
         throw new UnknownMethodException( "DELETE" );
     }

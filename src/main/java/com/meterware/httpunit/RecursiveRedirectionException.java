@@ -24,7 +24,7 @@ import java.net.URL;
 /**
  * Class used to indicate when a request to a resource resulted in an HTTP
  * redirect response that lead to a recursive loop of redirections
- * 
+ *
  * @author <a href="mailto:james.abley@gmail.com">James Abley </a>
  */
 public class RecursiveRedirectionException extends RuntimeException {
@@ -34,7 +34,7 @@ public class RecursiveRedirectionException extends RuntimeException {
     /**
      * Create a new <code>RecursiveRedirectionException</code> with the
      * specified URL and cause.
-     * 
+     *
      * @param url
      *            the {@link URL}that caused the recursive loop to be detected
      * @param cause
@@ -50,7 +50,7 @@ public class RecursiveRedirectionException extends RuntimeException {
     /**
      * Create a new <code>RecursiveRedirectionException</code> with the
      * specified URL and detail message.
-     * 
+     *
      * @param url
      *            the <code>URL</code> that caused the recursive loop to be
      *            detected. The URL is saved for later retrieval by
@@ -67,7 +67,7 @@ public class RecursiveRedirectionException extends RuntimeException {
     /**
      * Create a new <code>RecursiveRedirectionException</code> with the
      * specified URL, detail message and cause.
-     * 
+     *
      * @param url
      *            the <code>URL</code> that caused the recursive loop to be
      *            detected. The URL is saved for later retrieval by
@@ -88,7 +88,7 @@ public class RecursiveRedirectionException extends RuntimeException {
 
     /**
      * Returns the URL that caused this exception to be thrown.
-     * 
+     *
      * @return the <code>URL</code> that gave rise to this Exception
      */
     public URL getURL() {

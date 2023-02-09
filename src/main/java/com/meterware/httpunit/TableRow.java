@@ -44,7 +44,7 @@ public class TableRow extends HTMLElementBase {
 
 
     TableCell[] getCells() {
-        
+
         return (TableCell[]) _cells.toArray( new TableCell[ _cells.size() ]);
     }
 

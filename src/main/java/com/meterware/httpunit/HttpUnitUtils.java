@@ -48,21 +48,21 @@ public class HttpUnitUtils {
 
     /**
      * handle Exceptions and thowables
-     * @param th 
+     * @param th
      */
     public static void handleException(Throwable th) {
     	if (EXCEPTION_DEBUG) {
     		th.printStackTrace();
-    	}	
-    }  
-    
+    	}
+    }
+
     /**
      * are we running in the Eclipse IDE?
      * @return whether we are running in the Eclipse environment
      */
     public static boolean isEclipse() {
     	StackTraceElement[] ste = new Throwable().getStackTrace();
-    	return (ste[ste.length - 1].getClassName().startsWith("org.eclipse.jdt"));    	
+    	return (ste[ste.length - 1].getClassName().startsWith("org.eclipse.jdt"));
     }
 
     /**
@@ -181,7 +181,7 @@ public class HttpUnitUtils {
         }
         return buffer.toByteArray();
     }
-    
+
     /**
      * parse an InputStream to a string (for debugging)
      * @param is
@@ -205,7 +205,7 @@ public class HttpUnitUtils {
     		}
     		return sb.toString();
     }
-    
+
     /**
      * parse the given inputSource with a new Parser
      * @param inputSource
@@ -215,22 +215,22 @@ public class HttpUnitUtils {
     	DocumentBuilder db=newParser();
     	try {
     		Document doc=db.parse(inputSource);
-  			return doc;  			
+  			return doc;
     	} catch (java.net.MalformedURLException mue) {
     		if (EXCEPTION_DEBUG) {
     			String msg=mue.getMessage();
     			if (msg!=null) {
     				System.err.println(msg);
-    			}	
+    			}
     			InputStream is=inputSource.getByteStream();
     			is.reset();
     			String content=parseISToString(is);
     			System.err.println(content);
-    		}	
+    		}
     		throw mue;
     	}
     }
-    
+
     /**
      * parse the given inputStream with a new Parser
      * @param inputStream
@@ -240,22 +240,22 @@ public class HttpUnitUtils {
     	DocumentBuilder db=newParser();
     	try {
     		Document doc=db.parse(inputStream);
-  			return doc;  			
+  			return doc;
     	} catch (java.net.MalformedURLException mue) {
     		if (EXCEPTION_DEBUG) {
     			String msg=mue.getMessage();
     			if (msg!=null) {
     				System.err.println(msg);
-    			}	
+    			}
     			InputStream is=inputStream;
     			is.reset();
     			String content=parseISToString(is);
     			System.err.println(content);
-    		}	
+    		}
     		throw mue;
     	}
     }
-    
+
 
     /**
      * creates a parser using JAXP API.
@@ -356,13 +356,13 @@ public class HttpUnitUtils {
 
 
     /**
-     * Trims whitespace from the ends, and encodes from the middle. 
+     * Trims whitespace from the ends, and encodes from the middle.
      * Spaces within quotes are respected.
      */
     static String encodeSpaces( String s ) {
         s = s.trim();
         // if no spaces we are fine
-        if (s.indexOf( ' ' ) < 0) 
+        if (s.indexOf( ' ' ) < 0)
         	return s;
 
         boolean inQuotes = false;
@@ -376,7 +376,7 @@ public class HttpUnitUtils {
           if (aChar == '"' || aChar == '\'' ) {
             inQuotes = !inQuotes;
             sb.append( aChar );
-            // append everything in quotes and printable chars above space      
+            // append everything in quotes and printable chars above space
           } else if (inQuotes) {
             sb.append( aChar );
           } else if (aChar > ' ') {
@@ -432,7 +432,7 @@ public class HttpUnitUtils {
             try {
                 return new InputSource( getClass().getClassLoader().getResourceAsStream( localName ) );
             } catch (Exception e) {
-                // proposed patch for bug report 
+                // proposed patch for bug report
                 // [ 1264706 ] [patch] replace ClasspathEntityResolver
                 // by fabrizio giustina
             	  // even to return this in all cases!

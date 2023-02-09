@@ -56,7 +56,7 @@ public interface HTMLParser {
      * Returns true if this parser supports forcing  the upper/lower case of tag and attribute names.
      */
     public boolean supportsForceTagCase();
-    
+
     /**
      * Returns true if this parser can return an HTMLDocument object.
      */

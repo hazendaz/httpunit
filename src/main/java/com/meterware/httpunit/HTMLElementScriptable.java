@@ -32,7 +32,7 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
 	   * the element that I am scripting for
 	   */
     private HTMLElement _element;
-    
+
 
     /**
 		 * @return the _element
@@ -58,7 +58,7 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
             return super.get( propertyName );
         }
     }
-    
+
     /**
      * get the content of the given attribute
      * @param attributeName
@@ -67,7 +67,7 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     public String getAttribute(String attributeName) {
     	return _element.getAttribute(attributeName);
     }
-    
+
     /**
      * set the attribute with the given attribute name to the given value
      * @param attributeName
@@ -76,15 +76,15 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     public void setAttribute( String attributeName, Object value ) {
     	_element.setAttribute( attributeName, value );
     }
-    
+
     /**
      * remove the given attribute
      * @param attributeName
      */
     public void removeAttribute( String attributeName ) {
     	_element.removeAttribute( attributeName );
-    }    
-    
+    }
+
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
         if (eventName.toLowerCase().equals( "onclick" )) {

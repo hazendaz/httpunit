@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
  */
 public class WebXMLTest {
     private static final String TEST_TARGET_PATH = "target/build";
-    
+
     /**
      * if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems
      * for the Eclipse environment we'll give advice what to do

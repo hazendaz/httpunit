@@ -580,7 +580,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
 
-   
+
     /**
      * test getting the uri
      * @param uri
@@ -589,7 +589,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     public void testGetRequestURI(String uri,String path) throws Exception {
     	/*
     	 http://de.wikipedia.org/wiki/Uniform_Resource_Identifier
-    	 
+
       foo://example.com:8042/over/there?name=ferret#nose
         \_/   \______________/\_________/ \_________/ \__/
          |           |            |            |        |
@@ -607,7 +607,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(path, request.getRequestURI());
         assertEquals(uri, request.getRequestURL().toString());
     }
-    
+
     @Test
     public void testGetRequestURI() throws Exception {
     	testGetRequestURI("http://localhost/simple","/simple");
@@ -818,7 +818,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("param1 value", "red", request.getParameter("param1"));
         assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
     }
-    
+
     private InvocationContextFactory _dummyfactory = new InvocationContextFactory() {
         public InvocationContext newInvocation( ServletUnitClient client, FrameSelector targetFrame, WebRequest request, Dictionary clientHeaders, byte[] messageBody ) throws IOException, MalformedURLException {
             return new InvocationContextImpl( client, null, targetFrame, request, clientHeaders, messageBody );

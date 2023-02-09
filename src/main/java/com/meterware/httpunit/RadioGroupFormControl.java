@@ -52,7 +52,7 @@ public class RadioGroupFormControl extends FormControl {
 
 
   /**
-   * add a radio button 
+   * add a radio button
    * @param control
    */
   void addRadioButton( RadioButtonFormControl control ) {

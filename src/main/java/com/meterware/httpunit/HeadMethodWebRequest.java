@@ -46,10 +46,10 @@ import java.net.URL;
  * A web request using the HEAD method. This request is used to obtain header
  * information for a resource without necessarily waiting for the data to be
  * computed or transmitted.
- * 
- * RFC 2616 http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html defines: 
+ *
+ * RFC 2616 http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html defines:
  * 9.4 HEAD
- * 
+ *
  * The HEAD method is identical to GET except that the server MUST NOT return a
  * message-body in the response. The metainformation contained in the HTTP
  * headers in response to a HEAD request SHOULD be identical to the information
@@ -57,14 +57,14 @@ import java.net.URL;
  * metainformation about the entity implied by the request without transferring
  * the entity-body itself. This method is often used for testing hypertext links
  * for validity, accessibility, and recent modification.
- * 
+ *
  * The response to a HEAD request MAY be cacheable in the sense that the
  * information contained in the response MAY be used to update a previously
  * cached entity from that resource. If the new field values indicate that the
  * cached entity differs from the current entity (as would be indicated by a
  * change in Content-Length, Content-MD5, ETag or Last-Modified), then the cache
  * MUST treat the cache entry as stale.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
@@ -75,10 +75,10 @@ public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
 	private void init() {
 		super.setMethod("HEAD");
 	}
-	
+
 	/**
 	 * Creates a new head request from a complete URL string.
-	 * 
+	 *
 	 * @param urlString
 	 *            the URL desired, including the protocol.
 	 */
@@ -89,7 +89,7 @@ public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
 
 	/**
 	 * Creates a new head request using a relative URL and base.
-	 * 
+	 *
 	 * @param urlBase
 	 *            the base URL.
 	 * @param urlString

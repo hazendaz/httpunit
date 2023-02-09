@@ -64,7 +64,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private boolean                _gotInputStream;
     private BufferedReader         _reader;
     private int 		           _serverPort;
-    private String		           _serverName;   
+    private String		           _serverName;
 
 
     /**
@@ -169,9 +169,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     		String dateString=getHeader(name);
     		Date headerDate=new Date(dateString);
     		return headerDate.getTime();
-    	} catch (Exception e) {	
+    	} catch (Exception e) {
         return -1;
-    	}  
+    	}
     }
 
 
@@ -415,9 +415,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     	String result;
     	result=_contentType;
     	/**
-    	 * suggested fix by bug report 
+    	 * suggested fix by bug report
     	 * [ 1509117 ] getContentType()
-    	 * by Tom Parker     
+    	 * by Tom Parker
     	 */
     	result=this.getHeader( "Content-Type" );
       return result;
@@ -957,13 +957,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     public void login(String username, String password) throws ServletException {
       // TODO Auto-generated method stub
-      
+
     }
 
 
     public void logout() throws ServletException {
       // TODO Auto-generated method stub
-      
+
     }
 
 

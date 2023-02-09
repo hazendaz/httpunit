@@ -111,7 +111,7 @@ public class UploadFileSpec {
         { "image/jpeg",               "jpg", "jpeg" },
         { "image/png",                "png" },
         { "image/tiff",               "tif", "tiff" },
-        { "application/pdf",          "pdf" },        
+        { "application/pdf",          "pdf" },
         { "application/octet-stream", "zip" }
     };
 

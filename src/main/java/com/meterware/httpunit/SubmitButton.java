@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
 public class SubmitButton extends Button {
 
     private boolean _fake;
-    
+
 
     public String getType() {
         return (isImageButton()?IMAGE_BUTTON_TYPE:SUBMIT_BUTTON_TYPE);
@@ -53,7 +53,7 @@ public class SubmitButton extends Button {
      * @since 1.6
      */
     public void click( int x, int y ) throws IOException, SAXException {
-        if (!isImageButton()) 
+        if (!isImageButton())
         	throw new IllegalStateException( "May only specify positions for an image button" );
         doOnClickSequence(x,y);
     }
@@ -62,13 +62,13 @@ public class SubmitButton extends Button {
 //--------------------------------- Button methods ----------------------------------------------
 
     /**
-     * do the button Action 
+     * do the button Action
      * @param x - x coordinate
      * @param y - y coordinate
      */
     protected void doButtonAction(int x,int y) throws IOException, SAXException {
       getForm().doFormSubmit( this ,x,y);
-    }  
+    }
 
 
 //------------------------------------ Object methods ----------------------------------------
@@ -156,7 +156,7 @@ public class SubmitButton extends Button {
      * should we allow unnamed Image Buttons?
      */
     private static boolean allowUnnamedImageButton=false;
-    
+
     /**
 		 * @return the allowUnnamedImageButton
 		 */
@@ -171,7 +171,7 @@ public class SubmitButton extends Button {
 			SubmitButton.allowUnnamedImageButton = allowUnnamedImageButton;
 		}
 
-    
+
     /**
      * return whether this is a validImageButton
      * @return true if it is an image Button
@@ -183,7 +183,7 @@ public class SubmitButton extends Button {
       	valid=valid && buttonName != null && buttonName.length() > 0;
     	return valid;
     }
-    
+
     /**
      * return the name of the positionParameter for this button (if this is an image Button)
      * @param direction e.g. "x" or "y"
@@ -192,13 +192,13 @@ public class SubmitButton extends Button {
     public String positionParameterName(String direction) {
     	// [ 1443333 ] Allow unnamed Image input elments to submit x,y values
       String buttonName = getName();
-    	String buttonPrefix="";        	
+    	String buttonPrefix="";
      	if (buttonName != null && buttonName.length() > 0) {
      		buttonPrefix=buttonName+".";
-     	}	
+     	}
     	return buttonPrefix+direction;
     }
-    
+
     /**
      * addValues if not disabled and pressed
      * @param processor - the ParameterProcessor used
@@ -215,8 +215,8 @@ public class SubmitButton extends Button {
           processor.addParameter( positionParameterName("x"), Integer.toString( _x ), characterSet );
           processor.addParameter( positionParameterName("y"), Integer.toString( _y ), characterSet );
         }
-      } // if  
-    }    
+      } // if
+    }
 
 
 //------------------------------------------ private members ----------------------------------
@@ -239,11 +239,11 @@ public class SubmitButton extends Button {
         return getName().equals( button.getName() ) &&
                   (getName().length() == 0 || getValue().equals( button.getValue() ));
     }
-    
+
     public void throwDisabledException() {
     	throw new DisabledSubmitButtonException( this );
-    }	
-    
+    }
+
     /**
      * This exception is thrown on an attempt to define a form request with a button not defined on that form.
      **/

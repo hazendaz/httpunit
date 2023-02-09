@@ -102,14 +102,14 @@ public class ServletUnitServletContext implements ServletContext {
 	 * objects that are necessary to access the resource.
 	 * <p>
 	 * This method returns null if no resource is mapped to the pathname.
-	 * 
+	 *
 	 * Some containers may allow writing to the URL returned by this method using
 	 * the methods of the URL class.
-	 * 
+	 *
 	 * The resource content is returned directly, so be aware that requesting a
 	 * .jsp page returns the JSP source code. Use a RequestDispatcher instead to
 	 * include results of an execution.
-	 * 
+	 *
 	 * This method has a different purpose than java.lang.Class.getResource, which
 	 * looks up resources based on a class loader. This method does not use class
 	 * loaders.
@@ -121,7 +121,7 @@ public class ServletUnitServletContext implements ServletContext {
 			// ServletUnitServletContext#getResource(String path)
 			// by Timo Westkemper
 			// return !resourceFile.exists() ? null : resourceFile.toURL();
-			// 
+			//
 			// state of code until 2014-02 - before proposal of Aki Yoshida
 			// return resourceFile == null ? null : resourceFile.toURL();
 
@@ -133,17 +133,17 @@ public class ServletUnitServletContext implements ServletContext {
 
 	/**
 	 * Returns the resource located at the named path as an InputStream object.
-	 * 
+	 *
 	 * The data in the InputStream can be of any type or length. The path must be
 	 * specified according to the rules given in getResource. This method returns
 	 * null if no resource exists at the specified path.
-	 * 
+	 *
 	 * Meta-information such as content length and content type that is available
 	 * via getResource method is lost when using this method.
-	 * 
+	 *
 	 * The servlet container must implement the URL handlers and URLConnection
 	 * objects necessary to access the resource.
-	 * 
+	 *
 	 * This method is different from java.lang.Class.getResourceAsStream, which
 	 * uses a class loader. This method allows servlet containers to make a
 	 * resource available to a servlet from any location, without using a class
@@ -163,7 +163,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * located at the given path. A RequestDispatcher object can be used to
 	 * forward a request to the resource or to include the resource in a response.
 	 * The resource can be dynamic or static.
-	 * 
+	 *
 	 * The pathname must begin with a "/" and is interpreted as relative to the
 	 * current context root. Use getContext to obtain a RequestDispatcher for
 	 * resources in foreign contexts. This method returns null if the
@@ -184,16 +184,16 @@ public class ServletUnitServletContext implements ServletContext {
 	/**
 	 * Returns a RequestDispatcher object that acts as a wrapper for the named
 	 * servlet.
-	 * 
+	 *
 	 * Servlets (and JSP pages also) may be given names via server administration
 	 * or via a web application deployment descriptor. A servlet instance can
 	 * determine its name using ServletConfig.getServletName().
-	 * 
+	 *
 	 * This method returns null if the ServletContext cannot return a
 	 * RequestDispatcher for any reason.
-	 * 
+	 *
 	 * patch by Izzy Alanis
-	 * 
+	 *
 	 * @param servletName
 	 *          - the name of the dispatcher to get
 	 **/
@@ -325,7 +325,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * Returns a String containing the real path for a given virtual path. For
 	 * example, the virtual path "/index.html" has a real path of whatever file on
 	 * the server's filesystem would be served by a request for "/index.html".
-	 * 
+	 *
 	 * The real path returned will be in a form appropriate to the computer and
 	 * operating system on which the servlet container is running, including the
 	 * proper path separators. This method returns null if the servlet container
@@ -341,11 +341,11 @@ public class ServletUnitServletContext implements ServletContext {
 	/**
 	 * Returns the name and version of the servlet container on which the servlet
 	 * is running.
-	 * 
+	 *
 	 * The form of the returned string is servername/versionnumber. For example,
 	 * the JavaServer Web Development Kit may return the string JavaServer Web Dev
 	 * Kit/1.0.
-	 * 
+	 *
 	 * The servlet container may return other optional information after the
 	 * primary string in parentheses, for example, JavaServer Web Dev Kit/1.0 (JDK
 	 * 1.1.6; Windows NT 4.0 x86).
@@ -357,7 +357,7 @@ public class ServletUnitServletContext implements ServletContext {
 	/**
 	 * Returns a String containing the value of the named context-wide
 	 * initialization parameter, or null if the parameter does not exist.
-	 * 
+	 *
 	 * This method can make available configuration information useful to an
 	 * entire "web application". For example, it can provide a webmaster's email
 	 * address or the name of a system that holds critical data.
@@ -432,7 +432,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * "/WEB-INF/"}&lt;br /&gt;
 	 * getResourcePaths("/catalog/") returns {"/catalog/index.html",
 	 * "/catalog/products.html", "/catalog/offers/"}.
-	 * 
+	 *
 	 * @param path
 	 *          partial path used to match the resources, which must start with a
 	 *          /
@@ -449,7 +449,7 @@ public class ServletUnitServletContext implements ServletContext {
 	 * Returns the name of this web application correponding to this
 	 * ServletContext as specified in the deployment descriptor for this web
 	 * application by the display-name element.
-	 * 
+	 *
 	 * @return The name of the web application or null if no name has been
 	 *         declared in the deployment descriptor
 	 * @since HttpUnit 1.3
@@ -492,7 +492,7 @@ public class ServletUnitServletContext implements ServletContext {
 	/**
 	 * Allows the test to determine where the log messages should be written.
 	 * Defaults to {@link System#out}
-	 * 
+	 *
 	 * @param logStream
 	 *          where to write the log messages
 	 * @see #log(String)
@@ -583,7 +583,7 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void setSessionTrackingModes(Set<SessionTrackingMode> sessionTrackingModes) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
@@ -598,17 +598,17 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void addListener(String className) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public <T extends EventListener> void addListener(T t) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public void addListener(Class<? extends EventListener> listenerClass) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException {
@@ -627,7 +627,7 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void declareRoles(String... roleNames) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public String getVirtualServerName() {
@@ -647,7 +647,7 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void setSessionTimeout(int sessionTimeout) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public String getRequestCharacterEncoding() {
@@ -657,7 +657,7 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void setRequestCharacterEncoding(String encoding) {
     // TODO Auto-generated method stub
-    
+
   }
 
   public String getResponseCharacterEncoding() {
@@ -667,6 +667,6 @@ public class ServletUnitServletContext implements ServletContext {
 
   public void setResponseCharacterEncoding(String encoding) {
     // TODO Auto-generated method stub
-    
+
   }
 }

@@ -200,28 +200,28 @@ public interface HTMLSegment {
      * @exception SAXException thrown if there is an error parsing the segment.
      **/
     public WebTable getTableStartingWith( final String text ) throws SAXException;
-    
-    
+
+
     /**
-     * Returns the first table in this HTML segment which has the specified text as a prefix of the text 
+     * Returns the first table in this HTML segment which has the specified text as a prefix of the text
      * in its first non-blank row and non-blank column. Will recurse into any nested tables, as needed.
      * @return the selected table, or null if none is found
      * @exception SAXException thrown if there is an error parsing the segment.
      **/
     public WebTable getTableStartingWithPrefix( String text ) throws SAXException;
-    
-    
+
+
     /**
-     * Returns the first table in this HTML segment which has the specified text as its summary attribute. 
+     * Returns the first table in this HTML segment which has the specified text as its summary attribute.
      * Will recurse into any nested tables, as needed.
      * @return the selected table, or null if none is found
      * @exception SAXException thrown if there is an error parsing the segment.
      **/
     public WebTable getTableWithSummary( String summary ) throws SAXException;
-    
-    
+
+
     /**
-     * Returns the first table in this HTML segment which has the specified text as its ID attribute. 
+     * Returns the first table in this HTML segment which has the specified text as its ID attribute.
      * Will recurse into any nested tables, as needed.
      * @return the selected table, or null if none is found
      * @exception SAXException thrown if there is an error parsing the segment.

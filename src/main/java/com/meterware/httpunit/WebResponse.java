@@ -66,8 +66,8 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
     private static String[] validContentTypes={
     	HTML_CONTENT, XHTML_CONTENT, FAUX_XHTML_CONTENT, XML_CONTENT
     };
-    
-    
+
+
     private static final int UNINITIALIZED_INT = -2;
     private static final int UNKNOWN_LENGTH_TIMEOUT = 500;
     private static final int UNKNOWN_LENGTH_RETRY_INTERVAL = 10;
@@ -87,7 +87,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
     public boolean isWithParse() {
     	return _withParse;
     }
-    
+
     /**
      * set the parsing switch
      * @param doParse
@@ -107,7 +107,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
 
     /**
      * Returns true if the response is HTML.
-     * @return true if the contenType fits 
+     * @return true if the contenType fits
      **/
     public boolean isHTML() {
     	boolean result=false;
@@ -297,18 +297,18 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      * @throws IOException
      */
     public byte[] getBytes() throws IOException {
-        if (_responseText == null) 
+        if (_responseText == null)
         	loadResponseText();
         return _bytes;
-    } 
-    
+    }
+
     /**
      * Returns the text of the response (excluding headers) as a string. Use this method in preference to 'toString'
      * which may be used to represent internal state of this object.
      * @return the response text
      **/
     public String getText() throws IOException {
-        if (_responseText == null) 
+        if (_responseText == null)
         	loadResponseText();
         return _responseText;
     }
@@ -317,7 +317,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      * Returns a buffered input stream for reading the contents of this reply.
      **/
     public InputStream getInputStream() throws IOException {
-        if (_inputStream == null) 
+        if (_inputStream == null)
         	_inputStream = new ByteArrayInputStream( getText().getBytes() );
         return _inputStream;
     }
@@ -374,7 +374,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
     public HTMLElement getElementWithID( String id ) throws SAXException {
         return getReceivedPage().getElementWithID( id );
     }
-    
+
     /**
      * return the HTMLElements with the specified tag name
      * @param tagName e.g. "div" or "table"
@@ -408,7 +408,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
     public HTMLElement[] getElementsWithClassName( String className ) throws SAXException {
         return getReceivedPage().getElementsWithClassName( className );
     }
-    
+
     /**
      * Returns the HTMLElements found with the specified attribute value.
      * @since 1.6
@@ -942,7 +942,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      * see [ 1159858 ] patch for RFE 1159844 (parsing intercepted pages)
      * @param frame the frame to hold the response
      * @param url the url from which the response was received
-     * 
+     *
      **/
     protected WebResponse( WebClient client, FrameSelector frame, URL url ) {
         _client = client;
@@ -953,7 +953,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
         // https://sourceforge.net/tracker/index.php?func=detail&aid=1159844&group_id=6550&atid=356550
         if (client!=null) {
         	_window = client.getMainWindow();
-        }	
+        }
     }
 
 
@@ -984,13 +984,13 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
         } else {
             _inputStream = inputStream;
         }*/
-        
+
         if (encodedUsingGZIP()) {
         	try {
         		_inputStream = new GZIPInputStream( inputStream );
         	} catch (EOFException eof) {
         		_inputStream = inputStream;
-        	} 
+        	}
         }  else  {
         	_inputStream = inputStream;
        	}
@@ -1096,7 +1096,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      * the response as a String
      */
     private String _responseText;
-    
+
     /**
      * the response as a byte array
      */
@@ -1191,9 +1191,9 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
             if (tag.getName().equalsIgnoreCase( "base" )) processBaseTag( tag );
             // loop over a noscript region
             if (tag.getName().equalsIgnoreCase( "noscript") && HttpUnitOptions.isScriptingEnabled()) {
-                do { 
-                	tag = parser.getNextTag(); 
-                } 
+                do {
+                	tag = parser.getNextTag();
+                }
                 while (!tag.getName().equalsIgnoreCase( "/noscript") );
             }
             tag = parser.getNextTag();
@@ -1255,7 +1255,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
      *
      */
     private void readRefreshRequest() {
-        if (_refreshDelay >= 0) 
+        if (_refreshDelay >= 0)
         	return;
         _refreshDelay = 0;
         String refreshHeader = _refreshHeader != null ? _refreshHeader : getHeaderField( "Refresh" );
@@ -1356,7 +1356,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
                 	_page.parse( getText(), _pageURL );
                 	if (_page == null) throw new IllegalStateException( "replaceText called in the middle of getReceivedPage()" );
                 	((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy( this );
-                }	
+                }
             } catch (IOException e) {
             	HttpUnitUtils.handleException(e);
                throw new RuntimeException( e.toString() );
@@ -1503,7 +1503,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
             do {
                 int _start = _end + 1;
                 while (_start < _buffer.length && _buffer[ _start ] != '<') _start++;
-                // proposed patch for bug report 
+                // proposed patch for bug report
                 // [ 1376739 ] iframe tag not recognized if Javascript code contains '<'
                 // by Nathan Jakubiak
                 // uncommented since it doesn't seem to fix the test in WebFrameTest.java
@@ -1544,7 +1544,7 @@ public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
 
 		/**
 		 * allow modification of the valid content Types
-		 * use with care 
+		 * use with care
 		 * @since 1.7
 		 * @param validContentTypes the validContentTypes to set
 		 */

@@ -167,7 +167,7 @@ public abstract class Event
      * necessary. If called multiple times the final invocation takes precedence. If called from a
      * subclass of Event interface only the values specified in the initEvent method are modified,
      * all other attributes are left unchanged.
-     * 
+     *
      * @param eventTypeArg Specifies the event type. This type may be any event type currently
      *        defined in this specification or a new event type.. The string must be an XML name.
      *        Any new event type must not begin with any upper, lower, or mixed case version of the

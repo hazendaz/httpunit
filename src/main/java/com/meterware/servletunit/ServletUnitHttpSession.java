@@ -45,7 +45,7 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Returns the maximum time interval, in seconds, that the servlet engine will keep this session open 
+     * Returns the maximum time interval, in seconds, that the servlet engine will keep this session open
      * between client requests. You can set the maximum time interval with the setMaxInactiveInterval method.
      **/
     public int getMaxInactiveInterval() {
@@ -55,7 +55,7 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Specifies the maximum length of time, in seconds, that the servlet engine keeps this session 
+     * Specifies the maximum length of time, in seconds, that the servlet engine keeps this session
      * if no user requests have been made of the session.
      **/
     public void setMaxInactiveInterval( int interval ) {
@@ -65,7 +65,7 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Returns a string containing the unique identifier assigned to this session. 
+     * Returns a string containing the unique identifier assigned to this session.
      * The identifier is assigned by the servlet engine and is implementation dependent.
      **/
     public String getId() {
@@ -89,9 +89,9 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Returns the last time the client sent a request associated with this session, 
+     * Returns the last time the client sent a request associated with this session,
      * as the number of milliseconds since midnight January 1, 1970 GMT.
-     **/ 
+     **/
     public long getLastAccessedTime() {
         if (_invalid) throw new IllegalStateException();
         return _lastAccessedTime;
@@ -99,9 +99,9 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Returns true if the Web server has created a session but the client 
+     * Returns true if the Web server has created a session but the client
      * has not yet joined. For example, if the server used only
-     * cookie-based sessions, and the client had disabled the use of cookies, 
+     * cookie-based sessions, and the client had disabled the use of cookies,
      * then a session would be new.
      **/
     public boolean isNew() {
@@ -145,7 +145,7 @@ class ServletUnitHttpSession implements HttpSession {
 
     /**
      * @deprecated as of JSDK 2.2, use removeAttribute
-     **/ 
+     **/
     public void removeValue( String name ) {
         removeAttribute( name );
     }
@@ -170,7 +170,7 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Binds an object to this session, using the name specified. If an object of the same name 
+     * Binds an object to this session, using the name specified. If an object of the same name
      * is already bound to the session, the object is replaced.
      **/
     public void setAttribute( String name, Object value ) {
@@ -190,9 +190,9 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Removes the object bound with the specified name from this session. If the session does not 
+     * Removes the object bound with the specified name from this session. If the session does not
      * have an object bound with the specified name, this method does nothing.
-     **/ 
+     **/
     public void removeAttribute( String name ) {
         if (_invalid) throw new IllegalStateException();
         if (_values.containsKey( name )) {
@@ -204,7 +204,7 @@ class ServletUnitHttpSession implements HttpSession {
 
 
     /**
-     * Returns an array containing the names of all the objects bound to this session. 
+     * Returns an array containing the names of all the objects bound to this session.
      * This method is useful, for example, when you want to delete all the objects bound to this session.
      **/
     public Enumeration getAttributeNames() {

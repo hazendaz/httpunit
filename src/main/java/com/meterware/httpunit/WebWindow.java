@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 
 /**
  * A window managed by a {@link com.meterware.httpunit.WebClient WebClient}.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebWindow {
@@ -58,7 +58,7 @@ public class WebWindow {
 	/**
 	 * The urls that have been encountered as redirect locations in the course
 	 * of a single client-initiated request
-	 * 
+	 *
 	 * @since patch [ 1155415 ] Handle redirect instructions which can lead to a
 	 *        loop
 	 */
@@ -66,7 +66,7 @@ public class WebWindow {
 
 	/**
 	 * True if seen initial request
-	 * 
+	 *
 	 * @since patch [ 1155415 ] Handle redirect instructions which can lead to a
 	 *        loop
 	 */
@@ -75,7 +75,7 @@ public class WebWindow {
 	/**
 	 * Cache the initial client request to ensure that the _redirects structure
 	 * gets reset.
-	 * 
+	 *
 	 * @since patch [ 1155415 ] Handle redirect instructions which can lead to a
 	 *        loop
 	 */
@@ -123,7 +123,7 @@ public class WebWindow {
 
 	/**
 	 * Submits a GET method request and returns a response.
-	 * 
+	 *
 	 * @exception SAXException
 	 *                thrown if there is an error parsing the retrieved page
 	 **/
@@ -135,7 +135,7 @@ public class WebWindow {
 	/**
 	 * Submits a web request and returns a response. This is an alternate name
 	 * for the getResponse method.
-	 * 
+	 *
 	 * @return the WebResponse or null
 	 **/
 	public WebResponse sendRequest(WebRequest request) throws IOException,
@@ -147,7 +147,7 @@ public class WebWindow {
 	 * Submits a web request and returns a response, using all state developed
 	 * so far as stored in cookies as requested by the server. see patch [
 	 * 1155415 ] Handle redirect instructions which can lead to a loop
-	 * 
+	 *
 	 * @exception SAXException
 	 *                thrown if there is an error parsing the retrieved page
 	 * @return the WebResponse or null
@@ -186,7 +186,7 @@ public class WebWindow {
 
 	/**
 	 * get a Response from a SubFrame
-	 * 
+	 *
 	 * @param request
 	 * @param requestContext
 	 * @return the WebResponse or null
@@ -309,7 +309,7 @@ public class WebWindow {
 
 	/**
 	 * construct a WebWindow from a given client
-	 * 
+	 *
 	 * @param client
 	 *            - the client to construct me from
 	 */
@@ -351,7 +351,7 @@ public class WebWindow {
 
 	/**
 	 * check whether redirect is configured
-	 * 
+	 *
 	 * @param response
 	 * @return
 	 */
@@ -370,7 +370,7 @@ public class WebWindow {
 	/**
 	 * check wether we should follow the redirect given in the response make
 	 * sure we don't run into a recursion
-	 * 
+	 *
 	 * @param response
 	 * @return
 	 */
@@ -382,7 +382,7 @@ public class WebWindow {
       	return false;
       // now do the recursion check
       String redirectLocation = response.getHeaderField("Location");
-      
+
       URL url = null;
 
       try {
@@ -390,39 +390,39 @@ public class WebWindow {
               url = new URL(response.getURL(), redirectLocation);
           }
       } catch (MalformedURLException e) {
-          // Fall through and allow existing exception handling code deal 
+          // Fall through and allow existing exception handling code deal
           // with any exception - we don't know at this stage whether it is
-          // a redirect instruction, although it is highly likely, given 
+          // a redirect instruction, although it is highly likely, given
           // there is a location header present in the response!
       }
-      
+
       switch (response.getResponseCode()) {
       	case HttpURLConnection.HTTP_MOVED_PERM:
   	    case HttpURLConnection.HTTP_MOVED_TEMP:	// Fall through
-  	    	int count = 0;                                                               
-  	      if (null != url) {                                                         
-  	      	Integer value = (Integer)_redirects.get(url);                            
-  	      	if (null != value) {                                                     
-  	      		// We have already been instructed to redirect to that                 
-  	      		// location in the course of this attempt to resolve the               
-  	      		// resource                                                            
-  	      		                                                                       
-  	      		count = value.intValue();                                              
-  	      	                                                                         
-  	      		int maxRedirects = getClient().                                        
-  	      		getClientProperties().getMaxRedirects();                               
-  	      	                                                                         
-  	      		if (count == maxRedirects) {                                           
-  	      			throw new RecursiveRedirectionException(url,                         
-  	      				"Maximum number of redirects exceeded");                           
-  	      		}                                                                      
-  	      	}                                                                        
-  	      	  	        	                                                           
-  	          count ++;                                                              
-  	        _redirects.put(url, new Integer(count)); 
+  	    	int count = 0;
+  	      if (null != url) {
+  	      	Integer value = (Integer)_redirects.get(url);
+  	      	if (null != value) {
+  	      		// We have already been instructed to redirect to that
+  	      		// location in the course of this attempt to resolve the
+  	      		// resource
+
+  	      		count = value.intValue();
+
+  	      		int maxRedirects = getClient().
+  	      		getClientProperties().getMaxRedirects();
+
+  	      		if (count == maxRedirects) {
+  	      			throw new RecursiveRedirectionException(url,
+  	      				"Maximum number of redirects exceeded");
+  	      		}
+  	      	}
+
+  	          count ++;
+  	        _redirects.put(url, new Integer(count));
   	      }
       		break;
-      }    
+      }
       return redirectLocation != null;
     }
 	FrameSelector getTopFrame() {

@@ -66,7 +66,7 @@ public class ParsedHTML {
 
     /** map of element names to lists of elements. **/
     private HashMap      _elementsByName = new HashMap();
-    
+
     /** map of element class to elements. **/
     private HashMap      _elementsByClass = new HashMap();
 
@@ -264,7 +264,7 @@ public class ParsedHTML {
             if (value.equals(aValue )) {
                //System.err.println(element.getTagName()+"("+name+")="+aValue);
              	 elements.add( element );
-            }	
+            }
         }
         return (HTMLElement[]) elements.toArray( new HTMLElement[ elements.size() ] );
     }
@@ -385,7 +385,7 @@ public class ParsedHTML {
             try {
                 _updateElements = false;
                 String language = NodeUtils.getNodeAttribute( element, "language", null );
-                if (!getResponse().getScriptingHandler().supportsScriptLanguage( language )) 
+                if (!getResponse().getScriptingHandler().supportsScriptLanguage( language ))
                 	_enableNoScriptNodes = true;
                 getResponse().getScriptingHandler().runScript( language, script );
             } finally {
@@ -423,7 +423,7 @@ public class ParsedHTML {
     String getIncludedScript( String srcAttribute ) throws IOException {
         WebRequest req = new GetMethodWebRequest( getBaseURL(), srcAttribute );
         WebWindow window = getResponse().getWindow();
-        if (window == null) 
+        if (window == null)
         	throw new IllegalStateException( "Unable to retrieve script included by this response, since it was loaded by getResource(). Use getResponse() instead.");
         WebResponse response = window.getResource( req );
         // check whether the Source is available
@@ -432,10 +432,10 @@ public class ParsedHTML {
         if (code<=HttpURLConnection.HTTP_BAD_REQUEST) {
         	// return the text
             String result =response.getText();
-            return result;        	
+            return result;
         } else {
         	// in this case the text would be an error message
-        	// we do not return it but set the 
+        	// we do not return it but set the
         	ScriptException se=new ScriptException("reponseCode "+code+" on getIncludedScript for src='"+srcAttribute+"'");
         	String badScript=null;
         	// let scripting engine decide what to do with this exception (throw it or remember it ...)
@@ -511,9 +511,9 @@ public class ParsedHTML {
 
         HTMLElement toHTMLElement( NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element ) {
         	  // [ 1531005 ] getElementsWithAttribute **FIX**
-            //if (element.getAttribute( "id" ).equals( "" )) { 
+            //if (element.getAttribute( "id" ).equals( "" )) {
             //	return null;
-            //}	
+            //}
             return parsedHTML.toDefaultElement( element );
         }
 
@@ -843,7 +843,7 @@ public class ParsedHTML {
 
 
     /**
-     * check whether the given node is a Web link by checking that 
+     * check whether the given node is a Web link by checking that
      * the node is of type "A"
      * @param node - the node to check
      * @return whether the given node represents a web link
@@ -855,7 +855,7 @@ public class ParsedHTML {
        * -> should be isAnchor method and getAnchor
        */
     	boolean result=false;
-      String tagName = ((Element) node).getTagName();    	
+      String tagName = ((Element) node).getTagName();
       if (!tagName.equalsIgnoreCase( "area" ) && !tagName.equalsIgnoreCase( "a")) {
       } else {
       	// pre 1.7 code - still active
@@ -904,10 +904,10 @@ public class ParsedHTML {
         if (htmlElement.getClassName() != null) {
             StringTokenizer tokenizer = new StringTokenizer(htmlElement.getClassName());
             String token;
-            
+
             while(tokenizer.hasMoreElements()) {
             	token = tokenizer.nextToken();
-       		
+
             	if ( _elementsByClass.containsKey( token )) {
                 	((ArrayList) _elementsByClass.get( token )).add( htmlElement );
             	} else {

@@ -64,9 +64,9 @@ public interface ScriptingEngineFactory {
      * Clears the accumulated script error messages.
      */
     public void clearErrorMessages();
-    
+
     /**
-     * handle Exceptions 
+     * handle Exceptions
      * @param e - the exception to handle
      * @param badScript - the script that caused the problem
      */

@@ -52,7 +52,7 @@ public class WebFormTest extends HttpUnitTest {
 
     /**
      * placeholder for test for BR 2407470 by redsonic with comment and patch by Adam Heath
-     * 
+     *
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Ignore
@@ -139,7 +139,7 @@ public class WebFormTest extends HttpUnitTest {
         assertEquals( "Expected response", "You made it!", _wc.getCurrentPage().getText() );
     }
 
-    
+
     /**
      * test clicking on a Positional Button with a given name "update"
      * @throws Exception
@@ -185,7 +185,7 @@ public class WebFormTest extends HttpUnitTest {
       URL url=response.getURL();
       // reset for other test
     	SubmitButton.setAllowUnnamedImageButton(oldAllowUnnamedImageButton);
-      // System.err.println(url.getPath());      
+      // System.err.println(url.getPath());
       assertEquals( "Result of click", "You made it!", response.getText() );
     }
 
@@ -273,7 +273,7 @@ public class WebFormTest extends HttpUnitTest {
         form.reset();
         assertEquals( "Reset text area value", "Something", form.getParameterValue( "name" ) );
     }
-    
+
 
        @Test
     public void testFormRequest() throws Exception {
@@ -316,7 +316,7 @@ public class WebFormTest extends HttpUnitTest {
 
     /**
      * test Null textValues
-     */ 
+     */
        @Test
     public void testNullTextValues() throws Exception {
            defineWebPage("Default", "<form method=POST action = \"/servlet/Login\">" +
@@ -337,9 +337,9 @@ public class WebFormTest extends HttpUnitTest {
 
     /**
      * [ httpunit-Bugs-1954311 ] Set the value of a text area. Currently fails
-     * if the textarea is empty to begin with.  
+     * if the textarea is empty to begin with.
      * by m0smith
-     * 
+     *
      * @throws Exception on failure
      */
        @Test
@@ -401,7 +401,7 @@ public class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * test Select HTML Element 
+     * test Select HTML Element
      * @throws Exception
      */
        @Test
@@ -438,7 +438,7 @@ public class WebFormTest extends HttpUnitTest {
         form.reset();
         assertEquals( "Reverted color", "red", form.getParameterValue( "color" ) );
     }
-    
+
 
 
        @Test

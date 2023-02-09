@@ -74,7 +74,7 @@ class HttpWebResponse extends WebResponse {
 
 
     /**
-     * get the input stream for the given connection 
+     * get the input stream for the given connection
      * @param connection
      * @return
      * @throws IOException
@@ -84,7 +84,7 @@ class HttpWebResponse extends WebResponse {
     	// check whether there is an error stream
     	if (isResponseOnErrorStream( connection )) {
     		result=((HttpURLConnection) connection).getErrorStream();
-    	} else  {     		
+    	} else  {
     		// if there is no error stream it depends on the response code
     		try {
     			result=connection.getInputStream();
@@ -112,7 +112,7 @@ class HttpWebResponse extends WebResponse {
     private boolean isErrorResponse(URLConnection connection ) {
     	return _responseCode >= HttpURLConnection.HTTP_BAD_REQUEST;
     }
-    
+
     /**
      * check whether the response is on the error stream
      * @param connection
@@ -193,7 +193,7 @@ class HttpWebResponse extends WebResponse {
 
     private int       _responseCode    = HttpURLConnection.HTTP_OK;
 	private String    _responseMessage = "OK";
-    
+
 	/**
 	 * set the responseCode to the given code and message
 	 * @param code

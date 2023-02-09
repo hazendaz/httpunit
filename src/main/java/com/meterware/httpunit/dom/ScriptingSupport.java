@@ -33,7 +33,7 @@ class ScriptingSupport {
 
     /** A non-null method value to be used to indicate that we have already looked up and failed to find one. **/
     private static final Method NO_SUCH_PROPERTY = ScriptingSupport.class.getDeclaredMethods()[0];
-    
+
     private static final Object[] NO_ARGS = new Object[0];
 
     /** map of classes to maps of string to function objects. **/
@@ -183,10 +183,10 @@ class ScriptingSupport {
         if (parameterType.equals( String.class )) return true;
         if (valueType.equals( String.class ) && isNumericParameter( parameterType )) return true;
         if (Number.class.isAssignableFrom( valueType ) && isNumericParameter( parameterType )) return true;
-        if (valueType.equals(Boolean.class )&&parameterType.equals(boolean .class)) return true; 
+        if (valueType.equals(Boolean.class )&&parameterType.equals(boolean .class)) return true;
         return valueType.equals( String.class ) && parameterType.equals( Boolean.class );
     }
-    
+
     private static boolean isNumericParameter( Class parameterType ) {
         if (parameterType.isPrimitive() && !(parameterType.equals( boolean.class ))) return true;
         return Number.class.isAssignableFrom( parameterType );

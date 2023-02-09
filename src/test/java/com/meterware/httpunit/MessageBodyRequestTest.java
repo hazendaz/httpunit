@@ -68,7 +68,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 		assertEquals("Body response", "\nPOST\n" + sourceData, response.getText());
 		assertEquals("Content-type", "text/sample", response.getContentType());
 	}
-	
+
 	/**
 	 * test for Patch by Serge Maslyukov for empty content Types
 	 * @throws Exception
@@ -98,7 +98,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 	}
 
 	/**
-	 * test for download problem described by Oliver Wahlen	 
+	 * test for download problem described by Oliver Wahlen
 	 */
     @Test
     public void testDownloadRequestUsingGetText() throws Exception {
@@ -121,7 +121,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     	download=response.getBytes();
 		assertArrayEquals("Body response", binaryData, download);
 	}
-	
+
     @Test
     public void testDownloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
@@ -138,7 +138,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 
 		download = getDownload(response);
 		assertArrayEquals("Body response", binaryData, download);
-		
+
 		download = response.getBytes();
 		assertArrayEquals("Body response", binaryData, download);
 	}

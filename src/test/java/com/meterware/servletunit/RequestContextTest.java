@@ -435,13 +435,13 @@ public class RequestContextTest extends HttpUnitTest {
 
         public void login(String username, String password) throws ServletException {
           // TODO Auto-generated method stub
-          
+
         }
 
 
         public void logout() throws ServletException {
           // TODO Auto-generated method stub
-          
+
         }
 
 

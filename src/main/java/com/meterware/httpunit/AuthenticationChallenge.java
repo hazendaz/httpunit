@@ -56,7 +56,7 @@ class AuthenticationChallenge extends HttpHeader {
         if (getAuthenticationType() == null) return false;
         if (getCredentialsForRealm() != null) return true;
         if (!_client.getExceptionsThrownOnErrorStatus()) return false;;
-        
+
         throw createAuthorizationRequiredException();
     }
 

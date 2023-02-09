@@ -48,8 +48,8 @@ abstract class WebResourceConfiguration {
 
     WebResourceConfiguration( Element resourceElement, String resourceNodeName ) throws SAXException {
     	this( resourceElement, resourceNodeName, XMLUtils.getChildNodeValue( resourceElement, resourceNodeName ) );
-    } 	
-    
+    }
+
     /**
      * construct a WebResourceConfiguration from the given parameters
      * @param resourceElement

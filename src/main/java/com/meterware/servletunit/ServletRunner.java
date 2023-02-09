@@ -105,10 +105,10 @@ public class ServletRunner {
         _application = new WebApplication( HttpUnitUtils.newParser().parse( webXml ), webXml.getParentFile().getParentFile(), contextPath );
         completeInitialization( contextPath );
     }
-    
+
     /**
      * constructor with entity Resolver
-     * as asked for in Bug report 1222269 by jim - jafergus 
+     * as asked for in Bug report 1222269 by jim - jafergus
      * @param webXMLFileSpec
      * @param resolver
      * @throws IOException

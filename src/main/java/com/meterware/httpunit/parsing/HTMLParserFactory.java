@@ -41,7 +41,7 @@ abstract public class HTMLParserFactory {
     private static boolean    _parserWarningsEnabled;
     // for parsers that support forcing Case
     private static boolean	  _forceUpper;
-    private static boolean    _forceLower;    
+    private static boolean    _forceLower;
 
 
     /**
@@ -112,7 +112,7 @@ abstract public class HTMLParserFactory {
     /**
      * Specifies whether the parser should preserve the case of HTML tags and attributes. Not every parser can
      * support this capability.  Note that enabling this will disable support for the HTMLDocument class.
-     * override any previous behaviour configured by calling {@link #setForceUpperCase(boolean)} or 
+     * override any previous behaviour configured by calling {@link #setForceUpperCase(boolean)} or
      * {@link #setForceLowerCase(boolean)}
      * @see #setReturnHTMLDocument
      * @see #setForceUpperCase(boolean)
@@ -123,7 +123,7 @@ abstract public class HTMLParserFactory {
         if (preserveTagCase) {
         	_forceLower = false;
         	_forceUpper = false;
-        }	
+        }
     }
 
 
@@ -148,19 +148,19 @@ abstract public class HTMLParserFactory {
         if (returnHTMLDocument) {
         	_preserveTagCase = false;
          	_forceLower = false;
-        	_forceUpper = false;        	
+        	_forceUpper = false;
         }
     }
 
     /**
-     * Specifies whether the parser should force the case of HTML tags and attributes to be upper case. Not 
-     * every parser can support this capability.  Note that enabling this will disable support for the 
-     * HTMLDocument class and override any previous behaviour configured by enabling 
+     * Specifies whether the parser should force the case of HTML tags and attributes to be upper case. Not
+     * every parser can support this capability.  Note that enabling this will disable support for the
+     * HTMLDocument class and override any previous behaviour configured by enabling
      * {@link #setPreserveTagCase(boolean)} or {@link #setForceLowerCase(boolean)}
      * @see #setReturnHTMLDocument
      * @see #setPreserveTagCase(boolean)
      * @see #setForceLowerCase(boolean)
-     * @param forceUpper 
+     * @param forceUpper
      * 				boolean indicating whether to enable this functionality
      */
     public static void setForceUpperCase(boolean forceUpper) {
@@ -183,9 +183,9 @@ abstract public class HTMLParserFactory {
 
     /**
      * Specifies whether the parser should force the case of HTML tags and attributes to lower case. Not
-     * every parser can support this capability.  Note that enabling this will disable support for the 
-     * HTMLDocument class and override any previous behaviour configured by enabling 
-     * {@link #setPreserveTagCase(boolean)} or {@link #setForceUpperCase(boolean)} 
+     * every parser can support this capability.  Note that enabling this will disable support for the
+     * HTMLDocument class and override any previous behaviour configured by enabling
+     * {@link #setPreserveTagCase(boolean)} or {@link #setForceUpperCase(boolean)}
      * @see #setReturnHTMLDocument
      * @see #setPreserveTagCase(boolean)
      * @see #setForceUpperCase(boolean)

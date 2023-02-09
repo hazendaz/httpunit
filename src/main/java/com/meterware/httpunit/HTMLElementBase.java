@@ -28,7 +28,7 @@ import java.util.Set;
 import org.w3c.dom.Node;
 
 /**
- * 
+ *
  * @since 1.5.2
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
@@ -67,7 +67,7 @@ abstract class HTMLElementBase implements HTMLElement {
 	/**
 	 * handle the event that has the given script attached by compiling the
 	 * eventScript as a function and executing it
-	 * 
+	 *
 	 * @param eventScript -
 	 *          the script to use
 	 * @deprecated since 1.7 - use doEventScript instead
@@ -108,7 +108,7 @@ abstract class HTMLElementBase implements HTMLElement {
 
 	/**
 	 * construct me from a node
-	 * 
+	 *
 	 * @param node -
 	 *          the node to get me from
 	 */
@@ -123,7 +123,7 @@ abstract class HTMLElementBase implements HTMLElement {
 
 	/**
 	 * get the Attribute with the given name - by delegating to NodeUtils
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to get
 	 * @return the attribute
@@ -134,7 +134,7 @@ abstract class HTMLElementBase implements HTMLElement {
 
 	/**
 	 * set the Attribute with the given name - by delegating to NodeUtils
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to set
 	 * @param value -
@@ -147,7 +147,7 @@ abstract class HTMLElementBase implements HTMLElement {
 
 	/**
 	 * remove the Attribute with the given name - by delegating to NodeUtils
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to remove
 	 */

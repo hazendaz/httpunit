@@ -56,21 +56,21 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
         }
     }
 
-    
+
     /**
      * associate me with a webresponse
      * @param response - the WebResponse to use
      */
     public void associate( WebResponse response ) {
       try {
-        // JavaScript.run( response ); // can't do this (yet?)      	
+        // JavaScript.run( response ); // can't do this (yet?)
       } catch (RuntimeException e) {
         throw e;
       } catch (Exception e) {
       	HttpUnitUtils.handleException(e);
       	throw new RuntimeException( e.toString() );
       }
-    }  
+    }
 
 
     /**
@@ -96,7 +96,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
         	// HttpUnitUtils.handleException(e);
         } catch (EcmaError ee) {
         	//throw ee;
-        	ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());        	
+        	ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());
         } finally {
             Context.exit();
         }
@@ -141,11 +141,11 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
 
 	 /**
-     * handle Exceptions 
+     * handle Exceptions
      * @param e - the exception to handle
      * @param badScript - the script that caused the problem
      */
     public void handleScriptException( Exception e, String badScript ) {
     	ScriptingEngineImpl.handleScriptException(e, badScript);
-    }		
+    }
 }

@@ -28,7 +28,7 @@ import org.mozilla.javascript.Scriptable;
  * completed using the listener. When a Node is copied using the cloneNode method the EventListeners
  * attached to the source Node are not attached to the copied Node. If the user wishes the same
  * EventListeners to be added to the newly created copy the user must add them manually.
- * 
+ *
  * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
  * @version $Id$
  */
@@ -38,7 +38,7 @@ public interface EventListener
     /**
      * This method is called whenever an event occurs of the type for which the EventListener
      * interface was registered.
-     * 
+     *
      * @param evt The Event contains contextual information about the event. It also contains the
      *        stopPropagation and preventDefault methods which are used in determining the event's
      *        flow and default action.

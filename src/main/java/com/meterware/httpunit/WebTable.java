@@ -116,7 +116,7 @@ public class WebTable extends HTMLElementBase {
     /**
      * Removes all rows and all columns from this table which have no visible text in them.
      * patch [ 1117822 ] Patch for purgeEmptyCells() problem
-     * by Glen Stampoultzis 
+     * by Glen Stampoultzis
      **/
     public void purgeEmptyCells() {
         int numRowsWithText = 0;

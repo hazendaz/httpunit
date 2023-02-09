@@ -71,22 +71,22 @@ public interface HTMLElement extends ScriptingEventHandler {
     /**
      * Set the value of the attribute of this element with the specified name.
      * @since 1.7
-     */ 
+     */
     void setAttribute( String name, Object value );
-     
+
     /**
      * Remove the attribute of this element with the specified name.
      * @since 1.7
-     */ 
+     */
     void removeAttribute( String name );
-    
+
     /**
      * Returns true if this element may have an attribute with the specified name.
      *
      * @since 1.6
      */
     boolean isSupportedAttribute( String name );
-    
+
 
     /**
      * Returns the delegate which supports scripting this element.

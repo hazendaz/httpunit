@@ -27,7 +27,7 @@ import java.net.URLEncoder;
 public class URLEncodedString implements ParameterProcessor {
 
     public static final int DEFAULT_BUFFER_SIZE = 128;
-    
+
     private StringBuffer _buffer = new StringBuffer( DEFAULT_BUFFER_SIZE );
 
     private boolean _haveParameters = false;

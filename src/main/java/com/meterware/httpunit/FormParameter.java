@@ -54,7 +54,7 @@ public class FormParameter {
     public boolean isUnknown() {
     	return this==UNKNOWN_PARAMETER;
     }
-    
+
     /**
      * add the given form control
      * @param control
@@ -79,9 +79,9 @@ public class FormParameter {
         if (_controls == null) _controls = (FormControl[]) _controlList.toArray( new FormControl[ _controlList.size() ] );
         return _controls;
     }
-    
+
     /**
-     * get the control for this form Parameter (assuming it 
+     * get the control for this form Parameter (assuming it
      * has only one as for a text control
      * @return the controls
      */
@@ -126,13 +126,13 @@ public class FormParameter {
         ArrayList list = new ArrayList( values.length );
         list.addAll( Arrays.asList( values ) );
         FormControl[] controls = getControls();
-        for (int i = 0; i < controls.length; i++) 
+        for (int i = 0; i < controls.length; i++)
         	controls[i].claimRequiredValues( list );
-        for (int i = 0; i < controls.length; i++) 
+        for (int i = 0; i < controls.length; i++)
         	controls[i].claimUniqueValue( list );
-        for (int i = 0; i < controls.length; i++) 
+        for (int i = 0; i < controls.length; i++)
         	controls[i].claimValue( list );
-        if (!list.isEmpty()) throw 	
+        if (!list.isEmpty()) throw
         	new UnusedParameterValueException( _name, (String) list.get(0) );
     }
 
@@ -257,7 +257,7 @@ public class FormParameter {
 
     /**
      * is this a read only parameter
-     * @return false if one of the controls is not read only or this is the unknown parameter 
+     * @return false if one of the controls is not read only or this is the unknown parameter
      */
     boolean isReadOnlyParameter() {
         FormControl[] controls = getControls();
@@ -267,7 +267,7 @@ public class FormParameter {
         return (!this.isUnknown());
     }
 
-    
+
     /**
      * is this a hidden parameter?
      * @return false if one of the controls is not hidden or this is the unknown parameter
@@ -298,9 +298,9 @@ public class FormParameter {
      **/
     public class UnusedParameterValueException extends IllegalRequestParameterException {
 
-    	
+
     	/**
-    	 * construct an exception for an unused parameter with the given name 
+    	 * construct an exception for an unused parameter with the given name
     	 * and the value that is bad
     	 * @param parameterName
     	 * @param badValue
@@ -310,7 +310,7 @@ public class FormParameter {
             _badValue      = badValue;
         }
 
-        
+
         /**
          * get the message for this exception
          * @return the message

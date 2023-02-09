@@ -54,7 +54,7 @@ public class ConfigTest {
         assertEquals("content type", "text/plain", response.getContentType());
         assertEquals("servlet name is " + ConfigServlet.class.getName(), response.getText());
     }
-    
+
     @Test
     /**
      * Test added by WF 2012-11-12 to answer question on developers mailing list
@@ -70,7 +70,7 @@ public class ConfigTest {
       	WebResponse response = wc.getResponse("http://localhost/" + "ISB/"+ resourceName);
       	fail("No Exception thrown");
       } catch (Throwable th) {
-      	// com.meterware.httpunit.HttpNotFoundException: 
+      	// com.meterware.httpunit.HttpNotFoundException:
       	// Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]
       	String expected="Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]";
       	assertTrue("HttpNotFoundException expected",th instanceof HttpNotFoundException);

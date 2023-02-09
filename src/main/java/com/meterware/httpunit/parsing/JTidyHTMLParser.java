@@ -68,7 +68,7 @@ class JTidyHTMLParser implements HTMLParser {
     public boolean supportsForceTagCase() {
       return false;
     }
-    
+
     public boolean supportsReturnHTMLDocument() {
         return true;
     }

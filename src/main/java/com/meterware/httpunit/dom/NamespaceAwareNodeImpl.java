@@ -73,7 +73,7 @@ public abstract class NamespaceAwareNodeImpl extends NodeImpl {
         } else {
             _localName = qualifiedName.substring( qualifiedName.indexOf(':') + 1 );
         }
-        setParentScope(owner); 
+        setParentScope(owner);
     }
 
     public String getNodeName() {

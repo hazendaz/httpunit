@@ -40,11 +40,11 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
    * @param allowed - the list of allowed values
    */
   public IllegalParameterValueException( String parameterName, String badValue, String[] allowed ) {
-      _parameterName = parameterName;        
+      _parameterName = parameterName;
       _badValue      = badValue;
       _allowedValues = allowed;
   }
-  
+
   /**
    * get the bad value from a list of Values
    * @param values
@@ -54,21 +54,21 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
   	String result="unknown bad value";
   	if (values.size()>0) {
   		Object badValue=values.get(0);
-  		result=badValue.toString(); 
-  	}	
+  		result=badValue.toString();
+  	}
   	return result;
-  }	
+  }
 
   /**
-   * 
+   *
    * @param parameterName
    * @param values
    * @param allowed
    */
   public IllegalParameterValueException( String parameterName, List values, String[] allowed ) {
   	this(parameterName,getBadValue(values),allowed);
-  }	
-    
+  }
+
 
     public String getMessage() {
         StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);

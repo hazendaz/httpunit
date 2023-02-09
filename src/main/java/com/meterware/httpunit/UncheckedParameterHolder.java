@@ -82,7 +82,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     	if (imageButton.isValidImageButton()) {
         setParameter( imageButton.positionParameterName("x"), Integer.toString( x ) );
         setParameter( imageButton.positionParameterName("y"), Integer.toString( y ) );
-    	}  
+    	}
     }
 
 

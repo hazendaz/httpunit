@@ -83,7 +83,7 @@ public class WebRequest {
     /**
      * Returns the final URL associated with this web request.
      * @return the Uniform Resource Locator for this Web request
-     * @throws MalformedURLException if the URL is not o.k. 
+     * @throws MalformedURLException if the URL is not o.k.
      **/
     public URL getURL() throws MalformedURLException {
         if (getURLBase() == null || getURLBase().toString().indexOf( "?" ) < 0) {
@@ -188,7 +188,7 @@ public class WebRequest {
      */
     protected String method;
 
-		
+
     /**
      * @return the method
      */

@@ -26,12 +26,12 @@ import org.w3c.dom.*;
 /**
  * Provides an HTMLElement Predicate that is capable of matching based on an
  * XPath node specification. This allows for very advanced matching techniques.
- * 
+ *
  * THREAD: Instances are not thread safe, each thread should create its own
  * instance with a specific xpath. (The same instance can be used for multiple
  * documents, each change in document will result in its internal caches being
  * flushed).
- * 
+ *
  * @author <a href="mailto:edA-qa@disemia.com">edA-qa mort-ora-y</a>
  * @author <a href="mailto:stephane@mikaty.net">Stephane Mikaty</a>
  */
@@ -46,7 +46,7 @@ public class XPathPredicate implements HTMLElementPredicate {
 	/**
 	 * Constructs an HTMLElementPredicate that matches only those elements which
 	 * match the provided XPath.
-	 * 
+	 *
 	 * @param path
 	 *          [in] XPath specification of valid/matching nodes
 	 * @throws XPathExpressionException
@@ -70,7 +70,7 @@ public class XPathPredicate implements HTMLElementPredicate {
 			debugOut(nl.item(i),indent+"\t");
 		}
 	}
-	
+
 	/**
 	 * check whether the given criteria are matched for the given element
 	 * @param someElement - the element to check
@@ -88,8 +88,8 @@ public class XPathPredicate implements HTMLElementPredicate {
 		Document doc = htmlNode.getOwnerDocument();
 		if (DEBUG) {
 			debugOut(doc,"");
-		}	
-		
+		}
+
 		NodeList nodes;
 		try {
 			nodes = (NodeList) xpath.evaluate(doc, XPathConstants.NODESET);

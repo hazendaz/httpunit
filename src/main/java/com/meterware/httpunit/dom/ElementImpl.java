@@ -110,7 +110,7 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
         setAttributeNode( attribute );
         reportPropertyChanged( name );
     }
-    
+
     /**
      * get the event Handler script for the event e.g. onchange, onmousedown, onclick, onmouseup
      * execute the script if it's assigned by calling doEvent for the script

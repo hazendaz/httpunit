@@ -26,7 +26,7 @@ import org.mozilla.javascript.Scriptable;
  * Event Model. Therefore, this interface can be obtained by using binding-specific casting methods
  * on an instance of the Node interface. The interface allows registration and removal of
  * EventListeners on an EventTarget and dispatch of events to that EventTarget.
- * 
+ *
  * @author W3C
  * @version $Id$
  */
@@ -41,7 +41,7 @@ public interface EventTarget
      * EventTarget with the same parameters the duplicate instances are discarded. They do not cause
      * the EventListener to be called twice and since they are discarded they do not need to be
      * removed with the removeEventListener method.
-     * 
+     *
      * @param type The event type for which the user is registering.
      * @param listener The listener parameter takes an interface implemented by the user which
      *        contains the methods to be called when the event occurs.
@@ -52,14 +52,14 @@ public interface EventTarget
      *        EventListener designated to use capture.
      */
     public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture);
-    
+
     /**
      * This method allows the removal of event listeners from the event target. If an EventListener
      * is removed from an EventTarget while it is processing an event, it will not be triggered by
      * the current actions. EventListeners can never be invoked after being removed. Calling
      * removeEventListener with arguments which do not identify any currently registered
      * EventListener on the EventTarget has no effect.
-     * 
+     *
      * @param type Specifies the event type of the EventListener being removed.
      * @param listener The EventListener parameter indicates the EventListener to be removed.
      * @param useCapture Specifies whether the EventListener being removed was registered as a
@@ -68,13 +68,13 @@ public interface EventTarget
      *        affect a non-capturing version of the same listener, and vice versa.
      */
     public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture);
-    
+
     /**
      * This method allows the dispatch of events into the implementations event model. Events
      * dispatched in this manner will have the same capturing and bubbling behavior as events
      * dispatched directly by the implementation. The target of the event is the EventTarget on
      * which dispatchEvent is called.
-     * 
+     *
      * @param evt Specifies the event type, behavior, and contextual information to be used in
      *        processing the event.
      * @return The return value of dispatchEvent indicates whether any of the listeners which

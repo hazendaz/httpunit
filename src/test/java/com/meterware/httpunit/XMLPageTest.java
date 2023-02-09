@@ -68,11 +68,11 @@ public class XMLPageTest extends HttpUnitTest {
         assertNotNull("we do have an root-element", simplePage.getDOM().getDocumentElement());
         assertEquals("the actual root must be the root of our test-xml", simplePage.getDOM().getDocumentElement().getTagName(), "main");
     }
-    
+
     /**
      * test for BR 2946821
-     * @throws SAXException 
-     * @throws IOException 
+     * @throws SAXException
+     * @throws IOException
      */
     @Test
     public void testGetDocumentElement() throws IOException, SAXException {

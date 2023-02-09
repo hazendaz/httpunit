@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Base class for objects which can be clicked to generate new web requests.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 abstract public class WebRequestSource extends ParameterHolder implements
@@ -88,7 +88,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * Returns the name of the frame containing this request source.
-	 * 
+	 *
 	 * @deprecated as of 1.6, use #getFrame
 	 */
 	public String getPageFrame() {
@@ -155,7 +155,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * get the relative URL for a weblink change spaces to %20
-	 * 
+	 *
 	 * @return the relative URL as a string
 	 */
 	protected String getRelativeURL() {
@@ -171,7 +171,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * Contructs a web request source.
-	 * 
+	 *
 	 * @param response
 	 *          the response from which this request source was extracted
 	 * @param node
@@ -238,7 +238,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * submit the given event for the given request
-	 * 
+	 *
 	 * @param event
 	 * @param request
 	 * @return the response for the submitted Request
@@ -258,7 +258,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 	/**
 	 * handle the event that has the given script attached by compiling the
 	 * eventScript as a function and executing it
-	 * 
+	 *
 	 * @param eventScript -
 	 *          the script to use
 	 * @deprecated since 1.7 - use doEventScript instead
@@ -269,7 +269,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * optional do the event if it's defined
-	 * 
+	 *
 	 * @param eventScript -
 	 *          the script to handle
 	 * @return whether the script was handled
@@ -317,7 +317,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * get the attribute value for the given name
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to get
 	 */
@@ -327,7 +327,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * set the attribute with the given name to the given value
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute
 	 * @param value -
@@ -340,7 +340,7 @@ abstract public class WebRequestSource extends ParameterHolder implements
 
 	/**
 	 * remove the given attribute
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to remove
 	 */
@@ -385,9 +385,9 @@ abstract public class WebRequestSource extends ParameterHolder implements
 	/**
 	 * parameter Delimiter for URL parameters bug report [ 1052037 ] Semicolon not
 	 * supported as URL param delimiter asks for this to be extended to &;
-	 * 
+	 *
 	 * @see http://www.w3.org/TR/html4/appendix/notes.html#h-B.2 section B2.2
-	 * 
+	 *
 	 */
 	private static final String	PARAM_DELIM	= "&";
 

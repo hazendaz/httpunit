@@ -498,7 +498,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
       return values == null ? null : (String) values.get( 0 );
     }
-    
+
     /**
      * Returns the headers defined for this response.
      * @param name
@@ -633,7 +633,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     public void setContentLengthLong(long len) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
@@ -661,6 +661,6 @@ class ServletUnitOutputStream extends ServletOutputStream {
 
     public void setWriteListener(WriteListener writeListener) {
         // TODO Auto-generated method stub
-        
+
     }
 }

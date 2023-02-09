@@ -41,7 +41,7 @@ public class Cookie {
     private String _path;
 
     private String _domain;
-    
+
     private long _expiredTime;
 
 
@@ -56,9 +56,9 @@ public class Cookie {
     /**
      * DateFormat to be used to format original Netscape cookies
      */
-    private final static DateFormat originalCookieFormat = 
+    private final static DateFormat originalCookieFormat =
     	 new SimpleDateFormat("EEE,dd-MMM-yyyy HH:mm:ss z", Locale.US);
-    
+
     static {
       originalCookieFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
@@ -72,7 +72,7 @@ public class Cookie {
         _name = name;
         _value = value;
     }
-    
+
     /**
      * construct a cookie with domain and path restrictions
      * @param name
@@ -105,7 +105,7 @@ public class Cookie {
               _expiredTime = System.currentTimeMillis() + getAgeInMsec( attributeValue );
             } else if (key.equalsIgnoreCase( "expires" )) {
             	_expiredTime = getAgeInMsecFromDate( attributeValue );
-            }            
+            }
         }
     }
 
@@ -122,7 +122,7 @@ public class Cookie {
             return 0;
         }
     }
-    
+
     /**
      * return the age of a cookie in milliesconds from a string formatted date value
      * @param dateValue - the string to parse
@@ -161,7 +161,7 @@ public class Cookie {
      */
     public void setValue(String value) {
       _value = value;
-    }    
+    }
 
     /**
      * Returns the path to which this cookie is restricted.
@@ -221,7 +221,7 @@ public class Cookie {
     	boolean expired=_expiredTime != 0 && _expiredTime <= System.currentTimeMillis();
     	return expired;
     }
-    
+
     /**
      * may this cookie be sent to the given url?
      * @param url - the unform resource locator to check

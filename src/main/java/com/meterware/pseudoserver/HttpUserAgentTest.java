@@ -73,7 +73,7 @@ public class HttpUserAgentTest {
 
     /**
      * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of the page
-     * use the given xml names space if it is not null 
+     * use the given xml names space if it is not null
      * @param xmlns
      * @param pageName
      * @param body

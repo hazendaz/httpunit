@@ -41,7 +41,7 @@ import org.w3c.dom.html.HTMLFormElement;
  **/
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement, FormScriptable {
 
-   
+
     ElementImpl create() {
         return new HTMLFormElementImpl();
     }
@@ -120,7 +120,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
     	String result=getAttributeWithNoDefault( "name" );
     	if (result==null)
     		result=this.getId();
-      return result; 
+      return result;
     }
 
 

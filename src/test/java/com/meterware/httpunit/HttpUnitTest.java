@@ -48,7 +48,7 @@ public class HttpUnitTest extends HttpUserAgentTest {
     public static boolean WARN_DISABLED=true;
     public static int disabledIndex=0;
     public static boolean firstWarn=true;
-    
+
     /**
      * return a left padded string
      * @param s
@@ -63,11 +63,11 @@ public class HttpUnitTest extends HttpUserAgentTest {
     	} else if (result.length()<pad) {
     		result=space.substring(0,pad-result.length())+result;
     	}
-    	return result;    	
+    	return result;
     }
 		public static String warnDelim="";
-		
-		
+
+
     /**
      * show a warning for disabled Tests
      * @param testName
@@ -87,7 +87,7 @@ public class HttpUnitTest extends HttpUserAgentTest {
     				" | "+padLeft(priority, 8)+
     				" | "+padLeft(""+urgency, 7)+
     				" | "+comment);
-    	}	
+    	}
     }
 
     static {

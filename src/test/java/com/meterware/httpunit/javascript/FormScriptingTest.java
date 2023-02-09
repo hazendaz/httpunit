@@ -104,7 +104,7 @@ public class FormScriptingTest extends HttpUnitTest {
         defineWebPage("OnCommand", "<html><head><title>test</title>\n" +
                 "<script type='text/javascript'>\n" +
                 "function show (attr) {\n" +
-// TODO make this work      		
+// TODO make this work
                 "  var body=document.body;\n" +
                 "  //var body=document.getElementById('thebody');\n" +
                 "  alert(body.getAttribute(attr));\n" +

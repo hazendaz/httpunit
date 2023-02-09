@@ -55,11 +55,11 @@ class WebApplication implements SessionListenerDispatcher {
 
     /** A mapping of resource names to servlet configurations. **/
     private WebResourceMap _servletMapping = new WebResourceMap();
-    
-    
+
+
     /** A mapping of filter names to FilterConfigurations */
     private Hashtable _filters = new Hashtable();
-    
+
     /** A mapping of servlet names to ServletConfigurations */
     private Hashtable _servlets = new Hashtable();
 
@@ -422,7 +422,7 @@ class WebApplication implements SessionListenerDispatcher {
         NodeList nl = document.getElementsByTagName( "filter" );
         for (int i = 0; i < nl.getLength(); i++) registerFilterClass( nameToClass, (Element) nl.item( i ) );
         	nl = document.getElementsByTagName( "filter-mapping" );
-        for (int i = 0; i < nl.getLength(); i++) 
+        for (int i = 0; i < nl.getLength(); i++)
         	registerFilter( nameToClass, (Element) nl.item( i ) );
         this._filters=nameToClass;
     }
@@ -485,7 +485,7 @@ class WebApplication implements SessionListenerDispatcher {
         NodeList nl = document.getElementsByTagName( "servlet" );
         for (int i = 0; i < nl.getLength(); i++) registerServletClass( nameToClass, (Element) nl.item( i ) );
         nl = document.getElementsByTagName( "servlet-mapping" );
-        for (int i = 0; i < nl.getLength(); i++) 
+        for (int i = 0; i < nl.getLength(); i++)
         	registerServlet( nameToClass, (Element) nl.item( i ) );
         this._servlets=nameToClass;
     }

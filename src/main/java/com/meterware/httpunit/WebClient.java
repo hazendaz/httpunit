@@ -199,7 +199,7 @@ public class WebClient {
     public Cookie getCookieDetails( String name ) {
     	return _cookieJar.getCookie( name );
     }
-    
+
     /**
      * Returns the value of the specified cookie.
      **/
@@ -633,12 +633,12 @@ public class WebClient {
             // see feature request [ 914314 ] Add HttpException.getResponse for better reporting
             exception.setResponse(response);
         	// 	shall we ignore errors?
-        	if (!getExceptionsThrownOnErrorStatus()) { 
+        	if (!getExceptionsThrownOnErrorStatus()) {
         		return;
         	} else {
                 throw exception;
-        	}        		
-        }	
+        	}
+        }
     }
 
 

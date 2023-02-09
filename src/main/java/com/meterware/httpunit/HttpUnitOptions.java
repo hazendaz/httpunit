@@ -38,7 +38,7 @@ import java.util.Vector;
  **/
 public abstract class HttpUnitOptions {
   /**
-	 * ID for Revision Control System - will show in the class file and 
+	 * ID for Revision Control System - will show in the class file and
 	 * can be looked for using the ident command of RCS
 	 */
 	private final static String RCSID="$Id$";
@@ -578,7 +578,7 @@ public abstract class HttpUnitOptions {
     private static boolean _scriptingEnabled = true;
 
     private static boolean _exceptionsThrownOnScriptError = true;
-    
+
     private static int _javaScriptOptimizationLevel = -1;
 
     private static boolean _checkHtmlContentType = false;
@@ -603,11 +603,11 @@ public abstract class HttpUnitOptions {
 		/**
 		 * setter for Java Script optimization level
 		 * @param scriptOptimizationLevel the _javaScriptOptimizationLevel to set
-		 * see rhino documentation for valid values: 
+		 * see rhino documentation for valid values:
   	 *    -2: with continuation
   	 *    -1: interpret
      * 0: compile to Java bytecode, don't optimize
-     * 1..9: compile to Java bytecode, optimize 		 * 
+     * 1..9: compile to Java bytecode, optimize 		 *
 		 */
 		public static void setJavaScriptOptimizationLevel(
 				int scriptOptimizationLevel) {

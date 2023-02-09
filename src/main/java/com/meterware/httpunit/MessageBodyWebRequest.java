@@ -173,7 +173,7 @@ public class MessageBodyWebRequest extends WebRequest {
         }
 
         /**
-         * 
+         *
          * @throws IOException
          */
         public void mark() throws IOException {
@@ -182,9 +182,9 @@ public class MessageBodyWebRequest extends WebRequest {
             } else {
             	// amount of bytes to be read after mark gets invalid
             	int readlimit=1024*1024; // ! MByte
-            	// Marks the current position in this input stream. 
-            	// A subsequent call to the reset method repositions 
-            	// this stream at the last marked position so that subsequent reads re-read the same bytes. 
+            	// Marks the current position in this input stream.
+            	// A subsequent call to the reset method repositions
+            	// this stream at the last marked position so that subsequent reads re-read the same bytes.
                 _source.mark(readlimit);
             }
         }

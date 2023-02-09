@@ -312,7 +312,7 @@ public class SelectionFormControl extends FormControl {
         final protected void reportNoMatches( List values ) {
             if (!_listBox) {
             	throw new IllegalParameterValueException( getName(), values, getOptionValues() );
-            }	
+            }
         }
 
 
@@ -390,8 +390,8 @@ public class SelectionFormControl extends FormControl {
             }
             _options = newArray;
         }
-        
-        
+
+
         public void put( int i, SelectionOption option ) {
             if (i < 0) return;
 
@@ -452,7 +452,7 @@ public class SelectionFormControl extends FormControl {
         	  }	// if
             return _options[ index ];
         } // get
-        
+
 
         /** Invoked when an option is set true. **/
         void optionSet( int i ) {

@@ -52,7 +52,7 @@ public interface ScriptingEventHandler {
     * @return true if the script is empty or the result of the script
     */
   	boolean doEvent( String eventScript );
-  	
+
     /**
      * run the Script for the given Event
      * @param eventScript
@@ -60,11 +60,11 @@ public interface ScriptingEventHandler {
      * @return true if the script is empty or the result of the script
      */
     boolean doEventScript( String eventScript );
-    
+
     /**
      * handle the event with the given name by getting the
      * attribute and then executing the eventScript for it
-     * 
+     *
      * @param eventName
      * @return the result of doEventScript
      */

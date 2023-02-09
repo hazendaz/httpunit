@@ -34,7 +34,7 @@ public class EventException
      * exception.
      */
     private static final short UNSPECIFIED_EVENT_TYPE_ERR = 0;
-    
+
     /**
      * An integer indicating the type of error generated.
      */
@@ -42,7 +42,7 @@ public class EventException
 
     /**
      * Creates new EventException instance.
-     * 
+     *
      * @param codeArg An integer indicating the type of error generated.
      */
     public EventException(short codeArg) {

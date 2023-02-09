@@ -91,7 +91,7 @@ class WebXMLString {
         String doctype = "<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/" + dtd + "'>";
         // if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems
         // work - around if dtd is not in CLASSPATH so that only the one test case
-        // that checks the isDtdOnClassPath condition will fail 
+        // that checks the isDtdOnClassPath condition will fail
         if (!isDtdOnClasspath()) {
             doctype = "<!DOCTYPE web-app>";
         }

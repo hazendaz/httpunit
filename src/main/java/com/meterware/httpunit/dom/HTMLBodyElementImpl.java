@@ -36,7 +36,7 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
     }
 
     /**
-     * 
+     *
      * @return the onload event
      */
     public Function getOnloadEvent() {

@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * A collection of HTTP cookies, which can interact with cookie and set-cookie
  * header values.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:drew.varner@oracle.com">Drew Varner</a>
  **/
@@ -68,7 +68,7 @@ public class CookieJar {
 
 	/**
 	 * find the cookies in the given Header String array
-	 * 
+	 *
 	 * @param cookieHeader
 	 *            - the strings to look for cookies
 	 * @param recipe
@@ -92,7 +92,7 @@ public class CookieJar {
 	 * Defines a cookie to be sent to the server on every request. This bypasses
 	 * the normal mechanism by which only certain cookies are sent based on
 	 * their host and path.
-	 * 
+	 *
 	 * @deprecated as of 1.6, use #putCookie
 	 **/
 	public void addCookie(String name, String value) {
@@ -103,10 +103,10 @@ public class CookieJar {
 	 * Defines a cookie to be sent to the server on every request. This bypasses
 	 * the normal mechanism by which only certain cookies are sent based on
 	 * their host and path.
-	 * 
+	 *
 	 * Values of null will result in the cookie being removed. Any other value
 	 * will leave the cookie unchanged expect for the value.
-	 * 
+	 *
 	 * @since 1.6
 	 **/
 	public void putCookie(String name, String value) {
@@ -190,7 +190,7 @@ public class CookieJar {
 
 	/**
 	 * Returns the value of the specified cookie.
-	 * 
+	 *
 	 * @param name
 	 *            - the name of the cookie to get the value for
 	 * @return the value of the cookie
@@ -281,7 +281,7 @@ public class CookieJar {
 
 	/**
 	 * compare the two domains given for "cookie-equality"
-	 * 
+	 *
 	 * @param domain
 	 * @param newDomain
 	 * @return
@@ -307,7 +307,7 @@ public class CookieJar {
 		 * Extracts cookies from a cookie header. Works in conjunction with a
 		 * cookie press class, which actually creates the cookies and adds them
 		 * to the jar as appropriate.
-		 * 
+		 *
 		 * 1. Parse the header into tokens, separated by ',' and ';' (respecting
 		 * single and double quotes) 2. Process tokens from the end: a. if the
 		 * token contains an '=' we have a name/value pair. Add them to the
@@ -357,7 +357,7 @@ public class CookieJar {
 		 * Tokenizes a cookie header and returns the tokens in a
 		 * <code>Vector</code>. handles the broken syntax for expires= fields
 		 * ...
-		 * 
+		 *
 		 * @param cookieHeader
 		 *            - the header to read
 		 * @return a Vector of cookieTokens as name=value pairs
@@ -414,7 +414,7 @@ public class CookieJar {
 
 	/**
 	 * cookie Factory - creates cookies for URL s
-	 * 
+	 *
 	 */
 	class CookiePress {
 
@@ -425,7 +425,7 @@ public class CookieJar {
 
 		/**
 		 * create a cookie press for the given URL
-		 * 
+		 *
 		 * @param sourceURL
 		 */
 		public CookiePress(URL sourceURL) {
@@ -442,7 +442,7 @@ public class CookieJar {
 
 		/**
 		 * add the token content
-		 * 
+		 *
 		 * @param token
 		 * @param lastChar
 		 */
@@ -454,7 +454,7 @@ public class CookieJar {
 
 		/**
 		 * add from a token
-		 * 
+		 *
 		 * @param recipe
 		 *            - the recipe to use
 		 * @param token
@@ -479,7 +479,7 @@ public class CookieJar {
 
 		/**
 		 * add the given cookie if it is valid
-		 * 
+		 *
 		 * @param cookie
 		 */
 		private void addCookieIfValid(Cookie cookie) {
@@ -489,7 +489,7 @@ public class CookieJar {
 
 		/**
 		 * accept the given cookie
-		 * 
+		 *
 		 * @param cookie
 		 * @return
 		 */
@@ -545,7 +545,7 @@ public class CookieJar {
 		/**
 		 * get the domainAttribute Status for the given cookie with the
 		 * given sourceHost
-		 * 
+		 *
 		 * @see http://wp.netscape.com/newsref/std/cookie_spec.html
 		 * @param cookie - the cookie to use
 		 * @param sourceHost
@@ -588,7 +588,7 @@ public class CookieJar {
 	/**
 	 * Parses cookies according to <a
 	 * href="http://www.ietf.org/rfc/rfc2109.txt">RFC 2109</a>
-	 * 
+	 *
 	 * <br />
 	 * These cookies come from the <code>Set-Cookie:</code> header
 	 **/
@@ -596,7 +596,7 @@ public class CookieJar {
 
 		/**
 		 * check whether the given lower case String is a cookie attribute
-		 * 
+		 *
 		 * @param stringLowercase
 		 *            - the string to check
 		 * @return true - if the string is the name of a valid cookie attribute
@@ -618,7 +618,7 @@ public class CookieJar {
 	/**
 	 * Parses cookies according to <a
 	 * href="http://www.ietf.org/rfc/rfc2965.txt">RFC 2965</a>
-	 * 
+	 *
 	 * <br />
 	 * These cookies come from the <code>Set-Cookie2:</code> header
 	 **/

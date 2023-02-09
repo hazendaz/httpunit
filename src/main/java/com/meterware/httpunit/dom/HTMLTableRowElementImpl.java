@@ -117,16 +117,16 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
 
     public void setRowIndex(int rowIndex) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void setSectionRowIndex(int sectionRowIndex) {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void setCells(HTMLCollection cells) {
         // TODO Auto-generated method stub
-        
+
     }
 }

@@ -43,7 +43,7 @@ import org.xml.sax.SAXException;
  *
  * @author <a href="mailto:Oliver.Imbusch.extern@HVBInfo.com">Oliver Imbusch</a>
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/ 
+ **/
 public class WebApplet extends HTMLElementBase {
 
     private WebResponse _response;

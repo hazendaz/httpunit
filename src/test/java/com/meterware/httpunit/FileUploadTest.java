@@ -152,28 +152,28 @@ public class FileUploadTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testRemoveFileParameter() throws Exception {                                                                 
-        File file = new File( "temp.txt" );                                                                                  
-        FileWriter fw = new FileWriter( file );                                                                              
-        PrintWriter pw = new PrintWriter( fw );                                                                              
-        pw.println( "Not much text" );                                                                                       
-        pw.println( "But two lines" );                                                                                       
-        pw.close();                                                                                                          
-                                                                                                                             
-        defineWebPage( "Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> " +            
-                                  "<Input type=file name=message>" +                                                         
-                                  "<Input type=submit name=update value=age>" +                                              
-                                  "</form>" );                                                                               
-        WebConversation wc = new WebConversation();                                                                          
-        WebRequest request = new GetMethodWebRequest( getHostPath() + "/Default.html" );                                     
-        WebResponse simplePage = wc.getResponse( request );                                                                  
-        WebForm formSubmit = simplePage.getForms()[0];                                                                       
-        formSubmit.setParameter( "message", file );                                                                          
-        formSubmit.removeParameter("message");                                                                               
-                                                                                                                             
-        file.delete();                                                                                                       
-    }                                                                                                                        
-                                                                                                                             
+    public void testRemoveFileParameter() throws Exception {
+        File file = new File( "temp.txt" );
+        FileWriter fw = new FileWriter( file );
+        PrintWriter pw = new PrintWriter( fw );
+        pw.println( "Not much text" );
+        pw.println( "But two lines" );
+        pw.close();
+
+        defineWebPage( "Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> " +
+                                  "<Input type=file name=message>" +
+                                  "<Input type=submit name=update value=age>" +
+                                  "</form>" );
+        WebConversation wc = new WebConversation();
+        WebRequest request = new GetMethodWebRequest( getHostPath() + "/Default.html" );
+        WebResponse simplePage = wc.getResponse( request );
+        WebForm formSubmit = simplePage.getForms()[0];
+        formSubmit.setParameter( "message", file );
+        formSubmit.removeParameter("message");
+
+        file.delete();
+    }
+
 
     @Test
     public void testMultiFileSubmit() throws Exception {
@@ -508,4 +508,4 @@ class MimeEcho extends PseudoServlet {
 
 }
 
- 	  	 
+

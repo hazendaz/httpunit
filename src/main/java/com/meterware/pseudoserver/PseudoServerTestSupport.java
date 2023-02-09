@@ -31,15 +31,15 @@ public class PseudoServerTestSupport extends ExternalResource {
     private String _hostPath;
     private PseudoServer _server;
 
-    @Override                                    
-    public void before() throws Throwable {      
-        setUpServer();                           
-    }                                            
-                                                 
-    @Override                                    
-    public void after() {                        
-        tearDownServer();                        
-    }                                            
+    @Override
+    public void before() throws Throwable {
+        setUpServer();
+    }
+
+    @Override
+    public void after() {
+        tearDownServer();
+    }
 
     public void setUpServer() throws IOException {
         _server = new PseudoServer();

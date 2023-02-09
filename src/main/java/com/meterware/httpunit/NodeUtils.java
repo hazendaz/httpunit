@@ -40,7 +40,7 @@ public class NodeUtils {
    * @param node - the node to look in
    * @param attributeName - the attribute's name to look for
    * @param defaultValue
-   * @return - the value - defaultValue as default 
+   * @return - the value - defaultValue as default
    */
     public static int getAttributeValue( Node node, String attributeName, int defaultValue ) {
         NamedNodeMap nnm = node.getAttributes();
@@ -90,7 +90,7 @@ public class NodeUtils {
     static void setNodeAttribute( Node node, String attributeName, String value ) {
     	((Element)node).setAttributeNS(null, attributeName, value );
     }
-    
+
     /**
      * remove the given attribute from the given node based on the attribute's name
      * @param node
@@ -99,7 +99,7 @@ public class NodeUtils {
     static void removeNodeAttribute( Node node, String attributeName ) {
     	((Element)node).removeAttribute( attributeName );
     }
-    
+
     /**
      * check whether the given Attribute in the Node is Present
      * @param node - the node to check

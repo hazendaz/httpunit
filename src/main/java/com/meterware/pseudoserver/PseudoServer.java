@@ -37,7 +37,7 @@ public class PseudoServer {
 	 * by default the factory is not used any more since there were problems with the test cases as of 2012-10-09
 	 */
 	public static final boolean useFactory=false;
-	
+
     static final int DEFAULT_SOCKET_TIMEOUT = 1000;
 
     private static final int INPUT_POLL_INTERVAL = 10;
@@ -337,8 +337,8 @@ public class PseudoServer {
                 boolean keepAlive = respondToRequest( request, outputStream );
                 if (!keepAlive) break;
                 while (_active && 0 == inputStream.available()) {
-                    try { 
-                    	Thread.sleep( INPUT_POLL_INTERVAL ); 
+                    try {
+                    	Thread.sleep( INPUT_POLL_INTERVAL );
                     } catch (InterruptedException e) {}
                 }
             }
@@ -373,7 +373,7 @@ public class PseudoServer {
             	String uri=request.getURI();
             	// 404 - Not Found error code
             	int errorCode=HttpURLConnection.HTTP_NOT_FOUND;
-            	// typical 404 error Message 
+            	// typical 404 error Message
             	String errorMessage="unable to find " + uri;
             	// make sure there is a resource and
             	// next time we'll take it from the resource Cache
@@ -383,7 +383,7 @@ public class PseudoServer {
             } else {
                 if (resource.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     response.setResponse( resource.getResponseCode(), "" );
-                }            	
+                }
             }
             if (resource.closesConnection()) keepAlive = false;
             String[] headers = resource.getHeaders();
@@ -397,10 +397,10 @@ public class PseudoServer {
             t.printStackTrace();
             response.setResponse( HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString() );
         }
-        try { 
-        	response.write( resource ); 
-        } catch (IOException e) { 
-        	System.out.println( "*** Failed to send reply: " + e ); 
+        try {
+        	response.write( resource );
+        } catch (IOException e) {
+        	System.out.println( "*** Failed to send reply: " + e );
         }
         return keepAlive;
     }

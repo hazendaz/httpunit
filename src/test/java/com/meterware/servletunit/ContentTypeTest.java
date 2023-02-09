@@ -88,7 +88,7 @@ public class ContentTypeTest
     }
 
     /*
-     * This test case demonstrates that ServletUnit incorrectly replaces the 
+     * This test case demonstrates that ServletUnit incorrectly replaces the
      * content type specified by the servlet with one of its own.
      * (Expected behavior would be that ServletUnit would not alter the
      * response coming back from the servlet under test.)

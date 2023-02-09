@@ -39,7 +39,7 @@ import org.apache.xerces.xni.parser.XMLInputSource;
  * A filter to interpret JavaScript script blocks, based on the sample Scripts program provided by NekoHTML.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/ 
+ **/
 class ScriptFilter extends DefaultFilter {
 
     /** The NekoHTML configuration. */

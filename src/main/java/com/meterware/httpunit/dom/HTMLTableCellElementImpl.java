@@ -216,7 +216,7 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTab
 
     public void setCellIndex(int cellIndex) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

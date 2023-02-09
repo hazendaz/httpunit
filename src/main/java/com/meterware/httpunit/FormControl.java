@@ -98,7 +98,7 @@ public abstract class FormControl extends HTMLElementBase {
             for(Iterator iter = customAttributes.iterator(); iter.hasNext(); ) {
                 supportAttribute((String)iter.next());
             }
-        }        
+        }
     }
 
 
@@ -267,7 +267,7 @@ public abstract class FormControl extends HTMLElementBase {
     protected void sendOnChangeEvent() {
     	doOnChangeEvent();
     }
-    
+
     /**
      * Performs the 'onchange' event defined for this control.
      */
@@ -283,15 +283,15 @@ public abstract class FormControl extends HTMLElementBase {
     protected void sendOnClickEvent() {
       doOnClickEvent();
     }
-    
-   
+
+
     /**
      * Performs the 'onClick' event defined for this control.
      */
     protected  boolean doOnClickEvent() {
     	return handleEvent("onclick");
     }
-    
+
     /**
      * Performs the 'onMouseUp' event defined for this control.
     * @deprecated since 1.7 use doOnMouseUpEvent instead
@@ -314,7 +314,7 @@ public abstract class FormControl extends HTMLElementBase {
     protected void sendOnMouseDownEvent() {
     	doOnMouseDownEvent();
     }
-    
+
     /**
      * Performs the 'onMouseDown' event defined for this control.
      */
@@ -484,9 +484,9 @@ public abstract class FormControl extends HTMLElementBase {
         public void setAttribute(String attributeName, Object value) {
            // Value set by JavaScript, make sure attribute is supported
            supportAttribute(attributeName);
-           super.setAttribute( attributeName, value );          
+           super.setAttribute( attributeName, value );
         }
-        
+
         /**
          * allow calling click for this control
          */
@@ -497,9 +497,9 @@ public abstract class FormControl extends HTMLElementBase {
         	if (element instanceof FormControl) {
         		FormControl control=(FormControl)element;
         		control.sendOnClickEvent();
-        	}	
+        	}
         }
-        
+
         /**
          * simulate blur
          */
@@ -514,7 +514,7 @@ public abstract class FormControl extends HTMLElementBase {
         public void focus() {
         	handleEvent("onfocus");
         }
-        
+
         /**
          * allow firing a sendOnChangeEvent
          *
@@ -740,7 +740,7 @@ abstract class TextFormControl extends FormControl {
 
 
     /**
-     * claim values and fire onChange Event if a change occured 
+     * claim values and fire onChange Event if a change occured
      * @param values - the list of values
      */
     void claimValue( List values ) {

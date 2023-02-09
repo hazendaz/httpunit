@@ -172,7 +172,7 @@ public class WebPageTest extends HttpUnitTest {
         assertEquals("", text);
     }
 
-    //@Ignore 
+    //@Ignore
     @Test
     public void testTitle() throws Exception {
         defineResource("/SimpleTitlePage.html",
@@ -589,11 +589,11 @@ public class WebPageTest extends HttpUnitTest {
         //check the response
         assertTrue(resp.getText().indexOf("Success") >= 0);
     }
-    
+
     /**
      * test case for BR 2883515
-     * @throws SAXException 
-     * @throws IOException 
+     * @throws SAXException
+     * @throws IOException
      */
     @Test
     public void testInvalidNoScriptHandling() throws IOException, SAXException {
@@ -601,7 +601,7 @@ public class WebPageTest extends HttpUnitTest {
     	WebConversation wc = new WebConversation();
       WebResponse resp = wc.getResponse(getHostPath() + "/InvalidNoScriptPage.html");
       // indirectly invoke readTags
-      resp.replaceText("dummy", "dummy"); 
+      resp.replaceText("dummy", "dummy");
     }
 
     /**

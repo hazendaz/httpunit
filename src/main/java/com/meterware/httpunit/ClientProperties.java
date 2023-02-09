@@ -159,21 +159,21 @@ public class ClientProperties {
         _acceptGzip = acceptGzip;
     }
 
-    /**                                                           
-     * get Maximum number of redirect requests        
-     * @return it                
-     */                                                           
-    public int getMaxRedirects() {                                
-    	return _maxRedirects;                                        
-    }                                                             
+    /**
+     * get Maximum number of redirect requests
+     * @return it
+     */
+    public int getMaxRedirects() {
+    	return _maxRedirects;
+    }
 
     /**
      * set the maximum number of redirects
      * @param maxRedirects
      */
-    public void setMaxRedirects( int maxRedirects ) {             
-    	_maxRedirects = maxRedirects;                                
-    }                                                             
+    public void setMaxRedirects( int maxRedirects ) {
+    	_maxRedirects = maxRedirects;
+    }
 
 
     /**
@@ -232,10 +232,10 @@ public class ClientProperties {
     public String getOverrideContextType() {
     	return getOverrideContentType();
     }
-    
+
     /**
      * @deprecated since 1.8 see BR 2595566 - name of setter is a typo
-     * @param overrideContentType the content type 
+     * @param overrideContentType the content type
      * @see setOverrideContentType
     */
     public void setOverrideContextType( String overrideContentType ) {
@@ -277,7 +277,7 @@ public class ClientProperties {
     DNSListener getDnsListener() {
         return _dnsListener;
     }
-    
+
 		/**
 		 * @return the whether Referer information should be stripped from the
 		 * header

@@ -47,7 +47,7 @@ public class HttpException extends RuntimeException {
       _responseCode = responseCode;
       _cause = cause;
     }
-    
+
     /**
      * throw a http Exception with the given responseCode and Message and base url
      * @param responseCode
@@ -59,7 +59,7 @@ public class HttpException extends RuntimeException {
         _responseCode = responseCode;
         _url = baseURL;
     }
-    
+
     /**
      * throw a http Exception with the given responseCode and Message, base url and cause
      * @param responseCode
@@ -113,21 +113,21 @@ public class HttpException extends RuntimeException {
     }
 
 
-    // private local copies of variables 
+    // private local copies of variables
     private int _responseCode;
     private URL _url;
     private String _responseMessage;
-    
+
     /**
      * get the cause (if any)
      */
     public Throwable getCause() {
       return _cause;
     }
-    	 
-     
+
+
     private Throwable _cause;
-    
+
     // see feature request [ 914314 ] Add HttpException.getResponse for better reporting
     private WebResponse response;
 
@@ -144,7 +144,7 @@ public class HttpException extends RuntimeException {
      * @param response
      */
 	public void setResponse(WebResponse response) {
-		this.response=response;		
+		this.response=response;
 	}
-    	 
+
 }

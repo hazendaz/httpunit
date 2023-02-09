@@ -49,7 +49,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
     public boolean supportsScriptLanguage( String language ) {
         return getScriptEngine().supportsScriptLanguage( language );
     }
-    
+
     /**
      * handle the event that has the given script attached
      * by compiling the eventScript as a function and  executing it
@@ -59,7 +59,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
     public boolean doEvent( String eventScript ) {
     	return doEventScript(eventScript);
     }
-    
+
 
     /**
      * Executes the specified scripted event.
@@ -69,7 +69,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
     public boolean doEventScript( String eventScript ) {
         return eventScript.length() == 0 || getScriptEngine().doEventScript( eventScript );
     }
-    
+
     /**
      * Executes the event Handler script for the specified event (such as onchange, onmousedown, onclick, onmouseup) if it is defined.
      * @param eventName the name of the event for which a handler should be run.

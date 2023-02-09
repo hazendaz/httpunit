@@ -37,14 +37,14 @@ public abstract class HttpsProtocolSupport {
 
     /** The name of the system parameter used by java.net to locate protocol handlers. **/
     private final static String PROTOCOL_HANDLER_PKGS  = "java.protocol.handler.pkgs";
-        
-       
+
+
     // Sun Microsystems:
     public final static String SunJSSE_PROVIDER_CLASS    = "com.sun.net.ssl.internal.ssl.Provider";
     // 741145: "sun.net.www.protocol.https";
-    public final static String SunJSSE_PROVIDER_CLASS2   = "sun.net.www.protocol.https";    
+    public final static String SunJSSE_PROVIDER_CLASS2   = "sun.net.www.protocol.https";
     public final static String SunSSL_PROTOCOL_HANDLER   = "com.sun.net.ssl.internal.www.protocol";
-    
+
     // IBM WebSphere
     // 	both ibm packages are inside ibmjsseprovider.jar that comes with WebSphere
     public final static String IBMJSSE_PROVIDER_CLASS    = "com.ibm.jsse.IBMJSSEProvider";
@@ -60,7 +60,7 @@ public abstract class HttpsProtocolSupport {
     private static boolean _httpsSupportVerified;
 
     private static boolean _httpsProtocolSupportEnabled;
-    
+
     /**
      * use the given SSL providers - reset the one used so far
      * @param className
@@ -71,7 +71,7 @@ public abstract class HttpsProtocolSupport {
     	JSSE_PROVIDER_CLASS  =className;
     	SSL_PROTOCOL_HANDLER =handlerName;
     }
-    
+
     /**
      * use the IBM WebShpere handlers
      */
@@ -132,7 +132,7 @@ public abstract class HttpsProtocolSupport {
      * get the Https Provider Class
      * if it's been set already return it - otherwise
      * check with the Security package and take the first available provider
-     * if all fails take the default provider class 
+     * if all fails take the default provider class
      * @return the HttpsProviderClass
      * @throws ClassNotFoundException
      */
@@ -142,10 +142,10 @@ public abstract class HttpsProtocolSupport {
     			Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
     			if (sslProviders.length > 0) {
     				_httpsProviderClass = sslProviders[0].getClass();
-    			}       	
+    			}
     			if (_httpsProviderClass == null) {
     				_httpsProviderClass = Class.forName( JSSE_PROVIDER_CLASS );
-    			}	
+    			}
         }
         return _httpsProviderClass;
     }
@@ -158,7 +158,7 @@ public abstract class HttpsProtocolSupport {
         }
         return false;
     }
-    
+
     /**
      * convenience function: create a socket factory which
      * uses an anything-goes trust manager.

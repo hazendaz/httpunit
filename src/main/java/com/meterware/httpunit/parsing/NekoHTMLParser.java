@@ -50,7 +50,7 @@ class NekoHTMLParser implements HTMLParser {
          	adapter.setDocument( (HTMLDocument)doc );
       } catch (NekoDOMParser.ScriptException e) {
            throw e.getException();
-      }     
+      }
   }
 
 
@@ -66,7 +66,7 @@ class NekoHTMLParser implements HTMLParser {
     public boolean supportsForceTagCase() {
       return false;
     }
-    
+
     public boolean supportsReturnHTMLDocument() {
         return true;
     }

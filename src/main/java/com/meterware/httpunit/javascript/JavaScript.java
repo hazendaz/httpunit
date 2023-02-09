@@ -66,7 +66,7 @@ public class JavaScript {
         // bug report [ 1216567 ] Exception for large javascripts
         // by Grzegorz Lukasik
         // and
-        
+
         context.setOptimizationLevel(HttpUnitOptions.getJavaScriptOptimizationLevel());
         Scriptable scope = context.initStandardObjects( null );
         initHTMLObjects( scope );
@@ -276,7 +276,7 @@ public class JavaScript {
             result.initialize( elements );
             return result;
         }
-        
+
         /**
          * {@inheritDoc}
          */
@@ -331,7 +331,7 @@ public class JavaScript {
 
 
     /**
-     * Window functions 
+     * Window functions
      *
      */
     static public class Window extends JavaScriptEngine {
@@ -432,7 +432,7 @@ public class JavaScript {
         public void jsFunction_alert( String message ) {
             getDelegate().alertUser( message );
         }
-        
+
         /**
          * javascript built in function "toLowerCase"
          * @param s
@@ -454,7 +454,7 @@ public class JavaScript {
 
         public void jsFunction_moveTo( int x, int y ) {
         }
-        
+
         public void jsFunction_scrollTo( int x, int y ) {
         }
 
@@ -479,7 +479,7 @@ public class JavaScript {
             return delegate == null ? null : (Window) toScriptable( delegate );
         }
 
-        /** The global "event" object is not supported, so return null (instead of causing '"event" is not defined') */ 
+        /** The global "event" object is not supported, so return null (instead of causing '"event" is not defined') */
         public Location jsGet_event() {
            return null;
         }
@@ -638,7 +638,7 @@ public class JavaScript {
 		public void jsFunction_addEventListener(String type,
 				Scriptable listener, boolean useCapture) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 
@@ -652,7 +652,7 @@ public class JavaScript {
 		public void jsFunction_removeEventListener(String type,
 				Scriptable listener, boolean useCapture) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
     }
@@ -945,9 +945,9 @@ public class JavaScript {
         public Style jsGet_style() {
             return _style;
         }
-        
+
         /**
-         * arbitrary attribute access 
+         * arbitrary attribute access
          * @param attributeName
          * @return
          */
@@ -987,7 +987,7 @@ public class JavaScript {
 
 
     /**
-     * Form functions 
+     * Form functions
      *
      */
     static public class Form extends HTMLElement {
@@ -997,14 +997,14 @@ public class JavaScript {
         public String getClassName() {
             return "Form";
         }
-        
+
         public String jsGet_name() {
           return getDelegate().getName();
         }
-        
+
         /**
          * @since FR [ 2163079 ] make form.name property mutable
-         * by Peter De Bruycker 
+         * by Peter De Bruycker
          * @param name
          */
         public void jsSet_name( String name ) {
@@ -1063,7 +1063,7 @@ public class JavaScript {
 
 
     /**
-     * Javascript support for any control 
+     * Javascript support for any control
      */
     static public class Control extends JavaScriptEngine {
 

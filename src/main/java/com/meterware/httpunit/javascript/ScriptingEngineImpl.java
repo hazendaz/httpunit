@@ -47,7 +47,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
 
     /**
-     * access to the list of error Messages that were collected 
+     * access to the list of error Messages that were collected
      * @return the array with error Messages
      */
     static public String[] getErrorMessages() {
@@ -56,12 +56,12 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
 
     /**
-     * handle Exceptions 
+     * handle Exceptions
      * @param e - the exception to handle
      * @param badScript - the script that caused the problem
      */
     static public void handleScriptException( Exception e, String badScript ) {
-    	String errorMessage=badScript==null? e.getMessage():badScript + " failed: " + e; 
+    	String errorMessage=badScript==null? e.getMessage():badScript + " failed: " + e;
     	if (e instanceof EcmaError ||
     			e instanceof EvaluatorException ||
     			e instanceof ScriptException ||
@@ -124,17 +124,17 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
     public boolean doEvent( String eventScript ) {
     	return doEventScript(eventScript);
     }
-   
-    
+
+
     /**
     * handle the event that has the given script attached
     * by compiling the eventScript as a function and  executing it
     * @param eventScript - the script to use
     */
-    public boolean doEventScript( String eventScript ) { 	
-    	if (eventScript.length() == 0) { 
+    public boolean doEventScript( String eventScript ) {
+    	if (eventScript.length() == 0) {
       	return true;
-      }	else { 	
+      }	else {
         try {
             Context context = Context.enter();
             context.initStandardObjects( null );

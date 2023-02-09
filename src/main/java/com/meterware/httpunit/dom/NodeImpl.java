@@ -31,7 +31,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract public class NodeImpl extends AbstractDomComponent implements Node {
- 
+
     private DocumentImpl _ownerDocument;
     private NodeImpl     _parentNode;
     private NodeImpl     _firstChild;
@@ -353,7 +353,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public Iterator preOrderIteratorWithinNode() {
@@ -361,7 +361,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         result.setDoNotLeaveNode(this);
         return result;
     }
-    
+
 	public Iterator preOrderIteratorWithinNode(IteratorMask mask) {
         PreOrderIterator result = new PreOrderIterator( PreOrderIterator.nextNode( this ),mask );
         result.setDoNotLeaveNode(this);
@@ -393,7 +393,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     /**
      * iterator for Nodetrees that can be influenced with an Iterator mask to skip
-     * specific parts 
+     * specific parts
      */
     static class PreOrderIterator implements Iterator {
         private NodeImpl _nextNode;
@@ -416,7 +416,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 		public void setDoNotLeaveNode(NodeImpl doNotLeaveNode) {
 			_doNotLeaveNode = doNotLeaveNode;
 		}
-		
+
 		/**
 		 * check whether the node is a child of the doNotLeaveNode (if one is set)
 		 * @param node
@@ -431,14 +431,14 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 				Node parent = node.getParentNode();
 				if (parent==null) {
 					return false;
-				} else { 
+				} else {
 					if (parent.isSameNode(_doNotLeaveNode)) {
 						return true;
 					} else {
 						return isChild(parent);
-					}					
+					}
 				}
-			}				
+			}
 		}
 
 		/**

@@ -29,9 +29,9 @@ import org.w3c.dom.Node;
 /**
  * Represents a block-level element such as a paragraph or table cell, which can
  * contain other elements.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * 
+ *
  * @since 1.6
  */
 abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
@@ -115,7 +115,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
 	/**
 	 * handle the event that has the given script attached by compiling the
 	 * eventScript as a function and executing it
-	 * 
+	 *
 	 * @param eventScript -
 	 *          the script to use
 	 * @deprecated since 1.7 - use doEventScript instead
@@ -126,7 +126,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
 
 	/**
 	 * optional do the event if it's defined
-	 * 
+	 *
 	 * @param eventScript -
 	 *          the script to work on
 	 * @return true if the event script was handled
@@ -149,7 +149,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
 
 	/**
 	 * get the attribute with the given name
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to get
 	 */
@@ -159,7 +159,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
 
 	/**
 	 * set the attribute with the given name to the given value
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute to set
 	 * @param value -
@@ -172,7 +172,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment,
 
 	/**
 	 * remove the attribute with the given name
-	 * 
+	 *
 	 * @param name -
 	 *          the name of the attribute
 	 */

@@ -258,7 +258,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
 
     public Node cloneNode( boolean deep ) {
         HTMLDocumentImpl copy = new HTMLDocumentImpl();
-        
+
         if (deep) {
         	copy.importChildren( this, copy );
         	copy._documentElement=copy.getHtmlElement();
@@ -311,7 +311,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         _exemplars.put( "applet",   new HTMLAppletElementImpl() );
     }
 
-    
+
     /**
      * get the Window
      * @return the window

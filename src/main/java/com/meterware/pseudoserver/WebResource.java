@@ -84,7 +84,7 @@ public class WebResource {
     public void suppressAutomaticContentTypeHeader() {
         _hasExplicitContentTypeHeader = true;
     }
-    
+
 
     public WebResource( String contents, int responseCode ) {
         this( contents, DEFAULT_CONTENT_TYPE, responseCode );

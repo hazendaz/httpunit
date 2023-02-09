@@ -38,7 +38,7 @@ import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
 /**
- * 
+ *
  *
  * @author <a href="russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
@@ -90,7 +90,7 @@ class NekoDOMParser extends org.apache.xerces.parsers.DOMParser implements Scrip
         } else {
         	configuration.setProperty( TAG_NAME_CASE, "lower" );
         	configuration.setProperty( ATTRIBUTE_NAME_CASE, "lower" );
-        	
+
         	if (HTMLParserFactory.getForceUpperCase()) {
         		configuration.setProperty(TAG_NAME_CASE, "upper");
         		configuration.setProperty(ATTRIBUTE_NAME_CASE, "upper");
@@ -100,7 +100,7 @@ class NekoDOMParser extends org.apache.xerces.parsers.DOMParser implements Scrip
         		configuration.setProperty(TAG_NAME_CASE, "lower");
         		configuration.setProperty(ATTRIBUTE_NAME_CASE, "lower");
         	}
-        }	
+        }
 
         try {
             final NekoDOMParser domParser = new NekoDOMParser( configuration, adapter );

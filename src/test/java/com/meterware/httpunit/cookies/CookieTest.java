@@ -139,7 +139,7 @@ public class CookieTest {
 
     private void checkAcceptance(int index, boolean shouldAccept, String urlString,
                                  String specifiedDomain, String specifiedPath) throws MalformedURLException {
-    	
+
         CookieJar jar = newJar(urlString, specifiedDomain, specifiedPath);
 
         if (shouldAccept) {

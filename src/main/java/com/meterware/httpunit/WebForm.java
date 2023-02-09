@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
  * the parameters defined for the form, the structure of the form (as a DOM), or
  * the text of the form. They may also create a {@link WebRequest} to simulate
  * the submission of the form.
- * 
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebForm extends WebRequestSource {
@@ -98,7 +98,7 @@ public class WebForm extends WebRequestSource {
 	 * the submit button's 'onclick' or the form's 'onsubmit' event is triggered
 	 * and inhibits the submission, will return the updated contents of the
 	 * frame containing this form.
-	 * 
+	 *
 	 * @since 1.6
 	 **/
 	public WebResponse submit(SubmitButton button, int x, int y)
@@ -114,7 +114,7 @@ public class WebForm extends WebRequestSource {
 	/**
 	 * Submits this form using the web client from which it was originally
 	 * obtained, ignoring any buttons defined for the form.
-	 * 
+	 *
 	 * @since 1.6
 	 **/
 	public WebResponse submitNoButton() throws SAXException, IOException {
@@ -307,7 +307,7 @@ public class WebForm extends WebRequestSource {
 	 * Creates and returns a web request which will simulate the submission of
 	 * this form by pressing the specified button. If the button is null,
 	 * simulates the pressing of the default button.
-	 * 
+	 *
 	 * @param button
 	 *            - the submitbutton to be pressed - may be null
 	 * @param x
@@ -614,7 +614,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * Sets the value of a parameter in this form.
-	 * 
+	 *
 	 * @param name
 	 *            - the name of the parameter
 	 * @param value
@@ -660,7 +660,7 @@ public class WebForm extends WebRequestSource {
 	 * Sets the single value of a file upload parameter in this form. A more
 	 * convenient way to do this than using
 	 * {@link #setParameter(String,com.meterware.httpunit.protocol.UploadFileSpec[])}
-	 * 
+	 *
 	 * @since 1.6
 	 */
 	public void setParameter(String name, File file) {
@@ -669,7 +669,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * Toggles the value of the specified checkbox parameter.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the checkbox parameter
 	 * @throws IllegalArgumentException
@@ -686,7 +686,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * Toggles the value of the specified checkbox parameter.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the checkbox parameter
 	 * @param value
@@ -705,7 +705,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * Sets the value of the specified checkbox parameter.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the checkbox parameter
 	 * @param state
@@ -724,7 +724,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * Sets the value of the specified checkbox parameter.
-	 * 
+	 *
 	 * @param name
 	 *            the name of the checkbox parameter
 	 * @param value
@@ -744,9 +744,9 @@ public class WebForm extends WebRequestSource {
 	}
 
 	/**
-	 * 
+	 *
 	 * Scriptable implementation for the WebForm
-	 * 
+	 *
 	 */
 	public class Scriptable extends HTMLElementScriptable implements
 			NamedDelegate, IdentifiedDelegate, FormScriptable {
@@ -769,7 +769,7 @@ public class WebForm extends WebRequestSource {
 
 		/**
 		 * return the name of the WebForm
-		 * 
+		 *
 		 * @return the name
 		 */
 		public String getName() {
@@ -779,7 +779,7 @@ public class WebForm extends WebRequestSource {
 
 		/**
 		 * return the id of the WebForm
-		 * 
+		 *
 		 * @return the id
 		 */
 		public String getID() {
@@ -788,7 +788,7 @@ public class WebForm extends WebRequestSource {
 
 		/**
 		 * get the Object for the given propertyName
-		 * 
+		 *
 		 * @param propertyName
 		 *            - the name of the property to get
 		 * @return the Object for the property
@@ -813,7 +813,7 @@ public class WebForm extends WebRequestSource {
 		/**
 		 * Sets the value of the named property. Will throw a runtime exception
 		 * if the property does not exist or cannot accept the specified value.
-		 * 
+		 *
 		 * @param propertyName
 		 *            - the name of the property
 		 * @param value
@@ -912,7 +912,7 @@ public class WebForm extends WebRequestSource {
 	 * get the Vector of submit buttons - will always contain at least one
 	 * button - if the original vector has none a faked submit button will be
 	 * added
-	 * 
+	 *
 	 * @return a Vector with the submit buttons
 	 */
 	private Vector getSubmitButtonVector() {
@@ -976,7 +976,7 @@ public class WebForm extends WebRequestSource {
 
 	/**
 	 * get the form parameter with the given name
-	 * 
+	 *
 	 * @param name
 	 * @return the form parameter with this name
 	 */
@@ -1036,7 +1036,7 @@ public class WebForm extends WebRequestSource {
 		/**
 		 * construct a new InvalidFileParameterException for the given parameter
 		 * name and value list
-		 * 
+		 *
 		 * @param parameterName
 		 * @param values
 		 */

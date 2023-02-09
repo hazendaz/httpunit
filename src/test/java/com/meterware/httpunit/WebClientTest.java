@@ -518,9 +518,9 @@ public class WebClientTest extends HttpUnitTest {
         WebResponse wr = wc.getResponse("http://someserver.com/sample");
         assertEquals("authorization", "Basic dXNlcjpwYXNzd29yZA==", wr.getText());
     }
- 
+
     /**
-     * test Rfc2069 optionally with or without opaque parameter 
+     * test Rfc2069 optionally with or without opaque parameter
      * @param withOpaque
      * @throws Exception
      */
@@ -566,7 +566,7 @@ public class WebClientTest extends HttpUnitTest {
     public void testRfc2069DigestAuthentication() throws Exception {
     	testRfc2069DigestAuthentication(true);
     }
-    
+
     /**
      * test for BR 2957505
      * No 'opaque' causes NPE when attempting DigestAuthentication
@@ -575,7 +575,7 @@ public class WebClientTest extends HttpUnitTest {
     public void testRfc2069DigestAuthenticationNoOpaque() throws Exception {
     	testRfc2069DigestAuthentication(false);
     }
-    
+
     /**
      * Verifies one-time digest authentication with Quality of Protection (qop).
      *
@@ -767,75 +767,75 @@ public class WebClientTest extends HttpUnitTest {
         response = wc.getResponse(response.getLinks()[0].getRequest());
         assertEquals("Link Referer header", getHostPath() + '/' + linkSource, response.getText().trim());
     }
-    
+
     /**
-     * test for BR 2834933 
+     * test for BR 2834933
      * https://sourceforge.net/tracker/?func=detail&aid=2834933&group_id=6550&atid=106550
      * by aptivate
      * @throws Exception
      */
     @Test
-    public void testMaxRedirectsNotExceeded() throws Exception {	                              
-    	 String resourceAName = "something/resourceA";                                             
-    	    String resourceBName = "something/resourceB";                                          
-    	    String resourceCName = "something/resourceC";                                          
-    	                                                                                           
-    	    // Should test the following :                                                         
-    	    // loads resource A                                                                    
-    	    // loads resource B                                                                    
-    	    // redirects to resource A                                                             
-    	    // loads resource B                                                                    
-    	    // redirects to resource A                                                             
-    	    // loads resource C                                                                    
-    	                                                                                           
-    	    String resourceAContent =                                                              
-    	  	  "<HTML>" +                                                                            
-    	  	  "<BODY onload='redirect();'>" +                                                       
-    	  	  "<script type='text/javascript'>" +                                                   
-    	        "function redirect()" +                                                            
-    	        "{" +                                                                              
-    	        "	if (document.cookie == '')" +                                                   
-    	        "	{" +                                                                            
-    	        "     document.cookie = 'test=1;';\n" +                                            
-    	        "		window.location.replace('/" + resourceBName + "');\n" +                       
-    	        "	}" +                                                                            
-    	        " else if (document.cookie == 'test=1')" +                                         
-    	        " {" +                                                                             
-    	        "		document.cookie = 'test=2;';\n" +                                             
-    	        "		window.location.replace('/" + resourceBName + "');\n" +                       
-    	        " }" +                                                                             
-    	        " else" +                                                                          
-    	        " {" +                                                                             
-    	        " 	window.location.replace('/" + resourceCName + "');\n" +                         
-    	        " }" +                                                                             
-    	        "}" +                                                                              
-    	        "</script>" +                                                                      
-    	        "</BODY>" +                                                                        
-    	        "</HTML>";                                                                         
-    	                                                                                           
-    	    defineResource(resourceAName, resourceAContent,                                        
-    	            HttpURLConnection.HTTP_OK);                                                    
-    	                                                                                           
-    	    defineResource(resourceBName, "ignored content",                                       
-    	            HttpURLConnection.HTTP_MOVED_TEMP);                                            
-    	    addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"                    
-    	            + resourceAName);                                                              
-    	                                                                                           
-    	    defineResource(resourceCName, "ignored content",                                       
-    	            HttpURLConnection.HTTP_OK);                                                    
-    	                                                                                           
-    	    WebConversation wc = new WebConversation();                                            
-    	    wc.getClientProperties().setMaxRedirects(2);                                           
-    	                                                                                           
-    	    try {                                                                                  
-    	  	  wc.getResponse(getHostPath() + '/' + resourceAName);                                  
-    	    } catch (RecursiveRedirectionException e) {                                            
-    	  	  fail("Not expecting a RecursiveRedirectionException - " +                             
-    	  	  		"max redirects not exceeded");                                                    
-    	    }                                                                                      
-    	}                                                                                          
-    	                                                                                           
-    	/**                                                                                        
+    public void testMaxRedirectsNotExceeded() throws Exception {
+    	 String resourceAName = "something/resourceA";
+    	    String resourceBName = "something/resourceB";
+    	    String resourceCName = "something/resourceC";
+
+    	    // Should test the following :
+    	    // loads resource A
+    	    // loads resource B
+    	    // redirects to resource A
+    	    // loads resource B
+    	    // redirects to resource A
+    	    // loads resource C
+
+    	    String resourceAContent =
+    	  	  "<HTML>" +
+    	  	  "<BODY onload='redirect();'>" +
+    	  	  "<script type='text/javascript'>" +
+    	        "function redirect()" +
+    	        "{" +
+    	        "	if (document.cookie == '')" +
+    	        "	{" +
+    	        "     document.cookie = 'test=1;';\n" +
+    	        "		window.location.replace('/" + resourceBName + "');\n" +
+    	        "	}" +
+    	        " else if (document.cookie == 'test=1')" +
+    	        " {" +
+    	        "		document.cookie = 'test=2;';\n" +
+    	        "		window.location.replace('/" + resourceBName + "');\n" +
+    	        " }" +
+    	        " else" +
+    	        " {" +
+    	        " 	window.location.replace('/" + resourceCName + "');\n" +
+    	        " }" +
+    	        "}" +
+    	        "</script>" +
+    	        "</BODY>" +
+    	        "</HTML>";
+
+    	    defineResource(resourceAName, resourceAContent,
+    	            HttpURLConnection.HTTP_OK);
+
+    	    defineResource(resourceBName, "ignored content",
+    	            HttpURLConnection.HTTP_MOVED_TEMP);
+    	    addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
+    	            + resourceAName);
+
+    	    defineResource(resourceCName, "ignored content",
+    	            HttpURLConnection.HTTP_OK);
+
+    	    WebConversation wc = new WebConversation();
+    	    wc.getClientProperties().setMaxRedirects(2);
+
+    	    try {
+    	  	  wc.getResponse(getHostPath() + '/' + resourceAName);
+    	    } catch (RecursiveRedirectionException e) {
+    	  	  fail("Not expecting a RecursiveRedirectionException - " +
+    	  	  		"max redirects not exceeded");
+    	    }
+    	}
+
+    	/**
 
 
     /**

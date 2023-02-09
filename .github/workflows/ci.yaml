@@ -21,5 +21,9 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: ${{ matrix.distribution }}
-      - name: Test with Maven
+      - name: Run tests (Linux)
+        run: xvfb-run -a ./mvnw test -B
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - name: Run tests (Windows/Mac)
         run: ./mvnw test -B
+        if: ${{ matrix.os != 'ubuntu-latest' }}

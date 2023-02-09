@@ -581,7 +581,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private void addCookieHeader() {
         if (_cookies.isEmpty()) return;
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (Enumeration e = _cookies.elements(); e.hasMoreElements();) {
             Cookie cookie = (Cookie) e.nextElement();
             sb.append( cookie.getName() ).append( '=' ).append( cookie.getValue() );

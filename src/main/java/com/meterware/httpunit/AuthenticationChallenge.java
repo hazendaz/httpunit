@@ -180,7 +180,7 @@ class AuthenticationChallenge extends HttpHeader {
                 MessageDigest digest = MessageDigest.getInstance( "MD5" );
                 digest.update( data.getBytes( StandardCharsets.UTF_8 ) );
                 byte[] bytes = digest.digest();
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < bytes.length; i++) {
                     int aByte = bytes[i];
                     if (aByte < 0) aByte += 256;

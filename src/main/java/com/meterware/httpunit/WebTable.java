@@ -217,7 +217,7 @@ public class WebTable extends HTMLElementBase {
 
     public String toString() {
         String eol = System.getProperty( "line.separator" );
-        StringBuffer sb = new StringBuffer( HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("WebTable:" ).append( eol );
+        StringBuilder sb = new StringBuilder( HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("WebTable:" ).append( eol );
         for (int i = 0; i < getCells().length; i++) {
             sb.append( "[" ).append( i ).append( "]: " );
             for (int j = 0; j < getCells()[i].length; j++) {

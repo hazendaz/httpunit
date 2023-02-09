@@ -316,7 +316,7 @@ public class FormParameter {
          * @return the message
          */
         public String getMessage() {
-            StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
             sb.append( "Attempted to assign to parameter '" ).append( _parameterName );
             sb.append( "' the extraneous value '" ).append( _badValue ).append( "'." );
             return sb.toString();
@@ -354,7 +354,7 @@ public class FormParameter {
          * get the message for this exception
          */
         public String getMessage() {
-            StringBuffer sb = new StringBuffer( HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE );
+            StringBuilder sb = new StringBuilder( HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE );
             sb.append( "Attempted to upload " ).append( _numSupplied ).append( " files using parameter '" ).append( _parameterName );
             if (_numExpected == 0) {
                 sb.append( "' which is not a file parameter." );
@@ -387,7 +387,7 @@ public class FormParameter {
 
 
         public String getMessage() {
-            StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
             sb.append( "Attempted to invoke method '" ).append( _methodName );
             sb.append( "' for parameter '" ).append( _parameterName ).append( "', which is not a unique checkbox control." );
             return sb.toString();

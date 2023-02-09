@@ -292,7 +292,7 @@ public class PseudoServer {
 
     private static String escape( String urlString ) {
         if (urlString.indexOf( ' ' ) < 0) return urlString;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         int start = 0;
         do {

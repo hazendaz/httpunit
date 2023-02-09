@@ -190,7 +190,7 @@ public class HttpUnitUtils {
      */
     public static String parseISToString(java.io.InputStream is){
     	java.io.DataInputStream din = new java.io.DataInputStream(is);
-    	StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
     	try{
     		String line = null;
     		while((line=din.readLine()) != null){
@@ -367,7 +367,7 @@ public class HttpUnitUtils {
         	return s;
 
         boolean inQuotes = false;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         // loop over oper the chars of the URL
         for (int i = 0; i < chars.length; i++) {

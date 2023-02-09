@@ -79,7 +79,7 @@ public class HttpException extends RuntimeException {
      * @return - the message of the Exception
      */
     public String getMessage() {
-        StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append( "Error on HTTP request: " );
+        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append( "Error on HTTP request: " );
         sb.append( _responseCode );
         if (_responseMessage != null) {
             sb.append( " " );

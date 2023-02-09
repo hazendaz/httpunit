@@ -458,7 +458,7 @@ public class WebFormTest extends HttpUnitTest {
 
        @Test
     public void testSingleSelectParameterOrdering() throws Exception {
-        StringBuffer sb = new StringBuffer( "<form action='sendIt' id='theform'>" );
+        StringBuilder sb = new StringBuilder( "<form action='sendIt' id='theform'>" );
         for (int i= 0; i < 4; i++) {
             sb.append( "<select name='enabled'><option value='true'>Enabled<option value='false' selected>Disabled</select>" );
         }

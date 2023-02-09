@@ -296,7 +296,7 @@ class WebResourceSpec {
 
 
     String asText() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("  <security-constraint>\n");
         sb.append("    <web-resource-collection>\n");
         sb.append("      <web-resource-name>").append(_name).append("</web-resource-name>\n");

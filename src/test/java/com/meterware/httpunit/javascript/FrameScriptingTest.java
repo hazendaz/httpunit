@@ -46,7 +46,7 @@ public class FrameScriptingTest extends HttpUnitTest {
         defineResource("image.gif", new byte[]{0, 1, 0, 1}, "image/gif");
         defineWebPage("Menu/Page/Target", "Target page");
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         buff.append("This frame contains JavaScript that re-writes the \"red\" frame if it exists.\n");
         buff.append("<script language=\"JavaScript\">\n");
         buff.append("if (window.parent.red) {\n");
@@ -93,7 +93,7 @@ public class FrameScriptingTest extends HttpUnitTest {
      */
     private String getMenuHtml(final String baseUrlString, final String linkUrlString) {
         final String[] menuLines = getMenuHtmlLines(baseUrlString, linkUrlString);
-        StringBuffer pageBuffer = new StringBuffer();
+        StringBuilder pageBuffer = new StringBuilder();
         for (int i = 0; i < menuLines.length; i++) {
             String line = menuLines[i];
             pageBuffer.append(line).append("\n");

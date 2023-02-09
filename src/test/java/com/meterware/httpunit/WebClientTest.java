@@ -360,7 +360,7 @@ public class WebClientTest extends HttpUnitTest {
     public void testHeaderFields() throws Exception {
         defineResource("getHeaders", new PseudoServlet() {
             public WebResource getGetResponse() {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append(getHeader("Junky")).append("<-->").append(getHeader("User-Agent"));
                 return new WebResource(sb.toString(), "text/plain");
             }
@@ -662,7 +662,7 @@ public class WebClientTest extends HttpUnitTest {
 
 
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             if (!_missingValues.isEmpty()) sb.append("missing: ").append(_missingValues);
             if (!_extraValues.isEmpty()) sb.append("extra: ").append(_extraValues);
             return sb.toString();

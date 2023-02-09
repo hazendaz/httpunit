@@ -189,7 +189,7 @@ public class PseudoServerTest {
         sendHTTPLine(os, "Connection: close");
         sendHTTPLine(os, "");
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
@@ -490,7 +490,7 @@ public class PseudoServerTest {
      * @return
      */
     private String generateLongMIMEPostData() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         buf.append("--MIME_Boundary\r\n");
         buf.append("Content-Type: text/xml\r\n");

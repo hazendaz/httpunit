@@ -148,7 +148,7 @@ public class WebResource {
 
 
     static String toString( byte[] contentsAsBytes ) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < contentsAsBytes.length; i++) {
             byte contentsAsByte = contentsAsBytes[i];
             sb.append( Integer.toHexString( contentsAsByte ) ).append( ' ' );

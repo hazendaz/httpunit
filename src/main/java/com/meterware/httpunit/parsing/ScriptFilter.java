@@ -141,7 +141,7 @@ class ScriptFilter extends DefaultFilter {
 
 
     private XMLInputSource newInputSource( String replacementText ) {
-        StringBuffer systemID = new StringBuffer( _systemID );
+        StringBuilder systemID = new StringBuilder( _systemID );
         systemID.append( "script" ).append( ++_scriptIndex );
 
         return new XMLInputSource( null, systemID.toString(), null, new StringReader( replacementText ), "UTF-8" );

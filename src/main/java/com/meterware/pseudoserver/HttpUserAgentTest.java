@@ -191,7 +191,7 @@ public class HttpUserAgentTest {
 
 
     public static String asText( Object[] args ) {
-        StringBuffer sb = new StringBuffer( "{" );
+        StringBuilder sb = new StringBuilder( "{" );
         for (int i = 0; i < args.length; i++) {
             if (i != 0) sb.append( "," );
             sb.append( '"' ).append( args[ i ] ).append( '"' );
@@ -202,7 +202,7 @@ public class HttpUserAgentTest {
 
 
     protected String asBytes( String s ) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             sb.append( Integer.toHexString( chars[i] ) ).append( " " );
@@ -221,7 +221,7 @@ public class HttpUserAgentTest {
 
 
     private String toString( byte[] message ) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < message.length; i++) {
             if (i != 0 && (i % 4) == 0) sb.append( ' ' );
             if (message[ i ] >= 0 && message[ i ] < 16) sb.append( '0' );

@@ -130,7 +130,7 @@ public class NewScriptingTests extends AbstractJavaScriptTest {
                     System.out.println( testDesc );
                 int midj = (fromj + toj) / 2;
                 WebConversation wc = null;
-                StringBuffer prepareScript = new StringBuffer();
+                StringBuilder prepareScript = new StringBuilder();
                 try {
                     // prepare code lines like
                     // var1000=1000+1;

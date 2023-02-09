@@ -613,7 +613,7 @@ public class WebPageTest extends HttpUnitTest {
      * @return a fragment of HTML text
      */
     private String scriptToWriteAnotherDocument(String document, String targetWindow) {
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         buff.append("<script language=\"JavaScript\">\n");
         buff.append("target = window.open('', '").append(targetWindow).append("');\n");
         buff.append("target.document.write('").append(document).append("');\n");

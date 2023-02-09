@@ -94,7 +94,7 @@ public class HttpHeader {
         Properties properties = new Properties();
         char[] chars = parameterString.toCharArray();
         int i = 0;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         while (i < chars.length) {
             while (i < chars.length && Character.isWhitespace( chars[i] ) ) i++;

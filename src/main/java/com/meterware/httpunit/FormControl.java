@@ -996,7 +996,7 @@ class MissingParameterValueException extends IllegalRequestParameterException {
 
 
     public String getMessage() {
-        StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         sb.append( "Parameter '" ).append( _parameterName ).append( "' must have the value '" );
         sb.append( _missingValue ).append( "'. Attempted to set it to: { " );
         for (int i = 0; i < _proposedValues.length; i++) {

@@ -174,7 +174,7 @@ public class CookieTest {
 
 
     private CookieJar newJar(String urlString, String specifiedDomain, String specifiedPath) throws MalformedURLException {
-        StringBuffer header = new StringBuffer("name=value");
+        StringBuilder header = new StringBuilder("name=value");
         if (specifiedDomain != null) header.append("; domain=").append(specifiedDomain);
         if (specifiedPath != null) header.append("; path=").append(specifiedPath);
 

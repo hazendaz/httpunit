@@ -71,7 +71,7 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
 
 
     public String getMessage() {
-        StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         sb.append( "May not set parameter '" ).append( _parameterName ).append( "' to '" );
         sb.append( _badValue ).append( "'. Value must be one of: { " );
         for (int i = 0; i < _allowedValues.length; i++) {

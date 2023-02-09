@@ -227,7 +227,7 @@ public class CookieJar {
 	public String getCookieHeaderField(URL targetURL) {
 		if (_cookies.isEmpty() && _globalCookies.isEmpty())
 			return null;
-		StringBuffer sb = new StringBuffer(DEFAULT_HEADER_SIZE);
+		StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);
 		HashSet restrictedCookies = new HashSet();
 		for (Iterator i = _cookies.iterator(); i.hasNext();) {
 			Cookie cookie = (Cookie) i.next();

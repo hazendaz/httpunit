@@ -166,7 +166,7 @@ class HttpWebResponse extends WebResponse {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer( "HttpWebResponse [url=" );
+        StringBuilder sb = new StringBuilder( "HttpWebResponse [url=" );
         sb.append( getURL() ).append( "; headers=" );
         for (Enumeration e = _headers.keys(); e.hasMoreElements(); ) {
             Object key = e.nextElement();
@@ -237,7 +237,7 @@ class HttpWebResponse extends WebResponse {
 
 
     private String getRemainingTokens( StringTokenizer st ) {
-        StringBuffer messageBuffer = new StringBuffer( st.hasMoreTokens() ? st.nextToken() : "" );
+        StringBuilder messageBuffer = new StringBuilder( st.hasMoreTokens() ? st.nextToken() : "" );
         while (st.hasMoreTokens()) {
             messageBuffer.append( ' ' ).append( st.nextToken() );
         }

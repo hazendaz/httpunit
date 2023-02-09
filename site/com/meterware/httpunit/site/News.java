@@ -62,7 +62,7 @@ public class News extends FragmentTemplate  {
 
 
     public String asText() {
-        StringBuffer sb = new StringBuffer( "<h2>News</h2>" );
+        StringBuilder sb = new StringBuilder( "<h2>News</h2>" );
         sb.append( LINE_BREAK ).append( "<table>" );
         for (int i = 0; i < _items.size(); i++) {
             Item item = (Item) _items.get( i );
@@ -92,7 +92,7 @@ public class News extends FragmentTemplate  {
         private String _url;
 
         public String asText( int styleIndex ) {
-            StringBuffer sb = new StringBuffer( LINE_BREAK );
+            StringBuilder sb = new StringBuilder( LINE_BREAK );
             sb.append( "<tr><td class='news' align='right'>" );
             sb.append( DATE_FORMAT.format( _date ) ).append( "</td><td class='news'>" );
             if (_url != null) sb.append( "<a href='" ).append( _url ).append( "'>" );

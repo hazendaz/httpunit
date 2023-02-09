@@ -132,7 +132,7 @@ public class NodeUtils {
      * any HTML tags.
      **/
     public static String asText( NodeList rootNodes ) {
-        final StringBuffer sb = new StringBuffer(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         NodeAction action = new NodeAction() {
             public boolean processElement( PreOrderTraversal traversal, Element node ) {
                 String nodeName = node.getNodeName().toLowerCase();

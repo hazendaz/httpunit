@@ -202,7 +202,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 
 
     private String getEffectiveUrl() throws IOException {
-        StringBuffer spec = new StringBuffer( getAction() );
+        StringBuilder spec = new StringBuilder( getAction() );
         if ("get".equalsIgnoreCase( getMethod() )) {
             URLEncodedString parameters = new URLEncodedString();
             HTMLCollection controls = getElements();

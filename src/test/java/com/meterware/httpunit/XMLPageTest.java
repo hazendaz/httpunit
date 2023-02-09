@@ -97,7 +97,7 @@ public class XMLPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.xml");
         WebResponse simplePage = wc.getResponse(request);
         NodeUtils.PreOrderTraversal pot = new NodeUtils.PreOrderTraversal(simplePage.getDOM());
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
         pot.perform(new NodeUtils.NodeAction() {
             public boolean processElement(NodeUtils.PreOrderTraversal traversal, Element element) {
                 if (element.getNodeName().toLowerCase().equals("main")) {

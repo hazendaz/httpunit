@@ -59,7 +59,7 @@ class MimeEncodedMessageBody extends MessageBody {
 
     private String encode( String string ) {
         char[] chars = string.toCharArray();
-        StringBuffer sb = new StringBuffer(chars.length+20);
+        StringBuilder sb = new StringBuilder(chars.length+20);
         for (int i = 0; i < chars.length; i++ ) {
             if (chars[i] == '\\') {
                 sb.append( "\\\\" );    // accomodate MS-DOS file paths ??? is this safe??
@@ -115,7 +115,7 @@ class MimeEncodedMessageBody extends MessageBody {
         private final static char LF = 0x0A;
 
         private String fixLineEndings( String value ) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             char[] chars = value.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 if (chars[i] == CR || (chars[i] == LF && (i == 0 || chars[i-1] != CR))) {

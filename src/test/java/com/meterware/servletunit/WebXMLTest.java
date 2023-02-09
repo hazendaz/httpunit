@@ -66,7 +66,7 @@ public class WebXMLTest {
      *
      * @throws Exception
      */
-    // TODO This test is not necessary as the issue it states to fix doesn't occur, leaving for now.
+    // TODO This test is only applicable when using a concrete servlet implementation such as tomcat-servlet-api and thus unnecessary to test in this code base.
     @Ignore
     @Test
     public void testDTDClassPath() throws Exception {

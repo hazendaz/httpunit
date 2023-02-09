@@ -419,7 +419,7 @@ public class WebWindow {
   	      	}
 
   	          count ++;
-  	        _redirects.put(url, new Integer(count));
+  	        _redirects.put(url, Integer.valueOf(count));
   	      }
       		break;
       }

@@ -193,7 +193,7 @@ class WebXMLString {
 
 
     void setLoadOnStartup(String servletName, int i) {
-        _loadOnStartup.put(servletName, new Integer(i));
+        _loadOnStartup.put(servletName, Integer.valueOf(i));
     }
 
 

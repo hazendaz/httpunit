@@ -364,7 +364,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     public void testNonDefaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
-        Object value = new Integer(1);
+        Object value = Integer.valueOf(1);
 
         request.setAttribute("one", value);
 
@@ -382,7 +382,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        request.setAttribute("one", new Integer(1));
+        request.setAttribute("one", Integer.valueOf(1));
         request.setAttribute("one", "One");
         assertEquals("Revised attribute value", "One", request.getAttribute("one"));
     }
@@ -504,7 +504,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         ServletUnitContext context = _context;
 
         HttpSession session = context.newSession();
-        session.setAttribute("Initial", new Integer(1));
+        session.setAttribute("Initial", Integer.valueOf(1));
         Enumeration attributeNames = session.getAttributeNames();
         assertTrue(attributeNames.hasMoreElements());
         assertEquals("Initial", attributeNames.nextElement());
@@ -540,7 +540,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + originalID);
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable(), NO_MESSAGE_BODY);
-        originalSession.setAttribute("Initial", new Integer(1));
+        originalSession.setAttribute("Initial", Integer.valueOf(1));
         Enumeration attributeNames = originalSession.getAttributeNames();
         assertTrue(attributeNames.hasMoreElements());
         assertEquals("Initial", attributeNames.nextElement());

@@ -137,7 +137,7 @@ class ScriptingSupport {
         if (targetValueClass.equals( String.class )) return value.toString();
         if (!(value instanceof Number) || !isNumericParameter( targetValueClass )) return value;
 
-        if (targetValueClass.getName().equals("int")) return new Integer( ((Number) value).intValue() );
+        if (targetValueClass.getName().equals("int")) return Integer.valueOf( ((Number) value).intValue() );
         if (targetValueClass.getName().equals("byte")) return new Byte( ((Number) value).byteValue() );
         if (targetValueClass.getName().equals("long")) return new Long( ((Number) value).longValue() );
         if (targetValueClass.getName().equals("short")) return new Short( ((Number) value).shortValue() );

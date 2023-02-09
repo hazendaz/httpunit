@@ -68,9 +68,9 @@ public class HTMLTableTest extends AbstractHTMLElementTest {
                 new Object[][]{{"abbr", "lots"}, {"align", "center"},
                         {"axis", "age"}, {"bgColor", "red"},
                         {"char", ",", "." /* ch */}, {"charoff", "20" /* charoff */},
-                        {"colspan", new Integer(3), new Integer(1)}, {"headers", "time,age"},
+                        {"colspan", Integer.valueOf(3), Integer.valueOf(1)}, {"headers", "time,age"},
                         {"height", "20"}, {"nowrap", Boolean.TRUE, Boolean.FALSE},
-                        {"rowspan", new Integer(15), new Integer(1)},
+                        {"rowspan", Integer.valueOf(15), Integer.valueOf(1)},
                         {"scope", "row"}, {"valign", "top", "middle"}, {"width", "10"}});
         doElementTest("th", HTMLTableCellElement.class,
                 new Object[][]{{"abbr", "lots"}});

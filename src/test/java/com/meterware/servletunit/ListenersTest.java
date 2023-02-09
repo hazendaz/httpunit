@@ -127,10 +127,10 @@ public class ListenersTest extends EventAwareTestBase {
         HttpSession session = ic.getRequest().getSession();
         verifyEvents();
 
-        verifyAttribute.expect("one", new Integer(1));
+        verifyAttribute.expect("one", Integer.valueOf(1));
         expectEvent("added", ListenerClass5.class, verifyAttribute);
         expectEvent("added", ListenerClass6.class, verifyAttribute);
-        session.setAttribute("one", new Integer(1));
+        session.setAttribute("one", Integer.valueOf(1));
         verifyEvents();
 
         expectEvent("replaced", ListenerClass5.class, verifyAttribute);
@@ -190,10 +190,10 @@ public class ListenersTest extends EventAwareTestBase {
         ServletContext context = ic.getServlet().getServletConfig().getServletContext();
         verifyEvents();
 
-        verifyAttribute.expect("deux", new Integer(2));
+        verifyAttribute.expect("deux", Integer.valueOf(2));
         expectEvent("added", ListenerClass7.class, verifyAttribute);
         expectEvent("added", ListenerClass8.class, verifyAttribute);
-        context.setAttribute("deux", new Integer(2));
+        context.setAttribute("deux", Integer.valueOf(2));
         verifyEvents();
 
         expectEvent("replaced", ListenerClass7.class, verifyAttribute);

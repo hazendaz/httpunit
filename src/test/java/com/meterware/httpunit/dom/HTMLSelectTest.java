@@ -117,7 +117,7 @@ public class HTMLSelectTest extends AbstractHTMLElementTest {
         assertSame("first option", _options[0], _select.getOptions().item(0));
         assertProperties("default selected", "defaultSelected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
         assertProperties("initial selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("index", "index", _options, new Integer[]{new Integer(0), new Integer(1), new Integer(2)});
+        assertProperties("index", "index", _options, new Integer[]{Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(2)});
         assertProperties("text", "text", _options, new String[]{"Vermillion", "Azure", "Chartreuse"});
         assertProperties("value", "value", _options, new String[]{"red", "blue", "green"});
         assertEquals("select length", _options.length, _select.getLength());

@@ -56,7 +56,7 @@ public class NodeListImpl extends ScriptableObject implements NodeList {
 
 
     public Object get( String name, Scriptable start ) {
-        if ("length".equals( name )) return new Integer( getLength() );
+        if ("length".equals( name )) return Integer.valueOf( getLength() );
         return NOT_FOUND;
     }
 

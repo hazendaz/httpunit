@@ -799,7 +799,7 @@ public class WebForm extends WebRequestSource {
 			} else if (propertyName.equals("action")) {
 				return getAction();
 			} else if (propertyName.equals("length")) {
-				return new Integer(getFormControls().length);
+				return Integer.valueOf(getFormControls().length);
 			} else {
 				final FormParameter parameter = getParameter(propertyName);
 				if (!parameter.isUnknown())

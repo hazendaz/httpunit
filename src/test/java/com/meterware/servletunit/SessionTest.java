@@ -96,7 +96,7 @@ public class SessionTest extends ServletUnitTest {
     @Test
     public void testSessionAttributes() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
-        session.setAttribute("first", new Integer(1));
+        session.setAttribute("first", Integer.valueOf(1));
         session.setAttribute("second", "two");
         session.setAttribute("third", "III");
 

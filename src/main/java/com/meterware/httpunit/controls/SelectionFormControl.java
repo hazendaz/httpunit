@@ -102,11 +102,11 @@ public class SelectionFormControl extends FormControl {
             if (propertyName.equalsIgnoreCase( "options" )) {
                 return _selectionOptions;
             } else if (propertyName.equalsIgnoreCase( "length" )) {
-                return new Integer( getOptionValues().length );
+                return Integer.valueOf( getOptionValues().length );
             } else if (propertyName.equalsIgnoreCase( "value" )) {
                 return getSelectedValue();
             } else if (propertyName.equalsIgnoreCase( "selectedIndex" )) {
-                return new Integer( _selectionOptions.getFirstSelectedIndex() );
+                return Integer.valueOf( _selectionOptions.getFirstSelectedIndex() );
             } else {
                 return super.get( propertyName );
             }

@@ -28,6 +28,7 @@ import java.util.Enumeration;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 
+import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
@@ -43,7 +44,7 @@ import org.xml.sax.SAXNotSupportedException;
  * @author <a href="russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
  **/
-class NekoDOMParser extends org.apache.xerces.parsers.DOMParser implements ScriptHandler {
+class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     // private static final String HTML_DOCUMENT_CLASS_NAME = "org.apache.html.dom.HTMLDocumentImpl";
 

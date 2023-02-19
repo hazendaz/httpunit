@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ class EventAwareTestBase {
 
 
     protected static void sendEvent(String eventName, Object listener, Object eventObject) {
-        assertFalse("Unexpected event: " + EventData.toEventString(eventName, listener.getClass()), _events.isEmpty());
+        assertFalse(_events.isEmpty(), "Unexpected event: " + EventData.toEventString(eventName, listener.getClass()));
         ((EventData) _events.remove(0)).verifyEvent(eventName, listener, eventObject);
     }
 
@@ -87,7 +87,7 @@ class EventData {
 
 
     void verifyEvent(String eventName, Object listener, Object event) {
-        assertEquals("Event", toString(), toEventString(eventName, listener.getClass()));
+        assertEquals(toString(), toEventString(eventName, listener.getClass()), "Event");
         if (_verifier != null) _verifier.verifyEvent(toString(), event);
     }
 

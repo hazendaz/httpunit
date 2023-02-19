@@ -19,10 +19,10 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the base64 converter.
@@ -30,24 +30,24 @@ import org.junit.Test;
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  * @author <a href="mailto:mtarruella@silacom.com">Marcos Tarruella</a>
  */
-public class Base64Test {
+class Base64Test {
 
     @Test
-    public void testEncode() {
-        assertEquals("Result of encoding", "QWxhZGRpbjpvcGVuIHNlc2FtZQ==", Base64.encode("Aladdin:open sesame"));
-        assertEquals("Result of encoding", "QWRtaW46Zm9vYmFy", Base64.encode("Admin:foobar"));
+    void testEncode() {
+        assertEquals("QWxhZGRpbjpvcGVuIHNlc2FtZQ==", Base64.encode("Aladdin:open sesame"), "Result of encoding");
+        assertEquals("QWRtaW46Zm9vYmFy", Base64.encode("Admin:foobar"), "Result of encoding");
     }
 
 
     @Test
-    public void testDecode() {
-        assertEquals("Result of decoding", "Aladdin:open sesame", Base64.decode("QWxhZGRpbjpvcGVuIHNlc2FtZQ=="));
-        assertEquals("Result of decoding", "Admin:foobar", Base64.decode("QWRtaW46Zm9vYmFy"));
+    void testDecode() {
+        assertEquals("Aladdin:open sesame", Base64.decode("QWxhZGRpbjpvcGVuIHNlc2FtZQ=="), "Result of decoding");
+        assertEquals("Admin:foobar", Base64.decode("QWRtaW46Zm9vYmFy"), "Result of decoding");
     }
 
 
     @Test
-    public void testExceptionDecoding() {
+    void testExceptionDecoding() {
         try {
             Base64.decode("123");
             fail("valid Base64 codes have a multiple of 4 characters");

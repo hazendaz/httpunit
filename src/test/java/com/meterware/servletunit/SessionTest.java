@@ -19,25 +19,25 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the HttpSession implementation.
  */
-public class SessionTest extends ServletUnitTest {
+class SessionTest extends ServletUnitTest {
 
     private ServletUnitContext _context;
     private ServletContext _servletContext = new ServletUnitServletContext(null);
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _context = new ServletUnitContext(null, _servletContext, new SessionListenerDispatcher() {
             public void sendSessionCreated(HttpSession session) {
             }
@@ -59,42 +59,42 @@ public class SessionTest extends ServletUnitTest {
 
 
     @Test
-    public void testNoInitialState() throws Exception {
-        assertNull("Session with incorrect ID", _context.getSession("12345"));
+    void testNoInitialState() throws Exception {
+        assertNull(_context.getSession("12345"), "Session with incorrect ID");
     }
 
 
     @Test
-    public void testCreateSession() throws Exception {
+    void testCreateSession() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
-        assertNotNull("Session is null", session);
-        assertTrue("Session is not marked as new", session.isNew());
+        assertNotNull(session, "Session is null");
+        assertTrue(session.isNew(), "Session is not marked as new");
         ServletUnitHttpSession session2 = _context.newSession();
-        assertTrue("New session has the same ID", !session.getId().equals(session2.getId()));
-        assertTrue("Different session returned", session.equals(_context.getSession(session.getId())));
+        assertNotEquals(session.getId(), session2.getId(), "New session has the same ID");
+        assertEquals(session, _context.getSession(session.getId()), "Different session returned");
     }
 
 
     @Test
-    public void testSessionState() throws Exception {
+    void testSessionState() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
         long accessedAt = session.getLastAccessedTime();
-        assertTrue("Session is not marked as new", session.isNew());
+        assertTrue(session.isNew(), "Session is not marked as new");
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
         }
         ;
-        assertEquals("Initial access time", accessedAt, _context.getSession(session.getId()).getLastAccessedTime());
+        assertEquals(accessedAt, _context.getSession(session.getId()).getLastAccessedTime(), "Initial access time");
         session.access();
-        assertTrue("Last access time not changed", accessedAt != _context.getSession(session.getId()).getLastAccessedTime());
-        assertTrue("Session is still marked as new", !_context.getSession(session.getId()).isNew());
+        assertTrue(accessedAt != _context.getSession(session.getId()).getLastAccessedTime(), "Last access time not changed");
+        assertFalse(_context.getSession(session.getId()).isNew(), "Session is still marked as new");
 
     }
 
 
     @Test
-    public void testSessionAttributes() throws Exception {
+    void testSessionAttributes() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
         session.setAttribute("first", Integer.valueOf(1));
         session.setAttribute("second", "two");
@@ -109,10 +109,10 @@ public class SessionTest extends ServletUnitTest {
 
 
     @Test
-    public void testSessionContext() throws Exception {
+    void testSessionContext() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
-        assertNotNull("No context returned", session.getServletContext());
-        assertSame("Owning context", _servletContext, session.getServletContext());
+        assertNotNull(session.getServletContext(), "No context returned");
+        assertSame(_servletContext, session.getServletContext(), "Owning context");
     }
 
 

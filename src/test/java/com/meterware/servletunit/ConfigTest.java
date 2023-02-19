@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.HttpNotFoundException;
 import com.meterware.httpunit.WebClient;
@@ -35,52 +35,52 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests support for the servlet configuration.
  */
-public class ConfigTest {
+class ConfigTest {
 
     @Test
-    public void testConfigObject() throws Exception {
+    void testConfigObject() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
         sr.registerServlet(resourceName, ConfigServlet.class.getName());
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/" + resourceName);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
         assertEquals("servlet name is " + ConfigServlet.class.getName(), response.getText());
     }
 
-    @Test
     /**
      * Test added by WF 2012-11-12 to answer question on developers mailing list
      * @throws Exception
      */
-    public void testInvalidConfig() throws Exception {
-      final String resourceName = "something/interesting";
+    @Test
+    void testInvalidConfig() throws Exception {
+        final String resourceName = "something/interesting";
 
-      ServletRunner sr = new ServletRunner();
-      sr.registerServlet(resourceName, ConfigServlet.class.getName());
-      WebClient wc = sr.newClient();
-      try {
-      	WebResponse response = wc.getResponse("http://localhost/" + "ISB/"+ resourceName);
-      	fail("No Exception thrown");
-      } catch (Throwable th) {
-      	// com.meterware.httpunit.HttpNotFoundException:
-      	// Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]
-      	String expected="Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]";
-      	assertTrue("HttpNotFoundException expected",th instanceof HttpNotFoundException);
-      	assertEquals("wrong exception message",expected,th.getMessage());
-      }
+        ServletRunner sr = new ServletRunner();
+        sr.registerServlet(resourceName, ConfigServlet.class.getName());
+        WebClient wc = sr.newClient();
+        try {
+            WebResponse response = wc.getResponse("http://localhost/" + "ISB/" + resourceName);
+            fail("No Exception thrown");
+        } catch (Throwable th) {
+            // com.meterware.httpunit.HttpNotFoundException:
+            // Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]
+            String expected = "Error on HTTP request: 404 No servlet mapping defined [http://localhost/ISB/something/interesting]";
+            assertTrue(th instanceof HttpNotFoundException, "HttpNotFoundException expected");
+            assertEquals(expected, th.getMessage(), "wrong exception message");
+        }
     }
 
 
     @Test
-    public void testContextAttributes() throws Exception {
+    void testContextAttributes() throws Exception {
         final String servlet1Name = "something/interesting";
         final String servlet2Name = "something/else";
 
@@ -94,12 +94,12 @@ public class ConfigTest {
 
         InvocationContext ic2 = wc.newInvocation("http://localhost/" + servlet2Name);
         ServletContext sc2 = ic2.getServlet().getServletConfig().getServletContext();
-        assertEquals("attribute 'sample'", "found me", sc2.getAttribute("sample"));
+        assertEquals("found me", sc2.getAttribute("sample"), "attribute 'sample'");
     }
 
 
     @Test
-    public void testFileMimeType() throws Exception {
+    void testFileMimeType() throws Exception {
         final String servlet1Name = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -114,18 +114,18 @@ public class ConfigTest {
 
 
     @Test
-    public void testServletContextAccess() throws Exception {
+    void testServletContextAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("SimpleServlet", ConfigServlet.class.getName());
         ServletUnitClient client = sr.newClient();
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
         ServletContext context = ic.getServlet().getServletConfig().getServletContext();
-        assertSame("Context from session", context, ic.getRequest().getSession().getServletContext());
+        assertSame(context, ic.getRequest().getSession().getServletContext(), "Context from session");
     }
 
 
     private void checkMimeType(ServletContext context, String fileName, String expectedMimeType) {
-        assertEquals("mime type for " + fileName, expectedMimeType, context.getMimeType(fileName));
+        assertEquals(expectedMimeType, context.getMimeType(fileName), "mime type for " + fileName);
     }
 
 

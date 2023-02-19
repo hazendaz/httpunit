@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit.cookies;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.pseudoserver.HttpUserAgentTest;
 
@@ -28,22 +28,22 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 public class CookieTest {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         CookieProperties.reset();
     }
 
 
     @Test
-    public void testSimpleCookies() throws Exception {
+    void testSimpleCookies() throws Exception {
         CookieJar jar = new CookieJar(
                 new TestSource(new URL("http://www.meterware.com"),
                         new String[]{"Reason=; path=/",
@@ -52,14 +52,14 @@ public class CookieTest {
                                 "funky=ab$==",
                                 "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
                                 "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;"}));
-        assertEquals("cookie 'Reason' value", "", jar.getCookieValue("Reason"));
-        assertEquals("cookie 'age' value", "12", jar.getCookieValue("age"));
-        assertEquals("cookie 'name' value", "george", jar.getCookieValue("name"));
-        assertEquals("cookie 'type' value", "short", jar.getCookieValue("type"));
-        assertEquals("cookie 'funky' value", "ab$==", jar.getCookieValue("funky"));
-        assertEquals("cookie 'p30waco_sso' value", "3.0,en,us,AMERICA,Drew", jar.getCookieValue("p30waco_sso"));
-        assertEquals("cookie 'PORTAL30_SSO_TEST' value", "X", jar.getCookieValue("PORTAL30_SSO_TEST"));
-        assertEquals("cookie 'SESSION_ID' value", "17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", jar.getCookieValue("SESSION_ID"));
+        assertEquals("", jar.getCookieValue("Reason"), "cookie 'Reason' value");
+        assertEquals("12", jar.getCookieValue("age"), "cookie 'age' value");
+        assertEquals("george", jar.getCookieValue("name"), "cookie 'name' value");
+        assertEquals("short", jar.getCookieValue("type"), "cookie 'type' value");
+        assertEquals("ab$==", jar.getCookieValue("funky"), "cookie 'funky' value");
+        assertEquals("3.0,en,us,AMERICA,Drew", jar.getCookieValue("p30waco_sso"), "cookie 'p30waco_sso' value");
+        assertEquals("X", jar.getCookieValue("PORTAL30_SSO_TEST"), "cookie 'PORTAL30_SSO_TEST' value");
+        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", jar.getCookieValue("SESSION_ID"), "cookie 'SESSION_ID' value");
     }
 
     /**
@@ -73,14 +73,14 @@ public class CookieTest {
                 new TestSource(new URL("http://www.meterware.com"),
                         new String[]{"NewUniversalCookie=\"mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm\"; Path=/"}));
         Collection cookies = jar.getCookies();
-        assertTrue("There should only be one cookie but there are " + cookies.size(), cookies.size() == 1);
-        assertEquals("cookie 'NewUniversalCookie' value", "mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm", jar.getCookieValue("NewUniversalCookie"));
+        assertEquals(1, cookies.size(), "There should only be one cookie but there are " + cookies.size());
+        assertEquals("mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm", jar.getCookieValue("NewUniversalCookie"), "cookie 'NewUniversalCookie' value");
     }
 
 
     @Test
-    public void testCookieMatching() throws Exception {
-        assertTrue("Universal cookie could not be sent", new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")));
+    void testCookieMatching() throws Exception {
+        assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")), "Universal cookie could not be sent");
 
         checkMatching(1, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets/sample");
 
@@ -99,9 +99,9 @@ public class CookieTest {
         attributes.put("domain", domain);
         Cookie cookie = new Cookie("name", "value", attributes);
         if (success) {
-            assertTrue("Cookie " + index + " did not allow " + url, cookie.mayBeSentTo(url));
+            assertTrue(cookie.mayBeSentTo(url), "Cookie " + index + " did not allow " + url);
         } else {
-            assertFalse("Cookie " + index + " allowed " + url, cookie.mayBeSentTo(url));
+            assertFalse(cookie.mayBeSentTo(url), "Cookie " + index + " allowed " + url);
         }
     }
 
@@ -112,7 +112,7 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    public void testCookieAcceptance() throws Exception {
+    void testCookieAcceptance() throws Exception {
         checkAcceptance(1, true, "www.meterware.com/servlets/special", null, null);
         checkAcceptance(2, true, "www.meterware.com/servlets/special", ".meterware.com", "/servlets");
         checkAcceptance(3, false, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
@@ -146,18 +146,18 @@ public class CookieTest {
         	// modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
         	// http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
         	Cookie cookie = jar.getCookie( "name" );
-        	assertNotNull( "Rejected cookie " + index + "( " + specifiedDomain + " from " + urlString + ") should have been accepted", cookie );
+        	assertNotNull( cookie , "Rejected cookie " + index + "( " + specifiedDomain + " from " + urlString + ") should have been accepted");
         	URL url = new URL( "http://" + urlString );
-        	assertTrue( "Cookie " + index + " should be sent to the url ", cookie.mayBeSentTo(url));
+        	assertTrue( cookie.mayBeSentTo(url), "Cookie " + index + " should be sent to the url ");
 
         } else {
-            assertNull("Cookie " + index + " should have been rejected", jar.getCookie("name"));
+            assertNull(jar.getCookie("name"), "Cookie " + index + " should have been rejected");
         }
     }
 
 
     @Test
-    public void testCookieDefaults() throws Exception {
+    void testCookieDefaults() throws Exception {
         checkDefaults(1, "www.meterware.com/servlets/special", ".meterware.com", "/servlets", ".meterware.com", "/servlets");
         checkDefaults(2, "www.meterware.com/servlets/special/myServlet", null, null, "www.meterware.com", "/servlets/special");
     }
@@ -166,10 +166,10 @@ public class CookieTest {
     private void checkDefaults(int index, String urlString, String specifiedDomain, String specifiedPath,
                                String expectedDomain, String expectedPath) throws MalformedURLException {
         CookieJar jar = newJar(urlString, specifiedDomain, specifiedPath);
-        assertNotNull("case " + index + " domain is null", jar.getCookie("name").getDomain());
-        assertEquals("case " + index + " domain", expectedDomain, jar.getCookie("name").getDomain());
-        assertNotNull("case " + index + " path is null", jar.getCookie("name").getPath());
-        assertEquals("case " + index + " path", expectedPath, jar.getCookie("name").getPath());
+        assertNotNull(jar.getCookie("name").getDomain(), "case " + index + " domain is null");
+        assertEquals(expectedDomain, jar.getCookie("name").getDomain(), "case " + index + " domain");
+        assertNotNull(jar.getCookie("name").getPath(), "case " + index + " path is null");
+        assertEquals(expectedPath, jar.getCookie("name").getPath(), "case " + index + " path");
     }
 
 
@@ -189,7 +189,7 @@ public class CookieTest {
      * @throws Exception when an unexpected error occurs
      */
     @Test
-    public void testCookieAge() throws Exception {
+    void testCookieAge() throws Exception {
         String ages[] = {"max-age=5000",
                 "Max-Age=3000",
                 "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
@@ -205,29 +205,29 @@ public class CookieTest {
                 1112124642000l,
                 0};
 
-        for (int i = 0; i < ages.length; i++) {
+        for (int i = 0;i < ages.length;i++) {
             String cookieName = "cookie" + i;
             String header = cookieName + "=cookievalue;" + ages[i];
             TestSource source = new TestSource(new URL("http://www.somedomain.com/somepath/"), header);
             CookieJar jar = new CookieJar(source);
             Cookie cookie = jar.getCookie(cookieName);
-            assertNotNull(cookieName + " not null", cookie);
+            assertNotNull(cookie, cookieName + " not null");
 
             long expiredTime = cookie.getExpiredTime();
             int grace = 3000;
-            assertTrue(cookieName + " '" + ages[i] + "' expiration expect on or after" +
-                    expectedMilliSeconds[i] + " but was " + expiredTime,
-                    expectedMilliSeconds[i] <= expiredTime);
-            assertTrue(cookieName + " '" + ages[i] + "' expiration expect before " +
-                    (expectedMilliSeconds[i] + grace) + " but was " + expiredTime,
-                    (expectedMilliSeconds[i]) + grace > expiredTime);
+            assertTrue(expectedMilliSeconds[i] <= expiredTime,
+                    cookieName + " '" + ages[i] + "' expiration expect on or after" +
+                            expectedMilliSeconds[i] + " but was " + expiredTime);
+            assertTrue((expectedMilliSeconds[i]) + grace > expiredTime,
+                    cookieName + " '" + ages[i] + "' expiration expect before " +
+                            (expectedMilliSeconds[i] + grace) + " but was " + expiredTime);
             //  assertEquals( cookieName + " expiration", expiredTime, expectedMilliSeconds[i] );
         }
     }
 
 
     @Test
-    public void testHeaderGeneration() throws Exception {
+    void testHeaderGeneration() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putCookie("zero", "nil");
         jar.updateCookies(newJar("www.meterware.com/servlets/standard/AServlet", "first=ready, gone=expired;max-age=0"));
@@ -248,14 +248,14 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    public void testDrupalCookieInteraction() throws Exception {
+    void testDrupalCookieInteraction() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putSingleUseCookie("SESS1234", "1234", ".drupalsite.org", "/");
         Cookie cookie = jar.getCookie("SESS1234");
         assertTrue(cookie != null);
-        assertEquals(cookie.getDomain(), ".drupalsite.org");
-        assertEquals(cookie.getValue(), "1234");
-        assertEquals(cookie.getPath(), "/");
+        assertEquals(".drupalsite.org", cookie.getDomain());
+        assertEquals("1234", cookie.getValue());
+        assertEquals("/", cookie.getPath());
         assertEquals(1, jar.getCookies().size());
 
         CookieJar jar1 = new CookieJar();
@@ -264,9 +264,9 @@ public class CookieTest {
 
         cookie = jar.getCookie("SESS1234");
         assertTrue(cookie != null);
-        assertEquals(cookie.getDomain(), "www.drupalsite.org");
-        assertEquals(cookie.getValue(), "deleted");
-        assertEquals(cookie.getPath(), "/");
+        assertEquals("www.drupalsite.org", cookie.getDomain());
+        assertEquals("deleted", cookie.getValue());
+        assertEquals("/", cookie.getPath());
         assertEquals(1, jar.getCookies().size());
 
         CookieJar jar2 = new CookieJar();
@@ -275,9 +275,9 @@ public class CookieTest {
 
         cookie = jar.getCookie("SESS1234");
         assertTrue(cookie != null);
-        assertEquals(cookie.getDomain(), ".drupalsite.org");
-        assertEquals(cookie.getValue(), "4321");
-        assertEquals(cookie.getPath(), "/");
+        assertEquals(".drupalsite.org", cookie.getDomain());
+        assertEquals("4321", cookie.getValue());
+        assertEquals("/", cookie.getPath());
         assertEquals(1, jar.getCookies().size());
 
     }
@@ -288,14 +288,14 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    public void testSingleUseCookie() throws Exception {
+    void testSingleUseCookie() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putSingleUseCookie("zero", "nil", "sourceforge.net", "test/me");
         Cookie cookie = jar.getCookie("zero");
         assertTrue(cookie != null);
-        assertEquals(cookie.getDomain(), "sourceforge.net");
-        assertEquals(cookie.getValue(), "nil");
-        assertEquals(cookie.getPath(), "test/me");
+        assertEquals("sourceforge.net", cookie.getDomain());
+        assertEquals("nil", cookie.getValue());
+        assertEquals("test/me", cookie.getPath());
     }
 
     /**
@@ -305,14 +305,14 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    public void testHttpOnlyCookies() throws Exception {
+    void testHttpOnlyCookies() throws Exception {
         CookieJar jar = new CookieJar(
                 new TestSource(new URL("http://www.meterware.com"),
                         new String[]{"myStuff=1234; path=/foo; HttpOnly"}));
-        assertEquals("cookie 'myStuff' value", "1234", jar.getCookieValue("myStuff"));
+        assertEquals("1234", jar.getCookieValue("myStuff"), "cookie 'myStuff' value");
         // comment of 2010-04-22
         String path = jar.getCookie("myStuff").getPath();
-        assertEquals("cookie 'myStuff' path", "/foo", path);
+        assertEquals("/foo", path, "cookie 'myStuff' path");
     }
 
     /**
@@ -321,13 +321,13 @@ public class CookieTest {
      * https://sourceforge.net/tracker/?func=detail&aid=2871999&group_id=6550&atid=106550
      */
     @Test
-    public void testHttpOnlyCookiePath() throws Exception {
+    void testHttpOnlyCookiePath() throws Exception {
         CookieJar jar = new CookieJar(
                 new TestSource(new URL("http://www.meterware.com"),
                         new String[]{"myStuff=1234; path=/; HttpOnly"}));
         Cookie cookie = jar.getCookie("myStuff");
         String expected = "/";
-        assertEquals("The cookie should have the path '" + expected + "' but has " + cookie.getPath(), cookie.getPath(), expected);
+        assertEquals(cookie.getPath(), expected, "The cookie should have the path '" + expected + "' but has " + cookie.getPath());
     }
 
     /**
@@ -344,12 +344,12 @@ public class CookieTest {
 
 
     private void checkHeader(int index, CookieJar jar, String expectedHeader, String targetURLString) throws MalformedURLException {
-        assertEquals("header " + index, expectedHeader, jar.getCookieHeaderField(new URL("http://" + targetURLString)));
+        assertEquals(expectedHeader, jar.getCookieHeaderField(new URL("http://" + targetURLString)), "header " + index);
     }
 
 
     @Test
-    public void testCookieReplacement() throws Exception {
+    void testCookieReplacement() throws Exception {
         CookieJar jar = new CookieJar();
         jar.updateCookies(newJar("www.meterware.com/servlets/standard", "first=ready"));
         jar.updateCookies(newJar("meterware.com/servlets/standard", "second=more"));
@@ -366,7 +366,7 @@ public class CookieTest {
 
 
     @Test
-    public void testLenientMatching() throws Exception {
+    void testLenientMatching() throws Exception {
         CookieProperties.setDomainMatchingStrict(false);
         checkAcceptance(1, true, "www.some.meterware.com/servlets/special", ".meterware.com", null);
         checkAcceptance(2, false, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
@@ -381,7 +381,7 @@ public class CookieTest {
 
 
     @Test
-    public void testRejectionCallbacks() throws Exception {
+    void testRejectionCallbacks() throws Exception {
         MockListener listener = new MockListener();
         CookieProperties.addCookieListener(listener);
 
@@ -443,16 +443,16 @@ public class CookieTest {
 
 
         void confirmRejection() {
-            assertTrue("Cookie " + _cookieNum + " was not logged as rejected", _rejected);
+            assertTrue(_rejected, "Cookie " + _cookieNum + " was not logged as rejected");
         }
 
 
         public void cookieRejected(String name, int reason, String attribute) {
             _rejected = true;
-            assertEquals("Cookie " + _cookieNum + " rejection code", _reason, reason);
+            assertEquals(_reason, reason, "Cookie " + _cookieNum + " rejection code");
             if (_attribute != null)
-                assertEquals("Cookie " + _cookieNum + " rejected attribute", _attribute, attribute);
-            if (_cookieName != null) assertEquals("Cookie " + _cookieNum + " name", _cookieName, name);
+                assertEquals(_attribute, attribute, "Cookie " + _cookieNum + " rejected attribute");
+            if (_cookieName != null) assertEquals(_cookieName, name, "Cookie " + _cookieNum + " name");
         }
     }
 

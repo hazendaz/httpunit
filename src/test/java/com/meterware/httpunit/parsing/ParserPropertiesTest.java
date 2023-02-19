@@ -19,16 +19,18 @@
  */
 package com.meterware.httpunit.parsing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.meterware.httpunit.*;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -39,10 +41,11 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class ParserPropertiesTest extends HttpUnitTest {
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         HTMLParserFactory.reset();
     }
 
@@ -61,9 +64,9 @@ public class ParserPropertiesTest extends HttpUnitTest {
         WebResponse simplePage = wc.getResponse(request);
         Document doc = simplePage.getDOM();
         NodeList nlist = doc.getElementsByTagName(tagName);
-        assertEquals("Number of nodes with tag '" + tagName + "':", boldNodeContents.length, nlist.getLength());
+        assertEquals(boldNodeContents.length, nlist.getLength(), "Number of nodes with tag '" + tagName + "':");
         for (int i = 0; i < nlist.getLength(); i++) {
-            assertEquals("Element " + i, boldNodeContents[i], nlist.item(i).getFirstChild().getNodeValue());
+            assertEquals(boldNodeContents[i], nlist.item(i).getFirstChild().getNodeValue(), "Element " + i);
         }
     }
 
@@ -120,8 +123,9 @@ public class ParserPropertiesTest extends HttpUnitTest {
      *
      * @throws Exception
      */
-    @Test @Ignore
-    public void testKeepCase() throws Exception {
+    @Test
+    @Disabled
+    void testKeepCase() throws Exception {
         doTestKeepCase(true, new String[]{"active", "anchor"}, new String[]{"active"});
     }
 
@@ -132,7 +136,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testLowerCase() throws Exception {
+    void testLowerCase() throws Exception {
         doTestKeepCase(false, new String[]{"active", "anchor"}, new String[]{"active", "anchor"});
     }
 
@@ -142,8 +146,9 @@ public class ParserPropertiesTest extends HttpUnitTest {
      *
      * @throws Exception
      */
-    @Test @Ignore
-    public void testForceUpperCase() throws Exception {
+    @Test
+    @Disabled
+    void testForceUpperCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceUpperCase());
         verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "B");
@@ -156,8 +161,9 @@ public class ParserPropertiesTest extends HttpUnitTest {
      * test for patch [ 1176688 ] Allow configuration of neko parser properties
      * by james abley
      */
-    @Test @Ignore
-    public void testForceLowerCase() throws Exception {
+    @Test
+    @Disabled
+    void testForceLowerCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceLowerCase());
         verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "b");

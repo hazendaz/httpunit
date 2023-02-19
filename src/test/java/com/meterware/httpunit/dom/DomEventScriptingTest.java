@@ -19,31 +19,31 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mozilla.javascript.Context;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class DomEventScriptingTest extends AbstractHTMLElementTest {
+class DomEventScriptingTest extends AbstractHTMLElementTest {
 
     private Context _context;
     private static final Object[] NO_ARGS = new Object[0];
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _context = Context.enter();
         _context.initStandardObjects(null);
     }
 
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         Context.exit();
     }
 
@@ -53,9 +53,9 @@ public class DomEventScriptingTest extends AbstractHTMLElementTest {
      * is defined.
      */
     @Test
-    public void testNoOnloadEvent() throws Exception {
+    void testNoOnloadEvent() throws Exception {
         HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body");
-        assertNull("Found a default definition for 'onLoad' event", body.getOnloadEvent());
+        assertNull(body.getOnloadEvent(), "Found a default definition for 'onLoad' event");
     }
 
 
@@ -64,11 +64,11 @@ public class DomEventScriptingTest extends AbstractHTMLElementTest {
      * is defined.
      */
     @Test
-    public void testInlineOnloadEvent() throws Exception {
+    void testInlineOnloadEvent() throws Exception {
         HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body", new Object[][]{{"onload", "title='here'"}});
-        assertNotNull("Found no definition for 'onLoad' event", body.getOnloadEvent());
+        assertNotNull(body.getOnloadEvent(), "Found no definition for 'onLoad' event");
         body.getOnloadEvent().call(_context, body, body, NO_ARGS);
-        assertEquals("Updated title", "here", body.getTitle());
+        assertEquals("here", body.getTitle(), "Updated title");
     }
 
 }

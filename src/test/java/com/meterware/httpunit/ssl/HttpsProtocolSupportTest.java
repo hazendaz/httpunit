@@ -19,8 +19,8 @@
  */
 package com.meterware.httpunit.ssl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.meterware.httpunit.HttpsProtocolSupport;
 
@@ -29,7 +29,7 @@ import java.security.Security;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the HttpsProtocolSupport
@@ -37,34 +37,34 @@ import org.junit.Test;
  * @author <a href="mailto:russ@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:wf@bitplan.com">Wolfgang Fahl</a>
  */
-public class HttpsProtocolSupportTest {
+class HttpsProtocolSupportTest {
 
     /**
      * test the available HttpsProtocolProviders
      * are available
      */
     @Test
-    public void testProvider() throws Exception {
+    void testProvider() throws Exception {
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.SunJSSE_PROVIDER_CLASS;
         Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
         if (sslProviders.length > 0)
             expected = sslProviders[0].getClass().getName();
-        assertEquals("provider", expected, provider.getName());
+        assertEquals(expected, provider.getName(), "provider");
     }
 
     /**
      * test the available HttpsProtocolProviders
      */
     @Test
-    public void testProviderIBM() throws Exception {
+    void testProviderIBM() throws Exception {
         HttpsProtocolSupport.useIBM();
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.IBMJSSE_PROVIDER_CLASS;
         Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
         if (sslProviders.length > 0)
             expected = sslProviders[0].getClass().getName();
-        assertEquals("provider", expected, provider.getName());
+        assertEquals(expected, provider.getName(), "provider");
     }
 
     /**
@@ -73,7 +73,7 @@ public class HttpsProtocolSupportTest {
      * @throws Exception
      */
     @Test
-    public void testSocketFactory() throws Exception {
+    void testSocketFactory() throws Exception {
         SSLSocketFactory factory = HttpsProtocolSupport.getSocketFactory();
         assertNotNull(factory);
     }

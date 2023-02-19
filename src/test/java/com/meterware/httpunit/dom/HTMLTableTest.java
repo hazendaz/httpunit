@@ -19,11 +19,11 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
@@ -34,25 +34,25 @@ import org.w3c.dom.html.HTMLTableRowElement;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class HTMLTableTest extends AbstractHTMLElementTest {
+class HTMLTableTest extends AbstractHTMLElementTest {
 
     private Element _body;
     private HTMLTableElement _mainTable;
     private HTMLTableRowElement[] _htmlMainTableRows = new HTMLTableRowElement[3];
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _body = _htmlDocument.createElement("body");
         _htmlDocument.appendChild(_body);
 
         _mainTable = (HTMLTableElement) _htmlDocument.createElement("table");
         _body.appendChild(_mainTable);
 
-        for (int i = 0; i < _htmlMainTableRows.length; i++) {
+        for (int i = 0;i < _htmlMainTableRows.length;i++) {
             _htmlMainTableRows[i] = (HTMLTableRowElement) _htmlDocument.createElement("tr");
             _mainTable.appendChild(_htmlMainTableRows[i]);
-            for (int j = 0; j < 2; j++) {
+            for (int j = 0;j < 2;j++) {
                 _htmlMainTableRows[i].appendChild(_htmlDocument.createElement("td"));
             }
         }
@@ -63,7 +63,7 @@ public class HTMLTableTest extends AbstractHTMLElementTest {
      * Verify the construction of table nodes with their attributes.
      */
     @Test
-    public void testTableNodeCreation() throws Exception {
+    void testTableNodeCreation() throws Exception {
         doElementTest("td", HTMLTableCellElement.class,
                 new Object[][]{{"abbr", "lots"}, {"align", "center"},
                         {"axis", "age"}, {"bgColor", "red"},
@@ -87,16 +87,16 @@ public class HTMLTableTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testReadTable() throws Exception {
+    void testReadTable() throws Exception {
         HTMLCollection rows = _mainTable.getRows();
-        assertEquals("Number of rows in table", 3, rows.getLength());
-        for (int i = 0; i < 3; i++) {
+        assertEquals(3, rows.getLength(), "Number of rows in table");
+        for (int i = 0;i < 3;i++) {
             Node node = rows.item(i);
-            assertTrue("Row " + (i + 1) + " is not a table row", node instanceof HTMLTableRowElement);
+            assertTrue(node instanceof HTMLTableRowElement, "Row " + (i + 1) + " is not a table row");
             HTMLCollection cells = ((HTMLTableRowElement) node).getCells();
-            assertEquals("Number of cells in row", 2, cells.getLength());
-            for (int j = 0; j < 2; j++) {
-                assertTrue("Cell (" + (i + 1) + "," + (j + 1) + ") is not a table cell", cells.item(j) instanceof HTMLTableCellElement);
+            assertEquals(2, cells.getLength(), "Number of cells in row");
+            for (int j = 0;j < 2;j++) {
+                assertTrue(cells.item(j) instanceof HTMLTableCellElement, "Cell (" + (i + 1) + "," + (j + 1) + ") is not a table cell");
             }
         }
     }

@@ -22,20 +22,20 @@ package com.meterware.httpunit;
 import com.meterware.httpunit.parsing.HTMLParserFactory;
 import com.meterware.pseudoserver.HttpUserAgentTest;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+
 
 /**
  * a base class for HttpUnit regression tests.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract
-public class HttpUnitTest extends HttpUserAgentTest {
+public abstract class HttpUnitTest extends HttpUserAgentTest {
 
-    @Before
     /**
      * setup the test by resetting the environment for Http Unit tests
      */
+    @BeforeEach
     public void setUpHttpUnitTest() throws Exception {
         HttpUnitOptions.reset();
         HTMLParserFactory.reset();

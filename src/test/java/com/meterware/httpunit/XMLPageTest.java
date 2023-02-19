@@ -19,13 +19,15 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,11 +36,12 @@ import org.xml.sax.SAXException;
 /**
  * A test for the XML handling functionality.
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class XMLPageTest extends HttpUnitTest {
 
 
     @Test
-    public void testXML() throws Exception {
+    void testXML() throws Exception {
         defineResource("SimplePage.xml",
                 "<?xml version=\"1.0\" ?><main><title>See me now</title></main>",
                 "text/xml");
@@ -55,7 +58,7 @@ public class XMLPageTest extends HttpUnitTest {
      *
      * @throws Exception
      */
-    @Ignore
+    @Disabled
     public void testXMLisHTML() throws Exception {
         String originalXml = "<?xml version=\"1.0\" ?><main><title>See me now</title></main>";
         defineResource("SimplePage.xml", originalXml, "text/xml");
@@ -63,10 +66,10 @@ public class XMLPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.xml");
         WebResponse simplePage = wc.getResponse(request);
         // we do not have an html result
-        assertFalse("xml result is not HTML", simplePage.isHTML());
+        assertFalse(simplePage.isHTML(), "xml result is not HTML");
         // get the main element as root
-        assertNotNull("we do have an root-element", simplePage.getDOM().getDocumentElement());
-        assertEquals("the actual root must be the root of our test-xml", simplePage.getDOM().getDocumentElement().getTagName(), "main");
+        assertNotNull(simplePage.getDOM().getDocumentElement(), "we do have an root-element");
+        assertEquals("main", simplePage.getDOM().getDocumentElement().getTagName(), "the actual root must be the root of our test-xml");
     }
 
     /**
@@ -75,21 +78,21 @@ public class XMLPageTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    public void testGetDocumentElement() throws IOException, SAXException {
-    	String html="<html><body></body></html>";
-    	defineResource("BR2946821.html",html,"text/html");
-    	WebConversation wc = new WebConversation();
-      WebRequest request = new GetMethodWebRequest(getHostPath() + "/BR2946821.html");
-      WebResponse page = wc.getResponse(request);
-      assertTrue(page.isHTML());
-      Document doc = page.getDOM();
-      Element docElement = doc.getDocumentElement();
-      assertNotNull("There should be a root element",docElement);
+    void testGetDocumentElement() throws IOException, SAXException {
+        String html = "<html><body></body></html>";
+        defineResource("BR2946821.html", html, "text/html");
+        WebConversation wc = new WebConversation();
+        WebRequest request = new GetMethodWebRequest(getHostPath() + "/BR2946821.html");
+        WebResponse page = wc.getResponse(request);
+        assertTrue(page.isHTML());
+        Document doc = page.getDOM();
+        Element docElement = doc.getDocumentElement();
+        assertNotNull(docElement, "There should be a root element");
     }
 
 
     @Test
-    public void testTraversal() throws Exception {
+    void testTraversal() throws Exception {
         defineResource("SimplePage.xml",
                 "<?xml version='1.0' ?><zero><main><first><second/></first><main><normal/><simple/></main><after/></main><end/></zero>",
                 "text/xml");
@@ -103,7 +106,7 @@ public class XMLPageTest extends HttpUnitTest {
                 if (element.getNodeName().toLowerCase().equals("main")) {
                     traversal.pushContext("x");
                 } else {
-                    for (Iterator i = traversal.getContexts(); i.hasNext(); )
+                    for (Iterator i = traversal.getContexts();i.hasNext();)
                         sb.append(i.next());
                     sb.append(element.getNodeName()).append("|");
                 }
@@ -118,6 +121,6 @@ public class XMLPageTest extends HttpUnitTest {
         // new result
         // expected="HTML|HEAD|ZERO|xFIRST|xSECOND|xxNORMAL|xxSIMPLE|xAFTER|END|";
         String got = sb.toString().toLowerCase();
-        assertTrue("Traversal result", got.endsWith(expected));
+        assertTrue(got.endsWith(expected), "Traversal result");
     }
 }

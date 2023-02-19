@@ -19,23 +19,26 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.*;
 
 import java.util.ArrayList;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author Wolfgang Fahl - for compiling patches from the Source Forge web site 2008-03
  */
-public class ScriptingTest extends AbstractJavaScriptTest {
+@ExtendWith(ExternalResourceSupport.class)
+class ScriptingTest extends AbstractJavaScriptTest {
 
     @Test
-    public void testJavaScriptURLWithValue() throws Exception {
+    void testJavaScriptURLWithValue() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<a href='JavaScript:\"You made it!\"'>go</a>" +
@@ -43,13 +46,13 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
-        assertEquals("New page", "You made it!", wc.getCurrentPage().getText());
-        assertEquals("New URL", "javascript:\"You made it!\"", wc.getCurrentPage().getURL().toExternalForm());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "New page");
+        assertEquals("javascript:\"You made it!\"", wc.getCurrentPage().getURL().toExternalForm(), "New URL");
     }
 
 
     @Test
-    public void testJavaScriptURLWithNoValue() throws Exception {
+    void testJavaScriptURLWithNoValue() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<a href=\"javascript:alert( 'Hi there!' )\">go</a>" +
@@ -57,24 +60,24 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebResponse myPage = response.getLinks()[0].click();
-        assertEquals("Alert message", "Hi there!", wc.popNextAlert());
-        assertEquals("Current page URL", getHostPath() + "/OnCommand.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("Returned page URL", getHostPath() + "/OnCommand.html", myPage.getURL().toExternalForm());
+        assertEquals("Hi there!", wc.popNextAlert(), "Alert message");
+        assertEquals(getHostPath() + "/OnCommand.html", wc.getCurrentPage().getURL().toExternalForm(), "Current page URL");
+        assertEquals(getHostPath() + "/OnCommand.html", myPage.getURL().toExternalForm(), "Returned page URL");
     }
 
 
     @Test
-    public void testInitialJavaScriptURL() throws Exception {
+    void testInitialJavaScriptURL() throws Exception {
         WebConversation wc = new WebConversation();
         GetMethodWebRequest request = new GetMethodWebRequest("javascript:alert( 'Hi there!' )");
-        assertEquals("Javascript URL", "javascript:alert( 'Hi there!' )", request.getURL().toExternalForm());
+        assertEquals("javascript:alert( 'Hi there!' )", request.getURL().toExternalForm(), "Javascript URL");
         wc.getResponse(request);
-        assertEquals("Alert message", "Hi there!", wc.popNextAlert());
+        assertEquals("Hi there!", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testJavaScriptURLWithVariables() throws Exception {
+    void testJavaScriptURLWithVariables() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<a href='javascript:\"Our winner is... \" + document.the_form.winner.value'>go</a>" +
@@ -84,12 +87,12 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
-        assertEquals("New page", "Our winner is... George of the Jungle", wc.getCurrentPage().getText());
+        assertEquals("Our winner is... George of the Jungle", wc.getCurrentPage().getText(), "New page");
     }
 
 
     @Test
-    public void testJavaScriptURLWithQuestionMark() throws Exception {
+    void testJavaScriptURLWithQuestionMark() throws Exception {
         defineResource("/appname/HandleAction/report?type=C", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -101,7 +104,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
-        assertEquals("New page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "New page");
     }
 
 
@@ -111,12 +114,12 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testUndefined() throws Exception {
+    void testUndefined() throws Exception {
         WebConversation wc = doTestJavaScript("if (typeof(xyzDefinitelyNotDefined) == 'undefined') {\n" +
                 "alert ('blabla');\n" +
                 "return;\n" +
                 "}");
-        assertEquals("Alert message", "blabla", wc.popNextAlert());
+        assertEquals("blabla", wc.popNextAlert(), "Alert message");
     }
 
     /**
@@ -126,7 +129,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testAvoidEndlessLoop() throws Exception {
+    void testAvoidEndlessLoop() throws Exception {
         WebConversation wc = doTestJavaScript("document.location='#node_selected';");
     }
 
@@ -136,7 +139,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testJavaScriptURLWithIncludedFunction() throws Exception {
+    void testJavaScriptURLWithIncludedFunction() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html", "<html><head><script language='JavaScript' src='saycheese.js'>" +
                 "</script></head>" +
@@ -146,7 +149,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinkWith("go").click();
-        assertEquals("Alert message", "Cheese!", wc.popNextAlert());
+        assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
     /**
@@ -154,7 +157,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * e.g. toLowerCase
      */
     @Test
-    public void testJavaScriptWitBuiltInFunctions() throws Exception {
+    void testJavaScriptWitBuiltInFunctions() throws Exception {
         defineResource("OnCommand.html", "<html>" +
                 "<body>" +
                 "<a href=\"javascript:alert(toLowerCase('Cheese!'))\">go</a>" +
@@ -162,7 +165,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinkWith("go").click();
-        assertEquals("Alert message", "cheese!", wc.popNextAlert());
+        assertEquals("cheese!", wc.popNextAlert(), "Alert message");
     }
 
     /**
@@ -171,7 +174,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testJavaScriptURLWithIncludedFunction2() throws Exception {
+    void testJavaScriptURLWithIncludedFunction2() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("callcheese.js", "function callCheese() { sayCheese(); }");
         defineResource("OnCommand.html", "<html><head>\n" +
@@ -183,7 +186,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinkWith("go").click();
-        assertEquals("Alert message", "Cheese!", wc.popNextAlert());
+        assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
     /**
@@ -193,7 +196,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testBadJavascriptFile() {
+    void testBadJavascriptFile() {
         // define xyz.js to create a 404 error
         // we don't do this - it should be a default behaviour of the Pseudo Server!
         // defineResource( "xyz.js", "File does not exist: xyz.js", 404);
@@ -210,7 +213,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         boolean oldDebug = HttpUnitUtils.setEXCEPTION_DEBUG(false);
         AssertionError failure = null;
         // check 4 combinations of Exception and ScriptError status flags
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0;i < 4;i++) {
             boolean throwScriptException = (i % 2) == 0; // true on case 0 and 2
             boolean throwException = ((i / 2) % 2) == 0;   // true on case 0 and 1
             String testDescription = ("case " + i + " throwScriptException=" + throwScriptException + " throwException=" + throwException);
@@ -226,9 +229,9 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                     fail("there should have been an exception");
                 } else {
                     String[] errMsgs = HttpUnitOptions.getScriptErrorMessages();
-                    assertTrue("There should be an error Message", errMsgs.length == 1);
+                    assertEquals(1, errMsgs.length, "There should be an error Message");
                     String errMsg = errMsgs[0];
-                    assertEquals(testDescription, "reponseCode 404 on getIncludedScript for src='xyz.js'", errMsg);
+                    assertEquals("reponseCode 404 on getIncludedScript for src='xyz.js'", errMsg, testDescription);
                 }
             } catch (ScriptException se) {
                 assertTrue(throwScriptException);
@@ -249,7 +252,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
 
 
     @Test
-    public void testJavaScriptURLInNewWindow() throws Exception {
+    void testJavaScriptURLInNewWindow() throws Exception {
         defineWebPage("OnCommand", "<input type='button' id='nowindow' onClick='alert(\"hi\")'></input>\n" +
                 "<input type='button' id='withwindow' onClick=\"window.open('javascript:alert(\\'hi\\')','_self')\"></input>");
         WebConversation wc = new WebConversation();
@@ -257,21 +260,21 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         Button button1 = (Button) response.getElementWithID("nowindow");
         Button button2 = (Button) response.getElementWithID("withwindow");
         button1.click();
-        assertEquals("Alert message 1", "hi", wc.popNextAlert());
+        assertEquals("hi", wc.popNextAlert(), "Alert message 1");
         button2.click();
-        assertEquals("Alert message 2", "hi", wc.popNextAlert());
+        assertEquals("hi", wc.popNextAlert(), "Alert message 2");
     }
 
 
     @Test
-    public void testSingleCommandOnLoad() throws Exception {
+    void testSingleCommandOnLoad() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body onLoad='alert(\"Ouch!\")'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertNotNull("No alert detected", wc.getNextAlert());
-        assertEquals("Alert message", "Ouch!", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertNotNull(wc.getNextAlert(), "No alert detected");
+        assertEquals("Ouch!", wc.popNextAlert(), "Alert message");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
     /**
@@ -281,7 +284,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testWindowOnload() throws Exception {
+    void testWindowOnload() throws Exception {
         String html = "<html>\n" +
                 "<body>\n" +
                 "<script language='JavaScript'><!--\n" +
@@ -299,10 +302,10 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         defineResource("OnCommand.html", html);
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertNotNull("No alert detected", wc.getNextAlert());
-        assertEquals("Alert message", "windowload", wc.popNextAlert());
+        assertNotNull(wc.getNextAlert(), "No alert detected");
+        assertEquals("windowload", wc.popNextAlert(), "Alert message");
         response.getLinks()[0].click();
-        assertEquals("Alert message", "click", wc.popNextAlert());
+        assertEquals("click", wc.popNextAlert(), "Alert message");
     }
 
     /**
@@ -312,7 +315,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testOnLoadErrorBypass() throws Exception {
+    void testOnLoadErrorBypass() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body onLoad='noSuchFunction()'>" +
                 "<img src=sample.jpg>" +
@@ -322,8 +325,8 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         HttpUnitOptions.clearScriptErrorMessages();
 
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Number of images on page", 1, response.getImages().length);
-        assertEquals("Number of script failures logged", 1, HttpUnitOptions.getScriptErrorMessages().length);
+        assertEquals(1, response.getImages().length, "Number of images on page");
+        assertEquals(1, HttpUnitOptions.getScriptErrorMessages().length, "Number of script failures logged");
     }
 
     /**
@@ -331,7 +334,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * by Renaud Waldura
      */
     @Test
-    public void testIncludeErrorBypass() throws Exception {
+    void testIncludeErrorBypass() throws Exception {
         defineResource("OnBypassCommand.html", "<html><head><script language='JavaScript' src='missingScript.js'>" +
                 "</script></head>" +
                 "<body>" +
@@ -350,7 +353,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
             fail("Runtime exception is appropriate in this test case since we ignored the loading error");
         } catch (RuntimeException rte) {
             // java.lang.RuntimeException: Error clicking link: com.meterware.httpunit.ScriptException: URL 'javascript:sayCheese()' failed: org.mozilla.javascript.EcmaError: ReferenceError: "sayCheese" is not defined.
-            assertTrue("is not defined should be found in message", rte.getMessage().indexOf("not defined") > 0);
+            assertTrue(rte.getMessage().indexOf("not defined") > 0, "is not defined should be found in message");
         } finally {
             HttpUnitUtils.setEXCEPTION_DEBUG(oldDebug);
         }
@@ -359,14 +362,14 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         HttpUnitOptions.clearScriptErrorMessages();
         response.getLinkWith("go").click();
         String messages[] = HttpUnitOptions.getScriptErrorMessages();
-        assertTrue("there should be one message", messages.length == 1);
+        assertEquals(1, messages.length, "there should be one message");
         String message = messages[0];
-        assertTrue("is not defined should be found", message.indexOf("is not defined") > 0);
+        assertTrue(message.indexOf("is not defined") > 0, "is not defined should be found");
     }
 
 
     @Test
-    public void testConfirmationDialog() throws Exception {
+    void testConfirmationDialog() throws Exception {
         defineWebPage("OnCommand", "<a href='NextPage' id='go' onClick='return confirm( \"go on?\" );'>");
         defineResource("NextPage", "Got the next page!");
 
@@ -374,42 +377,42 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse wr = wc.getResponse(getHostPath() + "/OnCommand.html");
         wc.setDialogResponder(new DialogAdapter() {
             public boolean getConfirmation(String confirmationPrompt) {
-                assertEquals("Confirmation prompt", "go on?", confirmationPrompt);
+                assertEquals("go on?", confirmationPrompt, "Confirmation prompt");
                 return false;
             }
         });
         wr.getLinkWithID("go").click();
-        assertEquals("Current page", wr, wc.getCurrentPage());
+        assertEquals(wr, wc.getCurrentPage(), "Current page");
         wc.setDialogResponder(new DialogAdapter());
         wr.getLinkWithID("go").click();
-        assertEquals("Page after confirmation", "Got the next page!", wc.getCurrentPage().getText());
+        assertEquals("Got the next page!", wc.getCurrentPage().getText(), "Page after confirmation");
     }
 
 
     @Test
-    public void testPromptDialog() throws Exception {
+    void testPromptDialog() throws Exception {
         defineWebPage("OnCommand", "<a href='NextPage' id='go' onClick='return \"yes\" == prompt( \"go on?\", \"no\" );'>");
         defineResource("NextPage", "Got the next page!");
 
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/OnCommand.html");
         wr.getLinkWithID("go").click();
-        assertEquals("Current page", wr, wc.getCurrentPage());
+        assertEquals(wr, wc.getCurrentPage(), "Current page");
 
         wc.setDialogResponder(new DialogAdapter() {
             public String getUserResponse(String prompt, String defaultResponse) {
-                assertEquals("Confirmation prompt", "go on?", prompt);
-                assertEquals("Default response", "no", defaultResponse);
+                assertEquals("go on?", prompt, "Confirmation prompt");
+                assertEquals("no", defaultResponse, "Default response");
                 return "yes";
             }
         });
         wr.getLinkWithID("go").click();
-        assertEquals("Page after confirmation", "Got the next page!", wc.getCurrentPage().getText());
+        assertEquals("Got the next page!", wc.getCurrentPage().getText(), "Page after confirmation");
     }
 
 
     @Test
-    public void testFunctionCallOnLoad() throws Exception {
+    void testFunctionCallOnLoad() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "<!-- hide this\n" +
                 "function sayCheese() { alert( \"Cheese!\" ); }" +
@@ -422,12 +425,12 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                 "</script></body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "Cheese!", wc.popNextAlert());
+        assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testComment() throws Exception {
+    void testComment() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'><!--" +
                 "//--></script><script language='JavaScript'>" + "\n" +
                 "var n=0;" + "\n" +
@@ -439,31 +442,31 @@ public class ScriptingTest extends AbstractJavaScriptTest {
 
 
     @Test
-    public void testIncludedFunction() throws Exception {
+    void testIncludedFunction() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html", "<html><head><script language='JavaScript' src='saycheese.js'>" +
                 "</script></head>" +
                 "<body onLoad='sayCheese()'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "Cheese!", wc.popNextAlert());
+        assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testIncludedFunctionWithBaseTag() throws Exception {
+    void testIncludedFunctionWithBaseTag() throws Exception {
         defineResource("scripts/saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html", "<html><head><base href='" + getHostPath() + "/scripts/OnCommand.html'><script language='JavaScript' src='saycheese.js'>" +
                 "</script></head>" +
                 "<body onLoad='sayCheese()'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "Cheese!", wc.popNextAlert());
+        assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testWindowOpen() throws Exception {
+    void testWindowOpen() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body><script language='JavaScript'>var otherWindow;</script>" +
@@ -484,21 +487,21 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
 
-        assertFalse("No window opened", windowsOpened.isEmpty());
+        assertFalse(windowsOpened.isEmpty(), "No window opened");
         final WebWindow openedWindow = (WebWindow) windowsOpened.get(0);
-        assertEquals("New window message", "You made it!", openedWindow.getCurrentPage().getText());
-        assertEquals("New window name", "sample", openedWindow.getName());
+        assertEquals("You made it!", openedWindow.getCurrentPage().getText(), "New window message");
+        assertEquals("sample", openedWindow.getName(), "New window name");
         response.getLinks()[2].click();
-        assertEquals("Alert message", "window is not closed", wc.popNextAlert());
+        assertEquals("window is not closed", wc.popNextAlert(), "Alert message");
         response.getLinks()[1].click();
-        assertTrue("Window was not closed", openedWindow.isClosed());
+        assertTrue(openedWindow.isClosed(), "Window was not closed");
         response.getLinks()[2].click();
-        assertEquals("Alert message", "window is closed", wc.popNextAlert());
+        assertEquals("window is closed", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testWindowOpenWithEmptyName() throws Exception {
+    void testWindowOpenWithEmptyName() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body><script language='JavaScript'>var otherWindow;</script>" +
@@ -519,21 +522,21 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
 
-        assertFalse("No window opened", windowsOpened.isEmpty());
+        assertFalse(windowsOpened.isEmpty(), "No window opened");
         final WebWindow openedWindow = (WebWindow) windowsOpened.get(0);
-        assertEquals("New window message", "You made it!", openedWindow.getCurrentPage().getText());
-        assertEquals("New window name", "", openedWindow.getName());
+        assertEquals("You made it!", openedWindow.getCurrentPage().getText(), "New window message");
+        assertEquals("", openedWindow.getName(), "New window name");
         response.getLinks()[2].click();
-        assertEquals("Alert message", "window is not closed", wc.popNextAlert());
+        assertEquals("window is not closed", wc.popNextAlert(), "Alert message");
         response.getLinks()[1].click();
-        assertTrue("Window was not closed", openedWindow.isClosed());
+        assertTrue(openedWindow.isClosed(), "Window was not closed");
         response.getLinks()[2].click();
-        assertEquals("Alert message", "window is closed", wc.popNextAlert());
+        assertEquals("window is closed", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testWindowOpenWithSelf() throws Exception {
+    void testWindowOpenWithSelf() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body><script language='JavaScript'>var otherWindow;</script>" +
@@ -554,14 +557,14 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
 
-        assertTrue("Opened a new window", windowsOpened.isEmpty());
-        assertEquals("New window message", "You made it!", wc.getCurrentPage().getText());
-        assertEquals("Number of open windows", 1, wc.getOpenWindows().length);
+        assertTrue(windowsOpened.isEmpty(), "Opened a new window");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "New window message");
+        assertEquals(1, wc.getOpenWindows().length, "Number of open windows");
     }
 
 
     @Test
-    public void testJavascriptURLWithFragment() throws Exception {
+    void testJavascriptURLWithFragment() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body><script language='JavaScript'>function newWindow(hrefTarget) {" +
@@ -582,14 +585,14 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
 
-        assertFalse("No window opened", windowsOpened.isEmpty());
+        assertFalse(windowsOpened.isEmpty(), "No window opened");
         final WebWindow openedWindow = (WebWindow) windowsOpened.get(0);
-        assertEquals("New window message", "You made it!", openedWindow.getCurrentPage().getText());
+        assertEquals("You made it!", openedWindow.getCurrentPage().getText(), "New window message");
     }
 
 
     @Test
-    public void testWindowOpenNoContents() throws Exception {
+    void testWindowOpenNoContents() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body>" +
                 "<a href='#' onClick=\"window.open( null, 'sample' );\">go</a>" +
@@ -607,16 +610,16 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
 
-        assertFalse("No window opened", windowsOpened.isEmpty());
+        assertFalse(windowsOpened.isEmpty(), "No window opened");
         final WebWindow openedWindow = (WebWindow) windowsOpened.get(0);
-        assertEquals("New window message", "", openedWindow.getCurrentPage().getText());
-        assertEquals("New window name", "sample", openedWindow.getName());
-        assertEquals("Window by name", openedWindow, wc.getOpenWindow("sample"));
+        assertEquals("", openedWindow.getCurrentPage().getText(), "New window message");
+        assertEquals("sample", openedWindow.getName(), "New window name");
+        assertEquals(openedWindow, wc.getOpenWindow("sample"), "Window by name");
     }
 
 
     @Test
-    public void testWindowReopen() throws Exception {
+    void testWindowReopen() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("Revise.html", "You changed it!");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
@@ -636,16 +639,16 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         });
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
-        assertEquals("New window message", "You made it!", ((WebWindow) windowsOpened.get(0)).getCurrentPage().getText());
+        assertEquals("You made it!", ((WebWindow) windowsOpened.get(0)).getCurrentPage().getText(), "New window message");
         response.getLinks()[1].click();
 
-        assertEquals("Number of window openings", 1, windowsOpened.size());
-        assertEquals("Changed window message", "You changed it!", ((WebWindow) windowsOpened.get(0)).getCurrentPage().getText());
+        assertEquals(1, windowsOpened.size(), "Number of window openings");
+        assertEquals("You changed it!", ((WebWindow) windowsOpened.get(0)).getCurrentPage().getText(), "Changed window message");
     }
 
 
     @Test
-    public void testOpenedWindowProperties() throws Exception {
+    void testOpenedWindowProperties() throws Exception {
         defineResource("Target.html", "<html><head><script language='JavaScript'>" +
                 "function show_properties() {" +
                 "   alert( 'name=' + window.name );" +
@@ -659,17 +662,17 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("main window name", "main", wc.getMainWindow().getName());
-        assertEquals("main window alert", "opener not defined", wc.popNextAlert());
+        assertEquals("main", wc.getMainWindow().getName(), "main window name");
+        assertEquals("opener not defined", wc.popNextAlert(), "main window alert");
         response.getLinks()[0].click();
 
-        assertEquals("1st alert", "name=sample", wc.popNextAlert());
-        assertEquals("2nd alert", "opener name=main", wc.popNextAlert());
+        assertEquals("name=sample", wc.popNextAlert(), "1st alert");
+        assertEquals("opener name=main", wc.popNextAlert(), "2nd alert");
     }
 
 
     @Test
-    public void testFrameProperties() throws Exception {
+    void testFrameProperties() throws Exception {
         HttpUnitOptions.setExceptionsThrownOnScriptError(false);
         defineWebPage("Linker", "This is a trivial page with <a href=Target.html>one link</a>");
         defineResource("Target.html", "<html><head><script language='JavaScript'>" +
@@ -700,18 +703,18 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse blue = wc.getFrameContents("blue");
         blue.getLinkWith("show").click();
 
-        assertEquals("1st alert", "name=blue", wc.popNextAlert());
-        assertEquals("2nd alert", "top url=" + getHostPath() + "/Frames.html", wc.popNextAlert());
-        assertEquals("3rd alert", "1st frame=red", wc.popNextAlert());
-        assertEquals("4th alert", "2nd frame=blue", wc.popNextAlert());
-        assertEquals("5th alert", "parent url=" + getHostPath() + "/Frames.html", wc.popNextAlert());
-        assertEquals("6th alert", "top.parent=" + getHostPath() + "/Frames.html", wc.popNextAlert());
-        assertEquals("7th alert", "indexed frame=red", wc.popNextAlert());
+        assertEquals("name=blue", wc.popNextAlert(), "1st alert");
+        assertEquals("top url=" + getHostPath() + "/Frames.html", wc.popNextAlert(), "2nd alert");
+        assertEquals("1st frame=red", wc.popNextAlert(), "3rd alert");
+        assertEquals("2nd frame=blue", wc.popNextAlert(), "4th alert");
+        assertEquals("parent url=" + getHostPath() + "/Frames.html", wc.popNextAlert(), "5th alert");
+        assertEquals("top.parent=" + getHostPath() + "/Frames.html", wc.popNextAlert(), "6th alert");
+        assertEquals("indexed frame=red", wc.popNextAlert(), "7th alert");
     }
 
 
     @Test
-    public void testLocationProperty() throws Exception {
+    void testLocationProperty() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("location.js", "function show() {" +
                 "alert('Window location is ' + window.location);" +
@@ -728,32 +731,32 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                 "</body>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message 1", "Window location is " + getHostPath() + "/OnCommand.html", wc.popNextAlert());
-        assertEquals("Alert message 2", "Document location is " + getHostPath() + "/OnCommand.html", wc.popNextAlert());
-        assertEquals("Alert message 3", "Window location.href is " + getHostPath() + "/OnCommand.html", wc.popNextAlert());
+        assertEquals("Window location is " + getHostPath() + "/OnCommand.html", wc.popNextAlert(), "Alert message 1");
+        assertEquals("Document location is " + getHostPath() + "/OnCommand.html", wc.popNextAlert(), "Alert message 2");
+        assertEquals("Window location.href is " + getHostPath() + "/OnCommand.html", wc.popNextAlert(), "Alert message 3");
         response.getLinks()[0].mouseOver();
-        assertEquals("2nd page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("2nd page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "2nd page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "2nd page");
 
         response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[1].mouseOver();
-        assertEquals("3rd page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("3rd page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "3rd page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "3rd page");
 
         response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[2].mouseOver();
-        assertEquals("4th page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("4th page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "4th page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "4th page");
 
         response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getScriptingHandler().doEventScript("window.location.href='" + getHostPath() + "/Target.html'");
-        assertEquals("5th page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("5th page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "5th page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "5th page");
     }
 
 
     @Test
-    public void testLocationPropertyOnLoad() throws Exception {
+    void testLocationPropertyOnLoad() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title>" +
                 "</head>" +
@@ -761,15 +764,15 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                 "</body>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("current page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("current page", "You made it!", wc.getCurrentPage().getText());
-        assertEquals("returned page URL", getHostPath() + "/Target.html", response.getURL().toExternalForm());
-        assertEquals("returned page", "You made it!", response.getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "current page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "current page");
+        assertEquals(getHostPath() + "/Target.html", response.getURL().toExternalForm(), "returned page URL");
+        assertEquals("You made it!", response.getText(), "returned page");
     }
 
 
     @Test
-    public void testLocationReadableSubproperties() throws Exception {
+    void testLocationReadableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("location.js", "function show() {" +
                 "alert('host is ' + window.location.host);" +
@@ -787,17 +790,17 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                         "</body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/simple/OnCommand.html?point=center");
-        assertEquals("Alert message 1", "host is " + getHostPath().substring(7), wc.popNextAlert());
-        assertEquals("Alert message 2", "hostname is localhost", wc.popNextAlert());
-        assertEquals("Alert message 3", "port is " + getHostPort(), wc.popNextAlert());
-        assertEquals("Alert message 4", "pathname is /simple/OnCommand.html", wc.popNextAlert());
-        assertEquals("Alert message 5", "protocol is http:", wc.popNextAlert());
-        assertEquals("Alert message 6", "search is ?point=center", wc.popNextAlert());
+        assertEquals("host is " + getHostPath().substring(7), wc.popNextAlert(), "Alert message 1");
+        assertEquals("hostname is localhost", wc.popNextAlert(), "Alert message 2");
+        assertEquals("port is " + getHostPort(), wc.popNextAlert(), "Alert message 3");
+        assertEquals("pathname is /simple/OnCommand.html", wc.popNextAlert(), "Alert message 4");
+        assertEquals("protocol is http:", wc.popNextAlert(), "Alert message 5");
+        assertEquals("search is ?point=center", wc.popNextAlert(), "Alert message 6");
     }
 
 
     @Test
-    public void testLocationWriteableSubproperties() throws Exception {
+    void testLocationWriteableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("OnCommand.html?where=here", "You found it!");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title>" +
@@ -809,18 +812,18 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].mouseOver();
-        assertEquals("2nd page URL", getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("2nd page", "You made it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/Target.html", wc.getCurrentPage().getURL().toExternalForm(), "2nd page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "2nd page");
 
         response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[1].mouseOver();
-        assertEquals("3rd page URL", getHostPath() + "/OnCommand.html?where=here", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("3rd page", "You found it!", wc.getCurrentPage().getText());
+        assertEquals(getHostPath() + "/OnCommand.html?where=here", wc.getCurrentPage().getURL().toExternalForm(), "3rd page URL");
+        assertEquals("You found it!", wc.getCurrentPage().getText(), "3rd page");
     }
 
 
     @Test
-    public void testScriptDisabled() throws Exception {
+    void testScriptDisabled() throws Exception {
         HttpUnitOptions.setScriptingEnabled(false);
         defineResource("nothing.html", "Should get here");
         defineResource("OnCommand.html", "<html><head></head>" +
@@ -832,15 +835,15 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         link.click();
-        assertEquals("unchanged parameter value", "blue", form.getParameterValue("color"));
-        assertEquals("Expected result", "Should get here", wc.getCurrentPage().getText());
+        assertEquals("blue", form.getParameterValue("color"), "unchanged parameter value");
+        assertEquals("Should get here", wc.getCurrentPage().getText(), "Expected result");
     }
 
 
     @Test
-    public void testNavigatorObject() throws Exception {
+    void testNavigatorObject() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewProperties() { \n" +
                 "  alert( 'appName=' + navigator.appName );\n" +
@@ -859,19 +862,19 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         wc.getClientProperties().setApplicationID("Internet Explorer", "Mozilla", "4.0");
         wc.getClientProperties().setPlatform("JVM");
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message 1", "appName=Internet Explorer", wc.popNextAlert());
-        assertEquals("Alert message 2", "appCodeName=Mozilla", wc.popNextAlert());
-        assertEquals("Alert message 3", "appVersion=4.0", wc.popNextAlert());
-        assertEquals("Alert message 4", "userAgent=Mozilla/4.0", wc.popNextAlert());
-        assertEquals("Alert message 5", "platform=JVM", wc.popNextAlert());
-        assertEquals("Alert message 6", "javaEnabled=false", wc.popNextAlert());
-        assertEquals("Alert message 7", "# plugins=0", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("appName=Internet Explorer", wc.popNextAlert(), "Alert message 1");
+        assertEquals("appCodeName=Mozilla", wc.popNextAlert(), "Alert message 2");
+        assertEquals("appVersion=4.0", wc.popNextAlert(), "Alert message 3");
+        assertEquals("userAgent=Mozilla/4.0", wc.popNextAlert(), "Alert message 4");
+        assertEquals("platform=JVM", wc.popNextAlert(), "Alert message 5");
+        assertEquals("javaEnabled=false", wc.popNextAlert(), "Alert message 6");
+        assertEquals("# plugins=0", wc.popNextAlert(), "Alert message 7");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testScreenObject() throws Exception {
+    void testScreenObject() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewProperties() { \n" +
                 "  alert( 'dimensions=' + screen.availWidth + 'x' + screen.availHeight );\n" +
@@ -883,13 +886,13 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setAvailableScreenSize(1024, 752);
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message 1", "dimensions=1024x752", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("dimensions=1024x752", wc.popNextAlert(), "Alert message 1");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testStyleProperty() throws Exception {
+    void testStyleProperty() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showDisplay( id ) {" +
@@ -937,7 +940,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @author Mattias Jiderhamn (mattias78)
      */
     @Test
-    public void testSetAttribute() throws Exception {
+    void testSetAttribute() throws Exception {
         /*
            *
           A minimal snippet:
@@ -986,7 +989,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testCallOnChange() throws Exception {
+    void testCallOnChange() throws Exception {
         defineResource("start.html",
                 "<html><head>\n" +
                         "<script language='JavaScript'>\n" +
@@ -1011,7 +1014,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         String firstAlert = wc.popNextAlert();
         assertEquals("calling onChange", firstAlert);
         String secondAlert = wc.popNextAlert();
-        assertEquals("2nd", "onChange has been called", secondAlert);
+        assertEquals("onChange has been called", secondAlert, "2nd");
         String thirdAlert = wc.popNextAlert();
         // TODO make this work
         // assertEquals("3rd","onChange has been called",thirdAlert);
@@ -1023,7 +1026,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testWindowEvent() throws Exception {
+    void testWindowEvent() throws Exception {
         defineWebPage("OnCommand",
                 "<html><head>\n" +
                         "<script language='JavaScript'>\n" +
@@ -1045,7 +1048,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
 
 
     @Test
-    public void testTagNameNodeNameProperties() throws Exception {
+    void testTagNameNodeNameProperties() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>\n" +
                         "function showTagName(id) {\n" +
@@ -1071,7 +1074,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
 
 
     @Test
-    public void testReadNoCookie() throws Exception {
+    void testReadNoCookie() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewCookies() { \n" +
                 "  alert( 'cookies: ' + document.cookie );\n" +
@@ -1081,24 +1084,24 @@ public class ScriptingTest extends AbstractJavaScriptTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message 1", "cookies: ", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("cookies: ", wc.popNextAlert(), "Alert message 1");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testSimpleSetCookie() throws Exception {
+    void testSimpleSetCookie() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>\n" +
                 "<body onLoad='document.cookie=\"color=red;path=/\"'>\n" +
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Cookie 'color'", "red", wc.getCookieValue("color"));
+        assertEquals("red", wc.getCookieValue("color"), "Cookie 'color'");
     }
 
 
     @Test
-    public void testSetCookieToNull() throws Exception {
+    void testSetCookieToNull() throws Exception {
         defineResource("OnCommand.html", "<html><script>" +
                 "document.cookie = null;" +
                 "</script></html>");
@@ -1108,7 +1111,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
 
 
     @Test
-    public void testReadCookies() throws Exception {
+    void testReadCookies() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewCookies() { \n" +
                 "  alert( 'cookies: ' + document.cookie );\n" +
@@ -1120,22 +1123,22 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         wc.putCookie("height", "tall");
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message 1", "cookies: age=12; height=tall", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("cookies: age=12; height=tall", wc.popNextAlert(), "Alert message 1");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testButtonWithoutForm() throws Exception {
+    void testButtonWithoutForm() throws Exception {
         defineWebPage("OnCommand", "<button id='mybutton' onclick='alert( \"I heard you!\" )'>" +
                 "<input id='yourbutton' type='button'  onclick='alert( \"Loud and Clear.\" )'>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         ((Button) response.getElementWithID("mybutton")).click();
-        assertEquals("Alert message 1", "I heard you!", wc.popNextAlert());
+        assertEquals("I heard you!", wc.popNextAlert(), "Alert message 1");
 
         ((Button) response.getElementWithID("yourbutton")).click();
-        assertEquals("Alert message 2", "Loud and Clear.", wc.popNextAlert());
+        assertEquals("Loud and Clear.", wc.popNextAlert(), "Alert message 2");
     }
 
 
@@ -1145,9 +1148,9 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     // TODO JWL 6/26/2021 Nekohtml patch is against 'body' not the 'header' so issue was never fixed.
-    @Ignore
+    @Disabled
     @Test
-    public void testJavascriptDetectionTrick() throws Exception {
+    void testJavascriptDetectionTrick() throws Exception {
         defineResource("NoScript.html", "No javascript here");
         defineResource("HasScript.html", "Javascript is enabled!");
         defineResource("Start.html", "<html><head>" +
@@ -1161,10 +1164,10 @@ public class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setAutoRefresh(true);
         WebResponse response = wc.getResponse(getHostPath() + "/Start.html");
-        assertEquals("Result page ", "Javascript is enabled!", response.getText());
+        assertEquals("Javascript is enabled!", response.getText(), "Result page ");
         HttpUnitOptions.setScriptingEnabled(false);
         response = wc.getResponse(getHostPath() + "/Start.html");
-        assertEquals("Result page", "No javascript here", response.getText());
+        assertEquals("No javascript here", response.getText(), "Result page");
     }
 
     /**
@@ -1172,7 +1175,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * by kauffman81
      */
     @Test
-    public void testJavaScriptConfirmPopUp() throws Exception {
+    void testJavaScriptConfirmPopUp() throws Exception {
         String target = "<html><body>After click we want to see this!</body></html>";
         defineResource("Target.html", target);
         defineResource("Popup.html", "<html><head><script language='JavaScript'>" +
@@ -1220,9 +1223,9 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
-    @Ignore
+    @Disabled
     @Test
-    public void testJavaScriptFromSource() throws Exception {
+    void testJavaScriptFromSource() throws Exception {
         defineResource("someScript.js", "function someFunction() {\n" +
                 "	alert('somefunction called')" +
                 "}\n");
@@ -1249,7 +1252,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testFillSelect() throws Exception {
+    void testFillSelect() throws Exception {
         defineResource("testSelect.html", "<html><head><script type='text/javascript'>\n" +
                 "<!--\n" +
                 "function fillSelect() {\n" +
@@ -1289,7 +1292,7 @@ public class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    public void testModifySelectLength() throws Exception {
+    void testModifySelectLength() throws Exception {
         defineResource("testModifySelectLength.html",
                 "<html><head><script type='text/javascript'>\n" +
                         "<!--\n" +

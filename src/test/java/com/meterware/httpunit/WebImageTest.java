@@ -19,18 +19,21 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class WebImageTest extends HttpUnitTest {
 
 
     @Test
-    public void testGetImages() throws Exception {
+    void testGetImages() throws Exception {
         defineResource("GetImagePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><img src='sample.jpg'>\n" +
@@ -40,12 +43,12 @@ public class WebImageTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/GetImagePage.html");
         WebResponse simplePage = wc.getResponse(request);
-        assertEquals("Number of images", 3, simplePage.getImages().length);
-        assertEquals("First image source", "sample.jpg", simplePage.getImages()[0].getSource());
+        assertEquals(3, simplePage.getImages().length, "Number of images");
+        assertEquals("sample.jpg", simplePage.getImages()[0].getSource(), "First image source");
 
         WebImage image = simplePage.getImageWithAltText("one");
-        assertNotNull("No image found", image);
-        assertEquals("Selected image source", "onemore.gif", image.getSource());
+        assertNotNull(image, "No image found");
+        assertEquals("onemore.gif", image.getSource(), "Selected image source");
     }
 
     /**
@@ -55,24 +58,24 @@ public class WebImageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetImageManyTimes() throws Exception {
+    void testGetImageManyTimes() throws Exception {
         // try this for different numbers of images
         int testCounts[] = {10, 100
-                //,1000    // approx 2.5 secs
-                //,2000    // approx 15  secs
-                //,3000    // approx 47 secs
-                //,4000    // approx 90 secs
-                //,5000    // approx 126 secs
-                // ,10000   // approx 426 secs
-                //,100000  // let us know if you get this running ...
+        //,1000    // approx 2.5 secs
+        //,2000    // approx 15  secs
+        //,3000    // approx 47 secs
+        //,4000    // approx 90 secs
+        //,5000    // approx 126 secs
+        // ,10000   // approx 426 secs
+        //,100000  // let us know if you get this running ...
         };
         // try
-        for (int testIndex = 0; testIndex < testCounts.length; testIndex++) {
+        for (int testIndex = 0;testIndex < testCounts.length;testIndex++) {
             int MANY_IMAGES_COUNT = testCounts[testIndex];
             // System.out.println(""+(testIndex+1)+". test many images with "+MANY_IMAGES_COUNT+" image links");
             String html = "<html><head><title>A page with many images</title></head>\n" +
                     "<body>\n";
-            for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
+            for (int i = 0;i < MANY_IMAGES_COUNT;i++) {
                 html += "<img src='image" + i + ".gif' alt='image#" + i + "'>\n";
             }
             html += "</body></html>\n";
@@ -80,9 +83,9 @@ public class WebImageTest extends HttpUnitTest {
             WebConversation wc = new WebConversation();
             WebRequest request = new GetMethodWebRequest(getHostPath() + "/manyImages" + testIndex + ".html");
             WebResponse manyImagesPage = wc.getResponse(request);
-            assertEquals("Number of images", MANY_IMAGES_COUNT, manyImagesPage.getImages().length);
-            for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
-                assertEquals("image source #" + i, "image" + i + ".gif", manyImagesPage.getImages()[i].getSource());
+            assertEquals(MANY_IMAGES_COUNT, manyImagesPage.getImages().length, "Number of images");
+            for (int i = 0;i < MANY_IMAGES_COUNT;i++) {
+                assertEquals("image" + i + ".gif", manyImagesPage.getImages()[i].getSource(), "image source #" + i);
             } // for
         } // for
     }
@@ -117,10 +120,10 @@ public class WebImageTest extends HttpUnitTest {
             } catch (java.net.BindException jnbe) {
                 String msg = "There should be no exception for " + url + " but there is as BindException '" + jnbe.getMessage() + "' after " + i + " gif image accesses";
                 // System.out.println(msg);
-                assertTrue(msg, false);
+                assertTrue(false, msg);
             }
         } // for
-        assertTrue("the test loop should have been performed " + MAX_GIFTESTCOUNT + " times", i >= MAX_GIFTESTCOUNT);
+        assertTrue(i >= MAX_GIFTESTCOUNT, "the test loop should have been performed " + MAX_GIFTESTCOUNT + " times");
     }
 
     /**
@@ -145,7 +148,7 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     @Test
-    public void testFindImageAndLink() throws Exception {
+    void testFindImageAndLink() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><img src='sample.jpg'>\n" +
@@ -155,23 +158,23 @@ public class WebImageTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
-        assertNull("Found bogus image with 'junk.png'", simplePage.getImageWithSource("junk.png"));
+        assertNull(simplePage.getImageWithSource("junk.png"), "Found bogus image with 'junk.png'");
 
         WebImage image = simplePage.getImageWithSource("onemore.gif");
-        assertNotNull("Did not find image with source 'onemore.gif'", image);
+        assertNotNull(image, "Did not find image with source 'onemore.gif'");
         WebLink link = image.getLink();
-        assertNull("Found bogus link for image 'onemore.gif'", link);
+        assertNull(link, "Found bogus link for image 'onemore.gif'");
 
         image = simplePage.getImageWithSource("another.png");
-        assertNotNull("Did not find image with source 'another.png'", image);
+        assertNotNull(image, "Did not find image with source 'another.png'");
         link = image.getLink();
-        assertNotNull("Did not find link for image 'another.png'", link);
-        assertEquals("Link URL", "somewhere.htm", link.getURLString());
+        assertNotNull(link, "Did not find link for image 'another.png'");
+        assertEquals("somewhere.htm", link.getURLString(), "Link URL");
     }
 
 
     @Test
-    public void testImageRequest() throws Exception {
+    void testImageRequest() throws Exception {
         defineResource("grouped/SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><img name='this_one' src='sample.jpg'>\n" +
@@ -182,7 +185,7 @@ public class WebImageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/grouped/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
         WebRequest imageRequest = simplePage.getImageWithName("this_one").getRequest();
-        assertEquals("Image URL", getHostPath() + "/grouped/sample.jpg", imageRequest.getURL().toExternalForm());
+        assertEquals(getHostPath() + "/grouped/sample.jpg", imageRequest.getURL().toExternalForm(), "Image URL");
     }
 
 

@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebResponse;
@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 
 /**
@@ -52,7 +52,7 @@ import org.xml.sax.InputSource;
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class FiltersTestCase {
+class FiltersTestCase {
 
 
     final static FilterMetaData FILTER1 = new FilterMetaDataImpl(1);
@@ -70,14 +70,14 @@ public class FiltersTestCase {
      * Verifies that the no-filter case is handled by servlet metadata.
      */
     @Test
-    public void testNoFilterAssociation() throws Exception {
+    void testNoFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         WebApplication application = new WebApplication(HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
-        assertEquals("number of associated filters", 0, filters.length);
+        assertEquals(0, filters.length, "number of associated filters");
     }
 
 
@@ -85,7 +85,7 @@ public class FiltersTestCase {
      * Verifies that a simple filter is associated with a servlet by its name.
      */
     @Test
-    public void testNameFilterAssociation() throws Exception {
+    void testNameFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -93,8 +93,8 @@ public class FiltersTestCase {
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
-        assertEquals("number of associated filters", 1, filters.length);
-        assertEquals("filter class", TrivialFilter.class, filters[0].getFilter().getClass());
+        assertEquals(1, filters.length, "number of associated filters");
+        assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
     }
 
 
@@ -102,24 +102,24 @@ public class FiltersTestCase {
      * Verifies that a simple filter will be called before a servlet with the same URL.
      */
     @Test
-    public void testFilterByNameInvocation() throws Exception {
+    void testFilterByNameInvocation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
         ServletRunner sr = new ServletRunner(wxs.asInputStream());
         ServletUnitClient wc = sr.newClient();
         InvocationContext ic = wc.newInvocation("http://localhost/SimpleServlet");
-        assertTrue("Did not find a filter", ic.isFilterActive());
+        assertTrue(ic.isFilterActive(), "Did not find a filter");
 
         Filter filter = ic.getFilter();
-        assertNotNull("Filter is null", filter);
-        assertEquals("Filter class", TrivialFilter.class, filter.getClass());
+        assertNotNull(filter, "Filter is null");
+        assertEquals(TrivialFilter.class, filter.getClass(), "Filter class");
         ic.pushFilter(ic.getRequest(), ic.getResponse());
-        assertFalse("Did not switch to servlet", ic.isFilterActive());
-        assertEquals("Servlet class", SimpleGetServlet.class, ic.getServlet().getClass());
+        assertFalse(ic.isFilterActive(), "Did not switch to servlet");
+        assertEquals(SimpleGetServlet.class, ic.getServlet().getClass(), "Servlet class");
         ic.popRequest();
-        assertTrue("Did not pop back to filter", ic.isFilterActive());
-        assertSame("Restored filter", filter, ic.getFilter());
+        assertTrue(ic.isFilterActive(), "Did not pop back to filter");
+        assertSame(filter, ic.getFilter(), "Restored filter");
     }
 
 
@@ -127,7 +127,7 @@ public class FiltersTestCase {
      * Verifies that a simple filter will be called before a servlet with the same URL.
      */
     @Test
-    public void testNamedFilterOrder() throws Exception {
+    void testNamedFilterOrder() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -137,20 +137,20 @@ public class FiltersTestCase {
         InvocationContext ic = wc.newInvocation("http://localhost/SimpleServlet");
 
         Filter filter1 = ic.getFilter();
-        assertEquals("Filter 1 class", TrivialFilter.class, filter1.getClass());
+        assertEquals(TrivialFilter.class, filter1.getClass(), "Filter 1 class");
         ic.pushFilter(ic.getRequest(), ic.getResponse());
 
-        assertTrue("Did not find a filter", ic.isFilterActive());
+        assertTrue(ic.isFilterActive(), "Did not find a filter");
         Filter filter2 = ic.getFilter();
-        assertEquals("Filter 2 class", AttributeFilter.class, filter2.getClass());
+        assertEquals(AttributeFilter.class, filter2.getClass(), "Filter 2 class");
         ic.pushFilter(ic.getRequest(), ic.getResponse());
 
-        assertFalse("Did not switch to servlet", ic.isFilterActive());
-        assertEquals("Servlet class", SimpleGetServlet.class, ic.getServlet().getClass());
+        assertFalse(ic.isFilterActive(), "Did not switch to servlet");
+        assertEquals(SimpleGetServlet.class, ic.getServlet().getClass(), "Servlet class");
         ic.popRequest();
-        assertSame("Restored filter 2", filter2, ic.getFilter());
+        assertSame(filter2, ic.getFilter(), "Restored filter 2");
         ic.popRequest();
-        assertSame("Restored filter 1", filter1, ic.getFilter());
+        assertSame(filter1, ic.getFilter(), "Restored filter 1");
     }
 
 
@@ -158,7 +158,7 @@ public class FiltersTestCase {
      * Verifies that request / response wrappering for filters is supported.
      */
     @Test
-    public void testFilterRequestWrapping() throws Exception {
+    void testFilterRequestWrapping() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -173,13 +173,13 @@ public class FiltersTestCase {
         HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(originalRequest);
 
         ic.pushFilter(requestWrapper, responseWrapper);
-        assertFalse("Did not switch to servlet", ic.isFilterActive());
-        assertSame("Servlet request", requestWrapper, ic.getRequest());
-        assertSame("Servlet response", responseWrapper, ic.getResponse());
+        assertFalse(ic.isFilterActive(), "Did not switch to servlet");
+        assertSame(requestWrapper, ic.getRequest(), "Servlet request");
+        assertSame(responseWrapper, ic.getResponse(), "Servlet response");
 
         ic.popRequest();
-        assertSame("Filter request", originalRequest, ic.getRequest());
-        assertSame("Filter response", originalResponse, ic.getResponse());
+        assertSame(originalRequest, ic.getRequest(), "Filter request");
+        assertSame(originalResponse, ic.getResponse(), "Filter response");
     }
 
 
@@ -187,7 +187,7 @@ public class FiltersTestCase {
      * Verifies that the filter chain invokes the servlet.
      */
     @Test
-    public void testFilterChain() throws Exception {
+    void testFilterChain() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -198,9 +198,9 @@ public class FiltersTestCase {
         HttpServletResponse originalResponse = ic.getResponse();
         HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(originalResponse);
         ic.getFilterChain().doFilter(ic.getRequest(), responseWrapper);
-        assertTrue("Servlet was not called", _servletCalled);
-        assertTrue("Filter marked as active", ic.isFilterActive());
-        assertSame("Response object after doFilter", originalResponse, ic.getResponse());
+        assertTrue(_servletCalled, "Servlet was not called");
+        assertTrue(ic.isFilterActive(), "Filter marked as active");
+        assertSame(originalResponse, ic.getResponse(), "Response object after doFilter");
     }
 
 
@@ -208,14 +208,14 @@ public class FiltersTestCase {
      * Verifies that filters are automatically called.
      */
     @Test
-    public void testFilterInvocation() throws Exception {
+    void testFilterInvocation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Attribute", AttributeFilter.class, "Simple");
         ServletRunner sr = new ServletRunner(wxs.asInputStream());
         ServletUnitClient wc = sr.newClient();
         WebResponse wr = wc.getResponse("http://localhost/SimpleServlet");
-        assertEquals("Filtered response ", "by-filter", wr.getText().trim());
+        assertEquals("by-filter", wr.getText().trim(), "Filtered response ");
     }
 
 
@@ -223,7 +223,7 @@ public class FiltersTestCase {
      * Verifies that a simple filter is associated with a url pattern.
      */
     @Test
-    public void testUrlFilterAssociation() throws Exception {
+    void testUrlFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/helpMe/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForUrl("Trivial", TrivialFilter.class, "/helpMe/*");
@@ -232,13 +232,13 @@ public class FiltersTestCase {
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/helpMe/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
-        assertEquals("number of associated filters", 1, filters.length);
-        assertEquals("filter class", TrivialFilter.class, filters[0].getFilter().getClass());
+        assertEquals(1, filters.length, "number of associated filters");
+        assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
     }
 
 
     @Test
-    public void testFilterMapping() throws Exception {
+    void testFilterMapping() throws Exception {
         FilterUrlMap map = new FilterUrlMap();
         map.put("/foo/bar/*", FILTER1);
         map.put("/baz/*", FILTER2);
@@ -260,14 +260,14 @@ public class FiltersTestCase {
 
 
     private void checkMapping(FilterUrlMap map, String urlString, FilterMetaData[] expectedFilters) {
-        assertEquals("Filters selected for '" + urlString + "'",
-                Arrays.asList(expectedFilters),
-                Arrays.asList(map.getMatchingFilters(urlString)));
+        assertEquals(Arrays.asList(expectedFilters),
+                Arrays.asList(map.getMatchingFilters(urlString)),
+                "Filters selected for '" + urlString + "'");
     }
 
 
     @Test
-    public void testFilterInitialization() throws Exception {
+    void testFilterInitialization() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         Properties params = new Properties();
@@ -280,21 +280,21 @@ public class FiltersTestCase {
 
         AttributeFilter filter = (AttributeFilter) ic.getFilter();
         FilterConfig filterConfig = filter._filterConfig;
-        assertNotNull("Filter was not initialized", filterConfig);
-        assertEquals("Filter name", "Config", filterConfig.getFilterName());
-        assertNotNull("No servlet context provided", filterConfig.getServletContext());
+        assertNotNull(filterConfig, "Filter was not initialized");
+        assertEquals("Config", filterConfig.getFilterName(), "Filter name");
+        assertNotNull(filterConfig.getServletContext(), "No servlet context provided");
 
-        assertNull("init parameter 'gender' should be null", filterConfig.getInitParameter("gender"));
-        assertEquals("init parameter 'red'", "red", filterConfig.getInitParameter("color"));
+        assertNull(filterConfig.getInitParameter("gender"), "init parameter 'gender' should be null");
+        assertEquals("red", filterConfig.getInitParameter("color"), "init parameter 'red'");
 
         ArrayList names = new ArrayList();
-        for (Enumeration e = filterConfig.getInitParameterNames(); e.hasMoreElements(); ) {
+        for (Enumeration e = filterConfig.getInitParameterNames();e.hasMoreElements();) {
             String name = (String) e.nextElement();
             names.add(name);
         }
-        assertEquals("Number of names in enumeration", 2, names.size());
-        assertTrue("'color' not found in enumeration", names.contains("color"));
-        assertTrue("'age' not found in enumeration", names.contains("age"));
+        assertEquals(2, names.size(), "Number of names in enumeration");
+        assertTrue(names.contains("color"), "'color' not found in enumeration");
+        assertTrue(names.contains("age"), "'age' not found in enumeration");
     }
 
 

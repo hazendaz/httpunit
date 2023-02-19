@@ -19,22 +19,25 @@
  */
 package com.meterware.httpunit.parsing;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.*;
 
 import java.io.PrintWriter;
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class HTMLParserListenerTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class HTMLParserListenerTest extends HttpUnitTest {
 
     @Test
-    public void testBadHTMLPage() throws Exception {
+    void testBadHTMLPage() throws Exception {
         defineResource("BadPage.html", "<html>"
                 + "<head><title>A Sample Page</head>\n"
                 + "<body><p><b>Wrong embedded tags</p></b>\n"
@@ -50,15 +53,15 @@ public class HTMLParserListenerTest extends HttpUnitTest {
             WebRequest request = new GetMethodWebRequest(getHostPath()
                     + "/BadPage.html");
             wc.getResponse(request);
-            assertTrue("Should have found problems", errorHandler.foundProblems());
-            assertEquals("Expected URL", request.getURL(), errorHandler.getBadURL());
+            assertTrue(errorHandler.foundProblems(), "Should have found problems");
+            assertEquals(request.getURL(), errorHandler.getBadURL(), "Expected URL");
         } finally {
             HTMLParserFactory.removeHTMLParserListener(errorHandler);
         }
     }
 
     @Test
-    public void testGoodHTMLPage() throws Exception {
+    void testGoodHTMLPage() throws Exception {
         final ErrorHandler errorHandler = new ErrorHandler(
                 /* expectProblems */false);
         try {
@@ -82,7 +85,7 @@ public class HTMLParserListenerTest extends HttpUnitTest {
     }
 
     @Test
-    public void testJTidyPrintWriterParsing() throws Exception {
+    void testJTidyPrintWriterParsing() throws Exception {
         URL url = new URL("http://localhost/blank.html");
         PrintWriter p = new JTidyPrintWriter(url);
         p.print("line 1234 column 1234");
@@ -98,7 +101,7 @@ public class HTMLParserListenerTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testHeadMethodWebRequest2() throws Exception {
+    void testHeadMethodWebRequest2() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n"
                         + "<body>Hello</body></html>\n");
@@ -108,7 +111,7 @@ public class HTMLParserListenerTest extends HttpUnitTest {
             HTMLParserFactory.setHTMLParser(new NekoHTMLParser() {
                 // @Override
                 public void parse(URL pageURL, String pageText,
-                                  DocumentAdapter adapter) {
+                        DocumentAdapter adapter) {
                     System.err.println("Parsing URL=" + pageURL + "\n"
                             + pageText);
                     fail("Should not be parsing a HEAD request");
@@ -157,8 +160,8 @@ public class HTMLParserListenerTest extends HttpUnitTest {
         }
 
         public void error(URL url, String msg, int line, int column) {
-            assertTrue(msg + " at line " + line + ", column " + column,
-                    _expectProblems);
+            assertTrue(_expectProblems,
+                    msg + " at line " + line + ", column " + column);
             _foundProblems = true;
             _badURL = url;
         }

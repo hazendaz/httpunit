@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
@@ -32,23 +32,23 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the ServletUnitHttpResponse class.
  */
-public class HttpServletResponseTest extends ServletUnitTest {
+class HttpServletResponseTest extends ServletUnitTest {
 
     @Test
-    public void testDefaultResponse() throws Exception {
+    void testDefaultResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
-        assertEquals("Contents", "", response.getText());
+        assertEquals("", response.getText(), "Contents");
     }
 
 
     @Test
-    public void testSimpleResponse() throws Exception {
+    void testSimpleResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         servletResponse.setContentLength(65);
@@ -56,17 +56,17 @@ public class HttpServletResponseTest extends ServletUnitTest {
         pw.println("<html><head><title>Sample Page</title></head><body></body></html>");
 
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
-        assertEquals("Status code", HttpServletResponse.SC_OK, response.getResponseCode());
-        assertEquals("Content type", "text/html", response.getContentType());
-        assertEquals("Title", "Sample Page", response.getTitle());
-        assertEquals("Content length", 65, response.getContentLength());
-        assertEquals("Content encoding", "iso-8859-1", response.getCharacterSet());
-        assertEquals("Content header", "text/html; charset=iso-8859-1", response.getHeaderField("Content-type"));
+        assertEquals(HttpServletResponse.SC_OK, response.getResponseCode(), "Status code");
+        assertEquals("text/html", response.getContentType(), "Content type");
+        assertEquals("Sample Page", response.getTitle(), "Title");
+        assertEquals(65, response.getContentLength(), "Content length");
+        assertEquals("iso-8859-1", response.getCharacterSet(), "Content encoding");
+        assertEquals("text/html; charset=iso-8859-1", response.getHeaderField("Content-type"), "Content header");
     }
 
 
     @Test
-    public void testEncoding() throws Exception {
+    void testEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
                 "<body>This has no data\n" +
@@ -78,40 +78,40 @@ public class HttpServletResponseTest extends ServletUnitTest {
         pw.close();
 
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
-        assertEquals("Character set", "iso-8859-8", response.getCharacterSet());
-        assertEquals("Title", hebrewTitle, response.getTitle());
+        assertEquals("iso-8859-8", response.getCharacterSet(), "Character set");
+        assertEquals(hebrewTitle, response.getTitle(), "Title");
     }
 
 
     @Test
-    public void testLocale() throws Exception {
+    void testLocale() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
-        assertEquals("Default locale", Locale.getDefault(), servletResponse.getLocale());
+        assertEquals(Locale.getDefault(), servletResponse.getLocale(), "Default locale");
 
         servletResponse.setContentType("text/html");
         servletResponse.setLocale(new Locale("he", "IL"));
-        assertEquals("Specified locale", new Locale("he", "IL"), servletResponse.getLocale());
-        assertEquals("Content type", "text/html; charset=iso-8859-8", servletResponse.getHeaderField("Content-type"));
+        assertEquals(new Locale("he", "IL"), servletResponse.getLocale(), "Specified locale");
+        assertEquals("text/html; charset=iso-8859-8", servletResponse.getHeaderField("Content-type"), "Content type");
 
     }
 
 
     @Test
-    public void testStreamResponse() throws Exception {
+    void testStreamResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         ServletOutputStream sos = servletResponse.getOutputStream();
         sos.println("<html><head><title>Sample Page</title></head><body></body></html>");
 
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
-        assertEquals("Status code", HttpServletResponse.SC_OK, response.getResponseCode());
-        assertEquals("Content type", "text/html", response.getContentType());
-        assertEquals("Title", "Sample Page", response.getTitle());
+        assertEquals(HttpServletResponse.SC_OK, response.getResponseCode(), "Status code");
+        assertEquals("text/html", response.getContentType(), "Content type");
+        assertEquals("Sample Page", response.getTitle(), "Title");
     }
 
 
     @Test
-    public void testStreamWriterAfterOutputStream() throws Exception {
+    void testStreamWriterAfterOutputStream() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         servletResponse.getOutputStream();
@@ -124,7 +124,7 @@ public class HttpServletResponseTest extends ServletUnitTest {
 
 
     @Test
-    public void testStreamOutputStreamAfterWriter() throws Exception {
+    void testStreamOutputStreamAfterWriter() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getWriter();
         try {
@@ -136,7 +136,7 @@ public class HttpServletResponseTest extends ServletUnitTest {
 
 
     @Test
-    public void testSetBufferSizeAfterWrite() throws Exception {
+    void testSetBufferSizeAfterWrite() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setBufferSize(120);
         servletResponse.getWriter();
@@ -151,7 +151,7 @@ public class HttpServletResponseTest extends ServletUnitTest {
 
 
     @Test
-    public void testSetBufferSizeAfterStreamOutput() throws Exception {
+    void testSetBufferSizeAfterStreamOutput() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setBufferSize(120);
         servletResponse.getOutputStream();
@@ -166,12 +166,12 @@ public class HttpServletResponseTest extends ServletUnitTest {
 
 
     @Test
-    public void testResetBuffer() throws Exception {
+    void testResetBuffer() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getOutputStream().print("something");
-        assertEquals("buffer size", 9, servletResponse.getContents().length);
+        assertEquals(9, servletResponse.getContents().length, "buffer size");
         servletResponse.resetBuffer();
-        assertEquals("buffer size", 0, servletResponse.getContents().length);
+        assertEquals(0, servletResponse.getContents().length, "buffer size");
 
         servletResponse.flushBuffer();
         try {
@@ -188,44 +188,44 @@ public class HttpServletResponseTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testUpdateAfterFlushBuffer() throws Exception {
+    void testUpdateAfterFlushBuffer() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getWriter();
-        assertFalse("Should not be committed yet", servletResponse.isCommitted());
+        assertFalse(servletResponse.isCommitted(), "Should not be committed yet");
         servletResponse.flushBuffer();
-        assertTrue("Should be committed now", servletResponse.isCommitted());
+        assertTrue(servletResponse.isCommitted(), "Should be committed now");
     }
 
     @Test
-    public void testSingleHeaders() throws Exception {
+    void testSingleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
 
-        assertFalse("header foo wrongly detected", servletResponse.containsHeader("foo"));
+        assertFalse(servletResponse.containsHeader("foo"), "header foo wrongly detected");
         servletResponse.setHeader("foo", "bar");
         String headerValue = servletResponse.getHeaderField("foo");
-        assertEquals("header is wrong", "bar", headerValue);
-        assertTrue("header foo not detected", servletResponse.containsHeader("foo"));
+        assertEquals("bar", headerValue, "header is wrong");
+        assertTrue(servletResponse.containsHeader("foo"), "header foo not detected");
 
         servletResponse.setHeader("foo", "baz");
         headerValue = servletResponse.getHeaderField("foo");
-        assertEquals("header is wrong", "baz", headerValue);
+        assertEquals("baz", headerValue, "header is wrong");
 
         servletResponse.setIntHeader("three", 3);
         headerValue = servletResponse.getHeaderField("three");
-        assertEquals("int header is wrong", "3", headerValue);
+        assertEquals("3", headerValue, "int header is wrong");
 
         // use RFC1123_DATE_SPEC formatter
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss z");
         Date d = df.parse("12/9/1969 12:00:00 GMT");
         servletResponse.setDateHeader("date", d.getTime());
         headerValue = servletResponse.getHeaderField("date");
-        assertEquals("date header is wrong", "Tue, 09 Dec 1969 12:00:00 GMT", headerValue);
+        assertEquals("Tue, 09 Dec 1969 12:00:00 GMT", headerValue, "date header is wrong");
     }
 
 
     @Test
-    public void testMultipleHeaders() throws Exception {
+    void testMultipleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
 
@@ -238,24 +238,24 @@ public class HttpServletResponseTest extends ServletUnitTest {
         servletResponse.addIntHeader("list", 3);
         servletResponse.addDateHeader("list", date.getTime());
         String[] headerList = servletResponse.getHeaderFields("list");
-        assertEquals("header is wrong", "foo", headerList[0]);
-        assertEquals("header is wrong", "3", headerList[1]);
-        assertEquals("header is wrong", "Tue, 09 Dec 1969 12:00:00 GMT", headerList[2]);
+        assertEquals("foo", headerList[0], "header is wrong");
+        assertEquals("3", headerList[1], "header is wrong");
+        assertEquals("Tue, 09 Dec 1969 12:00:00 GMT", headerList[2], "header is wrong");
 
         servletResponse.setHeader("list", "monkeyboy");
         headerList = servletResponse.getHeaderFields("list");
-        assertEquals("setHeader did not replace the list header", headerList.length, 1);
-        assertEquals("header is wrong", "monkeyboy", headerList[0]);
+        assertEquals(1, headerList.length, "setHeader did not replace the list header");
+        assertEquals("monkeyboy", headerList[0], "header is wrong");
     }
 
 
     @Test
-    public void testSendRedirect() throws Exception {
+    void testSendRedirect() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         final String location = "http://localhost/newLocation";
         servletResponse.sendRedirect(location);
-        assertEquals("Redirected Location", location, servletResponse.getHeaderField("Location"));
-        assertEquals("Status", 302, servletResponse.getStatus());
+        assertEquals(location, servletResponse.getHeaderField("Location"), "Redirected Location");
+        assertEquals(302, servletResponse.getStatus(), "Status");
     }
 
 }

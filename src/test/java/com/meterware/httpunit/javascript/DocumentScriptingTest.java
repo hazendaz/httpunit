@@ -19,26 +19,30 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-public class DocumentScriptingTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class DocumentScriptingTest extends HttpUnitTest {
 
     @Test
-    public void testDocumentTitle() throws Exception {
+    void testDocumentTitle() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" +
                 "<body onLoad='alert(\"Window title is \" + document.title)'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "Window title is Amazing!", wc.popNextAlert());
+        assertEquals("Window title is Amazing!", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testDocumentFindForms() throws Exception {
+    void testDocumentFindForms() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function getFound( object ) {" +
                 "  return (object == null) ? \"did not find \" : \"found \";" +
@@ -54,16 +58,16 @@ public class DocumentScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "found 1 form(s)", wc.popNextAlert());
-        assertEquals("Alert message", "found form 'realform'", wc.popNextAlert());
-        assertEquals("Alert message", "found form 'forms[\'realform\']'", wc.popNextAlert());
-        assertEquals("Alert message", "did not find form 'noform'", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("found 1 form(s)", wc.popNextAlert(), "Alert message");
+        assertEquals("found form 'realform'", wc.popNextAlert(), "Alert message");
+        assertEquals("found form 'forms[\'realform\']'", wc.popNextAlert(), "Alert message");
+        assertEquals("did not find form 'noform'", wc.popNextAlert(), "Alert message");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testDocumentFindLinks() throws Exception {
+    void testDocumentFindLinks() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function getFound( object ) {" +
                 "  return (object == null) ? \"did not find \" : \"found \";" +
@@ -81,16 +85,16 @@ public class DocumentScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "found 2 link(s)", wc.popNextAlert());
-        assertEquals("Alert message", "found link 'reallink'", wc.popNextAlert());
-        assertEquals("Alert message", "found link 'links[reallink]'", wc.popNextAlert());
-        assertEquals("Alert message", "did not find link 'nolink'", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("found 2 link(s)", wc.popNextAlert(), "Alert message");
+        assertEquals("found link 'reallink'", wc.popNextAlert(), "Alert message");
+        assertEquals("found link 'links[reallink]'", wc.popNextAlert(), "Alert message");
+        assertEquals("did not find link 'nolink'", wc.popNextAlert(), "Alert message");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testJavaScriptObjectIdentity() throws Exception {
+    void testJavaScriptObjectIdentity() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function compareLinks() { " +
                 "  if (document.reallink == document.links['reallink']) {" +
@@ -106,12 +110,12 @@ public class DocumentScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "they are the same", wc.popNextAlert());
+        assertEquals("they are the same", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testCaseSensitiveNames() throws Exception {
+    void testCaseSensitiveNames() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='item' action='run'></form>" +
@@ -122,14 +126,14 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinkWithName("first").mouseOver();
-        assertEquals("form action", "run", wc.popNextAlert());
+        assertEquals("run", wc.popNextAlert(), "form action");
         response.getLinkWithName("second").mouseOver();
-        assertEquals("link href", getHostPath() + "/sample.html", wc.popNextAlert());
+        assertEquals(getHostPath() + "/sample.html", wc.popNextAlert(), "link href");
     }
 
 
     @Test
-    public void testLinkMouseOverEvent() throws Exception {
+    void testLinkMouseOverEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='realform'><input name='color' value='blue'></form>" +
@@ -139,14 +143,14 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         link.mouseOver();
-        assertEquals("changed parameter value", "green", form.getParameterValue("color"));
+        assertEquals("green", form.getParameterValue("color"), "changed parameter value");
     }
 
 
     @Test
-    public void testLinkClickEvent() throws Exception {
+    void testLinkClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='realform'><input name='color' value='blue'></form>" +
@@ -156,9 +160,9 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         link.click();
-        assertEquals("changed parameter value", "green", form.getParameterValue("color"));
+        assertEquals("green", form.getParameterValue("color"), "changed parameter value");
     }
 
     /**
@@ -167,7 +171,7 @@ public class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testLinkMouseDownEvent() throws Exception {
+    void testLinkMouseDownEvent() throws Exception {
         defineResource("nothing.html", "<html><head></head><body</body></html>");
         defineResource("OnMouseDown.html", "<html><head></head>" +
                 "<body>" +
@@ -178,9 +182,9 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnMouseDown.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         link.click();
-        assertEquals("changed parameter value", "green", form.getParameterValue("color"));
+        assertEquals("green", form.getParameterValue("color"), "changed parameter value");
     }
 
 
@@ -192,7 +196,7 @@ public class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testHashDestinationOnClickEvent() throws Exception {
+    void testHashDestinationOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='realform'><input name='color' value='blue'></form>" +
@@ -202,9 +206,9 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         response = link.click();
-        assertEquals("changed parameter value", "green", response.getFormWithName("realform").getParameterValue("color"));
+        assertEquals("green", response.getFormWithName("realform").getParameterValue("color"), "changed parameter value");
     }
 
     /**
@@ -213,7 +217,7 @@ public class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testHashDestinationOnMouseDownEvent() throws Exception {
+    void testHashDestinationOnMouseDownEvent() throws Exception {
         defineResource("OnMouseDown.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='realform'><input name='color' value='blue'></form>" +
@@ -223,13 +227,13 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnMouseDown.html");
         WebForm form = response.getFormWithName("realform");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial parameter value", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "initial parameter value");
         response = link.click();
-        assertEquals("changed parameter value", "green", response.getFormWithName("realform").getParameterValue("color"));
+        assertEquals("green", response.getFormWithName("realform").getParameterValue("color"), "changed parameter value");
     }
 
     @Test
-    public void testLinkProperties() throws Exception {
+    void testLinkProperties() throws Exception {
         defineResource("somewhere.html?with=values", "you made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -239,16 +243,16 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinkWithName("target");
-        assertEquals("initial value", "nowhere.html", link.getURLString());
+        assertEquals("nowhere.html", link.getURLString(), "initial value");
         response.getLinkWithName("control").click();
-        assertEquals("changed reference", getHostPath() + "/somewhere.html?with=values", link.getRequest().getURL().toExternalForm());
+        assertEquals(getHostPath() + "/somewhere.html?with=values", link.getRequest().getURL().toExternalForm(), "changed reference");
         response = link.click();
-        assertEquals("New page", "you made it!", response.getText());
+        assertEquals("you made it!", response.getText(), "New page");
     }
 
 
     @Test
-    public void testLinkIndexes() throws Exception {
+    void testLinkIndexes() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function alertLinks() { " +
                 "  for (var i=0; i < document.links.length; i++) {" +
@@ -266,16 +270,16 @@ public class DocumentScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", getHostPath() + "/demo.html", wc.popNextAlert());
-        assertEquals("Alert message", getHostPath() + "/guide.html", wc.popNextAlert());
-        assertEquals("Alert message", getHostPath() + "/search.html", wc.popNextAlert());
-        assertEquals("Alert message", getHostPath() + "/sample.html", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals(getHostPath() + "/demo.html", wc.popNextAlert(), "Alert message");
+        assertEquals(getHostPath() + "/guide.html", wc.popNextAlert(), "Alert message");
+        assertEquals(getHostPath() + "/search.html", wc.popNextAlert(), "Alert message");
+        assertEquals(getHostPath() + "/sample.html", wc.popNextAlert(), "Alert message");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testDocumentFindImages() throws Exception {
+    void testDocumentFindImages() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function getFound( object ) {\n" +
                 "  return (object == null) ? \"did not find \" : \"found \";\n" +
@@ -293,17 +297,17 @@ public class DocumentScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Alert message", "found 2 images(s)", wc.popNextAlert());
-        assertEquals("Alert message", "found image 'realimage'", wc.popNextAlert());
-        assertEquals("Alert message", "found image 'images[realimage]'", wc.popNextAlert());
-        assertEquals("Alert message", "did not find image 'noimage'", wc.popNextAlert());
-        assertEquals("Alert message", "2ndimage", wc.popNextAlert());
-        assertNull("Alert should have been removed", wc.getNextAlert());
+        assertEquals("found 2 images(s)", wc.popNextAlert(), "Alert message");
+        assertEquals("found image 'realimage'", wc.popNextAlert(), "Alert message");
+        assertEquals("found image 'images[realimage]'", wc.popNextAlert(), "Alert message");
+        assertEquals("did not find image 'noimage'", wc.popNextAlert(), "Alert message");
+        assertEquals("2ndimage", wc.popNextAlert(), "Alert message");
+        assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
 
     @Test
-    public void testImageSwap() throws Exception {
+    void testImageSwap() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<img name='theImage' src='initial.gif'>" +
@@ -313,30 +317,30 @@ public class DocumentScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebImage image = response.getImageWithName("theImage");
         WebLink link = response.getLinks()[0];
-        assertEquals("initial image source", "initial.gif", image.getSource());
+        assertEquals("initial.gif", image.getSource(), "initial image source");
         link.mouseOver();
-        assertEquals("changed image source", "new.jpg", image.getSource());
+        assertEquals("new.jpg", image.getSource(), "changed image source");
     }
 
 
     @Test
-    public void testWriteToNewDocument() throws Exception {
+    void testWriteToNewDocument() throws Exception {
         defineWebPage("OnCommand", "<a href='#' onclick=\"window.open( '', 'empty' );w = window.open( '', 'sample' );w.document.open( 'text/plain' ); w.document.write( 'You made it!' );w.document.close()\" >");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinks()[0];
         link.click();
         WebWindow ww = wc.getOpenWindow("sample");
-        assertEquals("Generated page", "You made it!", ww.getCurrentPage().getText());
-        assertEquals("Content Type", "text/plain", ww.getCurrentPage().getContentType());
+        assertEquals("You made it!", ww.getCurrentPage().getText(), "Generated page");
+        assertEquals("text/plain", ww.getCurrentPage().getContentType(), "Content Type");
         link.click();
-        assertEquals("Generated page", "You made it!", ww.getCurrentPage().getText());
-        assertEquals("Empty page", "", wc.getOpenWindow("empty").getCurrentPage().getText());
+        assertEquals("You made it!", ww.getCurrentPage().getText(), "Generated page");
+        assertEquals("", wc.getOpenWindow("empty").getCurrentPage().getText(), "Empty page");
     }
 
 
     @Test
-    public void testSetDocumentReparse() throws Exception {
+    void testSetDocumentReparse() throws Exception {
         defineResource("index.html",
                 "<html><head>" +
                         "<script language='JavaScript ' >document.title = 'New title';</script>" +
@@ -346,13 +350,13 @@ public class DocumentScriptingTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/index.html");
-        assertEquals("No of forms", response.getForms().length, 1);
-        assertEquals("JavaScript no of forms", "No of forms: 1", wc.popNextAlert());
+        assertEquals(1, response.getForms().length, "No of forms");
+        assertEquals("No of forms: 1", wc.popNextAlert(), "JavaScript no of forms");
     }
 
 
     @Test
-    public void testTagProperty() throws Exception {
+    void testTagProperty() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showFormsCount(oDOM){   " +
@@ -380,7 +384,7 @@ public class DocumentScriptingTest extends HttpUnitTest {
 
 
     private void assertElementTags(WebConversation wc, String number, final String counts) {
-        assertEquals("form '" + number + "' message", "form with number " + number + " has " + counts + " inputs", wc.popNextAlert());
+        assertEquals("form with number " + number + " has " + counts + " inputs", wc.popNextAlert(), "form '" + number + "' message");
     }
 
 }

@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HttpNotFoundException;
@@ -44,17 +44,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests support for stateless HttpServlets.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class StatelessTest {
+class StatelessTest {
 
     @Test
-    public void testNotFound() throws Exception {
+    void testNotFound() throws Exception {
         ServletRunner sr = new ServletRunner();
 
         WebRequest request = new GetMethodWebRequest("http://localhost/nothing");
@@ -62,44 +62,44 @@ public class StatelessTest {
             sr.getResponse(request);
             fail("Should have rejected the request");
         } catch (HttpNotFoundException e) {
-            assertEquals("Response code", HttpURLConnection.HTTP_NOT_FOUND, e.getResponseCode());
+            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getResponseCode(), "Response code");
         }
     }
 
 
     @Test
-    public void testServletCaching() throws Exception {
+    void testServletCaching() throws Exception {
         AccessCountServlet._numInstances = 0;
         final String resourceName = "something/interesting";
 
-        assertEquals("Initial instances of servlet class", 0, AccessCountServlet.getNumInstances());
+        assertEquals(0, AccessCountServlet.getNumInstances(), "Initial instances of servlet class");
         ServletRunner sr = new ServletRunner();
         sr.registerServlet(resourceName, AccessCountServlet.class.getName());
 
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName);
-        assertEquals("First reply", "1", sr.getResponse(request).getText().trim());
-        assertEquals("Instances of servlet class after first call", 1, AccessCountServlet.getNumInstances());
-        assertEquals("Second reply", "2", sr.getResponse(request).getText().trim());
-        assertEquals("Instances of servlet class after first call", 1, AccessCountServlet.getNumInstances());
+        assertEquals("1", sr.getResponse(request).getText().trim(), "First reply");
+        assertEquals(1, AccessCountServlet.getNumInstances(), "Instances of servlet class after first call");
+        assertEquals("2", sr.getResponse(request).getText().trim(), "Second reply");
+        assertEquals(1, AccessCountServlet.getNumInstances(), "Instances of servlet class after first call");
         sr.shutDown();
-        assertEquals("Instances of servlet class after shutdown", 0, AccessCountServlet.getNumInstances());
+        assertEquals(0, AccessCountServlet.getNumInstances(), "Instances of servlet class after shutdown");
     }
 
 
     @Test
-    public void testServletAccessByClassName() throws Exception {
+    void testServletAccessByClassName() throws Exception {
         ServletRunner sr = new ServletRunner();
 
         WebRequest request = new GetMethodWebRequest("http://localhost/servlet/" + SimpleGetServlet.class.getName());
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("requested resource", SimpleGetServlet.RESPONSE_TEXT, response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
 
 
     @Test
-    public void testSimpleGet() throws Exception {
+    void testSimpleGet() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -107,14 +107,14 @@ public class StatelessTest {
 
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName);
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("requested resource", SimpleGetServlet.RESPONSE_TEXT, response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
 
 
     @Test
-    public void testGetWithSetParams() throws Exception {
+    void testGetWithSetParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -123,18 +123,18 @@ public class StatelessTest {
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName);
         request.setParameter("color", "red");
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You selected red", response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You selected red", response.getText(), "requested resource");
         String[] headers = response.getHeaderFields("MyHeader");
-        assertEquals("Number of MyHeaders returned", 2, headers.length);
-        assertEquals("MyHeader #1", "value1", headers[0]);
-        assertEquals("MyHeader #2", "value2", headers[1]);
+        assertEquals(2, headers.length, "Number of MyHeaders returned");
+        assertEquals("value1", headers[0], "MyHeader #1");
+        assertEquals("value2", headers[1], "MyHeader #2");
     }
 
 
     @Test
-    public void testGetWithInlineParams() throws Exception {
+    void testGetWithInlineParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -142,14 +142,14 @@ public class StatelessTest {
 
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName + "?color=dark+red");
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You selected dark red", response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You selected dark red", response.getText(), "requested resource");
     }
 
 
     @Test
-    public void testHeaderRetrieval() throws Exception {
+    void testHeaderRetrieval() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("/Parameters", ParameterServlet.class.getName());
 
@@ -159,13 +159,13 @@ public class StatelessTest {
         WebRequest request = new GetMethodWebRequest("http://localhost/Parameters?color=dark+red");
         request.setHeaderField("request", "Caller");
         InvocationContext ic = client.newInvocation(request);
-        assertEquals("Sample header", "Value", ic.getRequest().getHeader("sample"));
-        assertEquals("Request header", "Caller", ic.getRequest().getHeader("Request"));
+        assertEquals("Value", ic.getRequest().getHeader("sample"), "Sample header");
+        assertEquals("Caller", ic.getRequest().getHeader("Request"), "Request header");
     }
 
 
     @Test
-    public void testParameterHandling() throws Exception {
+    void testParameterHandling() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("/testForm", FormSubmissionServlet.class.getName());
 
@@ -175,12 +175,12 @@ public class StatelessTest {
         form.setParameter("login", "me");
         form.setParameter("password", "haha");
         form.submit();
-        assertEquals("Resultant response", "You posted me,haha", client.getCurrentPage().getText());
+        assertEquals("You posted me,haha", client.getCurrentPage().getText(), "Resultant response");
     }
 
 
     @Test
-    public void testSimplePost() throws Exception {
+    void testSimplePost() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -189,14 +189,14 @@ public class StatelessTest {
         WebRequest request = new PostMethodWebRequest("http://localhost/" + resourceName);
         request.setParameter("color", "red");
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You posted red", response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You posted red", response.getText(), "requested resource");
     }
 
 
     @Test
-    public void testStreamBasedPost() throws Exception {
+    void testStreamBasedPost() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("ReportData", BodyEcho.class.getName());
 
@@ -206,28 +206,28 @@ public class StatelessTest {
         WebClient wc = sr.newClient();
         WebRequest wr = new PostMethodWebRequest("http://localhost/ReportData", source, "text/sample");
         WebResponse response = wc.getResponse(wr);
-        assertEquals("Body response", sourceData.length() + "\n" + sourceData, response.getText());
-        assertEquals("Content-type", "text/sample", response.getContentType());
+        assertEquals(sourceData.length() + "\n" + sourceData, response.getText(), "Body response");
+        assertEquals("text/sample", response.getContentType(), "Content-type");
     }
 
 
     @Test
-    public void testRequestInputStream() throws Exception {
+    void testRequestInputStream() throws Exception {
         ServletRunner sr = new ServletRunner();
         WebRequest request = new PostMethodWebRequest("http://localhost/servlet/" + ParameterServlet.class.getName());
         request.setParameter("color", "green");
         final String expectedBody = "color=green";
         InvocationContext ic = sr.newClient().newInvocation(request);
-        assertEquals("Message body type", "application/x-www-form-urlencoded", ic.getRequest().getContentType());
+        assertEquals("application/x-www-form-urlencoded", ic.getRequest().getContentType(), "Message body type");
         InputStream is = ic.getRequest().getInputStream();
         byte[] buffer = new byte[expectedBody.length()];
-        assertEquals("Input stream length", buffer.length, is.read(buffer));
-        assertEquals("Message body", expectedBody, new String(buffer));
+        assertEquals(buffer.length, is.read(buffer), "Input stream length");
+        assertEquals(expectedBody, new String(buffer), "Message body");
     }
 
 
     @Test
-    public void testFrameAccess() throws Exception {
+    void testFrameAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("Frames", FrameTopServlet.class.getName());
         sr.registerServlet("RedFrame", SimpleGetServlet.class.getName());
@@ -238,7 +238,7 @@ public class StatelessTest {
         WebResponse page = client.getResponse(request);
         HttpUserAgentTest.assertMatchingSet("Frames defined for the conversation", new String[]{"_top", "red", "blue"}, client.getFrameNames());
         WebResponse response = client.getFrameContents("red");
-        assertEquals("Frame contents", SimpleGetServlet.RESPONSE_TEXT, response.getText());
+        assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "Frame contents");
 
         page.getSubframeContents(page.getFrameNames()[0]);
     }

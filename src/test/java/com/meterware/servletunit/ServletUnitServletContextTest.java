@@ -19,40 +19,40 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.InputStream;
 import java.net.URL;
 
 import javax.servlet.ServletContext;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ServletUnitServletContextTest {
+class ServletUnitServletContextTest {
 	private static final String EXISTENT_RESOURCE_PATH = "src/test/resources/existent.xml";
 	private static final String NONEXISTENT_RESOURCE_PATH = "src/test/resources/nonexistent.xml";
 
-	@Test
-	public void testGetResource() throws Exception {
-		WebApplication webapp = new WebApplication();
-		ServletContext sc = new ServletUnitServletContext(webapp);
+    @Test
+    void testGetResource() throws Exception {
+        WebApplication webapp = new WebApplication();
+        ServletContext sc = new ServletUnitServletContext(webapp);
 
-		// for existent resources
-		InputStream is = sc.getResourceAsStream(EXISTENT_RESOURCE_PATH);
-		assertNotNull("must not return a null", is);
-		is.close();
+        // for existent resources
+        InputStream is = sc.getResourceAsStream(EXISTENT_RESOURCE_PATH);
+        assertNotNull(is, "must not return a null");
+        is.close();
 
-		URL r = sc.getResource(EXISTENT_RESOURCE_PATH);
-		assertNotNull("must not return a null", r);
+        URL r = sc.getResource(EXISTENT_RESOURCE_PATH);
+        assertNotNull(r, "must not return a null");
 
-		// for non-existent resources
-		is = sc.getResourceAsStream(NONEXISTENT_RESOURCE_PATH);
-		assertNull("must return a null", is);
+        // for non-existent resources
+        is = sc.getResourceAsStream(NONEXISTENT_RESOURCE_PATH);
+        assertNull(is, "must return a null");
 
-		r = sc.getResource(NONEXISTENT_RESOURCE_PATH);
-		assertNull("must return a null", r);
+        r = sc.getResource(NONEXISTENT_RESOURCE_PATH);
+        assertNull(r, "must return a null");
 
-	}
+    }
 
 }

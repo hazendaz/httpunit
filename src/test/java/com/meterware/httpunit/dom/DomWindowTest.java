@@ -19,17 +19,17 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.html.HTMLDocument;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class DomWindowTest extends AbstractHTMLElementTest {
+class DomWindowTest extends AbstractHTMLElementTest {
 
     private TestWindowProxy _proxy;
 
@@ -37,24 +37,24 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies that we can obtain a window for a document and then retrieve document for that window.
      */
     @Test
-    public void testDocumentWindowAccess() throws Exception {
+    void testDocumentWindowAccess() throws Exception {
         DomWindow window = _htmlDocument.getWindow();
-        assertSame("The original document", _htmlDocument, window.getDocument());
-        assertSame("The window upon subsequence request", window, _htmlDocument.getWindow());
-        assertSame("The window accessed from itself", window, window.getWindow());
-        assertSame("The window's 'self' object", window, window.getSelf());
+        assertSame(_htmlDocument, window.getDocument(), "The original document");
+        assertSame(window, _htmlDocument.getWindow(), "The window upon subsequence request");
+        assertSame(window, window.getWindow(), "The window accessed from itself");
+        assertSame(window, window.getSelf(), "The window's 'self' object");
     }
 
     /**
      * Verifies that the open method returns a window with an appropriate document.
      */
     @Test
-    public void testWindowOpen() throws Exception {
+    void testWindowOpen() throws Exception {
         DomWindow window1 = createMainWindow();
         DomWindow window2 = window1.open("next.html", "broken", "", false);
         HTMLDocument document = window2.getDocument();
-        assertNotNull("Window has no associated document", document);
-        assertEquals("Title of document in new window", "broken (next.html)", document.getTitle());
+        assertNotNull(document, "Window has no associated document");
+        assertEquals("broken (next.html)", document.getTitle(), "Title of document in new window");
 
         window2.close();
         TestWindowProxy.assertLastProxyMethod("close");
@@ -65,12 +65,12 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Writes to a document should appear in the window's document write buffer.
      */
     @Test
-    public void testDocumentWrite() throws Exception {
+    void testDocumentWrite() throws Exception {
         DomWindow window1 = createMainWindow();
         window1.getDocument().write("A simple string");
-        assertEquals("Contents of write buffer", "A simple string", window1.getDocumentWriteBuffer());
+        assertEquals("A simple string", window1.getDocumentWriteBuffer(), "Contents of write buffer");
         window1.discardDocumentWriteBuffer();
-        assertEquals("Contents of cleared write buffer", "", window1.getDocumentWriteBuffer());
+        assertEquals("", window1.getDocumentWriteBuffer(), "Contents of cleared write buffer");
 
     }
 
@@ -88,7 +88,7 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies that an alert request is sent to the proxy appropriately.
      */
     @Test
-    public void testAlert() throws Exception {
+    void testAlert() throws Exception {
         DomWindow window = createMainWindow();
         window.alert("A little message");
         TestWindowProxy.assertLastProxyMethod("alert( A little message )");
@@ -98,13 +98,13 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies that a confirmation request is sent to the proxy and the appropriate answer is returned.
      */
     @Test
-    public void testConfirm() throws Exception {
+    void testConfirm() throws Exception {
         DomWindow window = createMainWindow();
         _proxy.setAnswer("no");
-        assertFalse("Should have said no", window.confirm("Time to quit?"));
+        assertFalse(window.confirm("Time to quit?"), "Should have said no");
         TestWindowProxy.assertLastProxyMethod("confirm( Time to quit? )");
         _proxy.setAnswer("yes");
-        assertTrue("Should have said yes", window.confirm("Want to stay?"));
+        assertTrue(window.confirm("Want to stay?"), "Should have said yes");
         TestWindowProxy.assertLastProxyMethod("confirm( Want to stay? )");
     }
 
@@ -113,13 +113,13 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies that a prompt is sent to the proxy and the appropriate answer is returned.
      */
     @Test
-    public void testPrompt() throws Exception {
+    void testPrompt() throws Exception {
         DomWindow window = createMainWindow();
         _proxy.setAnswer(null);
-        assertEquals("User default choice", "0", window.prompt("How many choices?", "0"));
+        assertEquals("0", window.prompt("How many choices?", "0"), "User default choice");
         TestWindowProxy.assertLastProxyMethod("prompt( How many choices? )");
         _proxy.setAnswer("blue");
-        assertEquals("Explicit user choice", "blue", window.prompt("What is your favorite color?", "yellow"));
+        assertEquals("blue", window.prompt("What is your favorite color?", "yellow"), "Explicit user choice");
         TestWindowProxy.assertLastProxyMethod("prompt( What is your favorite color? )");
     }
 
@@ -127,22 +127,22 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies that writing to and closing a document triggers a replaceText request.
      */
     @Test
-    public void testTextReplacement() throws Exception {
+    void testTextReplacement() throws Exception {
         DomWindow window = createMainWindow();
         window.getDocument().write("A bit of text");
         window.getDocument().close();
-        assertNotNull("No text replacement occurred", _proxy.getReplacementText());
-        assertEquals("Replacement text", "A bit of text", _proxy.getReplacementText());
+        assertNotNull(_proxy.getReplacementText(), "No text replacement occurred");
+        assertEquals("A bit of text", _proxy.getReplacementText(), "Replacement text");
     }
 
     /**
      * Verifies that the window can report its URL, which it obtains via its prozy.
      */
     @Test
-    public void testWindowUrl() throws Exception {
+    void testWindowUrl() throws Exception {
         DomWindow window = createMainWindow();
         _proxy.setUrl(new URL("http://localhost"));
-        assertEquals("Window url", new URL("http://localhost"), window.getUrl());
+        assertEquals(new URL("http://localhost"), window.getUrl(), "Window url");
     }
 
     // todo test getNavigator
@@ -156,7 +156,7 @@ public class DomWindowTest extends AbstractHTMLElementTest {
      * Verifies simply the existence of some methods not currently implemented. Todo make them do something useful.
      */
     @Test
-    public void testMethodExistences() throws Exception {
+    void testMethodExistences() throws Exception {
         DomWindow window = _htmlDocument.getWindow();
         window.setTimeout(40);
         window.focus();

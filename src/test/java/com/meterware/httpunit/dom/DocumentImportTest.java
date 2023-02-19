@@ -19,21 +19,21 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.*;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class DocumentImportTest {
+class DocumentImportTest {
 
     private DocumentImpl _document;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
     }
 
@@ -44,18 +44,18 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportAttribute() throws Exception {
+    void testImportAttribute() throws Exception {
         Element element = _document.createElement("rainbow");
         Attr original = _document.createAttribute("color");
         element.setAttributeNode(original);
         original.setValue("red");
 
         Attr copy = (Attr) _document.importNode(original, false);
-        assertEquals("Node type", Node.ATTRIBUTE_NODE, copy.getNodeType());
-        assertEquals("Node name", "color", copy.getNodeName());
-        assertNull("Should have removed the original element", copy.getOwnerElement());
-        assertEquals("Node value", "red", copy.getNodeValue());
-        assertTrue("Node value should be specified", copy.getSpecified());
+        assertEquals(Node.ATTRIBUTE_NODE, copy.getNodeType(), "Node type");
+        assertEquals("color", copy.getNodeName(), "Node name");
+        assertNull(copy.getOwnerElement(), "Should have removed the original element");
+        assertEquals("red", copy.getNodeValue(), "Node value");
+        assertTrue(copy.getSpecified(), "Node value should be specified");
     }
 
 
@@ -65,14 +65,14 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportText() throws Exception {
+    void testImportText() throws Exception {
         String textValue = "something to say";
         Text original = _document.createTextNode(textValue);
 
         Text copy = (Text) _document.importNode(original, false);
-        assertEquals("Node type", Node.TEXT_NODE, copy.getNodeType());
-        assertEquals("Node name", "#text", copy.getNodeName());
-        assertEquals("length", textValue.length(), copy.getLength());
+        assertEquals(Node.TEXT_NODE, copy.getNodeType(), "Node type");
+        assertEquals("#text", copy.getNodeName(), "Node name");
+        assertEquals(textValue.length(), copy.getLength(), "length");
     }
 
 
@@ -82,14 +82,14 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportComment() throws Exception {
+    void testImportComment() throws Exception {
         String commentText = "something to say";
         Comment original = _document.createComment(commentText);
 
         Comment copy = (Comment) _document.importNode(original, false);
-        assertEquals("Node type", Node.COMMENT_NODE, copy.getNodeType());
-        assertEquals("Node name", "#comment", copy.getNodeName());
-        assertEquals("length", commentText.length(), copy.getLength());
+        assertEquals(Node.COMMENT_NODE, copy.getNodeType(), "Node type");
+        assertEquals("#comment", copy.getNodeName(), "Node name");
+        assertEquals(commentText.length(), copy.getLength(), "length");
     }
 
 
@@ -99,15 +99,15 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportCData() throws Exception {
+    void testImportCData() throws Exception {
         String cDataText = "something <to> say";
         CDATASection original = _document.createCDATASection(cDataText);
 
         CDATASection copy = (CDATASection) _document.importNode(original, false);
-        assertEquals("Node type", Node.CDATA_SECTION_NODE, copy.getNodeType());
-        assertEquals("Node name", "#cdata-section", copy.getNodeName());
-        assertEquals("length", cDataText.length(), copy.getLength());
-        assertEquals("value", cDataText, copy.getNodeValue());
+        assertEquals(Node.CDATA_SECTION_NODE, copy.getNodeType(), "Node type");
+        assertEquals("#cdata-section", copy.getNodeName(), "Node name");
+        assertEquals(cDataText.length(), copy.getLength(), "length");
+        assertEquals(cDataText, copy.getNodeValue(), "value");
     }
 
 
@@ -117,18 +117,18 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportProcessingInstruction() throws Exception {
+    void testImportProcessingInstruction() throws Exception {
         String target = "mememe";
         String data = "you you you";
         ProcessingInstruction original = _document.createProcessingInstruction(target, data);
-        assertEquals("Original node type", Node.PROCESSING_INSTRUCTION_NODE, original.getNodeType());
+        assertEquals(Node.PROCESSING_INSTRUCTION_NODE, original.getNodeType(), "Original node type");
 
         ProcessingInstruction copy = (ProcessingInstruction) _document.importNode(original, false);
-        assertEquals("Node type", Node.PROCESSING_INSTRUCTION_NODE, copy.getNodeType());
-        assertEquals("Node name", target, copy.getNodeName());
-        assertEquals("value", data, copy.getNodeValue());
-        assertEquals("target", target, copy.getTarget());
-        assertEquals("data", data, copy.getData());
+        assertEquals(Node.PROCESSING_INSTRUCTION_NODE, copy.getNodeType(), "Node type");
+        assertEquals(target, copy.getNodeName(), "Node name");
+        assertEquals(data, copy.getNodeValue(), "value");
+        assertEquals(target, copy.getTarget(), "target");
+        assertEquals(data, copy.getData(), "data");
     }
 
 
@@ -138,17 +138,17 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportElementWithAttributes() throws Exception {
+    void testImportElementWithAttributes() throws Exception {
         Element original = _document.createElement("zork");
         Attr size = _document.createAttribute("interactive");
         original.setAttribute("version", "2.0");
         original.setAttributeNode(size);
 
         Element copy = (Element) _document.importNode(original, /* deep */ false);
-        assertEquals("Node type", Node.ELEMENT_NODE, copy.getNodeType());
-        assertEquals("Node name", "zork", copy.getNodeName());
-        assertEquals("version attribute", "2.0", copy.getAttribute("version"));
-        assertTrue("copy does not have interactive attribute", copy.hasAttribute("interactive"));
+        assertEquals(Node.ELEMENT_NODE, copy.getNodeType(), "Node type");
+        assertEquals("zork", copy.getNodeName(), "Node name");
+        assertEquals("2.0", copy.getAttribute("version"), "version attribute");
+        assertTrue(copy.hasAttribute("interactive"), "copy does not have interactive attribute");
     }
 
 
@@ -158,7 +158,7 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testImportNSElementWithNSAttributes() throws Exception {
+    void testImportNSElementWithNSAttributes() throws Exception {
         Element original = _document.createElementNS("http://funnyspace/", "fs:zork");
         original.setAttributeNS("http://funnyspace/", "fs:version", "2.0");
         Attr size = _document.createAttributeNS("http://funnyspace/", "fs:interactive");
@@ -171,12 +171,12 @@ public class DocumentImportTest {
 
 
     private void verifyNSElementWithNSAttributes(String comment, Element element) {
-        assertEquals(comment + " node type", Node.ELEMENT_NODE, element.getNodeType());
-        assertEquals(comment + " node name", "fs:zork", element.getNodeName());
-        assertEquals(comment + " local name", "zork", element.getLocalName());
-        assertEquals(comment + " namespace URI", "http://funnyspace/", element.getNamespaceURI());
-        assertEquals(comment + " version attribute", "2.0", element.getAttribute("fs:version"));
-        assertTrue(comment + " does not have interactive attribute", element.hasAttribute("fs:interactive"));
+        assertEquals(Node.ELEMENT_NODE, element.getNodeType(), comment + " node type");
+        assertEquals("fs:zork", element.getNodeName(), comment + " node name");
+        assertEquals("zork", element.getLocalName(), comment + " local name");
+        assertEquals("http://funnyspace/", element.getNamespaceURI(), comment + " namespace URI");
+        assertEquals("2.0", element.getAttribute("fs:version"), comment + " version attribute");
+        assertTrue(element.hasAttribute("fs:interactive"), comment + " does not have interactive attribute");
     }
 
 
@@ -186,15 +186,15 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testShallowImportElementWithChildren() throws Exception {
+    void testShallowImportElementWithChildren() throws Exception {
         Element original = _document.createElement("zork");
         original.appendChild(_document.createElement("foo"));
         original.appendChild(_document.createElement("bar"));
 
         Element copy = (Element) _document.importNode(original, /* deep */ false);
-        assertEquals("Node type", Node.ELEMENT_NODE, copy.getNodeType());
-        assertEquals("Node name", "zork", copy.getNodeName());
-        assertFalse("copy should have no children", copy.hasChildNodes());
+        assertEquals(Node.ELEMENT_NODE, copy.getNodeType(), "Node type");
+        assertEquals("zork", copy.getNodeName(), "Node name");
+        assertFalse(copy.hasChildNodes(), "copy should have no children");
     }
 
 
@@ -204,19 +204,19 @@ public class DocumentImportTest {
      * @throws Exception thrown if an error occurs during the test.
      */
     @Test
-    public void testDeepImportElementWithChildren() throws Exception {
+    void testDeepImportElementWithChildren() throws Exception {
         Element original = _document.createElement("zork");
         original.appendChild(_document.createElement("foo"));
         original.appendChild(_document.createTextNode("in the middle"));
         original.appendChild(_document.createElement("bar"));
 
         Element copy = (Element) _document.importNode(original, /* deep */ true);
-        assertEquals("Node type", Node.ELEMENT_NODE, copy.getNodeType());
-        assertEquals("Node name", "zork", copy.getNodeName());
-        assertTrue("copy should have children", copy.hasChildNodes());
+        assertEquals(Node.ELEMENT_NODE, copy.getNodeType(), "Node type");
+        assertEquals("zork", copy.getNodeName(), "Node name");
+        assertTrue(copy.hasChildNodes(), "copy should have children");
 
         NodeList children = copy.getChildNodes();
-        assertEquals("Number of child nodes", 3, children.getLength());
+        assertEquals(3, children.getLength(), "Number of child nodes");
 
         Node child = copy.getFirstChild();
         verifyNode("1st", child, Node.ELEMENT_NODE, "foo", null);
@@ -228,9 +228,9 @@ public class DocumentImportTest {
 
 
     private void verifyNode(String comment, Node node, short type, String name, String value) {
-        assertEquals(comment + " node type", type, node.getNodeType());
-        assertEquals(comment + " node name", name, node.getNodeName());
-        assertEquals(comment + " node value", value, node.getNodeValue());
+        assertEquals(type, node.getNodeType(), comment + " node type");
+        assertEquals(name, node.getNodeName(), comment + " node name");
+        assertEquals(value, node.getNodeValue(), comment + " node value");
     }
 
 }

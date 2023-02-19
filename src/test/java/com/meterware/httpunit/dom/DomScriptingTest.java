@@ -19,13 +19,11 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.Element;
@@ -38,74 +36,74 @@ import org.w3c.dom.html.HTMLBodyElement;
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class DomScriptingTest extends AbstractHTMLElementTest {
+class DomScriptingTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testGetDocument() throws Exception {
+    void testGetDocument() throws Exception {
         Element element = createElement("body");
-        assertEquals("Returned document", _htmlDocument, ((Scriptable) element).get("document", null));
+        assertEquals(_htmlDocument, ((Scriptable) element).get("document", null), "Returned document");
     }
 
 
     @Test
-    public void testDocumentGetTitle() throws Exception {
+    void testDocumentGetTitle() throws Exception {
         _htmlDocument.setTitle("something");
-        assertEquals("title", "something", _htmlDocument.get("title", null));
+        assertEquals("something", _htmlDocument.get("title", null), "title");
 
         Node body = createElement("body");
-        assertEquals("title", "something", evaluateExpression(body, "document.title"));
+        assertEquals("something", evaluateExpression(body, "document.title"), "title");
     }
 
 
     @Test
-    public void testDocumentPutTitle() throws Exception {
+    void testDocumentPutTitle() throws Exception {
         _htmlDocument.put("title", _htmlDocument, "right here");
-        assertEquals("title after put", "right here", _htmlDocument.getTitle());
+        assertEquals("right here", _htmlDocument.getTitle(), "title after put");
 
         Node body = createElement("body");
         evaluateExpression(body, "document.title='new value'");
-        assertEquals("title after script", "new value", _htmlDocument.getTitle());
+        assertEquals("new value", _htmlDocument.getTitle(), "title after script");
     }
 
     // todo test document.write, document.writeln - window must override getDocumentWriteBuffer, discardDocumentWriteBuffer(?)
 
     @Test
-    public void testElementPutTitle() throws Exception {
+    void testElementPutTitle() throws Exception {
         HTMLBodyElement body = (HTMLBodyElement) createElement("body");
         Scriptable scriptableBody = (Scriptable) body;
 
         scriptableBody.put("title", scriptableBody, "right here");
-        assertEquals("title after put", "right here", body.getTitle());
+        assertEquals("right here", body.getTitle(), "title after put");
 
         evaluateExpression(body, "title='new value'");
-        assertEquals("title after script", "new value", body.getTitle());
+        assertEquals("new value", body.getTitle(), "title after script");
     }
 
 
     @Test
-    public void testBodyAttributes() throws Exception {
+    void testBodyAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
         body.setBgColor("red");
 
-        assertEquals("initial background color", "red", evaluateExpression(_htmlDocument, "body.bgcolor"));
+        assertEquals("red", evaluateExpression(_htmlDocument, "body.bgcolor"), "initial background color");
 
         evaluateExpression(_htmlDocument, "body.id='blue'");
-        assertEquals("revised foreground color", "blue", body.getId());
+        assertEquals("blue", body.getId(), "revised foreground color");
     }
 
 
     @Test
-    public void testNumericAttributes() throws Exception {
+    void testNumericAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
         HTMLAnchorElementImpl anchor = (HTMLAnchorElementImpl) createElement("a");
         body.appendChild(anchor);
         anchor.setTabIndex(4);
 
-        assertEquals("initial tab index", 4, evaluateExpression(anchor, "tabindex"));
+        assertEquals(4, evaluateExpression(anchor, "tabindex"), "initial tab index");
 
         evaluateExpression(anchor, "tabindex=6");
-        assertEquals("revised tab index", 6, anchor.getTabIndex());
+        assertEquals(6, anchor.getTabIndex(), "revised tab index");
     }
 
 
@@ -117,15 +115,15 @@ public class DomScriptingTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testCreateElement() throws Exception {
+    void testCreateElement() throws Exception {
         Object node = evaluateExpression(_htmlDocument, "createElement( 'a' )");
-        assertNotNull("No node returned", node);
-        assertTrue("Node is not an anchor element", node instanceof HTMLAnchorElement);
+        assertNotNull(node, "No node returned");
+        assertTrue(node instanceof HTMLAnchorElement, "Node is not an anchor element");
     }
 
 
     @Test
-    public void testDocumentLinksCollection() throws Exception {
+    void testDocumentLinksCollection() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         proxy.setUrl(new URL("http://localhost"));
         _htmlDocument.getWindow().setProxy(proxy);
@@ -133,13 +131,13 @@ public class DomScriptingTest extends AbstractHTMLElementTest {
         appendLink(body, "red", "red.html");
         appendLink(body, "blue", "blue.html");
 
-        assertEquals("number of links", 2, evaluateExpression(_htmlDocument, "links.length"));
+        assertEquals(2, evaluateExpression(_htmlDocument, "links.length"), "number of links");
         Object second = evaluateExpression(_htmlDocument, "links[1]");
-        assertNotNull("Did not obtain any link object", second);
-        assertTrue("Object is not a link element", second instanceof HTMLAnchorElement);
-        assertEquals("Link ID", "blue", ((HTMLAnchorElement) second).getId());
+        assertNotNull(second, "Did not obtain any link object");
+        assertTrue(second instanceof HTMLAnchorElement, "Object is not a link element");
+        assertEquals("blue", ((HTMLAnchorElement) second).getId(), "Link ID");
 
-        assertEquals("red link href", "http://localhost/red.html", evaluateExpression(_htmlDocument, "links.red.href"));
+        assertEquals("http://localhost/red.html", evaluateExpression(_htmlDocument, "links.red.href"), "red link href");
     }
 
 
@@ -152,7 +150,7 @@ public class DomScriptingTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testConvertable() throws Exception {
+    void testConvertable() throws Exception {
         assertConvertable(String.class, String.class);
         assertConvertable(Integer.class, String.class);
         assertConvertable(String.class, Integer.class);
@@ -162,7 +160,7 @@ public class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     private void assertConvertable(Class valueType, Class parameterType) {
-        assertTrue(valueType.getName() + " should be convertable to " + parameterType.getName(), ScriptingSupport.isConvertableTo(valueType, parameterType));
+        assertTrue(ScriptingSupport.isConvertableTo(valueType, parameterType), valueType.getName() + " should be convertable to " + parameterType.getName());
     }
 
 

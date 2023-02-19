@@ -19,7 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextAttributeEvent;
@@ -32,15 +33,15 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class ListenersTest extends EventAwareTestBase {
+class ListenersTest extends EventAwareTestBase {
 
     @Test
-    public void testContextListeners() throws Exception {
+    void testContextListeners() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", WebXMLTest.SimpleGetServlet.class);
         EventVerifier verifyContext = new ServletContextEventVerifier();
@@ -72,7 +73,7 @@ public class ListenersTest extends EventAwareTestBase {
 
 
     @Test
-    public void testSessionLifecycleListeners() throws Exception {
+    void testSessionLifecycleListeners() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", WebXMLTest.SimpleGetServlet.class);
         EventVerifier verifyContext = new HttpSessionEventVerifier();
@@ -111,7 +112,7 @@ public class ListenersTest extends EventAwareTestBase {
 
 
     @Test
-    public void testSessionAttributeListeners() throws Exception {
+    void testSessionAttributeListeners() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", WebXMLTest.SimpleGetServlet.class);
         HttpSessionAttributeEventVerifier verifyAttribute = new HttpSessionAttributeEventVerifier();
@@ -158,8 +159,8 @@ public class ListenersTest extends EventAwareTestBase {
             if (!(eventObject instanceof HttpSessionBindingEvent))
                 fail("Event " + eventLabel + " did not include an http session binding event");
             HttpSessionBindingEvent bindingChange = (HttpSessionBindingEvent) eventObject;
-            assertEquals("Changed attribute name", _name, bindingChange.getName());
-            assertEquals("Changed attribute value", _value, bindingChange.getValue());
+            assertEquals(_name, bindingChange.getName(), "Changed attribute name");
+            assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
 
@@ -171,7 +172,7 @@ public class ListenersTest extends EventAwareTestBase {
 
 
     @Test
-    public void testContextAttributeListeners() throws Exception {
+    void testContextAttributeListeners() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", WebXMLTest.SimpleGetServlet.class);
         ContextAttributeEventVerifier verifyAttribute = new ContextAttributeEventVerifier();
@@ -221,8 +222,8 @@ public class ListenersTest extends EventAwareTestBase {
             if (!(eventObject instanceof ServletContextAttributeEvent))
                 fail("Event " + eventLabel + " did not include an http session binding event");
             ServletContextAttributeEvent bindingChange = (ServletContextAttributeEvent) eventObject;
-            assertEquals("Changed attribute name", _name, bindingChange.getName());
-            assertEquals("Changed attribute value", _value, bindingChange.getValue());
+            assertEquals(_name, bindingChange.getName(), "Changed attribute name");
+            assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
 

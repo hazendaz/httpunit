@@ -19,9 +19,9 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -31,30 +31,30 @@ import org.w3c.dom.html.*;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class HTMLElementTest extends AbstractHTMLElementTest {
+class HTMLElementTest extends AbstractHTMLElementTest {
 
     @Test
-    public void testCaseInsensitiveTagSearch() throws Exception {
+    void testCaseInsensitiveTagSearch() throws Exception {
         Element element = createElement("body");
         Node form = element.appendChild(createElement("form"));
         NodeList nl = element.getElementsByTagName("form");
-        assertEquals("# form nodes to find", 1, nl.getLength());
-        assertSame("Found form node", form, nl.item(0));
+        assertEquals(1, nl.getLength(), "# form nodes to find");
+        assertSame(form, nl.item(0), "Found form node");
     }
 
 
     @Test
-    public void testBaseElementDefaults() throws Exception {
+    void testBaseElementDefaults() throws Exception {
         Element element = createElement("b", new String[0][]);
-        assertTrue("node should be an HTMLElement but is " + element.getClass(), element instanceof HTMLElement);
-        assertEquals("Tag name", "B", element.getNodeName());
+        assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
+        assertEquals("B", element.getNodeName(), "Tag name");
 
         HTMLElement htmlElement = (HTMLElement) element;
-        assertNull("class name should not be specified by default", htmlElement.getClassName());
-        assertNull("direction should not be specified by default", htmlElement.getDir());
-        assertNull("id should not be specified by default", htmlElement.getId());
-        assertNull("lang should not be specified by default", htmlElement.getLang());
-        assertNull("title should not be specified by default", htmlElement.getTitle());
+        assertNull(htmlElement.getClassName(), "class name should not be specified by default");
+        assertNull(htmlElement.getDir(), "direction should not be specified by default");
+        assertNull(htmlElement.getId(), "id should not be specified by default");
+        assertNull(htmlElement.getLang(), "lang should not be specified by default");
+        assertNull(htmlElement.getTitle(), "title should not be specified by default");
     }
 
 
@@ -64,25 +64,25 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    public void testBaseElementAttributes() throws Exception {
+    void testBaseElementAttributes() throws Exception {
         Element element = createElement("code", new String[][]{{"class", "special"}, {"dir", "rtl"}, {"id", "sample"}, {"lang", "hb"}, {"title", "psalm 83"}});
-        assertTrue("node should be an HTMLElement but is " + element.getClass(), element instanceof HTMLElement);
-        assertEquals("Tag name", "CODE", element.getNodeName());
+        assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
+        assertEquals("CODE", element.getNodeName(), "Tag name");
 
         HTMLElement htmlElement = (HTMLElement) element;
-        assertEquals("class name", "special", htmlElement.getClassName());
-        assertEquals("direction", "rtl", htmlElement.getDir());
-        assertEquals("id", "sample", htmlElement.getId());
-        assertEquals("lang", "hb", htmlElement.getLang());
-        assertEquals("title", "psalm 83", htmlElement.getTitle());
+        assertEquals("special", htmlElement.getClassName(), "class name");
+        assertEquals("rtl", htmlElement.getDir(), "direction");
+        assertEquals("sample", htmlElement.getId(), "id");
+        assertEquals("hb", htmlElement.getLang(), "lang");
+        assertEquals("psalm 83", htmlElement.getTitle(), "title");
     }
 
 
     @Test
-    public void testWriteableElementAttributes() throws Exception {
+    void testWriteableElementAttributes() throws Exception {
         Element element = createElement("cite", new String[0][]);
-        assertTrue("node should be an HTMLElement but is " + element.getClass(), element instanceof HTMLElement);
-        assertEquals("Tag name", "CITE", element.getNodeName());
+        assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
+        assertEquals("CITE", element.getNodeName(), "Tag name");
 
         HTMLElement htmlElement = (HTMLElement) element;
         htmlElement.setClassName("special");
@@ -91,50 +91,50 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
         htmlElement.setLang("hb");
         htmlElement.setTitle("psalm 83");
 
-        assertEquals("class name", "special", htmlElement.getClassName());
-        assertEquals("direction", "rtl", htmlElement.getDir());
-        assertEquals("id", "sample", htmlElement.getId());
-        assertEquals("lang", "hb", htmlElement.getLang());
-        assertEquals("title", "psalm 83", htmlElement.getTitle());
+        assertEquals("special", htmlElement.getClassName(), "class name");
+        assertEquals("rtl", htmlElement.getDir(), "direction");
+        assertEquals("sample", htmlElement.getId(), "id");
+        assertEquals("hb", htmlElement.getLang(), "lang");
+        assertEquals("psalm 83", htmlElement.getTitle(), "title");
     }
 
 
     @Test
-    public void testEmptyFormDefaults() throws Exception {
+    void testEmptyFormDefaults() throws Exception {
         Element element = createElement("form", new String[][]{{"action", "go_here"}});
-        assertTrue("node should be an HTMLFormElement but is " + element.getClass(), element instanceof HTMLFormElement);
-        assertEquals("Tag name", "FORM", element.getNodeName());
+        assertTrue(element instanceof HTMLFormElement, "node should be an HTMLFormElement but is " + element.getClass());
+        assertEquals("FORM", element.getNodeName(), "Tag name");
 
         HTMLFormElement form = (HTMLFormElement) element;
-        assertEquals("default character set", "UNKNOWN", form.getAcceptCharset());
-        assertEquals("specified action", "go_here", form.getAction());
-        assertEquals("number of controls in collection", 0, form.getElements().getLength());
-        assertEquals("default form encoding", "application/x-www-form-urlencoded", form.getEnctype());
-        assertEquals("number of controls in form", 0, form.getLength());
-        assertEquals("default method", "GET", form.getMethod().toUpperCase());
-        assertNull("form name should not be specified by default", form.getName());
-        assertNull("default target is not null", form.getTarget());
+        assertEquals("UNKNOWN", form.getAcceptCharset(), "default character set");
+        assertEquals("go_here", form.getAction(), "specified action");
+        assertEquals(0, form.getElements().getLength(), "number of controls in collection");
+        assertEquals("application/x-www-form-urlencoded", form.getEnctype(), "default form encoding");
+        assertEquals(0, form.getLength(), "number of controls in form");
+        assertEquals("GET", form.getMethod().toUpperCase(), "default method");
+        assertNull(form.getName(), "form name should not be specified by default");
+        assertNull(form.getTarget(), "default target is not null");
     }
 
 
     @Test
-    public void testFormAttributes() throws Exception {
+    void testFormAttributes() throws Exception {
         Element element = createElement("form", new String[][]{{"accept-charset", "latin-1"},
                 {"enctype", "multipart/form-data"},
                 {"method", "post"},
                 {"name", "aform"},
                 {"target", "green"}});
         HTMLFormElement form = (HTMLFormElement) element;
-        assertEquals("character set", "latin-1", form.getAcceptCharset());
-        assertEquals("form encoding", "multipart/form-data", form.getEnctype());
-        assertEquals("method", "post", form.getMethod());
-        assertEquals("form name", "aform", form.getName());
-        assertEquals("target", "green", form.getTarget());
+        assertEquals("latin-1", form.getAcceptCharset(), "character set");
+        assertEquals("multipart/form-data", form.getEnctype(), "form encoding");
+        assertEquals("post", form.getMethod(), "method");
+        assertEquals("aform", form.getName(), "form name");
+        assertEquals("green", form.getTarget(), "target");
     }
 
 
     @Test
-    public void testWriteableFormAttributes() throws Exception {
+    void testWriteableFormAttributes() throws Exception {
         Element element = createElement("form", new String[][]{{"action", "go_here"}});
         HTMLFormElement form = (HTMLFormElement) element;
 
@@ -145,68 +145,68 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
         form.setName("aform");
         form.setTarget("green");
 
-        assertEquals("specified action", "go_there", form.getAction());
-        assertEquals("character set", "latin-1", form.getAcceptCharset());
-        assertEquals("form encoding", "multipart/form-data", form.getEnctype());
-        assertEquals("method", "post", form.getMethod());
-        assertEquals("form name", "aform", form.getName());
-        assertEquals("target", "green", form.getTarget());
+        assertEquals("go_there", form.getAction(), "specified action");
+        assertEquals("latin-1", form.getAcceptCharset(), "character set");
+        assertEquals("multipart/form-data", form.getEnctype(), "form encoding");
+        assertEquals("post", form.getMethod(), "method");
+        assertEquals("aform", form.getName(), "form name");
+        assertEquals("green", form.getTarget(), "target");
     }
 
 
     @Test
-    public void testTitleElement() throws Exception {
+    void testTitleElement() throws Exception {
         Element element = createElement("title");
         Text text = _htmlDocument.createTextNode("something here");
         element.appendChild(text);
 
-        assertTrue("node should be an HTMLTitleElement but is " + element.getClass(), element instanceof HTMLTitleElement);
-        assertEquals("Tag name", "TITLE", element.getNodeName());
+        assertTrue(element instanceof HTMLTitleElement, "node should be an HTMLTitleElement but is " + element.getClass());
+        assertEquals("TITLE", element.getNodeName(), "Tag name");
 
         HTMLTitleElement title = (HTMLTitleElement) element;
-        assertEquals("initial title", "something here", title.getText());
+        assertEquals("something here", title.getText(), "initial title");
 
         title.setText("what it says now");
         NodeList childNodes = element.getChildNodes();
-        assertEquals("Number of child nodes", 1, childNodes.getLength());
-        assertTrue("Sole child node is not text", childNodes.item(0) instanceof Text);
-        assertEquals("Revised title text", "what it says now", ((Text) childNodes.item(0)).getData());
-        assertEquals("revised title", "what it says now", title.getText());
+        assertEquals(1, childNodes.getLength(), "Number of child nodes");
+        assertTrue(childNodes.item(0) instanceof Text, "Sole child node is not text");
+        assertEquals("what it says now", ((Text) childNodes.item(0)).getData(), "Revised title text");
+        assertEquals("what it says now", title.getText(), "revised title");
     }
 
 
     @Test
-    public void testEmptyTitleElement() throws Exception {
+    void testEmptyTitleElement() throws Exception {
         Element element = createElement("title");
 
-        assertTrue("node should be an HTMLTitleElement but is " + element.getClass(), element instanceof HTMLTitleElement);
-        assertEquals("Tag name", "TITLE", element.getNodeName());
+        assertTrue(element instanceof HTMLTitleElement, "node should be an HTMLTitleElement but is " + element.getClass());
+        assertEquals("TITLE", element.getNodeName(), "Tag name");
 
         HTMLTitleElement title = (HTMLTitleElement) element;
-        assertEquals("initial title", "", title.getText());
+        assertEquals("", title.getText(), "initial title");
         title.setText("what it says now");
         NodeList childNodes = element.getChildNodes();
-        assertEquals("Number of child nodes", 1, childNodes.getLength());
-        assertTrue("Sole child node is not text", childNodes.item(0) instanceof Text);
-        assertEquals("Revised title text", "what it says now", ((Text) childNodes.item(0)).getData());
-        assertEquals("revised title", "what it says now", title.getText());
+        assertEquals(1, childNodes.getLength(), "Number of child nodes");
+        assertTrue(childNodes.item(0) instanceof Text, "Sole child node is not text");
+        assertEquals("what it says now", ((Text) childNodes.item(0)).getData(), "Revised title text");
+        assertEquals("what it says now", title.getText(), "revised title");
     }
 
 
     @Test
-    public void testHtmlElement() throws Exception {
+    void testHtmlElement() throws Exception {
         doElementTest("html", HTMLHtmlElement.class, new String[][]{{"version", "4.0"}});
     }
 
 
     @Test
-    public void testHeadElement() throws Exception {
+    void testHeadElement() throws Exception {
         doElementTest("head", HTMLHeadElement.class, new String[][]{{"profile", "http://www.acme.com/profiles/core"}});
     }
 
 
     @Test
-    public void testLinkElement() throws Exception {
+    void testLinkElement() throws Exception {
         doElementTest("link", HTMLLinkElement.class, new Object[][]{{"charset", "utf-8"}, {"href", "site.css"},
                 {"hreflang", "en"}, {"disabled", Boolean.TRUE, Boolean.FALSE},
                 {"rel", "ccc.html"}, {"rev", "aaa.html"}, {"target", "green"},
@@ -215,41 +215,41 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testMetaElement() throws Exception {
+    void testMetaElement() throws Exception {
         doElementTest("meta", HTMLMetaElement.class, new Object[][]{{"content", "Something"}, {"http-equiv", "Refresh"},
                 {"name", "author"}, {"scheme", "ISBN"}});
     }
 
 
     @Test
-    public void testBaseElement() throws Exception {
+    void testBaseElement() throws Exception {
         doElementTest("base", HTMLBaseElement.class, new Object[][]{{"href", "somewhere.html"}, {"target", "blue"}});
     }
 
 
     @Test
-    public void testStyleElment() throws Exception {
+    void testStyleElment() throws Exception {
         doElementTest("style", HTMLStyleElement.class, new Object[][]{{"disabled", Boolean.TRUE, Boolean.FALSE},
                 {"media", "paper", "screen"}, {"type", "text/css"}});
     }
 
 
     @Test
-    public void testBodyElement() throws Exception {
+    void testBodyElement() throws Exception {
         doElementTest("body", HTMLBodyElement.class, new Object[][]{{"aLink", "red"}, {"background", "blue"}, {"link", "azure"},
                 {"bgColor", "white"}, {"text", "maroon"}, {"vLink", "crimson"}});
     }
 
 
     @Test
-    public void testOptionElementAttributes() throws Exception {
+    void testOptionElementAttributes() throws Exception {
         doElementTest("option", HTMLOptionElement.class, new Object[][]{{"disabled", Boolean.TRUE, Boolean.FALSE}, {"label", "Vert"},
                 {"value", "green"}});
     }
 
 
     @Test
-    public void testSelectElement() throws Exception {
+    void testSelectElement() throws Exception {
         doElementTest("select", HTMLSelectElement.class, new Object[][]{{"multiple", Boolean.TRUE, Boolean.FALSE},
                 {"name", "here"}, {"tabindex", 1, 0},
                 {"size", 12, 0}, {"disabled", Boolean.TRUE, Boolean.FALSE}});
@@ -257,7 +257,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testInputElement() throws Exception {
+    void testInputElement() throws Exception {
         doElementTest("input", HTMLInputElement.class, new Object[][]{{"accept", "text/html"}, {"accessKey", "C"}, {"align", "middle", "bottom"},
                 {"alt", "check"},
                 {"disabled", Boolean.TRUE, Boolean.FALSE}, {"maxlength", 5, 0},
@@ -269,7 +269,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testButtonElement() throws Exception {
+    void testButtonElement() throws Exception {
         doElementTest("button", HTMLButtonElement.class, new Object[][]{{"accesskey", "C"}, {"disabled", Boolean.TRUE, Boolean.FALSE},
                 {"name", "here"}, {"tabindex", 1, 0},
                 {"type", "button", "submit", "ro"}, {"value", "230"}});
@@ -278,7 +278,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testTextAreaElement() throws Exception {
+    void testTextAreaElement() throws Exception {
         doElementTest("textarea", HTMLTextAreaElement.class, new Object[][]{{"accesskey", "C"}, {"cols", 1, 0},
                 {"disabled", Boolean.TRUE, Boolean.FALSE}, {"name", "here"},
                 {"readonly", Boolean.TRUE, Boolean.FALSE}, {"rows", 8, 0},
@@ -289,7 +289,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testAnchorElement() throws Exception {
+    void testAnchorElement() throws Exception {
         doElementTest("a", HTMLAnchorElement.class, new Object[][]{{"accesskey", "U"}, {"charset", "utf-8"}, {"hreflang", "en"},
                 {"name", "here"}, {"rel", "link"}, {"rev", "index"}, {"target", "green"},
                 {"type", "text/html"}});
@@ -297,7 +297,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testAreaElement() throws Exception {
+    void testAreaElement() throws Exception {
         doElementTest("area", HTMLAreaElement.class, new Object[][]{{"accesskey", "U"}, {"alt", "[draw]"}, {"coords", "30,40,20"},
                 {"nohref", Boolean.TRUE, Boolean.FALSE}, {"shape", "circle"}, {"tabindex", 4, 0},
                 {"target", "green"}});
@@ -305,7 +305,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testImageElement() throws Exception {
+    void testImageElement() throws Exception {
         doElementTest("img", HTMLImageElement.class,
                 new Object[][]{{"name", "here"}, {"align", "top"}, {"alt", "big show"},
                         {"border", "3"}, {"height", "7"},
@@ -316,14 +316,14 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
 
 
     @Test
-    public void testParagraphElement() throws Exception {
+    void testParagraphElement() throws Exception {
         doElementTest("p", HTMLParagraphElement.class,
                 new Object[][]{{"title", "here"}, {"id", "aaa"}, {"align", "top"}});
     }
 
 
     @Test
-    public void testIFrameElement() throws Exception {
+    void testIFrameElement() throws Exception {
         doElementTest("iframe", HTMLIFrameElement.class,
                 new Object[][]{{"align", "center"}, {"src", "aaa"}});
     }
@@ -336,7 +336,7 @@ public class HTMLElementTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    public void testAppletElement() throws Exception {
+    void testAppletElement() throws Exception {
         doElementTest("applet", HTMLAppletElement.class,
                 new Object[][]{{"align", "center"},/* { "alt", "an applet" }, { "archive", "my.jar" },*/
                         {"code", "here.There"}, {"codebase", "there", "."}, /*{ "height", "17" },

@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
@@ -27,7 +27,9 @@ import com.meterware.pseudoserver.WebResource;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests handling of non-Latin scripts.
@@ -35,16 +37,17 @@ import org.junit.Test;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:matsuhashi@quick.co.jp">Kazuaki Matsuhashi</a>
  */
-public class EncodingTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class EncodingTest extends HttpUnitTest {
 
 
     @Test
-    public void testDecodeWithCharacterSetAsArg() throws Exception {
+    void testDecodeWithCharacterSetAsArg() throws Exception {
         String expected = "newpage\u30b5\u30f3\u30d7\u30eb";  // "\u30b5\u30f3\u30d7\u30eb" means "SAMPLE" in Japanese EUC-JP characterSet
 
         String encodedString = "newpage%A5%B5%A5%F3%A5%D7%A5%EB";
         String actual = HttpUnitUtils.decode(encodedString, "EUC-JP");
-        assertEquals("decoded string", expected, actual);
+        assertEquals(expected, actual, "decoded string");
     }
 
     /**
@@ -53,7 +56,7 @@ public class EncodingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testParseContentHeader() throws Exception {
+    void testParseContentHeader() throws Exception {
         String headers[] = {
                 "",
                 "text/plain",
@@ -76,16 +79,16 @@ public class EncodingTest extends HttpUnitTest {
                 {"text/html", "utf-8"},
                 {"text/html", "iso-8859-8"}
         };
-        for (int i = 0; i < headers.length; i++) {
+        for (int i = 0;i < headers.length;i++) {
             String result[] = HttpUnitUtils.parseContentTypeHeader(headers[i]);
             assertEquals(2, result.length);
-            assertEquals("header " + i, expected[i][0], result[0]);
-            assertEquals("header " + i, expected[i][1], result[1]);
+            assertEquals(expected[i][0], result[0], "header " + i);
+            assertEquals(expected[i][1], result[1], "header " + i);
         } // for
     }
 
     @Test
-    public void testSpecifiedEncoding() throws Exception {
+    void testSpecifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
                 "<body>This has no data\n" +
@@ -97,13 +100,13 @@ public class EncodingTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Title", hebrewTitle, simplePage.getTitle());
-        assertEquals("Character set", "iso-8859-8", simplePage.getCharacterSet());
+        assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
+        assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
     }
 
 
     @Test
-    public void testQuotedEncoding() throws Exception {
+    void testQuotedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
                 "<body>This has no data\n" +
@@ -115,13 +118,13 @@ public class EncodingTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Title", hebrewTitle, simplePage.getTitle());
-        assertEquals("Character set", "iso-8859-8", simplePage.getCharacterSet());
+        assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
+        assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
     }
 
 
     @Test
-    public void testUnspecifiedEncoding() throws Exception {
+    void testUnspecifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
                 "<body>This has no data\n" +
@@ -134,13 +137,13 @@ public class EncodingTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Character set", "iso-8859-8", simplePage.getCharacterSet());
-        assertEquals("Title", hebrewTitle, simplePage.getTitle());
+        assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
+        assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
     }
 
 
     @Test
-    public void testMetaEncoding() throws Exception {
+    void testMetaEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title>" +
                 "<meta Http_equiv=content-type content=\"text/html; charset=iso-8859-8\"></head>\n" +
@@ -153,13 +156,13 @@ public class EncodingTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Character set", "iso-8859-8", simplePage.getCharacterSet());
-        assertEquals("Title", hebrewTitle, simplePage.getTitle());
+        assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
+        assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
     }
 
 
     @Test
-    public void testHebrewForm() throws Exception {
+    void testHebrewForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
         defineResource("HebrewForm.html",
                 "<html><head></head>" +
@@ -191,13 +194,13 @@ public class EncodingTest extends HttpUnitTest {
         WebResponse answer = wc.getResponse(request);
         String[][] cells = answer.getTables()[0].asText();
 
-        assertEquals("Message", "Hello, " + hebrewName, cells[0][0]);
-        assertEquals("Character set", "iso-8859-8", answer.getCharacterSet());
+        assertEquals("Hello, " + hebrewName, cells[0][0], "Message");
+        assertEquals("iso-8859-8", answer.getCharacterSet(), "Character set");
     }
 
 
     @Test
-    public void testEncodedRequestWithoutForm() throws Exception {
+    void testEncodedRequestWithoutForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
         defineResource("SayHello", new PseudoServlet() {
             public WebResource getPostResponse() {
@@ -223,13 +226,13 @@ public class EncodingTest extends HttpUnitTest {
         WebResponse answer = wc.getResponse(request);
         String[][] cells = answer.getTables()[0].asText();
 
-        assertEquals("Message", "Hello, " + hebrewName, cells[0][0]);
-        assertEquals("Character set", "iso-8859-8", answer.getCharacterSet());
+        assertEquals("Hello, " + hebrewName, cells[0][0], "Message");
+        assertEquals("iso-8859-8", answer.getCharacterSet(), "Character set");
     }
 
 
     @Test
-    public void testUnsupportedEncoding() throws Exception {
+    void testUnsupportedEncoding() throws Exception {
         defineResource("SimplePage.html", "not much here");
         addResourceHeader("SimplePage.html", "Content-type: text/plain; charset=BOGUS");
 
@@ -237,13 +240,13 @@ public class EncodingTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Text", "not much here", simplePage.getText());
-        assertEquals("Character set", WebResponse.getDefaultEncoding(), simplePage.getCharacterSet());
+        assertEquals("not much here", simplePage.getText(), "Text");
+        assertEquals(WebResponse.getDefaultEncoding(), simplePage.getCharacterSet(), "Character set");
     }
 
 
     @Test
-    public void testJapaneseLinkParamNameWithValue() throws Exception {
+    void testJapaneseLinkParamNameWithValue() throws Exception {
         String japaneseUrl = "request?%A5%D8%A5%EB%A5%D7=2";
         defineWebPage("Linker", "<a id='link' href='" + japaneseUrl + "'>goThere</a>");
         setResourceCharSet("Linker.html", "EUC-JP", true);
@@ -252,12 +255,12 @@ public class EncodingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse formPage = wc.getResponse(getHostPath() + "/Linker.html");
         WebResponse target = formPage.getLinkWithID("link").click();
-        assertEquals("Resultant page", "You made it!", target.getText());
+        assertEquals("You made it!", target.getText(), "Resultant page");
     }
 
 
     @Test
-    public void testJapaneseLinkParamNameWithoutValue() throws Exception {
+    void testJapaneseLinkParamNameWithoutValue() throws Exception {
         String japaneseUrl = "request?%A5%D8%A5%EB%A5%D7";
         defineWebPage("Linker", "<a id='link' href='" + japaneseUrl + "'>goThere</a>");
         setResourceCharSet("Linker.html", "EUC-JP", true);
@@ -266,28 +269,28 @@ public class EncodingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse formPage = wc.getResponse(getHostPath() + "/Linker.html");
         WebResponse target = formPage.getLinkWithID("link").click();
-        assertEquals("Resultant page", "You made it!", target.getText());
+        assertEquals("You made it!", target.getText(), "Resultant page");
     }
 
 
     @Test
-    public void testSimpleEntityReplacement() throws Exception {
+    void testSimpleEntityReplacement() throws Exception {
         String rawString = "Cox&amp;&amp;Forkum";
-        assertEquals("After substitution", "Cox&&Forkum", HttpUnitUtils.replaceEntities(rawString));
+        assertEquals("Cox&&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
 
     @Test
-    public void testSkipEntityReplacementOnBadString() throws Exception {
+    void testSkipEntityReplacementOnBadString() throws Exception {
         String rawString = "Cox&Forkum";
-        assertEquals("After substitution", "Cox&Forkum", HttpUnitUtils.replaceEntities(rawString));
+        assertEquals("Cox&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
 
     @Test
-    public void testSkipEntityReplacementOnUnhandledEntity() throws Exception {
+    void testSkipEntityReplacementOnUnhandledEntity() throws Exception {
         String rawString = "&lt;something&gt;";
-        assertEquals("After substitution", "&lt;something&gt;", HttpUnitUtils.replaceEntities(rawString));
+        assertEquals("&lt;something&gt;", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
 

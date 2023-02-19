@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.HttpUnitTest;
 
@@ -49,23 +49,23 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="russgold@httpunit.org">Russell Gold</a>
  */
 
-public class RequestContextTest extends HttpUnitTest {
+class RequestContextTest extends HttpUnitTest {
 
     /**
      * Verify parsing of a query string.
      */
     @Test
-    public void testQueryStringParsing() throws Exception {
+    void testQueryStringParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic?param=red&param1=old&param=blue"));
         assertMatchingSet("parameter names", new String[]{"param", "param1"}, rc.getParameterNames());
         assertMatchingSet("param values", new String[]{"red", "blue"}, rc.getParameterValues("param"));
-        assertEquals("param1 value", "old", ((String[]) rc.getParameterMap().get("param1"))[0]);
+        assertEquals("old", ((String[]) rc.getParameterMap().get("param1"))[0], "param1 value");
     }
 
 
@@ -73,13 +73,13 @@ public class RequestContextTest extends HttpUnitTest {
      * Verify override of parent request parameters.
      */
     @Test
-    public void testParameterOverride() throws Exception {
+    void testParameterOverride() throws Exception {
         HttpServletRequest request = new DummyHttpServletRequest(new URL("http://localhost/basic?param=red&param1=old&param=blue"));
         RequestContext context = new RequestContext(new URL("http://localhost/second?param=yellow&param2=fast"));
         context.setParentRequest(request);
         assertMatchingSet("parameter names", new String[]{"param", "param1", "param2"}, context.getParameterNames());
         assertMatchingSet("param values", new String[]{"yellow"}, context.getParameterValues("param"));
-        assertEquals("param1 value", "old", ((String[]) context.getParameterMap().get("param1"))[0]);
+        assertEquals("old", ((String[]) context.getParameterMap().get("param1"))[0], "param1 value");
     }
 
 
@@ -87,12 +87,12 @@ public class RequestContextTest extends HttpUnitTest {
      * Verify parsing of message body parameters.
      */
     @Test
-    public void testPostParameterParsing() throws Exception {
+    void testPostParameterParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
         rc.setMessageBody("param=red&param1=old&param=blue".getBytes(StandardCharsets.UTF_8));
         assertMatchingSet("parameter names", new String[]{"param", "param1"}, rc.getParameterNames());
         assertMatchingSet("param values", new String[]{"red", "blue"}, rc.getParameterValues("param"));
-        assertEquals("param1 value", "old", ((String[]) rc.getParameterMap().get("param1"))[0]);
+        assertEquals("old", ((String[]) rc.getParameterMap().get("param1"))[0], "param1 value");
     }
 
 
@@ -100,7 +100,7 @@ public class RequestContextTest extends HttpUnitTest {
      * Verify parsing of message body parameters using a specified character encoding.
      */
     @Test
-    public void testEncodedParameterParsing() throws Exception {
+    void testEncodedParameterParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param=red&param1=%E0%E1%E2%E3&param=blue";
@@ -108,7 +108,7 @@ public class RequestContextTest extends HttpUnitTest {
         rc.setMessageEncoding("iso-8859-8");
         assertMatchingSet("parameter names", new String[]{"param", "param1"}, rc.getParameterNames());
         assertMatchingSet("param values", new String[]{"red", "blue"}, rc.getParameterValues("param"));
-        assertEquals("param1 value", hebrewValue, ((String[]) rc.getParameterMap().get("param1"))[0]);
+        assertEquals(hebrewValue, ((String[]) rc.getParameterMap().get("param1"))[0], "param1 value");
     }
 
 

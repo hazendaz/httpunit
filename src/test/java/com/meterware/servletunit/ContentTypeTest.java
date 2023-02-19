@@ -41,7 +41,8 @@ package com.meterware.servletunit;
  *
  * *****************************************************************************************************************
  */
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebClient;
@@ -55,9 +56,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly
@@ -73,16 +74,16 @@ public class ContentTypeTest
     {
     }
 
-    @Before
-    public void setUp()
+    @BeforeEach
+    void setUp()
     {
         runner = new ServletRunner();
         runner.registerServlet("/test1", TestServlet1.class.getName());
         runner.registerServlet("/test2", TestServlet2.class.getName());
     }
 
-    @After
-    public void tearDown()
+    @AfterEach
+    void tearDown()
     {
         runner.shutDown();
     }
@@ -94,7 +95,7 @@ public class ContentTypeTest
      * response coming back from the servlet under test.)
      */
     @Test
-    public void testProvidedContentTypeOverwritten() throws Exception
+    void testProvidedContentTypeOverwritten() throws Exception
     {
         WebClient client = runner.newClient();
         WebRequest request = new GetMethodWebRequest("http://localhost/test1");
@@ -136,7 +137,7 @@ public class ContentTypeTest
      * response coming back from the servlet under test.)
      */
     @Test
-    public void testContentProvidedWhenNoneSpecified() throws Exception
+    void testContentProvidedWhenNoneSpecified() throws Exception
     {
         WebClient client = runner.newClient();
         WebRequest request = new GetMethodWebRequest("http://localhost/test2");
@@ -150,7 +151,7 @@ public class ContentTypeTest
         // unfortunately currently the default content type is "text/plain; charset=iso-8859-1"
         // whereas the HttpUnitOptions default Content Type is "text/html" ...
         // we'll check for the current state for the time being 2012-09-13
-        assertEquals("text/plain; charset=iso-8859-1",response.getHeaderField("Content-Type"));
+        assertEquals("text/plain; charset=iso-8859-1", response.getHeaderField("Content-Type"));
     }
 
     /*

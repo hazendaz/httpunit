@@ -19,8 +19,8 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
@@ -32,11 +32,14 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test to verify miscellaneous requests with message bodies.
  **/
+@ExtendWith(ExternalResourceSupport.class)
 public class MessageBodyRequestTest extends HttpUnitTest {
 
 	/**
@@ -56,102 +59,102 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 		return wr;
 	}
 
-	/**
-	 * test a generic Post request
-	 * @throws Exception
-	 */
+    /**
+     * test a generic Post request
+     * @throws Exception
+     */
     @Test
-    public void testGenericPostRequest() throws Exception {
-		WebConversation wc = new WebConversation();
-		String sourceData="This is an interesting test\nWith two lines";
-		WebRequest wr = makeRequest("ReportData",sourceData, "text/sample");
-		WebResponse response = wc.getResponse(wr);
-		assertEquals("Body response", "\nPOST\n" + sourceData, response.getText());
-		assertEquals("Content-type", "text/sample", response.getContentType());
-	}
+    void testGenericPostRequest() throws Exception {
+        WebConversation wc = new WebConversation();
+        String sourceData = "This is an interesting test\nWith two lines";
+        WebRequest wr = makeRequest("ReportData", sourceData, "text/sample");
+        WebResponse response = wc.getResponse(wr);
+        assertEquals("\nPOST\n" + sourceData, response.getText(), "Body response");
+        assertEquals("text/sample", response.getContentType(), "Content-type");
+    }
 
-	/**
-	 * test for Patch by Serge Maslyukov for empty content Types
-	 * @throws Exception
-	 */
+    /**
+     * test for Patch by Serge Maslyukov for empty content Types
+     * @throws Exception
+     */
     @Test
-    public void testEmptyContentType() throws Exception {
-		WebConversation wc = new WebConversation();
-		String emptyContentType=""; // this is an emptyContentType
-		WebRequest wr = makeRequest("something","some data",emptyContentType);
-		WebResponse response = wc.getResponse(wr);
-		assertEquals("Content-type", "",wr.getContentType());
-	}
+    void testEmptyContentType() throws Exception {
+        WebConversation wc = new WebConversation();
+        String emptyContentType = ""; // this is an emptyContentType
+        WebRequest wr = makeRequest("something", "some data", emptyContentType);
+        WebResponse response = wc.getResponse(wr);
+        assertEquals("", wr.getContentType(), "Content-type");
+    }
 
     @Test
-    public void testPutRequest() throws Exception {
+    void testPutRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
-		String sourceData = "This is an interesting test\nWith two lines";
-		InputStream source = new ByteArrayInputStream(sourceData
-				.getBytes(StandardCharsets.ISO_8859_1));
+        String sourceData = "This is an interesting test\nWith two lines";
+        InputStream source = new ByteArrayInputStream(sourceData
+                .getBytes(StandardCharsets.ISO_8859_1));
 
-		WebConversation wc = new WebConversation();
-		WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
-				source, "text/plain");
-		WebResponse response = wc.getResponse(wr);
-		assertEquals("Body response", "\nPUT\n" + sourceData, response
-				.getText());
-	}
+        WebConversation wc = new WebConversation();
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
+                source, "text/plain");
+        WebResponse response = wc.getResponse(wr);
+        assertEquals("\nPUT\n" + sourceData, response
+                .getText(), "Body response");
+    }
 
-	/**
-	 * test for download problem described by Oliver Wahlen
-	 */
+    /**
+     * test for download problem described by Oliver Wahlen
+     */
     @Test
-    public void testDownloadRequestUsingGetText() throws Exception {
+    void testDownloadRequestUsingGetText() throws Exception {
         defineResource("ReportData", new BodyEcho());
-    	byte[] binaryData = new byte[256];
-    	for(int i=0;i<=255;i++) {
-    		binaryData[i] = (byte)i;
-    	}
+        byte[] binaryData = new byte[256];
+        for (int i = 0;i <= 255;i++) {
+            binaryData[i] = (byte) i;
+        }
 
-    	InputStream source = new ByteArrayInputStream( binaryData );
+        InputStream source = new ByteArrayInputStream( binaryData );
 
-    	WebConversation wc = new WebConversation();
-    	WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random" );
-    	WebResponse response = wc.getResponse( wr );
-    	// currently the following line does not work:
-    	byte[] download = response.getText().getBytes(StandardCharsets.UTF_8);
-    	// 	currently the following line works:
-    	// byte[] download = getDownload( response );
-    	// and this one is now available ...
-    	download=response.getBytes();
-		assertArrayEquals("Body response", binaryData, download);
-	}
+        WebConversation wc = new WebConversation();
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random" );
+        WebResponse response = wc.getResponse(wr);
+        // currently the following line does not work:
+        byte[] download = response.getText().getBytes(StandardCharsets.UTF_8);
+        // 	currently the following line works:
+        // byte[] download = getDownload( response );
+        // and this one is now available ...
+        download = response.getBytes();
+        assertArrayEquals(binaryData, download, "Body response");
+    }
 
     @Test
-    public void testDownloadRequest() throws Exception {
+    void testDownloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
-		byte[] binaryData = new byte[] { 0x01, 0x05, 0x0d, 0x0a, 0x02 };
+        byte[] binaryData = new byte[]{0x01, 0x05, 0x0d, 0x0a, 0x02};
 
-		InputStream source = new ByteArrayInputStream(binaryData);
+        InputStream source = new ByteArrayInputStream(binaryData);
 
-		WebConversation wc = new WebConversation();
-		WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
-				source, "application/random");
-		WebResponse response = wc.getResponse(wr);
-		byte[] download = response.getBytes();
-		assertArrayEquals("Body response", binaryData, download);
+        WebConversation wc = new WebConversation();
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
+                source, "application/random");
+        WebResponse response = wc.getResponse(wr);
+        byte[] download = response.getBytes();
+        assertArrayEquals(binaryData, download, "Body response");
 
-		download = getDownload(response);
-		assertArrayEquals("Body response", binaryData, download);
+        download = getDownload(response);
+        assertArrayEquals(binaryData, download, "Body response");
 
-		download = response.getBytes();
-		assertArrayEquals("Body response", binaryData, download);
-	}
+        download = response.getBytes();
+        assertArrayEquals(binaryData, download, "Body response");
+    }
 
-	/**
-	 * test for BR [ 1964665 ] HeaderOnlyRequest cannot be constructed
-	 */
+    /**
+     * test for BR [ 1964665 ] HeaderOnlyRequest cannot be constructed
+     */
     @Test
-    public void testHeaderOnlyWebRequest() throws Exception {
-		HeaderOnlyWebRequest r = new HeaderOnlyWebRequest(
-				"http://www.google.com");
-	}
+    void testHeaderOnlyWebRequest() throws Exception {
+        HeaderOnlyWebRequest r = new HeaderOnlyWebRequest(
+                "http://www.google.com");
+    }
 
 	/**
 	 * please do not copy this function any more - use getBytes instead ...

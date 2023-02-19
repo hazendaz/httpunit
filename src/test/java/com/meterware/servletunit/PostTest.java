@@ -19,9 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebForm;
@@ -37,7 +36,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 /* uncomment this and the other jetty dependend parts and also activate the pom.xml and if you use eclipse the classpath settings
@@ -79,7 +78,7 @@ public class PostTest {
         form.setParameter("brainz", "has none");
         form.submit();
         int expected = 1;
-        assertTrue("The postcount should be " + expected + " but is " + TestServlet.postCount, TestServlet.postCount == expected);
+        assertEquals(TestServlet.postCount, expected, "The postcount should be " + expected + " but is " + TestServlet.postCount);
     }
 
     /*
@@ -99,7 +98,7 @@ public class PostTest {
      }*/
 
     @Test
-    public void testMultiplePosts() throws Exception {
+    void testMultiplePosts() throws Exception {
         TestServlet.location = "http://localhost/";
 
         try {
@@ -116,7 +115,7 @@ public class PostTest {
     }
 
     @Test
-    public void testMultiPartPost() throws Exception {
+    void testMultiPartPost() throws Exception {
         TestServlet.location = "http://localhost/";
 
         ServletRunner sr = new ServletRunner();

@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -50,8 +50,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the ServletUnitHttpRequest class.
@@ -63,8 +63,8 @@ public class HttpServletRequestTest extends ServletUnitTest {
     private ServletUnitContext _context;
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _context = new ServletUnitContext(null, null, new SessionListenerDispatcher() {
             public void sendSessionCreated(HttpSession session) {
             }
@@ -86,18 +86,18 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
 
     @Test
-    public void testHeaderAccess() throws Exception {
+    void testHeaderAccess() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("sample", "value");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
-        assertEquals("sample header value", "value", request.getHeader("sample"));
+        assertEquals("value", request.getHeader("sample"), "sample header value");
 
         assertContains("Header names", "sample", request.getHeaderNames());
         Enumeration e = request.getHeaders("Sample");
-        assertNotNull("No header enumeration returned", e);
-        assertTrue("Enumeration is empty", e.hasMoreElements());
-        assertEquals("first header", "value", e.nextElement());
-        assertFalse("Enumeration has spurious header value", e.hasMoreElements());
+        assertNotNull(e, "No header enumeration returned");
+        assertTrue(e.hasMoreElements(), "Enumeration is empty");
+        assertEquals("value", e.nextElement(), "first header");
+        assertFalse(e.hasMoreElements(), "Enumeration has spurious header value");
     }
 
     /**
@@ -106,20 +106,20 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testDateHeaderAccess() throws Exception {
+    void testDateHeaderAccess() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         String dateStr = "Mon, 26 Jul 1997 05:00:00 GMT";
         Date testDate = new Date(dateStr);
         wr.setHeaderField("Expires", dateStr);
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         String dateStrRequest = request.getHeader("Expires");
-        assertTrue("Expires header field", dateStrRequest.equals(dateStr));
+        assertEquals(dateStrRequest, dateStr, "Expires header field");
         // invalid date headers return -1
         long requestDate = request.getDateHeader("invalid");
-        assertTrue("invalid date header field", requestDate == -1);
+        assertEquals(-1, requestDate, "invalid date header field");
         // valid date header field return the millisecs
         requestDate = request.getDateHeader("Expires");
-        assertTrue("Expires date header field", requestDate == testDate.getTime());
+        assertEquals(requestDate, testDate.getTime(), "Expires date header field");
     }
 
 
@@ -133,30 +133,30 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
 
     @Test
-    public void testGetDefaultProperties() throws Exception {
+    void testGetDefaultProperties() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
-        assertNull("Authorization incorrectly specified", request.getAuthType());
-        assertNull("Character encoding incorrectly specified", request.getCharacterEncoding());
-        assertEquals("Parameters unexpectedly specified", "", request.getQueryString());
-        assertNotNull("No input stream available", request.getInputStream());
+        assertNull(request.getAuthType(), "Authorization incorrectly specified");
+        assertNull(request.getCharacterEncoding(), "Character encoding incorrectly specified");
+        assertEquals("", request.getQueryString(), "Parameters unexpectedly specified");
+        assertNotNull(request.getInputStream(), "No input stream available");
     }
 
 
     @Test
-    public void testSetSingleValuedParameter() throws Exception {
+    void testSetSingleValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[]{"red", "blue"});
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertEquals("age parameter", "12", request.getParameter("age"));
-        assertNull("unset parameter should be null", request.getParameter("unset"));
+        assertEquals("12", request.getParameter("age"), "age parameter");
+        assertNull(request.getParameter("unset"), "unset parameter should be null");
     }
 
 
     @Test
-    public void testSetMultiValuedParameter() throws Exception {
+    void testSetMultiValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[]{"red", "blue"});
@@ -164,7 +164,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         assertMatchingSet("age parameter", new String[]{"12"}, request.getParameterValues("age"));
         assertMatchingSet("color parameter", new String[]{"red", "blue"}, request.getParameterValues("color"));
-        assertNull("unset parameter should be null", request.getParameterValues("unset"));
+        assertNull(request.getParameterValues("unset"), "unset parameter should be null");
     }
 
     /**
@@ -174,7 +174,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * by Sven Helmberger
      */
     @Test
-    public void testParameterWithSpacesAndAt() throws Exception {
+    void testParameterWithSpacesAndAt() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         String pValueWithSpaces = "This Input is to long";
         String pValueWithAt = "@user@example.org";
@@ -182,27 +182,27 @@ public class HttpServletRequestTest extends ServletUnitTest {
         String result = wr.getParameter("age");
         // according to Klaus Halfman as of 2005-02-18 / version 1.6 results in "This+Input+is+to+long"
         // System.err.println(result);
-        assertEquals("spaces should survive", pValueWithSpaces, result);
+        assertEquals(pValueWithSpaces, result, "spaces should survive");
         wr.setParameter("age", pValueWithAt);
         result = wr.getParameter("age");
-        assertEquals("@ should survive", pValueWithAt, result);
+        assertEquals(pValueWithAt, result, "@ should survive");
     }
 
     /**
      */
     @Test
-    public void testParameterWithAt() throws Exception {
+    void testParameterWithAt() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         String pValueWithSpaces = "This Input is to long";
         wr.setParameter("age", pValueWithSpaces);
         String result = wr.getParameter("age");
         // according to Klaus Halfman as of 2005-02-18 / version 1.6 results in "This+Input+is+to+long"
         // System.err.println(result);
-        assertEquals("spaces should survive", pValueWithSpaces, result);
+        assertEquals(pValueWithSpaces, result, "spaces should survive");
     }
 
     @Test
-    public void testParameterMap() throws Exception {
+    void testParameterMap() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[]{"red", "blue"});
@@ -211,18 +211,18 @@ public class HttpServletRequestTest extends ServletUnitTest {
         Map map = request.getParameterMap();
         assertMatchingSet("age parameter", new String[]{"12"}, (Object[]) map.get("age"));
         assertMatchingSet("color parameter", new String[]{"red", "blue"}, (Object[]) map.get("color"));
-        assertNull("unset parameter should be null", map.get("unset"));
+        assertNull(map.get("unset"), "unset parameter should be null");
     }
 
 
     @Test
-    public void testSetQueryString() throws Exception {
+    void testSetQueryString() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[]{"red", "blue"});
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertEquals("query string", "color=red&color=blue&age=12", request.getQueryString());
+        assertEquals("color=red&color=blue&age=12", request.getQueryString(), "query string");
     }
 
 
@@ -233,7 +233,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testBug1212204() throws Exception {
+    void testBug1212204() throws Exception {
         WebRequest request = new
                 GetMethodWebRequest("http://localhost/pathinfo?queryString");
         //assertEquals("queryString", request.getQueryString());
@@ -257,33 +257,33 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
 
     @Test
-    public void testInlineSingleValuedParameter() throws Exception {
+    void testInlineSingleValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertEquals("age parameter", "12", request.getParameter("age"));
-        assertNull("unset parameter should be null", request.getParameter("unset"));
+        assertEquals("12", request.getParameter("age"), "age parameter");
+        assertNull(request.getParameter("unset"), "unset parameter should be null");
     }
 
 
     @Test
-    public void testInlineParameterWithEmbeddedSpace() throws Exception {
+    void testInlineParameterWithEmbeddedSpace() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=dark+red&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertEquals("age parameter", "12", request.getParameter("age"));
-        assertEquals("color parameter", "dark red", request.getParameter("color"));
+        assertEquals("12", request.getParameter("age"), "age parameter");
+        assertEquals("dark red", request.getParameter("color"), "color parameter");
     }
 
 
     @Test
-    public void testInlineMultiValuedParameter() throws Exception {
+    void testInlineMultiValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
         assertMatchingSet("age parameter", new String[]{"12"}, request.getParameterValues("age"));
         assertMatchingSet("color parameter", new String[]{"red", "blue"}, request.getParameterValues("color"));
-        assertNull("unset parameter should be null", request.getParameterValues("unset"));
+        assertNull(request.getParameterValues("unset"), "unset parameter should be null");
     }
 
 
@@ -303,8 +303,8 @@ public class HttpServletRequestTest extends ServletUnitTest {
         wr.setParameter("param1", "red");
         wr.setParameter("param2", hebrewValue);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), new byte[0]);
-        assertEquals("param1 value", "red", request.getParameter("param1"));
-        assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
+        assertEquals("red", request.getParameter("param1"), "param1 value");
+        assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
     /**
@@ -315,7 +315,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_UTF8() throws Exception {
+    void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_UTF8() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use utf-8 to encode the data, then string is URL encoded
         HttpUnitOptions.setDefaultCharacterSet("UTF-8");
@@ -323,125 +323,125 @@ public class HttpServletRequestTest extends ServletUnitTest {
         wr.setParameter("param1", "red");
         wr.setParameter("param2", hebrewValue);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), new byte[0]);
-        assertEquals("param1 value", "red", request.getParameter("param1"));
-        assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
+        assertEquals("red", request.getParameter("param1"), "param1 value");
+        assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
     public void notestInlineQueryString() throws Exception {     // TODO make this work
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertEquals("query string", "color=red&color=blue&age=12", request.getQueryString());
+        assertEquals("color=red&color=blue&age=12", request.getQueryString(), "query string");
     }
 
 
     @Test
-    public void testRequestMessageBody() throws Exception {
+    void testRequestMessageBody() throws Exception {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PutMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), body.getBytes(StandardCharsets.UTF_8));
 
-        assertEquals("Request content length", body.length(), request.getContentLength());
+        assertEquals(body.length(), request.getContentLength(), "Request content length");
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
         byte[] buffer = new byte[request.getContentLength()];
         bis.read(buffer);
-        assertEquals("Request content", body, new String(buffer));
+        assertEquals(body, new String(buffer), "Request content");
     }
 
 
     @Test
-    public void testDefaultAttributes() throws Exception {
+    void testDefaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertNull("attribute should not be defined yet", request.getAttribute("unset"));
-        assertTrue("attribute enumeration should be empty", !request.getAttributeNames().hasMoreElements());
+        assertNull(request.getAttribute("unset"), "attribute should not be defined yet");
+        assertFalse(request.getAttributeNames().hasMoreElements(), "attribute enumeration should be empty");
     }
 
 
     @Test
-    public void testNonDefaultAttributes() throws Exception {
+    void testNonDefaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         Object value = Integer.valueOf(1);
 
         request.setAttribute("one", value);
 
-        assertEquals("attribute one", value, request.getAttribute("one"));
+        assertEquals(value, request.getAttribute("one"), "attribute one");
 
         Enumeration names = request.getAttributeNames();
-        assertTrue("attribute enumeration should not be empty", names.hasMoreElements());
-        assertEquals("contents in enumeration", "one", names.nextElement());
-        assertTrue("attribute enumeration should now be empty", !names.hasMoreElements());
+        assertTrue(names.hasMoreElements(), "attribute enumeration should not be empty");
+        assertEquals("one", names.nextElement(), "contents in enumeration");
+        assertFalse(names.hasMoreElements(), "attribute enumeration should now be empty");
     }
 
 
     @Test
-    public void testDuplicateAttributes() throws Exception {
+    void testDuplicateAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
         request.setAttribute("one", Integer.valueOf(1));
         request.setAttribute("one", "One");
-        assertEquals("Revised attribute value", "One", request.getAttribute("one"));
+        assertEquals("One", request.getAttribute("one"), "Revised attribute value");
     }
 
 
     @Test
-    public void testNullAttributeValue() throws Exception {
+    void testNullAttributeValue() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
         request.setAttribute("one", "One");
-        assertEquals("Initial attribute value", "One", request.getAttribute("one"));
+        assertEquals("One", request.getAttribute("one"), "Initial attribute value");
         request.setAttribute("one", null);
-        assertNull("Attribute 'one' should have been removed", request.getAttribute("one"));
+        assertNull(request.getAttribute("one"), "Attribute 'one' should have been removed");
     }
 
 
     @Test
-    public void testDefaultCookies() throws Exception {
+    void testDefaultCookies() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         Cookie[] cookies = request.getCookies();
-        assertNull("Unexpected cookies found", cookies);
+        assertNull(cookies, "Unexpected cookies found");
     }
 
 
     @Test
-    public void testSetCookieViaRequestHeader() throws Exception {
+    void testSetCookieViaRequestHeader() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Cookie", "flavor=vanilla,variety=sandwich");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
 
         Cookie[] cookies = request.getCookies();
-        assertNotNull("No cookies found", cookies);
-        assertEquals("Num cookies found", 2, cookies.length);
-        assertEquals("Cookie 1 name", "flavor", cookies[0].getName());
-        assertEquals("Cookie 1 value", "vanilla", cookies[0].getValue());
-        assertEquals("Cookie 2 name", "variety", cookies[1].getName());
-        assertEquals("Cookie 2 value", "sandwich", cookies[1].getValue());
+        assertNotNull(cookies, "No cookies found");
+        assertEquals(2, cookies.length, "Num cookies found");
+        assertEquals("flavor", cookies[0].getName(), "Cookie 1 name");
+        assertEquals("vanilla", cookies[0].getValue(), "Cookie 1 value");
+        assertEquals("variety", cookies[1].getName(), "Cookie 2 name");
+        assertEquals("sandwich", cookies[1].getValue(), "Cookie 2 value");
     }
 
 
     @Test
-    public void testGetSessionForFirstTime() throws MalformedURLException {
+    void testGetSessionForFirstTime() throws MalformedURLException {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         ServletUnitContext context = _context;
-        assertEquals("Initial number of sessions in context", 0, context.getSessionIDs().size());
+        assertEquals(0, context.getSessionIDs().size(), "Initial number of sessions in context");
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable(), NO_MESSAGE_BODY);
-        assertNull("New request should not have a request session ID", request.getRequestedSessionId());
-        assertNull("New request should not have a session", request.getSession( /* create */ false));
-        assertEquals("Number of sessions in the context after request.getSession(false)", 0, context.getSessionIDs().size());
+        assertNull(request.getRequestedSessionId(), "New request should not have a request session ID");
+        assertNull(request.getSession( /* create */ false), "New request should not have a session");
+        assertEquals(0, context.getSessionIDs().size(), "Number of sessions in the context after request.getSession(false)");
 
         HttpSession session = request.getSession();
-        assertNotNull("No session created", session);
-        assertTrue("Session not marked as new", session.isNew());
-        assertEquals("Number of sessions in context after request.getSession()", 1, context.getSessionIDs().size());
-        assertSame("Session with ID", session, context.getSession(session.getId()));
-        assertNull("New request should still not have a request session ID", request.getRequestedSessionId());
+        assertNotNull(session, "No session created");
+        assertTrue(session.isNew(), "Session not marked as new");
+        assertEquals(1, context.getSessionIDs().size(), "Number of sessions in context after request.getSession()");
+        assertSame(session, context.getSession(session.getId()), "Session with ID");
+        assertNull(request.getRequestedSessionId(), "New request should still not have a request session ID");
     }
 
     /**
@@ -450,7 +450,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * by Michael Corum
      */
     @Test
-    public void testGetUserCookies() throws Exception {
+    void testGetUserCookies() throws Exception {
         String FIRST_COOKIE = "RANDOM_COOKIE";
         String SECOND_COOKIE = "ANOTHER_COOKIE";
         String FIRST_COOKIE_VALUE = "cookie1";
@@ -483,7 +483,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * will cause a session to be made available.
      */
     @Test
-    public void testRetrieveSession() throws Exception {
+    void testRetrieveSession() throws Exception {
         ServletUnitContext context = _context;
         final ServletUnitHttpSession session = context.newSession();
         final String sessionID = session.getId();
@@ -492,15 +492,15 @@ public class HttpServletRequestTest extends ServletUnitTest {
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + sessionID);
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable(), NO_MESSAGE_BODY);
-        assertEquals("Requested session ID defined in request", sessionID, request.getRequestedSessionId());
+        assertEquals(sessionID, request.getRequestedSessionId(), "Requested session ID defined in request");
 
-        assertSame("Session returned when creation not requested", session, request.getSession( /* create */ false));
-        assertSame("Session returned when creation requested", session, request.getSession(true));
+        assertSame(session, request.getSession( /* create */ false), "Session returned when creation not requested");
+        assertSame(session, request.getSession(true), "Session returned when creation requested");
     }
 
 
     @Test
-    public void testAccessForbiddenToInvalidSession() throws Exception {
+    void testAccessForbiddenToInvalidSession() throws Exception {
         ServletUnitContext context = _context;
 
         HttpSession session = context.newSession();
@@ -531,7 +531,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * Obtains a new session, invalidates it, and verifies that
      */
     @Test
-    public void testSessionInvalidation() throws Exception {
+    void testSessionInvalidation() throws Exception {
         ServletUnitContext context = _context;
         HttpSession originalSession = context.newSession();
         String originalID = originalSession.getId();
@@ -547,13 +547,13 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         originalSession.invalidate();
 
-        assertNull("Invalidated session returned", request.getSession(false));
+        assertNull(request.getSession(false), "Invalidated session returned");
 
         HttpSession newSession = request.getSession(true);
-        assertNotNull("getSession(true) did not return a session", newSession);
-        assertNotSame("getSession(true) returned the original invalidated session", originalSession, newSession);
-        assertSame("session returned by getSession(false)", newSession, request.getSession(false));
-        assertSame("Session in context with new ID", newSession, context.getSession(newSession.getId()));
+        assertNotNull(newSession, "getSession(true) did not return a session");
+        assertNotSame(originalSession, newSession, "getSession(true) returned the original invalidated session");
+        assertSame(newSession, request.getSession(false), "session returned by getSession(false)");
+        assertSame(newSession, context.getSession(newSession.getId()), "Session in context with new ID");
     }
 
 
@@ -561,7 +561,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * Verifies that a request with a bad session ID causes a new session to be generated only when explicitly requested.
      */
     @Test
-    public void testGetSessionWithBadCookie() throws Exception {
+    void testGetSessionWithBadCookie() throws Exception {
         ServletUnitContext context = _context;
         HttpSession originalSession = context.newSession();
         String originalID = originalSession.getId();
@@ -575,9 +575,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + (originalID + "BAD"));
         request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable(), NO_MESSAGE_BODY);
 
-        assertNull("Unexpected session returned for bad cookie", request.getSession(false));
-        assertNotNull("Should have returned session when asked", request.getSession(true));
-        assertNotSame("Created session", originalSession, request.getSession(true));
+        assertNull(request.getSession(false), "Unexpected session returned for bad cookie");
+        assertNotNull(request.getSession(true), "Should have returned session when asked");
+        assertNotSame(originalSession, request.getSession(true), "Created session");
     }
 
 
@@ -610,8 +610,8 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     @Test
-    public void testGetRequestURI() throws Exception {
-    	testGetRequestURI("http://localhost/simple","/simple");
+    void testGetRequestURI() throws Exception {
+        testGetRequestURI("http://localhost/simple", "/simple");
     }
 
     /**
@@ -619,12 +619,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetRequestURIWithPort() throws Exception {
-    	testGetRequestURI("http://localhost:8042/simple8042","/simple8042");
+    void testGetRequestURIWithPort() throws Exception {
+        testGetRequestURI("http://localhost:8042/simple8042", "/simple8042");
     }
 
     @Test
-    public void testDefaultLocale() throws Exception {
+    void testDefaultLocale() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
@@ -642,52 +642,52 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSecureProperty() throws Exception {
+    void testSecureProperty() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
-        assertFalse("Incorrectly noted request as secure", request.isSecure());
+        assertFalse(request.isSecure(), "Incorrectly noted request as secure");
         assertEquals("http", request.getScheme(), "http");
 
         WebRequest secureReq = new GetMethodWebRequest("https://localhost/simple");
         request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Hashtable(), NO_MESSAGE_BODY);
-        assertTrue("Request not marked as secure", request.isSecure());
+        assertTrue(request.isSecure(), "Request not marked as secure");
         assertEquals("https", request.getScheme(), "https");
 
         wr = new GetMethodWebRequest("ftp://localhost/simple");
         request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
-        assertFalse("Incorrectly noted request as secure", request.isSecure());
+        assertFalse(request.isSecure(), "Incorrectly noted request as secure");
         assertEquals("ftp", request.getScheme(), "ftp");
 
         secureReq = new GetMethodWebRequest("ftps://localhost/simple");
         try {
             request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Hashtable(), NO_MESSAGE_BODY);
-            assertTrue("Request not marked as secure", request.isSecure());
+            assertTrue(request.isSecure(), "Request not marked as secure");
             assertEquals("ftps", request.getScheme(), "ftps");
         } catch (java.net.MalformedURLException mue) {
             // as of 2008-03 this happends - I'm not sure whether that should be expected WF
             String msg = mue.getMessage();
             // System.err.println(msg);
-            assertTrue("ftps is not a known protocol", msg.indexOf("unknown protocol: ftps") >= 0);
+            assertTrue(msg.indexOf("unknown protocol: ftps") >= 0, "ftps is not a known protocol");
         }
     }
 
 
     private void verifyLocales(ServletUnitHttpRequest request, Locale[] expectedLocales) {
-        assertNotNull("No default locale found", request.getLocale());
-        assertEquals("default locale", expectedLocales[0], request.getLocale());
+        assertNotNull(request.getLocale(), "No default locale found");
+        assertEquals(expectedLocales[0], request.getLocale(), "default locale");
 
         final Enumeration locales = request.getLocales();
-        assertNotNull("local enumeration not returned", locales);
+        assertNotNull(locales, "local enumeration not returned");
         for (int i = 0; i < expectedLocales.length; i++) {
-            assertTrue("Expected " + expectedLocales.length + " locales, only found " + i, locales.hasMoreElements());
-            assertEquals("Locale #" + (i + 1), expectedLocales[i], locales.nextElement());
+            assertTrue(locales.hasMoreElements(), "Expected " + expectedLocales.length + " locales, only found " + i);
+            assertEquals(expectedLocales[i], locales.nextElement(), "Locale #" + (i + 1));
         }
-        assertFalse("Too many locales returned", locales.hasMoreElements());
+        assertFalse(locales.hasMoreElements(), "Too many locales returned");
     }
 
 
     @Test
-    public void testSpecifiedLocales() throws Exception {
+    void testSpecifiedLocales() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Accept-language", "fr, en;q=0.6, en-us;q=0.7");
 
@@ -700,7 +700,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     * by Tim
     */
     @Test
-    public void testGetInputStreamSameObject() throws Exception {
+    void testGetInputStreamSameObject() throws Exception {
         byte[] bytes = new byte[0];
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -708,12 +708,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         InputStream first = request.getInputStream();
         InputStream second = request.getInputStream();
-        assertSame("Different InputStreams", first, second);
+        assertSame(first, second, "Different InputStreams");
     }
 
 
     @Test
-    public void testGetInputStreamAfterGetReader() throws Exception {
+    void testGetInputStreamAfterGetReader() throws Exception {
         byte[] bytes = new byte[0];
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -730,7 +730,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
 
     @Test
-    public void testGetInputStream() throws Exception {
+    void testGetInputStream() throws Exception {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -739,12 +739,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
         byte[] buffer = new byte[request.getContentLength()];
         bis.read(buffer);
-        assertEquals("Request content", body, new String(buffer, "UTF-8"));
+        assertEquals(body, new String(buffer, "UTF-8"), "Request content");
     }
 
 
     @Test
-    public void testGetReaderSameObject() throws Exception {
+    void testGetReaderSameObject() throws Exception {
         byte[] bytes = new byte[0];
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -752,12 +752,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         BufferedReader first = request.getReader();
         BufferedReader second = request.getReader();
-        assertSame("Different Readers", first, second);
+        assertSame(first, second, "Different Readers");
     }
 
 
     @Test
-    public void testGetReaderAfterGetInputStream() throws Exception {
+    void testGetReaderAfterGetInputStream() throws Exception {
         byte[] bytes = new byte[0];
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -774,7 +774,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
 
     @Test
-    public void testGetReaderDefaultCharset() throws Exception {
+    void testGetReaderDefaultCharset() throws Exception {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(HttpUnitUtils.DEFAULT_CHARACTER_SET));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -782,7 +782,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         char[] buffer = new char[body.length()];
         request.getReader().read(buffer);
-        assertEquals("Request content", body, new String(buffer));
+        assertEquals(body, new String(buffer), "Request content");
     }
 
 
@@ -799,7 +799,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         char[] buffer = new char[body.length()];
         request.getReader().read(buffer);
-        assertEquals("Request content", body, new String(buffer));
+        assertEquals(body, new String(buffer), "Request content");
     }
 
 
@@ -810,14 +810,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSpecifiedCharEncoding() throws Exception {
+    void testSpecifiedCharEncoding() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param1=red&param2=%E0%E1%E2%E3";  // use iso-8859-8 to encode the data
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Content-Type", "application/x-www-form-urlencoded; charset=ISO-8859-8");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes(StandardCharsets.ISO_8859_1));
-        assertEquals("param1 value", "red", request.getParameter("param1"));
-        assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
+        assertEquals("red", request.getParameter("param1"), "param1 value");
+        assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
     private InvocationContextFactory _dummyfactory = new InvocationContextFactory() {
@@ -831,7 +831,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     };
 
     @Test
-    public void testSpecifiedCharEncoding2() throws Exception {
+    void testSpecifiedCharEncoding2() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         HttpUnitOptions.setDefaultCharacterSet("iso-8859-8");
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
@@ -842,20 +842,20 @@ public class HttpServletRequestTest extends ServletUnitTest {
         ByteArrayOutputStream messageBody = client.getMessageBody(wr);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), messageBody.toByteArray());
         String parameter = request.getParameter("param2");
-        assertEquals("param2 value", hebrewValue, parameter);
-        assertEquals("param1 value", "red", request.getParameter("param1"));
+        assertEquals(hebrewValue, parameter, "param2 value");
+        assertEquals("red", request.getParameter("param1"), "param1 value");
     }
 
 
     @Test
-    public void testSuppliedCharEncoding() throws Exception {   // xxx turn this back on
+    void testSuppliedCharEncoding() throws Exception {   // xxx turn this back on
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param1=red&param2=%E0%E1%E2%E3";  // use iso-8859-8 to encode the data, then string is URL encoded
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), paramString.getBytes(StandardCharsets.ISO_8859_1));
         request.setCharacterEncoding("ISO-8859-8");
-        assertEquals("param1 value", "red", request.getParameter("param1"));
-        assertEquals("param2 value", hebrewValue, request.getParameter("param2"));
+        assertEquals("red", request.getParameter("param1"), "param1 value");
+        assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
     /**
@@ -864,11 +864,11 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultHttpServerPort() throws Exception {
+    void testDefaultHttpServerPort() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         int serverPort = request.getServerPort();
-        assertEquals("default http server port", serverPort, 80);
+        assertEquals(80, serverPort, "default http server port");
     }
 
     /**
@@ -877,11 +877,11 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSuppliedHttpServerPort() throws Exception {
+    void testSuppliedHttpServerPort() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost:8080/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         int serverPort = request.getServerPort();
-        assertEquals("supplied http server port", serverPort, 8080);
+        assertEquals(8080, serverPort, "supplied http server port");
     }
 
     /**
@@ -890,11 +890,11 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    public void testServerName() throws Exception {
+    void testServerName() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://myhost:8080/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(), NO_MESSAGE_BODY);
         String serverName = request.getServerName();
-        assertEquals("server name", serverName, "myhost");
+        assertEquals("myhost", serverName, "server name");
     }
 
 

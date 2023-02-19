@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.PostMethodWebRequest;
@@ -37,15 +37,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests support for state-management behavior.
  */
-public class StatefulTest {
+class StatefulTest {
 
     @Test
-    public void testNoInitialState() throws Exception {
+    void testNoInitialState() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -53,15 +53,15 @@ public class StatefulTest {
 
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName);
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "No session found", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("No session found", response.getText(), "requested resource");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testStateCookies() throws Exception {
+    void testStateCookies() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -70,13 +70,13 @@ public class StatefulTest {
         WebRequest request = new PostMethodWebRequest("http://localhost/" + resourceName);
         request.setParameter("color", "red");
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("Returned cookie count", 1, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testStatePreservation() throws Exception {
+    void testStatePreservation() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -88,21 +88,21 @@ public class StatefulTest {
         WebRequest request = new PostMethodWebRequest("http://localhost/" + resourceName1);
         request.setParameter("color", "red");
         WebResponse response = wc.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You selected red", response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You selected red", response.getText(), "requested resource");
 
         request = new GetMethodWebRequest("http://localhost/" + resourceName2);
         response = wc.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You posted red", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You posted red", response.getText(), "requested resource");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testSessionPreloading() throws Exception {
+    void testSessionPreloading() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -114,15 +114,15 @@ public class StatefulTest {
         wc.getSession(true).setAttribute("color", "green");
         WebRequest request = new GetMethodWebRequest("http://localhost/" + resourceName2);
         WebResponse response = wc.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You posted green", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You posted green", response.getText(), "requested resource");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testSessionAccess() throws Exception {
+    void testSessionAccess() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -134,13 +134,13 @@ public class StatefulTest {
         request.setParameter("color", "yellow");
         sr.getResponse(request);
 
-        assertNotNull("No session was created", sr.getSession(false));
-        assertEquals("Color attribute in session", "yellow", sr.getSession(false).getAttribute("color"));
+        assertNotNull(sr.getSession(false), "No session was created");
+        assertEquals("yellow", sr.getSession(false).getAttribute("color"), "Color attribute in session");
     }
 
 
     @Test
-    public void testInvocationContext() throws Exception {
+    void testInvocationContext() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -152,25 +152,25 @@ public class StatefulTest {
 
         InvocationContext ic = suc.newInvocation(request);
         StatefulServlet ss = (StatefulServlet) ic.getServlet();
-        assertNull("A session already exists", ss.getColor(ic.getRequest()));
+        assertNull(ss.getColor(ic.getRequest()), "A session already exists");
 
         ss.setColor(ic.getRequest(), "blue");
-        assertEquals("Color in session", "blue", ss.getColor(ic.getRequest()));
+        assertEquals("blue", ss.getColor(ic.getRequest()), "Color in session");
 
         Enumeration e = ic.getRequest().getSession().getAttributeNames();
-        assertNotNull("No attribute list returned", e);
-        assertTrue("No attribute names in list", e.hasMoreElements());
-        assertEquals("First attribute name", "color", e.nextElement());
-        assertTrue("List did not end after one name", !e.hasMoreElements());
+        assertNotNull(e, "No attribute list returned");
+        assertTrue(e.hasMoreElements(), "No attribute names in list");
+        assertEquals("color", e.nextElement(), "First attribute name");
+        assertFalse(e.hasMoreElements(), "List did not end after one name");
 
         String[] names = ic.getRequest().getSession().getValueNames();
-        assertEquals("number of value names", 1, names.length);
-        assertEquals("first name", "color", names[0]);
+        assertEquals(1, names.length, "number of value names");
+        assertEquals("color", names[0], "first name");
     }
 
 
     @Test
-    public void testInvocationCompletion() throws Exception {
+    void testInvocationCompletion() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -186,13 +186,13 @@ public class StatefulTest {
         ss.writeSelectMessage("blue", ic.getResponse().getWriter());
 
         WebResponse response = ic.getServletResponse();
-        assertEquals("requested resource", "You selected blue", response.getText());
-        assertEquals("Returned cookie count", 1, response.getNewCookieNames().length);
+        assertEquals("You selected blue", response.getText(), "requested resource");
+        assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testInvocationContextUpdate() throws Exception {
+    void testInvocationContextUpdate() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -208,10 +208,10 @@ public class StatefulTest {
         suc.getResponse(ic);
 
         WebResponse response = suc.getResponse("http://localhost/" + resourceName);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/plain", response.getContentType());
-        assertEquals("requested resource", "You posted blue", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("text/plain", response.getContentType(), "content type");
+        assertEquals("You posted blue", response.getText(), "requested resource");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 

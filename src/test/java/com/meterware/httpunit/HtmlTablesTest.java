@@ -19,10 +19,12 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the table handling code.
@@ -30,10 +32,11 @@ import org.junit.Test;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class HtmlTablesTest extends HttpUnitTest {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _wc = new WebConversation();
 
         defineWebPage("OneTable", "<h2>Interesting data</h2>" +
@@ -54,7 +57,7 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testFindNoTables() throws Exception {
+    void testFindNoTables() throws Exception {
         defineWebPage("Default", "This has no tables but it does" +
                 "have <a href=\"/other.html\">an active link</A>" +
                 " and <a name=here>an anchor</a>");
@@ -67,7 +70,7 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testFindOneTable() throws Exception {
+    void testFindOneTable() throws Exception {
         WebTable[] tables = _wc.getResponse(getHostPath() + "/OneTable.html").getTables();
         assertEquals(1, tables.length);
     }
@@ -79,7 +82,7 @@ public class HtmlTablesTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testPurgeEmptyCells() throws Exception {
+    void testPurgeEmptyCells() throws Exception {
         defineWebPage("StrangeSpan", "<h2>Interesting data</h2>" +
                 "<table class=\"headerTable\" width=\"97%\" cellspacing=\"2\" cellpadding=\"0\" border=\"0\" id=\"personalTable\">\n" +
                 "        <tr>\n" +
@@ -116,7 +119,7 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(6, table.getColumnCount());
         assertEquals(8, table.getRowCount());
         table.purgeEmptyCells();
-        assertEquals("after purging Cells there should be 2 columns left", 2, table.getColumnCount());
+        assertEquals(2, table.getColumnCount(), "after purging Cells there should be 2 columns left");
         assertEquals(8, table.getRowCount());
         String[][] text = table.asText();
         int row = 0;
@@ -145,7 +148,7 @@ public class HtmlTablesTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testPurgeEmptyCells2() throws Exception {
+    void testPurgeEmptyCells2() throws Exception {
         defineWebPage("BrokenSpan", "<h2>Broken Span</h2>" +
                 "<table id=\"testTable\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
                 "   <tr>" +
@@ -163,9 +166,9 @@ public class HtmlTablesTest extends HttpUnitTest {
         //String expected="WebTable:\n[0]:   [0]=  [1]=h3  [2]=h3\n[1]:   [0]=a  [1]=a  [2]=1";
         String expected = table.toString();
         table.purgeEmptyCells();
-        assertEquals("1st", table.toString(), expected);
+        assertEquals(table.toString(), expected, "1st");
         table.purgeEmptyCells();
-        assertEquals("2nd", table.toString(), expected);
+        assertEquals(table.toString(), expected, "2nd");
     }
 
 
@@ -175,7 +178,7 @@ public class HtmlTablesTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testFindTableSize() throws Exception {
+    void testFindTableSize() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
         assertEquals(5, table.getRowCount());
         assertEquals(3, table.getColumnCount());
@@ -193,7 +196,7 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testFindTableCell() throws Exception {
+    void testFindTableCell() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
         assertEquals("Two", table.getCellAsText(2, 0));
         assertEquals("3", table.getCellAsText(4, 2));
@@ -201,19 +204,19 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testTableAsText() throws Exception {
+    void testTableAsText() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
         table.purgeEmptyCells();
         String[][] text = table.asText();
-        assertEquals("rows with text", 3, text.length);
+        assertEquals(3, text.length, "rows with text");
         assertEquals("Two", text[1][0]);
         assertEquals("3", text[2][1]);
-        assertEquals("columns with text", 2, text[0].length);
+        assertEquals(2, text[0].length, "columns with text");
     }
 
 
     @Test
-    public void testNestedTable() throws Exception {
+    void testNestedTable() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table summary=\"outer one\">" +
                 "<tr><td>" +
@@ -226,22 +229,22 @@ public class HtmlTablesTest extends HttpUnitTest {
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable[] tables = page.getTables();
-        assertEquals("top level tables count", 1, tables.length);
-        assertEquals("rows", 1, tables[0].getRowCount());
-        assertEquals("columns", 1, tables[0].getColumnCount());
+        assertEquals(1, tables.length, "top level tables count");
+        assertEquals(1, tables[0].getRowCount(), "rows");
+        assertEquals(1, tables[0].getColumnCount(), "columns");
         WebTable[] nested = tables[0].getTableCell(0, 0).getTables();
-        assertEquals("nested tables count", 1, nested.length);
-        assertEquals("nested rows", 2, nested[0].getRowCount());
-        assertEquals("nested columns", 2, nested[0].getColumnCount());
+        assertEquals(1, nested.length, "nested tables count");
+        assertEquals(2, nested[0].getRowCount(), "nested rows");
+        assertEquals(2, nested[0].getColumnCount(), "nested columns");
 
         String nestedString = tables[0].getCellAsText(0, 0);
-        assertTrue("Cannot find 'Red' in string", nestedString.indexOf("Red") >= 0);
-        assertTrue("Cannot find 'Blue' in string", nestedString.indexOf("Blue") >= 0);
+        assertTrue(nestedString.indexOf("Red") >= 0, "Cannot find 'Red' in string");
+        assertTrue(nestedString.indexOf("Blue") >= 0, "Cannot find 'Blue' in string");
     }
 
 
     @Test
-    public void testColumnSpan() throws Exception {
+    void testColumnSpan() throws Exception {
         WebResponse page = _wc.getResponse(getHostPath() + "/SpanTable.html");
         WebTable table = page.getTables()[0];
         assertEquals("Colors", table.getCellAsText(0, 0));
@@ -271,19 +274,19 @@ public class HtmlTablesTest extends HttpUnitTest {
      * by AutoTest
      */
     @Test
-    public void testColumnNumberInTable() throws Exception {
+    void testColumnNumberInTable() throws Exception {
         defineWebPage("Default", htmlForBug1043368);
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTableStartingWithPrefix("Test Form");
-        assertNotNull("didn't find table", table);
+        assertNotNull(table, "didn't find table");
         // System.out.println( table.toString() );
-        assertFalse("wrong table", table.getCellAsText(1, 0).indexOf("Contact Name") == -1);
-        assertEquals("wrong column count", 4, table.getColumnCount());
+        assertNotNull(-1, "wrong table");
+        assertEquals(4, table.getColumnCount(), "wrong column count");
     }
 
 
     @Test
-    public void testRowSpan() throws Exception {
+    void testRowSpan() throws Exception {
         WebResponse page = _wc.getResponse(getHostPath() + "/SpanTable.html");
         WebTable table = page.getTables()[0];
         assertEquals(3, table.getRowCount());
@@ -296,7 +299,7 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testMissingColumns() throws Exception {
+    void testMissingColumns() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table summary=\"tough luck\">" +
                 "<tr><th colspan=2>Colors</th><th>Names</th></tr>" +
@@ -313,7 +316,7 @@ public class HtmlTablesTest extends HttpUnitTest {
 
 
     @Test
-    public void testInnerTableSeek() throws Exception {
+    void testInnerTableSeek() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table id=you summary=\"outer one\">" +
                 "<tr><td>Here we are</td><td>" +
@@ -333,38 +336,38 @@ public class HtmlTablesTest extends HttpUnitTest {
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable wt = page.getTableStartingWith("Red");
-        assertNotNull("Did not find table starting with 'Red'", wt);
+        assertNotNull(wt, "Did not find table starting with 'Red'");
         wt.purgeEmptyCells();
         String[][] cells = wt.asText();
-        assertEquals("Non-blank rows", 2, cells.length);
-        assertEquals("Non-blank columns", 2, cells[0].length);
-        assertEquals("cell at 1,0", "Blue", cells[1][0]);
+        assertEquals(2, cells.length, "Non-blank rows");
+        assertEquals(2, cells[0].length, "Non-blank columns");
+        assertEquals("Blue", cells[1][0], "cell at 1,0");
 
         wt = page.getTableStartingWithPrefix("Re");
-        assertNotNull("Did not find table starting with prefix 'Re'", wt);
+        assertNotNull(wt, "Did not find table starting with prefix 'Re'");
         cells = wt.asText();
-        assertEquals("Non-blank rows", 2, cells.length);
-        assertEquals("Non-blank columns", 2, cells[0].length);
-        assertEquals("cell at 1,0", "Blue", cells[1][0]);
+        assertEquals(2, cells.length, "Non-blank rows");
+        assertEquals(2, cells[0].length, "Non-blank columns");
+        assertEquals("Blue", cells[1][0], "cell at 1,0");
 
         wt = page.getTableWithSummary("Inner One");
-        assertNotNull("Did not find table with summary 'Inner One'", wt);
+        assertNotNull(wt, "Did not find table with summary 'Inner One'");
         cells = wt.asText();
-        assertEquals("Total rows", 3, cells.length);
-        assertEquals("Total columns", 2, cells[0].length);
-        assertEquals("cell at 2,0", "White", cells[2][0]);
+        assertEquals(3, cells.length, "Total rows");
+        assertEquals(2, cells[0].length, "Total columns");
+        assertEquals("White", cells[2][0], "cell at 2,0");
 
         wt = page.getTableWithID("me");
-        assertNotNull("Did not find table with id 'me'", wt);
+        assertNotNull(wt, "Did not find table with id 'me'");
         cells = wt.asText();
-        assertEquals("Total rows", 3, cells.length);
-        assertEquals("Total columns", 2, cells[0].length);
-        assertEquals("cell at 2,0", "White", cells[2][0]);
+        assertEquals(3, cells.length, "Total rows");
+        assertEquals(2, cells[0].length, "Total columns");
+        assertEquals("White", cells[2][0], "cell at 2,0");
     }
 
 
     @Test
-    public void testSpanOverEmptyColumns() throws Exception {
+    void testSpanOverEmptyColumns() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table summary=little>" +
                 "<tr><td colspan=2>Title</td><td>Data</td></tr>" +
@@ -376,14 +379,14 @@ public class HtmlTablesTest extends HttpUnitTest {
         WebTable table = page.getTableStartingWith("Title");
         table.purgeEmptyCells();
         String[][] cells = table.asText();
-        assertEquals("Non-blank rows", 3, cells.length);
-        assertEquals("Non-blank columns", 2, cells[0].length);
-        assertEquals("cell at 1,1", "Value", cells[1][1]);
+        assertEquals(3, cells.length, "Non-blank rows");
+        assertEquals(2, cells[0].length, "Non-blank columns");
+        assertEquals("Value", cells[1][1], "cell at 1,1");
     }
 
 
     @Test
-    public void testSpanOverAllEmptyColumns() throws Exception {
+    void testSpanOverAllEmptyColumns() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table summary=little>" +
                 "<tr><td colspan=2>Title</td><td>Data</td></tr>" +
@@ -395,14 +398,14 @@ public class HtmlTablesTest extends HttpUnitTest {
         WebTable table = page.getTableStartingWith("Title");
         table.purgeEmptyCells();
         String[][] cells = table.asText();
-        assertEquals("Non-blank rows", 3, cells.length);
-        assertEquals("Non-blank columns", 2, cells[0].length);
-        assertEquals("cell at 1,1", "Value", cells[1][1]);
+        assertEquals(3, cells.length, "Non-blank rows");
+        assertEquals(2, cells[0].length, "Non-blank columns");
+        assertEquals("Value", cells[1][1], "cell at 1,1");
     }
 
 
     @Test
-    public void testTableInParagraph() throws Exception {
+    void testTableInParagraph() throws Exception {
         defineWebPage("Default", "<p>" +
                 "<table summary=little>" +
                 "<tr><td>a</td><td>b</td><td>Value</td></tr>" +
@@ -410,15 +413,15 @@ public class HtmlTablesTest extends HttpUnitTest {
                 "</table></p>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
-        assertEquals("Number of tables in paragraph", 1, page.getTextBlocks()[0].getTables().length);
-        assertEquals("Number of tables in page", 1, page.getTables().length);
+        assertEquals(1, page.getTextBlocks()[0].getTables().length, "Number of tables in paragraph");
+        assertEquals(1, page.getTables().length, "Number of tables in page");
     }
 
     /**
      * Get a specific cell with a given id in a WebTable
      */
     @Test
-    public void testCellsWithID() throws Exception {
+    void testCellsWithID() throws Exception {
         defineWebPage("Default", "<h2>Interesting data</h2>" +
                 "<table id=\"table\" summary=little>" +
                 "<tr><td>Title</td><td>Data</td></tr>" +
@@ -428,30 +431,30 @@ public class HtmlTablesTest extends HttpUnitTest {
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTableWithID("table");
-        assertNotNull("there is a table", table);
+        assertNotNull(table, "there is a table");
         TableCell cell = table.getTableCellWithID("id1");
-        assertNotNull("cell id1", cell);
-        assertEquals("Value of cell id1", "value1", cell.getText());
+        assertNotNull(cell, "cell id1");
+        assertEquals("value1", cell.getText(), "Value of cell id1");
         cell = table.getTableCellWithID("id2");
-        assertNotNull("cell id2", cell);
-        assertEquals("Value of cell id2", "value2", cell.getText());
+        assertNotNull(cell, "cell id2");
+        assertEquals("value2", cell.getText(), "Value of cell id2");
 
         // test non existent cell id
         cell = table.getTableCellWithID("nonExistingID");
-        assertNull("cell id2", cell);
+        assertNull(cell, "cell id2");
 
         cell = (TableCell) page.getElementWithID("id1");
-        assertEquals("value of cell found from page", "value1", cell.getText());
+        assertEquals("value1", cell.getText(), "value of cell found from page");
     }
 
     /**
      * Test that the tag name can be extracted for a cell.
      */
     @Test
-    public void testCellTagName() throws Exception {
+    void testCellTagName() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
-        assertEquals("Tag name of header cell", table.getTableCell(0, 0).getTagName().toUpperCase(), "TH");
-        assertEquals("Tag name of non-header cell", table.getTableCell(0, 1).getTagName().toUpperCase(), "TD");
+        assertEquals("TH", table.getTableCell(0, 0).getTagName().toUpperCase(), "Tag name of header cell");
+        assertEquals("TD", table.getTableCell(0, 1).getTagName().toUpperCase(), "Tag name of non-header cell");
     }
 
     private WebConversation _wc;

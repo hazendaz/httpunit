@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.cookies.Cookie;
 import com.meterware.pseudoserver.PseudoServlet;
@@ -41,15 +41,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class WebClientTest extends HttpUnitTest {
 
-    @Ignore
+    @Disabled
     public void testNoSuchServer() throws Exception {
         WebConversation wc = new WebConversation();
 
@@ -69,16 +72,16 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testNotFound() throws Exception {
+    void testNotFound() throws Exception {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/nothing.htm");
         try {
             wc.getResponse(request);
             fail("Should have rejected the request");
         } catch (HttpNotFoundException e) {
-            assertEquals("Response code", HttpURLConnection.HTTP_NOT_FOUND, e.getResponseCode());
-            assertEquals("Response message", "unable to find /nothing.htm", e.getResponseMessage());
-            assertEquals("Response text", "", e.getResponse().getText());
+            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getResponseCode(), "Response code");
+            assertEquals("unable to find /nothing.htm", e.getResponseMessage(), "Response message");
+            assertEquals("", e.getResponse().getText(), "Response text");
         }
     }
 
@@ -88,11 +91,11 @@ public class WebClientTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    public void testUndefinedResource() throws IOException {
+    void testUndefinedResource() throws IOException {
         boolean originalState = HttpUnitOptions
                 .getExceptionsThrownOnErrorStatus();
         // try two cases for throwException true on i==0, false on i==1
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0;i < 2;i++) {
             boolean throwException = i == 0;
             HttpUnitOptions.setExceptionsThrownOnErrorStatus(throwException);
             WebResponse response = null;
@@ -114,11 +117,11 @@ public class WebClientTest extends HttpUnitTest {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response
                     .getResponseCode());
             if (throwException) {
-                assertEquals("with throwException=" + throwException, "", response.getText());
-                assertEquals("with throwException=" + throwException, "unable to find /undefined", response.getResponseMessage());
+                assertEquals("", response.getText(), "with throwException=" + throwException);
+                assertEquals("unable to find /undefined", response.getResponseMessage(), "with throwException=" + throwException);
             } else {
                 // FIXME what do we expect here and how do we get it!
-                assertEquals("with throwException=" + throwException, "unable to find /undefined", response.getText());
+                assertEquals("unable to find /undefined", response.getText(), "with throwException=" + throwException);
                 assertNull(response.getResponseMessage());
             }
         }
@@ -127,20 +130,20 @@ public class WebClientTest extends HttpUnitTest {
 
 
     @Test
-    public void testNotModifiedResponse() throws Exception {
+    void testNotModifiedResponse() throws Exception {
         defineResource("error.htm", "Not Modified", 304);
 
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/error.htm");
         WebResponse response = wc.getResponse(request);
-        assertEquals("Response code", 304, response.getResponseCode());
+        assertEquals(304, response.getResponseCode(), "Response code");
         response.getText();
         response.getInputStream().read();
     }
 
 
     @Test
-    public void testInternalErrorException() throws Exception {
+    void testInternalErrorException() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
 
         WebConversation wc = new WebConversation();
@@ -149,26 +152,26 @@ public class WebClientTest extends HttpUnitTest {
             wc.getResponse(request);
             fail("Should have rejected the request");
         } catch (HttpException e) {
-            assertEquals("Response code", 501, e.getResponseCode());
+            assertEquals(501, e.getResponseCode(), "Response code");
         }
     }
 
 
     @Test
-    public void testInternalErrorDisplay() throws Exception {
+    void testInternalErrorDisplay() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
 
         WebConversation wc = new WebConversation();
         wc.setExceptionsThrownOnErrorStatus(false);
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/internalError.htm");
         WebResponse response = wc.getResponse(request);
-        assertEquals("Response code", 501, response.getResponseCode());
-        assertEquals("Message contents", "Internal error", response.getText().trim());
+        assertEquals(501, response.getResponseCode(), "Response code");
+        assertEquals("Internal error", response.getText().trim(), "Message contents");
     }
 
 
     @Test
-    public void testSimpleGet() throws Exception {
+    void testSimpleGet() throws Exception {
         String resourceName = "something/interesting";
         String resourceValue = "the desired content";
 
@@ -177,13 +180,13 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
     }
 
 
     @Test
-    public void testFunkyGet() throws Exception {
+    void testFunkyGet() throws Exception {
         String resourceName = "ID=03.019c010101010001.00000001.a202000000000019. 0d09/login/";
         String resourceValue = "the desired content";
 
@@ -192,8 +195,8 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
     }
 
     /**
@@ -202,7 +205,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testCookies() throws Exception {
+    void testCookies() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -217,31 +220,31 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
         String[] names = wc.getCookieNames();
         // for (int i=0;i<names.length;i++)   	System.err.println(names[i]);
 
-        assertEquals("number of cookies", 8, names.length);
-        assertEquals("cookie 'HSBCLoginFailReason' value", "", wc.getCookieValue("HSBCLoginFailReason"));
-        assertEquals("cookie 'age' value", "12", wc.getCookieValue("age"));
-        assertEquals("cookie 'name' value", "george", wc.getCookieValue("name"));
-        assertEquals("cookie 'type' value", "short", wc.getCookieValue("type"));
-        assertEquals("cookie 'funky' value", "ab$==", wc.getCookieValue("funky"));
-        assertEquals("cookie 'p30waco_sso' value", "3.0,en,us,AMERICA,Drew", wc.getCookieValue("p30waco_sso"));
-        assertEquals("cookie 'PORTAL30_SSO_TEST' value", "X", wc.getCookieValue("PORTAL30_SSO_TEST"));
-        assertEquals("cookie 'SESSION_ID' value", "17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", wc.getCookieValue("SESSION_ID"));
+        assertEquals(8, names.length, "number of cookies");
+        assertEquals("", wc.getCookieValue("HSBCLoginFailReason"), "cookie 'HSBCLoginFailReason' value");
+        assertEquals("12", wc.getCookieValue("age"), "cookie 'age' value");
+        assertEquals("george", wc.getCookieValue("name"), "cookie 'name' value");
+        assertEquals("short", wc.getCookieValue("type"), "cookie 'type' value");
+        assertEquals("ab$==", wc.getCookieValue("funky"), "cookie 'funky' value");
+        assertEquals("3.0,en,us,AMERICA,Drew", wc.getCookieValue("p30waco_sso"), "cookie 'p30waco_sso' value");
+        assertEquals("X", wc.getCookieValue("PORTAL30_SSO_TEST"), "cookie 'PORTAL30_SSO_TEST' value");
+        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", wc.getCookieValue("SESSION_ID"), "cookie 'SESSION_ID' value");
         // addition for [ 1488617 ] alternate patch for cookie bug #1371204
         Cookie cookie = wc.getCookieDetails("age");
         assertTrue(cookie != null);
-        assertEquals(cookie.getDomain(), "localhost");
-        assertEquals(cookie.getValue(), "12");
-        assertEquals(cookie.getPath(), "/something");
+        assertEquals("localhost", cookie.getDomain());
+        assertEquals("12", cookie.getValue());
+        assertEquals("/something", cookie.getPath());
     }
 
 
     @Test
-    public void testCookiesDisabled() throws Exception {
+    void testCookiesDisabled() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -252,14 +255,14 @@ public class WebClientTest extends HttpUnitTest {
         wc.getClientProperties().setAcceptCookies(false);
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("number of cookies", 0, wc.getCookieNames().length);
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(0, wc.getCookieNames().length, "number of cookies");
     }
 
 
     @Test
-    public void testOldCookies() throws Exception {
+    void testOldCookies() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -269,10 +272,10 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("number of cookies", 1, wc.getCookieNames().length);
-        assertEquals("cookie 'CUSTOMER' value", "WILE_E_COYOTE", wc.getCookieValue("CUSTOMER"));
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(1, wc.getCookieNames().length, "number of cookies");
+        assertEquals("WILE_E_COYOTE", wc.getCookieValue("CUSTOMER"), "cookie 'CUSTOMER' value");
     }
 
     /**
@@ -281,15 +284,15 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testManualCookies() throws Exception {
+    void testManualCookies() throws Exception {
         defineResource("bounce", new CookieEcho());
         WebConversation wc = new WebConversation();
         wc.putCookie("CUSTOMER", "WILE_E_COYOTE");
         WebResponse response = wc.getResponse(getHostPath() + "/bounce");
-        assertEquals("Cookies sent", "CUSTOMER=WILE_E_COYOTE", response.getText());
+        assertEquals("CUSTOMER=WILE_E_COYOTE", response.getText(), "Cookies sent");
         wc.putCookie("CUSTOMER", "ROAD RUNNER");
         response = wc.getResponse(getHostPath() + "/bounce");
-        assertEquals("Cookies sent", "CUSTOMER=ROAD RUNNER", response.getText());
+        assertEquals("CUSTOMER=ROAD RUNNER", response.getText(), "Cookies sent");
     }
 
 
@@ -327,12 +330,12 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testEmptyCookie() throws Exception {
+    void testEmptyCookie() throws Exception {
         defineResource("bounce", new CookieEcho());
         WebConversation wc = new WebConversation();
         wc.putCookie("EMPTYVALUE", "non-empty");
         WebResponse response = wc.getResponse(getHostPath() + "/bounce");
-        assertEquals("Cookies sent", "EMPTYVALUE=non-empty", response.getText());
+        assertEquals("EMPTYVALUE=non-empty", response.getText(), "Cookies sent");
         wc.putCookie("SOMECOOKIE", "some value");
         wc.putCookie("EMPTYVALUE", null);
         response = wc.getResponse(getHostPath() + "/bounce");
@@ -343,7 +346,7 @@ public class WebClientTest extends HttpUnitTest {
         // be if we handle empty strings as cookie deletions
         // as long as 1799532 is rejected we'll go for a 2 here ...
         // [ 1371208 ] Patch for Cookie bug #1371204 has a solution to use 1 ...
-        assertEquals("number of cookies", 1, names.length);
+        assertEquals(1, names.length, "number of cookies");
         //  for (int i=0;i<names.length;i++)   	System.err.println(names[i]);
     }
 
@@ -357,7 +360,7 @@ public class WebClientTest extends HttpUnitTest {
 
 
     @Test
-    public void testHeaderFields() throws Exception {
+    void testHeaderFields() throws Exception {
         defineResource("getHeaders", new PseudoServlet() {
             public WebResource getGetResponse() {
                 StringBuilder sb = new StringBuilder();
@@ -370,12 +373,12 @@ public class WebClientTest extends HttpUnitTest {
         wc.getClientProperties().setUserAgent("me alone");
         wc.setHeaderField("junky", "Mozilla 6");
         WebResponse wr = wc.getResponse(getHostPath() + "/getHeaders");
-        assertEquals("headers found", "Mozilla 6<-->me alone", wr.getText());
+        assertEquals("Mozilla 6<-->me alone", wr.getText(), "headers found");
     }
 
 
     @Test
-    public void testBasicAuthentication() throws Exception {
+    void testBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             public WebResource getGetResponse() {
                 return new WebResource(getHeader("Authorization"), "text/plain");
@@ -385,7 +388,7 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setAuthorization("user", "password");
         WebResponse wr = wc.getResponse(getHostPath() + "/getAuthorization");
-        assertEquals("authorization", "Basic dXNlcjpwYXNzd29yZA==", wr.getText());
+        assertEquals("Basic dXNlcjpwYXNzd29yZA==", wr.getText(), "authorization");
     }
 
 
@@ -395,7 +398,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testOnDemandBasicAuthentication() throws Exception {
+    void testOnDemandBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
@@ -412,7 +415,7 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm", "user", "password");
         WebResponse wr = wc.getResponse(getHostPath() + "/getAuthorization");
-        assertEquals("authorization", "Basic dXNlcjpwYXNzd29yZA==", wr.getText());
+        assertEquals("Basic dXNlcjpwYXNzd29yZA==", wr.getText(), "authorization");
     }
 
     /**
@@ -421,7 +424,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testOnDemandBasicAuthenticationInputStream() throws Exception {
+    void testOnDemandBasicAuthenticationInputStream() throws Exception {
         defineResource("postRequiringAuthentication", new PseudoServlet() {
             public WebResource getPostResponse() {
                 String header = getHeader("Authorization");
@@ -456,7 +459,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception if an unexpected exception is thrown.
      */
     @Test
-    public void testBasicAuthenticationRequestedForUnknownRealm() throws Exception {
+    void testBasicAuthenticationRequestedForUnknownRealm() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
@@ -476,7 +479,7 @@ public class WebClientTest extends HttpUnitTest {
             wc.getResponse(getHostPath() + "/getAuthorization");
             fail("Should have rejected authentication");
         } catch (AuthorizationRequiredException e) {
-            assertEquals("authorization scheme", "Basic", e.getAuthenticationScheme());
+            assertEquals("Basic", e.getAuthenticationScheme(), "authorization scheme");
             assertEquals("bogusrealm", e.getAuthenticationParameter("realm"));
         }
     }
@@ -487,7 +490,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testAuthenticationNegotiateRequest() throws Exception {
+    void testAuthenticationNegotiateRequest() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
@@ -504,11 +507,12 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm", "user", "password");
         WebResponse wr = wc.getResponse(getHostPath() + "/getAuthorization");
-        assertEquals("authorization", "unauthorized", wr.getText());
+        assertEquals("unauthorized", wr.getText(), "authorization");
     }
 
-    @Test @Ignore
-    public void testProxyServerAccessWithAuthentication() throws Exception {
+    @Test
+    @Disabled
+    void testProxyServerAccessWithAuthentication() throws Exception {
         defineResource("http://someserver.com/sample", new PseudoServlet() {
             public WebResource getGetResponse() {
                 return new WebResource(getHeader("Proxy-Authorization"), "text/plain");
@@ -517,7 +521,7 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setProxyServer("localhost", getHostPort(), "user", "password");
         WebResponse wr = wc.getResponse("http://someserver.com/sample");
-        assertEquals("authorization", "Basic dXNlcjpwYXNzd29yZA==", wr.getText());
+        assertEquals("Basic dXNlcjpwYXNzd29yZA==", wr.getText(), "authorization");
     }
 
     /**
@@ -564,8 +568,8 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception if an unexpected exception is thrown during the test.
      */
     @Test
-    public void testRfc2069DigestAuthentication() throws Exception {
-    	testRfc2069DigestAuthentication(true);
+    void testRfc2069DigestAuthentication() throws Exception {
+        testRfc2069DigestAuthentication(true);
     }
 
     /**
@@ -573,8 +577,8 @@ public class WebClientTest extends HttpUnitTest {
      * No 'opaque' causes NPE when attempting DigestAuthentication
      */
     @Test
-    public void testRfc2069DigestAuthenticationNoOpaque() throws Exception {
-    	testRfc2069DigestAuthentication(false);
+    void testRfc2069DigestAuthenticationNoOpaque() throws Exception {
+        testRfc2069DigestAuthentication(false);
     }
 
     /**
@@ -583,8 +587,8 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    @Ignore
-    public void testQopDigestAuthenticationhttp_client() throws Exception {
+    @Disabled
+    void testQopDigestAuthenticationhttp_client() throws Exception {
         defineResource("/dir/index.html", new PseudoServlet() {
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
@@ -634,7 +638,7 @@ public class WebClientTest extends HttpUnitTest {
 
 
     private void assertHeadersEquals(HttpHeader expectedHeader, HttpHeader actualHeader) {
-        assertEquals("Authentication type", expectedHeader.getLabel(), actualHeader.getLabel());
+        assertEquals(expectedHeader.getLabel(), actualHeader.getLabel(), "Authentication type");
         if (!expectedHeader.equals(actualHeader)) {
             Deltas deltas = new Deltas();
             Set actualKeys = new HashSet(actualHeader.getProperties().keySet());
@@ -713,23 +717,23 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setSendReferer(refererEnabled);
         WebResponse response = wc.getResponse(page0);
-        assertEquals("Content type", "text/plain", response.getContentType());
-        assertEquals("Default Referer header", "null", response.getText().trim());
+        assertEquals("text/plain", response.getContentType(), "Content type");
+        assertEquals("null", response.getText().trim(), "Default Referer header");
 
         response = wc.getResponse(page1);
         response = wc.getResponse(response.getLinks()[0].getRequest());
         String expected = page1;
         if (!refererEnabled) expected = "null";
-        assertEquals("Link Referer header", expected, response.getText().trim());
+        assertEquals(expected, response.getText().trim(), "Link Referer header");
         response = wc.getResponse(page2);
         response = wc.getResponse(response.getForms()[0].getRequest());
         expected = page2;
         if (!refererEnabled) expected = "null";
-        assertEquals("Form Referer header", expected, response.getText().trim());
+        assertEquals(expected, response.getText().trim(), "Form Referer header");
     }
 
     @Test
-    public void testRefererHeader() throws Exception {
+    void testRefererHeader() throws Exception {
         dotestRefererHeader(true);
     }
 
@@ -740,13 +744,13 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testRefererHeaderWithStrippingReferer() throws Exception {
+    void testRefererHeaderWithStrippingReferer() throws Exception {
         dotestRefererHeader(false);
     }
 
 
     @Test
-    public void testRedirectedRefererHeader() throws Exception {
+    void testRedirectedRefererHeader() throws Exception {
         String linkSource = "fromLink";
         String linkTarget = "anOldOne";
         String resourceName = "tellMe";
@@ -766,7 +770,7 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + '/' + linkSource);
         response = wc.getResponse(response.getLinks()[0].getRequest());
-        assertEquals("Link Referer header", getHostPath() + '/' + linkSource, response.getText().trim());
+        assertEquals(getHostPath() + '/' + linkSource, response.getText().trim(), "Link Referer header");
     }
 
     /**
@@ -776,77 +780,77 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testMaxRedirectsNotExceeded() throws Exception {
-    	 String resourceAName = "something/resourceA";
-    	    String resourceBName = "something/resourceB";
-    	    String resourceCName = "something/resourceC";
+    void testMaxRedirectsNotExceeded() throws Exception {
+        String resourceAName = "something/resourceA";
+        String resourceBName = "something/resourceB";
+        String resourceCName = "something/resourceC";
 
-    	    // Should test the following :
-    	    // loads resource A
-    	    // loads resource B
-    	    // redirects to resource A
-    	    // loads resource B
-    	    // redirects to resource A
-    	    // loads resource C
+        // Should test the following :
+        // loads resource A
+        // loads resource B
+        // redirects to resource A
+        // loads resource B
+        // redirects to resource A
+        // loads resource C
 
-    	    String resourceAContent =
-    	  	  "<HTML>" +
-    	  	  "<BODY onload='redirect();'>" +
-    	  	  "<script type='text/javascript'>" +
-    	        "function redirect()" +
-    	        "{" +
-    	        "	if (document.cookie == '')" +
-    	        "	{" +
-    	        "     document.cookie = 'test=1;';\n" +
-    	        "		window.location.replace('/" + resourceBName + "');\n" +
-    	        "	}" +
-    	        " else if (document.cookie == 'test=1')" +
-    	        " {" +
-    	        "		document.cookie = 'test=2;';\n" +
-    	        "		window.location.replace('/" + resourceBName + "');\n" +
-    	        " }" +
-    	        " else" +
-    	        " {" +
-    	        " 	window.location.replace('/" + resourceCName + "');\n" +
-    	        " }" +
-    	        "}" +
-    	        "</script>" +
-    	        "</BODY>" +
-    	        "</HTML>";
+        String resourceAContent =
+                "<HTML>" +
+                        "<BODY onload='redirect();'>" +
+                        "<script type='text/javascript'>" +
+                        "function redirect()" +
+                        "{" +
+                        "	if (document.cookie == '')" +
+                        "	{" +
+                        "     document.cookie = 'test=1;';\n" +
+                        "		window.location.replace('/" + resourceBName + "');\n" +
+                        "	}" +
+                        " else if (document.cookie == 'test=1')" +
+                        " {" +
+                        "		document.cookie = 'test=2;';\n" +
+                        "		window.location.replace('/" + resourceBName + "');\n" +
+                        " }" +
+                        " else" +
+                        " {" +
+                        " 	window.location.replace('/" + resourceCName + "');\n" +
+                        " }" +
+                        "}" +
+                        "</script>" +
+                        "</BODY>" +
+                        "</HTML>";
 
-    	    defineResource(resourceAName, resourceAContent,
-    	            HttpURLConnection.HTTP_OK);
+        defineResource(resourceAName, resourceAContent,
+                HttpURLConnection.HTTP_OK);
 
-    	    defineResource(resourceBName, "ignored content",
-    	            HttpURLConnection.HTTP_MOVED_TEMP);
-    	    addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
-    	            + resourceAName);
+        defineResource(resourceBName, "ignored content",
+                HttpURLConnection.HTTP_MOVED_TEMP);
+        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
+                + resourceAName);
 
-    	    defineResource(resourceCName, "ignored content",
-    	            HttpURLConnection.HTTP_OK);
+        defineResource(resourceCName, "ignored content",
+                HttpURLConnection.HTTP_OK);
 
-    	    WebConversation wc = new WebConversation();
-    	    wc.getClientProperties().setMaxRedirects(2);
+        WebConversation wc = new WebConversation();
+        wc.getClientProperties().setMaxRedirects(2);
 
-    	    try {
-    	  	  wc.getResponse(getHostPath() + '/' + resourceAName);
-    	    } catch (RecursiveRedirectionException e) {
-    	  	  fail("Not expecting a RecursiveRedirectionException - " +
-    	  	  		"max redirects not exceeded");
-    	    }
-    	}
-
-    	/**
-
+        try {
+            wc.getResponse(getHostPath() + '/' + resourceAName);
+        } catch (RecursiveRedirectionException e) {
+            fail("Not expecting a RecursiveRedirectionException - " +
+                    "max redirects not exceeded");
+        }
+    }
 
     /**
+     
+     
+         /**
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
      * @author james abley
      */
     @Test
-    public void testSelfReferentialRedirect() throws Exception {
+    void testSelfReferentialRedirect() throws Exception {
         String resourceName = "something/redirected";
 
         defineResource(resourceName, "ignored content",
@@ -869,7 +873,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    public void testLoopingMalformedRedirect() throws Exception {
+    void testLoopingMalformedRedirect() throws Exception {
         String resourceAName = "something/redirected";
         String resourceBName = "something/else/redirected";
         String resourceCName = "another/redirect";
@@ -905,7 +909,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    public void testRedirectHistoryIsClearedOut() throws Exception {
+    void testRedirectHistoryIsClearedOut() throws Exception {
         String resourceName = "something/interesting";
         String resourceValue = "something interesting";
 
@@ -921,16 +925,16 @@ public class WebClientTest extends HttpUnitTest {
         // Normal behaviour first time through - redirects to resource
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/" + redirectName);
-        assertEquals("OK response", 200, response.getResponseCode());
-        assertEquals("Expected response string", resourceValue, response.getText().trim());
-        assertEquals("Content type", "text/html", response.getContentType());
+        assertEquals(200, response.getResponseCode(), "OK response");
+        assertEquals(resourceValue, response.getText().trim(), "Expected response string");
+        assertEquals("text/html", response.getContentType(), "Content type");
 
         // Can we get the resource again, or is the redirect urls not being cleared out?
         try {
             wc.getResponse(getHostPath() + "/" + redirectName);
-            assertEquals("OK response", 200, response.getResponseCode());
-            assertEquals("Expected response string", resourceValue, response.getText().trim());
-            assertEquals("Content type", "text/html", response.getContentType());
+            assertEquals(200, response.getResponseCode(), "OK response");
+            assertEquals(resourceValue, response.getText().trim(), "Expected response string");
+            assertEquals("text/html", response.getContentType(), "Content type");
         } catch (RecursiveRedirectionException e) {
             fail("Not expecting RecursiveRedirectionException - "
                     + "list of redirection urls should be new for each "
@@ -945,7 +949,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    public void testRedirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {
+    void testRedirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {
         String resourceAName = "something/redirected";
         String resourceBName = "something/else/redirected";
         String resourceCName = "another/redirect";
@@ -987,7 +991,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testEmptyErrorPage() throws Exception {
+    void testEmptyErrorPage() throws Exception {
         boolean originalState =
                 HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(false);
@@ -1001,7 +1005,7 @@ public class WebClientTest extends HttpUnitTest {
             assertEquals(0, response.getContentLength());
         } catch (java.io.FileNotFoundException fnfe) {
             fnfe.printStackTrace();
-            assertTrue("There should be no file not found exception '" + fnfe.getMessage() + "'", false);
+            assertTrue(false, "There should be no file not found exception '" + fnfe.getMessage() + "'");
         } finally {
             // Restore exceptions state
             HttpUnitOptions.setExceptionsThrownOnErrorStatus(originalState);
@@ -1014,21 +1018,21 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGZIPDisabled() throws Exception {
+    void testGZIPDisabled() throws Exception {
         String expectedResponse = "Here is my answer";
         defineResource("Compressed.html", new CompressedPseudoServlet(expectedResponse));
 
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setAcceptGzip(false);
         WebResponse wr = wc.getResponse(getHostPath() + "/Compressed.html");
-        assertNull("Should not have received a Content-Encoding header", wr.getHeaderField("Content-encoding"));
-        assertEquals("Content-Type", "text/plain", wr.getContentType());
-        assertEquals("Content", expectedResponse, wr.getText().trim());
+        assertNull(wr.getHeaderField("Content-encoding"), "Should not have received a Content-Encoding header");
+        assertEquals("text/plain", wr.getContentType(), "Content-Type");
+        assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
 
     @Test
-    public void testGZIPHandling() throws Exception {
+    void testGZIPHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller " +
                 "than the raw message. It should be obvious when you reach that point. " +
                 "Of course it is more than that - it needs to be long enough to cause a problem.";
@@ -1036,9 +1040,9 @@ public class WebClientTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/Compressed.html");
-        assertEquals("Content-Encoding header", "gzip", wr.getHeaderField("Content-encoding"));
-        assertEquals("Content-Type", "text/plain", wr.getContentType());
-        assertEquals("Content", expectedResponse, wr.getText().trim());
+        assertEquals("gzip", wr.getHeaderField("Content-encoding"), "Content-Encoding header");
+        assertEquals("text/plain", wr.getContentType(), "Content-Type");
+        assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
     /**
@@ -1106,7 +1110,7 @@ public class WebClientTest extends HttpUnitTest {
 
 
     @Test
-    public void testGZIPUndefinedLengthHandling() throws Exception {
+    void testGZIPUndefinedLengthHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller " +
                 "than the raw message. It should be obvious when you reach that point. " +
                 "Of course it is more than that - it needs to be long enough to cause a problem.";
@@ -1114,14 +1118,14 @@ public class WebClientTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/Compressed.html");
-        assertEquals("Content-Encoding header", "gzip", wr.getHeaderField("Content-encoding"));
-        assertEquals("Content-Type", "text/plain", wr.getContentType());
-        assertEquals("Content", expectedResponse, wr.getText().trim());
+        assertEquals("gzip", wr.getHeaderField("Content-encoding"), "Content-Encoding header");
+        assertEquals("text/plain", wr.getContentType(), "Content-Type");
+        assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
 
     @Test
-    public void testClientListener() throws Exception {
+    void testClientListener() throws Exception {
         defineWebPage("Target", "This is another page with <a href=Form.html target='_top'>one link</a>");
         defineWebPage("Form", "This is a page with a simple form: " +
                 "<form action=submit><input name=name><input type=submit></form>" +
@@ -1138,20 +1142,20 @@ public class WebClientTest extends HttpUnitTest {
         wc.addClientListener(new ListenerExample(messageLog));
 
         wc.getResponse(getHostPath() + "/Frames.html");
-        assertEquals("Num logged items", 6, messageLog.size());
-        for (int i = 0; i < 3; i++) {
+        assertEquals(6, messageLog.size(), "Num logged items");
+        for (int i = 0;i < 3;i++) {
             verifyRequestResponsePair(messageLog, 2 * i);
         }
     }
 
 
     private void verifyRequestResponsePair(ArrayList messageLog, int i) throws MalformedURLException {
-        assertTrue("Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass(),
-                messageLog.get(i) instanceof WebRequest);
-        assertTrue("Logged item " + (i + 1) + " is not a web response, but " + messageLog.get(i + 1).getClass(),
-                messageLog.get(i + 1) instanceof WebResponse);
-        assertEquals("Response target", ((WebRequest) messageLog.get(i)).getTarget(), ((WebResponse) messageLog.get(i + 1)).getFrameName());
-        assertEquals("Response URL", ((WebRequest) messageLog.get(i)).getURL(), ((WebResponse) messageLog.get(i + 1)).getURL());
+        assertTrue(messageLog.get(i) instanceof WebRequest,
+                "Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass());
+        assertTrue(messageLog.get(i + 1) instanceof WebResponse,
+                "Logged item " + (i + 1) + " is not a web response, but " + messageLog.get(i + 1).getClass());
+        assertEquals(((WebRequest) messageLog.get(i)).getTarget(), ((WebResponse) messageLog.get(i + 1)).getFrameName(), "Response target");
+        assertEquals(((WebRequest) messageLog.get(i)).getURL(), ((WebResponse) messageLog.get(i + 1)).getURL(), "Response URL");
     }
 
 
@@ -1177,7 +1181,7 @@ public class WebClientTest extends HttpUnitTest {
 
 
     @Test
-    public void testRedirect() throws Exception {
+    void testRedirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1189,14 +1193,14 @@ public class WebClientTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + '/' + redirectName);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("status", HttpURLConnection.HTTP_OK, response.getResponseCode());
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(HttpURLConnection.HTTP_OK, response.getResponseCode(), "status");
     }
 
 
     @Test
-    public void testDuplicateHeaderRedirect() throws Exception {
+    void testDuplicateHeaderRedirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1209,13 +1213,13 @@ public class WebClientTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + '/' + redirectName);
-        assertEquals("requested resource", resourceValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
+        assertEquals(resourceValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
     }
 
 
     @Test
-    public void testDisabledRedirect() throws Exception {
+    void testDisabledRedirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1229,13 +1233,14 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setAutoRedirect(false);
         WebResponse response = wc.getResponse(getHostPath() + '/' + redirectName);
-        assertEquals("requested resource", redirectValue, response.getText().trim());
-        assertEquals("content type", "text/html", response.getContentType());
+        assertEquals(redirectValue, response.getText().trim(), "requested resource");
+        assertEquals("text/html", response.getContentType(), "content type");
     }
 
 
-    @Test @Ignore
-    public void testDNSOverride() throws Exception {
+    @Test
+    @Disabled
+    void testDNSOverride() throws Exception {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setDnsListener(new DNSListener() {
             public String getIpAddress(String hostName) {
@@ -1259,11 +1264,11 @@ public class WebClientTest extends HttpUnitTest {
 
 
         WebResponse wr = wc.getResponse("http://meterware.com:" + getHostPort() + "/whereAmI");
-        assertEquals("Submitted host header", "found host header: meterware.com:" + getHostPort(), wr.getText());
-        assertEquals("Returned cookie 'type'", "short", wc.getCookieValue("type"));
+        assertEquals("found host header: meterware.com:" + getHostPort(), wr.getText(), "Submitted host header");
+        assertEquals("short", wc.getCookieValue("type"), "Returned cookie 'type'");
 
         wr = wc.getResponse("http://meterware.com:" + getHostPort() + "/checkCookies");
-        assertEquals("Submitted cookie header", "found cookies: type=short", wr.getText());
+        assertEquals("found cookies: type=short", wr.getText(), "Submitted cookie header");
     }
 
 
@@ -1273,7 +1278,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         String resourceName = "something/to/delete";
         final String responseBody = "deleted";
         final String contentType = "text/plain";
@@ -1288,8 +1293,8 @@ public class WebClientTest extends HttpUnitTest {
         WebRequest request = new DeleteMethodWebRequest(getHostPath() + '/' + resourceName);
         WebResponse response = wc.getResponse(request);
 
-        assertEquals("requested resource", responseBody, response.getText().trim());
-        assertEquals("content type", contentType, response.getContentType());
+        assertEquals(responseBody, response.getText().trim(), "requested resource");
+        assertEquals(contentType, response.getContentType(), "content type");
     }
 
 }

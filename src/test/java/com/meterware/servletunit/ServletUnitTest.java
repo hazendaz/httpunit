@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -28,8 +28,7 @@ import java.util.Vector;
 /**
  * A base class for servlet unit tests.
  */
-abstract
-public class ServletUnitTest {
+public abstract class ServletUnitTest {
 
 //------------------------------------ protected members ------------------------------------------
 

@@ -19,19 +19,19 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.*;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class NodeTest {
+class NodeTest {
 
     private DocumentImpl _document;
     private Element _element;
@@ -42,8 +42,8 @@ public class NodeTest {
     private Text _text;
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
         _element = _document.createElement("zork");
         _foo1 = _document.createElement("foo");
@@ -64,14 +64,14 @@ public class NodeTest {
      * Verifies that we can create a document and verify its type.
      */
     @Test
-    public void testDocumentCreation() throws Exception {
-        assertEquals("Node name", "#document", _document.getNodeName());
-        assertEquals("Node type", Node.DOCUMENT_NODE, _document.getNodeType());
-        assertNull("Documents should not have attributes", _document.getAttributes());
-        assertNull("Documents should not have values", _document.getNodeValue());
+    void testDocumentCreation() throws Exception {
+        assertEquals("#document", _document.getNodeName(), "Node name");
+        assertEquals(Node.DOCUMENT_NODE, _document.getNodeType(), "Node type");
+        assertNull(_document.getAttributes(), "Documents should not have attributes");
+        assertNull(_document.getNodeValue(), "Documents should not have values");
         _document.setNodeValue("an example");
-        assertNull("Setting the element value should have no effect", _document.getNodeValue());
-        assertSame("Owner document", _document, _document.getOwnerDocument());
+        assertNull(_document.getNodeValue(), "Setting the element value should have no effect");
+        assertSame(_document, _document.getOwnerDocument(), "Owner document");
     }
 
 
@@ -79,15 +79,15 @@ public class NodeTest {
      * Verifies that we can create an element with a given name and verify its type.
      */
     @Test
-    public void testElementCreation() throws Exception {
-        assertNotNull("Failed to create an element", _element);
-        assertSame("Owner document", _document, _element.getOwnerDocument());
-        assertEquals("Tag name", "zork", _element.getTagName());
-        assertEquals("Node name", "zork", _element.getNodeName());
-        assertEquals("Node type", Node.ELEMENT_NODE, _element.getNodeType());
-        assertNull("Elements should not have values", _element.getNodeValue());
+    void testElementCreation() throws Exception {
+        assertNotNull(_element, "Failed to create an element");
+        assertSame(_document, _element.getOwnerDocument(), "Owner document");
+        assertEquals("zork", _element.getTagName(), "Tag name");
+        assertEquals("zork", _element.getNodeName(), "Node name");
+        assertEquals(Node.ELEMENT_NODE, _element.getNodeType(), "Node type");
+        assertNull(_element.getNodeValue(), "Elements should not have values");
         _element.setNodeValue("an example");
-        assertNull("Setting the element value should have no effect", _element.getNodeValue());
+        assertNull(_element.getNodeValue(), "Setting the element value should have no effect");
     }
 
 
@@ -95,49 +95,50 @@ public class NodeTest {
      * Verifies that we can create a text node and verify its type.
      */
     @Test
-    public void testTextCreation() throws Exception {
-        assertNotNull("Failed to create a text node", _text);
-        assertSame("Owner document", _document, _text.getOwnerDocument());
-        assertEquals("Node name", "#text", _text.getNodeName());
-        assertEquals("Node type", Node.TEXT_NODE, _text.getNodeType());
-        assertNull("Text nodes should not have attributes", _text.getAttributes());
-        assertEquals("Text node value", "Something to say", _text.getNodeValue());
-        assertEquals("Text length", "Something to say".length(), _text.getLength());
+    void testTextCreation() throws Exception {
+        assertNotNull(_text, "Failed to create a text node");
+        assertSame(_document, _text.getOwnerDocument(), "Owner document");
+        assertEquals("#text", _text.getNodeName(), "Node name");
+        assertEquals(Node.TEXT_NODE, _text.getNodeType(), "Node type");
+        assertNull(_text.getAttributes(), "Text nodes should not have attributes");
+        assertEquals("Something to say", _text.getNodeValue(), "Text node value");
+        assertEquals("Something to say".length(), _text.getLength(), "Text length");
         _text.setNodeValue("an example");
-        assertEquals("Revised node value", "an example", _text.getNodeValue());
+        assertEquals("an example", _text.getNodeValue(), "Revised node value");
     }
 
 
     /**
      * Verifies that we can create a document type node and verify its type.
      */
-     @Test @Ignore
-     public void testDocumentTypeCreation() throws Exception {
+     @Test
+    @Disabled
+    void testDocumentTypeCreation() throws Exception {
 //        DocumentType documentType = com.meterware.httpunit.dom.DocumentTypeImpl.createDocumentType( _document );
-        assertNotNull( "Failed to create a text node", _text );
-        assertSame( "Owner document", _document, _text.getOwnerDocument() );
-        assertEquals( "Node name", "#text", _text.getNodeName() );
-        assertEquals( "Node type", Node.TEXT_NODE, _text.getNodeType() );
-        assertNull( "Text nodes should not have attributes", _text.getAttributes() );
-        assertEquals( "Text node value", "Something to say", _text.getNodeValue() );
-        assertEquals( "Text length", "Something to say".length(), _text.getLength() );
-        _text.setNodeValue( "an example" );
-        assertEquals( "Revised node value", "an example", _text.getNodeValue() );
-     }
+        assertNotNull(_text, "Failed to create a text node");
+        assertSame(_document, _text.getOwnerDocument(), "Owner document");
+        assertEquals("#text", _text.getNodeName(), "Node name");
+        assertEquals(Node.TEXT_NODE, _text.getNodeType(), "Node type");
+        assertNull(_text.getAttributes(), "Text nodes should not have attributes");
+        assertEquals("Something to say", _text.getNodeValue(), "Text node value");
+        assertEquals("Something to say".length(), _text.getLength(), "Text length");
+        _text.setNodeValue("an example");
+        assertEquals("an example", _text.getNodeValue(), "Revised node value");
+    }
 
 
     /**
      * Verifies that node accessors work for empty documents.
      */
     @Test
-    public void testEmptyDocument() throws Exception {
+    void testEmptyDocument() throws Exception {
         Document document = DocumentImpl.createDocument();
-        assertNull("Found a bogus first child", document.getFirstChild());
-        assertNull("Found a bogus last child", document.getLastChild());
-        assertFalse("Reported bogus children", document.hasChildNodes());
-        assertNull("Found a bogus next sibling", document.getNextSibling());
-        assertNull("Found a bogus previous sibling", document.getPreviousSibling());
-        assertNull("Found a bogus parent", document.getParentNode());
+        assertNull(document.getFirstChild(), "Found a bogus first child");
+        assertNull(document.getLastChild(), "Found a bogus last child");
+        assertFalse(document.hasChildNodes(), "Reported bogus children");
+        assertNull(document.getNextSibling(), "Found a bogus next sibling");
+        assertNull(document.getPreviousSibling(), "Found a bogus previous sibling");
+        assertNull(document.getParentNode(), "Found a bogus parent");
         verifyNodeList("empty document children", document.getChildNodes(), new Node[0]);
     }
 
@@ -146,16 +147,16 @@ public class NodeTest {
      * Verifies that we can add children to an element (or document) and find them.
      */
     @Test
-    public void testAddNodeChildren() throws Exception {
-        assertSame("First child of element", _foo1, _element.getFirstChild());
-        assertSame("Last child of element", _bar2, _element.getLastChild());
-        assertSame("Next sibling of foo1", _bar2, _foo1.getNextSibling());
-        assertSame("Previous sibling of bar2", _foo1, _bar2.getPreviousSibling());
+    void testAddNodeChildren() throws Exception {
+        assertSame(_foo1, _element.getFirstChild(), "First child of element");
+        assertSame(_bar2, _element.getLastChild(), "Last child of element");
+        assertSame(_bar2, _foo1.getNextSibling(), "Next sibling of foo1");
+        assertSame(_foo1, _bar2.getPreviousSibling(), "Previous sibling of bar2");
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_bar1, _text, _foo2});
-        assertTrue("Did not find children for foo1", _foo1.hasChildNodes());
-        assertFalse("Found ghost children for bar1", _bar1.hasChildNodes());
-        assertSame("Parent of bar1", _foo1, _bar1.getParentNode());
-        assertSame("Parent of element", _document, _element.getParentNode());
+        assertTrue(_foo1.hasChildNodes(), "Did not find children for foo1");
+        assertFalse(_bar1.hasChildNodes(), "Found ghost children for bar1");
+        assertSame(_foo1, _bar1.getParentNode(), "Parent of bar1");
+        assertSame(_document, _element.getParentNode(), "Parent of element");
     }
 
 
@@ -163,7 +164,7 @@ public class NodeTest {
      * Verifies that we can add children to an element or document and find them.
      */
     @Test
-    public void testElementChildrenByTagName() throws Exception {
+    void testElementChildrenByTagName() throws Exception {
         verifyNodeList("baz", _element.getElementsByTagName("baz"), new Node[0]);
         verifyNodeList("foo", _element.getElementsByTagName("foo"), new Element[]{_foo1, _foo2});
         verifyNodeList("bar", _element.getElementsByTagName("bar"), new Element[]{_bar1, _bar2});
@@ -180,14 +181,14 @@ public class NodeTest {
      * Verifies that only children of a particular document may be added to its children.
      */
     @Test
-    public void testNodeCreatedByOtherDocument() throws Exception {
+    void testNodeCreatedByOtherDocument() throws Exception {
         Document foreignDocument = DocumentImpl.createDocument();
         Element foreignElement = foreignDocument.createElement("stranger");
         try {
             _element.appendChild(foreignElement);
             fail("Permitted addition of element from different document");
         } catch (DOMException e) {
-            assertEquals("Reason for exception", DOMException.WRONG_DOCUMENT_ERR, e.code);
+            assertEquals(DOMException.WRONG_DOCUMENT_ERR, e.code, "Reason for exception");
         }
 
     }
@@ -197,7 +198,7 @@ public class NodeTest {
      * Verifies that a document can have only one 'document element'
      */
     @Test
-    public void testUniqueDocumentElement() throws Exception {
+    void testUniqueDocumentElement() throws Exception {
         Element bogusRoot = _document.createElement("root");
         try {
             _document.setDocumentElement(bogusRoot);
@@ -211,13 +212,13 @@ public class NodeTest {
      * Verifies that text nodes cannot have children
      */
     @Test
-    public void testNoChildrenForTextNodes() throws Exception {
+    void testNoChildrenForTextNodes() throws Exception {
         Element orphan = _document.createElement("baz");
         try {
             _text.appendChild(orphan);
             fail("Should not have permitted addition of a child to a text node");
         } catch (DOMException e) {
-            assertEquals("Reason for exception", DOMException.HIERARCHY_REQUEST_ERR, e.code);
+            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, e.code, "Reason for exception");
         }
     }
 
@@ -226,18 +227,18 @@ public class NodeTest {
      * Verifies that a node or one of its ancestors may not be added as its child
      */
     @Test
-    public void testRejectAddSelfOrAncestorAsChild() throws Exception {
+    void testRejectAddSelfOrAncestorAsChild() throws Exception {
         try {
             _element.appendChild(_element);
             fail("Permitted addition of element as its own child");
         } catch (DOMException e) {
-            assertEquals("Reason for exception", DOMException.HIERARCHY_REQUEST_ERR, e.code);
+            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, e.code, "Reason for exception");
         }
         try {
             _bar1.appendChild(_element);
             fail("Permitted addition of element as its descendant's child");
         } catch (DOMException e) {
-            assertEquals("Reason for exception", DOMException.HIERARCHY_REQUEST_ERR, e.code);
+            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, e.code, "Reason for exception");
         }
     }
 
@@ -246,7 +247,7 @@ public class NodeTest {
      * Verifies that we can insert a child node at a specific position.
      */
     @Test
-    public void testInsertChild() throws Exception {
+    void testInsertChild() throws Exception {
         Text newText = _document.createTextNode("Something new");
         _element.insertBefore(newText, _bar2);
         verifyNodeList("element child", _element.getChildNodes(), new Node[]{_foo1, newText, _bar2});
@@ -259,14 +260,14 @@ public class NodeTest {
      * Verifies that we cannot insert a child at a target by specifying a node which is not already a child of that target.
      */
     @Test
-    public void testInsertChildWithBadPredecessor() throws Exception {
+    void testInsertChildWithBadPredecessor() throws Exception {
         Text newText = _document.createTextNode("Something new");
         _element.insertBefore(newText, _bar2);
         try {
             _foo1.insertBefore(newText, _bar2);
             fail("Permitted insertion before a node that was not a child of the target");
         } catch (DOMException e) {
-            assertEquals("Reason for exception", DOMException.NOT_FOUND_ERR, e.code);
+            assertEquals(DOMException.NOT_FOUND_ERR, e.code, "Reason for exception");
         }
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_bar1, _text, _foo2});
         verifyNodeList("element child", _element.getChildNodes(), new Node[]{_foo1, newText, _bar2});
@@ -277,21 +278,21 @@ public class NodeTest {
      * Verifies that we can remove a child node from the document.
      */
     @Test
-    public void testRemoveChildFromEnd() throws Exception {
+    void testRemoveChildFromEnd() throws Exception {
         _foo1.removeChild(_foo2);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_bar1, _text});
     }
 
 
     @Test
-    public void testRemoveChildFromBeginning() throws Exception {
+    void testRemoveChildFromBeginning() throws Exception {
         _foo1.removeChild(_bar1);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_text, _foo2});
     }
 
 
     @Test
-    public void testRemoveChildFromMiddle() throws Exception {
+    void testRemoveChildFromMiddle() throws Exception {
         _foo1.removeChild(_text);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_bar1, _foo2});
     }
@@ -301,12 +302,12 @@ public class NodeTest {
      * Verifies that an exception is thrown if we try to remove a node which is not a child.
      */
     @Test
-    public void testRemoveChildFromWrongParent() throws Exception {
+    void testRemoveChildFromWrongParent() throws Exception {
         try {
             _foo1.removeChild(_bar2);
             fail("Permitted node removal from wrong child");
         } catch (DOMException e) {
-            assertEquals("reason for exception", DOMException.NOT_FOUND_ERR, e.code);
+            assertEquals(DOMException.NOT_FOUND_ERR, e.code, "reason for exception");
         }
     }
 
@@ -315,10 +316,10 @@ public class NodeTest {
      * Verifies that we can replace children (including those already elsewhere in the tree)
      */
     @Test
-    public void testReplaceChild() throws Exception {
+    void testReplaceChild() throws Exception {
         Element baz = _document.createElement("baz");
         Node old = _foo1.replaceChild(baz, _text);
-        assertSame("Removed node", _text, old);
+        assertSame(_text, old, "Removed node");
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[]{_bar1, baz, _foo2});
     }
 
@@ -327,19 +328,19 @@ public class NodeTest {
      * Verifies that we can clone nodes
      */
     @Test
-    public void testCloneNode() throws Exception {
+    void testCloneNode() throws Exception {
         _element.setAttribute("msg", "hi there");
         Element shallowClone = (Element) _element.cloneNode( /* deep */ false);
-        assertEquals("Cloned attribute", "hi there", shallowClone.getAttribute("msg"));
-        assertFalse("Shallow clone should not have children", shallowClone.hasChildNodes());
+        assertEquals("hi there", shallowClone.getAttribute("msg"), "Cloned attribute");
+        assertFalse(shallowClone.hasChildNodes(), "Shallow clone should not have children");
 
         Element deepClone = (Element) _element.cloneNode( /* deep */ true);
-        assertEquals("Cloned attribute", "hi there", deepClone.getAttribute("msg"));
-        assertTrue("Deep clone should have children", deepClone.hasChildNodes());
+        assertEquals("hi there", deepClone.getAttribute("msg"), "Cloned attribute");
+        assertTrue(deepClone.hasChildNodes(), "Deep clone should have children");
         NodeList childNodes = deepClone.getChildNodes();
-        assertEquals("Number of deepClone's children", 2, childNodes.getLength());
-        assertTrue("First child is not an element", childNodes.item(0) instanceof Element);
-        assertEquals("First cloned child's children", 3, childNodes.item(0).getChildNodes().getLength());
+        assertEquals(2, childNodes.getLength(), "Number of deepClone's children");
+        assertTrue(childNodes.item(0) instanceof Element, "First child is not an element");
+        assertEquals(3, childNodes.item(0).getChildNodes().getLength(), "First cloned child's children");
     }
 
 
@@ -347,14 +348,14 @@ public class NodeTest {
      * Verifies that we can iterate through nodes in order
      */
     @Test
-    public void testPreOrderIterator() throws Exception {
+    void testPreOrderIterator() throws Exception {
         Iterator each = ((NodeImpl) _element).preOrderIterator();
         Node[] expectedNodes = {_element, _foo1, _bar1, _text, _foo2, _bar2};
-        for (int i = 0; i < expectedNodes.length; i++) {
-            assertTrue("Iterator prematurely terminated after " + i + " nodes", each.hasNext());
-            assertSame("Node " + (1 + i) + ":", expectedNodes[i], each.next());
+        for (int i = 0;i < expectedNodes.length;i++) {
+            assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");
+            assertSame(expectedNodes[i], each.next(), "Node " + (1 + i) + ":");
         }
-        assertFalse("Iterator should have terminated after " + expectedNodes.length + " nodes", each.hasNext());
+        assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
 
@@ -362,14 +363,14 @@ public class NodeTest {
      * Verifies that we can iterate through nodes in order, starting from a specific node.
      */
     @Test
-    public void testPreOrderIteratorFromANode() throws Exception {
+    void testPreOrderIteratorFromANode() throws Exception {
         Iterator each = ((NodeImpl) _text).preOrderIterator();
         Node[] expectedNodes = {_text, _foo2, _bar2};
-        for (int i = 0; i < expectedNodes.length; i++) {
-            assertTrue("Iterator prematurely terminated after " + i + " nodes", each.hasNext());
-            assertSame("Node " + (1 + i) + ":", expectedNodes[i], each.next());
+        for (int i = 0;i < expectedNodes.length;i++) {
+            assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");
+            assertSame(expectedNodes[i], each.next(), "Node " + (1 + i) + ":");
         }
-        assertFalse("Iterator should have terminated after " + expectedNodes.length + " nodes", each.hasNext());
+        assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
 
@@ -377,56 +378,56 @@ public class NodeTest {
      * Verifies that we can iterate through nodes in order, starting after a specific node.
      */
     @Test
-    public void testPreOrderIteratorAfterANode() throws Exception {
+    void testPreOrderIteratorAfterANode() throws Exception {
         Iterator each = ((NodeImpl) _foo1).preOrderIteratorAfterNode();
         Node[] expectedNodes = {_bar1, _text, _foo2, _bar2};
-        for (int i = 0; i < expectedNodes.length; i++) {
-            assertTrue("Iterator prematurely terminated after " + i + " nodes", each.hasNext());
-            assertSame("Node " + (1 + i) + ":", expectedNodes[i], each.next());
+        for (int i = 0;i < expectedNodes.length;i++) {
+            assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");
+            assertSame(expectedNodes[i], each.next(), "Node " + (1 + i) + ":");
         }
-        assertFalse("Iterator should have terminated after " + expectedNodes.length + " nodes", each.hasNext());
+        assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
     /**
      * Verifies that we can iterate through nodes in order, starting after a specific node.
      */
     @Test
-    public void testPreOrderIteratorWithinNode() throws Exception {
+    void testPreOrderIteratorWithinNode() throws Exception {
         Iterator each = ((NodeImpl) _foo1).preOrderIteratorWithinNode();
         Node[] expectedNodes = {_bar1, _text, _foo2};
-        for (int i = 0; i < expectedNodes.length; i++) {
-            assertTrue("Iterator prematurely terminated after " + i + " nodes", each.hasNext());
+        for (int i = 0;i < expectedNodes.length;i++) {
+            assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");
             Object node = each.next();
-            assertSame("Node " + (1 + i) + ":", expectedNodes[i], node);
+            assertSame(expectedNodes[i], node, "Node " + (1 + i) + ":");
         }
-        assertFalse("Iterator should have terminated after " + expectedNodes.length + " nodes", each.hasNext());
+        assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
     /**
      * Verifies that we can iterate through nodes in order skipping a specified subtree.
      */
     @Test
-    public void testPreOrderIteratorWithMask() throws Exception {
+    void testPreOrderIteratorWithMask() throws Exception {
         Iterator each = ((NodeImpl) _element).preOrderIterator(new NodeImpl.IteratorMask() {
             public boolean skipSubtree(Node subtreeRoot) {
                 return subtreeRoot == _foo1;
             }
         });
         Node[] expectedNodes = {_element, _bar2};
-        for (int i = 0; i < expectedNodes.length; i++) {
-            assertTrue("Iterator prematurely terminated after " + i + " nodes", each.hasNext());
-            assertSame("Node " + (1 + i) + ":", expectedNodes[i], each.next());
+        for (int i = 0;i < expectedNodes.length;i++) {
+            assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");
+            assertSame(expectedNodes[i], each.next(), "Node " + (1 + i) + ":");
         }
-        assertFalse("Iterator should have terminated after " + expectedNodes.length + " nodes", each.hasNext());
+        assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
 
     private void verifyNodeList(String comment, NodeList nl, Node[] expectedNodes) {
-        assertNotNull("No " + comment + " node list returned", nl);
-        assertEquals("Number of " + comment + " nodes found", expectedNodes.length, nl.getLength());
+        assertNotNull(nl, "No " + comment + " node list returned");
+        assertEquals(expectedNodes.length, nl.getLength(), "Number of " + comment + " nodes found");
         for (int i = 0; i < expectedNodes.length; i++) {
             Node expectedNode = expectedNodes[i];
-            assertSame(comment + " node " + (i + 1), expectedNode, nl.item(i));
+            assertSame(expectedNode, nl.item(i), comment + " node " + (i + 1));
         }
     }
 }

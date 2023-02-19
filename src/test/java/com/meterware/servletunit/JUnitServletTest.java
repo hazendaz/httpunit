@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.HttpUnitUtils;
@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -48,112 +48,112 @@ import org.w3c.dom.NodeList;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class JUnitServletTest {
+class JUnitServletTest {
     private ServletRunner _runner;
 
 
     @Test
-    public void testNoTestClassSpecified() throws Exception {
+    void testNoTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit");
-        assertTrue("Did not find error message", wr.getText().contains("Cannot run"));
+        assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
 
 
     @Test
-    public void testBadTestClassSpecified() throws Exception {
+    void testBadTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=gobbledygook");
-        assertTrue("Did not find error message", wr.getText().contains("Cannot run"));
+        assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
 
 
     @Test
-    public void testAllTestsPass() throws Exception {
+    void testAllTestsPass() throws Exception {
         ServletUnitClient client = newClient();
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + PassingTests.class.getName());
         final WebTable resultsTable = wr.getTableWithID("results");
-        assertNotNull("Did not find results table", resultsTable);
+        assertNotNull(resultsTable, "Did not find results table");
         final String[][] results = resultsTable.asText();
-        assertEquals("Num rows", 1, results.length);
-        assertEquals("Num columns", 3, results[0].length);
-        assertEquals("Time header", "1 test", results[0][0]);
-        assertEquals("Status", "OK", results[0][2]);
+        assertEquals(1, results.length, "Num rows");
+        assertEquals(3, results[0].length, "Num columns");
+        assertEquals("1 test", results[0][0], "Time header");
+        assertEquals("OK", results[0][2], "Status");
     }
 
 
     @Test
-    public void testAllTestsPassTextFormat() throws Exception {
+    void testAllTestsPassTextFormat() throws Exception {
         ServletUnitClient client = newClient();
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + PassingTests.class.getName());
         String expectedStart = PassingTests.class.getName() + " (1 test): OK";
-        assertTrue("Results (" + wr.getText() + ") should start with '" + expectedStart, wr.getText().startsWith(expectedStart));
+        assertTrue(wr.getText().startsWith(expectedStart), "Results (" + wr.getText() + ") should start with '" + expectedStart);
     }
 
 
     @Test
-    public void testSomeFailures() throws Exception {
+    void testSomeFailures() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + FailingTests.class.getName());
         final WebTable resultsTable = wr.getTableWithID("results");
-        assertNotNull("Did not find results table", resultsTable);
+        assertNotNull(resultsTable, "Did not find results table");
         final String[][] results = resultsTable.asText();
-        assertEquals("Num rows", 4, results.length);
-        assertEquals("Num columns", 3, results[0].length);
-        assertEquals("First header", "3 tests", results[0][0]);
-        assertEquals("Status", "Problems Occurred", results[0][2]);
-        assertEquals("Failure header", "2 failures", results[1][1]);
-        assertEquals("Failure index 1", "1", results[2][0]);
-        assertEquals("Failure index 2", "2", results[3][0]);
-        assertTrue("Test class not found", results[2][1].indexOf('(' + FailingTests.class.getName() + ')') >= 0);
+        assertEquals(4, results.length, "Num rows");
+        assertEquals(3, results[0].length, "Num columns");
+        assertEquals("3 tests", results[0][0], "First header");
+        assertEquals("Problems Occurred", results[0][2], "Status");
+        assertEquals("2 failures", results[1][1], "Failure header");
+        assertEquals("1", results[2][0], "Failure index 1");
+        assertEquals("2", results[3][0], "Failure index 2");
+        assertTrue(results[2][1].indexOf('(' + FailingTests.class.getName() + ')') >= 0, "Test class not found");
     }
 
 
     @Test
-    public void testSomeFailuresTextFormat() throws Exception {
+    void testSomeFailuresTextFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + FailingTests.class.getName());
         String expectedStart = FailingTests.class.getName() + " (3 tests): Problems Occurred";
-        assertTrue("Results (" + wr.getText() + ") should start with: " + expectedStart, wr.getText().startsWith(expectedStart));
-        assertTrue("Results (" + wr.getText() + ") should contain: 2 failures", wr.getText().indexOf("2 failures") >= 0);
+        assertTrue(wr.getText().startsWith(expectedStart), "Results (" + wr.getText() + ") should start with: " + expectedStart);
+        assertTrue(wr.getText().indexOf("2 failures") >= 0, "Results (" + wr.getText() + ") should contain: 2 failures");
     }
 
 
     @Test
-    public void testSomeErrors() throws Exception {
+    void testSomeErrors() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + ErrorTests.class.getName());
         final WebTable resultsTable = wr.getTableWithID("results");
-        assertNotNull("Did not find results table", resultsTable);
+        assertNotNull(resultsTable, "Did not find results table");
         final String[][] results = resultsTable.asText();
-        assertEquals("Num rows", 3, results.length);
-        assertEquals("Num columns", 3, results[0].length);
-        assertEquals("First header", "2 tests", results[0][0]);
-        assertEquals("Status", "Problems Occurred", results[0][2]);
-        assertEquals("Failure header", "1 error", results[1][1]);
-        assertEquals("Failure index 1", "1", results[2][0]);
-        assertTrue("Test class not found", results[2][1].indexOf('(' + ErrorTests.class.getName() + ')') >= 0);
+        assertEquals(3, results.length, "Num rows");
+        assertEquals(3, results[0].length, "Num columns");
+        assertEquals("2 tests", results[0][0], "First header");
+        assertEquals("Problems Occurred", results[0][2], "Status");
+        assertEquals("1 error", results[1][1], "Failure header");
+        assertEquals("1", results[2][0], "Failure index 1");
+        assertTrue(results[2][1].indexOf('(' + ErrorTests.class.getName() + ')') >= 0, "Test class not found");
     }
 
 
     @Test
-    public void testSomeFailuresXMLFormat() throws Exception {
+    void testSomeFailuresXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=xml&test=" + FailingTests.class.getName());
-        assertEquals("Content type", "text/xml", wr.getContentType());
+        assertEquals("text/xml", wr.getContentType(), "Content type");
         DocumentBuilder builder = HttpUnitUtils.newParser();
         Document document = builder.parse(wr.getInputStream());
         Element element = document.getDocumentElement();
-        assertEquals("document element name", "testsuite", element.getNodeName());
-        assertEquals("number of tests", "3", element.getAttribute("tests"));
-        assertEquals("number of failures", "2", element.getAttribute("failures"));
-        assertEquals("number of errors", "0", element.getAttribute("errors"));
+        assertEquals("testsuite", element.getNodeName(), "document element name");
+        assertEquals("3", element.getAttribute("tests"), "number of tests");
+        assertEquals("2", element.getAttribute("failures"), "number of failures");
+        assertEquals("0", element.getAttribute("errors"), "number of errors");
         NodeList nl = element.getElementsByTagName("testcase");
         verifyElementWithNameHasFailureNode("testAddition", nl, /* failed */ "failure", true);
         verifyElementWithNameHasFailureNode("testSubtraction", nl, /* failed */ "failure", true);
@@ -162,18 +162,18 @@ public class JUnitServletTest {
 
 
     @Test
-    public void testSomeErrorsXMLFormat() throws Exception {
+    void testSomeErrorsXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=xml&test=" + ErrorTests.class.getName());
-        assertEquals("Content type", "text/xml", wr.getContentType());
+        assertEquals("text/xml", wr.getContentType(), "Content type");
         DocumentBuilder builder = HttpUnitUtils.newParser();
         Document document = builder.parse(wr.getInputStream());
         Element element = document.getDocumentElement();
-        assertEquals("document element name", "testsuite", element.getNodeName());
-        assertEquals("number of tests", "2", element.getAttribute("tests"));
-        assertEquals("number of failures", "0", element.getAttribute("failures"));
-        assertEquals("number of errors", "1", element.getAttribute("errors"));
+        assertEquals("testsuite", element.getNodeName(), "document element name");
+        assertEquals("2", element.getAttribute("tests"), "number of tests");
+        assertEquals("0", element.getAttribute("failures"), "number of failures");
+        assertEquals("1", element.getAttribute("errors"), "number of errors");
         NodeList nl = element.getElementsByTagName("testcase");
         verifyElementWithNameHasFailureNode("testAddition", nl, /* failed */ "error", true);
         verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "error", false);
@@ -185,9 +185,9 @@ public class JUnitServletTest {
             Element element = (Element) nl.item(i);
             if (element.getAttribute("name").indexOf(name) >= 0) {
                 if (failed) {
-                    assertEquals("no " + nodeName + " element found for test '" + name + "'", 1, element.getElementsByTagName(nodeName).getLength());
+                    assertEquals(1, element.getElementsByTagName(nodeName).getLength(), "no " + nodeName + " element found for test '" + name + "'");
                 } else {
-                    assertEquals("unexpected " + nodeName + " element found for test '" + name + "'", 0, element.getElementsByTagName(nodeName).getLength());
+                    assertEquals(0, element.getElementsByTagName(nodeName).getLength(), "unexpected " + nodeName + " element found for test '" + name + "'");
                 }
                 return;
             }
@@ -197,7 +197,7 @@ public class JUnitServletTest {
 
 
     @Test
-    public void testScriptedServletAccess() throws Exception {
+    void testScriptedServletAccess() throws Exception {
         WebXMLString wxs = new WebXMLString();
         Properties params = new Properties();
         params.setProperty("color", "red");
@@ -210,9 +210,9 @@ public class JUnitServletTest {
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + ServletAccessTestClass.class.getName());
 
         final WebTable resultsTable = wr.getTableWithID("results");
-        assertNotNull("Did not find results table", resultsTable);
+        assertNotNull(resultsTable, "Did not find results table");
         final String[][] results = resultsTable.asText();
-        assertEquals("Status", "OK", results[0][2]);
+        assertEquals("OK", results[0][2], "Status");
     }
 
 

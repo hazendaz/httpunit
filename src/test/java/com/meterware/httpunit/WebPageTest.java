@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,7 +28,9 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLDocument;
@@ -40,10 +42,11 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  */
-public class WebPageTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class WebPageTest extends HttpUnitTest {
 
     @Test
-    public void testNoResponse() throws Exception {
+    void testNoResponse() throws Exception {
         WebConversation wc = new WebConversation();
         try {
             WebRequest request = new GetMethodWebRequest(getHostPath() + "/NonExistentSimplePage.html");
@@ -55,14 +58,14 @@ public class WebPageTest extends HttpUnitTest {
 
 
     @Test
-    public void testProxyServerAccess() throws Exception {
+    void testProxyServerAccess() throws Exception {
         defineResource("http://someserver.com/sample", "Get this", "text/plain");
         WebConversation wc = new WebConversation();
         try {
             wc.setProxyServer("localhost", getHostPort());
             WebResponse wr = wc.getResponse("http://someserver.com/sample");
             String result = wr.getText();
-            assertEquals("Expected text", "Get this", result.trim());
+            assertEquals("Get this", result.trim(), "Expected text");
         } finally {
             wc.clearProxyServer();
         }
@@ -78,7 +81,7 @@ public class WebPageTest extends HttpUnitTest {
      */
 
     @Test
-    public void testHtmlRequirement() throws Exception {
+    void testHtmlRequirement() throws Exception {
         defineResource("TextPage.txt", "Just text", "text/plain");
         defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head><body>Something here</body></html>", "text/html");
         defineResource("StructuredPage.html", "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML Basic 1.0//EN' 'http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd'>" +
@@ -96,21 +99,21 @@ public class WebPageTest extends HttpUnitTest {
         }
 
         WebResponse simplePage = wc.getResponse(getHostPath() + "/SimplePage.html");
-        assertEquals("HTML Title", "A Sample Page", simplePage.getReceivedPage().getTitle());
+        assertEquals("A Sample Page", simplePage.getReceivedPage().getTitle(), "HTML Title");
 
         WebResponse structuredPage = wc.getResponse(getHostPath() + "/StructuredPage.html");
-        assertEquals("XHTML Title", "A Structured Page", structuredPage.getReceivedPage().getTitle());
+        assertEquals("A Structured Page", structuredPage.getReceivedPage().getTitle(), "XHTML Title");
         Document root = structuredPage.getDOM();
-        assertTrue("document root of structured  Page should be available", root != null);
+        assertTrue(root != null, "document root of structured  Page should be available");
 
         WebResponse xhtmlPage = wc.getResponse(getHostPath() + "/XHTMLPage.html");
-        assertEquals("XHTML Title", "An XHTML Page", xhtmlPage.getReceivedPage().getTitle());
+        assertEquals("An XHTML Page", xhtmlPage.getReceivedPage().getTitle(), "XHTML Title");
 
         WebResponse xmlrpcPage = wc.getResponse(getHostPath() + "/XMLRPC.html");
         root = xmlrpcPage.getDOM();
-        assertTrue("document root of xml RPC page should be available", root != null);
+        assertTrue(root != null, "document root of xml RPC page should be available");
         NodeList elements = root.getElementsByTagName("methodCall");
-        assertTrue("there should be one methodCall node", elements.getLength() == 1);
+        assertEquals(1, elements.getLength(), "there should be one methodCall node");
 
     }
 
@@ -121,7 +124,7 @@ public class WebPageTest extends HttpUnitTest {
      * @throws Exception if an unexpected exception occurs during the test.
      */
     @Test
-    public void testForceAsHtml() throws Exception {
+    void testForceAsHtml() throws Exception {
         HttpUnitOptions.setCheckHtmlContentType(true);
         defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head><body>Something here</body></html>", "text");
         WebConversation wc = new WebConversation();
@@ -133,12 +136,12 @@ public class WebPageTest extends HttpUnitTest {
 
         wc.getClientProperties().setOverrideContextType("text/html");
         WebResponse simplePage = wc.getResponse(getHostPath() + "/SimplePage.html");
-        assertEquals("HTML Title", "A Sample Page", simplePage.getReceivedPage().getTitle());
+        assertEquals("A Sample Page", simplePage.getReceivedPage().getTitle(), "HTML Title");
     }
 
 
     @Test
-    public void testHtmlDocument() throws Exception {
+    void testHtmlDocument() throws Exception {
         defineWebPage("SimplePage",
                 "This has no forms but it does\n" +
                         "have <a href=\"/other.html\">an <b>active</b> link</A>\n" +
@@ -147,8 +150,8 @@ public class WebPageTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse simplePage = wc.getResponse(getHostPath() + "/SimplePage.html");
         Document dom = simplePage.getDOM();
-        assertNotNull("No DOM created for document", dom);
-        assertTrue("returned dom does not implement HTMLDocument, but is " + dom.getClass().getName(), dom instanceof HTMLDocument);
+        assertNotNull(dom, "No DOM created for document");
+        assertTrue(dom instanceof HTMLDocument, "returned dom does not implement HTMLDocument, but is " + dom.getClass().getName());
     }
 
     /**
@@ -158,7 +161,7 @@ public class WebPageTest extends HttpUnitTest {
      * @author Dan Lipofsky 2009-08-19
      */
     @Test
-    public void testHeadMethodWebRequest() throws Exception {
+    void testHeadMethodWebRequest() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body>Hello</body></html>\n");
@@ -175,7 +178,7 @@ public class WebPageTest extends HttpUnitTest {
 
     //@Ignore
     @Test
-    public void testTitle() throws Exception {
+    void testTitle() throws Exception {
         defineResource("/SimpleTitlePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body>This has no forms but it does\n" +
@@ -186,13 +189,13 @@ public class WebPageTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimpleTitlePage.html");
         WebResponse simplePage = wc.getResponse(request);
-        assertEquals("Title", "A Sample Page", simplePage.getTitle());
-        assertEquals("Character set", "iso-8859-1", simplePage.getCharacterSet());
-        assertNull("No refresh request should have been found", simplePage.getRefreshRequest());
+        assertEquals("A Sample Page", simplePage.getTitle(), "Title");
+        assertEquals("iso-8859-1", simplePage.getCharacterSet(), "Character set");
+        assertNull(simplePage.getRefreshRequest(), "No refresh request should have been found");
     }
 
     @Test
-    public void testLocalFile() throws Exception {
+    void testLocalFile() throws Exception {
         File file = new File("temp.html");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -203,15 +206,15 @@ public class WebPageTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest("file:" + file.getAbsolutePath());
         WebResponse simplePage = wc.getResponse(request);
-        assertEquals("Title", "A Sample Page", simplePage.getTitle());
-        assertEquals("Character set", System.getProperty("file.encoding"), simplePage.getCharacterSet());
+        assertEquals("A Sample Page", simplePage.getTitle(), "Title");
+        assertEquals(System.getProperty("file.encoding"), simplePage.getCharacterSet(), "Character set");
 
         file.delete();
     }
 
 
     @Test
-    public void testNoLocalFile() throws Exception {
+    void testNoLocalFile() throws Exception {
         File file = new File("temp.html");
         file.delete();
 
@@ -227,7 +230,7 @@ public class WebPageTest extends HttpUnitTest {
 
 
     @Test
-    public void testRefreshHeader() throws Exception {
+    void testRefreshHeader() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title></head>\n" +
                 "<body>This has no data\n" +
@@ -239,14 +242,14 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertNotNull("No Refresh header found", simplePage.getRefreshRequest());
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 2, simplePage.getRefreshDelay());
+        assertNotNull(simplePage.getRefreshRequest(), "No Refresh header found");
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testMetaRefreshRequest() throws Exception {
+    void testMetaRefreshRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http_equiv=refresh content='2;\"" + refreshURL + "\"'></head>\n" +
@@ -258,13 +261,13 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 2, simplePage.getRefreshDelay());
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testMetaRefreshURLRequest() throws Exception {
+    void testMetaRefreshURLRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http-equiv=refresh content='2;URL=\"NextPage.html\"'></head>\n" +
@@ -276,13 +279,13 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 2, simplePage.getRefreshDelay());
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testMetaRefreshAbsoluteURLRequestWithAmpersandEncoding() throws Exception {
+    void testMetaRefreshAbsoluteURLRequestWithAmpersandEncoding() throws Exception {
         String refreshURL = "http://localhost:8080/someapp/secure/?username=abc&somevalue=abc";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http-equiv=refresh content='2;URL=\"http://localhost:8080/someapp/secure/?username=abc&amp;somevalue=abc\"'></head>\n" +
@@ -294,13 +297,13 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 2, simplePage.getRefreshDelay());
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testMetaRefreshURLRequestNoDelay() throws Exception {
+    void testMetaRefreshURLRequestNoDelay() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http-equiv=refresh content='URL=\"NextPage.html\"'></head>\n" +
@@ -312,13 +315,13 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 0, simplePage.getRefreshDelay());
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(0, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testMetaRefreshURLRequestDelayOnly() throws Exception {
+    void testMetaRefreshURLRequestDelayOnly() throws Exception {
         String refreshURL = getHostPath() + "/SimplePage.html";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http-equiv=refresh content='5'></head>\n" +
@@ -330,13 +333,13 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Refresh URL", refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm());
-        assertEquals("Refresh delay", 5, simplePage.getRefreshDelay());
+        assertEquals(refreshURL, simplePage.getRefreshRequest().getURL().toExternalForm(), "Refresh URL");
+        assertEquals(5, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
 
     @Test
-    public void testAutoRefresh() throws Exception {
+    void testAutoRefresh() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http_equiv=refresh content='2;" + refreshURL + "'></head>\n" +
@@ -350,7 +353,7 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertNull("No refresh request should have been found", simplePage.getRefreshRequest());
+        assertNull(simplePage.getRefreshRequest(), "No refresh request should have been found");
     }
 
 
@@ -358,7 +361,7 @@ public class WebPageTest extends HttpUnitTest {
      * Test the meta tag content retrieval
      */
     @Test
-    public void testMetaTag() throws Exception {
+    void testMetaTag() throws Exception {
         String page = "<html><head><title>Sample</title>" +
                 "<meta Http-equiv=\"Expires\" content=\"now\"/>\n" +
                 "<meta name=\"robots\" content=\"index,follow\"/>" +
@@ -382,7 +385,7 @@ public class WebPageTest extends HttpUnitTest {
      * test the stylesheet retrieval
      */
     @Test
-    public void testGetExternalStylesheet() throws Exception {
+    void testGetExternalStylesheet() throws Exception {
         String page = "<html><head><title>Sample</title>" +
                 "<link rev=\"made\" href=\"/Me@mycompany.com\"/>" +
                 "<link type=\"text/css\" rel=\"stylesheet\" href=\"/style.css\"/>" +
@@ -395,7 +398,7 @@ public class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
 
-        assertEquals("Stylesheet", "/style.css", simplePage.getExternalStyleSheet());
+        assertEquals("/style.css", simplePage.getExternalStyleSheet(), "Stylesheet");
     }
 
 
@@ -403,7 +406,7 @@ public class WebPageTest extends HttpUnitTest {
      * This test verifies that an IO exception is thrown when only a partial response is received.
      */
     @Test
-    public void testTruncatedPage() throws Exception {
+    void testTruncatedPage() throws Exception {
         HttpUnitOptions.setCheckContentLength(true);
         String page = "abcdefghijklmnop";
         defineResource("alphabet.html", page, "text/plain");
@@ -415,14 +418,14 @@ public class WebPageTest extends HttpUnitTest {
         try {
             WebResponse simplePage = wc.getResponse(request);
             String alphabet = simplePage.getText();
-            assertEquals("Full string", "abcdefghijklmnopqrstuvwxyz", alphabet);
+            assertEquals("abcdefghijklmnopqrstuvwxyz", alphabet, "Full string");
         } catch (IOException e) {
         }
     }
 
 
     @Test
-    public void testGetElementByID() throws Exception {
+    void testGetElementByID() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><form id='aForm'><input name=color></form>" +
@@ -439,7 +442,7 @@ public class WebPageTest extends HttpUnitTest {
 
 
     @Test
-    public void testGetElementsByName() throws Exception {
+    void testGetElementsByName() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><form name='aForm'><input name=color></form>" +
@@ -455,7 +458,7 @@ public class WebPageTest extends HttpUnitTest {
 
 
     @Test
-    public void testGetElementsByAttribute() throws Exception {
+    void testGetElementsByAttribute() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><form class='first' name='aForm'><input name=color></form>" +
@@ -477,7 +480,7 @@ public class WebPageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetElementsWithClassName() throws Exception {
+    void testGetElementsWithClassName() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" +
                         "<body><form class='first colorsample' name='aForm'><input name=color></form>" +
@@ -497,7 +500,7 @@ public class WebPageTest extends HttpUnitTest {
      * Test the {@link WebResponse.ByteTagParser} to ensure that embedded JavaScript is skipped.
      */
     @Test
-    public void testByteTagParser() throws Exception {
+    void testByteTagParser() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -510,20 +513,20 @@ public class WebPageTest extends HttpUnitTest {
 
         String[] expectedTags = {"html", "head", "title", "/title", "script", "/script", "base", "/head",
                 "body", "a", "/a", "/body", "/html"};
-        for (int i = 0; i < expectedTags.length; i++) {
+        for (int i = 0;i < expectedTags.length;i++) {
             final String tagName = parser.getNextTag().getName();
             final String expectedTag = expectedTags[i];
-            assertEquals("Tag number " + i, expectedTag, tagName);
+            assertEquals(expectedTag, tagName, "Tag number " + i);
         }
         final WebResponse.ByteTag nextTag = parser.getNextTag();
-        assertNull("More tags than expected: " + nextTag + "...?", nextTag);
+        assertNull(nextTag, "More tags than expected: " + nextTag + "...?");
     }
 
     /**
      * Test whether a base tag embedded within JavaScript in the header of a page confuses the parser.
      */
     @Test
-    public void testBaseTagWithinJavaScriptInHeader() throws Exception {
+    void testBaseTagWithinJavaScriptInHeader() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -535,17 +538,17 @@ public class WebPageTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         final WebResponse response = wc.getResponse(getHostPath() + "/main.html");
-        assertEquals("Base URL of link in main document", mainBaseURL, response.getLinkWith("relative link").getBaseURL());
+        assertEquals(mainBaseURL, response.getLinkWith("relative link").getBaseURL(), "Base URL of link in main document");
 
         final WebResponse targetResponse = wc.getOpenWindow(targetWindow).getCurrentPage();
-        assertEquals("Base URL of link in target document", targetBaseURL, targetResponse.getLinkWith("relative link").getBaseURL());
+        assertEquals(targetBaseURL, targetResponse.getLinkWith("relative link").getBaseURL(), "Base URL of link in target document");
     }
 
     /**
      * Test whether a base tag embedded within JavaScript in the body of a page confuses the parser.
      */
     @Test
-    public void testBaseTagWithinJavaScriptInBody() throws Exception {
+    void testBaseTagWithinJavaScriptInBody() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -557,10 +560,10 @@ public class WebPageTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         final WebResponse response = wc.getResponse(getHostPath() + "/main.html");
-        assertEquals("Base URL of link in main document", mainBaseURL, response.getLinkWith("relative link").getBaseURL());
+        assertEquals(mainBaseURL, response.getLinkWith("relative link").getBaseURL(), "Base URL of link in main document");
 
         final WebResponse targetResponse = wc.getOpenWindow(targetWindow).getCurrentPage();
-        assertEquals("Base URL of link in target document", targetBaseURL, targetResponse.getLinkWith("relative link").getBaseURL());
+        assertEquals(targetBaseURL, targetResponse.getLinkWith("relative link").getBaseURL(), "Base URL of link in target document");
     }
 
     /**
@@ -570,7 +573,7 @@ public class WebPageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetFirstMatchingForm() throws Exception {
+    void testGetFirstMatchingForm() throws Exception {
         defineResource("SimplePage.html", "<html><title>Hello</title>"
                 + " <body><form action='blah' method='GET'><button type='Submit' value='Blah'>Blah</button></form>"
                 + " <form action='new' method='GET'>"
@@ -584,7 +587,7 @@ public class WebPageTest extends HttpUnitTest {
 
         //find our desired Save form and submit it
         WebForm form = resp.getFirstMatchingForm(new XPathPredicate("//BUTTON[@value='Save']/ancestor::FORM"), null);
-        assertNotNull("The form found should not be null", form);
+        assertNotNull(form, "The form found should not be null");
         resp = wc.sendRequest(form.getRequest());
 
         //check the response
@@ -597,12 +600,12 @@ public class WebPageTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    public void testInvalidNoScriptHandling() throws IOException, SAXException {
-    	defineResource("/InvalidNoScriptPage.html","<html><body></body></html><noscript>t</noscript>");
-    	WebConversation wc = new WebConversation();
-      WebResponse resp = wc.getResponse(getHostPath() + "/InvalidNoScriptPage.html");
-      // indirectly invoke readTags
-      resp.replaceText("dummy", "dummy");
+    void testInvalidNoScriptHandling() throws IOException, SAXException {
+        defineResource("/InvalidNoScriptPage.html", "<html><body></body></html><noscript>t</noscript>");
+        WebConversation wc = new WebConversation();
+        WebResponse resp = wc.getResponse(getHostPath() + "/InvalidNoScriptPage.html");
+        // indirectly invoke readTags
+        resp.replaceText("dummy", "dummy");
     }
 
     /**

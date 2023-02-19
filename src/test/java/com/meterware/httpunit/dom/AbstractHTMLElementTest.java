@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLOptionElement;
@@ -41,7 +41,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
     protected HTMLDocumentImpl _htmlDocument;
     private List _eventsReceived = new ArrayList();
 
-    @Before
+    @BeforeEach
     public void setUpAbstractHTMLElementTest() throws Exception {
         _htmlDocument = new HTMLDocumentImpl();
     }
@@ -50,7 +50,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
     protected void assertProperties( String comment, String name, HTMLElement[] elements, Object[] expectedValues ) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         for (int i = 0; i < elements.length; i++) {
             HTMLElement element = elements[i];
-            assertEquals( comment + " " + i, expectedValues[i], AbstractHTMLElementTest.getProperty( element,  name ) );
+            assertEquals( expectedValues[i], AbstractHTMLElementTest.getProperty( element,  name ) , comment + " " + i);
         }
     }
 
@@ -78,13 +78,13 @@ abstract public class AbstractHTMLElementTest implements DomListener {
      */
     protected void doElementTest( String tagName, Class interfaceName, Object[][] attributes ) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         Element qualifiedElement = createElement( tagName, attributes );
-        assertTrue( "node should be a " + interfaceName.getName() + " but is " + qualifiedElement.getClass().getName(), interfaceName.isAssignableFrom( qualifiedElement.getClass() ) );
-        assertEquals( "Tag name", tagName.toUpperCase(), qualifiedElement.getNodeName() );
+        assertTrue( interfaceName.isAssignableFrom( qualifiedElement.getClass() ) , "node should be a " + interfaceName.getName() + " but is " + qualifiedElement.getClass().getName());
+        assertEquals( tagName.toUpperCase(), qualifiedElement.getNodeName() , "Tag name");
 
         for (int i = 0; i < attributes.length; i++) {
             String propertyName = (String) attributes[i][0];
             Object propertyValue = attributes[i][1];
-            assertEquals( propertyName, propertyValue, getProperty( qualifiedElement, propertyName ) );
+            assertEquals( propertyValue, getProperty( qualifiedElement, propertyName ) , propertyName);
         }
 
         Element element = createElement( tagName );
@@ -94,19 +94,19 @@ abstract public class AbstractHTMLElementTest implements DomListener {
             final Object propertyValue = attributes[i][1];
             Object defaultValue = attributes[i].length == 2 ? null : attributes[i][2];
             if (defaultValue == null) {
-                assertNull( propertyName + " should not be specified by default", getProperty( element, propertyName ) );
+                assertNull( getProperty( element, propertyName ) , propertyName + " should not be specified by default");
             } else {
-                assertEquals( "default " + propertyName, defaultValue,  getProperty( element, propertyName ) );
+                assertEquals( defaultValue,  getProperty( element, propertyName ) ,  "default " + propertyName);
             }
 
             Method writeMethod = AbstractHTMLElementTest.getWriteMethod( element, propertyName );
             if (attributes[i].length > 3 && attributes[i][3].equals( "ro" )) {
-                assertNull( propertyName + " is not read-only", writeMethod );
+                assertNull( writeMethod , propertyName + " is not read-only");
             } else {
                 assertNotNull( "No modifier defined for " + propertyName );
                 clearReceivedEvents();
                 writeMethod.invoke( element, new Object[] { propertyValue } );
-                assertEquals( "modified " + propertyName, propertyValue, getProperty( element, propertyName ) );
+                assertEquals( propertyValue, getProperty( element, propertyName ) , "modified " + propertyName);
                 expectPropertyChange( element, propertyName );
             }
         }
@@ -173,7 +173,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
 
 
     protected void expectPropertyChange( Element element, String property ) {
-        assertFalse( "Did not receive a property change event for " + element.getTagName() + "." + property, _eventsReceived.isEmpty() );
+        assertFalse( _eventsReceived.isEmpty() , "Did not receive a property change event for " + element.getTagName() + "." + property);
     }
 
 //-------------------------------------- DomListener methods --------------------------------------------

@@ -19,19 +19,22 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class HTMLElementTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class HTMLElementTest extends HttpUnitTest {
 
     @Test
-    public void testIDProperty() throws Exception {
+    void testIDProperty() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showTitle( id ) {" +
@@ -59,7 +62,7 @@ public class HTMLElementTest extends HttpUnitTest {
 
 
     @Test
-    public void testElementByIdReturnsNull() throws Exception {
+    void testElementByIdReturnsNull() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showNone() {" +
@@ -73,12 +76,12 @@ public class HTMLElementTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/start.html");
 
-        assertEquals("Null test alert", "It returned null", wc.popNextAlert());
+        assertEquals("It returned null", wc.popNextAlert(), "Null test alert");
     }
 
 
     @Test
-    public void testNameProperty() throws Exception {
+    void testNameProperty() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showTitle( name ) {" +
@@ -108,7 +111,7 @@ public class HTMLElementTest extends HttpUnitTest {
 
 
     @Test
-    public void testNamePropertyWithIdAttribute() throws Exception {
+    void testNamePropertyWithIdAttribute() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" +
                         "function showAll() {" +
@@ -131,12 +134,12 @@ public class HTMLElementTest extends HttpUnitTest {
 
 
     private void assertElementTitle(WebConversation wc, String propertyName, final String id, final String title) {
-        assertEquals("element '" + id + "' message", "element with " + propertyName + ' ' + id + " has title " + title, wc.popNextAlert());
+        assertEquals("element with " + propertyName + ' ' + id + " has title " + title, wc.popNextAlert(), "element '" + id + "' message");
     }
 
 
     @Test
-    public void testElementProperties() throws Exception {
+    void testElementProperties() throws Exception {
         defineWebPage("start",
                 "<form name='perform' title=fifth>" +
                         "  <input name='name' maxlength=20 tabindex='1'>" +
@@ -144,8 +147,8 @@ public class HTMLElementTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/start.html");
 
-        assertEquals("tabindex", "1", response.getScriptingHandler().evaluateExpression("document.perform.name.tabindex").toString());
-        assertEquals("maxlength", "20", response.getScriptingHandler().evaluateExpression("document.perform.name.maxlength").toString());
+        assertEquals("1", response.getScriptingHandler().evaluateExpression("document.perform.name.tabindex").toString(), "tabindex");
+        assertEquals("20", response.getScriptingHandler().evaluateExpression("document.perform.name.maxlength").toString(), "maxlength");
     }
 
 

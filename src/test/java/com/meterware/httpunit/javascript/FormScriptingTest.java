@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.*;
 import com.meterware.httpunit.protocol.UploadFileSpec;
@@ -31,13 +31,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
 /**
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
+@ExtendWith(ExternalResourceSupport.class)
 public class FormScriptingTest extends HttpUnitTest {
 
     /**
@@ -46,9 +49,9 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
-    @Ignore
+    @Disabled
     @Test
-    public void testFormNameProperty() throws Exception {
+    void testFormNameProperty() throws Exception {
         defineWebPage("OnCommand", "<form name='the_form_with_name'/>" +
                 "<script type='JavaScript'>" +
                 "  alert( document.forms[0].name );" +
@@ -63,9 +66,9 @@ public class FormScriptingTest extends HttpUnitTest {
                 "</script>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Message 1", "the_form_with_name", wc.popNextAlert());
-        assertEquals("Message 2", "the_form_with_id", wc.popNextAlert());
-        assertEquals("Message 3", "the_form_with_name2", wc.popNextAlert());
+        assertEquals("the_form_with_name", wc.popNextAlert(), "Message 1");
+        assertEquals("the_form_with_id", wc.popNextAlert(), "Message 2");
+        assertEquals("the_form_with_name2", wc.popNextAlert(), "Message 3");
     }
 
     /**
@@ -74,7 +77,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testModifyingFormNameProperty() throws Exception {
+    void testModifyingFormNameProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage(
                 "Default",
@@ -83,10 +86,10 @@ public class FormScriptingTest extends HttpUnitTest {
                         + "<a href='#' name='doShow' onClick='alert( document.forms[0].name );'>show</a>");
         WebResponse page = wc.getResponse(getHostPath() + "/Default.html");
         page.getLinkWithName("doShow").click();
-        assertEquals("Initial name", "form_name", wc.popNextAlert());
+        assertEquals("form_name", wc.popNextAlert(), "Initial name");
         page.getLinkWithName("doTell").click();
         page.getLinkWithName("doShow").click();
-        assertEquals("Current name", "new_form_name", wc.popNextAlert());
+        assertEquals("new_form_name", wc.popNextAlert(), "Current name");
     }
 
     /**
@@ -95,7 +98,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetAttributeForBody() throws Exception {
+    void testGetAttributeForBody() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;
@@ -123,15 +126,15 @@ public class FormScriptingTest extends HttpUnitTest {
         // System.err.println(response.getText());
 
         WebLink[] links = response.getLinks();
-        for (int i = 0; i < links.length; i++) {
+        for (int i = 0;i < links.length;i++) {
             links[i].click();
         }
         String expected[] = {
                 "#FFFFCC", "#E00000", "#0000E0", "#000080", "#000000"
         };
 
-        for (int i = 0; i < links.length; i++) {
-            assertEquals("Message for link  " + i, expected[i], wc.popNextAlert());
+        for (int i = 0;i < links.length;i++) {
+            assertEquals(expected[i], wc.popNextAlert(), "Message for link  " + i);
         }
     }
 
@@ -141,7 +144,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testGetAttributeForDiv() throws Exception {
+    void testGetAttributeForDiv() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;
@@ -162,20 +165,20 @@ public class FormScriptingTest extends HttpUnitTest {
         // the page for testing externally
         // System.err.println(response.getText());
         WebLink[] links = response.getLinks();
-        for (int i = 0; i < links.length; i++) {
+        for (int i = 0;i < links.length;i++) {
             links[i].click();
         }
         String expected[] = {
                 "left"
         };
-        for (int i = 0; i < links.length; i++) {
-            assertEquals("Message for link  " + i, expected[i], wc.popNextAlert());
+        for (int i = 0;i < links.length;i++) {
+            assertEquals(expected[i], wc.popNextAlert(), "Message for link  " + i);
         }
     }
 
 
     @Test
-    public void testElementsProperty() throws Exception {
+    void testElementsProperty() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function listElements( form ) {\n" +
                 "  elements = form.elements;\n" +
@@ -199,14 +202,14 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         final WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", null, form.getParameterValue("ready"));
+        assertNull(form.getParameterValue("ready"), "Initial state");
 
         response.getLinks()[0].click();
-        assertEquals("Message 1", "form has 3 elements", wc.popNextAlert());
-        assertEquals("Message 2", "value is Initial Text", wc.popNextAlert());
-        assertEquals("Message 3", "index is 1", wc.popNextAlert());
+        assertEquals("form has 3 elements", wc.popNextAlert(), "Message 1");
+        assertEquals("value is Initial Text", wc.popNextAlert(), "Message 2");
+        assertEquals("index is 1", wc.popNextAlert(), "Message 3");
 
-        assertEquals("Changed state", "on", form.getParameterValue("ready"));
+        assertEquals("on", form.getParameterValue("ready"), "Changed state");
     }
 
     /**
@@ -214,7 +217,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * inspired by Mail from Christoph to developer mailinglist of 2008-04-01
      */
     @Test
-    public void testClickSpan() throws Exception {
+    void testClickSpan() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function crtCtrla(obj,otherArg) {" +
                 "		alert(otherArg);" +
@@ -227,32 +230,32 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         String elementNames[] = response.getElementNames();
         HTMLElement elements[] = response.getElementsByTagName("span");
-        assertTrue("Two span elements should be found ", elements.length == 2);
+        assertEquals(2, elements.length, "Two span elements should be found ");
         HTMLElement span1 = elements[0];
         String onclick = "crtCtrla(this, \"rim_ModuleSearchResult=Drilldown=key_\", null, null);";
         assertEquals(span1.getAttribute("onclick"), onclick);
         span1.handleEvent("onclick");
         String alert = wc.popNextAlert();
-        assertEquals("function should have been triggered to alert", alert, "rim_ModuleSearchResult=Drilldown=key_");
+        assertEquals("rim_ModuleSearchResult=Drilldown=key_", alert, "function should have been triggered to alert");
         elements = response.getElementsWithAttribute("onclick", onclick);
         int expected = 1;
         // TODO check how 2 could be correct ...
         expected = 2;
-        assertTrue(expected + "elements should be found ", elements.length == expected);
+        assertEquals(elements.length, expected, expected + "elements should be found ");
         span1 = elements[0];
         span1.handleEvent("onclick");
         alert = wc.popNextAlert();
-        assertEquals("function should have been triggered to alert", alert, "rim_ModuleSearchResult=Drilldown=key_");
+        assertEquals("rim_ModuleSearchResult=Drilldown=key_", alert, "function should have been triggered to alert");
         // TODO remove this part
         span1 = elements[1];
         span1.handleEvent("onclick");
         alert = wc.popNextAlert();
-        assertEquals("function should have been triggered to alert", alert, "rim_ModuleSearchResult=Drilldown=key_");
+        assertEquals("rim_ModuleSearchResult=Drilldown=key_", alert, "function should have been triggered to alert");
     }
 
 
     @Test
-    public void testResetViaScript() throws Exception {
+    void testResetViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name=spectrum action='DoIt'>" +
@@ -267,12 +270,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebForm form = response.getFormWithName("spectrum");
         form.setParameter("color", "blue");
         response.getLinks()[0].click();
-        assertEquals("Value after reset", "green", form.getParameterValue("color"));
+        assertEquals("green", form.getParameterValue("color"), "Value after reset");
     }
 
 
     @Test
-    public void testOnResetEvent() throws Exception {
+    void testOnResetEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name=spectrum action='DoIt' onreset='alert( \"Ran the event\" );'>" +
@@ -288,18 +291,18 @@ public class FormScriptingTest extends HttpUnitTest {
 
         form.setParameter("color", "blue");
         form.getButtonWithID("clear").click();
-        assertEquals("Value after reset", "green", form.getParameterValue("color"));
-        assertEquals("Alert message", "Ran the event", wc.popNextAlert());
+        assertEquals("green", form.getParameterValue("color"), "Value after reset");
+        assertEquals("Ran the event", wc.popNextAlert(), "Alert message");
 
         form.setParameter("color", "blue");
         response.getLinks()[0].click();
-        assertEquals("Value after reset", "green", form.getParameterValue("color"));
-        assertNull("Event ran unexpectedly", wc.getNextAlert());
+        assertEquals("green", form.getParameterValue("color"), "Value after reset");
+        assertNull(wc.getNextAlert(), "Event ran unexpectedly");
     }
 
 
     @Test
-    public void testSubmitViaScript() throws Exception {
+    void testSubmitViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -314,7 +317,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getLinks()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
@@ -322,7 +325,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #959918
      */
     @Test
-    public void testNumericParameterSetting1() throws Exception {
+    void testNumericParameterSetting1() throws Exception {
         defineResource("DoIt?id=1234", "You made it!");
         defineResource("OnCommand.html", "<html><head>" +
                 "<script>" +
@@ -341,7 +344,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getLinks()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
@@ -349,7 +352,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #1087180
      */
     @Test
-    public void testNumericParameterSetting2() throws Exception {
+    void testNumericParameterSetting2() throws Exception {
         defineResource("DoIt.html?id=1234", "You made it!");
         defineResource("OnCommand.html", "<html><head>" +
                 "<script>" +
@@ -368,7 +371,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getLinks()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
@@ -376,7 +379,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #1073810 (Null pointer exception if javascript sets control value to null)
      */
     @Test
-    public void testNullParameterSetting() throws Exception {
+    void testNullParameterSetting() throws Exception {
         defineResource("OnCommand.html", "<html><head>" +
                 "<script>" +
                 "  function myFunction(value) {" +
@@ -401,7 +404,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testFormActionFromJavaScript() throws Exception {
+    void testFormActionFromJavaScript() throws Exception {
         // pending Patch 1155792 wf 2007-12-30
         // TODO activate in due course
         dotestFormActionFromJavaScript("param");
@@ -448,7 +451,7 @@ public class FormScriptingTest extends HttpUnitTest {
             response.getLinks()[0].click();
             String result = wc.getCurrentPage().getText();
             // 	System.err.println(result);
-            assertEquals("Result of submit", fooContent, result);
+            assertEquals(fooContent, result, "Result of submit");
         } catch (RuntimeException rte) {
             // TODO activate this test
             // There is currently a
@@ -467,7 +470,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testIndirectEventInvocation() throws Exception {
+    void testIndirectEventInvocation() throws Exception {
         defineResource("OnCommand.html", "<html><head></head><body>" +
                 "<form name=\"testForm\">" +
                 "<input type=\"text\" name=\"one\" value=\"default value\" onchange=\"this.form.two.value = this.form.one.value;\">" +
@@ -480,7 +483,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("testForm");
-        assertEquals("field one equals field two", form.getParameterValue("one"), form.getParameterValue("two"));
+        assertEquals(form.getParameterValue("one"), form.getParameterValue("two"), "field one equals field two");
     }
 
     /**
@@ -489,7 +492,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testEnablingDisabledSubmitButtonViaScript() throws Exception {
+    void testEnablingDisabledSubmitButtonViaScript() throws Exception {
         defineResource("DoIt?color=green&change=success", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -510,11 +513,11 @@ public class FormScriptingTest extends HttpUnitTest {
 
         assertSubmitButtonEnabled(form);
         clickSubmitButtonToProveThatItIsEnabled(form);
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
     @Test
-    public void testDisablingEnabledSubmitButtonViaScript() throws Exception {
+    void testDisablingEnabledSubmitButtonViaScript() throws Exception {
         defineResource("DoIt?color=green&change=success", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -538,7 +541,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    public void testEnablingDisabledNormalButtonViaScript() throws Exception {
+    void testEnablingDisabledNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -560,11 +563,11 @@ public class FormScriptingTest extends HttpUnitTest {
 
         assertNormalButtonEnabled(form, "changee");
         clickButtonToProveThatItIsEnabled(form, "changee");
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
     @Test
-    public void testDisablingEnableddNormalButtonViaScript() throws Exception {
+    void testDisablingEnableddNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -593,19 +596,19 @@ public class FormScriptingTest extends HttpUnitTest {
      * @param form
      */
     private void assertSubmitButtonDisabled(WebForm form) {
-        assertTrue("Button should have been Disabled", form.getSubmitButton("change").isDisabled());
+        assertTrue(form.getSubmitButton("change").isDisabled(), "Button should have been Disabled");
     }
 
     private void assertNormalButtonDisabled(WebForm form, String buttonID) {
-        assertTrue("Button should have been Disabled", form.getButtonWithID(buttonID).isDisabled());
+        assertTrue(form.getButtonWithID(buttonID).isDisabled(), "Button should have been Disabled");
     }
 
     private void assertSubmitButtonEnabled(WebForm form) {
-        assertFalse("Button should have been enabled or NOT-Disabled", form.getSubmitButton("change").isDisabled());
+        assertFalse(form.getSubmitButton("change").isDisabled(), "Button should have been enabled or NOT-Disabled");
     }
 
     private void assertNormalButtonEnabled(WebForm form, String buttonID) {
-        assertFalse("Button should have been enabled or NOT-Disabled", form.getButtonWithID(buttonID).isDisabled());
+        assertFalse(form.getButtonWithID(buttonID).isDisabled(), "Button should have been enabled or NOT-Disabled");
     }
 
     /**
@@ -661,7 +664,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    public void testEnablingDisabledRadioButtonViaScript() throws Exception {
+    void testEnablingDisabledRadioButtonViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name=spectrum action='DoIt'>" +
@@ -690,7 +693,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testSubmitViaScriptWithPostParams() throws Exception {
+    void testSubmitViaScriptWithPostParams() throws Exception {
         defineResource("/servlet/TestServlet?param3=value3&param4=value4", new PseudoServlet() {
             public WebResource getPostResponse() {
                 return new WebResource("You made it!", "text/plain");
@@ -716,12 +719,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getLinks()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
     @Test
-    public void testSubmitButtonlessFormViaScript() throws Exception {
+    void testSubmitButtonlessFormViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -734,12 +737,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getLinks()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
     @Test
-    public void testSubmitViaScriptButton() throws Exception {
+    void testSubmitViaScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -753,12 +756,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getFormWithName("spectrum").getButtons()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
     @Test
-    public void testDisabledScriptButton() throws Exception {
+    void testDisabledScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -780,7 +783,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testUpdateBeforeSubmit() throws Exception {
+    void testUpdateBeforeSubmit() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -793,12 +796,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getFormWithName("spectrum").getButtons()[0].click();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
     @Test
-    public void testSubmitButtonScript() throws Exception {
+    void testSubmitButtonScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
@@ -811,12 +814,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
 
         response.getFormWithName("spectrum").submit();
-        assertEquals("Result of submit", "You made it!", wc.getCurrentPage().getText());
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
 
     @Test
-    public void testSetFormTextValue() throws Exception {
+    void testSetFormTextValue() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body onLoad=\"document.realform.color.value='green'\">" +
                 "<form name='realform'><input name='color' value='blue'></form>" +
@@ -824,7 +827,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
-        assertEquals("color parameter value", "green", form.getParameterValue("color"));
+        assertEquals("green", form.getParameterValue("color"), "color parameter value");
     }
 
     /**
@@ -834,7 +837,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testCheckboxOnMouseDownEvent() throws Exception {
+    void testCheckboxOnMouseDownEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -846,20 +849,20 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", null, form.getParameterValue("color"));
+        assertNull(form.getParameterValue("color"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.removeParameter("color");
-        assertEquals("Alert message w/o change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message w/o change");
         form.setParameter("color", "blue");
-        assertEquals("Alert after change", "color-blue is now true", wc.popNextAlert());
+        assertEquals("color-blue is now true", wc.popNextAlert(), "Alert after change");
         form.removeParameter("color");
-        assertEquals("Alert after change", "color-blue is now false", wc.popNextAlert());
+        assertEquals("color-blue is now false", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Changed state", null, form.getParameterValue("color"));
+        assertNull(form.getParameterValue("color"), "Changed state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "blue", form.getParameterValue("color"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("blue", form.getParameterValue("color"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
     /**
@@ -868,7 +871,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testSetFormTextOnChangeEvent() throws Exception {
+    void testSetFormTextOnChangeEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -880,21 +883,21 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", "blue", form.getParameterValue("color"));
+        assertEquals("blue", form.getParameterValue("color"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.setParameter("color", "red");
-        assertEquals("Alert after change", "color is now red", wc.popNextAlert());
+        assertEquals("color is now red", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Changed state", "red", form.getParameterValue("color"));
+        assertEquals("red", form.getParameterValue("color"), "Changed state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "green", form.getParameterValue("color"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("green", form.getParameterValue("color"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
 
     @Test
-    public void testCheckboxProperties() throws Exception {
+    void testCheckboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewCheckbox( checkbox ) { \n" +
                 "  alert( 'checkbox ' + checkbox.name + ' default = ' + checkbox.defaultChecked )\n;" +
@@ -915,13 +918,13 @@ public class FormScriptingTest extends HttpUnitTest {
         response.getLinkWithName("report").mouseOver();
         verifyCheckbox( /* default */ wc, false, /* checked */ false, /* value */ "good");
 
-        assertEquals("initial parameter value", null, form.getParameterValue("ready"));
+        assertNull(form.getParameterValue("ready"), "initial parameter value");
         response.getLinkWithName("set").mouseOver();
-        assertEquals("changed parameter value", "good", form.getParameterValue("ready"));
+        assertEquals("good", form.getParameterValue("ready"), "changed parameter value");
         response.getLinkWithName("clear").mouseOver();
-        assertEquals("final parameter value", null, form.getParameterValue("ready"));
+        assertNull(form.getParameterValue("ready"), "final parameter value");
         response.getLinkWithName("change").mouseOver();
-        assertEquals("final parameter value", null, form.getParameterValue("ready"));
+        assertNull(form.getParameterValue("ready"), "final parameter value");
         response.getLinkWithName("report").mouseOver();
         verifyCheckbox( /* default */ wc, false, /* checked */ false, /* value */ "waiting");
         form.setParameter("ready", "waiting");
@@ -929,7 +932,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testIndexedCheckboxProperties() throws Exception {
+    void testIndexedCheckboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewCheckbox( checkbox ) { \n" +
                 "  alert( 'checkbox ' + checkbox.name + ' default = ' + checkbox.defaultChecked )\n;" +
@@ -952,14 +955,14 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     private void verifyCheckbox(WebClient wc, boolean defaultChecked, boolean checked, String value) {
-        assertEquals("Message " + 1 + "-1", "checkbox ready default = " + defaultChecked, wc.popNextAlert());
-        assertEquals("Message " + 1 + "-2", "checkbox ready checked = " + checked, wc.popNextAlert());
-        assertEquals("Message " + 1 + "-3", "checkbox ready value = " + value, wc.popNextAlert());
+        assertEquals("checkbox ready default = " + defaultChecked, wc.popNextAlert(), "Message " + 1 + "-1");
+        assertEquals("checkbox ready checked = " + checked, wc.popNextAlert(), "Message " + 1 + "-2");
+        assertEquals("checkbox ready value = " + value, wc.popNextAlert(), "Message " + 1 + "-3");
     }
 
 
     @Test
-    public void testCheckboxOnClickEvent() throws Exception {
+    void testCheckboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -971,25 +974,25 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", null, form.getParameterValue("color"));
+        assertNull(form.getParameterValue("color"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.removeParameter("color");
-        assertEquals("Alert message w/o change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message w/o change");
         form.setParameter("color", "blue");
-        assertEquals("Alert after change", "color-blue is now true", wc.popNextAlert());
+        assertEquals("color-blue is now true", wc.popNextAlert(), "Alert after change");
         form.removeParameter("color");
-        assertEquals("Alert after change", "color-blue is now false", wc.popNextAlert());
+        assertEquals("color-blue is now false", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Changed state", null, form.getParameterValue("color"));
+        assertNull(form.getParameterValue("color"), "Changed state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "blue", form.getParameterValue("color"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("blue", form.getParameterValue("color"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
 
     @Test
-    public void testSetCheckboxOnClickEvent() throws Exception {
+    void testSetCheckboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -1001,9 +1004,9 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
         form.toggleCheckbox("color");
-        assertEquals("Alert after change", "color-blue is now true", wc.popNextAlert());
+        assertEquals("color-blue is now true", wc.popNextAlert(), "Alert after change");
         form.setCheckbox("color", false);
-        assertEquals("Alert after change", "color-blue is now false", wc.popNextAlert());
+        assertEquals("color-blue is now false", wc.popNextAlert(), "Alert after change");
     }
 
 
@@ -1013,7 +1016,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testIndexedRadioProperties() throws Exception {
+    void testIndexedRadioProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewRadio( radio ) { \n" +
                 "  alert( 'radio ' + radio.name + ' default = ' + radio.defaultChecked )\n;" +
@@ -1040,7 +1043,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testRadioOnMouseDownEvent() throws Exception {
+    void testRadioOnMouseDownEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -1054,32 +1057,32 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", "red", form.getParameterValue("color"));
+        assertEquals("red", form.getParameterValue("color"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.setParameter("color", "red");
-        assertEquals("Alert message w/o change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message w/o change");
         form.setParameter("color", "blue");
-        assertEquals("Alert after change", "color is now blue", wc.popNextAlert());
+        assertEquals("color is now blue", wc.popNextAlert(), "Alert after change");
         form.setParameter("color", "red");
-        assertEquals("Alert after change", "color is now red", wc.popNextAlert());
+        assertEquals("color is now red", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Changed state", "red", form.getParameterValue("color"));
+        assertEquals("red", form.getParameterValue("color"), "Changed state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "blue", form.getParameterValue("color"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("blue", form.getParameterValue("color"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
 
     }
 
     private void verifyRadio(WebClient wc, boolean defaultChecked, boolean checked, String value) {
-        assertEquals("Message " + 1 + "-1", "radio ready default = " + defaultChecked, wc.popNextAlert());
-        assertEquals("Message " + 1 + "-2", "radio ready checked = " + checked, wc.popNextAlert());
-        assertEquals("Message " + 1 + "-3", "radio ready value = " + value, wc.popNextAlert());
+        assertEquals("radio ready default = " + defaultChecked, wc.popNextAlert(), "Message " + 1 + "-1");
+        assertEquals("radio ready checked = " + checked, wc.popNextAlert(), "Message " + 1 + "-2");
+        assertEquals("radio ready value = " + value, wc.popNextAlert(), "Message " + 1 + "-3");
     }
 
 
     @Test
-    public void testRadioOnClickEvent() throws Exception {
+    void testRadioOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -1093,25 +1096,25 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", "red", form.getParameterValue("color"));
+        assertEquals("red", form.getParameterValue("color"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.setParameter("color", "red");
-        assertEquals("Alert message w/o change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message w/o change");
         form.setParameter("color", "blue");
-        assertEquals("Alert after change", "color is now blue", wc.popNextAlert());
+        assertEquals("color is now blue", wc.popNextAlert(), "Alert after change");
         form.setParameter("color", "red");
-        assertEquals("Alert after change", "color is now red", wc.popNextAlert());
+        assertEquals("color is now red", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Changed state", "red", form.getParameterValue("color"));
+        assertEquals("red", form.getParameterValue("color"), "Changed state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "blue", form.getParameterValue("color"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("blue", form.getParameterValue("color"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
 
     @Test
-    public void testFormActionProperty() throws Exception {
+    void testFormActionProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Default", "<form method=GET name='the_form' action = 'ask'>" +
                 "<Input type=text name=age>" +
@@ -1121,7 +1124,7 @@ public class FormScriptingTest extends HttpUnitTest {
                 "<a href='#' name='doShow' onClick='alert( document.the_form.action );'>show</a>");
         WebResponse page = wc.getResponse(getHostPath() + "/Default.html");
         page.getLinkWithName("doShow").click();
-        assertEquals("Current action", "ask", wc.popNextAlert());
+        assertEquals("ask", wc.popNextAlert(), "Current action");
         page.getLinkWithName("doTell").click();
 
         WebRequest request = page.getForms()[0].getRequest();
@@ -1131,7 +1134,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testFormTargetProperty() throws Exception {
+    void testFormTargetProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Default", "<form method=GET name='the_form' action = 'ask'>" +
                 "<Input type=text name=age>" +
@@ -1141,10 +1144,10 @@ public class FormScriptingTest extends HttpUnitTest {
                 "<a href='#' name='doShow' onClick='alert( document.the_form.target );'>show</a>");
         WebResponse page = wc.getResponse(getHostPath() + "/Default.html");
         page.getLinkWithName("doShow").click();
-        assertEquals("Initial target", "_top", wc.popNextAlert());
+        assertEquals("_top", wc.popNextAlert(), "Initial target");
         page.getLinkWithName("doTell").click();
         page.getLinkWithName("doShow").click();
-        assertEquals("Current target", "_blank", wc.popNextAlert());
+        assertEquals("_blank", wc.popNextAlert(), "Current target");
 
         WebRequest request = page.getForms()[0].getRequest();
         assertEquals("_blank", request.getTarget());
@@ -1152,7 +1155,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testFormValidationOnSubmit() throws Exception {
+    void testFormValidationOnSubmit() throws Exception {
         defineResource("doIt?color=pink", "You got it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function verifyForm() { " +
@@ -1173,16 +1176,16 @@ public class FormScriptingTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("realform");
         form.submit();
-        assertEquals("Alert message", "wrong color", wc.popNextAlert());
-        assertSame("Current response", response, wc.getCurrentPage());
+        assertEquals("wrong color", wc.popNextAlert(), "Alert message");
+        assertSame(response, wc.getCurrentPage(), "Current response");
         form.setParameter("color", "pink");
         WebResponse newResponse = form.submit();
-        assertEquals("Result of submit", "You got it!", newResponse.getText());
+        assertEquals("You got it!", newResponse.getText(), "Result of submit");
     }
 
 
     @Test
-    public void testFormSelectReadableProperties() throws Exception {
+    void testFormSelectReadableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewSelect( choices ) { \n" +
                 "  alert( 'select has ' + choices.options.length + ' options' )\n;" +
@@ -1205,18 +1208,18 @@ public class FormScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("1st message", "select has 2 options", wc.popNextAlert());
-        assertEquals("2nd message", "select still has 2 options", wc.popNextAlert());
-        assertEquals("3rd message", "select option 0 is red", wc.popNextAlert());
-        assertEquals("4th message", "select 2nd option value is 3", wc.popNextAlert());
-        assertEquals("5th message", "blue selected", wc.popNextAlert());
-        assertEquals("6th message", "blue selected again", wc.popNextAlert());
+        assertEquals("select has 2 options", wc.popNextAlert(), "1st message");
+        assertEquals("select still has 2 options", wc.popNextAlert(), "2nd message");
+        assertEquals("select option 0 is red", wc.popNextAlert(), "3rd message");
+        assertEquals("select 2nd option value is 3", wc.popNextAlert(), "4th message");
+        assertEquals("blue selected", wc.popNextAlert(), "5th message");
+        assertEquals("blue selected again", wc.popNextAlert(), "6th message");
 
         response.getLinks()[0].mouseOver();
-        assertEquals("before change message", "selected #1", wc.popNextAlert());
+        assertEquals("selected #1", wc.popNextAlert(), "before change message");
         response.getFormWithName("the_form").setParameter("choices", "1");
         response.getLinks()[0].mouseOver();
-        assertEquals("after change message", "selected #0", wc.popNextAlert());
+        assertEquals("selected #0", wc.popNextAlert(), "after change message");
     }
 
 
@@ -1227,7 +1230,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * by Wolfgang Fahl of 2005-02-16 17:25
      */
     @Test
-    public void testSelectIndexOutOfBoundsCatching() throws Exception {
+    void testSelectIndexOutOfBoundsCatching() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewSelect( choices ) { \n" +
                 " // try accessing out of bounds\n" +
@@ -1258,7 +1261,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testFormSelectDefaults() throws Exception {
+    void testFormSelectDefaults() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function viewSelect( form ) { \n" +
                 "  alert( 'first default index= '  + form.first.selectedIndex )\n;" +
@@ -1277,15 +1280,15 @@ public class FormScriptingTest extends HttpUnitTest {
                 "</body></html>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("1st message", "first default index= 0", wc.popNextAlert());
-        assertEquals("2nd message", "second default index= -1", wc.popNextAlert());
-        assertEquals("3rd message", "third default index= -1", wc.popNextAlert());
-        assertEquals("4th message", "fourth default index= 0", wc.popNextAlert());
+        assertEquals("first default index= 0", wc.popNextAlert(), "1st message");
+        assertEquals("second default index= -1", wc.popNextAlert(), "2nd message");
+        assertEquals("third default index= -1", wc.popNextAlert(), "3rd message");
+        assertEquals("fourth default index= 0", wc.popNextAlert(), "4th message");
     }
 
 
     @Test
-    public void testFileSubmitProperties() throws Exception {
+    void testFileSubmitProperties() throws Exception {
         File file = new File("temp.html");
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body'>" +
@@ -1297,17 +1300,17 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].mouseOver();
-        assertEquals("1st message", "file selected is []", wc.popNextAlert());
+        assertEquals("file selected is []", wc.popNextAlert(), "1st message");
 
         WebForm form = response.getFormWithName("the_form");
         form.setParameter("file", new UploadFileSpec[]{new UploadFileSpec(file)});
         response.getLinks()[0].mouseOver();
-        assertEquals("2nd message", "file selected is [" + file.getAbsolutePath() + "]", wc.popNextAlert());
+        assertEquals("file selected is [" + file.getAbsolutePath() + "]", wc.popNextAlert(), "2nd message");
     }
 
 
     @Test
-    public void testFormSelectOnChangeEvent() throws Exception {
+    void testFormSelectOnChangeEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function selectOptionNum( the_select, index ) { \n" +
                 "  for (var i = 0; i < the_select.length; i++) {\n" +
@@ -1327,23 +1330,23 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         final WebForm form = response.getFormWithName("the_form");
-        assertEquals("Initial state", "blue", form.getParameterValue("choices"));
+        assertEquals("blue", form.getParameterValue("choices"), "Initial state");
 
-        assertEquals("Alert message before change", null, wc.getNextAlert());
+        assertNull(wc.getNextAlert(), "Alert message before change");
         form.setParameter("choices", "red");
-        assertEquals("Alert after change", "Selected index is 0", wc.popNextAlert());
+        assertEquals("Selected index is 0", wc.popNextAlert(), "Alert after change");
         form.setParameter("choices", "blue");
-        assertEquals("Alert after change", "Selected index is 1", wc.popNextAlert());
+        assertEquals("Selected index is 1", wc.popNextAlert(), "Alert after change");
 
-        assertEquals("Initial state", "blue", form.getParameterValue("choices"));
+        assertEquals("blue", form.getParameterValue("choices"), "Initial state");
         response.getLinks()[0].click();
-        assertEquals("Final state", "red", form.getParameterValue("choices"));
-        assertEquals("Alert message after JavaScript change", null, wc.getNextAlert());
+        assertEquals("red", form.getParameterValue("choices"), "Final state");
+        assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
 
     @Test
-    public void testFormSelectWriteableProperties() throws Exception {
+    void testFormSelectWriteableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" +
                 "<body>" +
                 "<form name='the_form'>" +
@@ -1359,15 +1362,15 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("initial selection", "1", form.getParameterValue("choices"));
+        assertEquals("1", form.getParameterValue("choices"), "initial selection");
 
         response.getLinks()[0].click();
-        assertEquals("Notification", "Selected index is 0", wc.popNextAlert());
+        assertEquals("Selected index is 0", wc.popNextAlert(), "Notification");
     }
 
 
     @Test
-    public void testFormSelectDefaultProperties() throws Exception {
+    void testFormSelectDefaultProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function selectOptionNum( the_select, index ) { \n" +
                 "  for (var i = 0; i < the_select.length; i++) {\n" +
@@ -1393,25 +1396,25 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebForm form = response.getFormWithName("the_form");
-        assertEquals("initial selection", "3", form.getParameterValue("choices"));
+        assertEquals("3", form.getParameterValue("choices"), "initial selection");
 
         response.getLinks()[0].click();
-        assertEquals("2nd selection", "5", form.getParameterValue("choices"));
+        assertEquals("5", form.getParameterValue("choices"), "2nd selection");
         response.getLinks()[1].click();
-        assertEquals("3rd selection", "1", form.getParameterValue("choices"));
+        assertEquals("1", form.getParameterValue("choices"), "3rd selection");
         response.getLinks()[2].click();
-        assertEquals("4th selection", "9", form.getParameterValue("choices"));
+        assertEquals("9", form.getParameterValue("choices"), "4th selection");
 
         assertMatchingSet("Displayed options", new String[]{"red", "blue", "green", "azure"}, form.getOptions("choices"));
         response.getLinks()[3].click();
         assertMatchingSet("Modified options", new String[]{"orange", "blue", "green", "azure"}, form.getOptions("choices"));
         response.getLinks()[4].click();
-        assertEquals("5th selection", "7", form.getParameterValue("choices"));
+        assertEquals("7", form.getParameterValue("choices"), "5th selection");
     }
 
 
     @Test
-    public void testFormSelectOverwriteOptions() throws Exception {
+    void testFormSelectOverwriteOptions() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function rewriteSelect( the_select ) { \n" +
                 "  the_select.options[0] = new Option( 'apache', 'a' );\n" +
@@ -1454,7 +1457,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testAccessAcrossFrames() throws Exception {
+    void testAccessAcrossFrames() throws Exception {
         defineResource("First.html",
                 "<html><head><script language='JavaScript'>" +
                         "function accessOtherFrame() {" +
@@ -1474,12 +1477,12 @@ public class FormScriptingTest extends HttpUnitTest {
 
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/Frames.html");
-        assertEquals("Alert message", "value: new1", wc.popNextAlert());
+        assertEquals("value: new1", wc.popNextAlert(), "Alert message");
     }
 
 
     @Test
-    public void testSetFromEmbeddedScript() throws Exception {
+    void testSetFromEmbeddedScript() throws Exception {
         defineWebPage("OnCommand", "<form name=\"testform\">" +
                 "<input type=text name=\"testfield\" value=\"old\">" +
                 "</form>" +
@@ -1488,12 +1491,12 @@ public class FormScriptingTest extends HttpUnitTest {
                 "</script>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Form parameter value", "new", response.getForms()[0].getParameterValue("testfield"));
+        assertEquals("new", response.getForms()[0].getParameterValue("testfield"), "Form parameter value");
     }
 
 
     @Test
-    public void testSubmitFromJavaScriptLink() throws Exception {
+    void testSubmitFromJavaScriptLink() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
         defineWebPage("OnCommand", "<form name='myform' action='test2.txt'>" +
                 "  <input type='submit' id='btn' name='Submit' value='Submit'/>" +
@@ -1506,7 +1509,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
 
     @Test
-    public void testSubmitOnLoad() throws Exception {
+    void testSubmitOnLoad() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><body onload='document.myform.btn.click();'>" +
                 "<form name='myform' action='test2.txt'>" +
@@ -1514,15 +1517,15 @@ public class FormScriptingTest extends HttpUnitTest {
                 "</form></body></html>");
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("current page URL", getHostPath() + "/test2.txt?Submit=Submit", wc.getCurrentPage().getURL().toExternalForm());
-        assertEquals("current page", "You made it!", wc.getCurrentPage().getText());
-        assertEquals("returned page URL", getHostPath() + "/test2.txt?Submit=Submit", wr.getURL().toExternalForm());
-        assertEquals("returned page", "You made it!", wr.getText());
+        assertEquals(getHostPath() + "/test2.txt?Submit=Submit", wc.getCurrentPage().getURL().toExternalForm(), "current page URL");
+        assertEquals("You made it!", wc.getCurrentPage().getText(), "current page");
+        assertEquals(getHostPath() + "/test2.txt?Submit=Submit", wr.getURL().toExternalForm(), "returned page URL");
+        assertEquals("You made it!", wr.getText(), "returned page");
     }
 
 
     @Test
-    public void testSelectValueProperty() throws Exception {
+    void testSelectValueProperty() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" +
                 "function testProperty( form ) {\n" +
                 "   elements = form.choices;\n" +
@@ -1541,15 +1544,15 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getLinks()[0].click();
-        assertEquals("Message 1", "selected item is blue", wc.popNextAlert());
+        assertEquals("selected item is blue", wc.popNextAlert(), "Message 1");
         response.getScriptingHandler().doEventScript("document.the_form.choices.value='red'");
         response.getLinks()[0].click();
-        assertEquals("Message 2", "selected item is red", wc.popNextAlert());
+        assertEquals("selected item is red", wc.popNextAlert(), "Message 2");
     }
 
 
     @Test
-    public void testElementsByIDProperty() throws Exception {
+    void testElementsByIDProperty() throws Exception {
         defineResource("index.html", "<html>\n" +
                 "<head>\n" +
                 "<title>JavaScript Form Elements by ID String Test</title>\n" +
@@ -1575,7 +1578,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/index.html");
         WebForm form = response.getFormWithName("formName");
-        assertEquals("Changed value", "Hello World!", form.getParameterValue("inputName"));
+        assertEquals("Hello World!", form.getParameterValue("inputName"), "Changed value");
     }
 
     /**
@@ -1584,7 +1587,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testElementTypeAccess() throws Exception {
+    void testElementTypeAccess() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" +
                 "function CheckForm() {\n" +
                 "  var len = document.myForm.elements.length;\n" +
@@ -1658,7 +1661,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testFormLength() throws Exception {
+    void testFormLength() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" +
                 "function CheckForm()\n" +
                 "{\n" +
@@ -1689,7 +1692,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception on any unexpected error
      */
     @Test
-    public void testIncreaseSelectLength() throws Exception {
+    void testIncreaseSelectLength() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" +
                 "function extend()\n" +
                 "{\n" +
@@ -1713,12 +1716,12 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/Default.html");
         wr.getLinks()[0].click();
-        assertEquals("1st message", "select has 1 options", wc.popNextAlert());
-        assertEquals("2nd message", "last option is Select Job Role", wc.popNextAlert());
+        assertEquals("select has 1 options", wc.popNextAlert(), "1st message");
+        assertEquals("last option is Select Job Role", wc.popNextAlert(), "2nd message");
         wr.getLinks()[1].click();
         wr.getLinks()[0].click();
-        assertEquals("3rd message", "select has 2 options", wc.popNextAlert());
-        assertEquals("4th message", "last option is here", wc.popNextAlert());
+        assertEquals("select has 2 options", wc.popNextAlert(), "3rd message");
+        assertEquals("last option is here", wc.popNextAlert(), "4th message");
     }
 
 
@@ -1730,7 +1733,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testElementDefaultValue() throws Exception {
+    void testElementDefaultValue() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" +
                 "function CheckForm()\n" +
                 "{\n" +

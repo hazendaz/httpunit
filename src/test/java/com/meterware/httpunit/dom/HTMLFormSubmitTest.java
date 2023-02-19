@@ -19,24 +19,24 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.html.*;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
+class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     private HTMLFormElement _form;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         TestWindowProxy windowProxy = new TestWindowProxy(_htmlDocument);
         windowProxy.setUrl(new URL("http://localhost/aux.html"));
 
@@ -55,11 +55,11 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that submitting a simple form works.
      */
     @Test
-    public void testSubmitFromForm() throws Exception {
+    void testSubmitFromForm() throws Exception {
         addInput("text", "name").setValue("master");
         addInput("checkbox", "second").setChecked(true);
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?name=master&second=on, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -67,13 +67,13 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that submitting a simple form from a button selects that button only.
      */
     @Test
-    public void testSubmitFromButton() throws Exception {
+    void testSubmitFromButton() throws Exception {
         addInput("text", "name", "master");
         addInput("checkbox", "second").setChecked(true);
         addInput("submit", "save", "none");
         HTMLInputElementImpl button = (HTMLInputElementImpl) addInput("submit", "save", "all");
         button.doClickAction();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?name=master&second=on&save=all, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on&save=all, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -81,10 +81,10 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that characters in parameter names will be appropriately encoded.
      */
     @Test
-    public void testEmbeddedEquals() throws Exception {
+    void testEmbeddedEquals() throws Exception {
         addInput("text", "age=x", "12");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -92,11 +92,11 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that an empty "select" element does not transmit any parameter values.
      */
     @Test
-    public void testEmptyChoiceSubmit() throws Exception {
+    void testEmptyChoiceSubmit() throws Exception {
         addInput("text", "age", "12");
         addSelect("empty");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age=12, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -104,14 +104,14 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a select will send a value taken from the "value" attribute.
      */
     @Test
-    public void testSubmitUsingSelectOptionAttributes() throws Exception {
+    void testSubmitUsingSelectOptionAttributes() throws Exception {
         addInput("text", "age", "12");
         HTMLSelectElement select = addSelect("color");
         addOption(select, "red", null);
         addOption(select, "blue", "azure").setAttribute("selected", "selected");
         addOption(select, "green", null);
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age=12&color=blue, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -119,7 +119,7 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a select will send a value taken from the text nodes following the option tags.
      */
     @Test
-    public void testSubmitUsingSelectOptionLabels() throws Exception {
+    void testSubmitUsingSelectOptionLabels() throws Exception {
         addInput("text", "age", "12");
         HTMLSelectElement select = addSelect("color");
         select.setMultiple(true);
@@ -128,7 +128,7 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addOption(select, null, "blue").setAttribute("selected", "selected");
         addOption(select, null, "green").setAttribute("selected", "selected");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?age=12&color=blue&color=green, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue&color=green, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -136,12 +136,12 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a radio button will send its value on submit.
      */
     @Test
-    public void testSubmitRadioButtons() throws Exception {
+    void testSubmitRadioButtons() throws Exception {
         addInput("radio", "color", "red").setChecked(true);
         addInput("radio", "color", "blue").setChecked(true);
         addInput("radio", "color", "green");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?color=blue, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 
@@ -149,25 +149,26 @@ public class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that checkboxes will send their values on submit.
      */
     @Test
-    public void testSubmitCheckboxes() throws Exception {
+    void testSubmitCheckboxes() throws Exception {
         addInput("checkbox", "color", "red").setChecked(true);
         addInput("checkbox", "color", "blue").setChecked(true);
         addInput("checkbox", "color", "green");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( GET, http://localhost/tryMe?color=red&color=blue, null, null )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( GET, http://localhost/tryMe?color=red&color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
     /**
      * Verifies that forms with the POST method send their data in the message body.
      */
-    @Test @Ignore
-    public void submitUsingPost() throws Exception {
+    @Test
+    @Disabled
+    void submitUsingPost() throws Exception {
         _form.setMethod("POST");
         addInput("checkbox", "color", "red").setChecked(true);
         addInput("checkbox", "color", "blue").setChecked(true);
         addInput("checkbox", "color", "green");
         _form.submit();
-        assertEquals("Expected response", "submitRequest( POST, http://localhost/tryMe, null, color=red&color=blue )", TestWindowProxy.popProxyCall());
+        assertEquals("submitRequest( POST, http://localhost/tryMe, null, color=red&color=blue )", TestWindowProxy.popProxyCall(), "Expected response");
     }
 
 

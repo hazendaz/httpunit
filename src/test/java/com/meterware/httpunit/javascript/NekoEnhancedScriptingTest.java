@@ -19,21 +19,24 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests that work under NekoHTML but not JTidy due to the ability to do script processing during parsing.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class NekoEnhancedScriptingTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class NekoEnhancedScriptingTest extends HttpUnitTest {
 
     @Test
-    public void testEmbeddedDocumentWrite() throws Exception {
+    void testEmbeddedDocumentWrite() throws Exception {
         defineResource("OnCommandWrite.html", "<html><head><title>something</title></head>" +
                 "<body>" +
                 "<script language='JavaScript'>" +
@@ -45,13 +48,13 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommandWrite.html");
         WebLink link = response.getLinkWithID("here");
-        assertNotNull("The link was not found", link);
-        assertEquals("Link contents", "something", link.getText());
+        assertNotNull(link, "The link was not found");
+        assertEquals("something", link.getText(), "Link contents");
     }
 
 
     @Test
-    public void testEmbeddedDocumentWriteWithClose() throws Exception {
+    void testEmbeddedDocumentWriteWithClose() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>something</title></head>" +
                 "<body>" +
                 "<script language='JavaScript'>" +
@@ -64,13 +67,13 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinkWithID("here");
-        assertNotNull("The link was not found", link);
-        assertEquals("Link contents", "something", link.getText());
+        assertNotNull(link, "The link was not found");
+        assertEquals("something", link.getText(), "Link contents");
     }
 
 
     @Test
-    public void testUnknownScript() throws Exception {
+    void testUnknownScript() throws Exception {
         defineWebPage("FunkyScript",
                 "<SCRIPT>" +
                         "var stuff='<A href=\"#\">Default JavaScript Working</A><BR>';" +
@@ -91,10 +94,10 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
                         "</SCRIPT>");
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/FunkyScript.html");
-        assertNotNull("No default script link found", wr.getLinkWith("Default JavaScript Working"));
-        assertNotNull("No default script link found", wr.getLinkWith("JavaScript Working"));
-        assertNotNull("No default script link found", wr.getLinkWith("JavaScript 1.2 Working"));
-        assertNull("VBScript link found", wr.getLinkWith("VBScript"));
+        assertNotNull(wr.getLinkWith("Default JavaScript Working"), "No default script link found");
+        assertNotNull(wr.getLinkWith("JavaScript Working"), "No default script link found");
+        assertNotNull(wr.getLinkWith("JavaScript 1.2 Working"), "No default script link found");
+        assertNull(wr.getLinkWith("VBScript"), "VBScript link found");
     }
 
 
@@ -104,7 +107,7 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testNoScriptSections() throws Exception {
+    void testNoScriptSections() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>something</title></head>" +
                 "<body>" +
                 "<script language='JavaScript'>" +
@@ -119,16 +122,16 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinkWithID("here");
-        assertNotNull("The link was not found", link);
-        assertEquals("Link contents", "something", link.getText());
-        assertNull("Should not have found link in noscript", response.getLinkWithID("there"));
+        assertNotNull(link, "The link was not found");
+        assertEquals("something", link.getText(), "Link contents");
+        assertNull(response.getLinkWithID("there"), "Should not have found link in noscript");
 
         HttpUnitOptions.setScriptingEnabled(false);
         response = wc.getResponse(getHostPath() + "/OnCommand.html");
         link = response.getLinkWithID("there");
-        assertNotNull("The link was not found", link);
-        assertEquals("Link contents", "anything", link.getText());
-        assertNull("Should not have found scripted link", response.getLinkWithID("here"));
+        assertNotNull(link, "The link was not found");
+        assertEquals("anything", link.getText(), "Link contents");
+        assertNull(response.getLinkWithID("here"), "Should not have found scripted link");
     }
 
 
@@ -138,7 +141,7 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
      * only to a specific position in the document. It may be possible to fix this with some logic changes...
      */
     @Test
-    public void testFormsCaching() throws Exception {
+    void testFormsCaching() throws Exception {
         defineWebPage("OnCommand", "<form>" +
                 "  <input type='text' name='color' value='blue' >" +
                 "</form>" +
@@ -153,8 +156,8 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
                 "</script>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
-        assertEquals("Message 1", "blue", wc.popNextAlert());
-        assertEquals("Message 2", "3", wc.popNextAlert());
+        assertEquals("blue", wc.popNextAlert(), "Message 1");
+        assertEquals("3", wc.popNextAlert(), "Message 2");
     }
 
 
@@ -162,7 +165,7 @@ public class NekoEnhancedScriptingTest extends HttpUnitTest {
      * Verifies that a script can write part of the frameset.
      */
     @Test
-    public void testScriptedFrames() throws Exception {
+    void testScriptedFrames() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
         defineResource("Frames.html",
                 "<html><script>" +

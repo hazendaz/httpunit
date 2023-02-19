@@ -19,11 +19,11 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Verifies handling of URLs with odd features.
@@ -31,51 +31,51 @@ import org.junit.Test;
  * @author <a href="mailto:ddkilzer@users.sourceforge.net">David D. Kilzer</a>
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class NormalizeURLTest extends HttpUnitTest {
+class NormalizeURLTest extends HttpUnitTest {
 
     /*
       * Test various combinations of URLs with NO trailing slash (and no directory or file part)
       */
 
     @Test
-    public void testHostnameNoSlash() throws Exception {
+    void testHostnameNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name");
-        assertEquals("URL", "http://host.name", request.getURL().toExternalForm());
+        assertEquals("http://host.name", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnamePortNoSlash() throws Exception {
+    void testHostnamePortNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name:80");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name:80");
+        assertEquals("http://host.name:80", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernameHostnameNoSlash() throws Exception {
+    void testUsernameHostnameNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username@host.name");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username@host.name");
+        assertEquals("http://username@host.name", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernamePasswordHostnameNoSlash() throws Exception {
+    void testUsernamePasswordHostnameNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username:password@host.name");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username:password@host.name");
+        assertEquals("http://username:password@host.name", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernameHostnamePortNoSlash() throws Exception {
+    void testUsernameHostnamePortNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username@host.name:80");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username@host.name:80");
+        assertEquals("http://username@host.name:80", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernamePasswordHostnamePortNoSlash() throws Exception {
+    void testUsernamePasswordHostnamePortNoSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username:password@host.name:80");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username:password@host.name:80");
+        assertEquals("http://username:password@host.name:80", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -84,44 +84,44 @@ public class NormalizeURLTest extends HttpUnitTest {
       */
 
     @Test
-    public void testHostnameSlash() throws Exception {
+    void testHostnameSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/");
+        assertEquals("http://host.name/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnamePortSlash() throws Exception {
+    void testHostnamePortSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name:80/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name:80/");
+        assertEquals("http://host.name:80/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernameHostnameSlash() throws Exception {
+    void testUsernameHostnameSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username@host.name/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username@host.name/");
+        assertEquals("http://username@host.name/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernamePasswordHostnameSlash() throws Exception {
+    void testUsernamePasswordHostnameSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username:password@host.name/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username:password@host.name/");
+        assertEquals("http://username:password@host.name/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernameHostnamePortSlash() throws Exception {
+    void testUsernameHostnamePortSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username@host.name:80/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username@host.name:80/");
+        assertEquals("http://username@host.name:80/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUsernamePasswordHostnamePortSlash() throws Exception {
+    void testUsernamePasswordHostnamePortSlash() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://username:password@host.name:80/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://username:password@host.name:80/");
+        assertEquals("http://username:password@host.name:80/", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -130,23 +130,23 @@ public class NormalizeURLTest extends HttpUnitTest {
       */
 
     @Test
-    public void testHostnameFile() throws Exception {
+    void testHostnameFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameDirectoryFile() throws Exception {
+    void testHostnameDirectoryFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameDirectory1Directory2File() throws Exception {
+    void testHostnameDirectory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/directory2/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -155,16 +155,16 @@ public class NormalizeURLTest extends HttpUnitTest {
       */
 
     @Test
-    public void testHostnameDirectory() throws Exception {
+    void testHostnameDirectory() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/");
+        assertEquals("http://host.name/directory/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameDirectory1Directory2() throws Exception {
+    void testHostnameDirectory1Directory2() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/directory2/");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/");
+        assertEquals("http://host.name/directory1/directory2/", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -173,79 +173,79 @@ public class NormalizeURLTest extends HttpUnitTest {
       */
 
     @Test
-    public void testTortureHostnameDotFile() throws Exception {
+    void testTortureHostnameDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectoryFile() throws Exception {
+    void testTortureHostnameDotDirectoryFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectoryDotFile() throws Exception {
+    void testTortureHostnameDotDirectoryDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory/./file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectoryDotDotFile() throws Exception {
+    void testTortureHostnameDotDirectoryDotDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory/../file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectory1Directory2File() throws Exception {
+    void testTortureHostnameDotDirectory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory1/directory2/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectory1DotDirectory2File() throws Exception {
+    void testTortureHostnameDotDirectory1DotDirectory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory1/./directory2/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDotDirectory1DotDirectory2DotFile() throws Exception {
+    void testTortureHostnameDotDirectory1DotDirectory2DotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/./directory1/./directory2/./file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDirectory1Directory2File() throws Exception {
+    void testTortureHostnameDirectory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/directory2/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDirectory1DotDotDirectory2File() throws Exception {
+    void testTortureHostnameDirectory1DotDotDirectory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/../directory2/file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory2/file.html");
+        assertEquals("http://host.name/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDirectory1DotDotDirectory2DotDotFile() throws Exception {
+    void testTortureHostnameDirectory1DotDotDirectory2DotDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/../directory2/../file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testTortureHostnameDirectory1Directory2DotDotDotDotFile() throws Exception {
+    void testTortureHostnameDirectory1Directory2DotDotDotDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory1/directory2/../../file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
     /**
@@ -254,9 +254,9 @@ public class NormalizeURLTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    public void testTripleDottedPath() throws Exception {
+    void testTripleDottedPath() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://en.wikipedia.org/wiki/...And_Found");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://en.wikipedia.org/wiki/...And_Found");
+        assertEquals("http://en.wikipedia.org/wiki/...And_Found", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -264,9 +264,9 @@ public class NormalizeURLTest extends HttpUnitTest {
      * Test relative URLs with directory navigation.
      */
     @Test
-    public void testRelativePathDotDotFile() throws Exception {
+    void testRelativePathDotDotFile() throws Exception {
         WebRequest request = new GetMethodWebRequest(new URL("http://host.name/directory1/file.html"), "../directory2/file.html");
-        assertEquals("URL", "http://host.name/directory2/file.html", request.getURL().toExternalForm());
+        assertEquals("http://host.name/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
@@ -275,130 +275,130 @@ public class NormalizeURLTest extends HttpUnitTest {
       */
 
     @Test
-    public void testHostnameSlash1File() throws Exception {
+    void testHostnameSlash1File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name//file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash2File() throws Exception {
+    void testHostnameSlash2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name///file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash3File() throws Exception {
+    void testHostnameSlash3File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name////file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/file.html");
+        assertEquals("http://host.name/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash1DirectoryFile() throws Exception {
+    void testHostnameSlash1DirectoryFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory//file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash2DirectoryFile() throws Exception {
+    void testHostnameSlash2DirectoryFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory///file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash3DirectoryFile() throws Exception {
+    void testHostnameSlash3DirectoryFile() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name/directory////file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/file.html");
+        assertEquals("http://host.name/directory/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash1Directory1Directory2File() throws Exception {
+    void testHostnameSlash1Directory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name//directory1//directory2//file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash2Directory1Directory2File() throws Exception {
+    void testHostnameSlash2Directory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name///directory1///directory2///file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash3Directory1Directory2File() throws Exception {
+    void testHostnameSlash3Directory1Directory2File() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name////directory1////directory2////file.html");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/file.html");
+        assertEquals("http://host.name/directory1/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash1Directory() throws Exception {
+    void testHostnameSlash1Directory() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name//directory//");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/");
+        assertEquals("http://host.name/directory/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash2Directory() throws Exception {
+    void testHostnameSlash2Directory() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name///directory///");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/");
+        assertEquals("http://host.name/directory/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash3Directory() throws Exception {
+    void testHostnameSlash3Directory() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name////directory////");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory/");
+        assertEquals("http://host.name/directory/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash1Directory1Directory2() throws Exception {
+    void testHostnameSlash1Directory1Directory2() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name//directory1//directory2//");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/");
+        assertEquals("http://host.name/directory1/directory2/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash2Directory1Directory2() throws Exception {
+    void testHostnameSlash2Directory1Directory2() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name///directory1///directory2///");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/");
+        assertEquals("http://host.name/directory1/directory2/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testHostnameSlash3Directory1Directory2() throws Exception {
+    void testHostnameSlash3Directory1Directory2() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host.name////directory1////directory2////");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host.name/directory1/directory2/");
+        assertEquals("http://host.name/directory1/directory2/", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testPathElementLeadingDot() throws Exception {
+    void testPathElementLeadingDot() throws Exception {
         WebRequest request = new GetMethodWebRequest("http://host/context/.src/page");
-        assertEquals("URL", request.getURL().toExternalForm(), "http://host/context/.src/page");
+        assertEquals("http://host/context/.src/page", request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testUrlAsParameter() throws Exception {
+    void testUrlAsParameter() throws Exception {
         String desiredUrl = "http://localhost:3333/composite/addobserver?url=http://localhost:8081/";
         WebRequest request = new GetMethodWebRequest(desiredUrl);
-        assertEquals("URL", desiredUrl, request.getURL().toExternalForm());
+        assertEquals(desiredUrl, request.getURL().toExternalForm(), "URL");
     }
 
 
     @Test
-    public void testSlashesInParameter() throws Exception {
+    void testSlashesInParameter() throws Exception {
         String desiredUrl = "http://localhost:8888/bug2295681/TestServlet?abc=abc&aaa=%%%&bbb=---%2d%2F%*%aa&ccc=yahoo@yahoo.com&ddd=aaa/../../&eee=/.";
         WebRequest request = new GetMethodWebRequest(desiredUrl);
-        assertEquals("URL", desiredUrl, request.getURL().toExternalForm());
+        assertEquals(desiredUrl, request.getURL().toExternalForm(), "URL");
     }
 
 

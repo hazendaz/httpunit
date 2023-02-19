@@ -19,7 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebResponse;
@@ -32,29 +33,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests support for navigating among servlets.
  */
-public class NavigationTest {
+class NavigationTest {
 
     @Test
-    public void testRedirect() throws Exception {
+    void testRedirect() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("target", TargetServlet.class.getName());
         sr.registerServlet("origin", OriginServlet.class.getName());
 
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/origin?color=green");
-        assertNotNull("No response received", response);
-        assertEquals("Expected response", "color=null: path=/target", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("color=null: path=/target", response.getText(), "Expected response");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testForward() throws Exception {
+    void testForward() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", FowarderServlet.class);
@@ -63,14 +64,14 @@ public class NavigationTest {
 
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/context/origin?color=green");
-        assertNotNull("No response received", response);
-        assertEquals("Expected response", "color=green: path=/context/target", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("color=green: path=/context/target", response.getText(), "Expected response");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testInclude() throws Exception {
+    void testInclude() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", IncluderServlet.class);
@@ -79,14 +80,14 @@ public class NavigationTest {
 
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/context/origin?color=green");
-        assertNotNull("No response received", response);
-        assertEquals("Expected response", "expecting: color=blue: path=/context/origin", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("expecting: color=blue: path=/context/origin", response.getText(), "Expected response");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testForwardViaHttpServletRequest() throws Exception {
+    void testForwardViaHttpServletRequest() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", FowarderServlet2.class);
@@ -95,14 +96,14 @@ public class NavigationTest {
 
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/context/origin?color=green");
-        assertNotNull("No response received", response);
-        assertEquals("Expected response", "color=green: path=/context/target", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("color=green: path=/context/target", response.getText(), "Expected response");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 
     @Test
-    public void testForwardViaRelativePath() throws Exception {
+    void testForwardViaRelativePath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/some/target", TargetServlet.class);
         wxs.addServlet("/some/origin", FowarderServlet3.class);
@@ -111,9 +112,9 @@ public class NavigationTest {
 
         WebClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/context/some/origin?color=green");
-        assertNotNull("No response received", response);
-        assertEquals("Expected response", "color=green: path=/context/some/target", response.getText());
-        assertEquals("Returned cookie count", 0, response.getNewCookieNames().length);
+        assertNotNull(response, "No response received");
+        assertEquals("color=green: path=/context/some/target", response.getText(), "Expected response");
+        assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
 

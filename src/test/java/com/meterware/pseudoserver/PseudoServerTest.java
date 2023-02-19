@@ -21,30 +21,30 @@ package com.meterware.pseudoserver;
 
 import static java.lang.String.valueOf;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PseudoServerTest {
+class PseudoServerTest {
 
     private PseudoServerTestSupport support = new PseudoServerTestSupport();
 
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         support.setUpServer();
     }
 
 
-    @After
-    public void tearDownHttpUserAgentTest() throws Exception {
+    @AfterEach
+    void tearDownHttpUserAgentTest() throws Exception {
         support.tearDownServer();
     }
 
@@ -58,20 +58,20 @@ public class PseudoServerTest {
     }
 
     @Test
-    public void testNotFoundStatus() throws Exception {
+    void testNotFoundStatus() throws Exception {
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/nothing.htm");
-        assertEquals("Response code", HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode());
+        assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode(), "Response code");
     }
 
 
     @Test
-    public void testStatusSpecification() throws Exception {
+    void testStatusSpecification() throws Exception {
         support.defineResource("error.htm", "Not Modified", 304);
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/error.htm");
-        assertEquals("Response code", 304, response.getResponseCode());
+        assertEquals(304, response.getResponseCode(), "Response code");
     }
 
 
@@ -79,7 +79,7 @@ public class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    public void testGetViaSocket() throws Exception {
+    void testGetViaSocket() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -93,8 +93,8 @@ public class PseudoServerTest {
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
-        assertTrue("Did not find matching protocol", result.startsWith("HTTP/1.0"));
-        assertTrue("Did not find expected text", result.indexOf("Get this") > 0);
+        assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
+        assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
 
@@ -102,7 +102,7 @@ public class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    public void testBadlyFormedMessageViaSocket() throws Exception {
+    void testBadlyFormedMessageViaSocket() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -114,8 +114,8 @@ public class PseudoServerTest {
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
-        assertTrue("Did not find matching protocol", result.startsWith("HTTP/1.0"));
-        assertTrue("Did not find expected error message", result.indexOf("400") > 0);
+        assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
+        assertTrue(result.indexOf("400") > 0, "Did not find expected error message");
     }
 
 
@@ -123,7 +123,7 @@ public class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    public void testProxyGetViaSocket() throws Exception {
+    void testProxyGetViaSocket() throws Exception {
         support.defineResource("http://someserver.com/sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -137,8 +137,8 @@ public class PseudoServerTest {
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
-        assertTrue("Did not find matching protocol", result.startsWith("HTTP/1.0"));
-        assertTrue("Did not find expected text", result.indexOf("Get this") > 0);
+        assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
+        assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
 
@@ -153,7 +153,7 @@ public class PseudoServerTest {
      * This verifies that the PseudoServer detects and echoes its protocol.
      */
     @Test
-    public void testProtocolMatching() throws Exception {
+    void testProtocolMatching() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -168,8 +168,8 @@ public class PseudoServerTest {
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
-        assertTrue("Did not find matching protocol", result.startsWith("HTTP/1.1"));
-        assertTrue("Did not find expected text", result.indexOf("Get this") > 0);
+        assertTrue(result.startsWith("HTTP/1.1"), "Did not find matching protocol");
+        assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
 
@@ -177,7 +177,7 @@ public class PseudoServerTest {
      * This verifies that the PseudoServer can be restricted to a HTTP/1.0.
      */
     @Test
-    public void testProtocolThrottling() throws Exception {
+    void testProtocolThrottling() throws Exception {
         support.getServer().setMaxProtocolLevel(1, 0);
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
@@ -193,13 +193,13 @@ public class PseudoServerTest {
         int b;
         while (-1 != (b = is.read())) sb.append((char) b);
         String result = sb.toString();
-        assertTrue("Did not find matching protocol", result.startsWith("HTTP/1.0"));
-        assertTrue("Did not find expected text", result.indexOf("Get this") > 0);
+        assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
+        assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
 
     @Test
-    public void testPseudoServlet() throws Exception {
+    void testPseudoServlet() throws Exception {
         String resourceName = "tellMe";
         String name = "Charlie";
         final String prefix = "Hello there, ";
@@ -213,13 +213,13 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("POST", '/' + resourceName, "name=" + name);
-        assertEquals("Content type", "text/plain", response.getHeader("Content-Type"));
-        assertEquals("Response", expectedResponse, new String(response.getBody()));
+        assertEquals("text/plain", response.getHeader("Content-Type"), "Content type");
+        assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
 
     @Test
-    public void testPseudoServletWithGET() throws Exception {
+    void testPseudoServletWithGET() throws Exception {
         String resourceName = "tellMe";
         String name = "Charlie";
         final String prefix = "Hello there, ";
@@ -233,13 +233,13 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", '/' + resourceName + "?name=" + name);
-        assertEquals("Response code", 200, response.getResponseCode());
-        assertEquals("Content type", "text/plain", response.getHeader("Content-Type"));
-        assertEquals("Response", expectedResponse, new String(response.getBody()));
+        assertEquals(200, response.getResponseCode(), "Response code");
+        assertEquals("text/plain", response.getHeader("Content-Type"), "Content type");
+        assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
     @Test
-    public void whenParameterStringContainsEmptyValue_readLaterParameters() throws Exception {
+    void whenParameterStringContainsEmptyValue_readLaterParameters() throws Exception {
         String resourceName = "tellMe";
         String name = "Charlie";
         final String prefix = "Hello there, ";
@@ -253,9 +253,9 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", '/' + resourceName + "?junk=&name=" + name);
-        assertEquals("Response code", 200, response.getResponseCode());
-        assertEquals("Content type", "text/plain", response.getHeader("Content-Type"));
-        assertEquals("Response", expectedResponse, new String(response.getBody()));
+        assertEquals(200, response.getResponseCode(), "Response code");
+        assertEquals("text/plain", response.getHeader("Content-Type"), "Content type");
+        assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
 
@@ -265,7 +265,7 @@ public class PseudoServerTest {
      * @throws Exception
      */
     @Test
-    public void testDisableContentTypeHeader() throws Exception {
+    void testDisableContentTypeHeader() throws Exception {
         support.defineResource("simple", new PseudoServlet() {
             public WebResource getGetResponse() {
                 WebResource resource = new WebResource("a string");
@@ -276,14 +276,14 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/simple");
-        assertEquals("Response code", 200, response.getResponseCode());
-        assertEquals("Response", "a string", new String(response.getBody()));
-        assertNull("Found a content type header", response.getHeader("Content-Type"));
+        assertEquals(200, response.getResponseCode(), "Response code");
+        assertEquals("a string", new String(response.getBody()), "Response");
+        assertNull(response.getHeader("Content-Type"), "Found a content type header");
     }
 
 
     @Test
-    public void testChunkedRequest() throws Exception {
+    void testChunkedRequest() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), "text/plain");
@@ -296,7 +296,7 @@ public class PseudoServerTest {
         conn.sendChunk("is ");
         conn.sendChunk("chunked.");
         SocketConnection.SocketResponse response = conn.getResponse();
-        assertEquals("retrieved body", "This is chunked.", new String(response.getBody()));
+        assertEquals("This is chunked.", new String(response.getBody()), "retrieved body");
     }
 
 
@@ -304,7 +304,7 @@ public class PseudoServerTest {
 
 
     @Test
-    public void testChunkedRequestFollowedByAnother() throws Exception {
+    void testChunkedRequestFollowedByAnother() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), "text/plain");
@@ -318,7 +318,7 @@ public class PseudoServerTest {
         conn.sendChunk("is ");
         conn.sendChunk("chunked.");
         SocketConnection.SocketResponse response = conn.getResponse();
-        assertEquals("retrieved body", "This is chunked.", new String(response.getBody()));
+        assertEquals("This is chunked.", new String(response.getBody()), "retrieved body");
 
 
         // Make a second request to duplicate the problem...
@@ -328,12 +328,12 @@ public class PseudoServerTest {
         conn.sendChunk("also (and with a greater size) ");
         conn.sendChunk("chunked.");
         SocketConnection.SocketResponse response2 = conn.getResponse();
-        assertEquals("retrieved body", "This is also (and with a greater size) chunked.", new String(response2.getBody()));
+        assertEquals("This is also (and with a greater size) chunked.", new String(response2.getBody()), "retrieved body");
     }
 
 
     @Test
-    public void testChunkedResponse() throws Exception {
+    void testChunkedResponse() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             public WebResource getGetResponse() {
                 WebResource webResource = new WebResource("5\r\nSent \r\n3\r\nin \r\n07\r\nchunks.\r\n0\r\n\r\n", "text/plain");
@@ -344,24 +344,24 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/chunkedServlet");
-        assertEquals("retrieved body", "Sent in chunks.", new String(response.getBody()));
-        assertNull("No Content-Length header should have been sent", response.getHeader("Content-Length"));
+        assertEquals("Sent in chunks.", new String(response.getBody()), "retrieved body");
+        assertNull(response.getHeader("Content-Length"), "No Content-Length header should have been sent");
     }
 
 
     @Test
-    public void testPersistentConnection() throws Exception {
+    void testPersistentConnection() throws Exception {
         support.defineResource("/testServlet", new TestMethodServlet());
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse resp1 = conn.getResponse("HEAD", "/testServlet");
-        assertEquals("test-header", "test-value1", resp1.getHeader("test-header1"));
+        assertEquals("test-value1", resp1.getHeader("test-header1"), "test-header");
 
         SocketConnection.SocketResponse resp2 = conn.getResponse("GET", "/testServlet");
-        assertEquals("retrieved body", TestMethodServlet.GET_DATA, new String(resp2.getBody()));
+        assertEquals(TestMethodServlet.GET_DATA, new String(resp2.getBody()), "retrieved body");
 
         SocketConnection.SocketResponse resp3 = conn.getResponse("OPTIONS", "/testServlet");
-        assertEquals("allow header", "GET", resp3.getHeader("Allow"));
+        assertEquals("GET", resp3.getHeader("Allow"), "allow header");
     }
 
 
@@ -389,7 +389,7 @@ public class PseudoServerTest {
 
 
     @Test
-    public void testBadMethodUsingPseudoServlet() throws Exception {
+    void testBadMethodUsingPseudoServlet() throws Exception {
         String resourceName = "tellMe";
 
         support.defineResource(resourceName, new PseudoServlet() {
@@ -397,12 +397,12 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("HEAD", '/' + resourceName);
-        assertEquals("Status code returned", HttpURLConnection.HTTP_BAD_METHOD, response.getResponseCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_METHOD, response.getResponseCode(), "Status code returned");
     }
 
 
     @Test
-    public void testClasspathDirectory() throws Exception {
+    void testClasspathDirectory() throws Exception {
         support.mapToClasspath("/some/classes");
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
@@ -411,7 +411,7 @@ public class PseudoServerTest {
 
 
     @Test
-    public void testPseudoServletRequestAccess() throws Exception {
+    void testPseudoServletRequestAccess() throws Exception {
         support.defineResource("/properties", new PseudoServlet() {
             public WebResource getGetResponse() {
                 return new WebResource(super.getRequest().getURI(), "text/plain");
@@ -420,12 +420,12 @@ public class PseudoServerTest {
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/properties");
-        assertEquals("retrieved body", "/properties", new String(response.getBody()));
+        assertEquals("/properties", new String(response.getBody()), "retrieved body");
     }
 
 
     @Test
-    public void testLargeDelayedPseudoServletRequest() throws Exception {
+    void testLargeDelayedPseudoServletRequest() throws Exception {
         support.defineResource("/largeRequest", new PseudoServlet() {
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), super.getHeader("CONTENT-TYPE"));

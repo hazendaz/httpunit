@@ -19,21 +19,24 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-public class TextBlockTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class TextBlockTest extends HttpUnitTest {
 
     @Test
-    public void testParagraphDetection() throws Exception {
+    void testParagraphDetection() throws Exception {
         defineWebPage("SimplePage",
                 "<p>This has no forms or links since we don't care " +
                         "about them</p>" +
@@ -41,29 +44,29 @@ public class TextBlockTest extends HttpUnitTest {
                         "<p>Which is what we want to find</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
-        assertEquals("Number of paragraphs", 3, response.getTextBlocks().length);
-        assertEquals("First paragraph", "This has no forms or links since we don't care about them", response.getTextBlocks()[0].getText());
+        assertEquals(3, response.getTextBlocks().length, "Number of paragraphs");
+        assertEquals("This has no forms or links since we don't care about them", response.getTextBlocks()[0].getText(), "First paragraph");
         BlockElement comment = response.getFirstMatchingTextBlock(TextBlock.MATCH_CLASS, "comment");
-        assertNotNull("Did not find a comment paragraph", comment);
-        assertEquals("Comment paragraph", "But it does have three paragraphs", comment.getText());
+        assertNotNull(comment, "Did not find a comment paragraph");
+        assertEquals("But it does have three paragraphs", comment.getText(), "Comment paragraph");
     }
 
 
     @Test
-    public void testTextConversion() throws Exception {
+    void testTextConversion() throws Exception {
         defineWebPage("SimplePage",
                 "<p>Here is a line<br>followed by another</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         BufferedReader br = new BufferedReader(new StringReader(response.getTextBlocks()[0].getText()));
-        assertEquals("First line", "Here is a line", br.readLine());
-        assertEquals("Second line", "followed by another", br.readLine());
+        assertEquals("Here is a line", br.readLine(), "First line");
+        assertEquals("followed by another", br.readLine(), "Second line");
         br.readLine();
     }
 
 
     @Test
-    public void testHeaderDetection() throws Exception {
+    void testHeaderDetection() throws Exception {
         defineWebPage("SimplePage",
                 "<h1>Here is a section</h1>\n" +
                         "with some text" +
@@ -72,34 +75,34 @@ public class TextBlockTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         TextBlock header1 = response.getFirstMatchingTextBlock(TextBlock.MATCH_TAG, "H1");
-        assertNotNull("Did not find the H1 header", header1);
-        assertEquals("H1 header", "Here is a section", header1.getText());
+        assertNotNull(header1, "Did not find the H1 header");
+        assertEquals("Here is a section", header1.getText(), "H1 header");
         TextBlock header2 = response.getFirstMatchingTextBlock(TextBlock.MATCH_TAG, "h2");
-        assertNotNull("Did not find the h2 header", header2);
-        assertEquals("H2 header", "A subsection", header2.getText());
-        assertEquals("Text under header 1", "with some text", response.getNextTextBlock(header1).getText());
+        assertNotNull(header2, "Did not find the h2 header");
+        assertEquals("A subsection", header2.getText(), "H2 header");
+        assertEquals("with some text", response.getNextTextBlock(header1).getText(), "Text under header 1");
     }
 
 
     @Test
-    public void testEmbeddedLinks() throws Exception {
+    void testEmbeddedLinks() throws Exception {
         defineWebPage("SimplePage",
                 "<h1>Here is a section</h1>\n" +
                         "<p>with a <a id='httpunit' href='http://httpunit.org'>link to the home page</a></p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         BlockElement paragraph = response.getTextBlocks()[1];
-        assertNotNull("Did not retrieve any links", paragraph.getLinks());
-        assertNotNull("Did not find the httpunit link", paragraph.getLinkWithID("httpunit"));
-        assertNull("Should not have found the httpunit link in the header", response.getTextBlocks()[0].getLinkWithID("httpunit"));
-        assertNotNull("Did not find the home page link", paragraph.getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, "home page"));
-        assertEquals("embedded link url", "http://httpunit.org", paragraph.getLinkWithID("httpunit").getRequest().getURL().toExternalForm());
+        assertNotNull(paragraph.getLinks(), "Did not retrieve any links");
+        assertNotNull(paragraph.getLinkWithID("httpunit"), "Did not find the httpunit link");
+        assertNull(response.getTextBlocks()[0].getLinkWithID("httpunit"), "Should not have found the httpunit link in the header");
+        assertNotNull(paragraph.getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, "home page"), "Did not find the home page link");
+        assertEquals("http://httpunit.org", paragraph.getLinkWithID("httpunit").getRequest().getURL().toExternalForm(), "embedded link url");
     }
 
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
-    @Ignore
+    @Disabled
     @Test
-    public void testEmbeddedLists() throws Exception {
+    void testEmbeddedLists() throws Exception {
         defineWebPage("SimplePage",
                 "<h1>Here is a section</h1>\n" +
                         "<p id='ordered'><ol><li>One<li>Two<li>Three</ol></p>" +
@@ -108,25 +111,25 @@ public class TextBlockTest extends HttpUnitTest {
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         TextBlock paragraph1 = (TextBlock) response.getElementWithID("ordered");
         WebList[] lists = paragraph1.getLists();
-        assertEquals("Number of lists found", 1, lists.length);
+        assertEquals(1, lists.length, "Number of lists found");
         WebList orderedList = lists[0];
-        assertEquals("ordered list type", WebList.ORDERED_LIST, orderedList.getListType());
-        assertEquals("ordered list size", 3, orderedList.getItems().length);
-        assertEquals("Second ordered list item", "Two", orderedList.getItems()[1].getText());
+        assertEquals(WebList.ORDERED_LIST, orderedList.getListType(), "ordered list type");
+        assertEquals(3, orderedList.getItems().length, "ordered list size");
+        assertEquals("Two", orderedList.getItems()[1].getText(), "Second ordered list item");
 
         TextBlock paragraph2 = (TextBlock) response.getElementWithID("unordered");
         lists = paragraph2.getLists();
-        assertEquals("Number of lists found", 1, lists.length);
+        assertEquals(1, lists.length, "Number of lists found");
         WebList unorderedList = lists[0];
-        assertEquals("bullet list type", WebList.BULLET_LIST, unorderedList.getListType());
-        assertEquals("bullet list size", 3, unorderedList.getItems().length);
-        assertEquals("First bullet list item", "Red", unorderedList.getItems()[0].getText());
+        assertEquals(WebList.BULLET_LIST, unorderedList.getListType(), "bullet list type");
+        assertEquals(3, unorderedList.getItems().length, "bullet list size");
+        assertEquals("Red", unorderedList.getItems()[0].getText(), "First bullet list item");
     }
 
     // TODO JWL 2/19/2023 Test was not annotated and does not work, annotated this and add ignores for now.
-    @Ignore
+    @Disabled
     @Test
-    public void ntestFormattingDetection() throws Exception {
+    void ntestFormattingDetection() throws Exception {
         String expectedText = "Here is some bold text and some bold italic text";
         defineWebPage("FormattedPage", "<p>Here is some <b>bold</b> text and some <b><i>bold italic</i></b> text</p>");
         WebConversation wc = new WebConversation();

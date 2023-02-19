@@ -19,6 +19,8 @@
  */
 package com.meterware.httpunit.dom;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.meterware.httpunit.protocol.MessageBody;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
@@ -26,14 +28,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Stack;
 
-import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.xml.sax.SAXException;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
 */
-@Ignore
+@Disabled
 class TestWindowProxy implements DomWindowProxy {
 
     private static Stack _proxyCalls = new Stack();
@@ -67,7 +68,7 @@ class TestWindowProxy implements DomWindowProxy {
 
 
     static void assertLastProxyMethod( String method ) {
-        Assert.assertEquals( "Last proxy method called", method, popProxyCall() );
+        assertEquals( method, popProxyCall() , "Last proxy method called");
     }
 
 

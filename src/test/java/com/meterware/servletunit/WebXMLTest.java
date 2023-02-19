@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.meterware.httpunit.AuthorizationRequiredException;
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -49,8 +49,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -67,9 +67,9 @@ public class WebXMLTest {
      * @throws Exception
      */
     // TODO This test is only applicable when using a concrete servlet implementation such as tomcat-servlet-api and thus unnecessary to test in this code base.
-    @Ignore
+    @Disabled
     @Test
-    public void testDTDClassPath() throws Exception {
+    void testDTDClassPath() throws Exception {
         boolean isDtdOnClasspath = WebXMLString.isDtdOnClasspath();
         String msg = WebXMLString.dtd + " should be on CLASSPATH - you might want to check that META-INF is on the CLASSPATH";
         if (!isDtdOnClasspath) {
@@ -80,11 +80,11 @@ public class WebXMLTest {
             }
             System.err.println("the other tests will work around the problem by changing the DOCTYPE to avoid lots of java.net.MalformedURLExceptions");
         }
-        assertTrue(msg, isDtdOnClasspath);
+        assertTrue(isDtdOnClasspath, msg);
     }
 
     @Test
-    public void testBasicAccess() throws Exception {
+    void testBasicAccess() throws Exception {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
@@ -93,14 +93,14 @@ public class WebXMLTest {
         ServletRunner sr = new ServletRunner(webXml);
         WebRequest request = new GetMethodWebRequest("http://localhost/SimpleServlet");
         WebResponse response = sr.getResponse(request);
-        assertNotNull("No response received", response);
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("requested resource", SimpleGetServlet.RESPONSE_TEXT, response.getText());
+        assertNotNull(response, "No response received");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
 
 
     @Test
-    public void testRealPath() throws Exception {
+    void testRealPath() throws Exception {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
@@ -117,7 +117,7 @@ public class WebXMLTest {
 
     private void assertRealPath(String comment, ServletRunner sr, File expectedFile, String relativePath) {
         String realPath = sr.getSession(true).getServletContext().getRealPath(relativePath);
-        assertEquals(comment, expectedFile.getAbsolutePath(), realPath);
+        assertEquals(expectedFile.getAbsolutePath(), realPath, comment);
     }
 
 
@@ -137,42 +137,42 @@ public class WebXMLTest {
 
 
     @Test
-    public void testBasicAuthenticationConfig() throws Exception {
+    void testBasicAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.requireBasicAuthentication("SampleRealm");
 
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertTrue("Did not detect basic authentication", app.usesBasicAuthentication());
-        assertEquals("Realm name", "SampleRealm", app.getAuthenticationRealm());
+        assertTrue(app.usesBasicAuthentication(), "Did not detect basic authentication");
+        assertEquals("SampleRealm", app.getAuthenticationRealm(), "Realm name");
     }
 
 
     @Test
-    public void testFormAuthenticationConfig() throws Exception {
+    void testFormAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.requireFormAuthentication("SampleRealm", "/Login", "/Error");
 
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertTrue("Did not detect form-based authentication", app.usesFormAuthentication());
-        assertEquals("Realm name", "SampleRealm", app.getAuthenticationRealm());
-        assertEquals("Login path", "/Login", app.getLoginURL().getFile());
-        assertEquals("Error path", "/Error", app.getErrorURL().getFile());
+        assertTrue(app.usesFormAuthentication(), "Did not detect form-based authentication");
+        assertEquals("SampleRealm", app.getAuthenticationRealm(), "Realm name");
+        assertEquals("/Login", app.getLoginURL().getFile(), "Login path");
+        assertEquals("/Error", app.getErrorURL().getFile(), "Error path");
     }
 
 
     @Test
-    public void testSecurityConstraint() throws Exception {
+    void testSecurityConstraint() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addSecureURL("SecureArea1", "/SimpleServlet");
         wxs.addAuthorizedRole("SecureArea1", "supervisor");
 
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertTrue("Did not require authorization", app.requiresAuthorization(new URL("http://localhost/SimpleServlet")));
-        assertTrue("Should not require authorization", !app.requiresAuthorization(new URL("http://localhost/FreeServlet")));
+        assertTrue(app.requiresAuthorization(new URL("http://localhost/SimpleServlet")), "Did not require authorization");
+        assertFalse(app.requiresAuthorization(new URL("http://localhost/FreeServlet")), "Should not require authorization");
 
         List roles = Arrays.asList(app.getPermittedRoles(new URL("http://localhost/SimpleServlet")));
-        assertTrue("Should have access", roles.contains("supervisor"));
-        assertTrue("Should not have access", !roles.contains("peon"));
+        assertTrue(roles.contains("supervisor"), "Should have access");
+        assertFalse(roles.contains("peon"), "Should not have access");
     }
 
 
@@ -180,10 +180,10 @@ public class WebXMLTest {
      * Verifies that the default display name is null.
      */
     @Test
-    public void testDefaultContextNameConfiguration() throws Exception {
+    void testDefaultContextNameConfiguration() throws Exception {
         WebXMLString wxs = new WebXMLString();
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertNull("Context name should default to null", app.getDisplayName());
+        assertNull(app.getDisplayName(), "Context name should default to null");
     }
 
 
@@ -193,23 +193,23 @@ public class WebXMLTest {
      * @throws Exception
      */
     @Test
-    public void testContextNameConfiguration() throws Exception {
+    void testContextNameConfiguration() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.setDisplayName("samples");
         wxs.addServlet("simple", "/SimpleServlet", SimpleGetServlet.class);
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertEquals("Display name", "samples", app.getDisplayName());
+        assertEquals("samples", app.getDisplayName(), "Display name");
 
         ServletRunner sr = new ServletRunner(wxs.asInputStream());
         ServletUnitClient client = sr.newClient();
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
         ServletContext servletContext = ic.getServlet().getServletConfig().getServletContext();
-        assertEquals("Context name", "samples", servletContext.getServletContextName());
+        assertEquals("samples", servletContext.getServletContextName(), "Context name");
     }
 
 
     @Test
-    public void testServletParameters() throws Exception {
+    void testServletParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
         Properties params = new Properties();
         params.setProperty("color", "red");
@@ -220,15 +220,15 @@ public class WebXMLTest {
         ServletUnitClient client = sr.newClient();
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
         ServletConfig servletConfig = ic.getServlet().getServletConfig();
-        assertEquals("Servlet name", "simple", servletConfig.getServletName());
-        assertNull("init parameter 'gender' should be null", servletConfig.getInitParameter("gender"));
-        assertEquals("init parameter via config", "red", ic.getServlet().getServletConfig().getInitParameter("color"));
-        assertEquals("init parameter directly", "12", ((HttpServlet) ic.getServlet()).getInitParameter("age"));
+        assertEquals("simple", servletConfig.getServletName(), "Servlet name");
+        assertNull(servletConfig.getInitParameter("gender"), "init parameter 'gender' should be null");
+        assertEquals("red", ic.getServlet().getServletConfig().getInitParameter("color"), "init parameter via config");
+        assertEquals("12", ((HttpServlet) ic.getServlet()).getInitParameter("age"), "init parameter directly");
     }
 
 
     @Test
-    public void testContextParameters() throws Exception {
+    void testContextParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
         wxs.addContextParam("icecream", "vanilla");
@@ -237,15 +237,15 @@ public class WebXMLTest {
 
         ServletRunner sr = new ServletRunner(wxs.asInputStream());
         ServletUnitClient client = sr.newClient();
-        assertEquals("Context parameter 'icecream'", "vanilla", sr.getContextParameter("icecream"));
+        assertEquals("vanilla", sr.getContextParameter("icecream"), "Context parameter 'icecream'");
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
-        assertNotNull("ServletContext should not be null", sc);
-        assertEquals("ServletContext.getInitParameter()", "vanilla", sc.getInitParameter("icecream"));
-        assertEquals("init parameter: cone", "waffle", sc.getInitParameter("cone"));
-        assertEquals("init parameter: topping", "", sc.getInitParameter("topping"));
-        assertNull("ServletContext.getInitParameter() should be null", sc.getInitParameter("shoesize"));
+        assertNotNull(sc, "ServletContext should not be null");
+        assertEquals("vanilla", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
+        assertEquals("waffle", sc.getInitParameter("cone"), "init parameter: cone");
+        assertEquals("", sc.getInitParameter("topping"), "init parameter: topping");
+        assertNull(sc.getInitParameter("shoesize"), "ServletContext.getInitParameter() should be null");
     }
 
     /**
@@ -261,14 +261,14 @@ public class WebXMLTest {
         ServletRunner sr = new ServletRunner(wxs.asInputStream());
         ServletUnitClient client = sr.newClient();
         sr.setContextParameter("icecream", "strawberry");
-        assertEquals("Context parameter 'icecream'", "strawberry", sr.getContextParameter("icecream"));
+        assertEquals("strawberry", sr.getContextParameter("icecream"), "Context parameter 'icecream'");
 
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
-        assertNotNull("ServletContext should not be null", sc);
-        assertEquals("ServletContext.getInitParameter()", "strawberry", sc.getInitParameter("icecream"));
-        assertNull("ServletContext.getInitParameter() should be null", sc.getInitParameter("shoesize"));
+        assertNotNull(sc, "ServletContext should not be null");
+        assertEquals("strawberry", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
+        assertNull(sc.getInitParameter("shoesize"), "ServletContext.getInitParameter() should be null");
     }
 
 
@@ -292,7 +292,7 @@ public class WebXMLTest {
 
 
     @Test
-    public void testBasicAuthorization() throws Exception {
+    void testBasicAuthorization() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
         wxs.requireBasicAuthentication("Sample Realm");
@@ -305,8 +305,8 @@ public class WebXMLTest {
             wc.getResponse("http://localhost/SimpleServlet");
             fail("Did not insist on validation for access to servlet");
         } catch (AuthorizationRequiredException e) {
-            assertEquals("Realm", "Sample Realm", e.getAuthenticationParameter("realm"));
-            assertEquals("Method", "Basic", e.getAuthenticationScheme());
+            assertEquals("Sample Realm", e.getAuthenticationParameter("realm"), "Realm");
+            assertEquals("Basic", e.getAuthenticationScheme(), "Method");
         }
 
         try {
@@ -314,21 +314,21 @@ public class WebXMLTest {
             wc.getResponse("http://localhost/SimpleServlet");
             fail("Permitted wrong user to access");
         } catch (HttpException e) {
-            assertEquals("Response code", 403, e.getResponseCode());
+            assertEquals(403, e.getResponseCode(), "Response code");
         }
 
         wc.setAuthorization("Me", "supervisor,agent");
         wc.getResponse("http://localhost/SimpleServlet");
 
         InvocationContext ic = wc.newInvocation("http://localhost/SimpleServlet");
-        assertEquals("Authenticated user", "Me", ic.getRequest().getRemoteUser());
-        assertTrue("User assigned to 'bogus' role", !ic.getRequest().isUserInRole("bogus"));
-        assertTrue("User not assigned to 'supervisor' role", ic.getRequest().isUserInRole("supervisor"));
+        assertEquals("Me", ic.getRequest().getRemoteUser(), "Authenticated user");
+        assertFalse(ic.getRequest().isUserInRole("bogus"), "User assigned to 'bogus' role");
+        assertTrue(ic.getRequest().isUserInRole("supervisor"), "User not assigned to 'supervisor' role");
     }
 
 
     @Test
-    public void testFormAuthentication() throws Exception {
+    void testFormAuthentication() throws Exception {
         HttpUnitOptions.setLoggingHttpHeaders(true);
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/Logon", SimpleLogonServlet.class);
@@ -343,25 +343,25 @@ public class WebXMLTest {
         ServletUnitClient wc = sr.newClient();
         WebResponse response = wc.getResponse("http://localhost/samples/Example/SimpleServlet");
         WebForm form = response.getFormWithID("login");
-        assertNotNull("did not find login form", form);
+        assertNotNull(form, "did not find login form");
 
         WebRequest request = form.getRequest();
         request.setParameter("j_username", "Me");
         request.setParameter("j_password", "supervisor");
         response = wc.getResponse(request);
-        assertNotNull("No response received after authentication", response);
-        assertEquals("content type", "text/html", response.getContentType());
-        assertEquals("requested resource", SimpleGetServlet.RESPONSE_TEXT, response.getText());
+        assertNotNull(response, "No response received after authentication");
+        assertEquals("text/html", response.getContentType(), "content type");
+        assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
 
         InvocationContext ic = wc.newInvocation("http://localhost/samples/Example/SimpleServlet");
-        assertEquals("Authenticated user", "Me", ic.getRequest().getRemoteUser());
-        assertTrue("User assigned to 'bogus' role", !ic.getRequest().isUserInRole("bogus"));
-        assertTrue("User not assigned to 'supervisor' role", ic.getRequest().isUserInRole("supervisor"));
+        assertEquals("Me", ic.getRequest().getRemoteUser(), "Authenticated user");
+        assertFalse(ic.getRequest().isUserInRole("bogus"), "User assigned to 'bogus' role");
+        assertTrue(ic.getRequest().isUserInRole("supervisor"), "User not assigned to 'supervisor' role");
     }
 
 
     @Test
-    public void testGetContextPath() throws Exception {
+    void testGetContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
 
@@ -378,7 +378,7 @@ public class WebXMLTest {
 
 
     @Test
-    public void testMountContextPath() throws Exception {
+    void testMountContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
 
@@ -398,7 +398,7 @@ public class WebXMLTest {
 
 
     @Test
-    public void testServletMapping() throws Exception {
+    void testServletMapping() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/foo/bar/*", Servlet1.class);
         wxs.addServlet("/baz/*", Servlet2.class);
@@ -421,9 +421,9 @@ public class WebXMLTest {
 
     private void checkMapping(ServletUnitClient wc, final String url, final Class servletClass, final String expectedPath, final String expectedInfo) throws IOException, ServletException {
         InvocationContext ic = wc.newInvocation(url);
-        assertTrue("selected servlet is " + ic.getServlet() + " rather than " + servletClass, servletClass.isInstance(ic.getServlet()));
-        assertEquals("ServletPath for " + url, expectedPath, ic.getRequest().getServletPath());
-        assertEquals("ServletInfo for " + url, expectedInfo, ic.getRequest().getPathInfo());
+        assertTrue(servletClass.isInstance(ic.getServlet()), "selected servlet is " + ic.getServlet() + " rather than " + servletClass);
+        assertEquals(expectedPath, ic.getRequest().getServletPath(), "ServletPath for " + url);
+        assertEquals(expectedInfo, ic.getRequest().getPathInfo(), "ServletInfo for " + url);
     }
 
 
@@ -432,7 +432,7 @@ public class WebXMLTest {
      * SimpleGetServlet and each of its subclasses adds its classname to the 'initialized' context attribute.
      */
     @Test
-    public void testLoadOnStartup() throws Exception {
+    void testLoadOnStartup() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("servlet1", "one", Servlet1.class);
         wxs.setLoadOnStartup("servlet1");
@@ -442,7 +442,7 @@ public class WebXMLTest {
         ServletRunner sr = new ServletRunner(toInputStream(wxs.asText()));
         ServletUnitClient wc = sr.newClient();
         InvocationContext ic = wc.newInvocation("http://localhost/three");
-        assertEquals("Initialized servlets", "Servlet1,Servlet3", ic.getServlet().getServletConfig().getServletContext().getAttribute("initialized"));
+        assertEquals("Servlet1,Servlet3", ic.getServlet().getServletConfig().getServletContext().getAttribute("initialized"), "Initialized servlets");
     }
 
 
@@ -451,7 +451,7 @@ public class WebXMLTest {
      * SimpleGetServlet and each of its subclasses adds its classname to the 'initialized' context attribute.
      */
     @Test
-    public void testLoadOrder() throws Exception {
+    void testLoadOrder() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("servlet1", "one", Servlet1.class);
         wxs.setLoadOnStartup("servlet1", 2);
@@ -463,7 +463,7 @@ public class WebXMLTest {
         ServletRunner sr = new ServletRunner(toInputStream(wxs.asText()));
         ServletUnitClient wc = sr.newClient();
         InvocationContext ic = wc.newInvocation("http://localhost/two");
-        assertEquals("Initialized servlets", "Servlet3,Servlet1,Servlet2", ic.getServlet().getServletConfig().getServletContext().getAttribute("initialized"));
+        assertEquals("Servlet3,Servlet1,Servlet2", ic.getServlet().getServletConfig().getServletContext().getAttribute("initialized"), "Initialized servlets");
     }
 
 

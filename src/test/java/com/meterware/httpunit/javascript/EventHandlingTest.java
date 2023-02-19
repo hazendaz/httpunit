@@ -19,25 +19,28 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.*;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
 /**
  * @author Wolfgang Fahl
  */
-public class EventHandlingTest extends HttpUnitTest {
+@ExtendWith(ExternalResourceSupport.class)
+class EventHandlingTest extends HttpUnitTest {
 
     private WebConversation _wc;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         _wc = new WebConversation();
     }
 
@@ -84,7 +87,7 @@ public class EventHandlingTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    public void testSimpleEventHandler() throws IOException, SAXException {
+    void testSimpleEventHandler() throws IOException, SAXException {
         String javaScript =
                 "			function testEventHandler() {\n" +
                         "				if (document.addEventListener) {\n" +

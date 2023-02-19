@@ -37,16 +37,14 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class FrameScriptingTest extends HttpUnitTest {
 
-
     private WebConversation _wc;
-
 
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
 
         defineWebPage("Simple", "This is a trivial page.");
-        defineResource("image.gif", new byte[]{0, 1, 0, 1}, "image/gif");
+        defineResource("image.gif", new byte[] { 0, 1, 0, 1 }, "image/gif");
         defineWebPage("Menu/Page/Target", "Target page");
 
         StringBuilder buff = new StringBuilder();
@@ -56,7 +54,7 @@ class FrameScriptingTest extends HttpUnitTest {
         buff.append("  window.parent.red.document.open(\"text/html\")\n");
         buff.append("  with (window.parent.red.document) {\n");
         final String[] lines = getMenuHtmlLines(getHostPath() + "/Menu/Page/Main.html", "Target.html");
-        for (int i = 0;i < lines.length;i++) {
+        for (int i = 0; i < lines.length; i++) {
             buff.append("    write('").append(lines[i]).append("\\n").append("');\n");
         }
         buff.append("    close();\n");
@@ -68,30 +66,31 @@ class FrameScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * Creates and returns the lines of HTML to represent a menu page with
-     * a <code>&lt;base ...&gt;</code> tag and one link.
-     * Used where the formulated HTML is to be embedded in JavaScript.
+     * Creates and returns the lines of HTML to represent a menu page with a <code>&lt;base ...&gt;</code> tag and one
+     * link. Used where the formulated HTML is to be embedded in JavaScript.
      *
-     * @param baseUrlString URL string to be used in the href of the 'base' tag.
-     * @param linkUrlString URL string to be used in the href of the link.
+     * @param baseUrlString
+     *            URL string to be used in the href of the 'base' tag.
+     * @param linkUrlString
+     *            URL string to be used in the href of the link.
+     *
      * @return String array representing the lines of HTML.
      */
     private String[] getMenuHtmlLines(String baseUrlString, String linkUrlString) {
-        return new String[]{
-                "<html><head><title>Menu</title>",
-                "<base href=\"" + baseUrlString + "\" target=\"blue\"></base>",
-                "</head>",
-                "<body>",
-                "This is the menu.<br>",
-                "Link to <a href=\"" + linkUrlString + "\">target page</a>.",
-                "</body></html>"};
+        return new String[] { "<html><head><title>Menu</title>",
+                "<base href=\"" + baseUrlString + "\" target=\"blue\"></base>", "</head>", "<body>",
+                "This is the menu.<br>", "Link to <a href=\"" + linkUrlString + "\">target page</a>.",
+                "</body></html>" };
     }
 
     /**
      * Creates and returns HTML to represent a menu page with a <code>&lt;base ...&gt;</code> tag and one link.
      *
-     * @param baseUrlString URL string to be used in the href of the 'base' tag.
-     * @param linkUrlString URL string to be used in the href of the link.
+     * @param baseUrlString
+     *            URL string to be used in the href of the 'base' tag.
+     * @param linkUrlString
+     *            URL string to be used in the href of the link.
+     *
      * @return String representing the HTML.
      */
     private String getMenuHtml(final String baseUrlString, final String linkUrlString) {
@@ -107,16 +106,16 @@ class FrameScriptingTest extends HttpUnitTest {
     /**
      * (Re)defines the web page 'Frames.html', which is a frameset containing 'red' and 'blue' frames.
      *
-     * @param redSrc  The source URL string for the 'red' frame.
-     * @param blueSrc The source URL string for the 'blue' frame.
+     * @param redSrc
+     *            The source URL string for the 'red' frame.
+     * @param blueSrc
+     *            The source URL string for the 'blue' frame.
      */
     private void redefineFrames(String redSrc, String blueSrc) {
         defineResource("Frames.html",
-                "<HTML><HEAD><TITLE>Frameset</TITLE></HEAD>" +
-                        "<FRAMESET cols=\"20%,80%\">" +
-                        "    <FRAME src=\"" + redSrc + "\" name=\"red\">" +
-                        "    <FRAME src=\"" + blueSrc + "\" name=\"blue\">" +
-                        "</FRAMESET></HTML>");
+                "<HTML><HEAD><TITLE>Frameset</TITLE></HEAD>" + "<FRAMESET cols=\"20%,80%\">" + "    <FRAME src=\""
+                        + redSrc + "\" name=\"red\">" + "    <FRAME src=\"" + blueSrc + "\" name=\"blue\">"
+                        + "</FRAMESET></HTML>");
     }
 
     /**
@@ -148,8 +147,8 @@ class FrameScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * Test correct handling of a link within a frame that has been re-written by JavaScript,
-     * and which contains a <code>&lt;base ...&gt;</code> element.
+     * Test correct handling of a link within a frame that has been re-written by JavaScript, and which contains a
+     * <code>&lt;base ...&gt;</code> element.
      */
     @Test
     void testFrameRewrittenToUseBaseElement() throws Exception {
@@ -157,13 +156,13 @@ class FrameScriptingTest extends HttpUnitTest {
         _wc.getResponse(getHostPath() + "/Frames.html");
         WebLink link = _wc.getFrameContents("red").getLinks()[0];
         link.click();
-        assertEquals("Menu/Page/Target", _wc.getFrameContents("blue").getTitle(), "Content of blue frame after clicking menu link");
+        assertEquals("Menu/Page/Target", _wc.getFrameContents("blue").getTitle(),
+                "Content of blue frame after clicking menu link");
     }
 
-
     /**
-     * Test correct handling of a link within a frame that has been re-written by JavaScript over an image,
-     * and which contains a <code>&lt;base ...&gt;</code> element.
+     * Test correct handling of a link within a frame that has been re-written by JavaScript over an image, and which
+     * contains a <code>&lt;base ...&gt;</code> element.
      */
     @Test
     void testImageFrameRewrittenToUseBaseElement() throws Exception {
@@ -171,22 +170,19 @@ class FrameScriptingTest extends HttpUnitTest {
         _wc.getResponse(getHostPath() + "/Frames.html");
         WebLink link = _wc.getFrameContents("red").getLinks()[0];
         link.click();
-        assertEquals("Menu/Page/Target", _wc.getFrameContents("blue").getTitle(), "Content of blue frame after clicking menu link");
+        assertEquals("Menu/Page/Target", _wc.getFrameContents("blue").getTitle(),
+                "Content of blue frame after clicking menu link");
     }
-
 
     /**
      * Verifies that a javascript URL which triggers refresh to the parent of a frame resolves with something sensible.
      */
     @Test
     void testJavaScriptURLToParentFrame() throws Exception {
-        defineResource("Frames.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET cols=\"20%,80%\">" +
-                        "    <FRAME src='Linker.html' name='red'>" +
-                        "    <FRAME src=Form name=blue>" +
-                        "</FRAMESET></HTML>");
-        defineWebPage("Linker", "This is a trivial page with <a href='javascript:window.parent.location.replace( \"Target\" );'>one link</a>");
+        defineResource("Frames.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"20%,80%\">"
+                + "    <FRAME src='Linker.html' name='red'>" + "    <FRAME src=Form name=blue>" + "</FRAMESET></HTML>");
+        defineWebPage("Linker",
+                "This is a trivial page with <a href='javascript:window.parent.location.replace( \"Target\" );'>one link</a>");
         defineResource("Form", "This is a page with nothing we care about");
         defineResource("Target", "You made it!", "text/plain");
 
@@ -195,30 +191,24 @@ class FrameScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", result.getText(), "Result of click");
     }
 
-
     /**
      * Verifies that when JavaScript overwrites an empty frame, other empty frames stay empty.
      */
     @Test
     void testJavaScriptOverwritingBlankFrame() throws Exception {
         defineResource("Frames.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET>" +
-                        "    <FRAME src='Writer.html' name='red'>" +
-                        "    <FRAME name=green>" +
-                        "    <FRAME name=blue>" +
-                        "</FRAMESET></HTML>");
-        defineWebPage("Writer", "This page overwrites an empty frame. <script language=\"JavaScript\">"
-                + "  window.parent.green.document.open(\"text/html\")\n"
-                + "  window.parent.green.document.write(\"Generated <a href=\\\"#\\\">link</a>\")\n"
-                + "  window.parent.green.document.close()\n"
-                + "</script>");
+                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET>" + "    <FRAME src='Writer.html' name='red'>"
+                        + "    <FRAME name=green>" + "    <FRAME name=blue>" + "</FRAMESET></HTML>");
+        defineWebPage("Writer",
+                "This page overwrites an empty frame. <script language=\"JavaScript\">"
+                        + "  window.parent.green.document.open(\"text/html\")\n"
+                        + "  window.parent.green.document.write(\"Generated <a href=\\\"#\\\">link</a>\")\n"
+                        + "  window.parent.green.document.close()\n" + "</script>");
 
         _wc.getResponse(getHostPath() + "/Frames.html");
         assertEquals(1, _wc.getFrameContents("green").getLinks().length, "Links in green frame");
         assertEquals(0, _wc.getFrameContents("blue").getLinks().length, "Links in blue frame");
     }
-
 
     /**
      * Verifies that the onload event of a frameset can access subframes.
@@ -226,45 +216,36 @@ class FrameScriptingTest extends HttpUnitTest {
     @Test
     void testFrameOnLoadEvent() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
-        defineResource("Frames.html",
-                "<html><frameset onload='alert( green.document.form.text.value );'>" +
-                        "    <frame src='OneForm.html' name='green'>" +
-                        "    <frame name=blue>" +
-                        "</frameset></htmlL>");
+        defineResource("Frames.html", "<html><frameset onload='alert( green.document.form.text.value );'>"
+                + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>" + "</frameset></htmlL>");
 
         _wc.getResponse(getHostPath() + "/Frames.html");
         assertEquals("nothing special", _wc.popNextAlert(), "On load message");
     }
 
-
     /**
-     * Verifies that the onload event of a frameset runs even if there is a noframes tag present that contains a body tag.
+     * Verifies that the onload event of a frameset runs even if there is a noframes tag present that contains a body
+     * tag.
      */
     @Test
     void testFrameOnLoadEventWithNoFrames() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
         defineResource("Frames.html",
-                "<html><frameset onload='alert( green.document.form.text.value );'>" +
-                        "    <frame src='OneForm.html' name='green'>" +
-                        "    <frame name=blue>" +
-                        "    <noframes><body></body></noframes>" +
-                        "</frameset></htmlL>");
+                "<html><frameset onload='alert( green.document.form.text.value );'>"
+                        + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>"
+                        + "    <noframes><body></body></noframes>" + "</frameset></htmlL>");
 
         _wc.getResponse(getHostPath() + "/Frames.html");
         assertEquals("nothing special", _wc.popNextAlert(), "On load message");
     }
-
 
     /**
      * Verifies that IFrames can be found using their id.
      */
     @Test
     void testIFrameAccessById() throws Exception {
-        defineWebPage("Frames",
-                "<iframe id='frame1'></iframe>" +
-                        "<script>" +
-                        "var frame = document.getElementById('frame1');" +
-                        "</script>");
+        defineWebPage("Frames", "<iframe id='frame1'></iframe>" + "<script>"
+                + "var frame = document.getElementById('frame1');" + "</script>");
 
         _wc.getResponse(getHostPath() + "/Frames.html");
     }

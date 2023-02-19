@@ -22,18 +22,22 @@ package com.meterware.httpunit.scripting;
 /**
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
-public interface FormScriptable extends ScriptingEventHandler{
+public interface FormScriptable extends ScriptingEventHandler {
 
-	/**
-	 * set the action
-	 * @param newAction
-	 */
-    void setAction( String newAction );
+    /**
+     * set the action
+     *
+     * @param newAction
+     */
+    void setAction(String newAction);
 
     /**
      * set the value of a parameter
-     * @param name - the name of the parameter to set
-     * @param value - the value to use for the parameter
+     *
+     * @param name
+     *            - the name of the parameter to set
+     * @param value
+     *            - the value to use for the parameter
      */
-    void setParameterValue( String name, String value );
+    void setParameterValue(String name, String value);
 }

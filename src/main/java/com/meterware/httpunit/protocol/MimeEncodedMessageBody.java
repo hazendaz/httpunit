@@ -29,11 +29,9 @@ import java.io.OutputStream;
  **/
 class MimeEncodedMessageBody extends MessageBody {
 
-
-    MimeEncodedMessageBody( String characterSet ) {
-        super( characterSet );
+    MimeEncodedMessageBody(String characterSet) {
+        super(characterSet);
     }
-
 
     /**
      * Returns the content type of this message body.
@@ -42,113 +40,110 @@ class MimeEncodedMessageBody extends MessageBody {
         return "multipart/form-data; boundary=" + BOUNDARY;
     }
 
-
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
-    public void writeTo( OutputStream outputStream, ParameterCollection parameters ) throws IOException {
-        MimeEncoding encoding = new MimeEncoding( outputStream );
-        parameters.recordParameters( encoding );
+    public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
+        MimeEncoding encoding = new MimeEncoding(outputStream);
+        parameters.recordParameters(encoding);
         encoding.sendClose();
     }
 
-
     private final static String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
-    private final static byte[] CRLF     = { 0x0d, 0x0A };
+    private final static byte[] CRLF = { 0x0d, 0x0A };
 
-
-    private String encode( String string ) {
+    private String encode(String string) {
         char[] chars = string.toCharArray();
-        StringBuilder sb = new StringBuilder(chars.length+20);
-        for (int i = 0; i < chars.length; i++ ) {
+        StringBuilder sb = new StringBuilder(chars.length + 20);
+        for (int i = 0; i < chars.length; i++) {
             if (chars[i] == '\\') {
-                sb.append( "\\\\" );    // accomodate MS-DOS file paths ??? is this safe??
+                sb.append("\\\\"); // accomodate MS-DOS file paths ??? is this safe??
             } else {
-                sb.append( chars[i] );
+                sb.append(chars[i]);
             }
         }
         return sb.toString();
     }
 
-
-    private void writeLn( OutputStream os, String value, String encoding ) throws IOException {
-        os.write( value.getBytes( encoding ) );
-        os.write( CRLF );
+    private void writeLn(OutputStream os, String value, String encoding) throws IOException {
+        os.write(value.getBytes(encoding));
+        os.write(CRLF);
     }
 
-
-    private void writeLn( OutputStream os, String value ) throws IOException {
-        writeLn( os, value, getCharacterSet() );
+    private void writeLn(OutputStream os, String value) throws IOException {
+        writeLn(os, value, getCharacterSet());
     }
-
 
     class MimeEncoding implements ParameterProcessor {
 
-        public MimeEncoding( OutputStream outputStream ) {
+        public MimeEncoding(OutputStream outputStream) {
             _outputStream = outputStream;
         }
 
-
         public void sendClose() throws IOException {
-            writeLn( _outputStream, "--" + BOUNDARY + "--" );
+            writeLn(_outputStream, "--" + BOUNDARY + "--");
         }
-
 
         /**
          * add the parameter with the given name value and characterSet
-         * @param name - the name
-         * @param value - the value to set
-         * @param characterSet - the name of the characterSet to use
+         *
+         * @param name
+         *            - the name
+         * @param value
+         *            - the value to set
+         * @param characterSet
+         *            - the name of the characterSet to use
          */
-        public void addParameter( String name, String value, String characterSet ) throws IOException {
-            if (name == null || name.length() == 0) return;
-            if (value == null) return;
-            writeLn( _outputStream, "--" + BOUNDARY );
-            writeLn( _outputStream, "Content-Disposition: form-data; name=\"" + name + '"' );  // XXX need to handle non-ascii names here
-            writeLn( _outputStream, "Content-Type: text/plain; charset=" + getCharacterSet() );
-            writeLn( _outputStream, "" );
-            writeLn( _outputStream, fixLineEndings( value ), getCharacterSet() );
+        public void addParameter(String name, String value, String characterSet) throws IOException {
+            if (name == null || name.length() == 0)
+                return;
+            if (value == null)
+                return;
+            writeLn(_outputStream, "--" + BOUNDARY);
+            writeLn(_outputStream, "Content-Disposition: form-data; name=\"" + name + '"'); // XXX need to handle
+                                                                                            // non-ascii names here
+            writeLn(_outputStream, "Content-Type: text/plain; charset=" + getCharacterSet());
+            writeLn(_outputStream, "");
+            writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
         }
-
 
         private final static char CR = 0x0D;
         private final static char LF = 0x0A;
 
-        private String fixLineEndings( String value ) {
+        private String fixLineEndings(String value) {
             StringBuilder sb = new StringBuilder();
             char[] chars = value.toCharArray();
             for (int i = 0; i < chars.length; i++) {
-                if (chars[i] == CR || (chars[i] == LF && (i == 0 || chars[i-1] != CR))) {
-                    sb.append( CR ).append( LF );
+                if (chars[i] == CR || (chars[i] == LF && (i == 0 || chars[i - 1] != CR))) {
+                    sb.append(CR).append(LF);
                 } else {
-                    sb.append( chars[i] );
+                    sb.append(chars[i]);
                 }
             }
             return sb.toString();
         }
 
+        public void addFile(String name, UploadFileSpec spec) throws IOException {
+            byte[] buffer = new byte[8 * 1024];
 
-        public void addFile( String name, UploadFileSpec spec ) throws IOException {
-            byte[] buffer = new byte[ 8 * 1024 ];
-
-            writeLn( _outputStream, "--" + BOUNDARY );
-            writeLn( _outputStream, "Content-Disposition: form-data; name=\"" + encode( name ) + "\"; filename=\"" + encode( spec.getFileName() ) + '"' );   // XXX need to handle non-ascii names here
-            writeLn( _outputStream, "Content-Type: " + spec.getContentType() );
-            writeLn( _outputStream, "" );
+            writeLn(_outputStream, "--" + BOUNDARY);
+            writeLn(_outputStream, "Content-Disposition: form-data; name=\"" + encode(name) + "\"; filename=\""
+                    + encode(spec.getFileName()) + '"'); // XXX need to handle non-ascii names here
+            writeLn(_outputStream, "Content-Type: " + spec.getContentType());
+            writeLn(_outputStream, "");
 
             InputStream in = spec.getInputStream();
             int count = 0;
             do {
-                _outputStream.write( buffer, 0, count );
-                count = in.read( buffer, 0, buffer.length );
+                _outputStream.write(buffer, 0, count);
+                count = in.read(buffer, 0, buffer.length);
             } while (count != -1);
 
             in.close();
-            writeLn( _outputStream, "" );
+            writeLn(_outputStream, "");
         }
 
         private OutputStream _outputStream;
     }
 
 }
-

@@ -28,7 +28,6 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class SocketConnection {
@@ -39,105 +38,99 @@ class SocketConnection {
 
     private boolean _isChunking;
 
-
-    public SocketConnection( String host, int port ) throws IOException, UnknownHostException {
+    public SocketConnection(String host, int port) throws IOException, UnknownHostException {
         _host = host;
-        _socket = new Socket( host, port );
+        _socket = new Socket(host, port);
         _os = _socket.getOutputStream();
-        _is = new BufferedInputStream( _socket.getInputStream() );
+        _is = new BufferedInputStream(_socket.getInputStream());
     }
-
 
     void close() throws IOException {
         _socket.close();
     }
 
-    SocketResponse getResponse( String method, String path ) throws IOException {
-        if (_isChunking) throw new IllegalStateException( "May not initiate a new request while chunking." );
-        sendHTTPLine( method + ' ' + path + " HTTP/1.1" );
-        sendHTTPLine( "Host: " + _host );
-        sendHTTPLine( "Connection: Keep-Alive" );
-        sendHTTPLine( "" );
-        return new SocketResponse( _is );
+    SocketResponse getResponse(String method, String path) throws IOException {
+        if (_isChunking)
+            throw new IllegalStateException("May not initiate a new request while chunking.");
+        sendHTTPLine(method + ' ' + path + " HTTP/1.1");
+        sendHTTPLine("Host: " + _host);
+        sendHTTPLine("Connection: Keep-Alive");
+        sendHTTPLine("");
+        return new SocketResponse(_is);
     }
 
-
-    SocketResponse getResponse( String method, String path, String body ) throws IOException {
-        if (_isChunking) throw new IllegalStateException( "May not initiate a new request while chunking." );
-        sendHTTPLine( method + ' ' + path + " HTTP/1.1" );
-        sendHTTPLine( "Host: " + _host );
-        sendHTTPLine( "Connection: Keep-Alive" );
-        sendHTTPLine( "Content-Length: " + body.length() );
-        sendHTTPLine( "" );
-        _os.write( body.getBytes(StandardCharsets.UTF_8) );
-        return new SocketResponse( _is );
+    SocketResponse getResponse(String method, String path, String body) throws IOException {
+        if (_isChunking)
+            throw new IllegalStateException("May not initiate a new request while chunking.");
+        sendHTTPLine(method + ' ' + path + " HTTP/1.1");
+        sendHTTPLine("Host: " + _host);
+        sendHTTPLine("Connection: Keep-Alive");
+        sendHTTPLine("Content-Length: " + body.length());
+        sendHTTPLine("");
+        _os.write(body.getBytes(StandardCharsets.UTF_8));
+        return new SocketResponse(_is);
     }
 
-
-    void startChunkedResponse( String method, String path ) throws IOException {
-        if (_isChunking) throw new IllegalStateException( "May not initiate a new request while chunking." );
-        sendHTTPLine( method + ' ' + path + " HTTP/1.1" );
-        sendHTTPLine( "Host: " + _host );
-        sendHTTPLine( "Connection: Keep-Alive" );
-        sendHTTPLine( "Transfer-Encoding: chunked" );
-        sendHTTPLine( "" );
+    void startChunkedResponse(String method, String path) throws IOException {
+        if (_isChunking)
+            throw new IllegalStateException("May not initiate a new request while chunking.");
+        sendHTTPLine(method + ' ' + path + " HTTP/1.1");
+        sendHTTPLine("Host: " + _host);
+        sendHTTPLine("Connection: Keep-Alive");
+        sendHTTPLine("Transfer-Encoding: chunked");
+        sendHTTPLine("");
         _isChunking = true;
     }
 
-
-    public void sendChunk( String chunk ) throws IOException {
-        if (!_isChunking) throw new IllegalStateException( "May not send a chunk when not in mid-request." );
-        sendHTTPLine( Integer.toHexString( chunk.length() ));
-        sendHTTPLine( chunk );
+    public void sendChunk(String chunk) throws IOException {
+        if (!_isChunking)
+            throw new IllegalStateException("May not send a chunk when not in mid-request.");
+        sendHTTPLine(Integer.toHexString(chunk.length()));
+        sendHTTPLine(chunk);
     }
-
 
     SocketResponse getResponse() throws IOException {
-        if (!_isChunking) throw new IllegalStateException( "Not chunking a request." );
+        if (!_isChunking)
+            throw new IllegalStateException("Not chunking a request.");
         _isChunking = false;
-        sendHTTPLine( "0" );
-        sendHTTPLine( "" );
-        return new SocketResponse( _is );
+        sendHTTPLine("0");
+        sendHTTPLine("");
+        return new SocketResponse(_is);
     }
 
-
-    private void sendHTTPLine( final String line ) throws IOException {
-        _os.write( line.getBytes(StandardCharsets.UTF_8) );
-        _os.write( 13 );
-        _os.write( 10 );
+    private void sendHTTPLine(final String line) throws IOException {
+        _os.write(line.getBytes(StandardCharsets.UTF_8));
+        _os.write(13);
+        _os.write(10);
     }
-
 
     class SocketResponse extends ReceivedHttpMessage {
 
         private String _protocol;
-        private int    _responseCode;
+        private int _responseCode;
         private String _message;
 
-        public SocketResponse( InputStream inputStream ) throws IOException {
-            super( inputStream );
+        public SocketResponse(InputStream inputStream) throws IOException {
+            super(inputStream);
         }
 
-
-        void appendMessageHeader( StringBuffer sb ) {
-            sb.append( _protocol ).append( ' ' ).append( _responseCode ).append( ' ' ).append( _message );
+        void appendMessageHeader(StringBuffer sb) {
+            sb.append(_protocol).append(' ').append(_responseCode).append(' ').append(_message);
         }
 
+        void interpretMessageHeader(String messageHeader) {
+            int s1 = messageHeader.indexOf(' ');
+            int s2 = messageHeader.indexOf(' ', s1 + 1);
 
-        void interpretMessageHeader( String messageHeader ) {
-            int s1 = messageHeader.indexOf( ' ' );
-            int s2 = messageHeader.indexOf( ' ', s1+1 );
-
-            _protocol = messageHeader.substring( 0, s1 );
-            _message  = messageHeader.substring( s2+1 );
+            _protocol = messageHeader.substring(0, s1);
+            _message = messageHeader.substring(s2 + 1);
 
             try {
-                _responseCode = Integer.parseInt( messageHeader.substring( s1+1, s2 ) );
+                _responseCode = Integer.parseInt(messageHeader.substring(s1 + 1, s2));
             } catch (NumberFormatException e) {
                 _responseCode = -1;
             }
         }
-
 
         public int getResponseCode() {
             return _responseCode;

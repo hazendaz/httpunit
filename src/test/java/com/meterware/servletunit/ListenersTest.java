@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextAttributeEvent;
@@ -62,7 +62,6 @@ class ListenersTest extends EventAwareTestBase {
         verifyEvents();
     }
 
-
     static class ServletContextEventVerifier implements EventVerifier {
 
         public void verifyEvent(String eventLabel, Object eventObject) {
@@ -70,7 +69,6 @@ class ListenersTest extends EventAwareTestBase {
                 fail("Event " + eventLabel + " did not include a servlet context event");
         }
     }
-
 
     @Test
     void testSessionLifecycleListeners() throws Exception {
@@ -101,7 +99,6 @@ class ListenersTest extends EventAwareTestBase {
         sr.shutDown();
     }
 
-
     static class HttpSessionEventVerifier implements EventVerifier {
 
         public void verifyEvent(String eventLabel, Object eventObject) {
@@ -109,7 +106,6 @@ class ListenersTest extends EventAwareTestBase {
                 fail("Event " + eventLabel + " did not include an http session event");
         }
     }
-
 
     @Test
     void testSessionAttributeListeners() throws Exception {
@@ -148,12 +144,10 @@ class ListenersTest extends EventAwareTestBase {
         sr.shutDown();
     }
 
-
     static class HttpSessionAttributeEventVerifier implements EventVerifier {
 
         private String _name;
         private Object _value;
-
 
         public void verifyEvent(String eventLabel, Object eventObject) {
             if (!(eventObject instanceof HttpSessionBindingEvent))
@@ -163,13 +157,11 @@ class ListenersTest extends EventAwareTestBase {
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
-
         public void expect(String name, Object value) {
             _name = name;
             _value = value;
         }
     }
-
 
     @Test
     void testContextAttributeListeners() throws Exception {
@@ -211,12 +203,10 @@ class ListenersTest extends EventAwareTestBase {
         sr.shutDown();
     }
 
-
     static class ContextAttributeEventVerifier implements EventVerifier {
 
         private String _name;
         private Object _value;
-
 
         public void verifyEvent(String eventLabel, Object eventObject) {
             if (!(eventObject instanceof ServletContextAttributeEvent))
@@ -226,13 +216,11 @@ class ListenersTest extends EventAwareTestBase {
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
-
         public void expect(String name, Object value) {
             _name = name;
             _value = value;
         }
     }
-
 
     static class EventDispatcher {
 
@@ -300,6 +288,5 @@ class ListenersTest extends EventAwareTestBase {
 
     static class ListenerClass8 extends EventDispatcher implements ServletContextAttributeListener {
     }
-
 
 }

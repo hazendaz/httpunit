@@ -34,28 +34,23 @@ class ServletInputStreamImpl extends ServletInputStream {
 
     private ByteArrayInputStream _baseStream;
 
-
-    public ServletInputStreamImpl( byte[] messageBody ) {
-        _baseStream = new ByteArrayInputStream( messageBody );
+    public ServletInputStreamImpl(byte[] messageBody) {
+        _baseStream = new ByteArrayInputStream(messageBody);
     }
-
 
     public int read() throws IOException {
         return _baseStream.read();
     }
-
 
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return false;
     }
 
-
     public boolean isReady() {
         // TODO Auto-generated method stub
         return false;
     }
-
 
     public void setReadListener(ReadListener readListener) {
         // TODO Auto-generated method stub

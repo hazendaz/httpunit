@@ -30,24 +30,21 @@ import javax.servlet.ServletContext;
  **/
 class ServletUnitServletConfig implements ServletConfig {
 
-
-    ServletUnitServletConfig( String name, WebApplication application, Hashtable initParams ) {
+    ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {
         _name = name;
         _initParameters = initParams;
         _context = application.getServletContext();
     }
 
-
-//-------------------------------------------- ServletConfig methods ---------------------------------------------------
-
+    // -------------------------------------------- ServletConfig methods
+    // ---------------------------------------------------
 
     /**
      * Returns the value of the specified init parameter, or null if no such init parameter is defined.
      **/
-    public String getInitParameter( String name ) {
-        return (String) _initParameters.get( name );
+    public String getInitParameter(String name) {
+        return (String) _initParameters.get(name);
     }
-
 
     /**
      * Returns an enumeration over the names of the init parameters.
@@ -56,14 +53,12 @@ class ServletUnitServletConfig implements ServletConfig {
         return _initParameters.keys();
     }
 
-
     /**
      * Returns the current servlet context.
      **/
     public ServletContext getServletContext() {
         return _context;
     }
-
 
     /**
      * Returns the registered name of the servlet, or its class name if it is not registered.
@@ -72,9 +67,8 @@ class ServletUnitServletConfig implements ServletConfig {
         return _name;
     }
 
-
-//----------------------------------------------- private members ------------------------------------------------------
-
+    // ----------------------------------------------- private members
+    // ------------------------------------------------------
 
     private String _name;
 

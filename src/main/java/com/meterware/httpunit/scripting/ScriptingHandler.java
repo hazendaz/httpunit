@@ -40,17 +40,15 @@ package com.meterware.httpunit.scripting;
  *******************************************************************************************************************/
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public interface ScriptingHandler extends ScriptingEventHandler {
 
-    boolean supportsScriptLanguage( String language );
+    boolean supportsScriptLanguage(String language);
 
+    String runScript(String language, String script);
 
-    String runScript( String language, String script );
-
-    Object evaluateExpression( String urlString );
+    Object evaluateExpression(String urlString);
 
     void clearCaches();
 }

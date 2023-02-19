@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {
@@ -32,57 +31,47 @@ public class ProcessingInstructionImpl extends NodeImpl implements ProcessingIns
     private String _target;
     private String _data;
 
-
-    public static ProcessingInstruction createProcessingImpl( DocumentImpl ownerDocument, String target, String data ) {
+    public static ProcessingInstruction createProcessingImpl(DocumentImpl ownerDocument, String target, String data) {
         ProcessingInstructionImpl instruction = new ProcessingInstructionImpl();
-        instruction.initialize( ownerDocument, target, data );
+        instruction.initialize(ownerDocument, target, data);
         return instruction;
     }
 
-
-    private void initialize( DocumentImpl ownerDocument, String target, String data ) {
-        super.initialize( ownerDocument );
+    private void initialize(DocumentImpl ownerDocument, String target, String data) {
+        super.initialize(ownerDocument);
         _target = target;
         _data = data;
     }
 
-
-    public static Node importNode( DocumentImpl document, ProcessingInstruction processingInstruction ) {
-        return createProcessingImpl( document, processingInstruction.getTarget(), processingInstruction.getData() );
+    public static Node importNode(DocumentImpl document, ProcessingInstruction processingInstruction) {
+        return createProcessingImpl(document, processingInstruction.getTarget(), processingInstruction.getData());
     }
-
 
     public String getNodeName() {
         return _target;
     }
 
-
     public String getNodeValue() throws DOMException {
         return _data;
     }
 
-
-    public void setNodeValue( String string ) throws DOMException {
-        setData( string );
+    public void setNodeValue(String string) throws DOMException {
+        setData(string);
     }
-
 
     public short getNodeType() {
         return PROCESSING_INSTRUCTION_NODE;
     }
 
-
     public String getTarget() {
         return _target;
     }
-
 
     public String getData() {
         return _data;
     }
 
-
-    public void setData( String string ) throws DOMException {
+    public void setData(String string) throws DOMException {
         _data = string;
     }
 }

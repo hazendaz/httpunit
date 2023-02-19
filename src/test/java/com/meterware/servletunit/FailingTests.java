@@ -26,7 +26,8 @@ import junit.framework.TestCase;
 /**
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
-// XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly nor any IDE
+// XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
+// nor any IDE
 @Ignore
 public class FailingTests extends TestCase {
 

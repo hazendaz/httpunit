@@ -39,12 +39,9 @@ import org.xml.sax.SAXException;
 @ExtendWith(ExternalResourceSupport.class)
 public class XMLPageTest extends HttpUnitTest {
 
-
     @Test
     void testXML() throws Exception {
-        defineResource("SimplePage.xml",
-                "<?xml version=\"1.0\" ?><main><title>See me now</title></main>",
-                "text/xml");
+        defineResource("SimplePage.xml", "<?xml version=\"1.0\" ?><main><title>See me now</title></main>", "text/xml");
 
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.xml");
@@ -53,8 +50,7 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     /**
-     * test case for BR [2373755] by Frank Waldheim
-     * deactivated since it is the opposite of 1281655
+     * test case for BR [2373755] by Frank Waldheim deactivated since it is the opposite of 1281655
      *
      * @throws Exception
      */
@@ -69,11 +65,13 @@ public class XMLPageTest extends HttpUnitTest {
         assertFalse(simplePage.isHTML(), "xml result is not HTML");
         // get the main element as root
         assertNotNull(simplePage.getDOM().getDocumentElement(), "we do have an root-element");
-        assertEquals("main", simplePage.getDOM().getDocumentElement().getTagName(), "the actual root must be the root of our test-xml");
+        assertEquals("main", simplePage.getDOM().getDocumentElement().getTagName(),
+                "the actual root must be the root of our test-xml");
     }
 
     /**
      * test for BR 2946821
+     *
      * @throws SAXException
      * @throws IOException
      */
@@ -90,7 +88,6 @@ public class XMLPageTest extends HttpUnitTest {
         assertNotNull(docElement, "There should be a root element");
     }
 
-
     @Test
     void testTraversal() throws Exception {
         defineResource("SimplePage.xml",
@@ -106,7 +103,7 @@ public class XMLPageTest extends HttpUnitTest {
                 if (element.getNodeName().toLowerCase().equals("main")) {
                     traversal.pushContext("x");
                 } else {
-                    for (Iterator i = traversal.getContexts();i.hasNext();)
+                    for (Iterator i = traversal.getContexts(); i.hasNext();)
                         sb.append(i.next());
                     sb.append(element.getNodeName()).append("|");
                 }

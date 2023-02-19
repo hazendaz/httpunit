@@ -39,35 +39,30 @@ public class HtmlTablesTest extends HttpUnitTest {
     void setUp() throws Exception {
         _wc = new WebConversation();
 
-        defineWebPage("OneTable", "<h2>Interesting data</h2>" +
-                "<table summary=\"tough luck\">" +
-                "<tr><th>One</th><td>&nbsp;</td><td>1</td></tr>" +
-                "<tr><td colspan=3><IMG SRC=\"/images/spacer.gif\" ALT=\"\" WIDTH=1 HEIGHT=1></td></tr>" +
-                "<tr><th>Two</th><td>&nbsp;</td><td>2</td></tr>" +
-                "<tr><td colspan=3><IMG SRC=\"/images/spacer.gif\" ALT=\"\" WIDTH=1 HEIGHT=1></td></tr>" +
-                "<tr><th>Three</th><td>&nbsp;</td><td>3</td></tr>" +
-                "</table>");
-        defineWebPage("SpanTable", "<h2>Interesting data</h2>" +
-                "<table summary=\"tough luck\">" +
-                "<tr><th colspan=2>Colors</th><th>Names</th></tr>" +
-                "<tr><td>Red</td><td rowspan=\"2\"><b>gules</b></td><td>rot</td></tr>" +
-                "<tr><td>Green</td><td><a href=\"nowhere\">vert</a></td></tr>" +
-                "</table>");
+        defineWebPage("OneTable",
+                "<h2>Interesting data</h2>" + "<table summary=\"tough luck\">"
+                        + "<tr><th>One</th><td>&nbsp;</td><td>1</td></tr>"
+                        + "<tr><td colspan=3><IMG SRC=\"/images/spacer.gif\" ALT=\"\" WIDTH=1 HEIGHT=1></td></tr>"
+                        + "<tr><th>Two</th><td>&nbsp;</td><td>2</td></tr>"
+                        + "<tr><td colspan=3><IMG SRC=\"/images/spacer.gif\" ALT=\"\" WIDTH=1 HEIGHT=1></td></tr>"
+                        + "<tr><th>Three</th><td>&nbsp;</td><td>3</td></tr>" + "</table>");
+        defineWebPage("SpanTable",
+                "<h2>Interesting data</h2>" + "<table summary=\"tough luck\">"
+                        + "<tr><th colspan=2>Colors</th><th>Names</th></tr>"
+                        + "<tr><td>Red</td><td rowspan=\"2\"><b>gules</b></td><td>rot</td></tr>"
+                        + "<tr><td>Green</td><td><a href=\"nowhere\">vert</a></td></tr>" + "</table>");
     }
-
 
     @Test
     void testFindNoTables() throws Exception {
-        defineWebPage("Default", "This has no tables but it does" +
-                "have <a href=\"/other.html\">an active link</A>" +
-                " and <a name=here>an anchor</a>");
+        defineWebPage("Default", "This has no tables but it does" + "have <a href=\"/other.html\">an active link</A>"
+                + " and <a name=here>an anchor</a>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable[] tables = page.getTables();
         assertNotNull(tables);
         assertEquals(0, tables.length);
     }
-
 
     @Test
     void testFindOneTable() throws Exception {
@@ -76,43 +71,27 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1117822 ] Patch for purgeEmptyCells() problem
-     * by Glen Stampoultzis
+     * test for patch [ 1117822 ] Patch for purgeEmptyCells() problem by Glen Stampoultzis
      *
      * @throws Exception
      */
     @Test
     void testPurgeEmptyCells() throws Exception {
-        defineWebPage("StrangeSpan", "<h2>Interesting data</h2>" +
-                "<table class=\"headerTable\" width=\"97%\" cellspacing=\"2\" cellpadding=\"0\" border=\"0\" id=\"personalTable\">\n" +
-                "        <tr>\n" +
-                "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Notifications:</th>\n" +
-                "        </tr>\n" +
-                "\n" +
-                "<tr> <td width=\"10\">&nbsp;</td>\n" +
-                "          <td colspan=\"5\">None</td>\n" +
-                "\n" +
-                "</tr> <tr>\n" +
-                "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Watches:</th>\n" +
-                "        </tr>\n" +
-                "\n" +
-                "<tr> <td>&nbsp;</td>\n" +
-                "          <td colspan=\"5\">None</td>\n" +
-                "</tr> <tr>\n" +
-                "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Messages:</th>\n" +
-                "\n" +
-                "        </tr>\n" +
-                "\n" +
-                "<tr> <td>&nbsp;</td>\n" +
-                "          <td colspan=\"5\">None</td>\n" +
-                "</tr> <tr>\n" +
-                "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Favourite Documents:</th>\n" +
-                "        </tr>\n" +
-                "\n" +
-                "<tr> <td>&nbsp;</td>\n" +
-                "\n" +
-                "          <td colspan=\"5\">None</td>\n" +
-                "</tr>\t</table>");
+        defineWebPage("StrangeSpan", "<h2>Interesting data</h2>"
+                + "<table class=\"headerTable\" width=\"97%\" cellspacing=\"2\" cellpadding=\"0\" border=\"0\" id=\"personalTable\">\n"
+                + "        <tr>\n"
+                + "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Notifications:</th>\n"
+                + "        </tr>\n" + "\n" + "<tr> <td width=\"10\">&nbsp;</td>\n"
+                + "          <td colspan=\"5\">None</td>\n" + "\n" + "</tr> <tr>\n"
+                + "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Watches:</th>\n"
+                + "        </tr>\n" + "\n" + "<tr> <td>&nbsp;</td>\n" + "          <td colspan=\"5\">None</td>\n"
+                + "</tr> <tr>\n"
+                + "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Messages:</th>\n"
+                + "\n" + "        </tr>\n" + "\n" + "<tr> <td>&nbsp;</td>\n" + "          <td colspan=\"5\">None</td>\n"
+                + "</tr> <tr>\n"
+                + "          <th colspan=\"6\"><img src=\"images/curve-left.gif\" align=\"top\" border=\"0\">Favourite Documents:</th>\n"
+                + "        </tr>\n" + "\n" + "<tr> <td>&nbsp;</td>\n" + "\n" + "          <td colspan=\"5\">None</td>\n"
+                + "</tr>\t</table>");
         WebTable table = _wc.getResponse(getHostPath() + "/StrangeSpan.html").getTables()[0];
         assertNotNull(table);
 
@@ -142,35 +121,25 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1295782 ] Method purgeEmptyCells Truncates Table
-     * by ahansen 2005-09-19 22:47
+     * test for bug report [ 1295782 ] Method purgeEmptyCells Truncates Table by ahansen 2005-09-19 22:47
      *
      * @throws Exception
      */
     @Test
     void testPurgeEmptyCells2() throws Exception {
-        defineWebPage("BrokenSpan", "<h2>Broken Span</h2>" +
-                "<table id=\"testTable\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" +
-                "   <tr>" +
-                "       <td><img src=\"test.jpg\"/></td>" +
-                "       <td colspan=\"2\">h3</td>" +
-                "   </tr>" +
-                "   <tr>" +
-                "       <td colspan=\"2\">a</td>" +
-                "       <td>1</td>" +
-                "   </tr>" +
-                "</table>"
-        );
+        defineWebPage("BrokenSpan", "<h2>Broken Span</h2>"
+                + "<table id=\"testTable\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">" + "   <tr>"
+                + "       <td><img src=\"test.jpg\"/></td>" + "       <td colspan=\"2\">h3</td>" + "   </tr>"
+                + "   <tr>" + "       <td colspan=\"2\">a</td>" + "       <td>1</td>" + "   </tr>" + "</table>");
         WebResponse page = _wc.getResponse(getHostPath() + "/BrokenSpan.html");
         WebTable table = page.getTables()[0];
-        //String expected="WebTable:\n[0]:   [0]=  [1]=h3  [2]=h3\n[1]:   [0]=a  [1]=a  [2]=1";
+        // String expected="WebTable:\n[0]: [0]= [1]=h3 [2]=h3\n[1]: [0]=a [1]=a [2]=1";
         String expected = table.toString();
         table.purgeEmptyCells();
         assertEquals(table.toString(), expected, "1st");
         table.purgeEmptyCells();
         assertEquals(table.toString(), expected, "2nd");
     }
-
 
     /**
      * test finding the Table Size
@@ -194,14 +163,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         }
     }
 
-
     @Test
     void testFindTableCell() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
         assertEquals("Two", table.getCellAsText(2, 0));
         assertEquals("3", table.getCellAsText(4, 2));
     }
-
 
     @Test
     void testTableAsText() throws Exception {
@@ -214,18 +181,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(2, text[0].length, "columns with text");
     }
 
-
     @Test
     void testNestedTable() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table summary=\"outer one\">" +
-                "<tr><td>" +
-                "Inner Table<br>" +
-                "<table summary=\"inner one\">" +
-                "        <tr><td>Red</td><td>1</td></tr>" +
-                "        <tr><td>Blue</td><td>2</td></tr>" +
-                "</table></td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table summary=\"outer one\">" + "<tr><td>" + "Inner Table<br>"
+                        + "<table summary=\"inner one\">" + "        <tr><td>Red</td><td>1</td></tr>"
+                        + "        <tr><td>Blue</td><td>2</td></tr>" + "</table></td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable[] tables = page.getTables();
@@ -242,7 +203,6 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertTrue(nestedString.indexOf("Blue") >= 0, "Cannot find 'Blue' in string");
     }
 
-
     @Test
     void testColumnSpan() throws Exception {
         WebResponse page = _wc.getResponse(getHostPath() + "/SpanTable.html");
@@ -253,25 +213,16 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertSame(table.getTableCell(0, 0), table.getTableCell(0, 1));
     }
 
-    public static String htmlForBug1043368 = "<HTML>\n" +
-            "<head>\n" +
-            "<title>FormTable Servlet GET</title>\n" +
-            "</head>\n<body>\n" +
-            "<FORM METHOD=\"POST\" ACTION=\"/some/action\">\n" +
-            "<TABLE>\n" +
-            "   <TR><TD colspan=\"4\">Test Form:</TD></TR>\n\n" +
-            "   <TR>\n" +
-            "       <TD>*Contact Name:</TD>\n" +
-            "       <TD><input type=\"text\" size=\"21\" name=\"CONTACT_NAME\" value=\"TIMOTHY O'LEARY\"></TD>\n" +
-            "       <TD>Building Number:</TD>\n" +
-            "       <TD><input type=\"text\" size=\"7\" name=\"BUILDING_NUMBER\" value=\"355\"></TD>\n" +
-            "   </TR>\n" +
-            "</TABLE>\n" +
-            "</FORM>";
+    public static String htmlForBug1043368 = "<HTML>\n" + "<head>\n" + "<title>FormTable Servlet GET</title>\n"
+            + "</head>\n<body>\n" + "<FORM METHOD=\"POST\" ACTION=\"/some/action\">\n" + "<TABLE>\n"
+            + "   <TR><TD colspan=\"4\">Test Form:</TD></TR>\n\n" + "   <TR>\n" + "       <TD>*Contact Name:</TD>\n"
+            + "       <TD><input type=\"text\" size=\"21\" name=\"CONTACT_NAME\" value=\"TIMOTHY O'LEARY\"></TD>\n"
+            + "       <TD>Building Number:</TD>\n"
+            + "       <TD><input type=\"text\" size=\"7\" name=\"BUILDING_NUMBER\" value=\"355\"></TD>\n" + "   </TR>\n"
+            + "</TABLE>\n" + "</FORM>";
 
     /**
-     * test for bug report [ 1043368 ] WebTable has wrong number of columns
-     * by AutoTest
+     * test for bug report [ 1043368 ] WebTable has wrong number of columns by AutoTest
      */
     @Test
     void testColumnNumberInTable() throws Exception {
@@ -283,7 +234,6 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertNotNull(-1, "wrong table");
         assertEquals(4, table.getColumnCount(), "wrong column count");
     }
-
 
     @Test
     void testRowSpan() throws Exception {
@@ -297,15 +247,13 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertSame(table.getTableCell(1, 1), table.getTableCell(2, 1));
     }
 
-
     @Test
     void testMissingColumns() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table summary=\"tough luck\">" +
-                "<tr><th colspan=2>Colors</th><th>Names</th></tr>" +
-                "<tr><td>Red</td><td rowspan=\"2\"><b>gules</b></td></tr>" +
-                "<tr><td>Green</td><td><a href=\"nowhere\">vert</a></td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table summary=\"tough luck\">"
+                        + "<tr><th colspan=2>Colors</th><th>Names</th></tr>"
+                        + "<tr><td>Red</td><td rowspan=\"2\"><b>gules</b></td></tr>"
+                        + "<tr><td>Green</td><td><a href=\"nowhere\">vert</a></td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTables()[0];
@@ -314,25 +262,16 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(3, table.getColumnCount());
     }
 
-
     @Test
     void testInnerTableSeek() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table id=you summary=\"outer one\">" +
-                "<tr><td>Here we are</td><td>" +
-                "Inner Table 1<br>" +
-                "<table id=you summary='inner zero'>" +
-                "        <tr><td colspan=2>&nbsp;</td></tr>" +
-                "        <tr><td>\nRed\n</td><td>1</td></tr>" +
-                "        <tr><td>Blue</td><td>2</td></tr>" +
-                "</table></td><td>" +
-                "Inner Table 2<br>" +
-                "<table id=me summary=\"inner one\">" +
-                "        <tr><td colspan=2>&nbsp;</td></tr>" +
-                "        <tr><td>Black</td><td>1</td></tr>" +
-                "        <tr><td>White</td><td>2</td></tr>" +
-                "</table></td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table id=you summary=\"outer one\">" + "<tr><td>Here we are</td><td>"
+                        + "Inner Table 1<br>" + "<table id=you summary='inner zero'>"
+                        + "        <tr><td colspan=2>&nbsp;</td></tr>" + "        <tr><td>\nRed\n</td><td>1</td></tr>"
+                        + "        <tr><td>Blue</td><td>2</td></tr>" + "</table></td><td>" + "Inner Table 2<br>"
+                        + "<table id=me summary=\"inner one\">" + "        <tr><td colspan=2>&nbsp;</td></tr>"
+                        + "        <tr><td>Black</td><td>1</td></tr>" + "        <tr><td>White</td><td>2</td></tr>"
+                        + "</table></td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable wt = page.getTableStartingWith("Red");
@@ -365,15 +304,13 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("White", cells[2][0], "cell at 2,0");
     }
 
-
     @Test
     void testSpanOverEmptyColumns() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table summary=little>" +
-                "<tr><td colspan=2>Title</td><td>Data</td></tr>" +
-                "<tr><td>Name</td><td>&nbsp;</td><td>Value</td></tr>" +
-                "<tr><td>Name</td><td>&nbsp;</td><td>Value</td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table summary=little>"
+                        + "<tr><td colspan=2>Title</td><td>Data</td></tr>"
+                        + "<tr><td>Name</td><td>&nbsp;</td><td>Value</td></tr>"
+                        + "<tr><td>Name</td><td>&nbsp;</td><td>Value</td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTableStartingWith("Title");
@@ -383,16 +320,14 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(2, cells[0].length, "Non-blank columns");
         assertEquals("Value", cells[1][1], "cell at 1,1");
     }
-
 
     @Test
     void testSpanOverAllEmptyColumns() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table summary=little>" +
-                "<tr><td colspan=2>Title</td><td>Data</td></tr>" +
-                "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>" +
-                "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table summary=little>"
+                        + "<tr><td colspan=2>Title</td><td>Data</td></tr>"
+                        + "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>"
+                        + "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTableStartingWith("Title");
@@ -403,14 +338,10 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Value", cells[1][1], "cell at 1,1");
     }
 
-
     @Test
     void testTableInParagraph() throws Exception {
-        defineWebPage("Default", "<p>" +
-                "<table summary=little>" +
-                "<tr><td>a</td><td>b</td><td>Value</td></tr>" +
-                "<tr><td>c</td><td>d</td><td>Value</td></tr>" +
-                "</table></p>");
+        defineWebPage("Default", "<p>" + "<table summary=little>" + "<tr><td>a</td><td>b</td><td>Value</td></tr>"
+                + "<tr><td>c</td><td>d</td><td>Value</td></tr>" + "</table></p>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         assertEquals(1, page.getTextBlocks()[0].getTables().length, "Number of tables in paragraph");
@@ -422,12 +353,11 @@ public class HtmlTablesTest extends HttpUnitTest {
      */
     @Test
     void testCellsWithID() throws Exception {
-        defineWebPage("Default", "<h2>Interesting data</h2>" +
-                "<table id=\"table\" summary=little>" +
-                "<tr><td>Title</td><td>Data</td></tr>" +
-                "<tr><td id=\"id1\">value1</td><td id=\"id2\">value2</td><td>Value</td></tr>" +
-                "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>" +
-                "</table>");
+        defineWebPage("Default",
+                "<h2>Interesting data</h2>" + "<table id=\"table\" summary=little>"
+                        + "<tr><td>Title</td><td>Data</td></tr>"
+                        + "<tr><td id=\"id1\">value1</td><td id=\"id2\">value2</td><td>Value</td></tr>"
+                        + "<tr><td>&nbsp;</td><td>&nbsp;</td><td>Value</td></tr>" + "</table>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebTable table = page.getTableWithID("table");
@@ -459,4 +389,3 @@ public class HtmlTablesTest extends HttpUnitTest {
 
     private WebConversation _wc;
 }
-

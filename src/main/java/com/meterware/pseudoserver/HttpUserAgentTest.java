@@ -31,250 +31,243 @@ import org.junit.Rule;
 
 /**
  * A base class for test cases that use the pseudo server.
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HttpUserAgentTest {
 
-    @Rule public PseudoServerTestSupport testSupport = new PseudoServerTestSupport();
+    @Rule
+    public PseudoServerTestSupport testSupport = new PseudoServerTestSupport();
 
-    protected void defineResource( String resourceName, PseudoServlet servlet ) {
+    protected void defineResource(String resourceName, PseudoServlet servlet) {
         testSupport.defineResource(resourceName, servlet);
     }
 
-
-    protected void defineResource( String resourceName, String value ) {
+    protected void defineResource(String resourceName, String value) {
         testSupport.defineResource(resourceName, value);
     }
 
-
-    protected void defineResource( String resourceName, byte[] value, String contentType ) {
+    protected void defineResource(String resourceName, byte[] value, String contentType) {
         testSupport.defineResource(resourceName, value, contentType);
     }
 
-
-    protected void defineResource( String resourceName, String value, int statusCode ) {
+    protected void defineResource(String resourceName, String value, int statusCode) {
         testSupport.defineResource(resourceName, value, statusCode);
     }
 
-
-    protected void defineResource( String resourceName, String value, String contentType ) {
+    protected void defineResource(String resourceName, String value, String contentType) {
         testSupport.defineResource(resourceName, value, contentType);
     }
 
-
-    protected void addResourceHeader( String resourceName, String header ) {
+    protected void addResourceHeader(String resourceName, String header) {
         testSupport.addResourceHeader(resourceName, header);
     }
 
-
-    protected void setResourceCharSet( String resourceName, String setName, boolean reportCharSet ) {
+    protected void setResourceCharSet(String resourceName, String setName, boolean reportCharSet) {
         testSupport.setResourceCharSet(resourceName, setName, reportCharSet);
     }
 
     /**
-     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of the page
-     * use the given xml names space if it is not null
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page use the given xml names space if it is not null
+     *
      * @param xmlns
      * @param pageName
      * @param body
      */
-    protected void defineWebPage( String xmlns,String pageName, String body ) {
+    protected void defineWebPage(String xmlns, String pageName, String body) {
         testSupport.defineWebPage(xmlns, pageName, body);
     }
 
     /**
-     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of the page
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page
+     *
      * @param pageName
      * @param body
      */
-    protected void defineWebPage( String pageName, String body ) {
+    protected void defineWebPage(String pageName, String body) {
         testSupport.defineWebPage(pageName, body);
     }
 
-
-    protected void mapToClasspath( String directory ) {
+    protected void mapToClasspath(String directory) {
         testSupport.mapToClasspath(directory);
     }
-
 
     protected PseudoServer getServer() {
         return testSupport.getServer();
     }
 
-
-    protected void setServerDebug( boolean enabled ) {
+    protected void setServerDebug(boolean enabled) {
         testSupport.setServerDebug(enabled);
     }
-
 
     protected String getHostPath() {
         return testSupport.getHostPath();
     }
 
-
     protected int getHostPort() throws IOException {
         return testSupport.getHostPort();
     }
 
-
-    protected void assertEqualQueries( String query1, String query2 ) {
-        assertEquals( new QuerySpec( query1 ), new QuerySpec( query2 ) );
+    protected void assertEqualQueries(String query1, String query2) {
+        assertEquals(new QuerySpec(query1), new QuerySpec(query2));
     }
 
-
-    protected void assertImplement( String comment, Object[] objects, Class expectedClass ) {
-        if (objects.length == 0) fail( "No " + comment + " found." );
+    protected void assertImplement(String comment, Object[] objects, Class expectedClass) {
+        if (objects.length == 0)
+            fail("No " + comment + " found.");
         for (int i = 0; i < objects.length; i++) {
-            assertImplements( comment, objects[i], expectedClass );
+            assertImplements(comment, objects[i], expectedClass);
         }
     }
 
-
-    protected void assertImplements( String comment, Object object, Class expectedClass ) {
+    protected void assertImplements(String comment, Object object, Class expectedClass) {
         if (object == null) {
-            fail( comment + " should be of class " + expectedClass.getName() + " but is null" );
-        } else if (!expectedClass.isInstance( object )) {
-            fail( comment + " should be of class " + expectedClass.getName() + " but is " + object.getClass().getName() );
+            fail(comment + " should be of class " + expectedClass.getName() + " but is null");
+        } else if (!expectedClass.isInstance(object)) {
+            fail(comment + " should be of class " + expectedClass.getName() + " but is " + object.getClass().getName());
         }
     }
 
-
-    protected void assertMatchingSet( String comment, Object[] expected, Enumeration found ) {
+    protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
         Vector foundItems = new Vector();
-        while (found.hasMoreElements()) foundItems.addElement( found.nextElement() );
+        while (found.hasMoreElements())
+            foundItems.addElement(found.nextElement());
 
-        assertMatchingSet( comment, expected, foundItems );
+        assertMatchingSet(comment, expected, foundItems);
     }
 
-
-    private void assertMatchingSet( String comment, Object[] expected, Vector foundItems ) {
+    private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
         Vector expectedItems = new Vector();
-        for (int i = 0; i < expected.length; i++) expectedItems.addElement( expected[ i ] );
+        for (int i = 0; i < expected.length; i++)
+            expectedItems.addElement(expected[i]);
         for (int i = 0; i < expected.length; i++) {
-            if (!foundItems.contains( expected[ i ] )) {
-                fail( comment + ": expected " + asText( expected ) + " but missing " + expected[ i ] );
+            if (!foundItems.contains(expected[i])) {
+                fail(comment + ": expected " + asText(expected) + " but missing " + expected[i]);
             } else {
-                foundItems.removeElement( expected[ i ] );
+                foundItems.removeElement(expected[i]);
             }
         }
 
-        if (!foundItems.isEmpty()) fail( comment + ": expected " + asText( expected ) + " but found superfluous" + foundItems.firstElement() );
+        if (!foundItems.isEmpty())
+            fail(comment + ": expected " + asText(expected) + " but found superfluous" + foundItems.firstElement());
     }
 
-
-    public static void assertMatchingSet( String comment, Object[] expected, Object[] found ) {
+    public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
         Vector foundItems = new Vector();
-        for (int i = 0; i < found.length; i++) foundItems.addElement( found[ i ] );
+        for (int i = 0; i < found.length; i++)
+            foundItems.addElement(found[i]);
 
         Vector expectedItems = new Vector();
 
-        for (int i = 0; i < expected.length; i++) expectedItems.addElement( expected[ i ] );
+        for (int i = 0; i < expected.length; i++)
+            expectedItems.addElement(expected[i]);
 
         for (int i = 0; i < expected.length; i++) {
-            if (!foundItems.contains( expected[ i ] )) {
-                fail( comment + ": expected " + asText( expected ) + " but found " + asText( found ) );
+            if (!foundItems.contains(expected[i])) {
+                fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                foundItems.removeElement( expected[ i ] );
+                foundItems.removeElement(expected[i]);
             }
         }
 
         for (int i = 0; i < found.length; i++) {
-            if (!expectedItems.contains( found[ i ] )) {
-                fail( comment + ": expected " + asText( expected ) + " but found " + asText( found ) );
+            if (!expectedItems.contains(found[i])) {
+                fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                expectedItems.removeElement( found[ i ] );
+                expectedItems.removeElement(found[i]);
             }
         }
 
-        if (!foundItems.isEmpty()) fail( comment + ": expected " + asText( expected ) + " but found " + asText( found ) );
+        if (!foundItems.isEmpty())
+            fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
     }
 
-
-    public static String asText( Object[] args ) {
-        StringBuilder sb = new StringBuilder( "{" );
+    public static String asText(Object[] args) {
+        StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < args.length; i++) {
-            if (i != 0) sb.append( "," );
-            sb.append( '"' ).append( args[ i ] ).append( '"' );
+            if (i != 0)
+                sb.append(",");
+            sb.append('"').append(args[i]).append('"');
         }
-        sb.append( "}" );
+        sb.append("}");
         return sb.toString();
     }
 
-
-    protected String asBytes( String s ) {
+    protected String asBytes(String s) {
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            sb.append( Integer.toHexString( chars[i] ) ).append( " " );
+            sb.append(Integer.toHexString(chars[i])).append(" ");
         }
         return sb.toString();
     }
 
-
-    private boolean equals( byte[] first, byte[] second ) {
-        if (first.length != second.length) return false;
+    private boolean equals(byte[] first, byte[] second) {
+        if (first.length != second.length)
+            return false;
         for (int i = 0; i < first.length; i++) {
-            if (first[ i ] != second[ i ]) return false;
+            if (first[i] != second[i])
+                return false;
         }
         return true;
     }
 
-
-    private String toString( byte[] message ) {
+    private String toString(byte[] message) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < message.length; i++) {
-            if (i != 0 && (i % 4) == 0) sb.append( ' ' );
-            if (message[ i ] >= 0 && message[ i ] < 16) sb.append( '0' );
-            sb.append( Integer.toHexString( 0xff & (int) message[ i ] ) );
+            if (i != 0 && (i % 4) == 0)
+                sb.append(' ');
+            if (message[i] >= 0 && message[i] < 16)
+                sb.append('0');
+            sb.append(Integer.toHexString(0xff & (int) message[i]));
         }
         return sb.toString();
     }
 
-
     static class QuerySpec {
-        QuerySpec( String urlString ) {
-            if (urlString.indexOf( '?' ) < 0) {
+        QuerySpec(String urlString) {
+            if (urlString.indexOf('?') < 0) {
                 _path = urlString;
             } else {
-                _path = urlString.substring( 0, urlString.indexOf( '?' ) );
+                _path = urlString.substring(0, urlString.indexOf('?'));
             }
             _fullString = urlString;
 
-            StringTokenizer st = new StringTokenizer( urlString.substring( urlString.indexOf( '?' )+ 1 ), "&" );
-            while (st.hasMoreTokens()) _parameters.addElement( st.nextToken() );
+            StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), "&");
+            while (st.hasMoreTokens())
+                _parameters.addElement(st.nextToken());
         }
 
         public String toString() {
             return _fullString;
         }
 
-        public boolean equals( Object o ) {
-            return getClass().equals( o.getClass() ) && equals( (QuerySpec) o );
+        public boolean equals(Object o) {
+            return getClass().equals(o.getClass()) && equals((QuerySpec) o);
         }
-
 
         public int hashCode() {
             return _path.hashCode() ^ _parameters.size();
         }
 
-
         private String _path;
         private String _fullString;
         private Vector _parameters = new Vector();
 
-        private boolean equals( QuerySpec o ) {
-            if (!_path.equals( o._path )) {
+        private boolean equals(QuerySpec o) {
+            if (!_path.equals(o._path)) {
                 return false;
-            } else if (_parameters.size() != o._parameters.size() ) {
+            } else if (_parameters.size() != o._parameters.size()) {
                 return false;
             } else {
                 for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {
-                    if (!_parameters.contains( e.nextElement() )) return false;
+                    if (!_parameters.contains(e.nextElement()))
+                        return false;
                 }
                 return true;
             }
         }
     }
 }
-
-

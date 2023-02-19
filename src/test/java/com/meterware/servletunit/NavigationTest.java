@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebResponse;
@@ -53,7 +53,6 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     @Test
     void testForward() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -68,7 +67,6 @@ class NavigationTest {
         assertEquals("color=green: path=/context/target", response.getText(), "Expected response");
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
-
 
     @Test
     void testInclude() throws Exception {
@@ -85,7 +83,6 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     @Test
     void testForwardViaHttpServletRequest() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -100,7 +97,6 @@ class NavigationTest {
         assertEquals("color=green: path=/context/target", response.getText(), "Expected response");
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
-
 
     @Test
     void testForwardViaRelativePath() throws Exception {
@@ -117,7 +113,6 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     static class OriginServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -127,7 +122,6 @@ class NavigationTest {
 
     }
 
-
     static class FowarderServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -135,7 +129,6 @@ class NavigationTest {
         }
 
     }
-
 
     static class FowarderServlet2 extends HttpServlet {
 
@@ -145,7 +138,6 @@ class NavigationTest {
 
     }
 
-
     static class FowarderServlet3 extends HttpServlet {
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -153,7 +145,6 @@ class NavigationTest {
         }
 
     }
-
 
     static class IncluderServlet extends HttpServlet {
         static final String PREFIX = "expecting: ";
@@ -163,7 +154,6 @@ class NavigationTest {
             getServletContext().getRequestDispatcher("/target?color=blue").include(req, resp);
         }
     }
-
 
     static class TargetServlet extends HttpServlet {
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -176,5 +166,3 @@ class NavigationTest {
 
     }
 }
-
-

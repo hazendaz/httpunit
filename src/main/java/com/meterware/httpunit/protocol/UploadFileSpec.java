@@ -34,48 +34,46 @@ public class UploadFileSpec {
     /**
      * Creates a specification based on a File object. The content type will be guessed from the file extension.
      */
-    public UploadFileSpec( File file ) {
+    public UploadFileSpec(File file) {
         _file = file;
         guessContentType();
     }
 
-
     /**
      * Creates a specification based on a File object and with a specified content type.
      */
-    public UploadFileSpec( File file, String contentType ) {
+    public UploadFileSpec(File file, String contentType) {
         _file = file;
         _contentType = contentType;
     }
 
-
     /**
      * Creates a specification for an upload from an input stream. The file name and content type must be specified.
      */
-    public UploadFileSpec( String fileName, InputStream inputStream, String contentType ) {
+    public UploadFileSpec(String fileName, InputStream inputStream, String contentType) {
         _fileName = fileName;
         _inputStream = inputStream;
         _contentType = contentType;
     }
 
-
     /**
      * get the Inputstream - even if it has been closed previously
+     *
      * @return the inputstream for the current file
+     *
      * @throws IOException
      */
     public InputStream getInputStream() throws IOException {
         if (_inputStream == null) {
-            _inputStream = new FileInputStream( _file );
+            _inputStream = new FileInputStream(_file);
         }
         try {
-        	_inputStream.available();
+            _inputStream.available();
         } catch (IOException ex) {
-        	_inputStream = new FileInputStream( _file );
+            _inputStream = new FileInputStream(_file);
         }
         return _inputStream;
     }
-
 
     public String getFileName() {
         if (_fileName == null) {
@@ -84,14 +82,12 @@ public class UploadFileSpec {
         return _fileName;
     }
 
-
     /**
      * Returns the content type associated with this file upload specification.
      */
     public String getContentType() {
         return _contentType;
     }
-
 
     private File _file;
 
@@ -104,23 +100,15 @@ public class UploadFileSpec {
     /**
      * the default content extensions
      */
-    private static String[][] CONTENT_EXTENSIONS = {
-        { "text/plain",               "txt", "text" },
-        { "text/html",                "htm", "html" },
-        { "image/gif",                "gif" },
-        { "image/jpeg",               "jpg", "jpeg" },
-        { "image/png",                "png" },
-        { "image/tiff",               "tif", "tiff" },
-        { "application/pdf",          "pdf" },
-        { "application/octet-stream", "zip" }
-    };
-
+    private static String[][] CONTENT_EXTENSIONS = { { "text/plain", "txt", "text" }, { "text/html", "htm", "html" },
+            { "image/gif", "gif" }, { "image/jpeg", "jpg", "jpeg" }, { "image/png", "png" },
+            { "image/tiff", "tif", "tiff" }, { "application/pdf", "pdf" }, { "application/octet-stream", "zip" } };
 
     private void guessContentType() {
-        String extension = getExtension( _file.getName() );
+        String extension = getExtension(_file.getName());
         for (int i = 0; i < CONTENT_EXTENSIONS.length; i++) {
-            for (int j=1; j < CONTENT_EXTENSIONS[i].length; j++) {
-                if (extension.equalsIgnoreCase( CONTENT_EXTENSIONS[i][j] )) {
+            for (int j = 1; j < CONTENT_EXTENSIONS[i].length; j++) {
+                if (extension.equalsIgnoreCase(CONTENT_EXTENSIONS[i][j])) {
                     _contentType = CONTENT_EXTENSIONS[i][0];
                     return;
                 }
@@ -128,7 +116,7 @@ public class UploadFileSpec {
         }
     }
 
-    private String getExtension( String fileName ) {
-        return fileName.substring( fileName.lastIndexOf( '.' ) + 1 );
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 }

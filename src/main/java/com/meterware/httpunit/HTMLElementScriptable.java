@@ -23,86 +23,91 @@ import com.meterware.httpunit.scripting.DocumentElement;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class HTMLElementScriptable extends ScriptableDelegate implements DocumentElement {
 
-	  /**
-	   * the element that I am scripting for
-	   */
+    /**
+     * the element that I am scripting for
+     */
     private HTMLElement _element;
 
+    /**
+     * @return the _element
+     */
+    protected HTMLElement get_element() {
+        return _element;
+    }
 
     /**
-		 * @return the _element
-		 */
-		protected HTMLElement get_element() {
-			return _element;
-		}
-
-		/**
      * get the property with the given name
-     * @param propertyName - the name of the property to get
+     *
+     * @param propertyName
+     *            - the name of the property to get
      */
-    public Object get( String propertyName ) {
-        if (propertyName.equals( "nodeName" )) {
+    public Object get(String propertyName) {
+        if (propertyName.equals("nodeName")) {
             return _element.getTagName();
-        } else if (propertyName.equals( "tagName" )) {
+        } else if (propertyName.equals("tagName")) {
             return _element.getTagName();
-        } else if (propertyName.equalsIgnoreCase( "title" )) {
+        } else if (propertyName.equalsIgnoreCase("title")) {
             return _element.getTitle();
-        } else if (_element.isSupportedAttribute( propertyName )) {
-            return _element.getAttribute( propertyName );
+        } else if (_element.isSupportedAttribute(propertyName)) {
+            return _element.getAttribute(propertyName);
         } else {
-            return super.get( propertyName );
+            return super.get(propertyName);
         }
     }
 
     /**
      * get the content of the given attribute
+     *
      * @param attributeName
+     *
      * @return the attribute as a string
      */
     public String getAttribute(String attributeName) {
-    	return _element.getAttribute(attributeName);
+        return _element.getAttribute(attributeName);
     }
 
     /**
      * set the attribute with the given attribute name to the given value
+     *
      * @param attributeName
      * @param value
      */
-    public void setAttribute( String attributeName, Object value ) {
-    	_element.setAttribute( attributeName, value );
+    public void setAttribute(String attributeName, Object value) {
+        _element.setAttribute(attributeName, value);
     }
 
     /**
      * remove the given attribute
+     *
      * @param attributeName
      */
-    public void removeAttribute( String attributeName ) {
-    	_element.removeAttribute( attributeName );
+    public void removeAttribute(String attributeName) {
+        _element.removeAttribute(attributeName);
     }
 
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
-        if (eventName.toLowerCase().equals( "onclick" )) {
-            handleEvent( "onmousedown" );
+        if (eventName.toLowerCase().equals("onclick")) {
+            handleEvent("onmousedown");
         }
-        String eventScript = getAttribute( eventName );
-        boolean result = doEventScript( eventScript );
-        if (eventName.toLowerCase().equals( "onclick" )) {
-            handleEvent( "onmouseup" );
+        String eventScript = getAttribute(eventName);
+        boolean result = doEventScript(eventScript);
+        if (eventName.toLowerCase().equals("onclick")) {
+            handleEvent("onmouseup");
         }
         return result;
     }
 
     /**
      * construct me from a given element
+     *
      * @param element
      */
-    public HTMLElementScriptable( HTMLElement element ) {
+    public HTMLElementScriptable(HTMLElement element) {
         _element = element;
     }
 }

@@ -51,7 +51,6 @@ import org.w3c.dom.NodeList;
 class JUnitServletTest {
     private ServletRunner _runner;
 
-
     @Test
     void testNoTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
@@ -60,7 +59,6 @@ class JUnitServletTest {
         assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
 
-
     @Test
     void testBadTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
@@ -68,7 +66,6 @@ class JUnitServletTest {
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=gobbledygook");
         assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
-
 
     @Test
     void testAllTestsPass() throws Exception {
@@ -83,15 +80,14 @@ class JUnitServletTest {
         assertEquals("OK", results[0][2], "Status");
     }
 
-
     @Test
     void testAllTestsPassTextFormat() throws Exception {
         ServletUnitClient client = newClient();
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + PassingTests.class.getName());
         String expectedStart = PassingTests.class.getName() + " (1 test): OK";
-        assertTrue(wr.getText().startsWith(expectedStart), "Results (" + wr.getText() + ") should start with '" + expectedStart);
+        assertTrue(wr.getText().startsWith(expectedStart),
+                "Results (" + wr.getText() + ") should start with '" + expectedStart);
     }
-
 
     @Test
     void testSomeFailures() throws Exception {
@@ -111,17 +107,17 @@ class JUnitServletTest {
         assertTrue(results[2][1].indexOf('(' + FailingTests.class.getName() + ')') >= 0, "Test class not found");
     }
 
-
     @Test
     void testSomeFailuresTextFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + FailingTests.class.getName());
         String expectedStart = FailingTests.class.getName() + " (3 tests): Problems Occurred";
-        assertTrue(wr.getText().startsWith(expectedStart), "Results (" + wr.getText() + ") should start with: " + expectedStart);
-        assertTrue(wr.getText().indexOf("2 failures") >= 0, "Results (" + wr.getText() + ") should contain: 2 failures");
+        assertTrue(wr.getText().startsWith(expectedStart),
+                "Results (" + wr.getText() + ") should start with: " + expectedStart);
+        assertTrue(wr.getText().indexOf("2 failures") >= 0,
+                "Results (" + wr.getText() + ") should contain: 2 failures");
     }
-
 
     @Test
     void testSomeErrors() throws Exception {
@@ -139,7 +135,6 @@ class JUnitServletTest {
         assertEquals("1", results[2][0], "Failure index 1");
         assertTrue(results[2][1].indexOf('(' + ErrorTests.class.getName() + ')') >= 0, "Test class not found");
     }
-
 
     @Test
     void testSomeFailuresXMLFormat() throws Exception {
@@ -160,7 +155,6 @@ class JUnitServletTest {
         verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "failure", false);
     }
 
-
     @Test
     void testSomeErrorsXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
@@ -179,22 +173,23 @@ class JUnitServletTest {
         verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "error", false);
     }
 
-
     private void verifyElementWithNameHasFailureNode(String name, NodeList nl, String nodeName, boolean failed) {
         for (int i = 0; i < nl.getLength(); i++) {
             Element element = (Element) nl.item(i);
             if (element.getAttribute("name").indexOf(name) >= 0) {
                 if (failed) {
-                    assertEquals(1, element.getElementsByTagName(nodeName).getLength(), "no " + nodeName + " element found for test '" + name + "'");
+                    assertEquals(1, element.getElementsByTagName(nodeName).getLength(),
+                            "no " + nodeName + " element found for test '" + name + "'");
                 } else {
-                    assertEquals(0, element.getElementsByTagName(nodeName).getLength(), "unexpected " + nodeName + " element found for test '" + name + "'");
+                    assertEquals(0, element.getElementsByTagName(nodeName).getLength(),
+                            "unexpected " + nodeName + " element found for test '" + name + "'");
                 }
                 return;
             }
         }
-        if (failed) fail("No test result found for '" + name + "'");
+        if (failed)
+            fail("No test result found for '" + name + "'");
     }
-
 
     @Test
     void testScriptedServletAccess() throws Exception {
@@ -215,7 +210,6 @@ class JUnitServletTest {
         assertEquals("OK", results[0][2], "Status");
     }
 
-
     private ServletUnitClient newClient() {
         _runner = new ServletRunner();
         MyFactory._runner = _runner;
@@ -224,9 +218,7 @@ class JUnitServletTest {
         return client;
     }
 
-
-//===============================================================================================================
-
+    // ===============================================================================================================
 
     static class SimpleGetServlet extends HttpServlet {
         static String RESPONSE_TEXT = "the desired content";
@@ -239,7 +231,6 @@ class JUnitServletTest {
         }
     }
 
-
     static class TestRunnerServlet extends JUnitServlet {
 
         public TestRunnerServlet() {
@@ -247,14 +238,13 @@ class JUnitServletTest {
         }
     }
 
-
     protected static class MyFactory implements InvocationContextFactory {
         private static ServletRunner _runner;
 
-        public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request, Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
+        public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
+                Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
             return new InvocationContextImpl(client, _runner, targetFrame, request, clientHeaders, messageBody);
         }
-
 
         public HttpSession getSession(String sessionId, boolean create) {
             return null;

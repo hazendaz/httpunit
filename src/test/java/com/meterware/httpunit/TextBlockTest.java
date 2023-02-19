@@ -38,24 +38,22 @@ class TextBlockTest extends HttpUnitTest {
     @Test
     void testParagraphDetection() throws Exception {
         defineWebPage("SimplePage",
-                "<p>This has no forms or links since we don't care " +
-                        "about them</p>" +
-                        "<p class='comment'>But it does have three paragraphs</p>\n" +
-                        "<p>Which is what we want to find</p>");
+                "<p>This has no forms or links since we don't care " + "about them</p>"
+                        + "<p class='comment'>But it does have three paragraphs</p>\n"
+                        + "<p>Which is what we want to find</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         assertEquals(3, response.getTextBlocks().length, "Number of paragraphs");
-        assertEquals("This has no forms or links since we don't care about them", response.getTextBlocks()[0].getText(), "First paragraph");
+        assertEquals("This has no forms or links since we don't care about them", response.getTextBlocks()[0].getText(),
+                "First paragraph");
         BlockElement comment = response.getFirstMatchingTextBlock(TextBlock.MATCH_CLASS, "comment");
         assertNotNull(comment, "Did not find a comment paragraph");
         assertEquals("But it does have three paragraphs", comment.getText(), "Comment paragraph");
     }
 
-
     @Test
     void testTextConversion() throws Exception {
-        defineWebPage("SimplePage",
-                "<p>Here is a line<br>followed by another</p>");
+        defineWebPage("SimplePage", "<p>Here is a line<br>followed by another</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         BufferedReader br = new BufferedReader(new StringReader(response.getTextBlocks()[0].getText()));
@@ -64,14 +62,10 @@ class TextBlockTest extends HttpUnitTest {
         br.readLine();
     }
 
-
     @Test
     void testHeaderDetection() throws Exception {
         defineWebPage("SimplePage",
-                "<h1>Here is a section</h1>\n" +
-                        "with some text" +
-                        "<h2>A subsection</h2>" +
-                        "<p>Some more text</p>");
+                "<h1>Here is a section</h1>\n" + "with some text" + "<h2>A subsection</h2>" + "<p>Some more text</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         TextBlock header1 = response.getFirstMatchingTextBlock(TextBlock.MATCH_TAG, "H1");
@@ -83,20 +77,21 @@ class TextBlockTest extends HttpUnitTest {
         assertEquals("with some text", response.getNextTextBlock(header1).getText(), "Text under header 1");
     }
 
-
     @Test
     void testEmbeddedLinks() throws Exception {
-        defineWebPage("SimplePage",
-                "<h1>Here is a section</h1>\n" +
-                        "<p>with a <a id='httpunit' href='http://httpunit.org'>link to the home page</a></p>");
+        defineWebPage("SimplePage", "<h1>Here is a section</h1>\n"
+                + "<p>with a <a id='httpunit' href='http://httpunit.org'>link to the home page</a></p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         BlockElement paragraph = response.getTextBlocks()[1];
         assertNotNull(paragraph.getLinks(), "Did not retrieve any links");
         assertNotNull(paragraph.getLinkWithID("httpunit"), "Did not find the httpunit link");
-        assertNull(response.getTextBlocks()[0].getLinkWithID("httpunit"), "Should not have found the httpunit link in the header");
-        assertNotNull(paragraph.getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, "home page"), "Did not find the home page link");
-        assertEquals("http://httpunit.org", paragraph.getLinkWithID("httpunit").getRequest().getURL().toExternalForm(), "embedded link url");
+        assertNull(response.getTextBlocks()[0].getLinkWithID("httpunit"),
+                "Should not have found the httpunit link in the header");
+        assertNotNull(paragraph.getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, "home page"),
+                "Did not find the home page link");
+        assertEquals("http://httpunit.org", paragraph.getLinkWithID("httpunit").getRequest().getURL().toExternalForm(),
+                "embedded link url");
     }
 
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
@@ -104,9 +99,8 @@ class TextBlockTest extends HttpUnitTest {
     @Test
     void testEmbeddedLists() throws Exception {
         defineWebPage("SimplePage",
-                "<h1>Here is a section</h1>\n" +
-                        "<p id='ordered'><ol><li>One<li>Two<li>Three</ol></p>" +
-                        "<p id='unordered'><ul><li>Red<li>Green<li>Blue</ul></p>");
+                "<h1>Here is a section</h1>\n" + "<p id='ordered'><ol><li>One<li>Two<li>Three</ol></p>"
+                        + "<p id='unordered'><ul><li>Red<li>Green<li>Blue</ul></p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
         TextBlock paragraph1 = (TextBlock) response.getElementWithID("ordered");
@@ -135,7 +129,8 @@ class TextBlockTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/FormattedPage.html");
         TextBlock paragraph = response.getTextBlocks()[0];
-        assertMatchingSet("Attributes for word 'bold'", new String[]{"b"}, paragraph.getFormats(expectedText.indexOf("bold")));
+        assertMatchingSet("Attributes for word 'bold'", new String[] { "b" },
+                paragraph.getFormats(expectedText.indexOf("bold")));
     }
 
 }

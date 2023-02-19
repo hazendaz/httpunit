@@ -22,32 +22,29 @@ package com.meterware.httpunit;
 import java.io.InputStream;
 
 /**
- * A web request using the PUT protocol.
- *
- * The objectives of this class are to suport an HTTP PUT petition
- * so we can test this HTTP requests.
- *
- * <B>Documentation</B> See the HTTP 1.1 [<a href="http://www.w3.org/Protocols/HTTP/">spec</a>]
+ * A web request using the PUT protocol. The objectives of this class are to suport an HTTP PUT petition so we can test
+ * this HTTP requests. <B>Documentation</B> See the HTTP 1.1 [<a href="http://www.w3.org/Protocols/HTTP/">spec</a>]
  *
  * @author Tom Watkins
  * @author Deepa Dihr
  * @author Marcos Tarruella
  * @author Russell Gold
- *
  **/
 public class PutMethodWebRequest extends MessageBodyWebRequest {
 
-
     /**
      * Constructs a web request using a specific absolute url string and input stream.
-     * @param url         the URL to which the request should be issued
-     * @param source      an input stream which will provide the body of this request
-     * @param contentType the MIME content type of the body, including any character set
+     *
+     * @param url
+     *            the URL to which the request should be issued
+     * @param source
+     *            an input stream which will provide the body of this request
+     * @param contentType
+     *            the MIME content type of the body, including any character set
      **/
-    public PutMethodWebRequest( String url, InputStream source, String contentType ) {
-        super( url, new InputStreamMessageBody( source, contentType ) );
+    public PutMethodWebRequest(String url, InputStream source, String contentType) {
+        super(url, new InputStreamMessageBody(source, contentType));
     }
-
 
     /**
      * Returns 'PUT' to indicate the method.

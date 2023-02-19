@@ -23,27 +23,23 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Node;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class CDATASectionImpl extends TextImpl implements CDATASection {
 
-    public static CDATASection createCDATASection( DocumentImpl ownerDocument, String data ) {
+    public static CDATASection createCDATASection(DocumentImpl ownerDocument, String data) {
         CDATASectionImpl cdataSection = new CDATASectionImpl();
-        cdataSection.initialize( ownerDocument, data );
+        cdataSection.initialize(ownerDocument, data);
         return cdataSection;
     }
 
-
-    public static Node importNode( DocumentImpl document, CDATASection cdataSection ) {
-        return document.createCDATASection( cdataSection.getData() );
+    public static Node importNode(DocumentImpl document, CDATASection cdataSection) {
+        return document.createCDATASection(cdataSection.getData());
     }
-
 
     public String getNodeName() {
         return "#cdata-section";
     }
-
 
     public short getNodeType() {
         return CDATA_SECTION_NODE;

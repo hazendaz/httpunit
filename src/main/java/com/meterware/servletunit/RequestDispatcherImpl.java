@@ -29,32 +29,29 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class RequestDispatcherImpl extends RequestContext implements RequestDispatcher {
 
     private ServletMetaData _servletMetaData;
 
-
-    RequestDispatcherImpl( WebApplication application, URL url ) throws ServletException {
-        super( url );
-        _servletMetaData = application.getServletRequest( url );
+    RequestDispatcherImpl(WebApplication application, URL url) throws ServletException {
+        super(url);
+        _servletMetaData = application.getServletRequest(url);
     }
-
 
     public ServletMetaData getServletMetaData() {
         return _servletMetaData;
     }
 
-
-    public void forward( ServletRequest request, ServletResponse response ) throws ServletException, IOException {
+    public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
         response.reset();
-        _servletMetaData.getServlet().service( DispatchedRequestWrapper.createForwardRequestWrapper( (HttpServletRequest) request, this ), response );
+        _servletMetaData.getServlet().service(
+                DispatchedRequestWrapper.createForwardRequestWrapper((HttpServletRequest) request, this), response);
     }
 
-
-    public void include( ServletRequest request, ServletResponse response ) throws ServletException, IOException {
-        _servletMetaData.getServlet().service( DispatchedRequestWrapper.createIncludeRequestWrapper( (HttpServletRequest) request, this ), response );
+    public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+        _servletMetaData.getServlet().service(
+                DispatchedRequestWrapper.createIncludeRequestWrapper((HttpServletRequest) request, this), response);
     }
 }

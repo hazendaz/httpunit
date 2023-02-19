@@ -23,6 +23,7 @@ import java.util.Hashtable;
 
 /**
  * Describes a servlet used to handle JSPs.
+ *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface JSPServletDescriptor {
@@ -32,10 +33,9 @@ public interface JSPServletDescriptor {
      */
     String getClassName();
 
-
     /**
      * Returns initialization parameters for the JSP servlet, given the specified classpath and working directory.
      */
-    Hashtable getInitializationParameters( String classPath, String workingDirectory );
+    Hashtable getInitializationParameters(String classPath, String workingDirectory);
 
 }

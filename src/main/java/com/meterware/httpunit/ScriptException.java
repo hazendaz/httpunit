@@ -46,7 +46,7 @@ package com.meterware.httpunit;
  **/
 public class ScriptException extends RuntimeException {
 
-    public ScriptException( String s ) {
-        super( s );
+    public ScriptException(String s) {
+        super(s);
     }
 }

@@ -24,28 +24,29 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an internal error is found on the server.
+ *
  * @author Seth Ladd
  * @author Russell Gold
  **/
 public class HttpInternalErrorException extends HttpException {
 
-
-	  /**
-	   * construct an internal http error form an url
-	   * @param url
-	   */
-    public HttpInternalErrorException( URL url ) {
-        super( HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal Error", url );
+    /**
+     * construct an internal http error form an url
+     *
+     * @param url
+     */
+    public HttpInternalErrorException(URL url) {
+        super(HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal Error", url);
     }
-
 
     /**
      * construct an internal HTTP Error from a URL and a throwable
+     *
      * @param url
      * @param t
      */
-    public HttpInternalErrorException( URL url, Throwable t ) {
-        super( HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString(), url,t  );
+    public HttpInternalErrorException(URL url, Throwable t) {
+        super(HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString(), url, t);
     }
 
 }

@@ -33,29 +33,25 @@ import java.util.StringTokenizer;
  */
 public class HttpRequest extends ReceivedHttpMessage {
 
-    private String         _protocol;
-    private String         _command;
-    private String         _uri;
-    private Hashtable      _parameters;
+    private String _protocol;
+    private String _command;
+    private String _uri;
+    private Hashtable _parameters;
 
-
-    HttpRequest( InputStream inputStream ) throws IOException {
-        super( inputStream );
+    HttpRequest(InputStream inputStream) throws IOException {
+        super(inputStream);
     }
 
-
-    void interpretMessageHeader( String messageHeader ) {
-        StringTokenizer st = new StringTokenizer( messageHeader );
-        _command  = st.nextToken();
-        _uri      = st.nextToken();
+    void interpretMessageHeader(String messageHeader) {
+        StringTokenizer st = new StringTokenizer(messageHeader);
+        _command = st.nextToken();
+        _uri = st.nextToken();
         _protocol = st.nextToken();
     }
 
-
-    void appendMessageHeader( StringBuffer sb ) {
-        sb.append( _command ).append( ' ' ).append( _uri ).append( ' ' ).append( _protocol );
+    void appendMessageHeader(StringBuffer sb) {
+        sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);
     }
-
 
     /**
      * Returns the command associated with this request.
@@ -64,14 +60,12 @@ public class HttpRequest extends ReceivedHttpMessage {
         return _command;
     }
 
-
     /**
      * Returns the URI specified in the message header for this request.
      */
     public String getURI() {
         return _uri;
     }
-
 
     /**
      * Returns the protocol string specified in the message header for this request.
@@ -80,68 +74,61 @@ public class HttpRequest extends ReceivedHttpMessage {
         return _protocol;
     }
 
-
     /**
-     * Returns the parameter with the specified name. If no such parameter exists, will
-     * return null.
+     * Returns the parameter with the specified name. If no such parameter exists, will return null.
      **/
-    public String[] getParameter( String name ) {
+    public String[] getParameter(String name) {
         if (_parameters == null) {
-            if (_command.equalsIgnoreCase( "GET" ) || _command.equalsIgnoreCase( "HEAD" )) {
-                _parameters = readParameters( getParameterString( _uri ) );
+            if (_command.equalsIgnoreCase("GET") || _command.equalsIgnoreCase("HEAD")) {
+                _parameters = readParameters(getParameterString(_uri));
             } else {
-                _parameters = readParameters( new String( getBody() ) );
+                _parameters = readParameters(new String(getBody()));
             }
         }
-        return (String[]) _parameters.get( name );
+        return (String[]) _parameters.get(name);
     }
 
-
-    private String getParameterString( String uri ) {
-        return uri.indexOf( '?' ) < 0 ? "" : uri.substring( uri.indexOf( '?' )+1 );
+    private String getParameterString(String uri) {
+        return uri.indexOf('?') < 0 ? "" : uri.substring(uri.indexOf('?') + 1);
     }
-
 
     boolean wantsKeepAlive() {
-        if ("Keep-alive".equalsIgnoreCase( getConnectionHeader() )) {
+        if ("Keep-alive".equalsIgnoreCase(getConnectionHeader())) {
             return true;
-        } else if (_protocol.equals( "HTTP/1.1" )) {
-            return !"Close".equalsIgnoreCase( getConnectionHeader() );
+        } else if (_protocol.equals("HTTP/1.1")) {
+            return !"Close".equalsIgnoreCase(getConnectionHeader());
         } else {
             return false;
         }
     }
 
-
-    private Hashtable readParameters( String content ) {
+    private Hashtable readParameters(String content) {
         Hashtable parameters = new Hashtable();
-	    if (content == null || content.trim().length() == 0) return parameters;
+        if (content == null || content.trim().length() == 0)
+            return parameters;
 
-        for (String spec : content.split( "&" )) {
-	        String[] split = spec.split( "=" );
-	        addParameter( parameters, HttpUnitUtils.decode( split[0] ), split.length < 2 ? null : HttpUnitUtils.decode( split[1] ));
+        for (String spec : content.split("&")) {
+            String[] split = spec.split("=");
+            addParameter(parameters, HttpUnitUtils.decode(split[0]),
+                    split.length < 2 ? null : HttpUnitUtils.decode(split[1]));
         }
         return parameters;
     }
 
-
-    private void addParameter( Hashtable parameters, String name, String value ) {
-        String[] oldValues = (String[]) parameters.get( name );
+    private void addParameter(Hashtable parameters, String name, String value) {
+        String[] oldValues = (String[]) parameters.get(name);
         if (oldValues == null) {
-            parameters.put( name, new String[] { value } );
+            parameters.put(name, new String[] { value });
         } else {
-            String[] values = new String[ oldValues.length+1 ];
-            System.arraycopy( oldValues, 0, values, 0, oldValues.length );
-            values[ oldValues.length ] = value;
-            parameters.put( name, values );
+            String[] values = new String[oldValues.length + 1];
+            System.arraycopy(oldValues, 0, values, 0, oldValues.length);
+            values[oldValues.length] = value;
+            parameters.put(name, values);
         }
     }
 
-
     private String getConnectionHeader() {
-        return getHeader( "Connection" );
+        return getHeader("Connection");
     }
 
-
 }
-

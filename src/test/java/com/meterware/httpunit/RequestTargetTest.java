@@ -37,7 +37,6 @@ class RequestTargetTest extends HttpUnitTest {
         _wc = new WebConversation();
     }
 
-
     @Test
     void testDefaultLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\">simple link</a>.");
@@ -51,7 +50,6 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals(WebRequest.TOP_FRAME, link.getTarget(), "default link target");
     }
 
-
     @Test
     void testExplicitLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"subframe\">simple link</a>.");
@@ -61,15 +59,10 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", link.getRequest().getTarget(), "request target");
     }
 
-
     @Test
     void testInheritedLinkTarget() throws Exception {
-        defineResource("Start.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET cols=\"50%,50%\">" +
-                        "    <FRAME src=\"Initial.html\" name=\"red\">" +
-                        "    <FRAME name=\"blue\">" +
-                        "</FRAMESET></HTML>");
+        defineResource("Start.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
+                + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"blue\">" + "</FRAMESET></HTML>");
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"blue\">simple link</a>.");
         defineWebPage("SimpleLink", "Here is <a href=\"Initial.html\">another simple link</a>.");
 
@@ -84,17 +77,15 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("blue", link.getTarget(), "inherited link target");
     }
 
-
     @Test
     void testInheritedLinkTargetInTable() throws Exception {
         defineResource("Start.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET cols=\"50%,50%\">" +
-                        "    <FRAME src=\"Initial.html\" name=\"red\">" +
-                        "    <FRAME name=\"subframe\">" +
-                        "</FRAMESET></HTML>");
+                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
+                        + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"subframe\">"
+                        + "</FRAMESET></HTML>");
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"subframe\">simple link</a>.");
-        defineWebPage("SimpleLink", "Here is <table><tr><td><a href=\"Initial.html\">another simple link</a>.</td></tr></table>");
+        defineWebPage("SimpleLink",
+                "Here is <table><tr><td><a href=\"Initial.html\">another simple link</a>.</td></tr></table>");
 
         WebLink link = _wc.getResponse(getHostPath() + "/Start.html").getSubframeContents("red").getLinks()[0];
         assertEquals("subframe", link.getTarget(), "explicit link target");
@@ -108,14 +99,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", link.getTarget(), "inherited link target");
     }
 
-
     @Test
     void testDefaultFormTarget() throws Exception {
-        defineWebPage("Initial", "Here is a simple form: " +
-                "<form method=POST action = \"/servlet/Login\"><B>" +
-                "<input type=\"checkbox\" name=first>Disabled" +
-                "<br><Input type=submit value = \"Log in\">" +
-                "</form>");
+        defineWebPage("Initial",
+                "Here is a simple form: " + "<form method=POST action = \"/servlet/Login\"><B>"
+                        + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
+                        + "</form>");
 
         WebResponse response = _wc.getResponse(getHostPath() + "/Initial.html");
         assertEquals(1, response.getForms().length, "Num forms in page");
@@ -123,49 +112,41 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals(WebRequest.TOP_FRAME, form.getTarget(), "default form target");
     }
 
-
     @Test
     void testExplicitPostFormTarget() throws Exception {
-        defineWebPage("Initial", "Here is a simple form: " +
-                "<form method=POST action = \"/servlet/Login\" target=\"subframe\"><B>" +
-                "<input type=\"checkbox\" name=first>Disabled" +
-                "<br><Input type=submit value = \"Log in\">" +
-                "</form>");
+        defineWebPage("Initial",
+                "Here is a simple form: " + "<form method=POST action = \"/servlet/Login\" target=\"subframe\"><B>"
+                        + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
+                        + "</form>");
 
         WebForm form = _wc.getResponse(getHostPath() + "/Initial.html").getForms()[0];
         assertEquals("subframe", form.getTarget(), "explicit form target");
         assertEquals("subframe", form.getRequest().getTarget(), "request target");
     }
-
 
     @Test
     void testExplicitGetFormTarget() throws Exception {
-        defineWebPage("Initial", "Here is a simple form: " +
-                "<form method=GET action = \"/servlet/Login\" target=\"subframe\"><B>" +
-                "<input type=\"checkbox\" name=first>Disabled" +
-                "<br><Input type=submit value = \"Log in\">" +
-                "</form>");
+        defineWebPage("Initial",
+                "Here is a simple form: " + "<form method=GET action = \"/servlet/Login\" target=\"subframe\"><B>"
+                        + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
+                        + "</form>");
 
         WebForm form = _wc.getResponse(getHostPath() + "/Initial.html").getForms()[0];
         assertEquals("subframe", form.getTarget(), "explicit form target");
         assertEquals("subframe", form.getRequest().getTarget(), "request target");
     }
-
 
     @Test
     void testInheritedFormTarget() throws Exception {
         defineResource("Start.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET cols=\"50%,50%\">" +
-                        "    <FRAME src=\"Initial.html\" name=\"red\">" +
-                        "    <FRAME name=\"subframe\">" +
-                        "</FRAMESET></HTML>");
+                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
+                        + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"subframe\">"
+                        + "</FRAMESET></HTML>");
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"subframe\">simple link</a>.");
-        defineWebPage("SimpleLink", "Here is a simple form: " +
-                "<form method=GET action = \"/servlet/Login\" target=\"subframe\"><B>" +
-                "<input type=\"checkbox\" name=first>Disabled" +
-                "<br><Input type=submit value = \"Log in\">" +
-                "</form>");
+        defineWebPage("SimpleLink",
+                "Here is a simple form: " + "<form method=GET action = \"/servlet/Login\" target=\"subframe\"><B>"
+                        + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
+                        + "</form>");
 
         WebLink link = _wc.getResponse(getHostPath() + "/Start.html").getSubframeContents("red").getLinks()[0];
         assertEquals("subframe", link.getTarget(), "explicit link target");
@@ -176,7 +157,6 @@ class RequestTargetTest extends HttpUnitTest {
         WebForm form = response.getForms()[0];
         assertEquals("subframe", form.getTarget(), "inherited form target");
     }
-
 
     private WebConversation _wc;
 }

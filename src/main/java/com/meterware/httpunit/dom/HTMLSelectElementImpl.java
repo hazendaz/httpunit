@@ -30,7 +30,6 @@ import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElement {
@@ -38,36 +37,30 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
     public static final String TYPE_SELECT_ONE = "select-one";
     public static final String TYPE_SELECT_MULTIPLE = "select-multiple";
 
-
     ElementImpl create() {
         return new HTMLSelectElementImpl();
     }
 
-
-    public void add( HTMLElement element, HTMLElement before ) throws DOMException {
+    public void add(HTMLElement element, HTMLElement before) throws DOMException {
     }
-
-
 
     /**
      * simulate blur
      */
     public void blur() {
-    	handleEvent("onblur");
+        handleEvent("onblur");
     }
-
 
     /**
      * simulate focus;
      */
     public void focus() {
-    	handleEvent("onfocus");
+        handleEvent("onfocus");
     }
 
     public String getType() {
         return isMultiSelect() ? TYPE_SELECT_MULTIPLE : TYPE_SELECT_ONE;
     }
-
 
     private boolean isMultiSelect() {
         return (getMultiple() && getSize() > 1);
@@ -77,91 +70,81 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
         return getOptions().getLength();
     }
 
-
     public boolean getMultiple() {
-        return getBooleanAttribute( "multiple" );
+        return getBooleanAttribute("multiple");
     }
-
 
     public HTMLCollection getOptions() {
-        return HTMLCollectionImpl.createHTMLCollectionImpl( getElementsByTagName( getHtmlDocument().toNodeCase( "option" ) ) );
+        return HTMLCollectionImpl
+                .createHTMLCollectionImpl(getElementsByTagName(getHtmlDocument().toNodeCase("option")));
     }
-
 
     public int getSelectedIndex() {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            if (((HTMLOptionElement)options.item(i)).getSelected()) return i;
+            if (((HTMLOptionElement) options.item(i)).getSelected())
+                return i;
         }
         return isMultiSelect() ? -1 : 0;
     }
 
-
     public String getValue() {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            HTMLOptionElement optionElement = ((HTMLOptionElement)options.item(i));
-            if (optionElement.getSelected()) return optionElement.getValue();
+            HTMLOptionElement optionElement = ((HTMLOptionElement) options.item(i));
+            if (optionElement.getSelected())
+                return optionElement.getValue();
         }
-        return (isMultiSelect() || options.getLength() == 0) ? null : ((HTMLOptionElement)options.item(0)).getValue();
+        return (isMultiSelect() || options.getLength() == 0) ? null : ((HTMLOptionElement) options.item(0)).getValue();
     }
-
 
     public int getSize() {
-        return getIntegerAttribute( "size" );
+        return getIntegerAttribute("size");
     }
 
-
-    public void remove( int index ) {
+    public void remove(int index) {
     }
 
-
-    public void setMultiple( boolean multiple ) {
-        setAttribute( "multiple", multiple );
+    public void setMultiple(boolean multiple) {
+        setAttribute("multiple", multiple);
     }
 
-
-    public void setSelectedIndex( int selectedIndex ) {
+    public void setSelectedIndex(int selectedIndex) {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
             HTMLOptionElementImpl optionElement = (HTMLOptionElementImpl) options.item(i);
-            optionElement.setSelected( i == selectedIndex );
+            optionElement.setSelected(i == selectedIndex);
         }
     }
 
-
-    public void setSize( int size ) {
-        setAttribute( "size", size );
+    public void setSize(int size) {
+        setAttribute("size", size);
     }
 
-
-    int getIndexOf( HTMLOptionElementImpl option ) {
+    int getIndexOf(HTMLOptionElementImpl option) {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            if (options.item(i) == option) return i;
+            if (options.item(i) == option)
+                return i;
         }
-        throw new IllegalStateException( "option is not part of this select" );
+        throw new IllegalStateException("option is not part of this select");
     }
-
 
     void clearSelected() {
-        setSelectedIndex( -1 );
+        setSelectedIndex(-1);
     }
 
-
-    void addValues( ParameterProcessor processor, String characterSet ) throws IOException {
+    void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         HTMLCollection options = getOptions();
         String name = getName();
-        for (int i = 0; i < options.getLength();i++) {
-            ((HTMLOptionElementImpl) options.item( i )).addValueIfSelected( processor, name, characterSet );
+        for (int i = 0; i < options.getLength(); i++) {
+            ((HTMLOptionElementImpl) options.item(i)).addValueIfSelected(processor, name, characterSet);
         }
     }
 
-
-    public void setValue( String value ) {
-        setAttribute( "value", value );
+    public void setValue(String value) {
+        setAttribute("value", value);
     }
-
 
     public void reset() {
         HTMLCollection options = getOptions();

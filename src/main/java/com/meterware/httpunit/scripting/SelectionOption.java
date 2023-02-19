@@ -39,37 +39,27 @@ package com.meterware.httpunit.scripting;
  *
  *******************************************************************************************************************/
 
-
 /**
- *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface SelectionOption {
 
     String getText();
 
-
-    void setText( String text );
-
+    void setText(String text);
 
     String getValue();
 
-
-    void setValue( String value );
-
+    void setValue(String value);
 
     boolean isDefaultSelected();
 
-
     boolean isSelected();
 
-
-    void setSelected( boolean selected );
-
+    void setSelected(boolean selected);
 
     int getIndex();
 
-
-    void initialize( String text, String value, boolean defaultSelected, boolean selected );
+    void initialize(String text, String value, boolean defaultSelected, boolean selected);
 
 }

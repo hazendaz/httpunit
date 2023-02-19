@@ -32,15 +32,14 @@ public class ResetButton extends Button {
         return RESET_BUTTON_TYPE;
     }
 
-    ResetButton( WebForm form, HTMLControl control ) {
-        super( form, control );
+    ResetButton(WebForm form, HTMLControl control) {
+        super(form, control);
     }
-
 
     /**
      * overridden button action
      */
-    protected void doButtonAction(int x,int y) {
+    protected void doButtonAction(int x, int y) {
         getForm().reset();
     }
 }

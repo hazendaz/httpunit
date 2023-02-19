@@ -49,18 +49,20 @@ public class ParserPropertiesTest extends HttpUnitTest {
         HTMLParserFactory.reset();
     }
 
-
     /**
      * verify the upper/lower case handling
      *
      * @param wc
      * @param request
      * @param boldNodeContents
-     * @param tagName          - the tagName to look for
+     * @param tagName
+     *            - the tagName to look for
+     *
      * @throws IOException
      * @throws SAXException
      */
-    private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents, String tagName) throws IOException, SAXException {
+    private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents,
+            String tagName) throws IOException, SAXException {
         WebResponse simplePage = wc.getResponse(request);
         Document doc = simplePage.getDOM();
         NodeList nlist = doc.getElementsByTagName(tagName);
@@ -76,10 +78,12 @@ public class ParserPropertiesTest extends HttpUnitTest {
      * @param wc
      * @param request
      * @param boldNodeContents
+     *
      * @throws IOException
      * @throws SAXException
      */
-    private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents) throws IOException, SAXException {
+    private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents)
+            throws IOException, SAXException {
         verifyMatchingBoldNodes(wc, request, boldNodeContents, "b");
     }
 
@@ -96,11 +100,9 @@ public class ParserPropertiesTest extends HttpUnitTest {
      */
     public void prepareTestCase() throws Exception {
         defineResource("SimplePage.html",
-                "<HTML><head><title>A Sample Page</title></head>\n" +
-                        "<body>This has no forms but it does\n" +
-                        "have <a href=\"/other.html\">an <b>active</b> link</A>\n" +
-                        " and <a name=here>an <B>anchor</B></a>\n" +
-                        "</body></HTML>\n");
+                "<HTML><head><title>A Sample Page</title></head>\n" + "<body>This has no forms but it does\n"
+                        + "have <a href=\"/other.html\">an <b>active</b> link</A>\n"
+                        + " and <a name=here>an <B>anchor</B></a>\n" + "</body></HTML>\n");
         wc = new WebConversation();
         request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
     }
@@ -109,6 +111,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      * test the preserveTagCase configuration feature ofh the HTMLParserFactory
      *
      * @param preserveTagCase
+     *
      * @throws Exception
      */
     public void doTestKeepCase(boolean preserveTagCase, String[] expected1, String[] expected2) throws Exception {
@@ -126,23 +129,21 @@ public class ParserPropertiesTest extends HttpUnitTest {
     @Test
     @Disabled
     void testKeepCase() throws Exception {
-        doTestKeepCase(true, new String[]{"active", "anchor"}, new String[]{"active"});
+        doTestKeepCase(true, new String[] { "active", "anchor" }, new String[] { "active" });
     }
 
     /**
-     * test for patch [ 1211154 ] NekoDOMParser default to lowercase
-     * by Dan Allen
+     * test for patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen
      *
      * @throws Exception
      */
     @Test
     void testLowerCase() throws Exception {
-        doTestKeepCase(false, new String[]{"active", "anchor"}, new String[]{"active", "anchor"});
+        doTestKeepCase(false, new String[] { "active", "anchor" }, new String[] { "active", "anchor" });
     }
 
     /**
-     * test for patch [ 1176688 ] Allow configuration of neko parser properties
-     * by james abley
+     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley
      *
      * @throws Exception
      */
@@ -151,24 +152,23 @@ public class ParserPropertiesTest extends HttpUnitTest {
     void testForceUpperCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceUpperCase());
-        verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "B");
+        verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "B");
         HTMLParserFactory.setForceUpperCase(true);
-        verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "B");
+        verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "B");
         verifyMatchingBoldNodes(wc, request, new String[0], "b");
     }
 
     /**
-     * test for patch [ 1176688 ] Allow configuration of neko parser properties
-     * by james abley
+     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley
      */
     @Test
     @Disabled
     void testForceLowerCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceLowerCase());
-        verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "b");
+        verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "b");
         HTMLParserFactory.setForceLowerCase(true);
-        verifyMatchingBoldNodes(wc, request, new String[]{"active", "anchor"}, "b");
+        verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "b");
         verifyMatchingBoldNodes(wc, request, new String[0], "B");
     }
 

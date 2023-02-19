@@ -35,10 +35,11 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class WebWindowTest extends HttpUnitTest {
 
     /**
-     * Verifies that clicking on a link that specifies the _blank target creates a new window, populated with
-     * the contents of the referenced page.
+     * Verifies that clicking on a link that specifies the _blank target creates a new window, populated with the
+     * contents of the referenced page.
      *
-     * @throws Exception on any unexpected problem.
+     * @throws Exception
+     *             on any unexpected problem.
      */
     @Test
     void testNewTarget() throws Exception {
@@ -63,13 +64,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals(other, wc.getMainWindow(), "Main window");
     }
 
-
     @Test
     void testUnknownTarget() throws Exception {
         defineResource("goThere", "You came back!");
         defineResource("goHere", "You made it!");
-        defineWebPage("start", "<a href='goHere' id='go' target='somewhere'>here</a>" +
-                "<a href='goThere' id='return' target='somewhere'>there</a>");
+        defineWebPage("start", "<a href='goHere' id='go' target='somewhere'>here</a>"
+                + "<a href='goThere' id='return' target='somewhere'>there</a>");
 
         WebClient wc = new WebConversation();
         WebResponse initialPage = wc.getResponse(getHostPath() + "/start.html");
@@ -82,15 +82,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You came back!", other.getCurrentPage().getText(), "Updated window contents");
     }
 
-
     @Test
     void testTargetInAnotherWindow() throws Exception {
         defineWebPage("linker", "<a href='start.html' target='_blank'>start</a>");
-        defineResource("Frames.html", "<html>" +
-                "<frameset cols=\"20%,80%\">" +
-                "    <frame src=\"linker.html\" name=\"here\">" +
-                "    <frame name=\"somewhere\">" +
-                "</frameset></html>");
+        defineResource("Frames.html",
+                "<html>" + "<frameset cols=\"20%,80%\">" + "    <frame src=\"linker.html\" name=\"here\">"
+                        + "    <frame name=\"somewhere\">" + "</frameset></html>");
         defineResource("goHere", "You made it!");
         defineWebPage("start", "<a href='goHere' id='go' target='somewhere'>here</a>");
 
@@ -103,7 +100,6 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You made it!", initialPage.getSubframeContents("somewhere").getText(), "New frame contents");
     }
 
-
     @Test
     void testCloseOnlyWindow() throws Exception {
         defineResource("goHere", "You made it!");
@@ -113,7 +109,6 @@ class WebWindowTest extends HttpUnitTest {
         assertTrue(original.isClosed(), "Main window did not close");
         assertNotNull(wc.getMainWindow(), "No main window was created");
     }
-
 
     @Test
     void testListeners() throws Exception {
@@ -150,7 +145,6 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals(other, closedWindows.get(0), "Window reported closed");
     }
 
-
     @Test
     void testWindowIndependence() throws Exception {
         defineResource("next", "You made it!", "text/plain");
@@ -167,7 +161,6 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You made it!", other.getCurrentPage().getText(), "New window contents");
     }
 
-
     @Test
     void testWindowContext() throws Exception {
         defineResource("next", "You made it!");
@@ -182,6 +175,5 @@ class WebWindowTest extends HttpUnitTest {
         other.getCurrentPage().getLinkWithID("proceed").click();
         assertEquals("You made it!", other.getCurrentPage().getText(), "New window contents");
     }
-
 
 }

@@ -51,191 +51,205 @@ public class ServletRunner {
      */
     public ServletRunner() {
         _application = new WebApplication();
-        completeInitialization( null );
+        completeInitialization(null);
     }
 
     /**
-     * Constructor which expects the full path to the web.xml for the
-     * application.
+     * Constructor which expects the full path to the web.xml for the application.
+     *
      * @deprecated as of 1.6, use {@link #ServletRunner(File)}
      *
-     * @param webXMLFileSpec the full path to the web.xml file
+     * @param webXMLFileSpec
+     *            the full path to the web.xml file
      */
-    public ServletRunner( String webXMLFileSpec ) throws IOException, SAXException {
-        _application = new WebApplication( HttpUnitUtils.newParser().parse( webXMLFileSpec ) );
-        completeInitialization( null );
+    public ServletRunner(String webXMLFileSpec) throws IOException, SAXException {
+        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXMLFileSpec));
+        completeInitialization(null);
     }
 
-
     /**
-     * Constructor which expects the full path to the web.xml for the
-     * application and a context path under which to mount it.
+     * Constructor which expects the full path to the web.xml for the application and a context path under which to
+     * mount it.
+     *
      * @deprecated as of 1.6, use {@link #ServletRunner(File,String)}
      *
-     * @param webXMLFileSpec the full path to the web.xml file
-     * @param contextPath the context path
+     * @param webXMLFileSpec
+     *            the full path to the web.xml file
+     * @param contextPath
+     *            the context path
      */
-    public ServletRunner( String webXMLFileSpec, String contextPath ) throws IOException, SAXException {
-        this( new File( webXMLFileSpec ), contextPath );
+    public ServletRunner(String webXMLFileSpec, String contextPath) throws IOException, SAXException {
+        this(new File(webXMLFileSpec), contextPath);
     }
 
-
     /**
-     * Constructor which expects a File object representing the web.xml for the
-     * application.
+     * Constructor which expects a File object representing the web.xml for the application.
      *
-     * @param webXml the web.xml file
+     * @param webXml
+     *            the web.xml file
+     *
      * @since 1.6
      */
-    public ServletRunner( File webXml ) throws IOException, SAXException {
-        _application = new WebApplication( HttpUnitUtils.newParser().parse( webXml ) );
-        completeInitialization( null );
+    public ServletRunner(File webXml) throws IOException, SAXException {
+        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml));
+        completeInitialization(null);
     }
 
-
     /**
-     * Constructor which expects a File object representing the web.xml for the
-     * application and a context path under which to mount it.
+     * Constructor which expects a File object representing the web.xml for the application and a context path under
+     * which to mount it.
      *
-     * @param webXml the web.xml file
-     * @param contextPath the context path
+     * @param webXml
+     *            the web.xml file
+     * @param contextPath
+     *            the context path
+     *
      * @since 1.6
      */
-    public ServletRunner( File webXml, String contextPath ) throws IOException, SAXException {
-        _application = new WebApplication( HttpUnitUtils.newParser().parse( webXml ), webXml.getParentFile().getParentFile(), contextPath );
-        completeInitialization( contextPath );
+    public ServletRunner(File webXml, String contextPath) throws IOException, SAXException {
+        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml),
+                webXml.getParentFile().getParentFile(), contextPath);
+        completeInitialization(contextPath);
     }
 
     /**
-     * constructor with entity Resolver
-     * as asked for in Bug report 1222269 by jim - jafergus
+     * constructor with entity Resolver as asked for in Bug report 1222269 by jim - jafergus
+     *
      * @param webXMLFileSpec
      * @param resolver
+     *
      * @throws IOException
      * @throws SAXException
+     *
      * @since 1.7
      */
-    public ServletRunner( String webXMLFileSpec,EntityResolver resolver )	throws IOException, SAXException	{
-  		DocumentBuilder parser = HttpUnitUtils.newParser();
-  		parser.setEntityResolver(resolver);
-  		_application = new WebApplication( parser.parse(
-  		webXMLFileSpec ) );
-  		completeInitialization( null );
- 		}
+    public ServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {
+        DocumentBuilder parser = HttpUnitUtils.newParser();
+        parser.setEntityResolver(resolver);
+        _application = new WebApplication(parser.parse(webXMLFileSpec));
+        completeInitialization(null);
+    }
 
     /**
      * Constructor which expects an input stream containing the web.xml for the application.
      **/
-    public ServletRunner( InputStream webXML ) throws IOException, SAXException {
-        this( webXML, null );
+    public ServletRunner(InputStream webXML) throws IOException, SAXException {
+        this(webXML, null);
     }
 
     /**
      * Constructor which expects an input stream containing the web.xml for the application.
+     *
      * @param webXML
      * @param contextPath
+     *
      * @throws IOException
      * @throws SAXException
      */
-    public ServletRunner( InputStream webXML, String contextPath ) throws IOException, SAXException {
- 			InputSource inputSource=new InputSource( webXML );
- 			Document doc=HttpUnitUtils.parse(inputSource);
- 			try {
- 	 			_application = new WebApplication( doc, contextPath );
- 	 			completeInitialization( contextPath );
- 			} catch (java.net.MalformedURLException mue) {
- 				throw mue;
- 			}
+    public ServletRunner(InputStream webXML, String contextPath) throws IOException, SAXException {
+        InputSource inputSource = new InputSource(webXML);
+        Document doc = HttpUnitUtils.parse(inputSource);
+        try {
+            _application = new WebApplication(doc, contextPath);
+            completeInitialization(contextPath);
+        } catch (java.net.MalformedURLException mue) {
+            throw mue;
+        }
     }
-
 
     /**
      * Registers a servlet class to be run.
      **/
-    public void registerServlet( String resourceName, String servletClassName ) {
-        _application.registerServlet( resourceName, servletClassName, null );
+    public void registerServlet(String resourceName, String servletClassName) {
+        _application.registerServlet(resourceName, servletClassName, null);
     }
 
-
-    private void completeInitialization( String contextPath ) {
-        _context = new ServletUnitContext( contextPath, _application.getServletContext(), _application );
-        _application.registerServlet( "*.jsp", _jspServletDescriptor.getClassName(), _jspServletDescriptor.getInitializationParameters( null, null ) );
+    private void completeInitialization(String contextPath) {
+        _context = new ServletUnitContext(contextPath, _application.getServletContext(), _application);
+        _application.registerServlet("*.jsp", _jspServletDescriptor.getClassName(),
+                _jspServletDescriptor.getInitializationParameters(null, null));
     }
-
 
     /**
      * Registers a servlet class to be run, specifying initialization parameters.
      **/
-    public void registerServlet( String resourceName, String servletClassName, Hashtable initParameters ) {
-        _application.registerServlet( resourceName, servletClassName, initParameters );
+    public void registerServlet(String resourceName, String servletClassName, Hashtable initParameters) {
+        _application.registerServlet(resourceName, servletClassName, initParameters);
     }
-
 
     /**
      * Returns the response from the specified servlet.
-     * @exception SAXException thrown if there is an error parsing the response
+     *
+     * @exception SAXException
+     *                thrown if there is an error parsing the response
      **/
-    public WebResponse getResponse( WebRequest request ) throws MalformedURLException, IOException, SAXException {
-        return getClient().getResponse( request );
+    public WebResponse getResponse(WebRequest request) throws MalformedURLException, IOException, SAXException {
+        return getClient().getResponse(request);
     }
-
 
     /**
      * Returns the response from the specified servlet using GET.
-     * @exception SAXException thrown if there is an error parsing the response
+     *
+     * @exception SAXException
+     *                thrown if there is an error parsing the response
      **/
-    public WebResponse getResponse( String url ) throws MalformedURLException, IOException, SAXException {
-        return getClient().getResponse( url );
+    public WebResponse getResponse(String url) throws MalformedURLException, IOException, SAXException {
+        return getClient().getResponse(url);
     }
-
 
     /**
      * Returns the session to be used by the next request.
-     * @param create if true, will create a new session if no valid session is defined.
+     *
+     * @param create
+     *            if true, will create a new session if no valid session is defined.
+     *
      * @since 1.6
      */
-    public HttpSession getSession( boolean create ) {
-        return getClient().getSession( create );
+    public HttpSession getSession(boolean create) {
+        return getClient().getSession(create);
     }
-
 
     /**
      * Returns the value of the named context parameter found in the application definition.
-     * @param name - the name of the parameter to get
+     *
+     * @param name
+     *            - the name of the parameter to get
+     *
      * @return - the context parameter with the given name
      */
-    public String getContextParameter( String name ) {
-        Object value = _application.getContextParameters().get( name );
+    public String getContextParameter(String name) {
+        Object value = _application.getContextParameters().get(name);
         return value == null ? null : value.toString();
     }
 
     /**
      * Sets a application context parameter.
-     * @param name - the name of the parameter to set
-     * @param value - the value of the parameter to set
+     *
+     * @param name
+     *            - the name of the parameter to set
+     * @param value
+     *            - the value of the parameter to set
+     *
      * @deprecated - test case for this function deactivated wf 2007-12-30
      */
-    public void setContextParameter(String name, Object value){
-     	getApplication().getServletContext().setAttribute(name, value);
+    public void setContextParameter(String name, Object value) {
+        getApplication().getServletContext().setAttribute(name, value);
     }
 
     /**
-     * Shuts down the servlet container, returning any resources held by it.
-     * Calls the destroy method of each active servlet, then notifies
-     * ContextListeners of server shutdown.
+     * Shuts down the servlet container, returning any resources held by it. Calls the destroy method of each active
+     * servlet, then notifies ContextListeners of server shutdown.
      */
     public void shutDown() {
         _application.shutDown();
     }
 
-
     /**
      * Creates and returns a new web client that communicates with this servlet runner.
      **/
     public ServletUnitClient newClient() {
-        return ServletUnitClient.newClient( _factory );
+        return ServletUnitClient.newClient(_factory);
     }
-
 
     public static class JasperJSPServletDescriptor implements JSPServletDescriptor {
 
@@ -243,57 +257,55 @@ public class ServletRunner {
             return "org.apache.jasper.servlet.JspServlet";
         }
 
-
-        public Hashtable getInitializationParameters( String classPath, String workingDirectory ) {
+        public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
             Hashtable params = new Hashtable();
-            if (classPath != null) params.put( "classpath", classPath );
-            if (workingDirectory != null) params.put( "scratchdir", workingDirectory );
+            if (classPath != null)
+                params.put("classpath", classPath);
+            if (workingDirectory != null)
+                params.put("scratchdir", workingDirectory);
             return params;
         }
     }
 
-
     public final static JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
 
-
-//-------------------------------------------- package methods ---------------------------------------------------------
-
+    // -------------------------------------------- package methods
+    // ---------------------------------------------------------
 
     ServletUnitContext getContext() {
         return _context;
     }
 
-
     WebApplication getApplication() {
         return _application;
     }
 
-
-//---------------------------- private members ------------------------------------
+    // ---------------------------- private members ------------------------------------
 
     private static JSPServletDescriptor _jspServletDescriptor = JASPER_DESCRIPTOR;
 
-    private WebApplication     _application;
+    private WebApplication _application;
 
-    private ServletUnitClient  _client;
+    private ServletUnitClient _client;
 
     private ServletUnitContext _context;
 
     private InvocationContextFactory _factory = new InvocationContextFactory() {
-        public InvocationContext newInvocation( ServletUnitClient client, FrameSelector targetFrame, WebRequest request, Dictionary clientHeaders, byte[] messageBody ) throws IOException, MalformedURLException {
-            return new InvocationContextImpl( client, ServletRunner.this, targetFrame, request, clientHeaders, messageBody );
+        public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
+                Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
+            return new InvocationContextImpl(client, ServletRunner.this, targetFrame, request, clientHeaders,
+                    messageBody);
         }
 
-        public HttpSession getSession( String sessionId, boolean create ) {
-            return _context.getValidSession( sessionId, null, create );
+        public HttpSession getSession(String sessionId, boolean create) {
+            return _context.getValidSession(sessionId, null, create);
         }
     };
 
-
     private ServletUnitClient getClient() {
-        if (_client == null) _client = newClient();
+        if (_client == null)
+            _client = newClient();
         return _client;
     }
-
 
 }

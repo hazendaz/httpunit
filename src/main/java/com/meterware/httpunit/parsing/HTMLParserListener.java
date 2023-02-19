@@ -32,20 +32,29 @@ public interface HTMLParserListener {
 
     /**
      * Invoked when the parser wishes to report a warning.
-     * @param url    the location of the document to which the warning applies.
-     * @param msg    the warning message
-     * @param line   the line in the document on which the problematic HTML was found
-     * @param column the column in the document on which the problematic HTML was found
+     *
+     * @param url
+     *            the location of the document to which the warning applies.
+     * @param msg
+     *            the warning message
+     * @param line
+     *            the line in the document on which the problematic HTML was found
+     * @param column
+     *            the column in the document on which the problematic HTML was found
      */
-    void warning( URL url, String msg, int line, int column );
-
+    void warning(URL url, String msg, int line, int column);
 
     /**
      * Invoked when the parser wishes to report an error.
-     * @param url    the location of the document to which the error applies.
-     * @param msg    the warning message
-     * @param line   the line in the document on which the problematic HTML was found
-     * @param column the column in the document on which the problematic HTML was found
+     *
+     * @param url
+     *            the location of the document to which the error applies.
+     * @param msg
+     *            the warning message
+     * @param line
+     *            the line in the document on which the problematic HTML was found
+     * @param column
+     *            the column in the document on which the problematic HTML was found
      */
-    void error( URL url, String msg, int line, int column );
+    void error(URL url, String msg, int line, int column);
 }

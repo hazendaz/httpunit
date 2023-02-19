@@ -29,5 +29,5 @@ public interface ParameterCollection {
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
-    void recordParameters( ParameterProcessor processor ) throws IOException;
+    void recordParameters(ParameterProcessor processor) throws IOException;
 }

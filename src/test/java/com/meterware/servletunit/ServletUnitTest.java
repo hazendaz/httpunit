@@ -30,22 +30,23 @@ import java.util.Vector;
  */
 public abstract class ServletUnitTest {
 
-//------------------------------------ protected members ------------------------------------------
-
+    // ------------------------------------ protected members ------------------------------------------
 
     protected Object[] toArray(Enumeration e) {
         ArrayList result = new ArrayList();
-        while (e.hasMoreElements()) result.add(e.nextElement());
+        while (e.hasMoreElements())
+            result.add(e.nextElement());
         return result.toArray();
     }
-
 
     protected void assertMatchingSet(String comment, Object[] expected, Object[] found) {
         Vector expectedItems = new Vector();
         Vector foundItems = new Vector();
 
-        for (int i = 0; i < expected.length; i++) expectedItems.addElement(expected[i]);
-        for (int i = 0; i < found.length; i++) foundItems.addElement(found[i]);
+        for (int i = 0; i < expected.length; i++)
+            expectedItems.addElement(expected[i]);
+        for (int i = 0; i < found.length; i++)
+            foundItems.addElement(found[i]);
 
         for (int i = 0; i < expected.length; i++) {
             if (!foundItems.contains(expected[i])) {
@@ -63,14 +64,15 @@ public abstract class ServletUnitTest {
             }
         }
 
-        if (!foundItems.isEmpty()) fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
+        if (!foundItems.isEmpty())
+            fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
     }
-
 
     protected String asText(Object[] args) {
         StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < args.length; i++) {
-            if (i != 0) sb.append(",");
+            if (i != 0)
+                sb.append(",");
             sb.append('"').append(args[i]).append('"');
         }
         sb.append("}");
@@ -78,5 +80,3 @@ public abstract class ServletUnitTest {
     }
 
 }
-
-

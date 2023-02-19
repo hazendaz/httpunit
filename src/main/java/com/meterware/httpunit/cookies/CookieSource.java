@@ -33,10 +33,9 @@ public interface CookieSource {
      **/
     URL getURL();
 
-
     /**
      * Returns the values for the specified header field. If no such field is defined, will return an empty array.
      **/
-    String[] getHeaderFields( String fieldName );
+    String[] getHeaderFields(String fieldName);
 
 }

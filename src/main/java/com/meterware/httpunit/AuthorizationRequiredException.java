@@ -27,58 +27,55 @@ import java.util.Properties;
  **/
 public class AuthorizationRequiredException extends RuntimeException {
 
-
-    public static AuthorizationRequiredException createBasicAuthenticationRequiredException( String realm ) {
+    public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
         Properties props = new Properties();
-        props.put( "realm", realm );
-        return new AuthorizationRequiredException( "Basic", props );
+        props.put("realm", realm);
+        return new AuthorizationRequiredException("Basic", props);
     }
 
-
-    static AuthorizationRequiredException createException( String scheme, Map properties ) {
-        return new AuthorizationRequiredException( scheme, properties );
+    static AuthorizationRequiredException createException(String scheme, Map properties) {
+        return new AuthorizationRequiredException(scheme, properties);
     }
 
-
-    private AuthorizationRequiredException( String scheme, Map properties ) {
+    private AuthorizationRequiredException(String scheme, Map properties) {
         _scheme = scheme;
         _properties = properties;
     }
-
 
     public String getMessage() {
         return _scheme + " authentication required: " + _properties;
     }
 
-
     /**
      * Returns the name of the <a href="http://www.freesoft.org/CIE/RFC/Orig/rfc2617.txt">authentication scheme</a>.
+     *
      * @return the scheme
      **/
     public String getAuthenticationScheme() {
         return _scheme;
     }
 
-
     /**
      * Returns the named authentication parameter. For Basic authentication, the only parameter is "realm".
-     * @param parameterName the name of the parameter to fetch
+     *
+     * @param parameterName
+     *            the name of the parameter to fetch
+     *
      * @return the parameter, without quotes
      **/
-    public String getAuthenticationParameter( String parameterName ) {
-        return unQuote( (String) _properties.get( parameterName ) );
+    public String getAuthenticationParameter(String parameterName) {
+        return unQuote((String) _properties.get(parameterName));
     }
 
+    private String unQuote(String value) {
+        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\""))
+            return value;
 
-    private String unQuote( String value ) {
-        if (value == null || value.length() <= 1 || !value.startsWith( "\"" ) || !value.endsWith( "\"")) return value;
-
-        return value.substring( 1, value.length()-1 );
+        return value.substring(1, value.length() - 1);
     }
 
-//------------------------------------- private members ------------------------------------------
-
+    // ------------------------------------- private members ------------------------------------------
 
     private String _scheme;
-    private Map    _properties;
+    private Map _properties;
 }

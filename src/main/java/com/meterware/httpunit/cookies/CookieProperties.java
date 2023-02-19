@@ -37,70 +37,65 @@ public class CookieProperties {
     /** A collection of listeners for cookie events. **/
     private static ArrayList _listeners;
 
-
     public static void reset() {
         _domainMatchingStrict = true;
         _pathMatchingStrict = true;
         _listeners = null;
     }
 
-
     /**
-     * Returns true (the default) if cookies should be rejected if they specify a domain which is not a suffix
-     * of the host domain or does not contain all of the dots in that host domain name
-     * (see <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
+     * Returns true (the default) if cookies should be rejected if they specify a domain which is not a suffix of the
+     * host domain or does not contain all of the dots in that host domain name (see
+     * <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
      */
     public static boolean isDomainMatchingStrict() {
         return _domainMatchingStrict;
     }
 
-
     /**
      * Specifies whether strict domain name matching must be followed.
      */
-    public static void setDomainMatchingStrict( boolean domainMatchingStrict ) {
+    public static void setDomainMatchingStrict(boolean domainMatchingStrict) {
         _domainMatchingStrict = domainMatchingStrict;
     }
 
-
     /**
-     * Returns true (the default) if cookies should be rejected if they specify a path which is not a prefix
-     * of the request path (see <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
+     * Returns true (the default) if cookies should be rejected if they specify a path which is not a prefix of the
+     * request path (see <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
      */
     public static boolean isPathMatchingStrict() {
         return _pathMatchingStrict;
     }
 
-
     /**
      * Specifies whether strict path name matching must be followed.
      */
-    public static void setPathMatchingStrict( boolean pathMatchingStrict ) {
+    public static void setPathMatchingStrict(boolean pathMatchingStrict) {
         _pathMatchingStrict = pathMatchingStrict;
     }
-
 
     /**
      * Adds a listener for cookie events.
      */
-    public static void addCookieListener( CookieListener listener ) {
-        if (_listeners == null) _listeners = new ArrayList();
-        synchronized( _listeners ) {
-            _listeners.add( listener );
+    public static void addCookieListener(CookieListener listener) {
+        if (_listeners == null)
+            _listeners = new ArrayList();
+        synchronized (_listeners) {
+            _listeners.add(listener);
         }
     }
 
-
-    public static void reportCookieRejected( int reason, String attribute, String source ) {
-        if (_listeners == null) return;
+    public static void reportCookieRejected(int reason, String attribute, String source) {
+        if (_listeners == null)
+            return;
 
         List listeners;
-        synchronized( _listeners ) {
+        synchronized (_listeners) {
             listeners = (List) _listeners.clone();
         }
 
         for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((CookieListener) i.next()).cookieRejected( source, reason, attribute );
+            ((CookieListener) i.next()).cookieRejected(source, reason, attribute);
         }
     }
 }

@@ -35,48 +35,43 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
 
     public boolean isEnabled() {
         try {
-            Class.forName( "org.mozilla.javascript.Context" );
+            Class.forName("org.mozilla.javascript.Context");
             return true;
         } catch (Exception e) {
-            System.err.println( "Rhino classes (js.jar) not found - Javascript disabled" );
+            System.err.println("Rhino classes (js.jar) not found - Javascript disabled");
             return false;
         }
     }
 
-
-    public void associate( WebResponse response ) {
+    public void associate(WebResponse response) {
         try {
-            JavaScript.run( response );
+            JavaScript.run(response);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
-        	HttpUnitUtils.handleException(e);
-           throw new RuntimeException( e.toString() );
+            HttpUnitUtils.handleException(e);
+            throw new RuntimeException(e.toString());
         }
     }
 
-
-    public void load( WebResponse response ) {
+    public void load(WebResponse response) {
         try {
-            JavaScript.load( response );
+            JavaScript.load(response);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException( e.toString() );
+            throw new RuntimeException(e.toString());
         }
     }
 
-
-    public void setThrowExceptionsOnError( boolean throwExceptions ) {
-        JavaScript.setThrowExceptionsOnError( throwExceptions );
+    public void setThrowExceptionsOnError(boolean throwExceptions) {
+        JavaScript.setThrowExceptionsOnError(throwExceptions);
     }
-
 
     public boolean isThrowExceptionsOnError() {
         return JavaScript.isThrowExceptionsOnError();
     }
-
 
     public String[] getErrorMessages() {
         return ScriptingEngineImpl.getErrorMessages();
@@ -85,26 +80,22 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
     /**
      * delegate the handling for Script exceptions
      */
-	public void handleScriptException(Exception e, String badScript) {
-		ScriptingEngineImpl.handleScriptException(e, badScript);
-	}
-
+    public void handleScriptException(Exception e, String badScript) {
+        ScriptingEngineImpl.handleScriptException(e, badScript);
+    }
 
     public void clearErrorMessages() {
         ScriptingEngineImpl.clearErrorMessages();
     }
 
-
-    public ScriptingHandler createHandler( HTMLElement elementBase ) {
+    public ScriptingHandler createHandler(HTMLElement elementBase) {
         ScriptableDelegate delegate = elementBase.newScriptable();
-        delegate.setScriptEngine( elementBase.getParentDelegate().getScriptEngine( delegate ) );
+        delegate.setScriptEngine(elementBase.getParentDelegate().getScriptEngine(delegate));
         return delegate;
     }
 
-
-    public ScriptingHandler createHandler( WebResponse response ) {
+    public ScriptingHandler createHandler(WebResponse response) {
         return response.createJavascriptScriptingHandler();
     }
-
 
 }

@@ -27,7 +27,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLOptionElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {
@@ -38,84 +37,77 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         return new HTMLOptionElementImpl();
     }
 
-
     public boolean getDefaultSelected() {
-        return getBooleanAttribute( "selected" );
+        return getBooleanAttribute("selected");
     }
-
 
     public int getIndex() {
-        return getSelect().getIndexOf( this );
+        return getSelect().getIndexOf(this);
     }
 
-
-    public void setIndex( int i ) {};    // obsolete - required for compatibility with JDK 1.3
-
+    public void setIndex(int i) {
+    }; // obsolete - required for compatibility with JDK 1.3
 
     public String getLabel() {
-        return getAttributeWithNoDefault( "label" );
+        return getAttributeWithNoDefault("label");
     }
-
 
     public boolean getSelected() {
         return _selected != null ? _selected.booleanValue() : getDefaultSelected();
     }
 
-
     public String getText() {
         return asText();
     }
 
-
-    public void setDefaultSelected( boolean defaultSelected ) {
+    public void setDefaultSelected(boolean defaultSelected) {
     }
 
-
-    public void setLabel( String label ) {
-        setAttribute( "label", label );
+    public void setLabel(String label) {
+        setAttribute("label", label);
     }
 
-
-    public void setSelected( boolean selected ) {
-        if (selected && getSelect().getType().equals( HTMLSelectElementImpl.TYPE_SELECT_ONE)) getSelect().clearSelected();
+    public void setSelected(boolean selected) {
+        if (selected && getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE))
+            getSelect().clearSelected();
         _selected = selected ? Boolean.TRUE : Boolean.FALSE;
     }
 
-
     private HTMLSelectElementImpl getSelect() {
         Node parent = getParentNode();
-        while (parent != null && !("select".equalsIgnoreCase( parent.getNodeName() ))) parent = parent.getParentNode();
+        while (parent != null && !("select".equalsIgnoreCase(parent.getNodeName())))
+            parent = parent.getParentNode();
         return (HTMLSelectElementImpl) parent;
     }
 
-
     public String getValue() {
-        return getAttributeWithNoDefault( "value" );
+        return getAttributeWithNoDefault("value");
     }
 
-
-    public void setValue( String value ) {
-        setAttribute( "value", value );
+    public void setValue(String value) {
+        setAttribute("value", value);
     }
-
 
     public void reset() {
         _selected = null;
     }
 
-
-    void addValueIfSelected( ParameterProcessor processor, String name, String characterSet ) throws IOException {
+    void addValueIfSelected(ParameterProcessor processor, String name, String characterSet) throws IOException {
         if (getSelected()) {
             String value = getValue();
-            if (value == null) value = readDisplayedValue();
-            processor.addParameter( name, value, characterSet );
+            if (value == null)
+                value = readDisplayedValue();
+            processor.addParameter(name, value, characterSet);
         }
     }
 
     private String readDisplayedValue() {
         Node nextSibling = getNextSibling();
-        while (nextSibling != null && nextSibling.getNodeType() != Node.TEXT_NODE && nextSibling.getNodeType() != Node.ELEMENT_NODE) nextSibling = nextSibling.getNextSibling();
-        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) return "";
+        while (nextSibling != null && nextSibling.getNodeType() != Node.TEXT_NODE
+                && nextSibling.getNodeType() != Node.ELEMENT_NODE)
+            nextSibling = nextSibling.getNextSibling();
+        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE)
+            return "";
         return nextSibling.getNodeValue();
     }
 

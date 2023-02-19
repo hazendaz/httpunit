@@ -29,120 +29,106 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * A web request which contains a non-empty message body. Note that such requests
- * <em>must</em> use the <code>http</code> or <code>https</code> protocols.
+ * A web request which contains a non-empty message body. Note that such requests <em>must</em> use the
+ * <code>http</code> or <code>https</code> protocols.
  **/
-abstract
-public class MessageBodyWebRequest extends WebRequest {
+abstract public class MessageBodyWebRequest extends WebRequest {
 
     protected MessageBody _body;
     private boolean _mimeEncoded;
 
-
     /**
      * Constructs a web request using a specific absolute url string.
      **/
-    protected MessageBodyWebRequest( String urlString, boolean mimeEncoded ) {
-        super( urlString );
+    protected MessageBodyWebRequest(String urlString, boolean mimeEncoded) {
+        super(urlString);
         _mimeEncoded = mimeEncoded;
     }
 
-
     /**
      * Constructs a web request using a specific absolute url string.
      **/
-    protected MessageBodyWebRequest( String urlString, MessageBody messageBody ) {
-        super( urlString );
+    protected MessageBodyWebRequest(String urlString, MessageBody messageBody) {
+        super(urlString);
         _body = messageBody;
     }
-
 
     /**
      * Constructs a web request with a specific target.
      **/
-    protected MessageBodyWebRequest( URL urlBase, String urlString, String target, boolean mimeEncoded ) {
-        super( urlBase, urlString, target );
+    protected MessageBodyWebRequest(URL urlBase, String urlString, String target, boolean mimeEncoded) {
+        super(urlBase, urlString, target);
         _mimeEncoded = mimeEncoded;
     }
-
 
     /**
      * Constructs a web request for a form submitted via a button.
      *
      * @since 1.6
      **/
-    protected MessageBodyWebRequest( WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y ) {
-        super( sourceForm, parameterHolder, button, x, y );
+    protected MessageBodyWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x,
+            int y) {
+        super(sourceForm, parameterHolder, button, x, y);
         _mimeEncoded = parameterHolder.isSubmitAsMime();
-        setHeaderField( REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm() );
+        setHeaderField(REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm());
     }
-
 
     /**
      * Constructs a web request for a form submitted via script.
      **/
-    protected MessageBodyWebRequest( WebForm sourceForm ) {
-        super( sourceForm, WebRequest.newParameterHolder( sourceForm ) );
+    protected MessageBodyWebRequest(WebForm sourceForm) {
+        super(sourceForm, WebRequest.newParameterHolder(sourceForm));
         _mimeEncoded = sourceForm.isSubmitAsMime();
-        setHeaderField( REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm() );
+        setHeaderField(REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm());
     }
 
-
     /**
-     * Subclasses may override this method to provide a message body for the
-     * request.
+     * Subclasses may override this method to provide a message body for the request.
      **/
     protected MessageBody getMessageBody() {
         return _body;
     }
 
+    // ---------------------------------- WebRequest methods --------------------------------
 
-//---------------------------------- WebRequest methods --------------------------------
-
-
-    protected void writeMessageBody( OutputStream stream ) throws IOException {
-        getMessageBody().writeTo( stream, getParameterHolder() );
+    protected void writeMessageBody(OutputStream stream) throws IOException {
+        getMessageBody().writeTo(stream, getParameterHolder());
     }
-
 
     /**
      * Performs any additional processing necessary to complete the request.
      **/
-    protected void completeRequest( URLConnection connection ) throws IOException {
-        super.completeRequest( connection );
-        connection.setDoInput( true );
-        connection.setDoOutput( true );
+    protected void completeRequest(URLConnection connection) throws IOException {
+        super.completeRequest(connection);
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
 
         OutputStream stream = connection.getOutputStream();
-        writeMessageBody( stream );
+        writeMessageBody(stream);
         stream.flush();
         stream.close();
     }
-
 
     protected String getContentType() {
         return getMessageBody().getContentType();
     }
 
-
     public boolean isMimeEncoded() {
         return _mimeEncoded;
     }
 
-//============================= class InputStreamMessageBody ======================================
+    // ============================= class InputStreamMessageBody ======================================
 
     /**
      * A method request message body read directly from an input stream.
      **/
     public static class InputStreamMessageBody extends MessageBody {
 
-
-        public InputStreamMessageBody( InputStream source, String contentType ) {
-            super( null );
+        public InputStreamMessageBody(InputStream source, String contentType) {
+            super(null);
             _source = source;
             _contentType = contentType;
         }
-
 
         /**
          * Returns the content type of this message body.
@@ -151,46 +137,47 @@ public class MessageBodyWebRequest extends WebRequest {
             return _contentType;
         }
 
-
         /**
          * Transmits the body of this request as a sequence of bytes.
+         *
          * @param outputStream
          * @param parameters
-         * @throws IOException if the tranmission fails
+         *
+         * @throws IOException
+         *             if the tranmission fails
          */
-        public void writeTo( OutputStream outputStream, ParameterCollection parameters ) throws IOException {
+        public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
             if (_source.markSupported()) {
                 mark();
             }
             byte[] buffer = new byte[8 * 1024];
             int count = 0;
             do {
-                outputStream.write( buffer, 0, count );
-                count = _source.read( buffer, 0, buffer.length );
+                outputStream.write(buffer, 0, count);
+                count = _source.read(buffer, 0, buffer.length);
             } while (count != -1);
 
             written = true;
         }
 
         /**
-         *
          * @throws IOException
          */
         public void mark() throws IOException {
             if (written) {
                 _source.reset();
             } else {
-            	// amount of bytes to be read after mark gets invalid
-            	int readlimit=1024*1024; // ! MByte
-            	// Marks the current position in this input stream.
-            	// A subsequent call to the reset method repositions
-            	// this stream at the last marked position so that subsequent reads re-read the same bytes.
+                // amount of bytes to be read after mark gets invalid
+                int readlimit = 1024 * 1024; // ! MByte
+                // Marks the current position in this input stream.
+                // A subsequent call to the reset method repositions
+                // this stream at the last marked position so that subsequent reads re-read the same bytes.
                 _source.mark(readlimit);
             }
         }
 
-        private boolean     written = false;
+        private boolean written = false;
         private InputStream _source;
-        private String      _contentType;
+        private String _contentType;
     }
 }

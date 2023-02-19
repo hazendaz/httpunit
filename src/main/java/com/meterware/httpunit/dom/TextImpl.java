@@ -24,69 +24,60 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class TextImpl extends CharacterDataImpl implements Text {
 
-
-    static TextImpl createText( DocumentImpl ownerDocument, String data ) {
+    static TextImpl createText(DocumentImpl ownerDocument, String data) {
         TextImpl text = new TextImpl();
-        text.initialize( ownerDocument, data );
+        text.initialize(ownerDocument, data);
         return text;
     }
-
 
     public String getNodeName() {
         return "#text";
     }
 
-
     public String getNodeValue() throws DOMException {
         return getData();
     }
 
-
-    public void setNodeValue( String nodeValue ) throws DOMException {
-        setData( nodeValue );
+    public void setNodeValue(String nodeValue) throws DOMException {
+        setData(nodeValue);
     }
-
 
     public short getNodeType() {
         return TEXT_NODE;
     }
 
-
-    protected NodeImpl getChildIfPermitted( Node proposedChild ) {
-        throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Text nodes may not have children" );
+    protected NodeImpl getChildIfPermitted(Node proposedChild) {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Text nodes may not have children");
     }
 
-
-    public Text splitText( int offset ) throws DOMException {
+    public Text splitText(int offset) throws DOMException {
         return null;
     }
 
-
-    public static Node importNode( DocumentImpl document, Text text ) {
-        return document.createTextNode( text.getData() );
+    public static Node importNode(DocumentImpl document, Text text) {
+        return document.createTextNode(text.getData());
     }
 
-
-    void appendContents( StringBuffer sb ) {
-        sb.append( getData() );
+    void appendContents(StringBuffer sb) {
+        sb.append(getData());
     }
 
-//------------------------------------- DOM level 3 methods ------------------------------------------------------------
+    // ------------------------------------- DOM level 3 methods
+    // ------------------------------------------------------------
 
     public boolean isElementContentWhitespace() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String getWholeText() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Text replaceWholeText( String content ) throws DOMException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Text replaceWholeText(String content) throws DOMException {
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 }

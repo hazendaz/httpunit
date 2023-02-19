@@ -36,31 +36,40 @@ class ServletUnitWebResponse extends WebResponse {
 
     /**
      * Constructs a response object from a servlet response.
-     * @param frame the target frame on which the response will be displayed
-     * @param url the url from which the response was received
-     * @param response the response populated by the servlet
+     *
+     * @param frame
+     *            the target frame on which the response will be displayed
+     * @param url
+     *            the url from which the response was received
+     * @param response
+     *            the response populated by the servlet
      **/
-    ServletUnitWebResponse( ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response, boolean throwExceptionOnError ) throws IOException {
-        super( client, frame, url );
+    ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response,
+            boolean throwExceptionOnError) throws IOException {
+        super(client, frame, url);
         _response = (ServletUnitHttpResponse) response;
         /** make sure that any IO exception for HTML received page happens here, not later. **/
         if (getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {
-            defineRawInputStream( new ByteArrayInputStream( _response.getContents() ) );
-            if (getContentType().startsWith( "text" )) loadResponseText();
+            defineRawInputStream(new ByteArrayInputStream(_response.getContents()));
+            if (getContentType().startsWith("text"))
+                loadResponseText();
         }
     }
 
-
     /**
      * Constructs a response object from a servlet response.
-     * @param frame the target frame on which the response will be displayed
-     * @param url the url from which the response was received
-     * @param response the response populated by the servlet
+     *
+     * @param frame
+     *            the target frame on which the response will be displayed
+     * @param url
+     *            the url from which the response was received
+     * @param response
+     *            the response populated by the servlet
      **/
-    ServletUnitWebResponse( ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response ) throws IOException {
-        this( client, frame, url, response, true );
+    ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response)
+            throws IOException {
+        this(client, frame, url, response, true);
     }
-
 
     /**
      * Returns the response code associated with this response.
@@ -69,7 +78,6 @@ class ServletUnitWebResponse extends WebResponse {
         return _response.getStatus();
     }
 
-
     /**
      * Returns the response message associated with this response.
      **/
@@ -77,34 +85,27 @@ class ServletUnitWebResponse extends WebResponse {
         return _response.getMessage();
     }
 
-
     public String[] getHeaderFieldNames() {
         return _response.getHeaderFieldNames();
     }
 
-
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null.
      **/
-    public String getHeaderField( String fieldName ) {
-        return _response.getHeaderField( fieldName );
+    public String getHeaderField(String fieldName) {
+        return _response.getHeaderField(fieldName);
     }
 
-
-    public String[] getHeaderFields( String fieldName ) {
-        return _response.getHeaderFields( fieldName );
+    public String[] getHeaderFields(String fieldName) {
+        return _response.getHeaderFields(fieldName);
     }
-
 
     public String toString() {
         return "[ _response = " + _response + "]";
     }
 
-
-//-------------------------------------------- private members ------------------------------------------------
-
+    // -------------------------------------------- private members ------------------------------------------------
 
     private ServletUnitHttpResponse _response;
 
 }
-

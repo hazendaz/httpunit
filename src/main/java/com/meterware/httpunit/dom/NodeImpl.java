@@ -27,107 +27,102 @@ import org.w3c.dom.*;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     private DocumentImpl _ownerDocument;
-    private NodeImpl     _parentNode;
-    private NodeImpl     _firstChild;
-    private NodeImpl     _nextSibling;
-    private NodeImpl     _previousSibling;
-    private Hashtable    _userData = new Hashtable( );
+    private NodeImpl _parentNode;
+    private NodeImpl _firstChild;
+    private NodeImpl _nextSibling;
+    private NodeImpl _previousSibling;
+    private Hashtable _userData = new Hashtable();
 
     static IteratorMask SKIP_IFRAMES = new IteratorMask() {
-        public boolean skipSubtree( Node subtreeRoot ) {
+        public boolean skipSubtree(Node subtreeRoot) {
             return subtreeRoot instanceof HTMLIFrameElement;
         }
     };
 
-
-    protected void initialize( DocumentImpl ownerDocument ) {
-        if (_ownerDocument != null) throw new IllegalStateException( "NodeImpl already initialized" );
-        if (ownerDocument == null) throw new IllegalArgumentException( "No owner document specified" );
+    protected void initialize(DocumentImpl ownerDocument) {
+        if (_ownerDocument != null)
+            throw new IllegalStateException("NodeImpl already initialized");
+        if (ownerDocument == null)
+            throw new IllegalArgumentException("No owner document specified");
         _ownerDocument = ownerDocument;
     }
 
+    // ------------------------------------------ ScriptableObject methods
+    // --------------------------------------------------
 
-//------------------------------------------ ScriptableObject methods --------------------------------------------------
+    // ------------------------------------------ ScriptingEngine methods
+    // --------------------------------------------------
 
-//------------------------------------------ ScriptingEngine methods --------------------------------------------------
-
-//----------------------------------------------- Node methods ---------------------------------------------------------
-
+    // ----------------------------------------------- Node methods
+    // ---------------------------------------------------------
 
     public Node getParentNode() {
         return _parentNode;
     }
 
-
     public NodeList getChildNodes() {
         ArrayList list = new ArrayList();
         for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {
-            list.add( child );
+            list.add(child);
         }
-        return new NodeListImpl( list );
+        return new NodeListImpl(list);
     }
-
 
     public Node getFirstChild() {
         return _firstChild;
     }
 
-
     public Node getLastChild() {
-        if (_firstChild == null) return null;
+        if (_firstChild == null)
+            return null;
 
         Node child = _firstChild;
-        while (child.getNextSibling() != null) child = child.getNextSibling();
+        while (child.getNextSibling() != null)
+            child = child.getNextSibling();
         return child;
     }
-
 
     public Node getPreviousSibling() {
         return _previousSibling;
     }
 
-
     public Node getNextSibling() {
         return _nextSibling;
     }
-
 
     public NamedNodeMap getAttributes() {
         return null;
     }
 
-
     public Document getOwnerDocument() {
         return _ownerDocument;
     }
 
-
-    public Node insertBefore( Node newChild, Node refChild ) throws DOMException {
+    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         NodeImpl refChildNode = (NodeImpl) refChild;
-        if (refChildNode.getParentNode() != this) throw new DOMException( DOMException.NOT_FOUND_ERR, "Must specify an existing child as the reference" );
-        NodeImpl newChildNode = getChildIfPermitted( newChild );
-        removeFromTree( newChildNode );
+        if (refChildNode.getParentNode() != this)
+            throw new DOMException(DOMException.NOT_FOUND_ERR, "Must specify an existing child as the reference");
+        NodeImpl newChildNode = getChildIfPermitted(newChild);
+        removeFromTree(newChildNode);
         newChildNode._parentNode = this;
         if (refChildNode._previousSibling == null) {
             _firstChild = newChildNode;
         } else {
-            refChildNode._previousSibling.setNextSibling( newChildNode );
+            refChildNode._previousSibling.setNextSibling(newChildNode);
         }
-        newChildNode.setNextSibling( refChildNode );
+        newChildNode.setNextSibling(refChildNode);
         return newChildNode;
     }
 
-
-    private void removeFromTree( NodeImpl childNode ) {
+    private void removeFromTree(NodeImpl childNode) {
         if (childNode._parentNode != null) {
             if (childNode._previousSibling != null) {
-                childNode._previousSibling.setNextSibling( childNode._nextSibling );
+                childNode._previousSibling.setNextSibling(childNode._nextSibling);
             } else {
                 childNode._parentNode._firstChild = childNode._nextSibling;
                 childNode._nextSibling._previousSibling = null;
@@ -136,332 +131,311 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         }
     }
 
-
-    public Node replaceChild( Node newChild, Node oldChild ) throws DOMException {
-        insertBefore( newChild, oldChild );
-        return removeChild( oldChild );
+    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+        insertBefore(newChild, oldChild);
+        return removeChild(oldChild);
     }
 
-
-    public Node removeChild( Node oldChild ) throws DOMException {
-        if (oldChild.getParentNode() != this) throw new DOMException( DOMException.NOT_FOUND_ERR, "May only remove a node from its own parent" );
-        removeFromTree( (NodeImpl) oldChild );
+    public Node removeChild(Node oldChild) throws DOMException {
+        if (oldChild.getParentNode() != this)
+            throw new DOMException(DOMException.NOT_FOUND_ERR, "May only remove a node from its own parent");
+        removeFromTree((NodeImpl) oldChild);
         return oldChild;
     }
 
+    public Node appendChild(Node newChild) throws DOMException {
+        if (newChild == null)
+            throw new IllegalArgumentException("child to append may not be null");
 
-    public Node appendChild( Node newChild ) throws DOMException {
-        if (newChild == null) throw new IllegalArgumentException( "child to append may not be null" );
-
-        NodeImpl childNode = getChildIfPermitted( newChild );
-        removeFromTree( childNode );
+        NodeImpl childNode = getChildIfPermitted(newChild);
+        removeFromTree(childNode);
         childNode._parentNode = this;
         if (_firstChild == null) {
             _firstChild = childNode;
         } else {
-            ((NodeImpl) getLastChild()).setNextSibling( childNode );
+            ((NodeImpl) getLastChild()).setNextSibling(childNode);
         }
         return newChild;
     }
 
-
-    protected NodeImpl getChildIfPermitted( Node proposedChild ) {
-        if (!(proposedChild instanceof NodeImpl)) throw new DOMException( DOMException.WRONG_DOCUMENT_ERR, "Specified node is from a different DOM implementation" );
+    protected NodeImpl getChildIfPermitted(Node proposedChild) {
+        if (!(proposedChild instanceof NodeImpl))
+            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
+                    "Specified node is from a different DOM implementation");
         NodeImpl childNode = (NodeImpl) proposedChild;
-        if (getOwnerDocument() != childNode._ownerDocument) throw new DOMException( DOMException.WRONG_DOCUMENT_ERR, "Specified node is from a different document" );
+        if (getOwnerDocument() != childNode._ownerDocument)
+            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Specified node is from a different document");
         for (Node parent = this; parent != null; parent = parent.getParentNode()) {
-            if (proposedChild == parent) throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "May not add node as its own descendant" );
+            if (proposedChild == parent)
+                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "May not add node as its own descendant");
         }
 
         return childNode;
     }
 
-
-    private void setNextSibling( NodeImpl sibling ) {
+    private void setNextSibling(NodeImpl sibling) {
         _nextSibling = sibling;
-        if (sibling != null) sibling._previousSibling = this;
+        if (sibling != null)
+            sibling._previousSibling = this;
     }
-
 
     public boolean hasChildNodes() {
         return _firstChild != null;
     }
 
-
-    public Node cloneNode( boolean deep ) {
-        return getOwnerDocument().importNode( this, deep );
+    public Node cloneNode(boolean deep) {
+        return getOwnerDocument().importNode(this, deep);
     }
-
 
     public void normalize() {
     }
 
-
-    public boolean isSupported( String feature, String version ) {
+    public boolean isSupported(String feature, String version) {
         return false;
     }
-
 
     public String getNamespaceURI() {
         return null;
     }
 
-
     public String getPrefix() {
         return null;
     }
 
-
-    public void setPrefix( String prefix ) throws DOMException {
+    public void setPrefix(String prefix) throws DOMException {
     }
-
 
     public String getLocalName() {
         return null;
     }
 
-
     public boolean hasAttributes() {
         return false;
     }
 
-//------------------------------------ DOM level 3 methods -------------------------------------------------------------
+    // ------------------------------------ DOM level 3 methods
+    // -------------------------------------------------------------
 
-    public Object setUserData( String key, Object data, UserDataHandler handler ) {
-        return _userData.put( key, data );
+    public Object setUserData(String key, Object data, UserDataHandler handler) {
+        return _userData.put(key, data);
     }
 
-
-    public Object getUserData( String key ) {
-        return _userData.get( key );
+    public Object getUserData(String key) {
+        return _userData.get(key);
     }
 
-
-    public Object getFeature( String feature, String version ) {
+    public Object getFeature(String feature, String version) {
         return null;
     }
 
-
-    public boolean isEqualNode( Node arg ) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    public boolean isEqualNode(Node arg) {
+        return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public String lookupNamespaceURI( String prefix ) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public String lookupNamespaceURI(String prefix) {
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getBaseURI() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public short compareDocumentPosition( Node other ) throws DOMException {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public short compareDocumentPosition(Node other) throws DOMException {
+        return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getTextContent() throws DOMException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setTextContent( String textContent ) throws DOMException {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setTextContent(String textContent) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public boolean isSameNode( Node other ) {
+    public boolean isSameNode(Node other) {
         return this == other;
     }
 
-
-    public String lookupPrefix( String namespaceURI ) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public String lookupPrefix(String namespaceURI) {
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public boolean isDefaultNamespace( String namespaceURI ) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    public boolean isDefaultNamespace(String namespaceURI) {
+        return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-//----------------------------------------- implementation internals ---------------------------------------------------
+    // ----------------------------------------- implementation internals
+    // ---------------------------------------------------
 
-    public NodeList getElementsByTagName( String name ) {
+    public NodeList getElementsByTagName(String name) {
         ArrayList matchingElements = new ArrayList();
-        appendElementsWithTag( name, matchingElements );
-        return new NodeListImpl( matchingElements );
+        appendElementsWithTag(name, matchingElements);
+        return new NodeListImpl(matchingElements);
     }
 
-
-    private void appendElementsWithTag( String name, ArrayList matchingElements ) {
+    private void appendElementsWithTag(String name, ArrayList matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-            if (child.getNodeType() != ELEMENT_NODE) continue;
-            if (name.equals( "*" ) || ((Element) child).getTagName().equalsIgnoreCase( name )) matchingElements.add( child );
-            ((NodeImpl) child).appendElementsWithTag( name, matchingElements );
+            if (child.getNodeType() != ELEMENT_NODE)
+                continue;
+            if (name.equals("*") || ((Element) child).getTagName().equalsIgnoreCase(name))
+                matchingElements.add(child);
+            ((NodeImpl) child).appendElementsWithTag(name, matchingElements);
         }
     }
 
-
-    protected NodeList getElementsByTagNames( String[] names ) {
+    protected NodeList getElementsByTagNames(String[] names) {
         ArrayList matchingElements = new ArrayList();
-        appendElementsWithTags( names, matchingElements );
-        return new NodeListImpl( matchingElements );
+        appendElementsWithTags(names, matchingElements);
+        return new NodeListImpl(matchingElements);
     }
 
-
-    void appendElementsWithTags( String[] names, ArrayList matchingElements ) {
+    void appendElementsWithTags(String[] names, ArrayList matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-            if (child.getNodeType() != ELEMENT_NODE) continue;
+            if (child.getNodeType() != ELEMENT_NODE)
+                continue;
             String tagName = ((Element) child).getTagName();
             for (int i = 0; i < names.length; i++) {
-                if (tagName.equalsIgnoreCase( names[i] )) matchingElements.add( child );
+                if (tagName.equalsIgnoreCase(names[i]))
+                    matchingElements.add(child);
             }
-            ((NodeImpl) child).appendElementsWithTags( names, matchingElements );
+            ((NodeImpl) child).appendElementsWithTags(names, matchingElements);
         }
     }
-
 
     String asText() {
         StringBuffer sb = new StringBuffer();
-        appendContents( sb );
+        appendContents(sb);
         return sb.toString();
     }
 
-
-    void appendContents( StringBuffer sb ) {
+    void appendContents(StringBuffer sb) {
         NodeList nl = getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
-            ((NodeImpl) nl.item(i)).appendContents( sb );
+            ((NodeImpl) nl.item(i)).appendContents(sb);
         }
     }
 
-
     public Iterator preOrderIterator() {
-        return new PreOrderIterator( this );
+        return new PreOrderIterator(this);
     }
 
-
-    public Iterator preOrderIterator( IteratorMask mask ) {
-        return new PreOrderIterator( this, mask );
+    public Iterator preOrderIterator(IteratorMask mask) {
+        return new PreOrderIterator(this, mask);
     }
-
 
     public Iterator preOrderIteratorAfterNode() {
-        return new PreOrderIterator( PreOrderIterator.nextNode( this ) );
+        return new PreOrderIterator(PreOrderIterator.nextNode(this));
     }
 
     /**
-     *
      * @return
      */
     public Iterator preOrderIteratorWithinNode() {
-        PreOrderIterator result = new PreOrderIterator( PreOrderIterator.nextNode( this ) );
+        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this));
         result.setDoNotLeaveNode(this);
         return result;
     }
 
-	public Iterator preOrderIteratorWithinNode(IteratorMask mask) {
-        PreOrderIterator result = new PreOrderIterator( PreOrderIterator.nextNode( this ),mask );
+    public Iterator preOrderIteratorWithinNode(IteratorMask mask) {
+        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this), mask);
         result.setDoNotLeaveNode(this);
         return result;
-	}
-
-
-    public Iterator preOrderIteratorAfterNode( IteratorMask mask ) {
-        return new PreOrderIterator( PreOrderIterator.nextNode( this ), mask );
     }
 
+    public Iterator preOrderIteratorAfterNode(IteratorMask mask) {
+        return new PreOrderIterator(PreOrderIterator.nextNode(this), mask);
+    }
 
-    protected String getJavaPropertyName( String propertyName ) {
-        if (propertyName.equals( "document" )) {
+    protected String getJavaPropertyName(String propertyName) {
+        if (propertyName.equals("document")) {
             return "ownerDocument";
         } else {
             return propertyName;
         }
     }
 
-
     /**
      * allow masking of the iteration
      */
     interface IteratorMask {
-    	// skip a given subtree
-        boolean skipSubtree( Node subtreeRoot );
+        // skip a given subtree
+        boolean skipSubtree(Node subtreeRoot);
     }
 
     /**
-     * iterator for Nodetrees that can be influenced with an Iterator mask to skip
-     * specific parts
+     * iterator for Nodetrees that can be influenced with an Iterator mask to skip specific parts
      */
     static class PreOrderIterator implements Iterator {
         private NodeImpl _nextNode;
         private NodeImpl _startNode;
         private IteratorMask _mask;
-        private NodeImpl _doNotLeaveNode=null;
+        private NodeImpl _doNotLeaveNode = null;
 
         /**
          * get the limit node
+         *
          * @return
          */
         public NodeImpl getDoNotLeaveNode() {
-			return _doNotLeaveNode;
-		}
+            return _doNotLeaveNode;
+        }
 
         /**
          * limit the PreOrderIterator not to leave the given node
+         *
          * @param doNotLeaveNode
          */
-		public void setDoNotLeaveNode(NodeImpl doNotLeaveNode) {
-			_doNotLeaveNode = doNotLeaveNode;
-		}
-
-		/**
-		 * check whether the node is a child of the doNotLeaveNode (if one is set)
-		 * @param node
-		 * @return
-		 */
-		private boolean isChild(Node node) {
-			if (node==null) {
-				return false;
-			} if (_doNotLeaveNode==null) {
-				return true;
-			}	else {
-				Node parent = node.getParentNode();
-				if (parent==null) {
-					return false;
-				} else {
-					if (parent.isSameNode(_doNotLeaveNode)) {
-						return true;
-					} else {
-						return isChild(parent);
-					}
-				}
-			}
-		}
-
-		/**
-         * create a PreOrderIterator starting at a given currentNode
-         * @param currentNode
-         */
-        PreOrderIterator( NodeImpl currentNode ) {
-            _nextNode = currentNode;
-            _startNode= currentNode;
+        public void setDoNotLeaveNode(NodeImpl doNotLeaveNode) {
+            _doNotLeaveNode = doNotLeaveNode;
         }
 
+        /**
+         * check whether the node is a child of the doNotLeaveNode (if one is set)
+         *
+         * @param node
+         *
+         * @return
+         */
+        private boolean isChild(Node node) {
+            if (node == null) {
+                return false;
+            }
+            if (_doNotLeaveNode == null) {
+                return true;
+            } else {
+                Node parent = node.getParentNode();
+                if (parent == null) {
+                    return false;
+                } else {
+                    if (parent.isSameNode(_doNotLeaveNode)) {
+                        return true;
+                    } else {
+                        return isChild(parent);
+                    }
+                }
+            }
+        }
 
         /**
-         * create a PreOrderIterator starting at a given currentNode and setting
-         * the iterator mask to the given mask
+         * create a PreOrderIterator starting at a given currentNode
+         *
+         * @param currentNode
+         */
+        PreOrderIterator(NodeImpl currentNode) {
+            _nextNode = currentNode;
+            _startNode = currentNode;
+        }
+
+        /**
+         * create a PreOrderIterator starting at a given currentNode and setting the iterator mask to the given mask
+         *
          * @param currentNode
          * @param mask
          */
-        PreOrderIterator( NodeImpl currentNode, IteratorMask mask ) {
-            this( currentNode );
+        PreOrderIterator(NodeImpl currentNode, IteratorMask mask) {
+            this(currentNode);
             _mask = mask;
         }
-
 
         /**
          * is there still a next node?
@@ -470,38 +444,37 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
             return null != _nextNode;
         }
 
-
         /**
          * move one step in the tree
          */
         public Object next() {
             NodeImpl currentNode = _nextNode;
-            _nextNode = nextNode( _nextNode );
-            while (_mask != null && _nextNode != null && _mask.skipSubtree( _nextNode ))
-            	_nextNode = nextSubtree( _nextNode );
+            _nextNode = nextNode(_nextNode);
+            while (_mask != null && _nextNode != null && _mask.skipSubtree(_nextNode))
+                _nextNode = nextSubtree(_nextNode);
             // check that we fit the doNotLeaveNode condition in case there is one
             if (!isChild(_nextNode))
-            	_nextNode=null;
+                _nextNode = null;
             return currentNode;
         }
-
 
         public void remove() {
             throw new java.lang.UnsupportedOperationException();
         }
 
-
-        static NodeImpl nextNode( NodeImpl node ) {
-            if (node._firstChild != null) return node._firstChild;
-            return nextSubtree( node );
+        static NodeImpl nextNode(NodeImpl node) {
+            if (node._firstChild != null)
+                return node._firstChild;
+            return nextSubtree(node);
         }
 
-
-        private static NodeImpl nextSubtree( NodeImpl node ) {
-            if (node._nextSibling != null) return node._nextSibling;
+        private static NodeImpl nextSubtree(NodeImpl node) {
+            if (node._nextSibling != null)
+                return node._nextSibling;
             while (node._parentNode != null) {
                 node = node._parentNode;
-                if (node._nextSibling != null) return node._nextSibling;
+                if (node._nextSibling != null)
+                    return node._nextSibling;
             }
             return null;
         }

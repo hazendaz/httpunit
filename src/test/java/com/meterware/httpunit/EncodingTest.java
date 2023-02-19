@@ -40,10 +40,10 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class EncodingTest extends HttpUnitTest {
 
-
     @Test
     void testDecodeWithCharacterSetAsArg() throws Exception {
-        String expected = "newpage\u30b5\u30f3\u30d7\u30eb";  // "\u30b5\u30f3\u30d7\u30eb" means "SAMPLE" in Japanese EUC-JP characterSet
+        String expected = "newpage\u30b5\u30f3\u30d7\u30eb"; // "\u30b5\u30f3\u30d7\u30eb" means "SAMPLE" in Japanese
+                                                             // EUC-JP characterSet
 
         String encodedString = "newpage%A5%B5%A5%F3%A5%D7%A5%EB";
         String actual = HttpUnitUtils.decode(encodedString, "EUC-JP");
@@ -57,29 +57,13 @@ class EncodingTest extends HttpUnitTest {
      */
     @Test
     void testParseContentHeader() throws Exception {
-        String headers[] = {
-                "",
-                "text/plain",
-                "text/html; charset=Cp1252",
-                "text/html; charset=iso-8859-8",
-                "text/html; charset=EUC-JP",
-                "text/html charset=windows-1251",
-                "text/html; charset=utf-8",
-                "text/html; charset = utf-8",
-                "text/html; charset=\"iso-8859-8\""
-        };
-        String expected[][] = {
-                {"text/plain", null},
-                {"text/plain", null},
-                {"text/html", "Cp1252"},
-                {"text/html", "iso-8859-8"},
-                {"text/html", "EUC-JP"},
-                {"text/html", "windows-1251"},
-                {"text/html", "utf-8"},
-                {"text/html", "utf-8"},
-                {"text/html", "iso-8859-8"}
-        };
-        for (int i = 0;i < headers.length;i++) {
+        String headers[] = { "", "text/plain", "text/html; charset=Cp1252", "text/html; charset=iso-8859-8",
+                "text/html; charset=EUC-JP", "text/html charset=windows-1251", "text/html; charset=utf-8",
+                "text/html; charset = utf-8", "text/html; charset=\"iso-8859-8\"" };
+        String expected[][] = { { "text/plain", null }, { "text/plain", null }, { "text/html", "Cp1252" },
+                { "text/html", "iso-8859-8" }, { "text/html", "EUC-JP" }, { "text/html", "windows-1251" },
+                { "text/html", "utf-8" }, { "text/html", "utf-8" }, { "text/html", "iso-8859-8" } };
+        for (int i = 0; i < headers.length; i++) {
             String result[] = HttpUnitUtils.parseContentTypeHeader(headers[i]);
             assertEquals(2, result.length);
             assertEquals(expected[i][0], result[0], "header " + i);
@@ -90,9 +74,8 @@ class EncodingTest extends HttpUnitTest {
     @Test
     void testSpecifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
-        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
-                "<body>This has no data\n" +
-                "</body></html>\n";
+        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
+                + "</body></html>\n";
         defineResource("SimplePage.html", page);
         setResourceCharSet("SimplePage.html", "iso-8859-8", true);
 
@@ -104,13 +87,11 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
     }
 
-
     @Test
     void testQuotedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
-        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
-                "<body>This has no data\n" +
-                "</body></html>\n";
+        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
+                + "</body></html>\n";
         defineResource("SimplePage.html", page);
         setResourceCharSet("SimplePage.html", "\"iso-8859-8\"", true);
 
@@ -122,13 +103,11 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("iso-8859-8", simplePage.getCharacterSet(), "Character set");
     }
 
-
     @Test
     void testUnspecifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
-        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
-                "<body>This has no data\n" +
-                "</body></html>\n";
+        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
+                + "</body></html>\n";
         defineResource("SimplePage.html", page);
         setResourceCharSet("SimplePage.html", "iso-8859-8", false);
 
@@ -141,14 +120,12 @@ class EncodingTest extends HttpUnitTest {
         assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
     }
 
-
     @Test
     void testMetaEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
-        String page = "<html><head><title>" + hebrewTitle + "</title>" +
-                "<meta Http_equiv=content-type content=\"text/html; charset=iso-8859-8\"></head>\n" +
-                "<body>This has no data\n" +
-                "</body></html>\n";
+        String page = "<html><head><title>" + hebrewTitle + "</title>"
+                + "<meta Http_equiv=content-type content=\"text/html; charset=iso-8859-8\"></head>\n"
+                + "<body>This has no data\n" + "</body></html>\n";
         defineResource("SimplePage.html", page);
         setResourceCharSet("SimplePage.html", "iso-8859-8", false);
 
@@ -160,22 +137,19 @@ class EncodingTest extends HttpUnitTest {
         assertEquals(hebrewTitle, simplePage.getTitle(), "Title");
     }
 
-
     @Test
     void testHebrewForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
-        defineResource("HebrewForm.html",
-                "<html><head></head>" +
-                        "<form method=POST action=\"SayHello\">" +
-                        "<input type=text name=name><input type=submit></form></body></html>");
+        defineResource("HebrewForm.html", "<html><head></head>" + "<form method=POST action=\"SayHello\">"
+                + "<input type=text name=name><input type=submit></form></body></html>");
         setResourceCharSet("HebrewForm.html", "iso-8859-8", true);
         defineResource("SayHello", new PseudoServlet() {
             public WebResource getPostResponse() {
                 try {
                     String name = getParameter("name")[0];
-                    WebResource result = new WebResource("<html><body><table><tr><td>Hello, " +
-                            new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8") +
-                            "</td></tr></table></body></html>");
+                    WebResource result = new WebResource("<html><body><table><tr><td>Hello, "
+                            + new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8")
+                            + "</td></tr></table></body></html>");
                     result.setCharacterSet("iso-8859-8");
                     result.setSendCharacterSet(true);
                     return result;
@@ -198,7 +172,6 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("iso-8859-8", answer.getCharacterSet(), "Character set");
     }
 
-
     @Test
     void testEncodedRequestWithoutForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
@@ -206,9 +179,9 @@ class EncodingTest extends HttpUnitTest {
             public WebResource getPostResponse() {
                 try {
                     String name = getParameter("name")[0];
-                    WebResource result = new WebResource("<html><body><table><tr><td>Hello, " +
-                            new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8") +
-                            "</td></tr></table></body></html>");
+                    WebResource result = new WebResource("<html><body><table><tr><td>Hello, "
+                            + new String(name.getBytes(StandardCharsets.ISO_8859_1), "iso-8859-8")
+                            + "</td></tr></table></body></html>");
                     result.setCharacterSet("iso-8859-8");
                     result.setSendCharacterSet(true);
                     return result;
@@ -230,7 +203,6 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("iso-8859-8", answer.getCharacterSet(), "Character set");
     }
 
-
     @Test
     void testUnsupportedEncoding() throws Exception {
         defineResource("SimplePage.html", "not much here");
@@ -243,7 +215,6 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("not much here", simplePage.getText(), "Text");
         assertEquals(WebResponse.getDefaultEncoding(), simplePage.getCharacterSet(), "Character set");
     }
-
 
     @Test
     void testJapaneseLinkParamNameWithValue() throws Exception {
@@ -258,7 +229,6 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("You made it!", target.getText(), "Resultant page");
     }
 
-
     @Test
     void testJapaneseLinkParamNameWithoutValue() throws Exception {
         String japaneseUrl = "request?%A5%D8%A5%EB%A5%D7";
@@ -272,13 +242,11 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("You made it!", target.getText(), "Resultant page");
     }
 
-
     @Test
     void testSimpleEntityReplacement() throws Exception {
         String rawString = "Cox&amp;&amp;Forkum";
         assertEquals("Cox&&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
-
 
     @Test
     void testSkipEntityReplacementOnBadString() throws Exception {
@@ -286,12 +254,10 @@ class EncodingTest extends HttpUnitTest {
         assertEquals("Cox&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
-
     @Test
     void testSkipEntityReplacementOnUnhandledEntity() throws Exception {
         String rawString = "&lt;something&gt;";
         assertEquals("&lt;something&gt;", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
-
 
 }

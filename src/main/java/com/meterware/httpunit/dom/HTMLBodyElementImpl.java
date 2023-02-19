@@ -24,85 +24,73 @@ import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.html.HTMLBodyElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {
 
-    private HTMLEventHandler _onLoad = new HTMLEventHandler( this, "onload" );
+    private HTMLEventHandler _onLoad = new HTMLEventHandler(this, "onload");
 
     ElementImpl create() {
         return new HTMLBodyElementImpl();
     }
 
     /**
-     *
      * @return the onload event
      */
     public Function getOnloadEvent() {
         if (getParentScope() == null && getOwnerDocument() instanceof Scriptable)
-        	setParentScope( (Scriptable) getOwnerDocument() );
+            setParentScope((Scriptable) getOwnerDocument());
         return _onLoad.getHandler();
     }
 
-//----------------------------------------- HTMLBodyElement methods ----------------------------------------------------
+    // ----------------------------------------- HTMLBodyElement methods
+    // ----------------------------------------------------
 
     public String getALink() {
-        return getAttributeWithNoDefault( "aLink" );
+        return getAttributeWithNoDefault("aLink");
     }
-
 
     public String getBackground() {
-        return getAttributeWithNoDefault( "background" );
+        return getAttributeWithNoDefault("background");
     }
-
 
     public String getBgColor() {
-        return getAttributeWithNoDefault( "bgColor" );
+        return getAttributeWithNoDefault("bgColor");
     }
-
 
     public String getLink() {
-        return getAttributeWithNoDefault( "link" );
+        return getAttributeWithNoDefault("link");
     }
-
 
     public String getText() {
-        return getAttributeWithNoDefault( "text" );
+        return getAttributeWithNoDefault("text");
     }
-
 
     public String getVLink() {
-        return getAttributeWithNoDefault( "vLink" );
+        return getAttributeWithNoDefault("vLink");
     }
 
-
-    public void setALink( String aLink ) {
-        setAttribute( "aLink", aLink );
+    public void setALink(String aLink) {
+        setAttribute("aLink", aLink);
     }
 
-
-    public void setBackground( String background ) {
-        setAttribute( "background", background );
+    public void setBackground(String background) {
+        setAttribute("background", background);
     }
 
-
-    public void setBgColor( String bgColor ) {
-        setAttribute( "bgColor", bgColor );
+    public void setBgColor(String bgColor) {
+        setAttribute("bgColor", bgColor);
     }
 
-
-    public void setLink( String link ) {
-        setAttribute( "link", link );
+    public void setLink(String link) {
+        setAttribute("link", link);
     }
 
-
-    public void setText( String text ) {
-        setAttribute( "text", text );
+    public void setText(String text) {
+        setAttribute("text", text);
     }
 
-
-    public void setVLink( String vLink ) {
-        setAttribute( "vLink", vLink );
+    public void setVLink(String vLink) {
+        setAttribute("vLink", vLink);
     }
 }

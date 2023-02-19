@@ -59,7 +59,6 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     @Test
     void testStateCookies() throws Exception {
         final String resourceName = "something/interesting";
@@ -73,7 +72,6 @@ class StatefulTest {
         assertNotNull(response, "No response received");
         assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
-
 
     @Test
     void testStatePreservation() throws Exception {
@@ -100,7 +98,6 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     @Test
     void testSessionPreloading() throws Exception {
         final String resourceName1 = "something/interesting/start";
@@ -120,7 +117,6 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
-
     @Test
     void testSessionAccess() throws Exception {
         final String resourceName1 = "something/interesting/start";
@@ -137,7 +133,6 @@ class StatefulTest {
         assertNotNull(sr.getSession(false), "No session was created");
         assertEquals("yellow", sr.getSession(false).getAttribute("color"), "Color attribute in session");
     }
-
 
     @Test
     void testInvocationContext() throws Exception {
@@ -168,7 +163,6 @@ class StatefulTest {
         assertEquals("color", names[0], "first name");
     }
 
-
     @Test
     void testInvocationCompletion() throws Exception {
         final String resourceName = "something/interesting";
@@ -189,7 +183,6 @@ class StatefulTest {
         assertEquals("You selected blue", response.getText(), "requested resource");
         assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
-
 
     @Test
     void testInvocationContextUpdate() throws Exception {
@@ -213,7 +206,6 @@ class StatefulTest {
         assertEquals("You posted blue", response.getText(), "requested resource");
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
-
 
     static class StatefulServlet extends HttpServlet {
         static String RESPONSE_TEXT = "the desired content\r\n";
@@ -245,15 +237,13 @@ class StatefulTest {
             req.getSession().setAttribute("color", color);
         }
 
-
         protected String getColor(HttpServletRequest req) throws ServletException {
             HttpSession session = req.getSession( /* create */ false);
-            if (session == null) return null;
+            if (session == null)
+                return null;
 
             return (String) session.getAttribute("color");
         }
 
     }
 }
-
-

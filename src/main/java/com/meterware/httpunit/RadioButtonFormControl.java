@@ -27,10 +27,9 @@ public class RadioButtonFormControl extends BooleanFormControl {
         return RADIO_BUTTON_TYPE;
     }
 
-    public RadioButtonFormControl( WebForm form, HTMLInputElementImpl element ) {
-        super( form, element );
+    public RadioButtonFormControl(WebForm form, HTMLInputElementImpl element) {
+        super(form, element);
     }
-
 
     /**
      * Returns true if only one control of this kind can have a value.
@@ -39,9 +38,7 @@ public class RadioButtonFormControl extends BooleanFormControl {
         return true;
     }
 
-
     public String getQueryValue() {
         return getValueAttribute();
     }
 }
-

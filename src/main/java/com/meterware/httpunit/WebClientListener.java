@@ -39,7 +39,6 @@ package com.meterware.httpunit;
  *
  *******************************************************************************************************************/
 
-
 /**
  * A listener for messages sent and received by a web client.
  *
@@ -51,12 +50,10 @@ public interface WebClientListener {
     /**
      * Invoked when the web client sends a request.
      */
-    public void requestSent( WebClient src, WebRequest req );
-
+    public void requestSent(WebClient src, WebRequest req);
 
     /**
      * Invoked when the web client receives a response.
      */
-    public void responseReceived( WebClient src, WebResponse resp );
+    public void responseReceived(WebClient src, WebResponse resp);
 }
-

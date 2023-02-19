@@ -25,7 +25,6 @@ import org.junit.rules.ExternalResource;
 
 /**
  * helper class for JUnit Tests of httpunit
- *
  */
 public class PseudoServerTestSupport extends ExternalResource {
     private String _hostPath;
@@ -47,11 +46,11 @@ public class PseudoServerTestSupport extends ExternalResource {
     }
 
     public void tearDownServer() {
-        if (_server != null) _server.shutDown();
+        if (_server != null)
+            _server.shutDown();
     }
 
-
-    public void mapToClasspath( String directory ) {
+    public void mapToClasspath(String directory) {
         _server.mapToClasspath(directory);
     }
 
@@ -85,8 +84,8 @@ public class PseudoServerTestSupport extends ExternalResource {
     }
 
     /**
-     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of the page
-     * use the given xml names space if it is not null
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page use the given xml names space if it is not null
      *
      * @param xmlns
      * @param pageName
@@ -101,12 +100,13 @@ public class PseudoServerTestSupport extends ExternalResource {
             preamble += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
             xmlns = " xmlns=\"" + xmlns + "\"";
         }
-        defineResource(pageName + ".html", preamble + "<html" + xmlns + ">\n<head><title>" + pageName + "</title></head>\n" +
-                "<body>\n" + body + "\n</body>\n</html>");
+        defineResource(pageName + ".html", preamble + "<html" + xmlns + ">\n<head><title>" + pageName
+                + "</title></head>\n" + "<body>\n" + body + "\n</body>\n</html>");
     }
 
     /**
-     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of the page
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page
      *
      * @param pageName
      * @param body

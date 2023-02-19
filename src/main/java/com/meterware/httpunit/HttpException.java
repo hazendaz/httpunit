@@ -23,38 +23,41 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an Http error (response code 4xx or 5xx) is detected.
+ *
  * @author Seth Ladd
  * @author Russell Gold
  **/
 public class HttpException extends RuntimeException {
 
-
-	  /**
-	   * throw a http Exception with the given responseCode
-	   * @param responseCode
-	   */
-    protected HttpException( int responseCode ) {
+    /**
+     * throw a http Exception with the given responseCode
+     *
+     * @param responseCode
+     */
+    protected HttpException(int responseCode) {
         _responseCode = responseCode;
         System.err.println(responseCode);
     }
 
     /**
      * throw a http Exception with the given responseCode and cause
+     *
      * @param responseCode
      * @param cause
      */
-    protected HttpException( int responseCode, Throwable cause ) {
-      _responseCode = responseCode;
-      _cause = cause;
+    protected HttpException(int responseCode, Throwable cause) {
+        _responseCode = responseCode;
+        _cause = cause;
     }
 
     /**
      * throw a http Exception with the given responseCode and Message and base url
+     *
      * @param responseCode
      * @param responseMessage
      * @param baseURL
      */
-    protected HttpException( int responseCode, String responseMessage, URL baseURL ) {
+    protected HttpException(int responseCode, String responseMessage, URL baseURL) {
         _responseMessage = responseMessage;
         _responseCode = responseCode;
         _url = baseURL;
@@ -62,56 +65,57 @@ public class HttpException extends RuntimeException {
 
     /**
      * throw a http Exception with the given responseCode and Message, base url and cause
+     *
      * @param responseCode
      * @param responseMessage
      * @param baseURL
      * @param cause
      */
-    protected HttpException( int responseCode, String responseMessage, URL baseURL, Throwable cause ) {
-      _responseMessage = responseMessage;
-      _responseCode = responseCode;
-      _url = baseURL;
-      _cause = cause;
+    protected HttpException(int responseCode, String responseMessage, URL baseURL, Throwable cause) {
+        _responseMessage = responseMessage;
+        _responseCode = responseCode;
+        _url = baseURL;
+        _cause = cause;
     }
 
     /**
      * get the Message for the http Exception
+     *
      * @return - the message of the Exception
      */
     public String getMessage() {
-        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append( "Error on HTTP request: " );
-        sb.append( _responseCode );
+        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("Error on HTTP request: ");
+        sb.append(_responseCode);
         if (_responseMessage != null) {
-            sb.append( " " );
-            sb.append( _responseMessage );
-            sb.append( "" );
+            sb.append(" ");
+            sb.append(_responseMessage);
+            sb.append("");
         }
         if (_url != null) {
-            sb.append( " [" );
-            sb.append( _url.toExternalForm() );
-            sb.append( "]" );
+            sb.append(" [");
+            sb.append(_url.toExternalForm());
+            sb.append("]");
         }
         return sb.toString();
     }
 
-
     /**
      * get the response Code of this http Exception
+     *
      * @return - the response Code code 4xx or 5xx
      */
     public int getResponseCode() {
         return _responseCode;
     }
 
-
     /**
      * get the response Message of this http Exception
+     *
      * @return the response message
      */
     public String getResponseMessage() {
         return _responseMessage;
     }
-
 
     // private local copies of variables
     private int _responseCode;
@@ -122,9 +126,8 @@ public class HttpException extends RuntimeException {
      * get the cause (if any)
      */
     public Throwable getCause() {
-      return _cause;
+        return _cause;
     }
-
 
     private Throwable _cause;
 
@@ -133,18 +136,20 @@ public class HttpException extends RuntimeException {
 
     /**
      * return the WebResponse associated with this Exception (if any)
+     *
      * @return
      */
     public WebResponse getResponse() {
-		return response;
-	}
+        return response;
+    }
 
-	/**
+    /**
      * add the given response to this exception
+     *
      * @param response
      */
-	public void setResponse(WebResponse response) {
-		this.response=response;
-	}
+    public void setResponse(WebResponse response) {
+        this.response = response;
+    }
 
 }

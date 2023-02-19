@@ -35,78 +35,71 @@ import org.w3c.dom.html.HTMLImageElement;
 public class WebImage extends FixedURLWebRequestSource {
 
     private HTMLImageElement _element;
-    private ParsedHTML       _parsedHTML;
+    private ParsedHTML _parsedHTML;
 
-
-    WebImage( WebResponse response, ParsedHTML parsedHTML, URL baseURL, HTMLImageElement element, FrameSelector sourceFrame, String defaultTarget, String characterSet ) {
-        super( response, element, baseURL, "src", sourceFrame, defaultTarget, characterSet );
+    WebImage(WebResponse response, ParsedHTML parsedHTML, URL baseURL, HTMLImageElement element,
+            FrameSelector sourceFrame, String defaultTarget, String characterSet) {
+        super(response, element, baseURL, "src", sourceFrame, defaultTarget, characterSet);
         _element = element;
         _parsedHTML = parsedHTML;
     }
-
 
     public String getName() {
         return _element.getName();
     }
 
-
     public String getSource() {
         return _element.getSrc();
     }
-
 
     public String getAltText() {
         return _element.getAlt();
     }
 
-
     public WebLink getLink() {
-        return _parsedHTML.getFirstMatchingLink( new HTMLElementPredicate() {
+        return _parsedHTML.getFirstMatchingLink(new HTMLElementPredicate() {
 
-            public boolean matchesCriteria( Object link, Object parentNode ) {
+            public boolean matchesCriteria(Object link, Object parentNode) {
                 for (Node parent = (Node) parentNode; parent != null; parent = parent.getParentNode()) {
-                    if (parent.equals( ((WebLink) link).getElement() )) return true;
+                    if (parent.equals(((WebLink) link).getElement()))
+                        return true;
                 }
                 return false;
             }
-        }, _element.getParentNode() );
+        }, _element.getParentNode());
     }
-
-
 
     public class Scriptable extends HTMLElementScriptable implements NamedDelegate {
 
         public Scriptable() {
-            super( WebImage.this );
+            super(WebImage.this);
         }
-
 
         public String getName() {
             return WebImage.this.getID().length() != 0 ? WebImage.this.getID() : WebImage.this.getName();
         }
 
-
-        public Object get( String propertyName ) {
-            if (propertyName.equalsIgnoreCase( "src" )) {
+        public Object get(String propertyName) {
+            if (propertyName.equalsIgnoreCase("src")) {
                 return getSource();
-            } else if(propertyName.equalsIgnoreCase( "name" )) {
+            } else if (propertyName.equalsIgnoreCase("name")) {
                 return getName();
             } else {
-               return super.get( propertyName );
+                return super.get(propertyName);
             }
         }
 
-
-        public void set( String propertyName, Object value ) {
-            if (propertyName.equalsIgnoreCase( "src" )) {
-                if (value != null) _element.setSrc( value.toString() );
+        public void set(String propertyName, Object value) {
+            if (propertyName.equalsIgnoreCase("src")) {
+                if (value != null)
+                    _element.setSrc(value.toString());
             } else {
-                super.set( propertyName, value );
+                super.set(propertyName, value);
             }
         }
     }
 
-//---------------------------------- WebRequestSource methods ------------------------------------------
+    // ---------------------------------- WebRequestSource methods ------------------------------------------
 
     public ScriptableDelegate newScriptable() {
         return new Scriptable();

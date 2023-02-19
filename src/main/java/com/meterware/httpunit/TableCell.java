@@ -30,14 +30,12 @@ public class TableCell extends BlockElement {
 
     private HTMLTableCellElement _element;
 
-
     /**
      * Returns the number of columns spanned by this cell.
      **/
     public int getColSpan() {
         return _element.getColSpan();
     }
-
 
     /**
      * Returns the number of rows spanned by this cell.
@@ -46,26 +44,21 @@ public class TableCell extends BlockElement {
         return _element.getRowSpan();
     }
 
-
     /**
      * Returns the text value of this cell.
+     *
      * @deprecated as of 1.6, use #getText()
      */
     public String asText() {
         return getText();
     }
 
+    // ---------------------------------------- package methods -----------------------------------------
 
-
-
-//---------------------------------------- package methods -----------------------------------------
-
-
-    TableCell( WebResponse response, FrameSelector frame, HTMLTableCellElement element, URL url, String parentTarget, String characterSet ) {
-        super( response, frame, url, parentTarget, element, characterSet );
+    TableCell(WebResponse response, FrameSelector frame, HTMLTableCellElement element, URL url, String parentTarget,
+            String characterSet) {
+        super(response, frame, url, parentTarget, element, characterSet);
         _element = element;
     }
 
-
 }
-

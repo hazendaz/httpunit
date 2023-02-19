@@ -60,18 +60,18 @@ class EventHandlingTest extends HttpUnitTest {
             onLoad = " onload='" + onLoad + "'";
         }
         defineResource(name + ".html",
-                "<html>\n\t<head>\n\t\t<title>" + title + "</title>\n" +
-                        "\t\t<script type='text/javascript'>\n" +
-                        javaScript +
-                        "\t\t</script>\n\t</head>\n" +
-                        "\t<body" + onLoad + ">\n\t\t" + content + "\n\t</body>\n</html>");
+                "<html>\n\t<head>\n\t\t<title>" + title + "</title>\n" + "\t\t<script type='text/javascript'>\n"
+                        + javaScript + "\t\t</script>\n\t</head>\n" + "\t<body" + onLoad + ">\n\t\t" + content
+                        + "\n\t</body>\n</html>");
     }
 
     /**
      * get the response for the resource with the given name
      *
      * @param name
+     *
      * @return the response
+     *
      * @throws SAXException
      * @throws IOException
      */
@@ -81,19 +81,16 @@ class EventHandlingTest extends HttpUnitTest {
     }
 
     /**
-     * test for [ 1163753 ] partial patch for bug 771335 (DOM2 Events support) by  Rafael Krzewski
+     * test for [ 1163753 ] partial patch for bug 771335 (DOM2 Events support) by Rafael Krzewski
      *
      * @throws SAXException
      * @throws IOException
      */
     @Test
     void testSimpleEventHandler() throws IOException, SAXException {
-        String javaScript =
-                "			function testEventHandler() {\n" +
-                        "				if (document.addEventListener) {\n" +
-                        "					alert('found addEventListener');\n" +
-                        "				}\n" +
-                        "			}\n";
+        String javaScript = "			function testEventHandler() {\n"
+                + "				if (document.addEventListener) {\n"
+                + "					alert('found addEventListener');\n" + "				}\n" + "			}\n";
         String onLoad = "testEventHandler()";
         String content = "";
         String name = "simple1";

@@ -22,8 +22,8 @@ package com.meterware.httpunit;
 import com.meterware.httpunit.parsing.HTMLParserListener;
 
 /**
- * This interface represents a listener which can receive notification of errors and warnings during the parsing
- * of an HTML page.
+ * This interface represents a listener which can receive notification of errors and warnings during the parsing of an
+ * HTML page.
  *
  * @deprecated as of 1.5.2, use HTMLParserListener
  *

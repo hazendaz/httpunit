@@ -40,8 +40,7 @@ import org.junit.jupiter.api.Test;
 class HttpsProtocolSupportTest {
 
     /**
-     * test the available HttpsProtocolProviders
-     * are available
+     * test the available HttpsProtocolProviders are available
      */
     @Test
     void testProvider() throws Exception {

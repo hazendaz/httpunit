@@ -29,89 +29,81 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFormElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLControl extends HTMLElementImpl {
 
     public boolean getDisabled() {
-        return getBooleanAttribute( "disabled" );
+        return getBooleanAttribute("disabled");
     }
-
 
     public HTMLFormElement getForm() {
         Node parent = getParentNode();
-        while (parent != null && !("form".equalsIgnoreCase( parent.getNodeName() ))) parent = parent.getParentNode();
-        if (parent != null) return (HTMLFormElement) parent;
+        while (parent != null && !("form".equalsIgnoreCase(parent.getNodeName())))
+            parent = parent.getParentNode();
+        if (parent != null)
+            return (HTMLFormElement) parent;
 
         for (Iterator here = preOrderIterator(); here.hasNext();) {
             Object o = here.next();
-            if (o instanceof HTMLFormElement) return getPreviousForm( (HTMLFormElement) o );
+            if (o instanceof HTMLFormElement)
+                return getPreviousForm((HTMLFormElement) o);
         }
         return getLastFormInDocument();
     }
 
-
-    private HTMLFormElement getPreviousForm( HTMLFormElement nextForm ) {
+    private HTMLFormElement getPreviousForm(HTMLFormElement nextForm) {
         HTMLCollection forms = getHtmlDocument().getForms();
         for (int i = 0; i < forms.getLength(); i++) {
-            if (nextForm == forms.item( i )) return i == 0 ? null : (HTMLFormElement) forms.item( i-1 );
+            if (nextForm == forms.item(i))
+                return i == 0 ? null : (HTMLFormElement) forms.item(i - 1);
         }
         return null;
     }
 
-
     private HTMLFormElement getLastFormInDocument() {
         HTMLCollection forms = getHtmlDocument().getForms();
-        return forms.getLength() == 0 ? null : (HTMLFormElement) forms.item( forms.getLength()-1 );
+        return forms.getLength() == 0 ? null : (HTMLFormElement) forms.item(forms.getLength() - 1);
     }
-
 
     public String getName() {
-        return getAttributeWithNoDefault( "name" );
+        return getAttributeWithNoDefault("name");
     }
-
 
     public boolean getReadOnly() {
-        return getBooleanAttribute( "readonly" );
+        return getBooleanAttribute("readonly");
     }
-
 
     public int getTabIndex() {
-        return getIntegerAttribute( "tabindex" );
+        return getIntegerAttribute("tabindex");
     }
-
 
     public String getType() {
-        return getAttributeWithDefault( "type", "text" );
+        return getAttributeWithDefault("type", "text");
     }
 
-
-    public void setDisabled( boolean disabled ) {
-        setAttribute( "disabled", disabled );
+    public void setDisabled(boolean disabled) {
+        setAttribute("disabled", disabled);
     }
 
-
-    public void setName( String name ) {
-        setAttribute( "name", name );
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 
-
-    public void setReadOnly( boolean readOnly ) {
-        setAttribute( "readonly", readOnly );
+    public void setReadOnly(boolean readOnly) {
+        setAttribute("readonly", readOnly);
     }
 
-
-    public void setTabIndex( int tabIndex ) {
-        setAttribute( "tabindex", tabIndex );
+    public void setTabIndex(int tabIndex) {
+        setAttribute("tabindex", tabIndex);
     }
 
+    public void reset() {
+    }
 
-    public void reset() {}
+    void addValues(ParameterProcessor processor, String characterSet) throws IOException {
+    }
 
-
-    void addValues( ParameterProcessor processor, String characterSet ) throws IOException {}
-
-
-    public void silenceSubmitButton() {}
+    public void silenceSubmitButton() {
+    }
 }

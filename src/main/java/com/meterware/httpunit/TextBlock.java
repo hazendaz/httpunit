@@ -28,6 +28,7 @@ import org.w3c.dom.Node;
  * A class which represents a block of text in a web page. Experimental.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ *
  * @since 1.6
  **/
 public class TextBlock extends BlockElement {
@@ -38,43 +39,40 @@ public class TextBlock extends BlockElement {
     /** Predicate to match the tag associated with a block (case insensitive). **/
     public final static HTMLElementPredicate MATCH_TAG;
 
-
-    public TextBlock( WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode, String characterSet ) {
-        super( response, frame, baseURL, baseTarget, rootNode, characterSet );
+    public TextBlock(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
+            String characterSet) {
+        super(response, frame, baseURL, baseTarget, rootNode, characterSet);
     }
-
 
     /**
      * Returns any lists embedded in this text block.
      */
     public WebList[] getLists() {
-        return (WebList[]) (_lists.toArray( new WebList[ _lists.size() ] ) );
+        return (WebList[]) (_lists.toArray(new WebList[_lists.size()]));
     }
 
-
-    void addList( WebList webList ) {
-        _lists.add( webList );
+    void addList(WebList webList) {
+        _lists.add(webList);
     }
 
-
-    String[] getFormats( int characterPosition ) {
+    String[] getFormats(int characterPosition) {
         return null;
     }
 
-
     static {
         MATCH_CLASS = new HTMLElementPredicate() {
-            public boolean matchesCriteria( Object htmlElement, Object criteria ) {
-                if (criteria == null) criteria = "";
-                return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase( criteria.toString() );
+            public boolean matchesCriteria(Object htmlElement, Object criteria) {
+                if (criteria == null)
+                    criteria = "";
+                return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase(criteria.toString());
             };
         };
 
-
         MATCH_TAG = new HTMLElementPredicate() {
-            public boolean matchesCriteria( Object htmlElement, Object criteria ) {
-                if (criteria == null) criteria = "";
-                return criteria.toString().equalsIgnoreCase( ((BlockElement) htmlElement).getTagName() );
+            public boolean matchesCriteria(Object htmlElement, Object criteria) {
+                if (criteria == null)
+                    criteria = "";
+                return criteria.toString().equalsIgnoreCase(((BlockElement) htmlElement).getTagName());
             };
         };
     }

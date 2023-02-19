@@ -22,102 +22,87 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.*;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class AttrImpl extends NodeImpl implements Attr {
 
-    private String  _name;
-    private String  _value = "";
+    private String _name;
+    private String _value = "";
     private boolean _specified = false;
     private Element _ownerElement;
 
-
-    static AttrImpl createAttribute( DocumentImpl owner, String name ) {
+    static AttrImpl createAttribute(DocumentImpl owner, String name) {
         AttrImpl attribute = new AttrImpl();
-        attribute.initialize( owner, name );
+        attribute.initialize(owner, name);
         return attribute;
     }
 
-
-    public static Attr createAttribute( DocumentImpl owner, String namespaceURI, String qualifiedName ) {
+    public static Attr createAttribute(DocumentImpl owner, String namespaceURI, String qualifiedName) {
         AttrImpl attribute = new AttrImpl();
-        attribute.initialize( owner, qualifiedName );
+        attribute.initialize(owner, qualifiedName);
         return attribute;
     }
 
-
-    protected void initialize( DocumentImpl owner, String name ) {
-        super.initialize( owner );
+    protected void initialize(DocumentImpl owner, String name) {
+        super.initialize(owner);
         _name = name;
     }
-
 
     public String getNodeName() {
         return getName();
     }
 
-
     public String getNodeValue() throws DOMException {
         return getValue();
     }
 
-
-    public void setNodeValue( String nodeValue ) throws DOMException {
-        setValue( nodeValue );
+    public void setNodeValue(String nodeValue) throws DOMException {
+        setValue(nodeValue);
     }
-
 
     public short getNodeType() {
         return ATTRIBUTE_NODE;
     }
 
-
     public String getName() {
         return _name;
     }
-
 
     public boolean getSpecified() {
         return _specified;
     }
 
-
     public String getValue() {
         return _value;
     }
 
-
-    public void setValue( String value ) throws DOMException {
+    public void setValue(String value) throws DOMException {
         _value = value;
         _specified = true;
     }
-
 
     public Element getOwnerElement() {
         return _ownerElement;
     }
 
-
-    void setOwnerElement( Element ownerElement ) {
+    void setOwnerElement(Element ownerElement) {
         _ownerElement = ownerElement;
     }
 
-
-    public static Node importNode( Document document, Attr attr ) {
-        Attr attribute = document.createAttributeNS( attr.getNamespaceURI(), attr.getName() );
-        attribute.setValue( attr.getValue() );
+    public static Node importNode(Document document, Attr attr) {
+        Attr attribute = document.createAttributeNS(attr.getNamespaceURI(), attr.getName());
+        attribute.setValue(attr.getValue());
         return attribute;
     }
 
-//------------------------------------- DOM level 3 methods ------------------------------------------------------------
+    // ------------------------------------- DOM level 3 methods
+    // ------------------------------------------------------------
 
     public TypeInfo getSchemaTypeInfo() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
     public boolean isId() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 }

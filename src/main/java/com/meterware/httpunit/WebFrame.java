@@ -33,53 +33,43 @@ class WebFrame extends HTMLElementBase {
     private FrameSelector _selector;
 
     private WebResponse _response;
-    private Node        _element;
+    private Node _element;
 
-    private URL         _baseURL;
-
+    private URL _baseURL;
 
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();
     }
 
+    // ---------------------------------------- package methods -----------------------------------------
 
-//---------------------------------------- package methods -----------------------------------------
-
-
-    WebFrame( WebResponse response, URL baseURL, Node frameNode, FrameSelector parentFrame ) {
-        super( frameNode );
+    WebFrame(WebResponse response, URL baseURL, Node frameNode, FrameSelector parentFrame) {
+        super(frameNode);
         _response = response;
         _element = frameNode;
         _baseURL = baseURL;
-        _selector = getFrameSelector( parentFrame );
+        _selector = getFrameSelector(parentFrame);
     }
-
 
     String getFrameName() {
         return _selector.getName();
     }
 
-
     FrameSelector getSelector() {
         return _selector;
     }
 
-
-    private FrameSelector getFrameSelector( FrameSelector parentFrame ) {
-        return FrameHolder.newNestedFrame( parentFrame, super.getName() );
+    private FrameSelector getFrameSelector(FrameSelector parentFrame) {
+        return FrameHolder.newNestedFrame(parentFrame, super.getName());
     }
-
 
     WebRequest getInitialRequest() {
-        return new GetMethodWebRequest( _baseURL,
-                                        HttpUnitUtils.trimFragment( NodeUtils.getNodeAttribute( _element, "src" ) ),
-                                        _selector );
+        return new GetMethodWebRequest(_baseURL,
+                HttpUnitUtils.trimFragment(NodeUtils.getNodeAttribute(_element, "src")), _selector);
     }
 
-
     boolean hasInitialRequest() {
-        return NodeUtils.getNodeAttribute( _element, "src" ).length() > 0;
+        return NodeUtils.getNodeAttribute(_element, "src").length() > 0;
     }
 
 }
-

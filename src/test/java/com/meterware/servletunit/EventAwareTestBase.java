@@ -30,39 +30,33 @@ class EventAwareTestBase {
 
     private static ArrayList _events;
 
-
     protected static void expectEvent(String eventName, Class listenerClass) {
         _events.add(new EventData(eventName, listenerClass));
     }
 
-
     protected static void expectEvent(String eventName, Class listenerClass, EventVerifier verifier) {
         _events.add(new EventData(eventName, listenerClass, verifier));
     }
-
 
     protected static void sendEvent(String eventName, Object listener, Object eventObject) {
         assertFalse(_events.isEmpty(), "Unexpected event: " + EventData.toEventString(eventName, listener.getClass()));
         ((EventData) _events.remove(0)).verifyEvent(eventName, listener, eventObject);
     }
 
-
     protected static void verifyEvents() {
-        if (!_events.isEmpty()) fail("Did not receive event " + _events.get(0));
+        if (!_events.isEmpty())
+            fail("Did not receive event " + _events.get(0));
     }
-
 
     protected static void clearEvents() {
         _events = new ArrayList();
     }
-
 
     interface EventVerifier {
         public void verifyEvent(String eventLabel, Object eventObject);
     }
 
 }
-
 
 class EventData {
     private String _eventName;
@@ -73,11 +67,9 @@ class EventData {
         return eventName + " from " + listenerClass.getName();
     }
 
-
     EventData(String eventName, Class listenerClass) {
         this(eventName, listenerClass, null);
     }
-
 
     EventData(String eventName, Class listenerClass, EventAwareTestBase.EventVerifier verifier) {
         _eventName = eventName;
@@ -85,12 +77,11 @@ class EventData {
         _verifier = verifier;
     }
 
-
     void verifyEvent(String eventName, Object listener, Object event) {
         assertEquals(toString(), toEventString(eventName, listener.getClass()), "Event");
-        if (_verifier != null) _verifier.verifyEvent(toString(), event);
+        if (_verifier != null)
+            _verifier.verifyEvent(toString(), event);
     }
-
 
     public String toString() {
         return toEventString(_eventName, _listenerClass);

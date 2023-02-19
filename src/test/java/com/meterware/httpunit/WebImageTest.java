@@ -31,15 +31,11 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 public class WebImageTest extends HttpUnitTest {
 
-
     @Test
     void testGetImages() throws Exception {
         defineResource("GetImagePage.html",
-                "<html><head><title>A Sample Page</title></head>\n" +
-                        "<body><img src='sample.jpg'>\n" +
-                        "<IMG SRC='another.png'>" +
-                        " and <img src='onemore.gif' alt='one'>\n" +
-                        "</body></html>\n");
+                "<html><head><title>A Sample Page</title></head>\n" + "<body><img src='sample.jpg'>\n"
+                        + "<IMG SRC='another.png'>" + " and <img src='onemore.gif' alt='one'>\n" + "</body></html>\n");
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/GetImagePage.html");
         WebResponse simplePage = wc.getResponse(request);
@@ -52,30 +48,28 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1432236 ] Downloading gif images uses up sockets
-     * by Sir Runcible Spoon
+     * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon
      *
      * @throws Exception
      */
     @Test
     void testGetImageManyTimes() throws Exception {
         // try this for different numbers of images
-        int testCounts[] = {10, 100
-        //,1000    // approx 2.5 secs
-        //,2000    // approx 15  secs
-        //,3000    // approx 47 secs
-        //,4000    // approx 90 secs
-        //,5000    // approx 126 secs
-        // ,10000   // approx 426 secs
-        //,100000  // let us know if you get this running ...
+        int testCounts[] = { 10, 100
+                // ,1000 // approx 2.5 secs
+                // ,2000 // approx 15 secs
+                // ,3000 // approx 47 secs
+                // ,4000 // approx 90 secs
+                // ,5000 // approx 126 secs
+                // ,10000 // approx 426 secs
+                // ,100000 // let us know if you get this running ...
         };
         // try
-        for (int testIndex = 0;testIndex < testCounts.length;testIndex++) {
+        for (int testIndex = 0; testIndex < testCounts.length; testIndex++) {
             int MANY_IMAGES_COUNT = testCounts[testIndex];
             // System.out.println(""+(testIndex+1)+". test many images with "+MANY_IMAGES_COUNT+" image links");
-            String html = "<html><head><title>A page with many images</title></head>\n" +
-                    "<body>\n";
-            for (int i = 0;i < MANY_IMAGES_COUNT;i++) {
+            String html = "<html><head><title>A page with many images</title></head>\n" + "<body>\n";
+            for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
                 html += "<img src='image" + i + ".gif' alt='image#" + i + "'>\n";
             }
             html += "</body></html>\n";
@@ -84,7 +78,7 @@ public class WebImageTest extends HttpUnitTest {
             WebRequest request = new GetMethodWebRequest(getHostPath() + "/manyImages" + testIndex + ".html");
             WebResponse manyImagesPage = wc.getResponse(request);
             assertEquals(MANY_IMAGES_COUNT, manyImagesPage.getImages().length, "Number of images");
-            for (int i = 0;i < MANY_IMAGES_COUNT;i++) {
+            for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
                 assertEquals("image" + i + ".gif", manyImagesPage.getImages()[i].getSource(), "image source #" + i);
             } // for
         } // for
@@ -92,11 +86,9 @@ public class WebImageTest extends HttpUnitTest {
 
     public static final int MAX_GIFTESTCOUNT = 15000;
 
-
     /**
-     * test for bug report [ 1432236 ] Downloading gif images uses up sockets
-     * by Sir Runcible Spoon and rlindsjo
-     * as responded in the sourceforge tracker by himself
+     * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon and rlindsjo as
+     * responded in the sourceforge tracker by himself
      */
     public void dotestGetImageManyTimes(WebConversation wc, String url) throws Exception {
         String delim = "";
@@ -118,7 +110,8 @@ public class WebImageTest extends HttpUnitTest {
                 // Enable line below to not get too many open files / sockets
                 // resp.getInputStream().close();
             } catch (java.net.BindException jnbe) {
-                String msg = "There should be no exception for " + url + " but there is as BindException '" + jnbe.getMessage() + "' after " + i + " gif image accesses";
+                String msg = "There should be no exception for " + url + " but there is as BindException '"
+                        + jnbe.getMessage() + "' after " + i + " gif image accesses";
                 // System.out.println(msg);
                 assertTrue(false, msg);
             }
@@ -127,19 +120,17 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1432236 ] Downloading gif images uses up sockets
-     * by Sir Runcible Spoon
-     * as responded by himself and rlindsjo
+     * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon as responded by
+     * himself and rlindsjo
      *
      * @throws Exception
      */
     public void xtestGetImageManyTimes2() throws Exception {
         WebConversation wc = new WebConversation();
-        byte[] gif1x1 = {0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, //  GIF89a...
-                (byte) 0xF0, 0x00, 0x00, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x21,
-                (byte) 0xF9, 0x04, 0x01, 0x00, 0x00, 0x00, 0x00, 0x2C, 0x00, 0x00,
-                0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44,
-                0x01, 0x00, 0x3B};
+        byte[] gif1x1 = { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, // GIF89a...
+                (byte) 0xF0, 0x00, 0x00, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x21, (byte) 0xF9, 0x04, 0x01, 0x00, 0x00,
+                0x00, 0x00, 0x2C, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44, 0x01, 0x00,
+                0x3B };
         defineResource("image", gif1x1, "image/gif");
         // slow version of test with internal image definition
         // dotestGetImageManyTimes(wc,getHostPath() + "/image");
@@ -150,11 +141,9 @@ public class WebImageTest extends HttpUnitTest {
     @Test
     void testFindImageAndLink() throws Exception {
         defineResource("SimplePage.html",
-                "<html><head><title>A Sample Page</title></head>\n" +
-                        "<body><img src='sample.jpg'>\n" +
-                        "<a href='somewhere.htm'><IMG SRC='another.png'></a>" +
-                        " and <img src='onemore.gif'>\n" +
-                        "</body></html>\n");
+                "<html><head><title>A Sample Page</title></head>\n" + "<body><img src='sample.jpg'>\n"
+                        + "<a href='somewhere.htm'><IMG SRC='another.png'></a>" + " and <img src='onemore.gif'>\n"
+                        + "</body></html>\n");
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
@@ -172,21 +161,16 @@ public class WebImageTest extends HttpUnitTest {
         assertEquals("somewhere.htm", link.getURLString(), "Link URL");
     }
 
-
     @Test
     void testImageRequest() throws Exception {
         defineResource("grouped/SimplePage.html",
-                "<html><head><title>A Sample Page</title></head>\n" +
-                        "<body><img name='this_one' src='sample.jpg'>\n" +
-                        "<IMG SRC='another.png'>" +
-                        " and <img src='onemore.gif' alt='one'>\n" +
-                        "</body></html>\n");
+                "<html><head><title>A Sample Page</title></head>\n" + "<body><img name='this_one' src='sample.jpg'>\n"
+                        + "<IMG SRC='another.png'>" + " and <img src='onemore.gif' alt='one'>\n" + "</body></html>\n");
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/grouped/SimplePage.html");
         WebResponse simplePage = wc.getResponse(request);
         WebRequest imageRequest = simplePage.getImageWithName("this_one").getRequest();
         assertEquals(getHostPath() + "/grouped/sample.jpg", imageRequest.getURL().toExternalForm(), "Image URL");
     }
-
 
 }

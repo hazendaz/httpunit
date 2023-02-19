@@ -24,7 +24,6 @@ import com.meterware.pseudoserver.HttpUserAgentTest;
 
 import org.junit.jupiter.api.BeforeEach;
 
-
 /**
  * a base class for HttpUnit regression tests.
  *
@@ -41,58 +40,58 @@ public abstract class HttpUnitTest extends HttpUserAgentTest {
         HTMLParserFactory.reset();
     }
 
-
     /**
      * handling of tests that are temporarily disabled
      */
-    public static boolean WARN_DISABLED=true;
-    public static int disabledIndex=0;
-    public static boolean firstWarn=true;
+    public static boolean WARN_DISABLED = true;
+    public static int disabledIndex = 0;
+    public static boolean firstWarn = true;
 
     /**
      * return a left padded string
+     *
      * @param s
      * @param pad
+     *
      * @return
      */
     private static String padLeft(String s, int pad) {
-    	String result=s;
-    	String space="                                                         ";
-    	if (result.length()>pad) {
-    		result=result.substring(0,pad);
-    	} else if (result.length()<pad) {
-    		result=space.substring(0,pad-result.length())+result;
-    	}
-    	return result;
+        String result = s;
+        String space = "                                                         ";
+        if (result.length() > pad) {
+            result = result.substring(0, pad);
+        } else if (result.length() < pad) {
+            result = space.substring(0, pad - result.length()) + result;
+        }
+        return result;
     }
-		public static String warnDelim="";
 
+    public static String warnDelim = "";
 
     /**
      * show a warning for disabled Tests
+     *
      * @param testName
      * @param comment
      */
-    public static void warnDisabled(String testName,String priority,int urgency,String comment) {
-    	if (WARN_DISABLED) {
-    		if (firstWarn) {
-    			firstWarn=false;
-    			System.err.println("\n The following tests are not active - the features tested are not part of the current release:");
-    			System.err.println(" #  |        testname               | priority | urgency | reason  ");
-    			System.err.println("----+-------------------------------+----------+---------+----------------------------------------");
-    		}
-    		disabledIndex++;
-    		System.err.println(warnDelim+padLeft(""+disabledIndex,3)+
-    				" | "+padLeft(testName,29)+
-    				" | "+padLeft(priority, 8)+
-    				" | "+padLeft(""+urgency, 7)+
-    				" | "+comment);
-    	}
+    public static void warnDisabled(String testName, String priority, int urgency, String comment) {
+        if (WARN_DISABLED) {
+            if (firstWarn) {
+                firstWarn = false;
+                System.err.println(
+                        "\n The following tests are not active - the features tested are not part of the current release:");
+                System.err.println(" #  |        testname               | priority | urgency | reason  ");
+                System.err.println(
+                        "----+-------------------------------+----------+---------+----------------------------------------");
+            }
+            disabledIndex++;
+            System.err.println(warnDelim + padLeft("" + disabledIndex, 3) + " | " + padLeft(testName, 29) + " | "
+                    + padLeft(priority, 8) + " | " + padLeft("" + urgency, 7) + " | " + comment);
+        }
     }
 
     static {
         new WebConversation();
     }
-
 
 }

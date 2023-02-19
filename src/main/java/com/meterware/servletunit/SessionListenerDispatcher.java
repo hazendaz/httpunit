@@ -22,23 +22,18 @@ package com.meterware.servletunit;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 interface SessionListenerDispatcher {
 
-    void sendSessionCreated( HttpSession session );
+    void sendSessionCreated(HttpSession session);
 
+    void sendSessionDestroyed(HttpSession session);
 
-    void sendSessionDestroyed( HttpSession session );
+    void sendAttributeAdded(HttpSession session, String name, Object value);
 
+    void sendAttributeReplaced(HttpSession session, String name, Object oldValue);
 
-    void sendAttributeAdded( HttpSession session, String name, Object value );
-
-
-    void sendAttributeReplaced( HttpSession session, String name, Object oldValue );
-
-
-    void sendAttributeRemoved( HttpSession session, String name, Object oldValue );
+    void sendAttributeRemoved(HttpSession session, String name, Object oldValue);
 
 }

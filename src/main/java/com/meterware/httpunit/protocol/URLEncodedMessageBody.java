@@ -30,37 +30,32 @@ import java.nio.charset.StandardCharsets;
  **/
 class URLEncodedMessageBody extends MessageBody {
 
-
-    URLEncodedMessageBody( String characterSet ) {
-        super( characterSet );
+    URLEncodedMessageBody(String characterSet) {
+        super(characterSet);
     }
-
 
     /**
      * Returns the content type of this message body.
      **/
     public String getContentType() {
-        return "application/x-www-form-urlencoded" +
-                  (!HttpUnitOptions.isPostIncludesCharset() ? ""
-                                                            : "; charset=" + getCharacterSet());
+        return "application/x-www-form-urlencoded"
+                + (!HttpUnitOptions.isPostIncludesCharset() ? "" : "; charset=" + getCharacterSet());
     }
-
 
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
-    public void writeTo( OutputStream outputStream, ParameterCollection parameters ) throws IOException {
-        outputStream.write( getParameterString( parameters ).getBytes(StandardCharsets.UTF_8) );
+    public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
+        outputStream.write(getParameterString(parameters).getBytes(StandardCharsets.UTF_8));
     }
 
-
-    private String getParameterString( ParameterCollection parameters ) {
+    private String getParameterString(ParameterCollection parameters) {
         try {
             URLEncodedString encoder = new URLEncodedString();
-            parameters.recordParameters( encoder );
+            parameters.recordParameters(encoder);
             return encoder.getString();
         } catch (IOException e) {
-            throw new RuntimeException( "Programming error: " + e );   // should never happen
+            throw new RuntimeException("Programming error: " + e); // should never happen
         }
     }
 }

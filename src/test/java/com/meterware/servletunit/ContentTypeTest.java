@@ -19,6 +19,7 @@
  */
 package com.meterware.servletunit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * *****************************************************************************************************************
  *
@@ -42,7 +43,6 @@ package com.meterware.servletunit;
  * *****************************************************************************************************************
  */
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebClient;
@@ -61,42 +61,35 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly
- * by Kevin Hunter
- * @author wf
+ * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly by Kevin Hunter
  *
+ * @author wf
  */
-public class ContentTypeTest
-{
+public class ContentTypeTest {
     private ServletRunner runner;
 
-    public ContentTypeTest()
-    {
+    public ContentTypeTest() {
     }
 
     @BeforeEach
-    void setUp()
-    {
+    void setUp() {
         runner = new ServletRunner();
         runner.registerServlet("/test1", TestServlet1.class.getName());
         runner.registerServlet("/test2", TestServlet2.class.getName());
     }
 
     @AfterEach
-    void tearDown()
-    {
+    void tearDown() {
         runner.shutDown();
     }
 
     /*
-     * This test case demonstrates that ServletUnit incorrectly replaces the
-     * content type specified by the servlet with one of its own.
-     * (Expected behavior would be that ServletUnit would not alter the
-     * response coming back from the servlet under test.)
+     * This test case demonstrates that ServletUnit incorrectly replaces the content type specified by the servlet with
+     * one of its own. (Expected behavior would be that ServletUnit would not alter the response coming back from the
+     * servlet under test.)
      */
     @Test
-    void testProvidedContentTypeOverwritten() throws Exception
-    {
+    void testProvidedContentTypeOverwritten() throws Exception {
         WebClient client = runner.newClient();
         WebRequest request = new GetMethodWebRequest("http://localhost/test1");
         WebResponse response = client.getResponse(request);
@@ -108,21 +101,16 @@ public class ContentTypeTest
     }
 
     /*
-     * This servlet returns a simple XML document, with Content-Type set
-     * to "text/xml"
+     * This servlet returns a simple XML document, with Content-Type set to "text/xml"
      */
-    public static class TestServlet1 extends HttpServlet
-    {
+    public static class TestServlet1 extends HttpServlet {
         private static final long serialVersionUID = 5434730264615105319L;
 
-        public TestServlet1()
-        {
+        public TestServlet1() {
         }
 
         @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException
-        {
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setStatus(200);
             resp.addHeader("Content-Type", "text/xml");
             resp.setContentLength(7);
@@ -131,14 +119,12 @@ public class ContentTypeTest
     }
 
     /*
-     * This test case demonstrates that ServletUnit incorrectly provides
-     * a content type when the servlet under test doesn't provide one.
-     * (Expected behavior would be that ServletUnit would not alter the
-     * response coming back from the servlet under test.)
+     * This test case demonstrates that ServletUnit incorrectly provides a content type when the servlet under test
+     * doesn't provide one. (Expected behavior would be that ServletUnit would not alter the response coming back from
+     * the servlet under test.)
      */
     @Test
-    void testContentProvidedWhenNoneSpecified() throws Exception
-    {
+    void testContentProvidedWhenNoneSpecified() throws Exception {
         WebClient client = runner.newClient();
         WebRequest request = new GetMethodWebRequest("http://localhost/test2");
         WebResponse response = client.getResponse(request);
@@ -155,25 +141,19 @@ public class ContentTypeTest
     }
 
     /*
-     * This servlet returns a simple XML document, but omits the
-     * Content-Type header.
+     * This servlet returns a simple XML document, but omits the Content-Type header.
      */
-    public static class TestServlet2 extends HttpServlet
-    {
+    public static class TestServlet2 extends HttpServlet {
         private static final long serialVersionUID = 5434730264615105319L;
 
-        public TestServlet2()
-        {
+        public TestServlet2() {
         }
 
         @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException
-        {
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setStatus(200);
             resp.setContentLength(7);
             resp.getWriter().write("<test/>");
         }
     }
 }
-

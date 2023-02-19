@@ -36,173 +36,157 @@ import org.w3c.dom.Node;
 abstract class FixedURLWebRequestSource extends WebRequestSource {
 
     private static final String[] NO_VALUES = new String[0];
-    private Map       _presetParameterMap;
+    private Map _presetParameterMap;
     private ArrayList _presetParameterList;
-    private String    _characterSet;
+    private String _characterSet;
 
-
-    public FixedURLWebRequestSource( WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame, String defaultTarget, String characterSet ) {
-        super( response, node, baseURL, attribute, frame, defaultTarget );
+    public FixedURLWebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
+            String defaultTarget, String characterSet) {
+        super(response, node, baseURL, attribute, frame, defaultTarget);
         _characterSet = characterSet;
     }
 
-
-//------------------------------------------- WebRequestSource methods -------------------------------------------------
-
+    // ------------------------------------------- WebRequestSource methods
+    // -------------------------------------------------
 
     /**
      * Creates and returns a web request which will simulate clicking on this link.
      **/
     public WebRequest getRequest() {
-        return new GetMethodWebRequest( this );
+        return new GetMethodWebRequest(this);
     }
-
 
     /**
      * Returns an array containing the names of any parameters defined as part of this link's URL.
      **/
     public String[] getParameterNames() {
-        ArrayList parameterNames = new ArrayList( getPresetParameterMap().keySet() );
-        return (String[]) parameterNames.toArray( new String[ parameterNames.size() ] );
+        ArrayList parameterNames = new ArrayList(getPresetParameterMap().keySet());
+        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
     }
-
 
     /**
      * Returns the multiple default values of the named parameter.
      **/
-    public String[] getParameterValues( String name ) {
-        final String[] values = (String[]) getPresetParameterMap().get( name );
+    public String[] getParameterValues(String name) {
+        final String[] values = (String[]) getPresetParameterMap().get(name);
         return values == null ? NO_VALUES : values;
     }
 
-
-    protected void addPresetParameter( String name, String value ) {
-        _presetParameterMap.put( name, HttpUnitUtils.withNewValue( (String[]) _presetParameterMap.get( name ), value ) );
-        _presetParameterList.add( new PresetParameter( name, value ) );
+    protected void addPresetParameter(String name, String value) {
+        _presetParameterMap.put(name, HttpUnitUtils.withNewValue((String[]) _presetParameterMap.get(name), value));
+        _presetParameterList.add(new PresetParameter(name, value));
     }
-
 
     protected String getEmptyParameterValue() {
         return "";
     }
 
-
-    protected void setDestination( String destination ) {
-        super.setDestination( destination );
+    protected void setDestination(String destination) {
+        super.setDestination(destination);
         _presetParameterList = null;
         _presetParameterMap = null;
     }
 
-
-//------------------------------------------- ParameterHolder methods --------------------------------------------------
-
+    // ------------------------------------------- ParameterHolder methods
+    // --------------------------------------------------
 
     /**
      * Specifies the position at which an image button (if any) was clicked.
      **/
-    void selectImageButtonPosition( SubmitButton imageButton, int x, int y ) {
+    void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
         throw new IllegalNonFormParametersRequest();
     }
 
-
     /**
-     * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter processor.\
-     * These parameters always go on the URL, no matter what encoding method is used.
+     * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter
+     * processor.\ These parameters always go on the URL, no matter what encoding method is used.
      **/
 
-    void recordPredefinedParameters( ParameterProcessor processor ) throws IOException {
+    void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
     }
-
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
-    public void recordParameters( ParameterProcessor processor ) throws IOException {
+    public void recordParameters(ParameterProcessor processor) throws IOException {
         Iterator i = getPresetParameterList().iterator();
         while (i.hasNext()) {
             PresetParameter o = (PresetParameter) i.next();
-            processor.addParameter( o.getName(), o.getValue(), getCharacterSet() );
-         }
+            processor.addParameter(o.getName(), o.getValue(), getCharacterSet());
+        }
     }
-
 
     /**
      * Removes a parameter name from this collection.
      **/
-    void removeParameter( String name ) {
+    void removeParameter(String name) {
         throw new IllegalNonFormParametersRequest();
     }
-
 
     /**
      * Sets the value of a parameter in a web request.
      **/
-    void setParameter( String name, String value ) {
-        setParameter( name, new String[] { value } );
+    void setParameter(String name, String value) {
+        setParameter(name, new String[] { value });
     }
-
 
     /**
      * Sets the multiple values of a parameter in a web request.
      **/
-    void setParameter( String name, String[] values ) {
+    void setParameter(String name, String[] values) {
         if (values == null) {
-            throw new IllegalArgumentException( "May not supply a null argument array to setParameter()" );
-        } else if (!getPresetParameterMap().containsKey( name )) {
+            throw new IllegalArgumentException("May not supply a null argument array to setParameter()");
+        } else if (!getPresetParameterMap().containsKey(name)) {
             throw new IllegalNonFormParametersRequest();
-        } else if (!equals( getParameterValues( name ), values )) {
+        } else if (!equals(getParameterValues(name), values)) {
             throw new IllegalNonFormParametersRequest();
         }
     }
-
 
     String getCharacterSet() {
         return _characterSet;
     }
 
-
-    private boolean equals( String[] left, String[] right ) {
-        if (left.length != right.length) return false;
-        List rightValues = Arrays.asList( right );
+    private boolean equals(String[] left, String[] right) {
+        if (left.length != right.length)
+            return false;
+        List rightValues = Arrays.asList(right);
         for (int i = 0; i < left.length; i++) {
-            if (!rightValues.contains( left[i] )) return false;
+            if (!rightValues.contains(left[i]))
+                return false;
         }
         return true;
     }
 
-
     /**
      * Sets the multiple values of a file upload parameter in a web request.
      **/
-    void setParameter( String name, UploadFileSpec[] files ) {
+    void setParameter(String name, UploadFileSpec[] files) {
         throw new IllegalNonFormParametersRequest();
     }
-
 
     /**
      * Returns true if the specified parameter is a file field.
      **/
-    boolean isFileParameter( String name ) {
+    boolean isFileParameter(String name) {
         return false;
     }
-
 
     boolean isSubmitAsMime() {
         return false;
     }
 
-
     private Map getPresetParameterMap() {
-        if (_presetParameterMap == null) loadPresetParameters();
+        if (_presetParameterMap == null)
+            loadPresetParameters();
         return _presetParameterMap;
     }
 
-
     private ArrayList getPresetParameterList() {
-        if (_presetParameterList == null) loadPresetParameters();
+        if (_presetParameterList == null)
+            loadPresetParameters();
         return _presetParameterList;
     }
-
 
     private void loadPresetParameters() {
         _presetParameterMap = new HashMap();
@@ -210,31 +194,25 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
         loadDestinationParameters();
     }
 
-
 }
-
 
 class PresetParameter {
     private String _name;
     private String _value;
 
-
-    public PresetParameter( String name, String value ) {
+    public PresetParameter(String name, String value) {
         _name = name;
         _value = value;
     }
-
 
     public String getName() {
         return _name;
     }
 
-
     public String getValue() {
         return _value;
     }
 }
-
 
 class IllegalNonFormParametersRequest extends IllegalRequestParameterException {
 
@@ -243,7 +221,6 @@ class IllegalNonFormParametersRequest extends IllegalRequestParameterException {
 
     public String getMessage() {
         return "May not modify parameters for a request not derived from a form with parameter checking enabled.";
-     }
-
+    }
 
 }

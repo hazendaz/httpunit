@@ -40,17 +40,14 @@ package com.meterware.httpunit.parsing;
  *******************************************************************************************************************/
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public interface ScriptHandler {
 
-    String getIncludedScript( String srcAttribute );
+    String getIncludedScript(String srcAttribute);
 
+    boolean supportsScriptLanguage(String language);
 
-    boolean supportsScriptLanguage( String language );
-
-
-    String runScript( String language, String scriptText );
+    String runScript(String language, String scriptText);
 
 }

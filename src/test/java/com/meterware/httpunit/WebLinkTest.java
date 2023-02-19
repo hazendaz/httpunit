@@ -38,20 +38,17 @@ class WebLinkTest extends HttpUnitTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        defineResource("SimplePage.html",
-                "<html><head><title>A Sample Page</title></head>\n" +
-                        "<body>This has no forms but it does\n" +
-                        "have <a href='/other.html#middle' id='activeID'>an <b>active</b> link</A>\n" +
-                        " and <a name=here>an anchor</a>\n" +
-                        "<table><tr><td name='acell'><a href='basic.html' name='acelllink'>a link in a cell</a></td></tr></table>" +
-                        "<a href='basic.html' name=\"nextLink\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a>\n" +
-                        "<a href='another.html' name='myLink'>some text</a>\n" +
-                        "</body></html>\n");
+        defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
+                + "<body>This has no forms but it does\n"
+                + "have <a href='/other.html#middle' id='activeID'>an <b>active</b> link</A>\n"
+                + " and <a name=here>an anchor</a>\n"
+                + "<table><tr><td name='acell'><a href='basic.html' name='acelllink'>a link in a cell</a></td></tr></table>"
+                + "<a href='basic.html' name=\"nextLink\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a>\n"
+                + "<a href='another.html' name='myLink'>some text</a>\n" + "</body></html>\n");
 
         WebConversation wc = new WebConversation();
         _simplePage = wc.getResponse(getHostPath() + "/SimplePage.html");
     }
-
 
     @Test
     void testFindNoLinks() throws Exception {
@@ -63,31 +60,19 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(0, links.length);
     }
 
-
     /**
-     * test for Bug report 1908117 by firebird74
-     * http://www.w3.org/Addressing/URL/url-spec.html
-     * says
-     * Spaces and control characters in URLs must be escaped for transmission in HTTP
-     * so %20 ist used for space/blank
-     * trying out
-     * <html>
-     * <body>
-     * <a href="http://www.bit plan.com">BITlan blank link</a>
-     * </body>
-     * </html>
-     * in different browers gives different results.
-     * Firefox 2.0.0.13 will not show a link at all
-     * Internet Explorer 6.0 will show a link that has http://www.bit%20plan.com
-     * as it's target
+     * test for Bug report 1908117 by firebird74 http://www.w3.org/Addressing/URL/url-spec.html says Spaces and control
+     * characters in URLs must be escaped for transmission in HTTP so %20 ist used for space/blank trying out <html>
+     * <body> <a href="http://www.bit plan.com">BITlan blank link</a> </body> </html> in different browers gives
+     * different results. Firefox 2.0.0.13 will not show a link at all Internet Explorer 6.0 will show a link that has
+     * http://www.bit%20plan.com as it's target
      *
      * @throws Exception
      */
     @Test
     void testLinkToURLWithBlanks() throws Exception {
-        defineWebPage("urlwithblank",
-                "<a href='http://bla.fasel.com/a/b/lorem ipsum.pdf'>link with blank</a>" +
-                        "<a href='http://bla.fasel.com/a/b/lorem%20ipsum.pdf'>link with blank</a>");
+        defineWebPage("urlwithblank", "<a href='http://bla.fasel.com/a/b/lorem ipsum.pdf'>link with blank</a>"
+                + "<a href='http://bla.fasel.com/a/b/lorem%20ipsum.pdf'>link with blank</a>");
         WebConversation wc = new WebConversation();
         WebResponse resp = wc.getResponse(getHostPath() + "/urlwithblank.html");
         WebLink[] webLinks = resp.getLinks();
@@ -97,9 +82,11 @@ class WebLinkTest extends HttpUnitTest {
         String blankLink1 = "http://bla.fasel.com/a/b/loremipsum.pdf";
         String blankLink2 = "http://bla.fasel.com/a/b/lorem%20ipsum.pdf";
         WebLink link1 = webLinks[0];
-        assertEquals(link1.getURLString(), blankLink1, "the blank in the link1 should be converted but we got '" + link1.getURLString() + "'");
+        assertEquals(link1.getURLString(), blankLink1,
+                "the blank in the link1 should be converted but we got '" + link1.getURLString() + "'");
         WebLink link2 = webLinks[1];
-        assertEquals(link2.getURLString(), blankLink2, "the blank %20 in the link2 should not be converted but we got '" + link2.getURLString() + "'");
+        assertEquals(link2.getURLString(), blankLink2,
+                "the blank %20 in the link2 should not be converted but we got '" + link2.getURLString() + "'");
     }
 
     /**
@@ -114,20 +101,16 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(4, links.length, "number of links in page");
     }
 
-
     @Test
     void testEmbeddedFontTags() throws Exception {
-        defineResource("FontPage.html",
-                "<html><head><title>A Sample Page</title></head>\n" +
-                        "<table><tr><td><a href='/other.html' id='activeID'><font face='Arial'>an <b>active</b> link</font></A></td>\n" +
-                        "<td><a href='basic.html' name=\"nextLink\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a></td>\n" +
-                        "<td><a href='another.html' name='myLink'>some text</a></td>\n" +
-                        "</tr></table></body></html>\n");
+        defineResource("FontPage.html", "<html><head><title>A Sample Page</title></head>\n"
+                + "<table><tr><td><a href='/other.html' id='activeID'><font face='Arial'>an <b>active</b> link</font></A></td>\n"
+                + "<td><a href='basic.html' name=\"nextLink\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a></td>\n"
+                + "<td><a href='another.html' name='myLink'>some text</a></td>\n" + "</tr></table></body></html>\n");
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/FontPage.html");
         assertEquals(3, wr.getLinks().length, "Number of links found");
     }
-
 
     @Test
     void testLinkRequest() throws Exception {
@@ -137,17 +120,14 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/other.html", request.getURL().toExternalForm());
     }
 
-
     @Test
     void testLinkReference() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         assertEquals("/other.html", link.getURLString(), "URLString");
     }
 
-
     /**
-     * test for BR 2534057
-     * getLinks() for a Cell return all page links
+     * test for BR 2534057 getLinks() for a Cell return all page links
      *
      * @throws SAXException
      */
@@ -158,10 +138,10 @@ class WebLinkTest extends HttpUnitTest {
         assertTrue(elements[0] instanceof TableCell);
         TableCell aCell = (TableCell) elements[0];
         WebLink[] cellLinks = aCell.getLinks();
-        /*for (int i=0;i<cellLinks.length;i++) {
-              WebLink link=cellLinks[i];
-              System.out.println("link "+i+"="+link.getName());
-          }*/
+        /*
+         * for (int i=0;i<cellLinks.length;i++) { WebLink link=cellLinks[i];
+         * System.out.println("link "+i+"="+link.getName()); }
+         */
         assertEquals(1, cellLinks.length);
         assertEquals("acelllink", cellLinks[0].getName());
     }
@@ -188,7 +168,6 @@ class WebLinkTest extends HttpUnitTest {
         assertNull(link, "the image link was found based on its hidden alt attribute");
     }
 
-
     @Test
     void testCustomMatching() throws Exception {
         WebLink link = _simplePage.getFirstMatchingLink(WebLink.MATCH_URL_STRING, "nothing");
@@ -207,7 +186,6 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(2, links.length, "Number of links with URL containing 'other.ht'");
     }
 
-
     @Test
     void testGetLinkByIDAndName() throws Exception {
         WebLink link = _simplePage.getLinkWithID("noSuchID");
@@ -222,7 +200,6 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/basic.html", link.getRequest().getURL().toExternalForm(), "image link URL");
     }
 
-
     @Test
     void testFragmentIdentifier() throws Exception {
         WebLink link = (WebLink) _simplePage.getElementWithID("activeID");
@@ -232,13 +209,11 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("", _simplePage.getLinks()[1].getFragmentIdentifier(), "fragment identifier #2");
     }
 
-
     @Test
     void testLinkText() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         assertEquals("an active link", link.getText(), "Link text");
     }
-
 
     @Test
     void testLinkImageAsText() throws Exception {
@@ -251,11 +226,10 @@ class WebLinkTest extends HttpUnitTest {
         initialPage.getLinkWithImageText("Blah Blah");
     }
 
-
     /**
      * @throws Exception
-     * @see [ 1156972 ] isWebLink doesn't recognize all anchor tags
-     *      for different opinion on weblink count.
+     *
+     * @see [ 1156972 ] isWebLink doesn't recognize all anchor tags for different opinion on weblink count.
      */
     @Test
     void testLinkFollowing() throws Exception {
@@ -277,9 +251,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report
-     * [ 1232591 ] getTarget() gives "_top" even if target is not present
-     * by Rifi
+     * test for bug report [ 1232591 ] getTarget() gives "_top" even if target is not present by Rifi
      */
     @Test
     void testGetTarget_top() throws Exception {
@@ -292,17 +264,15 @@ class WebLinkTest extends HttpUnitTest {
         // the bug report _top is NOT what we expect
         // but for the time being this is how httpunit behaves ...
         String expected = "_top";
-        //System.err.println(target);
+        // System.err.println(target);
         assertEquals(target, expected);
     }
-
 
     @Test
     void testLinksWithFragmentsAndParameters() throws Exception {
         WebConversation wc = new WebConversation();
-        defineResource("Initial.html?age=3", "<html><head><title>Initial</title></head><body>" +
-                "Go to <a href=\"Next.html\">the next page.</a> <a name=\"bottom\">Bottom</a>" +
-                "</body></html>");
+        defineResource("Initial.html?age=3", "<html><head><title>Initial</title></head><body>"
+                + "Go to <a href=\"Next.html\">the next page.</a> <a name=\"bottom\">Bottom</a>" + "</body></html>");
         defineWebPage("Next", "And go back to <a href=\"Initial.html?age=3#Bottom\">the first page.</a>");
 
         WebResponse initialPage = wc.getResponse(getHostPath() + "/Initial.html?age=3");
@@ -318,13 +288,11 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("Initial", thirdPage.getTitle(), "Title of next page");
     }
 
-
     @Test
     void testLinksWithSlashesInQuery() throws Exception {
         WebConversation wc = new WebConversation();
-        defineResource("sample/Initial.html?age=3/5", "<html><head><title>Initial</title></head><body>" +
-                "Go to <a href=\"Next.html\">the next page.</a>" +
-                "</body></html>");
+        defineResource("sample/Initial.html?age=3/5", "<html><head><title>Initial</title></head><body>"
+                + "Go to <a href=\"Next.html\">the next page.</a>" + "</body></html>");
         defineWebPage("sample/Next", "And go back to <a href=\"Initial.html?age=3/5\">the first page.</a>");
 
         WebResponse initialPage = wc.getResponse(getHostPath() + "/sample/Initial.html?age=3/5");
@@ -336,33 +304,31 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(1, nextPage.getLinks().length, "Num links in next page");
     }
 
-
     @Test
     void testDocumentBase() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("alternate/Target", "Found me!");
-        defineResource("Initial.html", "<html><head><title>Test for Base</title>" +
-                "            <base href='/alternate/'></head>" +
-                "      <body><a href=\"Target.html\">Go</a></body></html>");
+        defineResource("Initial.html",
+                "<html><head><title>Test for Base</title>" + "            <base href='/alternate/'></head>"
+                        + "      <body><a href=\"Target.html\">Go</a></body></html>");
 
         WebResponse initialPage = wc.getResponse(getHostPath() + "/Initial.html");
         assertEquals(1, initialPage.getLinks().length, "Num links in initial page");
         WebLink link = initialPage.getLinks()[0];
 
         WebRequest request = link.getRequest();
-        assertEquals(getHostPath() + "/alternate/Target.html", request.getURL().toExternalForm(), "Destination for link");
+        assertEquals(getHostPath() + "/alternate/Target.html", request.getURL().toExternalForm(),
+                "Destination for link");
         WebResponse nextPage = wc.getResponse(request);
         assertTrue(nextPage.getText().indexOf("Found") >= 0, "Did not find the target");
     }
-
 
     @Test
     void testTargetBase() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("alternate/Target", "Found me!");
-        defineResource("Initial.html", "<html><head><title>Test for Base</title>" +
-                "            <base target=blue></head>" +
-                "      <body><a href=\"Target.html\">Go</a></body></html>");
+        defineResource("Initial.html", "<html><head><title>Test for Base</title>"
+                + "            <base target=blue></head>" + "      <body><a href=\"Target.html\">Go</a></body></html>");
 
         WebResponse initialPage = wc.getResponse(getHostPath() + "/Initial.html");
         assertEquals(1, initialPage.getLinks().length, "Num links in initial page");
@@ -371,18 +337,16 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("blue", link.getTarget(), "Target for link");
     }
 
-
     @Test
     void testParametersOnLinks() throws Exception {
         defineResource("ParameterLinks.html",
-                "<html><head><title>Param on Link Page</title></head>\n" +
-                        "<body>" +
-                        "<a href=\"/other.html\">no parameter link</A>\n" +
-                        "<a href=\"/other.html?param1=value1\">one parameter link</A>\n" +
-                        "<a href=\"/other.html?param1=value1&param2=value2\">two parameters link</A>\n" +
-                        "<a href=\"/other.html?param1=value1&param1=value3\">two values link</A>\n" +
-                        "<a href=\"/other.html?param1=value1&param2=value2&param1=value3\">two values link</A>\n" +
-                        "</body></html>\n");
+                "<html><head><title>Param on Link Page</title></head>\n" + "<body>"
+                        + "<a href=\"/other.html\">no parameter link</A>\n"
+                        + "<a href=\"/other.html?param1=value1\">one parameter link</A>\n"
+                        + "<a href=\"/other.html?param1=value1&param2=value2\">two parameters link</A>\n"
+                        + "<a href=\"/other.html?param1=value1&param1=value3\">two values link</A>\n"
+                        + "<a href=\"/other.html?param1=value1&param2=value2&param1=value3\">two values link</A>\n"
+                        + "</body></html>\n");
         WebConversation wc = new WebConversation();
 
         WebLink[] links = wc.getResponse(getHostPath() + "/ParameterLinks.html").getLinks();
@@ -399,91 +363,80 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("", request.getParameter("nonexistent"), "Non Existent parameter should be empty");
 
         // second link should have one parameter
-        checkLinkParameters(links[1], new String[]{"param1"},
-                new String[][]{{"value1"}});
+        checkLinkParameters(links[1], new String[] { "param1" }, new String[][] { { "value1" } });
 
-        // third link should have 2 parameters.  !! Order of parameters cannot be guaranted.
-        checkLinkParameters(links[2], new String[]{"param1", "param2"},
-                new String[][]{{"value1"}, {"value2"}});
+        // third link should have 2 parameters. !! Order of parameters cannot be guaranted.
+        checkLinkParameters(links[2], new String[] { "param1", "param2" },
+                new String[][] { { "value1" }, { "value2" } });
 
         // fourth link should have 1 parameter with 2 values.
-        checkLinkParameters(links[3], new String[]{"param1"},
-                new String[][]{{"value1", "value3"}});
+        checkLinkParameters(links[3], new String[] { "param1" }, new String[][] { { "value1", "value3" } });
 
         // fifth link should have 2 parameters with one with 2 values.
-        checkLinkParameters(links[4], new String[]{"param1", "param2"},
-                new String[][]{{"value1", "value3"}, {"value2"}});
+        checkLinkParameters(links[4], new String[] { "param1", "param2" },
+                new String[][] { { "value1", "value3" }, { "value2" } });
     }
-
 
     private void checkLinkParameters(WebLink link, String[] expectedNames, String[][] expectedValues) {
         WebRequest request = link.getRequest();
         assertNotNull(request);
         assertMatchingSet("Parameter names", expectedNames, request.getRequestParameterNames());
         for (int i = 0; i < expectedValues.length; i++) {
-            assertMatchingSet(expectedNames[i] + " values", expectedValues[i], request.getParameterValues(expectedNames[i]));
+            assertMatchingSet(expectedNames[i] + " values", expectedValues[i],
+                    request.getParameterValues(expectedNames[i]));
         }
     }
-
 
     @Test
     void testEncodedLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
-        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" +
-                "<body>" +
-                "<a href=\"/request?%24dollar=%25percent&%23hash=%26ampersand\">request</a>" +
-                "</body></html>");
+        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
+                + "<a href=\"/request?%24dollar=%25percent&%23hash=%26ampersand\">request</a>" + "</body></html>");
         WebResponse mapPage = wc.getResponse(getHostPath() + "/encodedLinks.html");
         WebLink link = mapPage.getLinks()[0];
         WebRequest wr = link.getRequest();
-        assertMatchingSet("Request parameter names", new String[]{"$dollar", "#hash"}, wr.getRequestParameterNames());
+        assertMatchingSet("Request parameter names", new String[] { "$dollar", "#hash" },
+                wr.getRequestParameterNames());
         assertEquals("%percent", wr.getParameter("$dollar"), "Value of $dollar");
         assertEquals("&ampersand", wr.getParameter("#hash"), "Value of #hash");
     }
 
-
     @Test
     void testValuelessLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
-        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" +
-                "<body>" +
-                "<a href=\"/request?arg1&valueless=\">request</a>" +
-                "</body></html>");
+        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
+                + "<a href=\"/request?arg1&valueless=\">request</a>" + "</body></html>");
         WebResponse mapPage = wc.getResponse(getHostPath() + "/encodedLinks.html");
         WebLink link = mapPage.getLinks()[0];
         WebRequest wr = link.getRequest();
-        assertMatchingSet("Request parameter names", new String[]{"arg1", "valueless"}, wr.getRequestParameterNames());
+        assertMatchingSet("Request parameter names", new String[] { "arg1", "valueless" },
+                wr.getRequestParameterNames());
         assertNull(wr.getParameter("arg1"), "Value of arg1");
     }
-
 
     @Test
     void testLinkParameterOrder() throws Exception {
         WebConversation wc = new WebConversation();
-        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" +
-                "<body>" +
-                "<a href='/request?arg0=0\n&arg1&arg0=2&valueless='>request</a>" +
-                "</body></html>");
+        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
+                + "<a href='/request?arg0=0\n&arg1&arg0=2&valueless='>request</a>" + "</body></html>");
         WebResponse mapPage = wc.getResponse(getHostPath() + "/encodedLinks.html");
         WebLink link = mapPage.getLinks()[0];
         WebRequest wr = link.getRequest();
-        assertMatchingSet("Request parameter names", new String[]{"arg0", "arg1", "valueless"}, wr.getRequestParameterNames());
-        assertMatchingSet("Value of arg0", new String[]{"0", "2"}, wr.getParameterValues("arg0"));
+        assertMatchingSet("Request parameter names", new String[] { "arg0", "arg1", "valueless" },
+                wr.getRequestParameterNames());
+        assertMatchingSet("Value of arg0", new String[] { "0", "2" }, wr.getParameterValues("arg0"));
         assertEquals("arg0=0&arg1&arg0=2&valueless=", wr.getQueryString(), "Actual query");
     }
-
 
     @Test
     void testLinkParameterValidation() throws Exception {
         WebConversation wc = new WebConversation();
-        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" +
-                "<body>" +
-                "<a href='/request?arg0=0&arg1&arg0=2&valueless='>request</a>" +
-                "</body></html>");
+        defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
+                + "<a href='/request?arg0=0&arg1&arg0=2&valueless='>request</a>" + "</body></html>");
         WebResponse mapPage = wc.getResponse(getHostPath() + "/encodedLinks.html");
         WebLink link = mapPage.getLinks()[0];
         WebRequest wr = link.getRequest();
-        wr.setParameter("arg0", new String[]{"0", "2"});
+        wr.setParameter("arg0", new String[] { "0", "2" });
         try {
             wr.setParameter("arg0", "3");
             fail("Did not prevent change to link parameters");
@@ -491,16 +444,14 @@ class WebLinkTest extends HttpUnitTest {
         }
     }
 
-
     @Test
     void testImageMapLinks() throws Exception {
         WebConversation wc = new WebConversation();
-        defineWebPage("pageWithMap", "Here is a page with <a href=\"somewhere\">a link</a>" +
-                " and a map: <IMG src=\"navbar1.gif\" usemap=\"#map1\" alt=\"navigation bar\">" +
-                "<map name=\"map1\">" +
-                "  <area href=\"guide.html\" alt=\"Guide\" shape=\"rect\" coords=\"0,0,118,28\">" +
-                "  <area href=\"search.html\" alt=\"Search\" shape=\"circle\" coords=\"184,200,60\">" +
-                "</map>");
+        defineWebPage("pageWithMap", "Here is a page with <a href=\"somewhere\">a link</a>"
+                + " and a map: <IMG src=\"navbar1.gif\" usemap=\"#map1\" alt=\"navigation bar\">"
+                + "<map name=\"map1\">"
+                + "  <area href=\"guide.html\" alt=\"Guide\" shape=\"rect\" coords=\"0,0,118,28\">"
+                + "  <area href=\"search.html\" alt=\"Search\" shape=\"circle\" coords=\"184,200,60\">" + "</map>");
         WebResponse mapPage = wc.getResponse(getHostPath() + "/pageWithMap.html");
         WebLink[] links = mapPage.getLinks();
         assertEquals(3, links.length, "number of links found");
@@ -511,18 +462,17 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1035949 ] NullPointerException on Weblink.click
-     * by Ute Platzer
+     * test for bug report [ 1035949 ] NullPointerException on Weblink.click by Ute Platzer
      *
      * @throws Exception
      */
     @Test
     void testLinkBug() throws Exception {
         WebConversation wc = new WebConversation();
-        String html = "\"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html40/strict.dtd\">\n" +
-                "<html><body>\n" +
-                "	<a target=\"_parent\" class=\"core_button_normal\"  href=\"/test2.html\">test link</a>" +
-                "</body></html>";
+        String html = "\"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html40/strict.dtd\">\n"
+                + "<html><body>\n"
+                + "	<a target=\"_parent\" class=\"core_button_normal\"  href=\"/test2.html\">test link</a>"
+                + "</body></html>";
         defineWebPage("test3", html);
         defineWebPage("test2", "test page2");
         HttpUnitOptions.setLoggingHttpHeaders(false);

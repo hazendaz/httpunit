@@ -35,7 +35,6 @@ class SessionTest extends ServletUnitTest {
     private ServletUnitContext _context;
     private ServletContext _servletContext = new ServletUnitServletContext(null);
 
-
     @BeforeEach
     void setUp() throws Exception {
         _context = new ServletUnitContext(null, _servletContext, new SessionListenerDispatcher() {
@@ -57,12 +56,10 @@ class SessionTest extends ServletUnitTest {
 
     }
 
-
     @Test
     void testNoInitialState() throws Exception {
         assertNull(_context.getSession("12345"), "Session with incorrect ID");
     }
-
 
     @Test
     void testCreateSession() throws Exception {
@@ -73,7 +70,6 @@ class SessionTest extends ServletUnitTest {
         assertNotEquals(session.getId(), session2.getId(), "New session has the same ID");
         assertEquals(session, _context.getSession(session.getId()), "Different session returned");
     }
-
 
     @Test
     void testSessionState() throws Exception {
@@ -87,11 +83,11 @@ class SessionTest extends ServletUnitTest {
         ;
         assertEquals(accessedAt, _context.getSession(session.getId()).getLastAccessedTime(), "Initial access time");
         session.access();
-        assertTrue(accessedAt != _context.getSession(session.getId()).getLastAccessedTime(), "Last access time not changed");
+        assertTrue(accessedAt != _context.getSession(session.getId()).getLastAccessedTime(),
+                "Last access time not changed");
         assertFalse(_context.getSession(session.getId()).isNew(), "Session is still marked as new");
 
     }
-
 
     @Test
     void testSessionAttributes() throws Exception {
@@ -100,13 +96,13 @@ class SessionTest extends ServletUnitTest {
         session.setAttribute("second", "two");
         session.setAttribute("third", "III");
 
-        assertMatchingSet("Attribute names", new String[]{"first", "second", "third"}, toArray(session.getAttributeNames()));
+        assertMatchingSet("Attribute names", new String[] { "first", "second", "third" },
+                toArray(session.getAttributeNames()));
 
         session.removeAttribute("third");
         session.setAttribute("first", null);
-        assertMatchingSet("Attribute names", new String[]{"second"}, toArray(session.getAttributeNames()));
+        assertMatchingSet("Attribute names", new String[] { "second" }, toArray(session.getAttributeNames()));
     }
-
 
     @Test
     void testSessionContext() throws Exception {
@@ -115,7 +111,4 @@ class SessionTest extends ServletUnitTest {
         assertSame(_servletContext, session.getServletContext(), "Owning context");
     }
 
-
 }
-
-

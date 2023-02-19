@@ -27,69 +27,73 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {
 
     private NodeList _list;
 
-    public static HTMLCollectionImpl createHTMLCollectionImpl( NodeList list ) {
+    public static HTMLCollectionImpl createHTMLCollectionImpl(NodeList list) {
         HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();
-        htmlCollection.initialize( list );
+        htmlCollection.initialize(list);
         return htmlCollection;
     }
 
-    private void initialize( NodeList list ) {
+    private void initialize(NodeList list) {
         _list = list;
     }
 
-//------------------------------------------ HTMLCollection methods --------------------------------------------------
+    // ------------------------------------------ HTMLCollection methods
+    // --------------------------------------------------
 
     public int getLength() {
         return _list.getLength();
     }
 
-
-    public Node item( int index ) {
-        return _list.item( index );
+    public Node item(int index) {
+        return _list.item(index);
     }
 
-
-    public Node namedItem( String name ) {
-        if (name == null) return null;
+    public Node namedItem(String name) {
+        if (name == null)
+            return null;
 
         Node nodeByName = null;
         for (int i = 0; null == nodeByName && i < getLength(); i++) {
             Node node = item(i);
-            if (!(node instanceof HTMLElementImpl)) continue;
-            if (name.equalsIgnoreCase( ((HTMLElement) node).getId() )) return node;
-            if (name.equalsIgnoreCase( ((HTMLElementImpl) node).getAttributeWithNoDefault( "name" )) ) nodeByName = node;
+            if (!(node instanceof HTMLElementImpl))
+                continue;
+            if (name.equalsIgnoreCase(((HTMLElement) node).getId()))
+                return node;
+            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault("name")))
+                nodeByName = node;
         }
         return nodeByName;
     }
 
-//------------------------------------------ ScriptableObject methods --------------------------------------------------
+    // ------------------------------------------ ScriptableObject methods
+    // --------------------------------------------------
 
     public String getClassName() {
         return getClass().getName();
     }
 
+    public Object get(String propertyName, Scriptable scriptable) {
+        Object result = super.get(propertyName, scriptable);
+        if (result != NOT_FOUND)
+            return result;
 
-    public Object get( String propertyName, Scriptable scriptable ) {
-        Object result = super.get( propertyName, scriptable );
-        if (result != NOT_FOUND) return result;
+        Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);
+        if (namedProperty != NOT_FOUND)
+            return namedProperty;
 
-        Object namedProperty = ScriptingSupport.getNamedProperty( this, propertyName, scriptable );
-        if (namedProperty != NOT_FOUND) return namedProperty;
-
-        Node namedItem = namedItem( propertyName );
+        Node namedItem = namedItem(propertyName);
         return namedItem == null ? NOT_FOUND : namedItem;
     }
 
-
-    public Object get( int index, Scriptable start ) {
-        if (index < 0 || index >= _list.getLength()) return NOT_FOUND;
-        return item( index );
+    public Object get(int index, Scriptable start) {
+        if (index < 0 || index >= _list.getLength())
+            return NOT_FOUND;
+        return item(index);
     }
 }

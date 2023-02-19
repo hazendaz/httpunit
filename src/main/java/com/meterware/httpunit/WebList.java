@@ -27,9 +27,10 @@ import java.util.ArrayList;
 import org.w3c.dom.Element;
 
 /**
- * Represents an HTML list.  Experimental.
+ * Represents an HTML list. Experimental.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ *
  * @since 1.6
  **/
 public class WebList extends HTMLElementBase {
@@ -49,12 +50,12 @@ public class WebList extends HTMLElementBase {
     private ArrayList _items = new ArrayList();
     private int _listType;
 
-
-    public WebList( WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Element element, String characterSet ) {
-        super( element );
-        if (element.getNodeName().equalsIgnoreCase( "ol" )) {
+    public WebList(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Element element,
+            String characterSet) {
+        super(element);
+        if (element.getNodeName().equalsIgnoreCase("ol")) {
             _listType = ORDERED_LIST;
-        } else if (element.getNodeName().equalsIgnoreCase( "ul" )) {
+        } else if (element.getNodeName().equalsIgnoreCase("ul")) {
             _listType = BULLET_LIST;
         }
         _response = response;
@@ -64,30 +65,25 @@ public class WebList extends HTMLElementBase {
         _characterSet = characterSet;
     }
 
-
     public int getListType() {
         return _listType;
     }
 
-
     public TextBlock[] getItems() {
-        return (TextBlock[]) _items.toArray( new TextBlock[ _items.size() ] );
+        return (TextBlock[]) _items.toArray(new TextBlock[_items.size()]);
     }
-
 
     public ScriptableDelegate newScriptable() {
-        return new HTMLElementScriptable( this );
+        return new HTMLElementScriptable(this);
     }
-
 
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();
     }
 
-
-    TextBlock addNewItem( Element element ) {
-        TextBlock listItem = new TextBlock( _response, _frame, _baseURL, _baseTarget, element, _characterSet );
-        _items.add( listItem );
+    TextBlock addNewItem(Element element) {
+        TextBlock listItem = new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);
+        _items.add(listItem);
         return listItem;
     }
 }

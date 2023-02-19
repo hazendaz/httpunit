@@ -37,14 +37,10 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
 
     @Test
     void testEmbeddedDocumentWrite() throws Exception {
-        defineResource("OnCommandWrite.html", "<html><head><title>something</title></head>" +
-                "<body>" +
-                "<script language='JavaScript'>" +
-                "document.write( '<a id=here href=about:blank>' );" +
-                "document.writeln( document.title );" +
-                "document.write( '</a>' );" +
-                "</script>" +
-                "</body></html>");
+        defineResource("OnCommandWrite.html",
+                "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
+                        + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
+                        + "document.write( '</a>' );" + "</script>" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommandWrite.html");
         WebLink link = response.getLinkWithID("here");
@@ -52,18 +48,12 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertEquals("something", link.getText(), "Link contents");
     }
 
-
     @Test
     void testEmbeddedDocumentWriteWithClose() throws Exception {
-        defineResource("OnCommand.html", "<html><head><title>something</title></head>" +
-                "<body>" +
-                "<script language='JavaScript'>" +
-                "document.write( '<a id=here href=about:blank>' );" +
-                "document.writeln( document.title );" +
-                "document.write( '</a>' );" +
-                "document.close();" +
-                "</script>" +
-                "</body></html>");
+        defineResource("OnCommand.html",
+                "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
+                        + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
+                        + "document.write( '</a>' );" + "document.close();" + "</script>" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinkWithID("here");
@@ -71,27 +61,14 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertEquals("something", link.getText(), "Link contents");
     }
 
-
     @Test
     void testUnknownScript() throws Exception {
-        defineWebPage("FunkyScript",
-                "<SCRIPT>" +
-                        "var stuff='<A href=\"#\">Default JavaScript Working</A><BR>';" +
-                        "document.writeln(stuff);" +
-                        "</SCRIPT>" +
-                        "<SCRIPT Language='JavaScript'>" +
-                        "var stuff='<A href=\"#\">JavaScript Working</A><BR>';" +
-                        "document.writeln(stuff);" +
-                        "</SCRIPT>" +
-                        "<SCRIPT Language='JavaScript1.2'>" +
-                        "var stuff='<A href=\"#\">JavaScript 1.2 Working</A><BR>';" +
-                        "document.writeln(stuff);" +
-                        "</SCRIPT>" +
-                        "<SCRIPT Language='VBScript'>" +
-                        "Dim stuff" +
-                        "stuff = '<A href=\"#\">VBScript</A><BR>'" +
-                        "document.writeln(stuff)" +
-                        "</SCRIPT>");
+        defineWebPage("FunkyScript", "<SCRIPT>" + "var stuff='<A href=\"#\">Default JavaScript Working</A><BR>';"
+                + "document.writeln(stuff);" + "</SCRIPT>" + "<SCRIPT Language='JavaScript'>"
+                + "var stuff='<A href=\"#\">JavaScript Working</A><BR>';" + "document.writeln(stuff);" + "</SCRIPT>"
+                + "<SCRIPT Language='JavaScript1.2'>" + "var stuff='<A href=\"#\">JavaScript 1.2 Working</A><BR>';"
+                + "document.writeln(stuff);" + "</SCRIPT>" + "<SCRIPT Language='VBScript'>" + "Dim stuff"
+                + "stuff = '<A href=\"#\">VBScript</A><BR>'" + "document.writeln(stuff)" + "</SCRIPT>");
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/FunkyScript.html");
         assertNotNull(wr.getLinkWith("Default JavaScript Working"), "No default script link found");
@@ -100,7 +77,6 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertNull(wr.getLinkWith("VBScript"), "VBScript link found");
     }
 
-
     /**
      * test no script sections
      *
@@ -108,17 +84,11 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      */
     @Test
     void testNoScriptSections() throws Exception {
-        defineResource("OnCommand.html", "<html><head><title>something</title></head>" +
-                "<body>" +
-                "<script language='JavaScript'>" +
-                "document.write( '<a id=here href=about:blank>' );" +
-                "document.writeln( document.title );" +
-                "document.write( '</a>' );" +
-                "</script>" +
-                "<noscript>" +
-                "<a href='#' id='there'>anything</a>" +
-                "</noscript>" +
-                "</body></html>");
+        defineResource("OnCommand.html",
+                "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
+                        + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
+                        + "document.write( '</a>' );" + "</script>" + "<noscript>"
+                        + "<a href='#' id='there'>anything</a>" + "</noscript>" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         WebLink link = response.getLinkWithID("here");
@@ -134,7 +104,6 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertNull(response.getLinkWithID("here"), "Should not have found scripted link");
     }
 
-
     /**
      * Verifies that nodes defined before a script section are available to that script section, even if a preceding
      * script section has caused them to be cached. Currently does not work with JTidy since there is no way to parse
@@ -142,24 +111,16 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      */
     @Test
     void testFormsCaching() throws Exception {
-        defineWebPage("OnCommand", "<form>" +
-                "  <input type='text' name='color' value='blue' >" +
-                "</form>" +
-                "<script type='JavaScript'>" +
-                "  alert( document.forms[0].color.value );" +
-                "</script>" +
-                "<form>" +
-                "  <input type='text' name='size' value='3' >" +
-                "</form>" +
-                "<script type='JavaScript'>" +
-                "  alert( document.forms[1].size.value );" +
-                "</script>");
+        defineWebPage("OnCommand",
+                "<form>" + "  <input type='text' name='color' value='blue' >" + "</form>" + "<script type='JavaScript'>"
+                        + "  alert( document.forms[0].color.value );" + "</script>" + "<form>"
+                        + "  <input type='text' name='size' value='3' >" + "</form>" + "<script type='JavaScript'>"
+                        + "  alert( document.forms[1].size.value );" + "</script>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
         assertEquals("blue", wc.popNextAlert(), "Message 1");
         assertEquals("3", wc.popNextAlert(), "Message 2");
     }
-
 
     /**
      * Verifies that a script can write part of the frameset.
@@ -167,18 +128,12 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
     @Test
     void testScriptedFrames() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
-        defineResource("Frames.html",
-                "<html><script>" +
-                        "  document.write( '<frameset>' )" +
-                        "</script>" +
-                        "    <frame src='OneForm.html' name='green'>" +
-                        "    <frame name=blue>" +
-                        "</frameset></htmlL>");
+        defineResource("Frames.html", "<html><script>" + "  document.write( '<frameset>' )" + "</script>"
+                + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>" + "</frameset></htmlL>");
 
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/Frames.html");
-        assertMatchingSet("Loaded frames", new String[]{"_top", "green", "blue"}, wc.getFrameNames());
+        assertMatchingSet("Loaded frames", new String[] { "_top", "green", "blue" }, wc.getFrameNames());
     }
-
 
 }

@@ -38,11 +38,12 @@ public interface InvocationContextFactory {
     /**
      * Creates and returns a new invocation context to test calling of servlet methods.
      **/
-    public InvocationContext newInvocation( ServletUnitClient client, FrameSelector targetFrame, WebRequest request, Dictionary clientHeaders, byte[] messageBody ) throws IOException, MalformedURLException;
-
+    public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
+            Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException;
 
     /**
-     * Returns the session with the specified ID; if none exists or the session is invalid, will create a new session if the create flag is true.
+     * Returns the session with the specified ID; if none exists or the session is invalid, will create a new session if
+     * the create flag is true.
      */
-    public HttpSession getSession( String sessionId, boolean create );
+    public HttpSession getSession(String sessionId, boolean create);
 }

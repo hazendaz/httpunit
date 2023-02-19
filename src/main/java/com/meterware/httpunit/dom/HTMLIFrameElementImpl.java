@@ -31,108 +31,87 @@ public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrame
         return new HTMLIFrameElementImpl();
     }
 
-
     public String getAlign() {
-        return getAttributeWithNoDefault( "align" );
+        return getAttributeWithNoDefault("align");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
-
 
     public String getFrameBorder() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setFrameBorder( String frameBorder ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setFrameBorder(String frameBorder) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getHeight() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setHeight( String height ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setHeight(String height) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getLongDesc() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setLongDesc( String longDesc ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setLongDesc(String longDesc) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getMarginHeight() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setMarginHeight( String marginHeight ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setMarginHeight(String marginHeight) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getMarginWidth() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setMarginWidth( String marginWidth ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setMarginWidth(String marginWidth) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setName( String name ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setName(String name) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getScrolling() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setScrolling( String scrolling ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setScrolling(String scrolling) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getSrc() {
-        return getAttributeWithNoDefault( "src" );
+        return getAttributeWithNoDefault("src");
     }
 
-
-    public void setSrc( String src ) {
-        setAttribute( "src", src );
+    public void setSrc(String src) {
+        setAttribute("src", src);
     }
-
 
     public String getWidth() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setWidth( String width ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setWidth(String width) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public Document getContentDocument() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -23,7 +23,6 @@ import com.meterware.httpunit.HTMLElement;
 import com.meterware.httpunit.WebResponse;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public interface ScriptingEngineFactory {
@@ -36,18 +35,18 @@ public interface ScriptingEngineFactory {
     /**
      * Associates a scripting engine with the specified HTML web response.
      **/
-    public void associate( WebResponse response );
+    public void associate(WebResponse response);
 
     /**
-     * Runs the 'onload' event (if any) for the specified HTML web response. Will associate a scripting engine with
-     * the response if that has not already been done.
+     * Runs the 'onload' event (if any) for the specified HTML web response. Will associate a scripting engine with the
+     * response if that has not already been done.
      **/
-    public void load( WebResponse response );
+    public void load(WebResponse response);
 
     /**
      * Determines whether script errors result in exceptions or warning messages.
      */
-    public void setThrowExceptionsOnError( boolean throwExceptions );
+    public void setThrowExceptionsOnError(boolean throwExceptions);
 
     /**
      * Returns true if script errors cause exceptions to be thrown.
@@ -55,8 +54,8 @@ public interface ScriptingEngineFactory {
     public boolean isThrowExceptionsOnError();
 
     /**
-     * Returns the accumulated script error messages encountered. Error messages are accumulated only
-     * if 'throwExceptionsOnError' is disabled.
+     * Returns the accumulated script error messages encountered. Error messages are accumulated only if
+     * 'throwExceptionsOnError' is disabled.
      */
     public String[] getErrorMessages();
 
@@ -67,14 +66,15 @@ public interface ScriptingEngineFactory {
 
     /**
      * handle Exceptions
-     * @param e - the exception to handle
-     * @param badScript - the script that caused the problem
+     *
+     * @param e
+     *            - the exception to handle
+     * @param badScript
+     *            - the script that caused the problem
      */
-    public void handleScriptException( Exception e, String badScript );
+    public void handleScriptException(Exception e, String badScript);
 
+    ScriptingHandler createHandler(HTMLElement elementBase);
 
-    ScriptingHandler createHandler( HTMLElement elementBase );
-
-
-    ScriptingHandler createHandler( WebResponse response );
+    ScriptingHandler createHandler(WebResponse response);
 }

@@ -20,25 +20,23 @@
 package com.meterware.httpunit;
 
 /**
- *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public class DialogAdapter implements DialogResponder {
 
     /**
-     * Invoked when the user agent needs to display a confirmation dialog. This default implementation confirms
-     * all dialogs.
+     * Invoked when the user agent needs to display a confirmation dialog. This default implementation confirms all
+     * dialogs.
      */
-    public boolean getConfirmation( String confirmationPrompt ) {
+    public boolean getConfirmation(String confirmationPrompt) {
         return true;
     }
-
 
     /**
      * Invoked when the user agent needs to display a generic dialog and obtain a user response. This default
      * implementation returns the default response.
      */
-    public String getUserResponse( String prompt, String defaultResponse ) {
+    public String getUserResponse(String prompt, String defaultResponse) {
         return defaultResponse;
     }
 }

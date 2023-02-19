@@ -32,37 +32,31 @@ import org.xml.sax.SAXException;
  */
 public interface DomWindowProxy {
 
-    DomWindowProxy openNewWindow( String name, String relativeUrl ) throws IOException, SAXException;
-
+    DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException;
 
     ScriptingHandler getScriptingHandler();
 
-
     void close();
 
+    void alert(String message);
 
-    void alert( String message );
+    boolean confirm(String message);
 
-
-    boolean confirm( String message );
-
-
-    String prompt( String prompt, String defaultResponse );
-
+    String prompt(String prompt, String defaultResponse);
 
     /**
      * Returns the URL associated with the window.
+     *
      * @return the URL associated with the window.
      */
     URL getURL();
 
-
     /**
-     * Replaces the text in the window with the specified text and content type. Returns false if unable
-     * to do the replacement.
+     * Replaces the text in the window with the specified text and content type. Returns false if unable to do the
+     * replacement.
      */
-    boolean replaceText( String text, String contentType );
+    boolean replaceText(String text, String contentType);
 
-
-    DomWindowProxy submitRequest( HTMLElementImpl sourceElement, String method, String location, String target, MessageBody requestBody ) throws IOException, SAXException;
+    DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
+            MessageBody requestBody) throws IOException, SAXException;
 }

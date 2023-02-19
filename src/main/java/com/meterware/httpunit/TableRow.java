@@ -35,34 +35,28 @@ public class TableRow extends HTMLElementBase {
     private WebTable _webTable;
     private HTMLTableRowElement _element;
 
-
-    TableRow( WebTable webTable, HTMLTableRowElement element ) {
-        super( element );
+    TableRow(WebTable webTable, HTMLTableRowElement element) {
+        super(element);
         _element = element;
         _webTable = webTable;
     }
 
-
     TableCell[] getCells() {
 
-        return (TableCell[]) _cells.toArray( new TableCell[ _cells.size() ]);
+        return (TableCell[]) _cells.toArray(new TableCell[_cells.size()]);
     }
 
-
-    TableCell newTableCell( HTMLTableCellElement element ) {
-        return _webTable.newTableCell( element );
+    TableCell newTableCell(HTMLTableCellElement element) {
+        return _webTable.newTableCell(element);
     }
 
-
-    void addTableCell( TableCell cell ) {
-        _cells.add( cell );
+    void addTableCell(TableCell cell) {
+        _cells.add(cell);
     }
-
 
     public ScriptableDelegate newScriptable() {
-        return new HTMLElementScriptable( this );
+        return new HTMLElementScriptable(this);
     }
-
 
     public ScriptableDelegate getParentDelegate() {
         return _webTable.getParentDelegate();

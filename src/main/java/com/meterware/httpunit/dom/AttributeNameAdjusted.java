@@ -30,5 +30,5 @@ package com.meterware.httpunit.dom;
  */
 public interface AttributeNameAdjusted {
 
-    String getJavaAttributeName( String attributeName );
+    String getJavaAttributeName(String attributeName);
 }

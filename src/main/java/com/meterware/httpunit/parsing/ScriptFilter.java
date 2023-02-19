@@ -60,78 +60,71 @@ class ScriptFilter extends DefaultFilter {
     /** The parser in which this filter is running. **/
     private ScriptHandler _scriptHandler;
 
-
     /** Constructs a script object with the specified configuration. */
-    ScriptFilter( HTMLConfiguration config ) {
+    ScriptFilter(HTMLConfiguration config) {
         _configuration = config;
     }
 
-
-    public void setScriptHandler( ScriptHandler scriptHandler ) {
+    public void setScriptHandler(ScriptHandler scriptHandler) {
         _scriptHandler = scriptHandler;
     }
 
-
-    public void startDocument( XMLLocator locator, String encoding, Augmentations augs ) throws XNIException {
+    public void startDocument(XMLLocator locator, String encoding, Augmentations augs) throws XNIException {
         _activeScriptBlock = null;
         _systemID = (locator == null) ? "" : (locator.getLiteralSystemId() + "_");
         _scriptIndex = 0;
-        super.startDocument( locator, encoding, null, augs );
+        super.startDocument(locator, encoding, null, augs);
     }
 
-
     /**
-     * Invoked for a start element. If the element is a <script>, overrides the normal behavior to begin collecting
-     * the script text.
+     * Invoked for a start element. If the element is a <script>, overrides the normal behavior to begin collecting the
+     * script text.
      */
-    public void startElement( QName element, XMLAttributes attrs, Augmentations augs ) throws XNIException {
-        if (!isSupportedScript( element, attrs )) {
-            super.startElement( element, attrs, augs );
+    public void startElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
+        if (!isSupportedScript(element, attrs)) {
+            super.startElement(element, attrs, augs);
         } else {
             _activeScriptBlock = new StringBuffer();
-            _scriptLanguage = getScriptLanguage( attrs );
-            String srcAttribute = attrs.getValue( "src" );
-            if (srcAttribute != null) _activeScriptBlock.append( _scriptHandler.getIncludedScript( srcAttribute ) );
+            _scriptLanguage = getScriptLanguage(attrs);
+            String srcAttribute = attrs.getValue("src");
+            if (srcAttribute != null)
+                _activeScriptBlock.append(_scriptHandler.getIncludedScript(srcAttribute));
         }
     }
 
-
-    private boolean isSupportedScript( QName element, XMLAttributes attrs ) {
-        if (!element.rawname.equalsIgnoreCase( "script" ) || attrs == null) return false;
-        String value = getScriptLanguage( attrs );
-        return HttpUnitOptions.isScriptingEnabled() && _scriptHandler.supportsScriptLanguage( value );
+    private boolean isSupportedScript(QName element, XMLAttributes attrs) {
+        if (!element.rawname.equalsIgnoreCase("script") || attrs == null)
+            return false;
+        String value = getScriptLanguage(attrs);
+        return HttpUnitOptions.isScriptingEnabled() && _scriptHandler.supportsScriptLanguage(value);
     }
 
-
-    private String getScriptLanguage( XMLAttributes attrs ) {
-        return attrs == null ? null : attrs.getValue( "language" );
+    private String getScriptLanguage(XMLAttributes attrs) {
+        return attrs == null ? null : attrs.getValue("language");
     }
 
-
-    public void emptyElement( QName element, XMLAttributes attrs, Augmentations augs ) throws XNIException {
-        if (!isSupportedScript( element, attrs )) {
+    public void emptyElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
+        if (!isSupportedScript(element, attrs)) {
             super.emptyElement(element, attrs, augs);
         }
     }
 
-
-    public void characters( XMLString text, Augmentations augs ) throws XNIException {
+    public void characters(XMLString text, Augmentations augs) throws XNIException {
         if (_activeScriptBlock != null) {
-            _activeScriptBlock.append( text.ch, text.offset, text.length );
+            _activeScriptBlock.append(text.ch, text.offset, text.length);
         } else {
-            super.characters( text, augs );
+            super.characters(text, augs);
         }
     }
 
-
-    public void endElement( QName element, Augmentations augs ) throws XNIException {
+    public void endElement(QName element, Augmentations augs) throws XNIException {
         if (_activeScriptBlock == null) {
-            super.endElement( element, augs );
+            super.endElement(element, augs);
         } else {
             try {
                 final String scriptText = _activeScriptBlock.toString();
-                String replacementText = getTranslatedScript( _scriptLanguage, scriptText );
-                _configuration.pushInputSource( newInputSource( replacementText ) );
+                String replacementText = getTranslatedScript(_scriptLanguage, scriptText);
+                _configuration.pushInputSource(newInputSource(replacementText));
             } catch (IOException e) { // ignore
             } finally {
                 _activeScriptBlock = null;
@@ -139,20 +132,15 @@ class ScriptFilter extends DefaultFilter {
         }
     }
 
+    private XMLInputSource newInputSource(String replacementText) {
+        StringBuilder systemID = new StringBuilder(_systemID);
+        systemID.append("script").append(++_scriptIndex);
 
-    private XMLInputSource newInputSource( String replacementText ) {
-        StringBuilder systemID = new StringBuilder( _systemID );
-        systemID.append( "script" ).append( ++_scriptIndex );
-
-        return new XMLInputSource( null, systemID.toString(), null, new StringReader( replacementText ), "UTF-8" );
+        return new XMLInputSource(null, systemID.toString(), null, new StringReader(replacementText), "UTF-8");
     }
 
-
-    protected String getTranslatedScript( final String language, final String scriptText ) throws IOException {
-        return _scriptHandler.runScript( language, scriptText );
+    protected String getTranslatedScript(final String language, final String scriptText) throws IOException {
+        return _scriptHandler.runScript(language, scriptText);
     }
-
 
 }
-
-

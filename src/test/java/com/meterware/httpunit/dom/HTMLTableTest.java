@@ -40,7 +40,6 @@ class HTMLTableTest extends AbstractHTMLElementTest {
     private HTMLTableElement _mainTable;
     private HTMLTableRowElement[] _htmlMainTableRows = new HTMLTableRowElement[3];
 
-
     @BeforeEach
     void setUp() throws Exception {
         _body = _htmlDocument.createElement("body");
@@ -49,15 +48,14 @@ class HTMLTableTest extends AbstractHTMLElementTest {
         _mainTable = (HTMLTableElement) _htmlDocument.createElement("table");
         _body.appendChild(_mainTable);
 
-        for (int i = 0;i < _htmlMainTableRows.length;i++) {
+        for (int i = 0; i < _htmlMainTableRows.length; i++) {
             _htmlMainTableRows[i] = (HTMLTableRowElement) _htmlDocument.createElement("tr");
             _mainTable.appendChild(_htmlMainTableRows[i]);
-            for (int j = 0;j < 2;j++) {
+            for (int j = 0; j < 2; j++) {
                 _htmlMainTableRows[i].appendChild(_htmlDocument.createElement("td"));
             }
         }
     }
-
 
     /**
      * Verify the construction of table nodes with their attributes.
@@ -65,38 +63,33 @@ class HTMLTableTest extends AbstractHTMLElementTest {
     @Test
     void testTableNodeCreation() throws Exception {
         doElementTest("td", HTMLTableCellElement.class,
-                new Object[][]{{"abbr", "lots"}, {"align", "center"},
-                        {"axis", "age"}, {"bgColor", "red"},
-                        {"char", ",", "." /* ch */}, {"charoff", "20" /* charoff */},
-                        {"colspan", Integer.valueOf(3), Integer.valueOf(1)}, {"headers", "time,age"},
-                        {"height", "20"}, {"nowrap", Boolean.TRUE, Boolean.FALSE},
-                        {"rowspan", Integer.valueOf(15), Integer.valueOf(1)},
-                        {"scope", "row"}, {"valign", "top", "middle"}, {"width", "10"}});
-        doElementTest("th", HTMLTableCellElement.class,
-                new Object[][]{{"abbr", "lots"}});
-        doElementTest("tr", HTMLTableRowElement.class,
-                new Object[][]{{"align", "center"}, {"bgColor", "red"},
-                        {"char", ",", "." /* ch */}, {"charoff", "20" /* charoff */},
-                        {"valign", "top", "middle"}});
+                new Object[][] { { "abbr", "lots" }, { "align", "center" }, { "axis", "age" }, { "bgColor", "red" },
+                        { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ },
+                        { "colspan", Integer.valueOf(3), Integer.valueOf(1) }, { "headers", "time,age" },
+                        { "height", "20" }, { "nowrap", Boolean.TRUE, Boolean.FALSE },
+                        { "rowspan", Integer.valueOf(15), Integer.valueOf(1) }, { "scope", "row" },
+                        { "valign", "top", "middle" }, { "width", "10" } });
+        doElementTest("th", HTMLTableCellElement.class, new Object[][] { { "abbr", "lots" } });
+        doElementTest("tr", HTMLTableRowElement.class, new Object[][] { { "align", "center" }, { "bgColor", "red" },
+                { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ }, { "valign", "top", "middle" } });
         doElementTest("table", HTMLTableElement.class,
-                new Object[][]{{"align", "right", "center"}, {"bgColor", "red"},
-                        {"border", "2"}, {"cellpadding", "20"}, {"cellspacing", "20"},
-                        {"frame", "above", "void"}, {"rules", "groups", "none"}, {"summary", "blah blah"},
-                        {"width", "5"}});
+                new Object[][] { { "align", "right", "center" }, { "bgColor", "red" }, { "border", "2" },
+                        { "cellpadding", "20" }, { "cellspacing", "20" }, { "frame", "above", "void" },
+                        { "rules", "groups", "none" }, { "summary", "blah blah" }, { "width", "5" } });
     }
-
 
     @Test
     void testReadTable() throws Exception {
         HTMLCollection rows = _mainTable.getRows();
         assertEquals(3, rows.getLength(), "Number of rows in table");
-        for (int i = 0;i < 3;i++) {
+        for (int i = 0; i < 3; i++) {
             Node node = rows.item(i);
             assertTrue(node instanceof HTMLTableRowElement, "Row " + (i + 1) + " is not a table row");
             HTMLCollection cells = ((HTMLTableRowElement) node).getCells();
             assertEquals(2, cells.getLength(), "Number of cells in row");
-            for (int j = 0;j < 2;j++) {
-                assertTrue(cells.item(j) instanceof HTMLTableCellElement, "Cell (" + (i + 1) + "," + (j + 1) + ") is not a table cell");
+            for (int j = 0; j < 2; j++) {
+                assertTrue(cells.item(j) instanceof HTMLTableCellElement,
+                        "Cell (" + (i + 1) + "," + (j + 1) + ") is not a table cell");
             }
         }
     }

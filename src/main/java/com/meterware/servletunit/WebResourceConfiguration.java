@@ -26,7 +26,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract class WebResourceConfiguration {
@@ -34,50 +33,48 @@ abstract class WebResourceConfiguration {
     private String _className;
     private Hashtable _initParams = new Hashtable();
 
-
-    WebResourceConfiguration( String className ) {
+    WebResourceConfiguration(String className) {
         _className = className;
     }
 
-
-    WebResourceConfiguration( String className, Hashtable initParams ) {
+    WebResourceConfiguration(String className, Hashtable initParams) {
         _className = className;
-        if (initParams != null) _initParams = initParams;
+        if (initParams != null)
+            _initParams = initParams;
     }
 
-
-    WebResourceConfiguration( Element resourceElement, String resourceNodeName ) throws SAXException {
-    	this( resourceElement, resourceNodeName, XMLUtils.getChildNodeValue( resourceElement, resourceNodeName ) );
+    WebResourceConfiguration(Element resourceElement, String resourceNodeName) throws SAXException {
+        this(resourceElement, resourceNodeName, XMLUtils.getChildNodeValue(resourceElement, resourceNodeName));
     }
 
     /**
      * construct a WebResourceConfiguration from the given parameters
+     *
      * @param resourceElement
      * @param resourceNodeName
      * @param className
+     *
      * @throws SAXException
      */
-    public WebResourceConfiguration(Element resourceElement, String resourceNodeName,				String className) throws SAXException {
-    	this(className);
-        final NodeList initParams = resourceElement.getElementsByTagName( "init-param" );
+    public WebResourceConfiguration(Element resourceElement, String resourceNodeName, String className)
+            throws SAXException {
+        this(className);
+        final NodeList initParams = resourceElement.getElementsByTagName("init-param");
         for (int i = initParams.getLength() - 1; i >= 0; i--) {
-            _initParams.put( XMLUtils.getChildNodeValue( (Element) initParams.item( i ), "param-name" ),
-                             XMLUtils.getChildNodeValue( (Element) initParams.item( i ), "param-value" ) );
+            _initParams.put(XMLUtils.getChildNodeValue((Element) initParams.item(i), "param-name"),
+                    XMLUtils.getChildNodeValue((Element) initParams.item(i), "param-value"));
         }
     }
 
-		abstract void destroyResource();
-
+    abstract void destroyResource();
 
     String getClassName() {
         return _className;
     }
 
-
     Hashtable getInitParams() {
         return _initParams;
     }
-
 
     abstract boolean isLoadOnStartup();
 

@@ -26,7 +26,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class FilterConfigImpl implements FilterConfig {
@@ -35,28 +34,23 @@ class FilterConfigImpl implements FilterConfig {
     private ServletContext _servletContext;
     private Hashtable _initParams;
 
-
-    FilterConfigImpl( String name, ServletContext servletContext, Hashtable initParams ) {
+    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {
         _name = name;
         _servletContext = servletContext;
         _initParams = initParams;
     }
 
-
     public String getFilterName() {
         return _name;
     }
-
 
     public ServletContext getServletContext() {
         return _servletContext;
     }
 
-
-    public String getInitParameter( String s ) {
-        return (String) _initParams.get( s );
+    public String getInitParameter(String s) {
+        return (String) _initParams.get(s);
     }
-
 
     public Enumeration getInitParameterNames() {
         return _initParams.keys();

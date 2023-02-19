@@ -37,11 +37,11 @@ class DocumentImportTest {
         _document = DocumentImpl.createDocument();
     }
 
-
     /**
      * Verifies the importing of an attribute node with no children.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportAttribute() throws Exception {
@@ -58,11 +58,11 @@ class DocumentImportTest {
         assertTrue(copy.getSpecified(), "Node value should be specified");
     }
 
-
     /**
      * Verifies the importing of a text node.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportText() throws Exception {
@@ -75,11 +75,11 @@ class DocumentImportTest {
         assertEquals(textValue.length(), copy.getLength(), "length");
     }
 
-
     /**
      * Verifies the importing of a comment node.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportComment() throws Exception {
@@ -92,11 +92,11 @@ class DocumentImportTest {
         assertEquals(commentText.length(), copy.getLength(), "length");
     }
 
-
     /**
      * Verifies the importing of a CData section.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportCData() throws Exception {
@@ -110,11 +110,11 @@ class DocumentImportTest {
         assertEquals(cDataText, copy.getNodeValue(), "value");
     }
 
-
     /**
      * Verifies the importing of a processing instruction.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportProcessingInstruction() throws Exception {
@@ -131,11 +131,11 @@ class DocumentImportTest {
         assertEquals(data, copy.getData(), "data");
     }
 
-
     /**
      * Verifies the importing of a simple element with attributes.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportElementWithAttributes() throws Exception {
@@ -151,11 +151,11 @@ class DocumentImportTest {
         assertTrue(copy.hasAttribute("interactive"), "copy does not have interactive attribute");
     }
 
-
     /**
      * Verifies the importing of a simple element with attributes, both supporting namespaces.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testImportNSElementWithNSAttributes() throws Exception {
@@ -169,7 +169,6 @@ class DocumentImportTest {
         verifyNSElementWithNSAttributes("copy", copy);
     }
 
-
     private void verifyNSElementWithNSAttributes(String comment, Element element) {
         assertEquals(Node.ELEMENT_NODE, element.getNodeType(), comment + " node type");
         assertEquals("fs:zork", element.getNodeName(), comment + " node name");
@@ -179,11 +178,11 @@ class DocumentImportTest {
         assertTrue(element.hasAttribute("fs:interactive"), comment + " does not have interactive attribute");
     }
 
-
     /**
      * Verifies the shallow importing of an element with children.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testShallowImportElementWithChildren() throws Exception {
@@ -197,11 +196,11 @@ class DocumentImportTest {
         assertFalse(copy.hasChildNodes(), "copy should have no children");
     }
 
-
     /**
      * Verifies the deep importing of an element with children.
      *
-     * @throws Exception thrown if an error occurs during the test.
+     * @throws Exception
+     *             thrown if an error occurs during the test.
      */
     @Test
     void testDeepImportElementWithChildren() throws Exception {
@@ -225,7 +224,6 @@ class DocumentImportTest {
         child = child.getNextSibling();
         verifyNode("3rd", child, Node.ELEMENT_NODE, "bar", null);
     }
-
 
     private void verifyNode(String comment, Node node, short type, String name, String value) {
         assertEquals(type, node.getNodeType(), comment + " node type");

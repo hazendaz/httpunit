@@ -61,10 +61,9 @@ public class WebClientTest extends HttpUnitTest {
             fail("Should have rejected the request");
         } catch (UnknownHostException e) {
         } catch (IOException e) {
-//            if (!(e.getCause() instanceof UnknownHostException)) throw e;
+            // if (!(e.getCause() instanceof UnknownHostException)) throw e;
         }
     }
-
 
     /**
      * check access to resources that are not defined
@@ -92,17 +91,15 @@ public class WebClientTest extends HttpUnitTest {
      */
     @Test
     void testUndefinedResource() throws IOException {
-        boolean originalState = HttpUnitOptions
-                .getExceptionsThrownOnErrorStatus();
+        boolean originalState = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         // try two cases for throwException true on i==0, false on i==1
-        for (int i = 0;i < 2;i++) {
+        for (int i = 0; i < 2; i++) {
             boolean throwException = i == 0;
             HttpUnitOptions.setExceptionsThrownOnErrorStatus(throwException);
             WebResponse response = null;
             try {
                 WebConversation wc = new WebConversation();
-                WebRequest request = new GetMethodWebRequest(getHostPath()
-                        + "/undefined");
+                WebRequest request = new GetMethodWebRequest(getHostPath() + "/undefined");
                 response = wc.getResponse(request);
                 if (throwException) {
                     fail("there should have been an exception here");
@@ -114,11 +111,11 @@ public class WebClientTest extends HttpUnitTest {
                 fail("there should be no exception here");
             }
             assertTrue(response != null);
-            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response
-                    .getResponseCode());
+            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode());
             if (throwException) {
                 assertEquals("", response.getText(), "with throwException=" + throwException);
-                assertEquals("unable to find /undefined", response.getResponseMessage(), "with throwException=" + throwException);
+                assertEquals("unable to find /undefined", response.getResponseMessage(),
+                        "with throwException=" + throwException);
             } else {
                 // FIXME what do we expect here and how do we get it!
                 assertEquals("unable to find /undefined", response.getText(), "with throwException=" + throwException);
@@ -127,7 +124,6 @@ public class WebClientTest extends HttpUnitTest {
         }
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(originalState);
     }
-
 
     @Test
     void testNotModifiedResponse() throws Exception {
@@ -140,7 +136,6 @@ public class WebClientTest extends HttpUnitTest {
         response.getText();
         response.getInputStream().read();
     }
-
 
     @Test
     void testInternalErrorException() throws Exception {
@@ -156,7 +151,6 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
-
     @Test
     void testInternalErrorDisplay() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
@@ -168,7 +162,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(501, response.getResponseCode(), "Response code");
         assertEquals("Internal error", response.getText().trim(), "Message contents");
     }
-
 
     @Test
     void testSimpleGet() throws Exception {
@@ -183,7 +176,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(resourceValue, response.getText().trim(), "requested resource");
         assertEquals("text/html", response.getContentType(), "content type");
     }
-
 
     @Test
     void testFunkyGet() throws Exception {
@@ -215,7 +207,8 @@ public class WebClientTest extends HttpUnitTest {
         addResourceHeader(resourceName, "Set-Cookie: type=short");
         addResourceHeader(resourceName, "Set-Cookie: funky=ab$==");
         addResourceHeader(resourceName, "Set-Cookie: p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X");
-        addResourceHeader(resourceName, "Set-Cookie: SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;");
+        addResourceHeader(resourceName,
+                "Set-Cookie: SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;");
 
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
@@ -223,7 +216,7 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(resourceValue, response.getText().trim(), "requested resource");
         assertEquals("text/html", response.getContentType(), "content type");
         String[] names = wc.getCookieNames();
-        // for (int i=0;i<names.length;i++)   	System.err.println(names[i]);
+        // for (int i=0;i<names.length;i++) System.err.println(names[i]);
 
         assertEquals(8, names.length, "number of cookies");
         assertEquals("", wc.getCookieValue("HSBCLoginFailReason"), "cookie 'HSBCLoginFailReason' value");
@@ -233,7 +226,8 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("ab$==", wc.getCookieValue("funky"), "cookie 'funky' value");
         assertEquals("3.0,en,us,AMERICA,Drew", wc.getCookieValue("p30waco_sso"), "cookie 'p30waco_sso' value");
         assertEquals("X", wc.getCookieValue("PORTAL30_SSO_TEST"), "cookie 'PORTAL30_SSO_TEST' value");
-        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", wc.getCookieValue("SESSION_ID"), "cookie 'SESSION_ID' value");
+        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", wc.getCookieValue("SESSION_ID"),
+                "cookie 'SESSION_ID' value");
         // addition for [ 1488617 ] alternate patch for cookie bug #1371204
         Cookie cookie = wc.getCookieDetails("age");
         assertTrue(cookie != null);
@@ -241,7 +235,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("12", cookie.getValue());
         assertEquals("/something", cookie.getPath());
     }
-
 
     @Test
     void testCookiesDisabled() throws Exception {
@@ -260,14 +253,14 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(0, wc.getCookieNames().length, "number of cookies");
     }
 
-
     @Test
     void testOldCookies() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
         defineResource(resourceName, resourceValue);
-        addResourceHeader(resourceName, "Set-Cookie: CUSTOMER=WILE_E_COYOTE; path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT");
+        addResourceHeader(resourceName,
+                "Set-Cookie: CUSTOMER=WILE_E_COYOTE; path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT");
 
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + '/' + resourceName);
@@ -295,37 +288,30 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("CUSTOMER=ROAD RUNNER", response.getText(), "Cookies sent");
     }
 
-
     /**
-     * test for  1799532 ] Patched CookieJar for dealing with empty cookies
-     * I had a problem testing a web app that sent empty cookie values to the client.
+     * test for 1799532 ] Patched CookieJar for dealing with empty cookies I had a problem testing a web app that sent
+     * empty cookie values to the client.
      * <p/>
-     * Within the same http response, a cookie was set by the web app twice, once
-     * with some non-empty value and the second time with an empty value. The
-     * intention of the web app obviously was to delete the cookie, wich actually
+     * Within the same http response, a cookie was set by the web app twice, once with some non-empty value and the
+     * second time with an empty value. The intention of the web app obviously was to delete the cookie, wich actually
      * occurs in IE and Firefox.
      * <p/>
-     * In HttpUnit though the cookie was stored with the empty value and sent back
-     * to the server in the next request. That confused the web app and caused
-     * application errors, because it didn't expect that cookie back with the
-     * empty value.
+     * In HttpUnit though the cookie was stored with the empty value and sent back to the server in the next request.
+     * That confused the web app and caused application errors, because it didn't expect that cookie back with the empty
+     * value.
      * <p/>
-     * I cannot really judge if this is actually a bug in HttpUnit or just more
-     * strict appliance of protocols than real Browsers do. Of course it is at
-     * least an ugly behaviour of the web app, but that wasn't my focus. It also
-     * seems from forums that others might have had the same problem.
+     * I cannot really judge if this is actually a bug in HttpUnit or just more strict appliance of protocols than real
+     * Browsers do. Of course it is at least an ugly behaviour of the web app, but that wasn't my focus. It also seems
+     * from forums that others might have had the same problem.
      * <p/>
      * To over come that problem, I had to change the CookieJar class in HttpUnit
      * <p/>
-     * to not store cookies with empty values, but remove them completely instead.
-     * The modified source file is attached (based on HttpUnit 1.6.2).
+     * to not store cookies with empty values, but remove them completely instead. The modified source file is attached
+     * (based on HttpUnit 1.6.2).
      * <p/>
-     * Russel, please check if you want to integrate this modification in a future
-     * HttpUnit Release.
-     * 2007-12-28: wf@bitplan.com  - looked at
-     * http://www.ietf.org/rfc/rfc2109.txt
-     * there is no statement about empty value handling -the standard asks for
-     * opaque handling ... no mocking about with values by the server ...
+     * Russel, please check if you want to integrate this modification in a future HttpUnit Release. 2007-12-28:
+     * wf@bitplan.com - looked at http://www.ietf.org/rfc/rfc2109.txt there is no statement about empty value handling
+     * -the standard asks for opaque handling ... no mocking about with values by the server ...
      *
      * @throws Exception
      */
@@ -347,9 +333,8 @@ public class WebClientTest extends HttpUnitTest {
         // as long as 1799532 is rejected we'll go for a 2 here ...
         // [ 1371208 ] Patch for Cookie bug #1371204 has a solution to use 1 ...
         assertEquals(1, names.length, "number of cookies");
-        //  for (int i=0;i<names.length;i++)   	System.err.println(names[i]);
+        // for (int i=0;i<names.length;i++) System.err.println(names[i]);
     }
-
 
     class CookieEcho extends PseudoServlet {
 
@@ -357,7 +342,6 @@ public class WebClientTest extends HttpUnitTest {
             return new WebResource(getHeader("Cookie"));
         }
     }
-
 
     @Test
     void testHeaderFields() throws Exception {
@@ -376,7 +360,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("Mozilla 6<-->me alone", wr.getText(), "headers found");
     }
 
-
     @Test
     void testBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
@@ -390,7 +373,6 @@ public class WebClientTest extends HttpUnitTest {
         WebResponse wr = wc.getResponse(getHostPath() + "/getAuthorization");
         assertEquals("Basic dXNlcjpwYXNzd29yZA==", wr.getText(), "authorization");
     }
-
 
     /**
      * test on demand Basic Authentication
@@ -430,8 +412,7 @@ public class WebClientTest extends HttpUnitTest {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource webResource = new WebResource("unauthorized");
-                    webResource
-                            .addHeader("WWW-Authenticate: Basic realm=\"testrealm\"");
+                    webResource.addHeader("WWW-Authenticate: Basic realm=\"testrealm\"");
                     return webResource;
                 } else {
                     return new WebResource(getBody(), "text/plain");
@@ -441,8 +422,8 @@ public class WebClientTest extends HttpUnitTest {
 
         String body = "something";
         InputStream bodyStream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
-        PostMethodWebRequest request = new PostMethodWebRequest(getHostPath()
-                + "/postRequiringAuthentication", bodyStream, "text/plain");
+        PostMethodWebRequest request = new PostMethodWebRequest(getHostPath() + "/postRequiringAuthentication",
+                bodyStream, "text/plain");
 
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm", "user", "password");
@@ -453,10 +434,11 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * Verifies that even though we have specified username and password for a realm,
-     * a request for a different realm will still result in an exception.
+     * Verifies that even though we have specified username and password for a realm, a request for a different realm
+     * will still result in an exception.
      *
-     * @throws Exception if an unexpected exception is thrown.
+     * @throws Exception
+     *             if an unexpected exception is thrown.
      */
     @Test
     void testBasicAuthenticationRequestedForUnknownRealm() throws Exception {
@@ -526,7 +508,9 @@ public class WebClientTest extends HttpUnitTest {
 
     /**
      * test Rfc2069 optionally with or without opaque parameter
+     *
      * @param withOpaque
+     *
      * @throws Exception
      */
     public void testRfc2069DigestAuthentication(final boolean withOpaque) throws Exception {
@@ -535,10 +519,10 @@ public class WebClientTest extends HttpUnitTest {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
-                    String headerStr="WWW-Authenticate: Digest realm=\"testrealm@host.com\"," +
-                        " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";";
-                        if (withOpaque)
-                        	headerStr+=", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
+                    String headerStr = "WWW-Authenticate: Digest realm=\"testrealm@host.com\","
+                            + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";";
+                    if (withOpaque)
+                        headerStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
                     resource.addHeader(headerStr);
                     return resource;
                 } else {
@@ -549,15 +533,12 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm@host.com", "Mufasa", "CircleOfLife");
         WebResponse wr = wc.getResponse(getHostPath() + "/dir/index.html");
-        String expectedHeaderStr="Digest username=\"Mufasa\"," +
-            "       realm=\"testrealm@host.com\"," +
-            "       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"," +
-            "       uri=\"/dir/index.html\"," +
-            "       response=\"1949323746fe6a43ef61f9606e7febea\"";
+        String expectedHeaderStr = "Digest username=\"Mufasa\"," + "       realm=\"testrealm@host.com\","
+                + "       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"," + "       uri=\"/dir/index.html\","
+                + "       response=\"1949323746fe6a43ef61f9606e7febea\"";
         if (withOpaque)
-            expectedHeaderStr+=", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
-        HttpHeader expectedHeader
-                = new HttpHeader(expectedHeaderStr);
+            expectedHeaderStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
+        HttpHeader expectedHeader = new HttpHeader(expectedHeaderStr);
         HttpHeader actualHeader = new HttpHeader(wr.getText());
         assertHeadersEquals(expectedHeader, actualHeader);
     }
@@ -565,7 +546,8 @@ public class WebClientTest extends HttpUnitTest {
     /**
      * Verifies one-time digest authentication with no Quality of Protection (qop).
      *
-     * @throws Exception if an unexpected exception is thrown during the test.
+     * @throws Exception
+     *             if an unexpected exception is thrown during the test.
      */
     @Test
     void testRfc2069DigestAuthentication() throws Exception {
@@ -573,8 +555,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2957505
-     * No 'opaque' causes NPE when attempting DigestAuthentication
+     * test for BR 2957505 No 'opaque' causes NPE when attempting DigestAuthentication
      */
     @Test
     void testRfc2069DigestAuthenticationNoOpaque() throws Exception {
@@ -594,55 +575,54 @@ public class WebClientTest extends HttpUnitTest {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
-                    resource.addHeader("WWW-Authenticate: Digest realm=\"testrealm@host.com\"," +
-                            " qop=\"auth\"," +
-                            " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"," +
-                            " opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
+                    resource.addHeader("WWW-Authenticate: Digest realm=\"testrealm@host.com\"," + " qop=\"auth\","
+                            + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\","
+                            + " opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
                     return resource;
                 } else {
                     return new WebResource(getHeader("Authorization"), "text/plain");
                 }
             }
         });
-        String text = getPageContents(getHostPath() + "/dir/index.html", "testrealm@host.com", "Mufasa", "Circle Of Life");
+        String text = getPageContents(getHostPath() + "/dir/index.html", "testrealm@host.com", "Mufasa",
+                "Circle Of Life");
         HttpHeader actualHeader = new HttpHeader(text);
-        HttpHeader expectedHeader
-                = new HttpHeader("Digest username=\"Mufasa\"," +
-                "       realm=\"testrealm@host.com\"," +
-                "       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"," +
-                "       uri=\"/dir/index.html\"," +
-                "       qop=auth," +
-                "       nc=00000001," +
-                "       cnonce=\"19530e1f777250e9d7ad02a93b187b9d\"," +
-                "       response=\"943fad0655736f7a2342daef67186ce6\"," +
-                "       opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
+        HttpHeader expectedHeader = new HttpHeader("Digest username=\"Mufasa\","
+                + "       realm=\"testrealm@host.com\"," + "       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\","
+                + "       uri=\"/dir/index.html\"," + "       qop=auth," + "       nc=00000001,"
+                + "       cnonce=\"19530e1f777250e9d7ad02a93b187b9d\","
+                + "       response=\"943fad0655736f7a2342daef67186ce6\","
+                + "       opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
         String cnonce = actualHeader.getProperty("cnonce");
         assertHeadersEquals(expectedHeader, actualHeader);
     }
 
     /**
      * get page contents
+     *
      * @param pageAddress
      * @param protectionDomain
      * @param userName
      * @param password
+     *
      * @return the page content
+     *
      * @throws Exception
      */
-    private static String getPageContents(String pageAddress, String protectionDomain, String userName, String password) throws Exception {
+    private static String getPageContents(String pageAddress, String protectionDomain, String userName, String password)
+            throws Exception {
         WebConversation wc = new WebConversation();
         wc.setAuthentication(protectionDomain, userName, password);
         WebResponse wr = wc.getResponse(pageAddress);
         return wr.getText();
     }
 
-
     private void assertHeadersEquals(HttpHeader expectedHeader, HttpHeader actualHeader) {
         assertEquals(expectedHeader.getLabel(), actualHeader.getLabel(), "Authentication type");
         if (!expectedHeader.equals(actualHeader)) {
             Deltas deltas = new Deltas();
             Set actualKeys = new HashSet(actualHeader.getProperties().keySet());
-            for (Iterator eachKey = expectedHeader.getProperties().keySet().iterator(); eachKey.hasNext(); ) {
+            for (Iterator eachKey = expectedHeader.getProperties().keySet().iterator(); eachKey.hasNext();) {
                 String key = (String) eachKey.next();
                 if (!actualKeys.contains(key)) {
                     deltas.addMissingValue(key, expectedHeader.getProperty(key));
@@ -651,7 +631,7 @@ public class WebClientTest extends HttpUnitTest {
                     deltas.compareValues(key, expectedHeader.getProperty(key), actualHeader.getProperty(key));
                 }
             }
-            for (Iterator eachKey = actualKeys.iterator(); eachKey.hasNext(); ) {
+            for (Iterator eachKey = actualKeys.iterator(); eachKey.hasNext();) {
                 String key = (String) eachKey.next();
                 deltas.addExtraValue(key, actualHeader.getProperty(key));
             }
@@ -659,19 +639,18 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
-
     static class Deltas {
         private ArrayList _missingValues = new ArrayList();
         private ArrayList _extraValues = new ArrayList();
 
-
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            if (!_missingValues.isEmpty()) sb.append("missing: ").append(_missingValues);
-            if (!_extraValues.isEmpty()) sb.append("extra: ").append(_extraValues);
+            if (!_missingValues.isEmpty())
+                sb.append("missing: ").append(_missingValues);
+            if (!_extraValues.isEmpty())
+                sb.append("extra: ").append(_extraValues);
             return sb.toString();
         }
-
 
         void addMissingValue(Object key, Object value) {
             _missingValues.add(key + "=" + value);
@@ -689,11 +668,12 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
-
     /**
      * test the Referer Header
      *
-     * @param refererEnabled - true if it should not be stripped
+     * @param refererEnabled
+     *            - true if it should not be stripped
+     *
      * @throws Exception
      */
     public void dotestRefererHeader(boolean refererEnabled) throws Exception {
@@ -706,7 +686,8 @@ public class WebClientTest extends HttpUnitTest {
         String page2 = getHostPath() + '/' + formSource;
 
         defineResource(linkSource, "<html><head></head><body><a href=\"" + resourceName + "\">Go</a></body></html>");
-        defineResource(formSource, "<html><body><form action=\"" + resourceName + "\"><input type=submit></form></body></html>");
+        defineResource(formSource,
+                "<html><body><form action=\"" + resourceName + "\"><input type=submit></form></body></html>");
         defineResource(resourceName, new PseudoServlet() {
             public WebResource getGetResponse() {
                 String referer = getHeader("Referer");
@@ -723,12 +704,14 @@ public class WebClientTest extends HttpUnitTest {
         response = wc.getResponse(page1);
         response = wc.getResponse(response.getLinks()[0].getRequest());
         String expected = page1;
-        if (!refererEnabled) expected = "null";
+        if (!refererEnabled)
+            expected = "null";
         assertEquals(expected, response.getText().trim(), "Link Referer header");
         response = wc.getResponse(page2);
         response = wc.getResponse(response.getForms()[0].getRequest());
         expected = page2;
-        if (!refererEnabled) expected = "null";
+        if (!refererEnabled)
+            expected = "null";
         assertEquals(expected, response.getText().trim(), "Form Referer header");
     }
 
@@ -738,8 +721,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test the referer Header twice - with and without stripping it according to
-     * [ 844084 ] Block HTTP referer
+     * test the referer Header twice - with and without stripping it according to [ 844084 ] Block HTTP referer
      *
      * @throws Exception
      */
@@ -747,7 +729,6 @@ public class WebClientTest extends HttpUnitTest {
     void testRefererHeaderWithStrippingReferer() throws Exception {
         dotestRefererHeader(false);
     }
-
 
     @Test
     void testRedirectedRefererHeader() throws Exception {
@@ -774,9 +755,9 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2834933
-     * https://sourceforge.net/tracker/?func=detail&aid=2834933&group_id=6550&atid=106550
-     * by aptivate
+     * test for BR 2834933 https://sourceforge.net/tracker/?func=detail&aid=2834933&group_id=6550&atid=106550 by
+     * aptivate
+     *
      * @throws Exception
      */
     @Test
@@ -793,41 +774,20 @@ public class WebClientTest extends HttpUnitTest {
         // redirects to resource A
         // loads resource C
 
-        String resourceAContent =
-                "<HTML>" +
-                        "<BODY onload='redirect();'>" +
-                        "<script type='text/javascript'>" +
-                        "function redirect()" +
-                        "{" +
-                        "	if (document.cookie == '')" +
-                        "	{" +
-                        "     document.cookie = 'test=1;';\n" +
-                        "		window.location.replace('/" + resourceBName + "');\n" +
-                        "	}" +
-                        " else if (document.cookie == 'test=1')" +
-                        " {" +
-                        "		document.cookie = 'test=2;';\n" +
-                        "		window.location.replace('/" + resourceBName + "');\n" +
-                        " }" +
-                        " else" +
-                        " {" +
-                        " 	window.location.replace('/" + resourceCName + "');\n" +
-                        " }" +
-                        "}" +
-                        "</script>" +
-                        "</BODY>" +
-                        "</HTML>";
+        String resourceAContent = "<HTML>" + "<BODY onload='redirect();'>" + "<script type='text/javascript'>"
+                + "function redirect()" + "{" + "	if (document.cookie == '')" + "	{"
+                + "     document.cookie = 'test=1;';\n" + "		window.location.replace('/" + resourceBName + "');\n"
+                + "	}" + " else if (document.cookie == 'test=1')" + " {" + "		document.cookie = 'test=2;';\n"
+                + "		window.location.replace('/" + resourceBName + "');\n" + " }" + " else" + " {"
+                + " 	window.location.replace('/" + resourceCName + "');\n" + " }" + "}" + "</script>" + "</BODY>"
+                + "</HTML>";
 
-        defineResource(resourceAName, resourceAContent,
-                HttpURLConnection.HTTP_OK);
+        defineResource(resourceAName, resourceAContent, HttpURLConnection.HTTP_OK);
 
-        defineResource(resourceBName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_TEMP);
-        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
-                + resourceAName);
+        defineResource(resourceBName, "ignored content", HttpURLConnection.HTTP_MOVED_TEMP);
+        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/" + resourceAName);
 
-        defineResource(resourceCName, "ignored content",
-                HttpURLConnection.HTTP_OK);
+        defineResource(resourceCName, "ignored content", HttpURLConnection.HTTP_OK);
 
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setMaxRedirects(2);
@@ -835,28 +795,23 @@ public class WebClientTest extends HttpUnitTest {
         try {
             wc.getResponse(getHostPath() + '/' + resourceAName);
         } catch (RecursiveRedirectionException e) {
-            fail("Not expecting a RecursiveRedirectionException - " +
-                    "max redirects not exceeded");
+            fail("Not expecting a RecursiveRedirectionException - " + "max redirects not exceeded");
         }
     }
 
     /**
-     
-     
-         /**
-     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
+     * /** test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
+     *
      * @author james abley
      */
     @Test
     void testSelfReferentialRedirect() throws Exception {
         String resourceName = "something/redirected";
 
-        defineResource(resourceName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
-        addResourceHeader(resourceName, "Location: " + getHostPath() + '/'
-                + resourceName);
+        defineResource(resourceName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
+        addResourceHeader(resourceName, "Location: " + getHostPath() + '/' + resourceName);
 
         WebConversation wc = new WebConversation();
         try {
@@ -870,6 +825,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
+     *
      * @author james abley
      */
     @Test
@@ -879,20 +835,14 @@ public class WebClientTest extends HttpUnitTest {
         String resourceCName = "another/redirect";
 
         // Define a linked list of 'A points to B points to C points to A...'
-        defineResource(resourceAName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
-        addResourceHeader(resourceAName, "Location: " + getHostPath() + '/'
-                + resourceBName);
+        defineResource(resourceAName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
+        addResourceHeader(resourceAName, "Location: " + getHostPath() + '/' + resourceBName);
 
-        defineResource(resourceBName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_TEMP);
-        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
-                + resourceCName);
+        defineResource(resourceBName, "ignored content", HttpURLConnection.HTTP_MOVED_TEMP);
+        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/" + resourceCName);
 
-        defineResource(resourceCName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
-        addResourceHeader(resourceCName, "Location: " + getHostPath() + "/"
-                + resourceAName);
+        defineResource(resourceCName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
+        addResourceHeader(resourceCName, "Location: " + getHostPath() + "/" + resourceAName);
 
         WebConversation wc = new WebConversation();
         try {
@@ -906,6 +856,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
+     *
      * @author james abley
      */
     @Test
@@ -917,10 +868,8 @@ public class WebClientTest extends HttpUnitTest {
 
         String redirectName = "something/redirected";
 
-        defineResource(redirectName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
-        addResourceHeader(redirectName, "Location: " + getHostPath() + '/'
-                + resourceName);
+        defineResource(redirectName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
+        addResourceHeader(redirectName, "Location: " + getHostPath() + '/' + resourceName);
 
         // Normal behaviour first time through - redirects to resource
         WebConversation wc = new WebConversation();
@@ -936,8 +885,7 @@ public class WebClientTest extends HttpUnitTest {
             assertEquals(resourceValue, response.getText().trim(), "Expected response string");
             assertEquals("text/html", response.getContentType(), "Content type");
         } catch (RecursiveRedirectionException e) {
-            fail("Not expecting RecursiveRedirectionException - "
-                    + "list of redirection urls should be new for each "
+            fail("Not expecting RecursiveRedirectionException - " + "list of redirection urls should be new for each "
                     + "client-initiated request");
         }
     }
@@ -946,6 +894,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
+     *
      * @author james abley
      */
     @Test
@@ -955,18 +904,13 @@ public class WebClientTest extends HttpUnitTest {
         String resourceCName = "another/redirect";
 
         // Define a linked list of 'A points to B points to C points to A...'
-        defineResource(resourceAName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
-        addResourceHeader(resourceAName, "Location: " + getHostPath() + '/'
-                + resourceBName);
+        defineResource(resourceAName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
+        addResourceHeader(resourceAName, "Location: " + getHostPath() + '/' + resourceBName);
 
-        defineResource(resourceBName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_TEMP);
-        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/"
-                + resourceCName);
+        defineResource(resourceBName, "ignored content", HttpURLConnection.HTTP_MOVED_TEMP);
+        addResourceHeader(resourceBName, "Location: " + getHostPath() + "/" + resourceCName);
 
-        defineResource(resourceCName, "ignored content",
-                HttpURLConnection.HTTP_MOVED_PERM);
+        defineResource(resourceCName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
         addResourceHeader(resourceCName, "Location: NotAProtocolThatIKnowOf://ThisReallyShouldThrowAnException");
 
         WebConversation wc = new WebConversation();
@@ -985,15 +929,13 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages
-     * by Roger Lindsj
+     * test for bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages by Roger Lindsj
      *
      * @throws Exception
      */
     @Test
     void testEmptyErrorPage() throws Exception {
-        boolean originalState =
-                HttpUnitOptions.getExceptionsThrownOnErrorStatus();
+        boolean originalState = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(false);
 
         try {
@@ -1030,12 +972,11 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
-
     @Test
     void testGZIPHandling() throws Exception {
-        String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller " +
-                "than the raw message. It should be obvious when you reach that point. " +
-                "Of course it is more than that - it needs to be long enough to cause a problem.";
+        String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
+                + "than the raw message. It should be obvious when you reach that point. "
+                + "Of course it is more than that - it needs to be long enough to cause a problem.";
         defineResource("Compressed.html", new CompressedPseudoServlet(expectedResponse));
 
         WebConversation wc = new WebConversation();
@@ -1046,10 +987,9 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * try to validate support request
-     * [ 885326 ] In CONTENT-ENCODING: gzip, EOFException happens.
-     * -- disabled by wf 2007-12-30 - does lead to a javascript problem and
-     * not fit for a reqular test since it depends on an outsided website not under control of the project
+     * try to validate support request [ 885326 ] In CONTENT-ENCODING: gzip, EOFException happens. -- disabled by wf
+     * 2007-12-30 - does lead to a javascript problem and not fit for a reqular test since it depends on an outsided
+     * website not under control of the project
      *
      * @throws Exception
      */
@@ -1060,42 +1000,38 @@ public class WebClientTest extends HttpUnitTest {
         WebResponse response = conversation.getResponse(request);
     }
 
-
     private class CompressedPseudoServlet extends PseudoServlet {
 
         private String _responseText;
         private boolean _suppressLengthHeader;
 
-
         public CompressedPseudoServlet(String responseText) {
             _responseText = responseText;
         }
-
 
         public CompressedPseudoServlet(String responseText, boolean suppressLengthHeader) {
             this(responseText);
             _suppressLengthHeader = suppressLengthHeader;
         }
 
-
         public WebResource getGetResponse() throws IOException {
             if (!userAcceptsGZIP()) {
                 return new WebResource(_responseText.getBytes(StandardCharsets.UTF_8), "text/plain");
             } else {
                 WebResource result = new WebResource(getCompressedContents(), "text/plain");
-                if (_suppressLengthHeader) result.suppressAutomaticLengthHeader();
+                if (_suppressLengthHeader)
+                    result.suppressAutomaticLengthHeader();
                 result.addHeader("Content-Encoding: gzip");
                 return result;
             }
         }
 
-
         private boolean userAcceptsGZIP() {
             String header = getHeader("Accept-Encoding");
-            if (header == null) return false;
+            if (header == null)
+                return false;
             return header.toLowerCase().indexOf("gzip") >= 0;
         }
-
 
         private byte[] getCompressedContents() throws IOException {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1108,12 +1044,11 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
-
     @Test
     void testGZIPUndefinedLengthHandling() throws Exception {
-        String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller " +
-                "than the raw message. It should be obvious when you reach that point. " +
-                "Of course it is more than that - it needs to be long enough to cause a problem.";
+        String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
+                + "than the raw message. It should be obvious when you reach that point. "
+                + "Of course it is more than that - it needs to be long enough to cause a problem.";
         defineResource("Compressed.html", new CompressedPseudoServlet(expectedResponse, /* suppress length */ true));
 
         WebConversation wc = new WebConversation();
@@ -1123,19 +1058,17 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
-
     @Test
     void testClientListener() throws Exception {
         defineWebPage("Target", "This is another page with <a href=Form.html target='_top'>one link</a>");
-        defineWebPage("Form", "This is a page with a simple form: " +
-                "<form action=submit><input name=name><input type=submit></form>" +
-                "<a href=Target.html target=red>a link</a>");
+        defineWebPage("Form",
+                "This is a page with a simple form: "
+                        + "<form action=submit><input name=name><input type=submit></form>"
+                        + "<a href=Target.html target=red>a link</a>");
         defineResource("Frames.html",
-                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" +
-                        "<FRAMESET cols='20%,80%'>" +
-                        "    <FRAME src='Target.html' name='red'>" +
-                        "    <FRAME src=Form.html name=blue>" +
-                        "</FRAMESET></HTML>");
+                "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols='20%,80%'>"
+                        + "    <FRAME src='Target.html' name='red'>" + "    <FRAME src=Form.html name=blue>"
+                        + "</FRAMESET></HTML>");
 
         WebConversation wc = new WebConversation();
         ArrayList messageLog = new ArrayList();
@@ -1143,42 +1076,38 @@ public class WebClientTest extends HttpUnitTest {
 
         wc.getResponse(getHostPath() + "/Frames.html");
         assertEquals(6, messageLog.size(), "Num logged items");
-        for (int i = 0;i < 3;i++) {
+        for (int i = 0; i < 3; i++) {
             verifyRequestResponsePair(messageLog, 2 * i);
         }
     }
-
 
     private void verifyRequestResponsePair(ArrayList messageLog, int i) throws MalformedURLException {
         assertTrue(messageLog.get(i) instanceof WebRequest,
                 "Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass());
         assertTrue(messageLog.get(i + 1) instanceof WebResponse,
                 "Logged item " + (i + 1) + " is not a web response, but " + messageLog.get(i + 1).getClass());
-        assertEquals(((WebRequest) messageLog.get(i)).getTarget(), ((WebResponse) messageLog.get(i + 1)).getFrameName(), "Response target");
-        assertEquals(((WebRequest) messageLog.get(i)).getURL(), ((WebResponse) messageLog.get(i + 1)).getURL(), "Response URL");
+        assertEquals(((WebRequest) messageLog.get(i)).getTarget(), ((WebResponse) messageLog.get(i + 1)).getFrameName(),
+                "Response target");
+        assertEquals(((WebRequest) messageLog.get(i)).getURL(), ((WebResponse) messageLog.get(i + 1)).getURL(),
+                "Response URL");
     }
-
 
     private static class ListenerExample implements WebClientListener {
 
         private List _messageLog;
 
-
         public ListenerExample(List messageLog) {
             _messageLog = messageLog;
         }
-
 
         public void requestSent(WebClient src, WebRequest req) {
             _messageLog.add(req);
         }
 
-
         public void responseReceived(WebClient src, WebResponse resp) {
             _messageLog.add(resp);
         }
     }
-
 
     @Test
     void testRedirect() throws Exception {
@@ -1198,7 +1127,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(HttpURLConnection.HTTP_OK, response.getResponseCode(), "status");
     }
 
-
     @Test
     void testDuplicateHeaderRedirect() throws Exception {
         String resourceName = "something/redirected";
@@ -1216,7 +1144,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(resourceValue, response.getText().trim(), "requested resource");
         assertEquals("text/html", response.getContentType(), "content type");
     }
-
 
     @Test
     void testDisabledRedirect() throws Exception {
@@ -1236,7 +1163,6 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(redirectValue, response.getText().trim(), "requested resource");
         assertEquals("text/html", response.getContentType(), "content type");
     }
-
 
     @Test
     @Disabled
@@ -1262,7 +1188,6 @@ public class WebClientTest extends HttpUnitTest {
             }
         });
 
-
         WebResponse wr = wc.getResponse("http://meterware.com:" + getHostPort() + "/whereAmI");
         assertEquals("found host header: meterware.com:" + getHostPort(), wr.getText(), "Submitted host header");
         assertEquals("short", wc.getCookieValue("type"), "Returned cookie 'type'");
@@ -1270,7 +1195,6 @@ public class WebClientTest extends HttpUnitTest {
         wr = wc.getResponse("http://meterware.com:" + getHostPort() + "/checkCookies");
         assertEquals("found cookies: type=short", wr.getText(), "Submitted cookie header");
     }
-
 
     /**
      * test for Delete Response patch by Matthew M. Boedicker"

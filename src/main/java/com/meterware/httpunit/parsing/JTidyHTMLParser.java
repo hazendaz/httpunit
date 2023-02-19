@@ -34,63 +34,61 @@ import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class JTidyHTMLParser implements HTMLParser {
 
-
-    public void parse( URL pageURL, String pageText, DocumentAdapter adapter ) throws IOException, SAXException {
-        Document jtidyDocument = getParser( pageURL ).parseDOM( new ByteArrayInputStream( pageText.getBytes( StandardCharsets.UTF_8 ) ), null );
+    public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {
+        Document jtidyDocument = getParser(pageURL)
+                .parseDOM(new ByteArrayInputStream(pageText.getBytes(StandardCharsets.UTF_8)), null);
         HTMLDocument htmlDocument = new HTMLDocumentImpl();
         NodeList nl = jtidyDocument.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node importedNode = nl.item(i);
-            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE) htmlDocument.appendChild( htmlDocument.importNode( importedNode, true ) );
+            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE)
+                htmlDocument.appendChild(htmlDocument.importNode(importedNode, true));
         }
-        adapter.setDocument( htmlDocument );
+        adapter.setDocument(htmlDocument);
     }
 
-
-    public String getCleanedText( String string ) {
-        return (string == null) ? "" : string.replace( NBSP, ' ' );
+    public String getCleanedText(String string) {
+        return (string == null) ? "" : string.replace(NBSP, ' ');
     }
-
 
     public boolean supportsPreserveTagCase() {
         return false;
     }
 
     public boolean supportsForceTagCase() {
-      return false;
+        return false;
     }
 
     public boolean supportsReturnHTMLDocument() {
         return true;
     }
 
-
     public boolean supportsParserWarnings() {
         return true;
     }
 
-
-    final private static char NBSP = (char) 160;   // non-breaking space, defined by JTidy
+    final private static char NBSP = (char) 160; // non-breaking space, defined by JTidy
 
     /**
      * get the parser of the given url
+     *
      * @param url
+     *
      * @return the parser
      */
-    private static Tidy getParser( URL url ) {
+    private static Tidy getParser(URL url) {
         Tidy tidy = new Tidy();
-        // BR 2880636 httpunit 1.7 does not work with latest Tidy release  r918
+        // BR 2880636 httpunit 1.7 does not work with latest Tidy release r918
         // tidy.setCharEncoding( org.w3c.tidy.Configuration.UTF8 );
         tidy.setInputEncoding("UTF8");
-        tidy.setQuiet( true );
-        tidy.setShowWarnings( HTMLParserFactory.isParserWarningsEnabled() );
+        tidy.setQuiet(true);
+        tidy.setShowWarnings(HTMLParserFactory.isParserWarningsEnabled());
         if (!HTMLParserFactory.getHTMLParserListeners().isEmpty()) {
-            tidy.setErrout( new JTidyPrintWriter( url ) );
+            tidy.setErrout(new JTidyPrintWriter(url));
         }
         return tidy;
     }

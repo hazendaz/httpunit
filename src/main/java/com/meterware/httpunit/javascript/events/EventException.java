@@ -23,15 +23,13 @@ package com.meterware.httpunit.javascript.events;
  * Event operations may throw an EventException as specified in their method descriptions.
  *
  * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
+ *
  * @version $Id$
  */
-public class EventException
-    extends Exception
-{
+public class EventException extends Exception {
     /**
-     * If the Event's type was not specified by initializing the event before the method was called.
-     * Specification of the Event's type as null or an empty string will also trigger this
-     * exception.
+     * If the Event's type was not specified by initializing the event before the method was called. Specification of
+     * the Event's type as null or an empty string will also trigger this exception.
      */
     private static final short UNSPECIFIED_EVENT_TYPE_ERR = 0;
 
@@ -43,7 +41,8 @@ public class EventException
     /**
      * Creates new EventException instance.
      *
-     * @param codeArg An integer indicating the type of error generated.
+     * @param codeArg
+     *            An integer indicating the type of error generated.
      */
     public EventException(short codeArg) {
         this.code = codeArg;

@@ -24,7 +24,6 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTextAreaElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextAreaElement {
@@ -35,94 +34,78 @@ public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextArea
         return new HTMLTextAreaElementImpl();
     }
 
-
     /**
      * simulate blur
      */
     public void blur() {
-    	handleEvent("onblur");
+        handleEvent("onblur");
     }
-
 
     /**
      * simulate focus;
      */
     public void focus() {
-    	handleEvent("onfocus");
+        handleEvent("onfocus");
     }
-
 
     public String getAccessKey() {
-        return getAttributeWithNoDefault( "accesskey" );
+        return getAttributeWithNoDefault("accesskey");
     }
-
 
     public int getCols() {
-        return getIntegerAttribute( "cols" );
+        return getIntegerAttribute("cols");
     }
-
 
     public String getDefaultValue() {
         Node node = getFirstChild();
 
-        if (node == null)
-    	{
-        	return "";
-    	}
+        if (node == null) {
+            return "";
+        }
 
-        if (node.getNodeType() != Node.TEXT_NODE)
-    	{
-        	return null;
-    	}
+        if (node.getNodeType() != Node.TEXT_NODE) {
+            return null;
+        }
 
         return node.getNodeValue();
     }
 
-
     public int getRows() {
-        return getIntegerAttribute( "rows" );
+        return getIntegerAttribute("rows");
     }
-
 
     public void select() {
     }
 
-
-    public void setAccessKey( String accessKey ) {
-        setAttribute( "accesskey", accessKey );
+    public void setAccessKey(String accessKey) {
+        setAttribute("accesskey", accessKey);
     }
 
-
-    public void setCols( int cols ) {
-        setAttribute( "cols", cols );
+    public void setCols(int cols) {
+        setAttribute("cols", cols);
     }
 
-
-    public void setDefaultValue( String defaultValue ) {
-        Text textNode = getOwnerDocument().createTextNode( defaultValue );
+    public void setDefaultValue(String defaultValue) {
+        Text textNode = getOwnerDocument().createTextNode(defaultValue);
         Node child = getFirstChild();
         if (child == null) {
-            appendChild( textNode );
+            appendChild(textNode);
         } else {
-            replaceChild( textNode, child );
+            replaceChild(textNode, child);
         }
     }
 
-
-    public void setRows( int rows ) {
-        setAttribute( "rows", rows );
+    public void setRows(int rows) {
+        setAttribute("rows", rows);
     }
-
 
     public String getValue() {
         return _value != null ? _value : getDefaultValue();
     }
 
-
-    public void setValue( String value ) {
+    public void setValue(String value) {
         _value = value;
     }
-
 
     public void reset() {
         _value = null;

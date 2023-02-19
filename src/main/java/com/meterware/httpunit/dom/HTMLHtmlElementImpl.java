@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLHtmlElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElement {
@@ -31,14 +30,12 @@ public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElem
         return new HTMLHtmlElementImpl();
     }
 
-
     public String getVersion() {
-        return getAttributeWithNoDefault( "version" );
+        return getAttributeWithNoDefault("version");
     }
 
-
-    public void setVersion( String version ) {
-        setAttribute( "version", version );
+    public void setVersion(String version) {
+        setAttribute("version", version);
     }
 
 }

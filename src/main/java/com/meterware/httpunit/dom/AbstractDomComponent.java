@@ -36,38 +36,33 @@ public abstract class AbstractDomComponent extends ScriptingEngineImpl implement
         return getClass().getName();
     }
 
-
-    public ScriptingEngine newScriptingEngine( ScriptableDelegate child ) {
-        throw new UnsupportedOperationException( );
+    public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
+        throw new UnsupportedOperationException();
     }
 
-
-    public void clearCaches() {}
-
-
-    public boolean has( String name, Scriptable start ) {
-        return super.has( name, start ) || ScriptingSupport.hasNamedProperty( this, getJavaPropertyName( name ), start );
+    public void clearCaches() {
     }
 
-
-    public Object get( String propertyName, Scriptable scriptable ) {
-        Object result = super.get( propertyName, scriptable );
-        if (result != NOT_FOUND) return result;
-
-        return ScriptingSupport.getNamedProperty( this, getJavaPropertyName( propertyName ), scriptable );
+    public boolean has(String name, Scriptable start) {
+        return super.has(name, start) || ScriptingSupport.hasNamedProperty(this, getJavaPropertyName(name), start);
     }
 
+    public Object get(String propertyName, Scriptable scriptable) {
+        Object result = super.get(propertyName, scriptable);
+        if (result != NOT_FOUND)
+            return result;
 
-    protected String getJavaPropertyName( String propertyName ) {
+        return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);
+    }
+
+    protected String getJavaPropertyName(String propertyName) {
         return propertyName;
     }
 
-
-    public void put( String propertyName, Scriptable initialObject, Object value ) {
-        super.put( propertyName, initialObject, value );
-        ScriptingSupport.setNamedProperty( this, getJavaPropertyName( propertyName ), value );
+    public void put(String propertyName, Scriptable initialObject, Object value) {
+        super.put(propertyName, initialObject, value);
+        ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);
     }
-
 
     protected static String createAnonymousFunctionName() {
         return "anon_" + (++_anonymousFunctionNum);

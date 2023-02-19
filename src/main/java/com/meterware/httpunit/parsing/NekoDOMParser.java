@@ -39,8 +39,6 @@ import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
 /**
- *
- *
  * @author <a href="russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
  **/
@@ -65,107 +63,102 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     private DocumentAdapter _documentAdapter;
 
-
     /**
      * construct a new NekoDomParser with the given adapter and url
+     *
      * @param adapter
      * @param url
-     * @return - the new parser
-     * patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen
-     * patch [ 1176688 ] Allow configuration of neko parser properties by James Abley
+     *
+     * @return - the new parser patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen patch [ 1176688 ]
+     *         Allow configuration of neko parser properties by James Abley
      */
-    static NekoDOMParser newParser( DocumentAdapter adapter, URL url ) {
+    static NekoDOMParser newParser(DocumentAdapter adapter, URL url) {
         final HTMLConfiguration configuration = new HTMLConfiguration();
-        // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't solve issue with <noscript> needs.
+        // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't solve
+        // issue with <noscript> needs.
         // configuration.setFeature(HTMLScanner.PARSE_NOSCRIPT_CONTENT, false);
         if (!HTMLParserFactory.getHTMLParserListeners().isEmpty() || HTMLParserFactory.isParserWarningsEnabled()) {
-            configuration.setErrorHandler( new ErrorHandler( url ) );
-            configuration.setFeature( REPORT_ERRORS, true);
+            configuration.setErrorHandler(new ErrorHandler(url));
+            configuration.setFeature(REPORT_ERRORS, true);
         }
-        configuration.setFeature( AUGMENTATIONS, true );
-        final ScriptFilter javaScriptFilter = new ScriptFilter( configuration );
-        configuration.setProperty( FILTERS, new XMLDocumentFilter[] { javaScriptFilter } );
+        configuration.setFeature(AUGMENTATIONS, true);
+        final ScriptFilter javaScriptFilter = new ScriptFilter(configuration);
+        configuration.setProperty(FILTERS, new XMLDocumentFilter[] { javaScriptFilter });
         if (HTMLParserFactory.isPreserveTagCase()) {
-          configuration.setProperty( TAG_NAME_CASE, "match" );
-          configuration.setProperty( ATTRIBUTE_NAME_CASE, "no-change" );
+            configuration.setProperty(TAG_NAME_CASE, "match");
+            configuration.setProperty(ATTRIBUTE_NAME_CASE, "no-change");
         } else {
-        	configuration.setProperty( TAG_NAME_CASE, "lower" );
-        	configuration.setProperty( ATTRIBUTE_NAME_CASE, "lower" );
+            configuration.setProperty(TAG_NAME_CASE, "lower");
+            configuration.setProperty(ATTRIBUTE_NAME_CASE, "lower");
 
-        	if (HTMLParserFactory.getForceUpperCase()) {
-        		configuration.setProperty(TAG_NAME_CASE, "upper");
-        		configuration.setProperty(ATTRIBUTE_NAME_CASE, "upper");
-        	}
-        	// this is the default as of patch [ 1211154 ] ... just for people who rely on patch [ 1176688 ]
-        	if (HTMLParserFactory.getForceLowerCase()) {
-        		configuration.setProperty(TAG_NAME_CASE, "lower");
-        		configuration.setProperty(ATTRIBUTE_NAME_CASE, "lower");
-        	}
+            if (HTMLParserFactory.getForceUpperCase()) {
+                configuration.setProperty(TAG_NAME_CASE, "upper");
+                configuration.setProperty(ATTRIBUTE_NAME_CASE, "upper");
+            }
+            // this is the default as of patch [ 1211154 ] ... just for people who rely on patch [ 1176688 ]
+            if (HTMLParserFactory.getForceLowerCase()) {
+                configuration.setProperty(TAG_NAME_CASE, "lower");
+                configuration.setProperty(ATTRIBUTE_NAME_CASE, "lower");
+            }
         }
 
         try {
-            final NekoDOMParser domParser = new NekoDOMParser( configuration, adapter );
-            domParser.setFeature( DEFER_NODE_EXPANSION, false );
-            if (HTMLParserFactory.isReturnHTMLDocument()) domParser.setProperty( DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName() );
-            javaScriptFilter.setScriptHandler( domParser );
+            final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
+            domParser.setFeature(DEFER_NODE_EXPANSION, false);
+            if (HTMLParserFactory.isReturnHTMLDocument())
+                domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
+            javaScriptFilter.setScriptHandler(domParser);
             return domParser;
         } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException( e.toString() );
+            throw new RuntimeException(e.toString());
         } catch (SAXNotSupportedException e) {
-            throw new RuntimeException( e.toString() );
+            throw new RuntimeException(e.toString());
         }
 
     }
-
 
     private Element getCurrentElement() {
         try {
-            return (Element) getProperty( CURRENT_ELEMENT_NODE );
+            return (Element) getProperty(CURRENT_ELEMENT_NODE);
         } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException( CURRENT_ELEMENT_NODE + " property not recognized" );
+            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not recognized");
         } catch (SAXNotSupportedException e) {
             e.printStackTrace();
-            throw new RuntimeException( CURRENT_ELEMENT_NODE + " property not supported" );
+            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not supported");
         }
     }
 
-
-    NekoDOMParser( HTMLConfiguration configuration, DocumentAdapter adapter ) {
-        super( configuration );
+    NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
+        super(configuration);
         _documentAdapter = adapter;
     }
 
-
-    public String getIncludedScript( String srcAttribute ) {
+    public String getIncludedScript(String srcAttribute) {
         try {
-            return _documentAdapter.getIncludedScript( srcAttribute );
+            return _documentAdapter.getIncludedScript(srcAttribute);
         } catch (IOException e) {
-            throw new ScriptException( e );
+            throw new ScriptException(e);
         }
     }
 
-
-    public boolean supportsScriptLanguage( String language ) {
-        return getScriptingHandler().supportsScriptLanguage( language );
+    public boolean supportsScriptLanguage(String language) {
+        return getScriptingHandler().supportsScriptLanguage(language);
     }
 
-
-    public String runScript( final String language, final String scriptText ) {
+    public String runScript(final String language, final String scriptText) {
         getScriptingHandler().clearCaches();
-        return getScriptingHandler().runScript( language, scriptText );
+        return getScriptingHandler().runScript(language, scriptText);
     }
-
 
     private ScriptingHandler getScriptingHandler() {
-        _documentAdapter.setDocument( (HTMLDocument) getCurrentElement().getOwnerDocument() );
+        _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());
         return _documentAdapter.getScriptingHandler();
     }
-
 
     static class ScriptException extends RuntimeException {
         private IOException _cause;
 
-        public ScriptException( IOException cause ) {
+        public ScriptException(IOException cause) {
             _cause = cause;
         }
 
@@ -175,37 +168,37 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     }
 }
 
-
 class ErrorHandler implements XMLErrorHandler {
 
     private URL _url = null;
 
-    ErrorHandler( URL url ) {
+    ErrorHandler(URL url) {
         _url = url;
     }
 
-    public void warning( String domain, String key, XMLParseException warningException ) throws XNIException {
+    public void warning(String domain, String key, XMLParseException warningException) throws XNIException {
         if (HTMLParserFactory.isParserWarningsEnabled()) {
-            System.out.println( "At line " + warningException.getLineNumber() + ", column " + warningException.getColumnNumber() + ": " + warningException.getMessage() );
+            System.out.println("At line " + warningException.getLineNumber() + ", column "
+                    + warningException.getColumnNumber() + ": " + warningException.getMessage());
         }
 
         Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
         while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).warning( _url, warningException.getMessage(), warningException.getLineNumber(), warningException.getColumnNumber() );
+            ((HTMLParserListener) listeners.nextElement()).warning(_url, warningException.getMessage(),
+                    warningException.getLineNumber(), warningException.getColumnNumber());
         }
     }
 
-
-    public void error( String domain, String key, XMLParseException errorException ) throws XNIException {
+    public void error(String domain, String key, XMLParseException errorException) throws XNIException {
         Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
         while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).error( _url, errorException.getMessage(), errorException.getLineNumber(), errorException.getColumnNumber() );
+            ((HTMLParserListener) listeners.nextElement()).error(_url, errorException.getMessage(),
+                    errorException.getLineNumber(), errorException.getColumnNumber());
         }
     }
 
-
-    public void fatalError( String domain, String key, XMLParseException fatalError ) throws XNIException {
-        error( domain, key, fatalError );
+    public void fatalError(String domain, String key, XMLParseException fatalError) throws XNIException {
+        error(domain, key, fatalError);
         throw fatalError;
     }
 }

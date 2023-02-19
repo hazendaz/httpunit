@@ -30,8 +30,8 @@ import javax.servlet.ServletContext;
 import org.junit.jupiter.api.Test;
 
 class ServletUnitServletContextTest {
-	private static final String EXISTENT_RESOURCE_PATH = "src/test/resources/existent.xml";
-	private static final String NONEXISTENT_RESOURCE_PATH = "src/test/resources/nonexistent.xml";
+    private static final String EXISTENT_RESOURCE_PATH = "src/test/resources/existent.xml";
+    private static final String NONEXISTENT_RESOURCE_PATH = "src/test/resources/nonexistent.xml";
 
     @Test
     void testGetResource() throws Exception {

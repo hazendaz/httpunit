@@ -27,42 +27,37 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
     private List _list;
 
-
-    public NodeListImpl( List list ) {
+    public NodeListImpl(List list) {
         _list = list;
     }
 
-
-    public Node item( int index ) {
-        return (Node) _list.get( index );
+    public Node item(int index) {
+        return (Node) _list.get(index);
     }
-
 
     public int getLength() {
         return _list.size();
     }
 
-
     public String getClassName() {
         return NodeListImpl.class.getName();
     }
 
-
-    public Object get( String name, Scriptable start ) {
-        if ("length".equals( name )) return Integer.valueOf( getLength() );
+    public Object get(String name, Scriptable start) {
+        if ("length".equals(name))
+            return Integer.valueOf(getLength());
         return NOT_FOUND;
     }
 
-
-    public Object get( int index, Scriptable start ) {
-        if (index < 0 || index >= getLength()) return NOT_FOUND;
-        return item( index );
+    public Object get(int index, Scriptable start) {
+        if (index < 0 || index >= getLength())
+            return NOT_FOUND;
+        return item(index);
     }
 }

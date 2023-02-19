@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLStyleElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleElement {
@@ -31,33 +30,27 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleEl
         return new HTMLStyleElementImpl();
     }
 
-
     public boolean getDisabled() {
-        return getBooleanAttribute( "disabled" );
+        return getBooleanAttribute("disabled");
     }
-
 
     public String getMedia() {
-        return getAttributeWithDefault( "media", "screen" );
+        return getAttributeWithDefault("media", "screen");
     }
-
 
     public String getType() {
-        return getAttributeWithNoDefault( "type" );
+        return getAttributeWithNoDefault("type");
     }
 
-
-    public void setDisabled( boolean disabled ) {
-        setAttribute( "disabled", disabled );
+    public void setDisabled(boolean disabled) {
+        setAttribute("disabled", disabled);
     }
 
-
-    public void setMedia( String media ) {
-        setAttribute( "media", media );
+    public void setMedia(String media) {
+        setAttribute("media", media);
     }
 
-
-    public void setType( String type ) {
-        setAttribute( "type", type );
+    public void setType(String type) {
+        setAttribute("type", type);
     }
 }

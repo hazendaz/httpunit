@@ -31,173 +31,139 @@ public class HTMLTableElementImpl extends HTMLElementImpl implements HTMLTableEl
         return new HTMLTableElementImpl();
     }
 
-
     public String getAlign() {
-        return getAttributeWithDefault( "align", "center" );
+        return getAttributeWithDefault("align", "center");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
-
 
     public String getBgColor() {
-        return getAttributeWithNoDefault( "bgColor" );
+        return getAttributeWithNoDefault("bgColor");
     }
 
-
-    public void setBgColor( String bgColor ) {
-        setAttribute( "bgColor", bgColor );
+    public void setBgColor(String bgColor) {
+        setAttribute("bgColor", bgColor);
     }
-
 
     public String getBorder() {
-        return getAttributeWithNoDefault( "border" );
+        return getAttributeWithNoDefault("border");
     }
 
-
-    public void setBorder( String border ) {
-        setAttribute( "border", border );
+    public void setBorder(String border) {
+        setAttribute("border", border);
     }
-
 
     public String getCellPadding() {
-        return getAttributeWithNoDefault( "cellpadding" );
+        return getAttributeWithNoDefault("cellpadding");
     }
 
-
-    public void setCellPadding( String cellPadding ) {
-        setAttribute( "cellpadding", cellPadding );
+    public void setCellPadding(String cellPadding) {
+        setAttribute("cellpadding", cellPadding);
     }
-
 
     public String getCellSpacing() {
-        return getAttributeWithNoDefault( "cellspacing" );
+        return getAttributeWithNoDefault("cellspacing");
     }
 
-
-    public void setCellSpacing( String cellSpacing ) {
-        setAttribute( "cellspacing", cellSpacing );
+    public void setCellSpacing(String cellSpacing) {
+        setAttribute("cellspacing", cellSpacing);
     }
-
 
     public String getFrame() {
-        return getAttributeWithDefault( "frame", "void" );
+        return getAttributeWithDefault("frame", "void");
     }
 
-
-    public void setFrame( String frame ) {
-        setAttribute( "frame", frame );
+    public void setFrame(String frame) {
+        setAttribute("frame", frame);
     }
-
 
     public String getRules() {
-        return getAttributeWithDefault( "rules", "none" );
+        return getAttributeWithDefault("rules", "none");
     }
 
-
-    public void setRules( String rules ) {
-        setAttribute( "rules", rules );
+    public void setRules(String rules) {
+        setAttribute("rules", rules);
     }
-
 
     public String getSummary() {
-        return getAttributeWithNoDefault( "summary" );
+        return getAttributeWithNoDefault("summary");
     }
 
-
-    public void setSummary( String summary ) {
-        setAttribute( "summary", summary );
+    public void setSummary(String summary) {
+        setAttribute("summary", summary);
     }
-
 
     public String getWidth() {
-        return getAttributeWithNoDefault( "width" );
+        return getAttributeWithNoDefault("width");
     }
 
-
-    public void setWidth( String width ) {
-        setAttribute( "width", width );
+    public void setWidth(String width) {
+        setAttribute("width", width);
     }
-
 
     public HTMLElement createCaption() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLElement createTFoot() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLElement createTHead() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public void deleteCaption() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void deleteRow( int index ) throws DOMException {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void deleteRow(int index) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public void deleteTFoot() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public void deleteTHead() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLTableCaptionElement getCaption() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLCollection getRows() {
-        return HTMLCollectionImpl.createHTMLCollectionImpl( getElementsByTagName( "tr" ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagName("tr"));
     }
-
 
     public HTMLCollection getTBodies() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLTableSectionElement getTFoot() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLTableSectionElement getTHead() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public HTMLElement insertRow( int index ) throws DOMException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public HTMLElement insertRow(int index) throws DOMException {
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setCaption( HTMLTableCaptionElement caption ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setCaption(HTMLTableCaptionElement caption) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setTFoot( HTMLTableSectionElement tFoot ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setTFoot(HTMLTableSectionElement tFoot) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public void setTHead( HTMLTableSectionElement tHead ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setTHead(HTMLTableSectionElement tHead) {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 }

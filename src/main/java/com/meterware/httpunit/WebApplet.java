@@ -47,168 +47,154 @@ import org.xml.sax.SAXException;
 public class WebApplet extends HTMLElementBase {
 
     private WebResponse _response;
-    private String      _baseTarget;
+    private String _baseTarget;
 
-    private Applet      _applet;
-    private HashMap     _parameters;
-    private String[]    _parameterNames;
+    private Applet _applet;
+    private HashMap _parameters;
+    private String[] _parameterNames;
 
     final private String CLASS_EXTENSION = ".class";
     private HTMLAppletElement _element;
 
-
-    public WebApplet( WebResponse response, HTMLAppletElement element, String baseTarget ) {
-        super( element );
+    public WebApplet(WebResponse response, HTMLAppletElement element, String baseTarget) {
+        super(element);
         _element = element;
-        _response   = response;
+        _response = response;
         _baseTarget = baseTarget;
     }
-
 
     /**
      * Returns the URL of the codebase used to find the applet classes
      */
     public URL getCodeBaseURL() throws MalformedURLException {
-        return new URL( _response.getURL(), getCodeBase() );
+        return new URL(_response.getURL(), getCodeBase());
     }
-
 
     private String getCodeBase() {
         final String codeBaseAttribute = _element.getCodeBase();
-        return codeBaseAttribute.endsWith( "/" ) ? codeBaseAttribute : (codeBaseAttribute + "/");
+        return codeBaseAttribute.endsWith("/") ? codeBaseAttribute : (codeBaseAttribute + "/");
     }
-
 
     /**
      * Returns the name of the applet main class.
      */
     public String getMainClassName() {
         String className = _element.getCode();
-        if (className.endsWith( CLASS_EXTENSION )) {
-            className = className.substring( 0, className.lastIndexOf( CLASS_EXTENSION ));
+        if (className.endsWith(CLASS_EXTENSION)) {
+            className = className.substring(0, className.lastIndexOf(CLASS_EXTENSION));
         }
-        className = className.replace( '/', '.' ).replace( '\\', '.' );
+        className = className.replace('/', '.').replace('\\', '.');
         return className;
     }
-
 
     /**
      * Returns the width of the panel in which the applet will be drawn.
      */
     public int getWidth() {
-        return Integer.parseInt( getAttribute( "width" ) );
+        return Integer.parseInt(getAttribute("width"));
     }
-
 
     /**
      * Returns the height of the panel in which the applet will be drawn.
      */
     public int getHeight() {
-        return Integer.parseInt( getAttribute( "height" ) );
+        return Integer.parseInt(getAttribute("height"));
     }
-
 
     /**
      * Returns the archive specification.
      */
     public String getArchiveSpecification() {
-        String specification = getParameter( "archive" );
-        if (specification == null) specification = getAttribute( "archive" );
+        String specification = getParameter("archive");
+        if (specification == null)
+            specification = getAttribute("archive");
         return specification;
     }
 
-
     List getArchiveList() throws MalformedURLException {
         ArrayList al = new ArrayList();
-        StringTokenizer st = new StringTokenizer( getArchiveSpecification(), "," );
-        while (st.hasMoreTokens()) al.add( new URL( getCodeBaseURL(), st.nextToken() ) );
+        StringTokenizer st = new StringTokenizer(getArchiveSpecification(), ",");
+        while (st.hasMoreTokens())
+            al.add(new URL(getCodeBaseURL(), st.nextToken()));
         return al;
     }
-
 
     /**
      * Returns an array containing the names of the parameters defined for the applet.
      */
     public String[] getParameterNames() {
         if (_parameterNames == null) {
-            ArrayList al = new ArrayList( getParameterMap().keySet() );
-            _parameterNames = (String[]) al.toArray( new String[ al.size() ] );
+            ArrayList al = new ArrayList(getParameterMap().keySet());
+            _parameterNames = (String[]) al.toArray(new String[al.size()]);
         }
         return _parameterNames;
     }
 
-
     /**
      * Returns the value of the specified applet parameter, or null if not defined.
      */
-    public String getParameter( String name ) {
-        return (String) getParameterMap().get( name );
+    public String getParameter(String name) {
+        return (String) getParameterMap().get(name);
     }
-
 
     private Map getParameterMap() {
         if (_parameters == null) {
             _parameters = new HashMap();
-            NodeList nl = ((Element) getNode()).getElementsByTagName( "param" );
+            NodeList nl = ((Element) getNode()).getElementsByTagName("param");
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);
-                _parameters.put( NodeUtils.getNodeAttribute( n, "name", "" ), NodeUtils.getNodeAttribute( n, "value", "" ) );
+                _parameters.put(NodeUtils.getNodeAttribute(n, "name", ""), NodeUtils.getNodeAttribute(n, "value", ""));
             }
         }
         return _parameters;
     }
 
-
-    public Applet getApplet() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public Applet getApplet()
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         if (_applet == null) {
-            ClassLoader cl = new URLClassLoader( getClassPath(), null );
-            Object o = cl.loadClass( getMainClassName() ).newInstance();
-            if (!(o instanceof Applet)) throw new RuntimeException( getMainClassName() + " is not an Applet" );
+            ClassLoader cl = new URLClassLoader(getClassPath(), null);
+            Object o = cl.loadClass(getMainClassName()).newInstance();
+            if (!(o instanceof Applet))
+                throw new RuntimeException(getMainClassName() + " is not an Applet");
             _applet = (Applet) o;
-            _applet.setStub( new AppletStubImpl( this ) );
+            _applet.setStub(new AppletStubImpl(this));
         }
         return _applet;
     }
 
-
     private URL[] getClassPath() throws MalformedURLException {
         List classPath = getArchiveList();
-        classPath.add( getCodeBaseURL() );
-        return (URL[]) classPath.toArray( new URL[ classPath.size() ] );
+        classPath.add(getCodeBaseURL());
+        return (URL[]) classPath.toArray(new URL[classPath.size()]);
     }
-
 
     String getBaseTarget() {
         return _baseTarget;
     }
 
-
     WebApplet[] getAppletsInPage() {
         try {
             return _response.getApplets();
         } catch (SAXException e) {
-        	HttpUnitUtils.handleException(e); // should never happen.
+            HttpUnitUtils.handleException(e); // should never happen.
             return null;
         }
     }
 
-
-    void sendRequest( URL url, String target ) {
-        WebRequest wr = new GetMethodWebRequest( null, url.toExternalForm(), target );
+    void sendRequest(URL url, String target) {
+        WebRequest wr = new GetMethodWebRequest(null, url.toExternalForm(), target);
         try {
-            _response.getWindow().getResponse( wr );
+            _response.getWindow().getResponse(wr);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-            throw new RuntimeException( e.toString() );
+            e.printStackTrace(); // To change body of catch statement use Options | File Templates.
+            throw new RuntimeException(e.toString());
         } catch (SAXException e) {
         }
     }
 
-
     public ScriptableDelegate newScriptable() {
-        return new HTMLElementScriptable( this );
+        return new HTMLElementScriptable(this);
     }
-
 
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();

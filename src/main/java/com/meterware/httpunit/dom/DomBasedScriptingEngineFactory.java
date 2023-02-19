@@ -40,63 +40,66 @@ import org.w3c.dom.html.HTMLDocument;
  */
 public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
-
     private final static Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);
 
-		/**
-		 * check whether this ScriptingEngineFactory is enabled
-		 */
+    /**
+     * check whether this ScriptingEngineFactory is enabled
+     */
     public boolean isEnabled() {
         try {
-            Class.forName( "org.mozilla.javascript.Context" );
+            Class.forName("org.mozilla.javascript.Context");
             return true;
         } catch (Exception e) {
-            logger.warn( "Rhino classes (js.jar) not found - Javascript disabled" );
+            logger.warn("Rhino classes (js.jar) not found - Javascript disabled");
             return false;
         }
     }
 
-
     /**
      * associate me with a webresponse
-     * @param response - the WebResponse to use
+     *
+     * @param response
+     *            - the WebResponse to use
      */
-    public void associate( WebResponse response ) {
-      try {
-        // JavaScript.run( response ); // can't do this (yet?)
-      } catch (RuntimeException e) {
-        throw e;
-      } catch (Exception e) {
-      	HttpUnitUtils.handleException(e);
-      	throw new RuntimeException( e.toString() );
-      }
+    public void associate(WebResponse response) {
+        try {
+            // JavaScript.run( response ); // can't do this (yet?)
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            HttpUnitUtils.handleException(e);
+            throw new RuntimeException(e.toString());
+        }
     }
-
 
     /**
      * load
+     *
      * @param response
      */
-    public void load( WebResponse response ) {
-    		Function onLoadEvent=null;
+    public void load(WebResponse response) {
+        Function onLoadEvent = null;
         try {
             Context context = Context.enter();
-            context.initStandardObjects( null );
+            context.initStandardObjects(null);
 
             HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();
-            if (!(htmlDocument instanceof HTMLDocumentImpl)) return;
+            if (!(htmlDocument instanceof HTMLDocumentImpl))
+                return;
 
             HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();
-            if (body == null) return;
+            if (body == null)
+                return;
             onLoadEvent = body.getOnloadEvent();
-            if (onLoadEvent == null) return;
-            onLoadEvent.call( context, body, body, new Object[0] );
+            if (onLoadEvent == null)
+                return;
+            onLoadEvent.call(context, body, body, new Object[0]);
         } catch (JavaScriptException e) {
-        	ScriptingEngineImpl.handleScriptException(e, onLoadEvent.toString());
-        	// HttpUnitUtils.handleException(e);
+            ScriptingEngineImpl.handleScriptException(e, onLoadEvent.toString());
+            // HttpUnitUtils.handleException(e);
         } catch (EcmaError ee) {
-        	//throw ee;
-        	ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());
+            // throw ee;
+            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());
         } finally {
             Context.exit();
         }
@@ -104,48 +107,48 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
     /**
      * setter for the throwExceptions flag
-     * @param throwExceptions - true if Exceptions should be thrown
+     *
+     * @param throwExceptions
+     *            - true if Exceptions should be thrown
      */
-    public void setThrowExceptionsOnError( boolean throwExceptions ) {
-      JavaScript.setThrowExceptionsOnError( throwExceptions );
+    public void setThrowExceptionsOnError(boolean throwExceptions) {
+        JavaScript.setThrowExceptionsOnError(throwExceptions);
     }
-
 
     /**
      * getter for the throwExceptions flag
+     *
      * @return - true if Exceptions should be thrown
      */
     public boolean isThrowExceptionsOnError() {
-    	return JavaScript.isThrowExceptionsOnError();
+        return JavaScript.isThrowExceptionsOnError();
     }
-
 
     public String[] getErrorMessages() {
-      return ScriptingEngineImpl.getErrorMessages();
+        return ScriptingEngineImpl.getErrorMessages();
     }
-
 
     public void clearErrorMessages() {
-      ScriptingEngineImpl.clearErrorMessages();
+        ScriptingEngineImpl.clearErrorMessages();
     }
 
-
-    public ScriptingHandler createHandler( HTMLElement elementBase ) {
+    public ScriptingHandler createHandler(HTMLElement elementBase) {
         return (ScriptingHandler) elementBase.getNode();
     }
 
-
-    public ScriptingHandler createHandler( WebResponse response ) {
+    public ScriptingHandler createHandler(WebResponse response) {
         return response.createDomScriptingHandler();
     }
 
-
-	 /**
+    /**
      * handle Exceptions
-     * @param e - the exception to handle
-     * @param badScript - the script that caused the problem
+     *
+     * @param e
+     *            - the exception to handle
+     * @param badScript
+     *            - the script that caused the problem
      */
-    public void handleScriptException( Exception e, String badScript ) {
-    	ScriptingEngineImpl.handleScriptException(e, badScript);
+    public void handleScriptException(Exception e, String badScript) {
+        ScriptingEngineImpl.handleScriptException(e, badScript);
     }
 }

@@ -36,12 +36,10 @@ class PseudoServerTest {
 
     private PseudoServerTestSupport support = new PseudoServerTestSupport();
 
-
     @BeforeEach
     void setUp() throws Exception {
         support.setUpServer();
     }
-
 
     @AfterEach
     void tearDownHttpUserAgentTest() throws Exception {
@@ -51,7 +49,6 @@ class PseudoServerTest {
     private String getHostPath() {
         return support.getHostPath();
     }
-
 
     private int getHostPort() throws IOException {
         return support.getHostPort();
@@ -64,7 +61,6 @@ class PseudoServerTest {
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode(), "Response code");
     }
 
-
     @Test
     void testStatusSpecification() throws Exception {
         support.defineResource("error.htm", "Not Modified", 304);
@@ -73,7 +69,6 @@ class PseudoServerTest {
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/error.htm");
         assertEquals(304, response.getResponseCode(), "Response code");
     }
-
 
     /**
      * This tests simple access to the server without using any client classes.
@@ -91,12 +86,12 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read())) sb.append((char) b);
+        while (-1 != (b = is.read()))
+            sb.append((char) b);
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
-
 
     /**
      * This tests simple access to the server without using any client classes.
@@ -112,12 +107,12 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read())) sb.append((char) b);
+        while (-1 != (b = is.read()))
+            sb.append((char) b);
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("400") > 0, "Did not find expected error message");
     }
-
 
     /**
      * This tests simple access to the server without using any client classes.
@@ -135,19 +130,18 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read())) sb.append((char) b);
+        while (-1 != (b = is.read()))
+            sb.append((char) b);
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
-
 
     private void sendHTTPLine(OutputStream os, final String line) throws IOException {
         os.write(line.getBytes(StandardCharsets.UTF_8));
         os.write(13);
         os.write(10);
     }
-
 
     /**
      * This verifies that the PseudoServer detects and echoes its protocol.
@@ -166,12 +160,12 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read())) sb.append((char) b);
+        while (-1 != (b = is.read()))
+            sb.append((char) b);
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.1"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
-
 
     /**
      * This verifies that the PseudoServer can be restricted to a HTTP/1.0.
@@ -191,12 +185,12 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read())) sb.append((char) b);
+        while (-1 != (b = is.read()))
+            sb.append((char) b);
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
-
 
     @Test
     void testPseudoServlet() throws Exception {
@@ -216,7 +210,6 @@ class PseudoServerTest {
         assertEquals("text/plain", response.getHeader("Content-Type"), "Content type");
         assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
-
 
     @Test
     void testPseudoServletWithGET() throws Exception {
@@ -258,7 +251,6 @@ class PseudoServerTest {
         assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
-
     /**
      * Verifies that it is possible to disable the content-type header.
      *
@@ -281,7 +273,6 @@ class PseudoServerTest {
         assertNull(response.getHeader("Content-Type"), "Found a content type header");
     }
 
-
     @Test
     void testChunkedRequest() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
@@ -299,9 +290,7 @@ class PseudoServerTest {
         assertEquals("This is chunked.", new String(response.getBody()), "retrieved body");
     }
 
-
     // need test: respond with HTTP_BAD_REQUEST if header line is bad
-
 
     @Test
     void testChunkedRequestFollowedByAnother() throws Exception {
@@ -311,7 +300,6 @@ class PseudoServerTest {
             }
         });
 
-
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         conn.startChunkedResponse("POST", "/chunkedServlet");
         conn.sendChunk("This ");
@@ -320,7 +308,6 @@ class PseudoServerTest {
         SocketConnection.SocketResponse response = conn.getResponse();
         assertEquals("This is chunked.", new String(response.getBody()), "retrieved body");
 
-
         // Make a second request to duplicate the problem...
         conn.startChunkedResponse("POST", "/chunkedServlet");
         conn.sendChunk("This ");
@@ -328,15 +315,16 @@ class PseudoServerTest {
         conn.sendChunk("also (and with a greater size) ");
         conn.sendChunk("chunked.");
         SocketConnection.SocketResponse response2 = conn.getResponse();
-        assertEquals("This is also (and with a greater size) chunked.", new String(response2.getBody()), "retrieved body");
+        assertEquals("This is also (and with a greater size) chunked.", new String(response2.getBody()),
+                "retrieved body");
     }
-
 
     @Test
     void testChunkedResponse() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             public WebResource getGetResponse() {
-                WebResource webResource = new WebResource("5\r\nSent \r\n3\r\nin \r\n07\r\nchunks.\r\n0\r\n\r\n", "text/plain");
+                WebResource webResource = new WebResource("5\r\nSent \r\n3\r\nin \r\n07\r\nchunks.\r\n0\r\n\r\n",
+                        "text/plain");
                 webResource.addHeader("Transfer-Encoding: chunked");
                 return webResource;
             }
@@ -347,7 +335,6 @@ class PseudoServerTest {
         assertEquals("Sent in chunks.", new String(response.getBody()), "retrieved body");
         assertNull(response.getHeader("Content-Length"), "No Content-Length header should have been sent");
     }
-
 
     @Test
     void testPersistentConnection() throws Exception {
@@ -363,7 +350,6 @@ class PseudoServerTest {
         SocketConnection.SocketResponse resp3 = conn.getResponse("OPTIONS", "/testServlet");
         assertEquals("GET", resp3.getHeader("Allow"), "allow header");
     }
-
 
     private class TestMethodServlet extends PseudoServlet {
 
@@ -387,7 +373,6 @@ class PseudoServerTest {
         }
     }
 
-
     @Test
     void testBadMethodUsingPseudoServlet() throws Exception {
         String resourceName = "tellMe";
@@ -400,15 +385,14 @@ class PseudoServerTest {
         assertEquals(HttpURLConnection.HTTP_BAD_METHOD, response.getResponseCode(), "Status code returned");
     }
 
-
     @Test
     void testClasspathDirectory() throws Exception {
         support.mapToClasspath("/some/classes");
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
-        conn.getResponse("GET", "/some/classes/" + SocketConnection.SocketResponse.class.getName().replace('.', '/') + ".class");
+        conn.getResponse("GET",
+                "/some/classes/" + SocketConnection.SocketResponse.class.getName().replace('.', '/') + ".class");
     }
-
 
     @Test
     void testPseudoServletRequestAccess() throws Exception {
@@ -422,7 +406,6 @@ class PseudoServerTest {
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/properties");
         assertEquals("/properties", new String(response.getBody()), "retrieved body");
     }
-
 
     @Test
     void testLargeDelayedPseudoServletRequest() throws Exception {
@@ -483,7 +466,6 @@ class PseudoServerTest {
         sock.close();
     }
 
-
     /**
      * This method generates a long MIME-encoded SOAP request message for use by testLargeDelayedPseudoServletRequest().
      *
@@ -499,7 +481,8 @@ class PseudoServerTest {
         buf.append("<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\r\n");
         buf.append("              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\r\n");
         buf.append("              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n");
-        buf.append("              xmlns:ns0=\"http://www.ws-i.org/SampleApplications/SupplyChainManagement/2003-07/Catalog.xsd\">\r\n");
+        buf.append(
+                "              xmlns:ns0=\"http://www.ws-i.org/SampleApplications/SupplyChainManagement/2003-07/Catalog.xsd\">\r\n");
         buf.append("   <env:Body>\r\n");
         buf.append("      <ns0:ProductCatalog>\r\n");
         buf.append("         <ns0:Product>\r\n");

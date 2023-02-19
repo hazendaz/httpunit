@@ -26,7 +26,6 @@ package com.meterware.httpunit.cookies;
  */
 public interface CookieListener {
 
-
     /** Indicates that the cookie was accepted. **/
     public final static int ACCEPTED = 0;
 
@@ -42,11 +41,9 @@ public interface CookieListener {
     /** Indicates that the source path does not begin with the path attribute. **/
     public final static int PATH_NOT_PREFIX = 5;
 
-
     /**
      * Invoked when a cookie is rejected by HttpUnit.
      **/
-    void cookieRejected( String cookieName, int reason, String attribute );
-
+    void cookieRejected(String cookieName, int reason, String attribute);
 
 }

@@ -39,93 +39,88 @@ public class Button extends FormControl {
 
     private WebResponse _baseResponse;
     // remember the last verifyEnabled result
-    private boolean _wasEnabled=true;
-
+    private boolean _wasEnabled = true;
 
     public String getType() {
         return BUTTON_TYPE;
     }
 
-
-    Button( WebForm form ) {
-        super( form );
+    Button(WebForm form) {
+        super(form);
     }
 
-
     /**
-     * construct a button from the given html control and assign the event handlers for onclick, onmousedown and onmouseup
+     * construct a button from the given html control and assign the event handlers for onclick, onmousedown and
+     * onmouseup
+     *
      * @param form
      * @param control
      */
-    Button( WebForm form, HTMLControl control ) {
-        super( form, control );
+    Button(WebForm form, HTMLControl control) {
+        super(form, control);
     }
 
-
-    Button( WebResponse response, HTMLControl control ) {
-        super( null, control );
+    Button(WebResponse response, HTMLControl control) {
+        super(null, control);
         _baseResponse = response;
     }
-
 
     /**
      * Returns the value associated with this button.
      **/
     public String getValue() {
-        return emptyIfNull( getNode() instanceof HTMLInputElementImpl
-                                ? ((HTMLInputElementImpl) getNode()).getValue()
-                                : ((HTMLButtonElementImpl) getNode()).getValue() );
+        return emptyIfNull(getNode() instanceof HTMLInputElementImpl ? ((HTMLInputElementImpl) getNode()).getValue()
+                : ((HTMLButtonElementImpl) getNode()).getValue());
     }
 
     /**
      * the onClickSequence for this button
+     *
      * @return true if the even was handled
      */
-    protected boolean doOnClickSequence(int x,int y) throws IOException, SAXException {
-      verifyButtonEnabled();
-      boolean result=doOnClickEvent();
-      if (result) {
-      	doButtonAction(x,y);
-      }
-      this.rememberEnableState();
-      return result;
+    protected boolean doOnClickSequence(int x, int y) throws IOException, SAXException {
+        verifyButtonEnabled();
+        boolean result = doOnClickEvent();
+        if (result) {
+            doButtonAction(x, y);
+        }
+        this.rememberEnableState();
+        return result;
     }
 
     /**
-     * Performs the action associated with clicking this button after running any 'onClick' script.
-     * For a submit button this typically submits the form.
+     * Performs the action associated with clicking this button after running any 'onClick' script. For a submit button
+     * this typically submits the form.
      */
     public void click() throws IOException, SAXException {
-      doOnClickSequence(0,0);
+        doOnClickSequence(0, 0);
     }
 
-
     boolean wasEnabled() {
-    	return _wasEnabled;
+        return _wasEnabled;
     }
 
     /**
      * remember wether the button was enabled
      */
     public void rememberEnableState() {
-    	_wasEnabled=!isDisabled();
+        _wasEnabled = !isDisabled();
     }
 
     /**
      * verifyButtonEnabled
      */
     protected void verifyButtonEnabled() {
-    	rememberEnableState();
-      if (isDisabled())
-      	throwDisabledException();
+        rememberEnableState();
+        if (isDisabled())
+            throwDisabledException();
     }
 
     /**
      * throw an exception that I'm disbled
-     *
      */
     public void throwDisabledException() {
-     	throw new DisabledButtonException(this);
+        throw new DisabledButtonException(this);
     }
 
     /**
@@ -133,24 +128,21 @@ public class Button extends FormControl {
      **/
     class DisabledButtonException extends IllegalStateException {
 
-
-        DisabledButtonException( Button button ) {
-            _name  = button.getName();
+        DisabledButtonException(Button button) {
+            _name = button.getName();
             _value = button.getValue();
         }
 
-
         public String getMessage() {
-        	String msg="Button" + (getName().length() == 0 ? "" : " '" + getName() + "'") + " is disabled and may not be clicked.";
-        	return msg;
+            String msg = "Button" + (getName().length() == 0 ? "" : " '" + getName() + "'")
+                    + " is disabled and may not be clicked.";
+            return msg;
         }
-
 
         protected String _name;
         protected String _value;
 
     }
-
 
     /**
      * Returns true if this button is disabled, meaning that it cannot be clicked.
@@ -159,51 +151,50 @@ public class Button extends FormControl {
         return super.isDisabled();
     }
 
-
     /**
      * Perform the normal action of this button.
-     * @param x - the x coordinate
-     * @param y - the y coordinate
+     *
+     * @param x
+     *            - the x coordinate
+     * @param y
+     *            - the y coordinate
+     *
      * @throws IOException
      * @throws SAXException
      */
-    protected void doButtonAction(int x,int y) throws IOException, SAXException {
-    	// pseudo - abstract
+    protected void doButtonAction(int x, int y) throws IOException, SAXException {
+        // pseudo - abstract
     }
 
     /**
-     * Perform the normal action of this button.
-     * delegate to the x-y version
+     * Perform the normal action of this button. delegate to the x-y version
+     *
      * @throws IOException
      * @throws SAXException
      */
     protected void doButtonAction() throws IOException, SAXException {
-    	doButtonAction(0,0);
+        doButtonAction(0, 0);
     }
 
-
-//-------------------------------------------------- FormControl methods -----------------------------------------------
-
+    // -------------------------------------------------- FormControl methods
+    // -----------------------------------------------
 
     protected String[] getValues() {
-        return new String[ 0 ];
+        return new String[0];
     }
 
-
-    protected void addValues( ParameterProcessor processor, String characterSet ) throws IOException {
+    protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
     }
-
 
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
-
     public ScriptableDelegate getParentDelegate() {
-        if (getForm() != null) return super.getParentDelegate();
+        if (getForm() != null)
+            return super.getParentDelegate();
         return _baseResponse.getDocumentScriptable();
     }
-
 
     class Scriptable extends FormControl.Scriptable {
 
@@ -212,17 +203,16 @@ public class Button extends FormControl {
         }
     }
 
-
     static {
         WITH_ID = new HTMLElementPredicate() {
-            public boolean matchesCriteria( Object button, Object id ) {
-                return ((Button) button).getID().equals( id );
+            public boolean matchesCriteria(Object button, Object id) {
+                return ((Button) button).getID().equals(id);
             }
         };
 
         WITH_LABEL = new HTMLElementPredicate() {
-            public boolean matchesCriteria( Object button, Object label ) {
-                return ((Button) button).getValue().equals( label );
+            public boolean matchesCriteria(Object button, Object label) {
+                return ((Button) button).getValue().equals(label);
             }
         };
 

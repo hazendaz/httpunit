@@ -57,6 +57,7 @@ class ConfigTest {
 
     /**
      * Test added by WF 2012-11-12 to answer question on developers mailing list
+     *
      * @throws Exception
      */
     @Test
@@ -78,7 +79,6 @@ class ConfigTest {
         }
     }
 
-
     @Test
     void testContextAttributes() throws Exception {
         final String servlet1Name = "something/interesting";
@@ -97,7 +97,6 @@ class ConfigTest {
         assertEquals("found me", sc2.getAttribute("sample"), "attribute 'sample'");
     }
 
-
     @Test
     void testFileMimeType() throws Exception {
         final String servlet1Name = "something/interesting";
@@ -112,7 +111,6 @@ class ConfigTest {
         checkMimeType(context, "sample.gif", "image/gif");
     }
 
-
     @Test
     void testServletContextAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -123,11 +121,9 @@ class ConfigTest {
         assertSame(context, ic.getRequest().getSession().getServletContext(), "Context from session");
     }
 
-
     private void checkMimeType(ServletContext context, String fileName, String expectedMimeType) {
         assertEquals(expectedMimeType, context.getMimeType(fileName), "mime type for " + fileName);
     }
-
 
     static class ConfigServlet extends HttpServlet {
         static String RESPONSE_TEXT = "the desired content\r\n";
@@ -147,5 +143,3 @@ class ConfigTest {
 
     }
 }
-
-

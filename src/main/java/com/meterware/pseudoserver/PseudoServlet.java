@@ -25,84 +25,72 @@ import java.io.Reader;
 /**
  * A basic simulated servlet for testing the HttpUnit library.
  **/
-abstract
-public class PseudoServlet {
-
+abstract public class PseudoServlet {
 
     final static public String CONTENTS = "contents";
-
 
     /**
      * Returns a resource object as a result of a get request.
      **/
-    public WebResource getResponse( String methodType ) throws IOException {
-        if (methodType.equalsIgnoreCase( "GET" )) {
+    public WebResource getResponse(String methodType) throws IOException {
+        if (methodType.equalsIgnoreCase("GET")) {
             return getGetResponse();
-        } else if (methodType.equalsIgnoreCase( "PUT" )) {
+        } else if (methodType.equalsIgnoreCase("PUT")) {
             return getPutResponse();
-        } else if (methodType.equalsIgnoreCase( "POST" )) {
+        } else if (methodType.equalsIgnoreCase("POST")) {
             return getPostResponse();
-        } else if (methodType.equalsIgnoreCase( "DELETE" )) {
+        } else if (methodType.equalsIgnoreCase("DELETE")) {
             return getDeleteResponse();
         } else {
-            throw new UnknownMethodException( methodType );
+            throw new UnknownMethodException(methodType);
         }
     }
-
 
     /**
      * Returns a resource object as a result of a get request.
      **/
     public WebResource getGetResponse() throws IOException {
-        throw new UnknownMethodException( "GET" );
+        throw new UnknownMethodException("GET");
     }
-
 
     /*
      * Returns a resource object as a result of a post request.
      **/
     public WebResource getPostResponse() throws IOException {
-        throw new UnknownMethodException( "POST" );
+        throw new UnknownMethodException("POST");
     }
-
 
     /*
      * Returns a resource object as a result of a put request.
      **/
     public WebResource getPutResponse() throws IOException {
-        throw new UnknownMethodException( "PUT" );
+        throw new UnknownMethodException("PUT");
     }
-
 
     /*
      * Returns a resource object as a result of a delete request.
      **/
     public WebResource getDeleteResponse() throws IOException {
-        throw new UnknownMethodException( "DELETE" );
+        throw new UnknownMethodException("DELETE");
     }
 
-
-    void init( HttpRequest requestStream ) {
+    void init(HttpRequest requestStream) {
         _request = requestStream;
     }
-
 
     /**
      * Returns the header with the specified name. If no such header exists, will return null.
      **/
-    protected String getHeader( String name ) {
-        return _request.getHeader( name );
+    protected String getHeader(String name) {
+        return _request.getHeader(name);
     }
-
 
     /**
-     * Returns the values for the parameter with the specified name. If no values exist
-     * will return null.
+     * Returns the values for the parameter with the specified name. If no values exist will return null.
      **/
-    protected String[] getParameter( String name ) {
-        return _request.getParameter( name );
+    protected String[] getParameter(String name) {
+        return _request.getParameter(name);
     }
-
 
     /**
      * Returns a reader for the body of the request.
@@ -111,20 +99,14 @@ public class PseudoServlet {
         return _request.getReader();
     }
 
-
     protected byte[] getBody() {
         return _request.getBody();
     }
-
 
     protected HttpRequest getRequest() {
         return _request;
     }
 
-
     private HttpRequest _request;
 
 }
-
-
-

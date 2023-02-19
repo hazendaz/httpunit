@@ -47,5 +47,5 @@ import org.w3c.dom.Element;
  */
 public interface DomListener {
 
-    void propertyChanged( Element changedElement, String propertyName );
+    void propertyChanged(Element changedElement, String propertyName);
 }

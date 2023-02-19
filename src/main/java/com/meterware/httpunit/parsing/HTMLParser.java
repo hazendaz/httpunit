@@ -28,24 +28,23 @@ import org.xml.sax.SAXException;
  * A front end to a DOM parser that can handle HTML.
  *
  * @since 1.5.2
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
  **/
 public interface HTMLParser {
 
     /**
-     * Parses the specified text string as a Document, registering it in the HTMLPage.
-     * Any error reporting will be annotated with the specified URL.
+     * Parses the specified text string as a Document, registering it in the HTMLPage. Any error reporting will be
+     * annotated with the specified URL.
      */
-    public void parse( URL baseURL, String pageText, DocumentAdapter adapter ) throws IOException, SAXException;
-
+    public void parse(URL baseURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException;
 
     /**
-     * Removes any string artifacts placed in the text by the parser. For example, a parser may choose to encode
-     * an HTML entity as a special character. This method should convert that character to normal text.
+     * Removes any string artifacts placed in the text by the parser. For example, a parser may choose to encode an HTML
+     * entity as a special character. This method should convert that character to normal text.
      */
-    public String getCleanedText( String string );
-
+    public String getCleanedText(String string);
 
     /**
      * Returns true if this parser supports preservation of the case of tag and attribute names.
@@ -53,7 +52,7 @@ public interface HTMLParser {
     public boolean supportsPreserveTagCase();
 
     /**
-     * Returns true if this parser supports forcing  the upper/lower case of tag and attribute names.
+     * Returns true if this parser supports forcing the upper/lower case of tag and attribute names.
      */
     public boolean supportsForceTagCase();
 
@@ -61,7 +60,6 @@ public interface HTMLParser {
      * Returns true if this parser can return an HTMLDocument object.
      */
     public boolean supportsReturnHTMLDocument();
-
 
     /**
      * Returns true if this parser can display parser warnings.

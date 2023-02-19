@@ -49,11 +49,10 @@ public interface WebWindowListener {
     /**
      * Invoked when the web client opens a new window.
      */
-    public void windowOpened( WebClient client, WebWindow window );
-
+    public void windowOpened(WebClient client, WebWindow window);
 
     /**
      * Invoked when the web client closes a window.
      */
-    public void windowClosed( WebClient client, WebWindow window );
+    public void windowClosed(WebClient client, WebWindow window);
 }

@@ -30,9 +30,7 @@ public class PassingTests extends TestCase {
         super(s);
     }
 
-
     public void testAddition() {
         assertEquals(2, 1 + 1);
     }
 }
-

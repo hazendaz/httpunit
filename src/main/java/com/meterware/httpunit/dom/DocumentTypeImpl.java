@@ -24,60 +24,52 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 
-//---------------------------------------------- DocumentType methods --------------------------------------------------
+    // ---------------------------------------------- DocumentType methods
+    // --------------------------------------------------
 
     public NamedNodeMap getEntities() {
         return null;
     }
 
-
     public String getInternalSubset() {
         return null;
     }
-
 
     public String getName() {
         return null;
     }
 
-
     public NamedNodeMap getNotations() {
         return null;
     }
-
 
     public String getPublicId() {
         return null;
     }
 
-
     public String getSystemId() {
         return null;
     }
 
-//------------------------------------------------ NodeImpl methods ----------------------------------------------------
-
+    // ------------------------------------------------ NodeImpl methods
+    // ----------------------------------------------------
 
     public String getNodeName() {
         return null;
     }
 
-
     public short getNodeType() {
         return 0;
     }
-
 
     public String getNodeValue() throws DOMException {
         return null;
     }
 
-
-    public void setNodeValue( String nodeValue ) throws DOMException {
+    public void setNodeValue(String nodeValue) throws DOMException {
     }
 }

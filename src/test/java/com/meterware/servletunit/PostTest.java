@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebForm;
@@ -52,22 +52,16 @@ import org.mortbay.jetty.servlet.ServletHolder;
 public class PostTest {
 
     /*
-    Server jetty;
-
-    protected void setUp() {
-        jetty = new Server(8989);
-    }
-
-    protected void tearDown() throws Exception {
-        jetty.stop();
-    }
-    */
+     * Server jetty; protected void setUp() { jetty = new Server(8989); } protected void tearDown() throws Exception {
+     * jetty.stop(); }
+     */
     static final String resourceName = "test";
 
     /**
      * check the webresponse
      *
      * @param response
+     *
      * @throws SAXException
      * @throws IOException
      */
@@ -78,24 +72,17 @@ public class PostTest {
         form.setParameter("brainz", "has none");
         form.submit();
         int expected = 1;
-        assertEquals(TestServlet.postCount, expected, "The postcount should be " + expected + " but is " + TestServlet.postCount);
+        assertEquals(TestServlet.postCount, expected,
+                "The postcount should be " + expected + " but is " + TestServlet.postCount);
     }
 
     /*
-     @Test
-     public void testThatFormSubmitIssuesASinglePost() throws Exception {
-         TestServlet.location="http://localhost:8989/";
-         TestServlet servlet = new TestServlet();
-         ServletHandler handler = new ServletHandler();
-         handler.addServletWithMapping(new ServletHolder(servlet), "/"+resourceName);
-         jetty.setHandler(handler);
-         jetty.start();
-
-         WebConversation wc = new WebConversation();
-         WebResponse response = wc.getResponse(TestServlet.location+resourceName);
-
-         check(response);
-     }*/
+     * @Test public void testThatFormSubmitIssuesASinglePost() throws Exception {
+     * TestServlet.location="http://localhost:8989/"; TestServlet servlet = new TestServlet(); ServletHandler handler =
+     * new ServletHandler(); handler.addServletWithMapping(new ServletHolder(servlet), "/"+resourceName);
+     * jetty.setHandler(handler); jetty.start(); WebConversation wc = new WebConversation(); WebResponse response =
+     * wc.getResponse(TestServlet.location+resourceName); check(response); }
+     */
 
     @Test
     void testMultiplePosts() throws Exception {
@@ -129,7 +116,7 @@ public class PostTest {
 
         assertEquals(true, response.getText().contains("name=\"empty\""));
         assertEquals(true, response.getText().contains("name=\"empty_textarea\""));
-        //check(response);
+        // check(response);
     }
 
     /**
@@ -139,33 +126,23 @@ public class PostTest {
         public static int postCount = 0;
         public static String location = null;
 
-        protected void doGet(HttpServletRequest request,
-                             HttpServletResponse response) throws IOException, ServletException {
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                throws IOException, ServletException {
             response.setContentType("text/html");
-            response
-                    .getWriter()
-                    .println(
-                            "<html>" +
-                                    "<body>" +
-                                    "<form action='" + location + resourceName + "' method='post' id='bug'>" +
-                                    "<input name='handle'/>" +
-                                    "<input name='brainz'/>" +
-                                    "</form>" +
-                                    "<form id='multipart-bug' method='post' action='" + location + resourceName + "' enctype='multipart/form-data'>" +
-                                    "<input name='empty' value=''>" +
-                                    "<input name='notempty' value='1'>" +
-                                    "<textarea name='empty_textarea'></textarea>" +
-                                    "</form>" +
-                                    "</body>" +
-                                    "</html>");
+            response.getWriter()
+                    .println("<html>" + "<body>" + "<form action='" + location + resourceName
+                            + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
+                            + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
+                            + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
+                            + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
+                            + "</form>" + "</body>" + "</html>");
             /*
-               if (request instanceof Request)
-                   ((Request) request).setHandled(true);
-               */
+             * if (request instanceof Request) ((Request) request).setHandled(true);
+             */
         }
 
-        protected void doPost(HttpServletRequest request,
-                              HttpServletResponse response) throws IOException, ServletException {
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+                throws IOException, ServletException {
             postCount++;
             InputStream is = request.getInputStream();
             OutputStream os = response.getOutputStream();

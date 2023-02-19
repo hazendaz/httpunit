@@ -36,189 +36,174 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFormElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement, FormScriptable {
-
 
     ElementImpl create() {
         return new HTMLFormElementImpl();
     }
 
+    // ------------------------------- ScriptableObject methods
+    // ----------------------------------------------------------
 
-    //------------------------------- ScriptableObject methods ----------------------------------------------------------
-
-
-    public Object get( String propertyName, Scriptable scriptable ) {
+    public Object get(String propertyName, Scriptable scriptable) {
         HTMLCollection elements = getElements();
-        for (int i=0; i < elements.getLength(); i++) {
-            Node node = elements.item( i );
+        for (int i = 0; i < elements.getLength(); i++) {
+            Node node = elements.item(i);
             NamedNodeMap attributes = node.getAttributes();
-            AttrImpl nameAttribute = (AttrImpl) attributes.getNamedItem( "name" );
-            if (nameAttribute != null && propertyName.equals( nameAttribute.getValue() )) return node;
-            AttrImpl idAttribute = (AttrImpl) attributes.getNamedItem( "id" );
-            if (idAttribute != null && propertyName.equals( idAttribute.getValue() )) return node;
+            AttrImpl nameAttribute = (AttrImpl) attributes.getNamedItem("name");
+            if (nameAttribute != null && propertyName.equals(nameAttribute.getValue()))
+                return node;
+            AttrImpl idAttribute = (AttrImpl) attributes.getNamedItem("id");
+            if (idAttribute != null && propertyName.equals(idAttribute.getValue()))
+                return node;
         }
-        return  super.get( propertyName, scriptable );
+        return super.get(propertyName, scriptable);
     }
 
-    //------------------------------- HTMLFormElement methods ----------------------------------------------------------
-
+    // ------------------------------- HTMLFormElement methods
+    // ----------------------------------------------------------
 
     public String getAcceptCharset() {
-        return getAttributeWithDefault( "accept-charset", "UNKNOWN" );
+        return getAttributeWithDefault("accept-charset", "UNKNOWN");
     }
 
-
-    public void setAcceptCharset( String acceptCharset ) {
-        setAttribute( "accept-charset", acceptCharset );
+    public void setAcceptCharset(String acceptCharset) {
+        setAttribute("accept-charset", acceptCharset);
     }
-
 
     public String getAction() {
-        return getAttribute( "action" );
+        return getAttribute("action");
     }
 
-
-    public void setAction( String action ) {
-        setAttribute( "action", action );
+    public void setAction(String action) {
+        setAttribute("action", action);
     }
 
-
-    public void setParameterValue( String name, String value ) {
-        Object control = get( name, null );
-        if (control instanceof ScriptableObject) ((ScriptableObject) control).put( "value", this, value );
+    public void setParameterValue(String name, String value) {
+        Object control = get(name, null);
+        if (control instanceof ScriptableObject)
+            ((ScriptableObject) control).put("value", this, value);
     }
-
 
     public String getEnctype() {
-        return getAttributeWithDefault( "enctype", "application/x-www-form-urlencoded" );
+        return getAttributeWithDefault("enctype", "application/x-www-form-urlencoded");
     }
 
-
-    public void setEnctype( String enctype ) {
-        setAttribute( "enctype", enctype );
+    public void setEnctype(String enctype) {
+        setAttribute("enctype", enctype);
     }
-
 
     public String getMethod() {
-        return getAttributeWithDefault( "method", "get" );
+        return getAttributeWithDefault("method", "get");
     }
 
-
-    public void setMethod( String method ) {
-        setAttribute( "method", method );
+    public void setMethod(String method) {
+        setAttribute("method", method);
     }
-
 
     /**
      * getter for the name
+     *
      * @see org.w3c.dom.html.HTMLFormElement#getName()
      */
     public String getName() {
-    	String result=getAttributeWithNoDefault( "name" );
-    	if (result==null)
-    		result=this.getId();
-      return result;
+        String result = getAttributeWithNoDefault("name");
+        if (result == null)
+            result = this.getId();
+        return result;
     }
 
-
-    public void setName( String name ) {
-        setAttribute( "name", name );
+    public void setName(String name) {
+        setAttribute("name", name);
     }
-
 
     public String getTarget() {
-        return getAttributeWithNoDefault( "target" );
+        return getAttributeWithNoDefault("target");
     }
 
-
-    public void setTarget( String target ) {
-        setAttribute( "target", target );
+    public void setTarget(String target) {
+        setAttribute("target", target);
     }
-
 
     public HTMLCollection getElements() {
         ArrayList elements = new ArrayList();
-        String[] names = new String[]{"INPUT", "TEXTAREA", "BUTTON", "SELECT"};
+        String[] names = new String[] { "INPUT", "TEXTAREA", "BUTTON", "SELECT" };
         for (Iterator each = preOrderIteratorAfterNode(); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node instanceof HTMLFormElement) break;
+            if (node instanceof HTMLFormElement)
+                break;
 
-            if (node.getNodeType() != ELEMENT_NODE) continue;
+            if (node.getNodeType() != ELEMENT_NODE)
+                continue;
             String tagName = ((Element) node).getTagName();
             for (int i = 0; i < names.length; i++) {
-                if (tagName.equalsIgnoreCase( names[i] )) elements.add( node );
+                if (tagName.equalsIgnoreCase(names[i]))
+                    elements.add(node);
             }
         }
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
-
 
     public int getLength() {
         return 0;
     }
 
-
     public void reset() {
         HTMLCollection elements = getElements();
         for (int i = 0; i < elements.getLength(); i++) {
             Node node = elements.item(i);
-            if (node instanceof HTMLControl) ((HTMLControl) node).reset();
+            if (node instanceof HTMLControl)
+                ((HTMLControl) node).reset();
         }
     }
-
 
     public void submit() {
         doSubmitAction();
     }
-
 
     /**
      * Handles the actual form submission - does not handle the "submit" event.
      */
     void doSubmitAction() {
         try {
-            if ("get".equalsIgnoreCase( getMethod() )) {
-                getDomWindow().submitRequest( this, getMethod(), getEffectiveUrl(), getTarget(), new byte[0] );
-            } else if ("post".equalsIgnoreCase( getMethod() )) {
-                getDomWindow().submitRequest( this, getMethod(), getAction(), getTarget(), new byte[0] );
+            if ("get".equalsIgnoreCase(getMethod())) {
+                getDomWindow().submitRequest(this, getMethod(), getEffectiveUrl(), getTarget(), new byte[0]);
+            } else if ("post".equalsIgnoreCase(getMethod())) {
+                getDomWindow().submitRequest(this, getMethod(), getAction(), getTarget(), new byte[0]);
             }
         } catch (Exception e) {
-            throw new RuntimeException( "Error submitting form: " + e );
-        }  finally {
+            throw new RuntimeException("Error submitting form: " + e);
+        } finally {
             silenceSubmitButtons();
         }
     }
 
-
     private void silenceSubmitButtons() {
         HTMLCollection controls = getElements();
         for (int i = 0; i < controls.getLength(); i++) {
-            ((HTMLControl) controls.item( i )).silenceSubmitButton();
+            ((HTMLControl) controls.item(i)).silenceSubmitButton();
         }
     }
 
-
     private String getEffectiveUrl() throws IOException {
-        StringBuilder spec = new StringBuilder( getAction() );
-        if ("get".equalsIgnoreCase( getMethod() )) {
+        StringBuilder spec = new StringBuilder(getAction());
+        if ("get".equalsIgnoreCase(getMethod())) {
             URLEncodedString parameters = new URLEncodedString();
             HTMLCollection controls = getElements();
             for (int i = 0; i < controls.getLength(); i++) {
-                ((HTMLControl) controls.item( i )).addValues( parameters, "us-ascii" );
+                ((HTMLControl) controls.item(i)).addValues(parameters, "us-ascii");
             }
-            if ((spec.indexOf( "?" ) >= 0) && !(spec.toString().endsWith( "?" ))) {
-                spec.append( '&' );
+            if ((spec.indexOf("?") >= 0) && !(spec.toString().endsWith("?"))) {
+                spec.append('&');
             } else {
-                spec.append( '?' );
+                spec.append('?');
             }
-            spec.append( parameters.getString() );
+            spec.append(parameters.getString());
         }
-        return new URL( getDomWindow().getUrl(), spec.toString() ).toExternalForm();
+        return new URL(getDomWindow().getUrl(), spec.toString()).toExternalForm();
     }
-
 
     private DomWindow getDomWindow() {
         return ((HTMLDocumentImpl) getOwnerDocument()).getWindow();

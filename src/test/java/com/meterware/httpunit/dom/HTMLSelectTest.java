@@ -36,21 +36,20 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     private HTMLSelectElement _select;
     private HTMLOptionElement[] _options;
 
-
     @BeforeEach
     void setUp() throws Exception {
-        _form = (HTMLFormElement) createElement("form", new String[][]{{"action", "go_here"}});
+        _form = (HTMLFormElement) createElement("form", new String[][] { { "action", "go_here" } });
         _select = (HTMLSelectElement) createElement("select");
         _htmlDocument.appendChild(_form);
         _form.appendChild(_select);
 
-        _options = new HTMLOptionElement[]{createOption("red", "Vermillion", false), createOption("blue", "Azure", true), createOption("green", "Chartreuse", false)};
-        for (int i = 0;i < _options.length;i++) {
+        _options = new HTMLOptionElement[] { createOption("red", "Vermillion", false),
+                createOption("blue", "Azure", true), createOption("green", "Chartreuse", false) };
+        for (int i = 0; i < _options.length; i++) {
             HTMLOptionElement option = _options[i];
             _select.appendChild(option);
         }
     }
-
 
     @Test
     void testSingleSelect() throws Exception {
@@ -61,19 +60,22 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
 
         _select.setSelectedIndex(0);
         assertEquals(0, _select.getSelectedIndex(), "modified select index");
-        assertProperties("changed default selected", "defaultSelected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("changed selected", "selected", _options, new Boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.FALSE});
+        assertProperties("changed default selected", "defaultSelected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
+        assertProperties("changed selected", "selected", _options,
+                new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.FALSE });
 
         ((HTMLOptionElementImpl) _options[2]).setSelected(true);
         assertEquals(2, _select.getSelectedIndex(), "remodified select index");
-        assertProperties("rechanged selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.FALSE, Boolean.TRUE});
+        assertProperties("rechanged selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.FALSE, Boolean.TRUE });
 
         ((HTMLControl) _select).reset();
         assertEquals("blue", _select.getValue(), "reset value");
         assertEquals(1, _select.getSelectedIndex(), "reset index");
-        assertProperties("reset selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
+        assertProperties("reset selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
     }
-
 
     @Test
     void testMultiSelect() throws Exception {
@@ -86,14 +88,16 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
 
         ((HTMLOptionElementImpl) _options[0]).setSelected(true);
         assertEquals(0, _select.getSelectedIndex(), "modified select index");
-        assertProperties("changed default selected", "defaultSelected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("changed selected", "selected", _options, new Boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.FALSE});
+        assertProperties("changed default selected", "defaultSelected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
+        assertProperties("changed selected", "selected", _options,
+                new Boolean[] { Boolean.TRUE, Boolean.TRUE, Boolean.FALSE });
 
         ((HTMLControl) _select).reset();
         assertEquals("blue", _select.getValue(), "reset value");
-        assertProperties("reset selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
+        assertProperties("reset selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
     }
-
 
     @Test
     void testSingleLineSelect() throws Exception {
@@ -106,23 +110,26 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
 
         ((HTMLOptionElementImpl) _options[0]).setSelected(true);
         assertEquals(0, _select.getSelectedIndex(), "modified select index");
-        assertProperties("changed default selected", "defaultSelected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("changed selected", "selected", _options, new Boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.FALSE});
+        assertProperties("changed default selected", "defaultSelected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
+        assertProperties("changed selected", "selected", _options,
+                new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.FALSE });
     }
-
 
     @Test
     void testElements() throws Exception {
         assertEquals(_options.length, _select.getOptions().getLength(), "number of options");
         assertSame(_options[0], _select.getOptions().item(0), "first option");
-        assertProperties("default selected", "defaultSelected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("initial selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.TRUE, Boolean.FALSE});
-        assertProperties("index", "index", _options, new Integer[]{Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(2)});
-        assertProperties("text", "text", _options, new String[]{"Vermillion", "Azure", "Chartreuse"});
-        assertProperties("value", "value", _options, new String[]{"red", "blue", "green"});
+        assertProperties("default selected", "defaultSelected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
+        assertProperties("initial selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
+        assertProperties("index", "index", _options,
+                new Integer[] { Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(2) });
+        assertProperties("text", "text", _options, new String[] { "Vermillion", "Azure", "Chartreuse" });
+        assertProperties("value", "value", _options, new String[] { "red", "blue", "green" });
         assertEquals(_options.length, _select.getLength(), "select length");
     }
-
 
     @Test
     void testSingleWithNothingSelected() throws Exception {
@@ -130,9 +137,9 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
         assertEquals(0, _select.getSelectedIndex(), "select index");
         assertEquals("red", _select.getValue(), "initial value");
 
-        assertProperties("initial selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.FALSE, Boolean.FALSE});
+        assertProperties("initial selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.FALSE, Boolean.FALSE });
     }
-
 
     @Test
     void testMultipleWithNothingSelected() throws Exception {
@@ -142,9 +149,9 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
         assertEquals(-1, _select.getSelectedIndex(), "select index");
         assertNull(_select.getValue(), "initial value");
 
-        assertProperties("initial selected", "selected", _options, new Boolean[]{Boolean.FALSE, Boolean.FALSE, Boolean.FALSE});
+        assertProperties("initial selected", "selected", _options,
+                new Boolean[] { Boolean.FALSE, Boolean.FALSE, Boolean.FALSE });
     }
-
 
     // XXX value (write), length (write)
     // XXX add, remove, blur, focus

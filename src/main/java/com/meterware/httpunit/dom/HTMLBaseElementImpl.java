@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLBaseElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElement {
@@ -31,23 +30,19 @@ public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElem
         return new HTMLBaseElementImpl();
     }
 
-
     public String getHref() {
-        return getAttributeWithNoDefault( "href" );
+        return getAttributeWithNoDefault("href");
     }
-
 
     public String getTarget() {
-        return getAttributeWithNoDefault( "target" );
+        return getAttributeWithNoDefault("target");
     }
 
-
-    public void setHref( String href ) {
-        setAttribute( "href", href );
+    public void setHref(String href) {
+        setAttribute("href", href);
     }
 
-
-    public void setTarget( String target ) {
-        setAttribute( "target", target );
+    public void setTarget(String target) {
+        setAttribute("target", target);
     }
 }

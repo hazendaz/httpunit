@@ -56,7 +56,6 @@ class WebXMLString {
     private Hashtable _contextParams = new Hashtable();
     private Hashtable _loadOnStartup = new Hashtable();
 
-
     ByteArrayInputStream asInputStream() throws UnsupportedEncodingException {
         return new ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
     }
@@ -64,7 +63,7 @@ class WebXMLString {
     // the stream for testing the dtd file
     private static URL dtdStream = null;
 
-    //  Document type definition to be used - should be one of the dtds available in META-INF
+    // Document type definition to be used - should be one of the dtds available in META-INF
     public static String dtd = "javax/servlet/resources/web-app_2_3.dtd";
 
     /**
@@ -80,16 +79,16 @@ class WebXMLString {
     }
 
     /**
-     * return me as a Text/String containing the XML descriptor according
-     * to the Sun Microsystems's specification
-     * if running on Eclipse shorten the DOCTYPE specification as a work-around for a
-     * bogus java.net.MalformedURLException (that is in fact caused by a null-pointer exception in handling the dtd part)
+     * return me as a Text/String containing the XML descriptor according to the Sun Microsystems's specification if
+     * running on Eclipse shorten the DOCTYPE specification as a work-around for a bogus java.net.MalformedURLException
+     * (that is in fact caused by a null-pointer exception in handling the dtd part)
      *
      * @return
      */
     String asText() {
         StringBuffer result = new StringBuffer("<?xml version='1.0' encoding='UTF-8'?>\n");
-        String doctype = "<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/" + dtd + "'>";
+        String doctype = "<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/"
+                + dtd + "'>";
         // if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems
         // work - around if dtd is not in CLASSPATH so that only the one test case
         // that checks the isDtdOnClassPath condition will fail
@@ -98,15 +97,18 @@ class WebXMLString {
         }
         result.append(doctype);
         result.append("<web-app>\n");
-//        result.append( "<web-app version='2.4' xmlns='http://java.sun.com/xml/ns/j2ee'\n " );
-//        result.append( "                       xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" );
-//        result.append( "                       xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'>\n" );
+        // result.append( "<web-app version='2.4' xmlns='http://java.sun.com/xml/ns/j2ee'\n " );
+        // result.append( " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" );
+        // result.append( " xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee
+        // http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'>\n" );
 
-        if (_displayName != null) result.append("  <display-name>").append(_displayName).append("</display-name>");
-        for (Iterator i = _contextParams.entrySet().iterator(); i.hasNext(); ) {
+        if (_displayName != null)
+            result.append("  <display-name>").append(_displayName).append("</display-name>");
+        for (Iterator i = _contextParams.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             result.append("  <context-param>\n    <param-name>").append(entry.getKey());
-            result.append("</param-name>\n    <param-value>").append(entry.getValue()).append("</param-value>\n  </context-param>\n");
+            result.append("</param-name>\n    <param-value>").append(entry.getValue())
+                    .append("</param-value>\n  </context-param>\n");
         }
         for (int i = 0; i < _filters.size(); i++) {
             Object name = _filterNames.get(i);
@@ -116,7 +118,8 @@ class WebXMLString {
             result.append("  </filter>\n");
         }
         for (int i = 0; i < _filters.size(); i++) {
-            result.append("  <filter-mapping>\n    <filter-name>").append(_filterNames.get(i)).append("</filter-name>\n");
+            result.append("  <filter-mapping>\n    <filter-name>").append(_filterNames.get(i))
+                    .append("</filter-name>\n");
             result.append("    ").append(_filterMappings.get(_filterNames.get(i))).append("\n  </filter-mapping>\n");
         }
         for (int i = 0; i < _listeners.size(); i++) {
@@ -127,16 +130,19 @@ class WebXMLString {
         for (int i = _servlets.size() - 1; i >= 0; i--) {
             Object name = _servletNames.get(i);
             result.append("  <servlet>\n    <servlet-name>").append(name).append("</servlet-name>\n");
-            result.append("    <servlet-class>").append(((Class) _servlets.get(i)).getName()).append("</servlet-class>\n");
+            result.append("    <servlet-class>").append(((Class) _servlets.get(i)).getName())
+                    .append("</servlet-class>\n");
             appendParams(result, "init-param", (Hashtable) _initParams.get(name));
             appendLoadOnStartup(result, _loadOnStartup.get(name));
             result.append("  </servlet>\n");
         }
         for (int i = _mappings.size() - 1; i >= 0; i--) {
-            result.append("  <servlet-mapping>\n    <servlet-name>").append(_servletNames.get(i)).append("</servlet-name>\n");
-            result.append("    <url-pattern>").append(_mappings.get(i)).append("</url-pattern>\n  </servlet-mapping>\n");
+            result.append("  <servlet-mapping>\n    <servlet-name>").append(_servletNames.get(i))
+                    .append("</servlet-name>\n");
+            result.append("    <url-pattern>").append(_mappings.get(i))
+                    .append("</url-pattern>\n  </servlet-mapping>\n");
         }
-        for (Enumeration e = _resources.elements(); e.hasMoreElements(); ) {
+        for (Enumeration e = _resources.elements(); e.hasMoreElements();) {
             result.append(((WebResourceSpec) e.nextElement()).asText());
         }
         result.append(_loginConfig);
@@ -144,35 +150,35 @@ class WebXMLString {
         return result.toString();
     }
 
-
     private void appendLoadOnStartup(StringBuffer result, Object startupOrder) {
-        if (startupOrder == null) return;
+        if (startupOrder == null)
+            return;
         result.append("    <load-on-startup");
-        if (startupOrder instanceof Number) result.append(">").append(startupOrder).append("</load-on-startup>\n");
-        else result.append("/>\n");
+        if (startupOrder instanceof Number)
+            result.append(">").append(startupOrder).append("</load-on-startup>\n");
+        else
+            result.append("/>\n");
     }
 
-
     private void appendParams(StringBuffer result, String tagName, Hashtable params) {
-        if (params == null) return;
-        for (Iterator it = params.entrySet().iterator(); it.hasNext(); ) {
+        if (params == null)
+            return;
+        for (Iterator it = params.entrySet().iterator(); it.hasNext();) {
             Map.Entry entry = (Map.Entry) it.next();
             result.append("    <").append(tagName).append(">\n      <param-name>").append(entry.getKey());
-            result.append("</param-name>\n      <param-value>").append(entry.getValue()).append("</param-value>\n    </");
+            result.append("</param-name>\n      <param-value>").append(entry.getValue())
+                    .append("</param-value>\n    </");
             result.append(tagName).append(">\n");
         }
     }
-
 
     void addContextParam(String name, String value) {
         _contextParams.put(name, value);
     }
 
-
     void addServlet(String urlPattern, Class servletClass) {
         addServlet("servlet_" + _servlets.size(), urlPattern, servletClass);
     }
-
 
     void addServlet(String name, String urlPattern, Class servletClass) {
         _servlets.add(servletClass);
@@ -180,38 +186,31 @@ class WebXMLString {
         _servletNames.add(name);
     }
 
-
     void addServlet(String name, String urlPattern, Class servletClass, Properties initParams) {
         _initParams.put(name, initParams);
         addServlet(name, urlPattern, servletClass);
     }
 
-
     void setLoadOnStartup(String servletName) {
         _loadOnStartup.put(servletName, Boolean.TRUE);
     }
 
-
     void setLoadOnStartup(String servletName, int i) {
         _loadOnStartup.put(servletName, Integer.valueOf(i));
     }
-
 
     void addFilterForServlet(String name, Class filterClass, String servletName, Properties initParams) {
         _filterParams.put(name, initParams);
         addFilterForServlet(name, filterClass, servletName);
     }
 
-
     void addFilterForServlet(String name, Class filterClass, String servletName) {
         addFilter(filterClass, name, "<servlet-name>" + servletName + "</servlet-name>");
     }
 
-
     void addFilterForUrl(String name, Class filterClass, String urlPattern) {
         addFilter(filterClass, name, "<url-pattern>" + urlPattern + "</url-pattern>");
     }
-
 
     private void addFilter(Class filterClass, String name, String mapping) {
         _filters.add(filterClass);
@@ -219,49 +218,34 @@ class WebXMLString {
         _filterMappings.put(name, mapping);
     }
 
-
     void requireBasicAuthorization(String realmName) {
-        _loginConfig = "  <login-config>\n" +
-                "    <auth-method>BASIC</auth-method>\n" +
-                "    <realm-name>" + realmName + "</realm-name>\n" +
-                "  </login-config>\n";
+        _loginConfig = "  <login-config>\n" + "    <auth-method>BASIC</auth-method>\n" + "    <realm-name>" + realmName
+                + "</realm-name>\n" + "  </login-config>\n";
     }
-
 
     void requireBasicAuthentication(String realmName) {
-        _loginConfig = "  <login-config>\n" +
-                "    <auth-method>BASIC</auth-method>\n" +
-                "    <realm-name>" + realmName + "</realm-name>\n" +
-                "  </login-config>\n";
+        _loginConfig = "  <login-config>\n" + "    <auth-method>BASIC</auth-method>\n" + "    <realm-name>" + realmName
+                + "</realm-name>\n" + "  </login-config>\n";
     }
-
 
     void requireFormAuthentication(String realmName, String loginPagePath, String errorPagePath) {
-        _loginConfig = "  <login-config>\n" +
-                "    <auth-method>FORM</auth-method>\n" +
-                "    <realm-name>" + realmName + "</realm-name>\n" +
-                "    <form-login-config>" +
-                "      <form-login-page>" + loginPagePath + "</form-login-page>\n" +
-                "      <form-error-page>" + errorPagePath + "</form-error-page>\n" +
-                "    </form-login-config>" +
-                "  </login-config>\n";
+        _loginConfig = "  <login-config>\n" + "    <auth-method>FORM</auth-method>\n" + "    <realm-name>" + realmName
+                + "</realm-name>\n" + "    <form-login-config>" + "      <form-login-page>" + loginPagePath
+                + "</form-login-page>\n" + "      <form-error-page>" + errorPagePath + "</form-error-page>\n"
+                + "    </form-login-config>" + "  </login-config>\n";
     }
-
 
     void addSecureURL(String resourceName, String urlPattern) {
         getWebResource(resourceName).addURLPattern(urlPattern);
     }
 
-
     void addAuthorizedRole(String resourceName, String roleName) {
         getWebResource(resourceName).addAuthorizedRole(roleName);
     }
 
-
     void addContextListener(Class aClass) {
         _listeners.add(aClass);
     }
-
 
     private WebResourceSpec getWebResource(String resourceName) {
         WebResourceSpec result = (WebResourceSpec) _resources.get(resourceName);
@@ -277,42 +261,37 @@ class WebXMLString {
     }
 }
 
-
 class WebResourceSpec {
 
     WebResourceSpec(String name) {
         _name = name;
     }
 
-
     void addURLPattern(String urlPattern) {
         _urls.add(urlPattern);
     }
 
-
     void addAuthorizedRole(String roleName) {
         _roles.add(roleName);
     }
-
 
     String asText() {
         StringBuilder sb = new StringBuilder();
         sb.append("  <security-constraint>\n");
         sb.append("    <web-resource-collection>\n");
         sb.append("      <web-resource-name>").append(_name).append("</web-resource-name>\n");
-        for (Iterator i = _urls.iterator(); i.hasNext(); ) {
+        for (Iterator i = _urls.iterator(); i.hasNext();) {
             sb.append("      <url-pattern>").append(i.next()).append("</url-pattern>\n");
         }
         sb.append("    </web-resource-collection>\n");
         sb.append("    <auth-constraint>\n");
-        for (Iterator i = _roles.iterator(); i.hasNext(); ) {
+        for (Iterator i = _roles.iterator(); i.hasNext();) {
             sb.append("      <role-name>").append(i.next()).append("</role-name>\n");
         }
         sb.append("    </auth-constraint>\n");
         sb.append("  </security-constraint>\n");
         return sb.toString();
     }
-
 
     private String _name;
     private ArrayList _urls = new ArrayList();

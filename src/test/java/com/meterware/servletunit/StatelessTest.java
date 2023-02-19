@@ -66,7 +66,6 @@ class StatelessTest {
         }
     }
 
-
     @Test
     void testServletCaching() throws Exception {
         AccessCountServlet._numInstances = 0;
@@ -85,7 +84,6 @@ class StatelessTest {
         assertEquals(0, AccessCountServlet.getNumInstances(), "Instances of servlet class after shutdown");
     }
 
-
     @Test
     void testServletAccessByClassName() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -96,7 +94,6 @@ class StatelessTest {
         assertEquals("text/html", response.getContentType(), "content type");
         assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
-
 
     @Test
     void testSimpleGet() throws Exception {
@@ -111,7 +108,6 @@ class StatelessTest {
         assertEquals("text/html", response.getContentType(), "content type");
         assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
-
 
     @Test
     void testGetWithSetParams() throws Exception {
@@ -132,7 +128,6 @@ class StatelessTest {
         assertEquals("value2", headers[1], "MyHeader #2");
     }
 
-
     @Test
     void testGetWithInlineParams() throws Exception {
         final String resourceName = "something/interesting";
@@ -146,7 +141,6 @@ class StatelessTest {
         assertEquals("text/plain", response.getContentType(), "content type");
         assertEquals("You selected dark red", response.getText(), "requested resource");
     }
-
 
     @Test
     void testHeaderRetrieval() throws Exception {
@@ -163,7 +157,6 @@ class StatelessTest {
         assertEquals("Caller", ic.getRequest().getHeader("Request"), "Request header");
     }
 
-
     @Test
     void testParameterHandling() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -177,7 +170,6 @@ class StatelessTest {
         form.submit();
         assertEquals("You posted me,haha", client.getCurrentPage().getText(), "Resultant response");
     }
-
 
     @Test
     void testSimplePost() throws Exception {
@@ -194,7 +186,6 @@ class StatelessTest {
         assertEquals("You posted red", response.getText(), "requested resource");
     }
 
-
     @Test
     void testStreamBasedPost() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -210,7 +201,6 @@ class StatelessTest {
         assertEquals("text/sample", response.getContentType(), "Content-type");
     }
 
-
     @Test
     void testRequestInputStream() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -225,7 +215,6 @@ class StatelessTest {
         assertEquals(expectedBody, new String(buffer), "Message body");
     }
 
-
     @Test
     void testFrameAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -236,18 +225,17 @@ class StatelessTest {
         WebClient client = sr.newClient();
         WebRequest request = new GetMethodWebRequest("http://host/Frames");
         WebResponse page = client.getResponse(request);
-        HttpUserAgentTest.assertMatchingSet("Frames defined for the conversation", new String[]{"_top", "red", "blue"}, client.getFrameNames());
+        HttpUserAgentTest.assertMatchingSet("Frames defined for the conversation",
+                new String[] { "_top", "red", "blue" }, client.getFrameNames());
         WebResponse response = client.getFrameContents("red");
         assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "Frame contents");
 
         page.getSubframeContents(page.getFrameNames()[0]);
     }
 
-
     static class SimpleGetServlet extends HttpServlet {
 
         static String RESPONSE_TEXT = "the desired content\r\n";
-
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
@@ -257,30 +245,25 @@ class StatelessTest {
         }
     }
 
-
     static class AccessCountServlet extends HttpServlet {
 
         private int _numAccesses;
 
         private static int _numInstances = 0;
 
-
         public void init() throws ServletException {
             super.init();
             _numInstances++;
         }
-
 
         public void destroy() {
             super.destroy();
             _numInstances--;
         }
 
-
         public static int getNumInstances() {
             return _numInstances;
         }
-
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
@@ -290,11 +273,9 @@ class StatelessTest {
         }
     }
 
-
     static class ParameterServlet extends HttpServlet {
 
         static String RESPONSE_TEXT = "the desired content\r\n";
-
 
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
@@ -306,7 +287,6 @@ class StatelessTest {
             pw.close();
         }
 
-
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -315,7 +295,6 @@ class StatelessTest {
         }
 
     }
-
 
     static class BodyEcho extends HttpServlet {
         /**
@@ -356,7 +335,6 @@ class StatelessTest {
             pw.close();
         }
 
-
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -365,7 +343,6 @@ class StatelessTest {
         }
 
     }
-
 
     static class FrameTopServlet extends HttpServlet {
 
@@ -382,5 +359,3 @@ class StatelessTest {
 
     }
 }
-
-

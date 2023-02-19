@@ -25,38 +25,36 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract class XMLUtils {
 
-    static String getChildNodeValue( Element root, String childNodeName ) throws SAXException {
-        return getChildNodeValue( root, childNodeName, null );
+    static String getChildNodeValue(Element root, String childNodeName) throws SAXException {
+        return getChildNodeValue(root, childNodeName, null);
     }
 
-
-    static String getChildNodeValue( Element root, String childNodeName, String defaultValue ) throws SAXException {
-        NodeList nl = root.getElementsByTagName( childNodeName );
+    static String getChildNodeValue(Element root, String childNodeName, String defaultValue) throws SAXException {
+        NodeList nl = root.getElementsByTagName(childNodeName);
         if (nl.getLength() == 1) {
-            return getTextValue( nl.item( 0 ) ).trim();
+            return getTextValue(nl.item(0)).trim();
         } else if (defaultValue == null) {
-            throw new SAXException( "Node <" + root.getNodeName() + "> has no child named <" + childNodeName + ">" );
+            throw new SAXException("Node <" + root.getNodeName() + "> has no child named <" + childNodeName + ">");
         } else {
             return defaultValue;
         }
     }
 
-
-    static String getTextValue( Node node ) throws SAXException {
+    static String getTextValue(Node node) throws SAXException {
         Node textNode = node.getFirstChild();
-        if (textNode == null) return "";
-        if (textNode.getNodeType() != Node.TEXT_NODE) throw new SAXException( "No text value found for <" + node.getNodeName() + "> node" );
+        if (textNode == null)
+            return "";
+        if (textNode.getNodeType() != Node.TEXT_NODE)
+            throw new SAXException("No text value found for <" + node.getNodeName() + "> node");
         return textNode.getNodeValue();
     }
 
-
-    static boolean hasChildNode( Element root, String childNodeName ) {
-        NodeList nl = root.getElementsByTagName( childNodeName );
+    static boolean hasChildNode(Element root, String childNodeName) {
+        NodeList nl = root.getElementsByTagName(childNodeName);
         return (nl.getLength() > 0);
     }
 

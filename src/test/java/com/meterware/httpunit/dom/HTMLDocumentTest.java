@@ -46,7 +46,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlElement.appendChild(_headElement = createElement("head"));
     }
 
-
     /**
      * Verifies that we can detect the lack of a document title.
      */
@@ -54,7 +53,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     void testEmptyDocumentTitle() throws Exception {
         assertEquals("", _htmlDocument.getTitle(), "title seen by document");
     }
-
 
     /**
      * Verifies that we can find the document title.
@@ -69,7 +67,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
         assertEquals("something here", _htmlDocument.getTitle(), "title seen by document");
     }
-
 
     /**
      * Verifies that we can modify an existing document title.
@@ -86,7 +83,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals("new value", _htmlDocument.getTitle(), "title seen by document");
     }
 
-
     /**
      * Verifies that we can set the document title if none exists.
      */
@@ -95,7 +91,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlDocument.setTitle("initial value");
         assertEquals("initial value", _htmlDocument.getTitle(), "title seen by document");
     }
-
 
     /**
      * Verifies retrieval of the body element.
@@ -108,7 +103,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(body, _htmlDocument.getBody(), "Body element");
     }
 
-
     /**
      * Verifies setting the body element.
      */
@@ -120,7 +114,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(body, _htmlDocument.getBody(), "Body element");
     }
 
-
     /**
      * Verifies retrieving elements by their ID attribute.
      */
@@ -129,7 +122,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
         body.setId("abc");
-
 
         HTMLAnchorElement anchor1 = (HTMLAnchorElement) createElement("a");
         anchor1.setHref("first");
@@ -144,7 +136,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(anchor1, _htmlDocument.getElementById("sea"), "Anchor element");
         assertSame(image1, _htmlDocument.getElementById("see"), "Image element");
     }
-
 
     /**
      * Verifies retrieving elements by their name attribute.
@@ -163,16 +154,15 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         image1.setName("see");
         body.appendChild(image1);
 
-        assertElementsByName(_htmlDocument, "see", new HTMLElement[]{anchor1, image1});
+        assertElementsByName(_htmlDocument, "see", new HTMLElement[] { anchor1, image1 });
         assertElementsByName(_htmlDocument, "abc", new HTMLElement[0]);
     }
 
-
     private void assertElementsByName(HTMLDocument document, String name, HTMLElement[] expectedElements) {
         NodeList actualElements = document.getElementsByName(name);
-        HttpUserAgentTest.assertMatchingSet("Elements with name '" + name + "'", expectedElements, toArray(actualElements));
+        HttpUserAgentTest.assertMatchingSet("Elements with name '" + name + "'", expectedElements,
+                toArray(actualElements));
     }
-
 
     private Object[] toArray(NodeList list) {
         Object[] result = new Object[list.getLength()];
@@ -181,7 +171,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         }
         return result;
     }
-
 
     /**
      * Verifies retrieval of the collection of links ('img' tags).
@@ -211,7 +200,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(image1, images.item(0), "image 1");
         assertSame(image2, images.item(1), "image 2");
     }
-
 
     /**
      * Verifies retrieval of the collection of links ('area' tags and 'a' tags with 'href' attributes).
@@ -251,7 +239,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(anchor2, links.item(2), "link 3");
     }
 
-
     /**
      * Verifies retrieval of the collection of forms.
      */
@@ -287,7 +274,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals(3, _htmlDocument.getForms().getLength(), "Forms found with iframes disabled");
     }
 
-
     /**
      * Verifies retrieval of the collection of anchors.
      */
@@ -316,7 +302,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertSame(anchor3, anchors.item(1), "anchor 3");
     }
 
-
     /**
      * Verifies that the document has an empty write buffer by default.
      */
@@ -325,7 +310,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertNotNull(_htmlDocument.getWriteBuffer(), "No write buffer was defined for the document");
         assertEquals(0, _htmlDocument.getWriteBuffer().length(), "Default buffer size");
     }
-
 
     /**
      * Verifies that writing to the document updates the write buffer.
@@ -337,7 +321,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals("This is a test", _htmlDocument.getWriteBuffer().toString(), "Result of write buffer");
     }
 
-
     /**
      * Verifies that writing to the document updates the write buffer.
      */
@@ -346,9 +329,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlDocument.writeln("This is a test");
         _htmlDocument.writeln("And another.");
         assertNotNull(_htmlDocument.getWriteBuffer(), "No write buffer was defined for the document");
-        assertEquals("This is a test\r\nAnd another.\r\n", _htmlDocument.getWriteBuffer().toString(), "Result of write buffer");
+        assertEquals("This is a test\r\nAnd another.\r\n", _htmlDocument.getWriteBuffer().toString(),
+                "Result of write buffer");
     }
-
 
     /**
      * Verifies that clearing the write buffer leaves it ready for new writes.
@@ -363,7 +346,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals("And another.", _htmlDocument.getWriteBuffer().toString(), "Result of write buffer");
     }
 
-
     /**
      * Verifies that the href of a link will be based on the URL of the enclosing window.
      */
@@ -377,7 +359,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         proxy.setUrl(new URL("http://localhost/aux.html"));
         assertEquals("http://localhost/main.html", link.getHref(), "referenced URL");
     }
-
 
     /**
      * Verifies that the href of a link will be based on the base URL of the enclosing window, if there is one.
@@ -396,7 +377,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals("http://meterware.com/httpunit/main.html", link.getHref(), "referenced URL");
     }
 
-
     /**
      * Verifies that the href of a javascript link does not use the enclosing window URL.
      */
@@ -411,7 +391,6 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         assertEquals("javascript:doSomething(123)", link.getHref(), "referenced URL");
     }
 
-
     /**
      * Verifies that a click on an href link will send a request for the referenced page.
      */
@@ -425,6 +404,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         link.setAttribute("target", "there");
         proxy.setUrl(new URL("http://localhost/aux.html"));
         link.click();
-        assertEquals("submitRequest( GET, http://localhost/main.html, there, null )", TestWindowProxy.popProxyCall(), "method invocation");
+        assertEquals("submitRequest( GET, http://localhost/main.html, there, null )", TestWindowProxy.popProxyCall(),
+                "method invocation");
     }
 }

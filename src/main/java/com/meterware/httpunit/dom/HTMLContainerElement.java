@@ -28,15 +28,11 @@ public interface HTMLContainerElement {
 
     HTMLCollection getLinks();
 
-
     HTMLCollection getImages();
-
 
     HTMLCollection getApplets();
 
-
     HTMLCollection getForms();
-
 
     HTMLCollection getAnchors();
 }

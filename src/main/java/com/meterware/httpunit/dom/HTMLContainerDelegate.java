@@ -36,73 +36,75 @@ class HTMLContainerDelegate {
 
     private NodeImpl.IteratorMask _iteratorMask = NodeImpl.SKIP_IFRAMES;
 
-
-    HTMLContainerDelegate( NodeImpl.IteratorMask iteratorMask ) {
+    HTMLContainerDelegate(NodeImpl.IteratorMask iteratorMask) {
         _iteratorMask = iteratorMask;
     }
 
-
     /**
      * get Links for a given Node
-     * @param rootNode - an array of forms
+     *
+     * @param rootNode
+     *            - an array of forms
+     *
      * @return
      */
-    HTMLCollection getLinks( NodeImpl rootNode ) {
+    HTMLCollection getLinks(NodeImpl rootNode) {
         ArrayList elements = new ArrayList();
-        for (Iterator each = rootNode.preOrderIteratorWithinNode( _iteratorMask ); each.hasNext();) {
+        for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE) continue;
+            if (node.getNodeType() != Node.ELEMENT_NODE)
+                continue;
 
             if (ParsedHTML.isWebLink(node)) {
-                elements.add( node );
+                elements.add(node);
             }
         }
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
-
 
     /**
      * get forms for a given Node
-     * @param rootNode - the node to start from
+     *
+     * @param rootNode
+     *            - the node to start from
+     *
      * @return - an array of forms
      */
-    HTMLCollection getForms( NodeImpl rootNode ) {
+    HTMLCollection getForms(NodeImpl rootNode) {
         ArrayList elements = new ArrayList();
-        for (Iterator each = rootNode.preOrderIteratorWithinNode( _iteratorMask ); each.hasNext();) {
+        for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE) continue;
+            if (node.getNodeType() != Node.ELEMENT_NODE)
+                continue;
 
-            if ("form".equalsIgnoreCase( ((Element) node).getTagName() )) {
-                elements.add( node );
+            if ("form".equalsIgnoreCase(((Element) node).getTagName())) {
+                elements.add(node);
             }
         }
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
-
-    HTMLCollection getAnchors( NodeImpl rootNode ) {
-        NodeList nodeList = rootNode.getElementsByTagName( "A" );
+    HTMLCollection getAnchors(NodeImpl rootNode) {
+        NodeList nodeList = rootNode.getElementsByTagName("A");
         ArrayList elements = new ArrayList();
         for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item( i );
-            if (node.getAttributes().getNamedItem( "name" ) != null) {
-                elements.add( node );
+            Node node = nodeList.item(i);
+            if (node.getAttributes().getNamedItem("name") != null) {
+                elements.add(node);
             }
         }
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
-
-    HTMLCollection getImages( NodeImpl rootNode ) {
+    HTMLCollection getImages(NodeImpl rootNode) {
         ArrayList elements = new ArrayList();
-        rootNode.appendElementsWithTags( new String[] {"img"}, elements );
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        rootNode.appendElementsWithTags(new String[] { "img" }, elements);
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
-
-    HTMLCollection getApplets( NodeImpl rootNode ) {
+    HTMLCollection getApplets(NodeImpl rootNode) {
         ArrayList elements = new ArrayList();
-        rootNode.appendElementsWithTags( new String[] {"applet"}, elements );
-        return HTMLCollectionImpl.createHTMLCollectionImpl( new NodeListImpl( elements ) );
+        rootNode.appendElementsWithTags(new String[] { "applet" }, elements);
+        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 }

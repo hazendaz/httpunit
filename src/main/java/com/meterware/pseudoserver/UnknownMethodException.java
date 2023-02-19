@@ -22,7 +22,7 @@ package com.meterware.pseudoserver;
 import java.io.IOException;
 
 class UnknownMethodException extends IOException {
-    UnknownMethodException( String method ) {
+    UnknownMethodException(String method) {
         _method = method;
     }
 
@@ -32,4 +32,3 @@ class UnknownMethodException extends IOException {
 
     private String _method;
 }
-

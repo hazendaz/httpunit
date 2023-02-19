@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
-*/
+ */
 @Disabled
 class TestWindowProxy implements DomWindowProxy {
 
@@ -43,103 +43,88 @@ class TestWindowProxy implements DomWindowProxy {
     private String _replacementText = null;
     private String _answer;
 
-
-
-    public TestWindowProxy( HTMLDocumentImpl htmlDocument ) {
+    public TestWindowProxy(HTMLDocumentImpl htmlDocument) {
         _document = htmlDocument;
-        _document.getWindow().setProxy( this );
+        _document.getWindow().setProxy(this);
     }
-
 
     static void clearProxyCalls() {
         _proxyCalls.clear();
     }
 
-
     static String popProxyCall() {
-        if (_proxyCalls.isEmpty()) return "";
+        if (_proxyCalls.isEmpty())
+            return "";
         return (String) _proxyCalls.pop();
     }
 
-
-    static void pushProxyCall( String call ) {
-        _proxyCalls.push( call );
+    static void pushProxyCall(String call) {
+        _proxyCalls.push(call);
     }
 
-
-    static void assertLastProxyMethod( String method ) {
-        assertEquals( method, popProxyCall() , "Last proxy method called");
+    static void assertLastProxyMethod(String method) {
+        assertEquals(method, popProxyCall(), "Last proxy method called");
     }
 
-
-    void setAnswer( String answer ) {
+    void setAnswer(String answer) {
         _answer = answer;
     }
-
 
     String getReplacementText() {
         return _replacementText;
     }
 
-
     public ScriptingHandler getScriptingHandler() {
         return _document.getWindow();
     }
 
-
-    public DomWindowProxy openNewWindow( String name, String relativeUrl ) throws IOException, SAXException {
+    public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
         HTMLDocumentImpl document = new HTMLDocumentImpl();
-        document.setTitle( name + " (" + relativeUrl + ')' );
-        return new TestWindowProxy( document );
+        document.setTitle(name + " (" + relativeUrl + ')');
+        return new TestWindowProxy(document);
     }
-
 
     public void close() {
-        pushProxyCall( "close" );
+        pushProxyCall("close");
     }
 
-
-    public void alert( String message ) {
-        pushProxyCall( "alert( " + message + " )" );
+    public void alert(String message) {
+        pushProxyCall("alert( " + message + " )");
     }
 
-
-    public boolean confirm( String message ) {
-        pushProxyCall( "confirm( " + message + " )" );
-        return _answer.equals( "yes" );
+    public boolean confirm(String message) {
+        pushProxyCall("confirm( " + message + " )");
+        return _answer.equals("yes");
     }
 
-
-    public String prompt( String prompt, String defaultResponse ) {
-        pushProxyCall( "prompt( " + prompt + " )" );
+    public String prompt(String prompt, String defaultResponse) {
+        pushProxyCall("prompt( " + prompt + " )");
         return _answer == null ? defaultResponse : _answer;
     }
 
-
-    public boolean replaceText( String text, String contentType ) {
+    public boolean replaceText(String text, String contentType) {
         _replacementText = text;
         return true;
     }
 
-
-    void setUrl( URL url ) {
+    void setUrl(URL url) {
         _url = url;
     }
-
 
     public URL getURL() {
         return _url;
     }
 
-
-    public DomWindowProxy submitRequest( HTMLElementImpl sourceElement, String method, String location, String target, MessageBody requestBody ) throws IOException, SAXException {
-        pushProxyCall( "submitRequest( " + method + ", " + location + ", " + target + ", " + stringifyMessageBody( requestBody ) + " )" );
+    public DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
+            MessageBody requestBody) throws IOException, SAXException {
+        pushProxyCall("submitRequest( " + method + ", " + location + ", " + target + ", "
+                + stringifyMessageBody(requestBody) + " )");
         return null;
     }
 
-
-    private String stringifyMessageBody( MessageBody requestBody ) {
-        if (requestBody == null) return "null";
+    private String stringifyMessageBody(MessageBody requestBody) {
+        if (requestBody == null)
+            return "null";
         return "something";
     }
 }

@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLHeadElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElement {
@@ -31,14 +30,12 @@ public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElem
         return new HTMLHeadElementImpl();
     }
 
-
     public String getProfile() {
-        return getAttributeWithNoDefault( "profile" );
+        return getAttributeWithNoDefault("profile");
     }
 
-
-    public void setProfile( String profile ) {
-        setAttribute( "profile", profile );
+    public void setProfile(String profile) {
+        setAttribute("profile", profile);
     }
 
 }

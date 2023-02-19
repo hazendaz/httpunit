@@ -29,70 +29,67 @@ import org.w3c.dom.Node;
  * An interface which defines the common properties for an HTML element, which can correspond to any HTML tag.
  *
  * @since 1.5.2
+ *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 // TODO activate the extends Element as
 // in http://www.w3.org/TR/REC-DOM-Level-1/java-language-binding.html
-//public interface HTMLElement extends Element,ScriptingEventHandler {
+// public interface HTMLElement extends Element,ScriptingEventHandler {
 public interface HTMLElement extends ScriptingEventHandler {
 
     /**
      * Returns the ID associated with this element. IDs are unique throughout the HTML document.
      **/
-     String getID();
-
+    String getID();
 
     /**
      * Returns the class associated with this element.
      **/
     String getClassName();
 
-
     /**
      * Returns the name associated with this element.
      **/
     String getName();
-
 
     /**
      * Returns the title associated with this element.
      **/
     String getTitle();
 
-
     /**
-     * Returns the value of the attribute of this element with the specified name.
-     * Returns the empty string if no such attribute exists.
+     * Returns the value of the attribute of this element with the specified name. Returns the empty string if no such
+     * attribute exists.
      *
      * @since 1.6
      */
-    String getAttribute( String name );
+    String getAttribute(String name);
 
     /**
      * Set the value of the attribute of this element with the specified name.
+     *
      * @since 1.7
      */
-    void setAttribute( String name, Object value );
+    void setAttribute(String name, Object value);
 
     /**
      * Remove the attribute of this element with the specified name.
+     *
      * @since 1.7
      */
-    void removeAttribute( String name );
+    void removeAttribute(String name);
 
     /**
      * Returns true if this element may have an attribute with the specified name.
      *
      * @since 1.6
      */
-    boolean isSupportedAttribute( String name );
-
+    boolean isSupportedAttribute(String name);
 
     /**
      * Returns the delegate which supports scripting this element.
      */
     ScriptingHandler getScriptingHandler();
-
 
     /**
      * Returns the contents of this element, converted to a string.
@@ -101,14 +98,12 @@ public interface HTMLElement extends ScriptingEventHandler {
      */
     String getText();
 
-
     /**
      * Returns the tag name of this node.
      *
      * @since 1.6.1
      */
     String getTagName();
-
 
     ScriptableDelegate newScriptable();
 

@@ -38,7 +38,6 @@ class AttributesTest {
     private Attr _heightAttribute;
     private Attr _weightAttribute;
 
-
     @BeforeEach
     void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
@@ -46,7 +45,6 @@ class AttributesTest {
         _heightAttribute = _document.createAttribute("height");
         _weightAttribute = _document.createAttribute("weight");
     }
-
 
     /**
      * Verifies that we can create an attributes node and verify it.
@@ -71,7 +69,6 @@ class AttributesTest {
         assertTrue(_heightAttribute.getSpecified(), "Should now be marked as specified");
     }
 
-
     /**
      * Verifies that we can set unique attribute nodes on an element and retrieve and remove them.
      */
@@ -86,18 +83,17 @@ class AttributesTest {
 
         NamedNodeMap attributes = _element.getAttributes();
         assertNotNull(attributes, "No attributes returned");
-        assertAttributesInMap(attributes, new Attr[]{_heightAttribute, _weightAttribute});
+        assertAttributesInMap(attributes, new Attr[] { _heightAttribute, _weightAttribute });
         assertSame(_heightAttribute, _element.getAttributeNode("height"), "height attribute");
         assertSame(_weightAttribute, _element.getAttributeNode("weight"), "weight attribute");
 
         _element.removeAttributeNode(_heightAttribute);
-        assertAttributesInMap(_element.getAttributes(), new Attr[]{_weightAttribute});
+        assertAttributesInMap(_element.getAttributes(), new Attr[] { _weightAttribute });
         assertNull(_element.getAttributeNode("height"), "height attribute should be gone");
         assertSame(_weightAttribute, _element.getAttributeNode("weight"), "weight attribute");
 
         assertNull(_heightAttribute.getOwnerElement(), "Onwer element should not be set after removal");
     }
-
 
     /**
      * Verifies that we cannot remove attribute nodes that are not defined.
@@ -113,7 +109,6 @@ class AttributesTest {
         }
     }
 
-
     /**
      * Verifies that setting an attribute node removes any older matching attribute node.
      */
@@ -125,10 +120,9 @@ class AttributesTest {
         assertSame(_element, newHeight.getOwnerElement(), "owner element");
         assertNull(_heightAttribute.getOwnerElement(), "Onwer element should not be set after removal");
 
-        assertAttributesInMap(_element.getAttributes(), new Attr[]{newHeight});
+        assertAttributesInMap(_element.getAttributes(), new Attr[] { newHeight });
         assertSame(newHeight, _element.getAttributeNode("height"), "height attribute");
     }
-
 
     /**
      * Verifies that an undefined attribute is returned as an empty string.
@@ -138,7 +132,6 @@ class AttributesTest {
         assertEquals("", _element.getAttribute("abcdef"), "Value for undefined attribute");
     }
 
-
     /**
      * Verifies that we can set and get attributes by value.
      */
@@ -146,7 +139,8 @@ class AttributesTest {
     void testSimpleAttributes() throws Exception {
         _element.setAttribute("height", "3");
         _element.setAttribute("width", "really wide");
-        assertAttributesInMap(_element.getAttributes(), new NVPair[]{new NVPair("height", "3"), new NVPair("width", "really wide")});
+        assertAttributesInMap(_element.getAttributes(),
+                new NVPair[] { new NVPair("height", "3"), new NVPair("width", "really wide") });
         assertTrue(_element.hasAttribute("height"), "Did not recognize height attribute");
         assertFalse(_element.hasAttribute("color"), "Should not have claimed attribute 'color' was present");
         assertEquals("really wide", _element.getAttribute("width"), "width attribute");
@@ -154,7 +148,6 @@ class AttributesTest {
         _element.removeAttribute("height");
         assertFalse(_element.hasAttribute("height"), "Height attribute should be gone now");
     }
-
 
     static class NVPair {
         private String _name;
@@ -186,7 +179,6 @@ class AttributesTest {
         }
     }
 
-
     private void assertAttributesInMap(NamedNodeMap attributes, NVPair[] expectedAttributes) {
         assertEquals(expectedAttributes.length, attributes.getLength(), "Number of known attribute nodes");
 
@@ -197,12 +189,13 @@ class AttributesTest {
 
         for (int i = 0; i < expectedAttributes.length; i++) {
             NVPair expectedAttribute = expectedAttributes[i];
-            assertTrue(attributesMissing.contains(expectedAttribute), "Did not find attribute " + expectedAttribute + " in item sequence");
-            assertEquals(expectedAttribute, new NVPair((Attr) attributes.getNamedItem(expectedAttribute.getName())), "attribute named '" + expectedAttribute.getName() + "' in map");
+            assertTrue(attributesMissing.contains(expectedAttribute),
+                    "Did not find attribute " + expectedAttribute + " in item sequence");
+            assertEquals(expectedAttribute, new NVPair((Attr) attributes.getNamedItem(expectedAttribute.getName())),
+                    "attribute named '" + expectedAttribute.getName() + "' in map");
             attributesMissing.remove(expectedAttribute);
         }
     }
-
 
     /**
      * Confirms that the map contains the expected attributes.
@@ -217,11 +210,12 @@ class AttributesTest {
 
         for (int i = 0; i < expectedAttributes.length; i++) {
             Attr expectedAttribute = expectedAttributes[i];
-            assertTrue(attributesMissing.contains(expectedAttribute), "Did not find attribute " + expectedAttribute + " in item sequence");
-            assertSame(expectedAttribute, attributes.getNamedItem(expectedAttribute.getName()), "attribute named '" + expectedAttribute.getName() + "' in map");
+            assertTrue(attributesMissing.contains(expectedAttribute),
+                    "Did not find attribute " + expectedAttribute + " in item sequence");
+            assertSame(expectedAttribute, attributes.getNamedItem(expectedAttribute.getName()),
+                    "attribute named '" + expectedAttribute.getName() + "' in map");
             attributesMissing.remove(expectedAttribute);
         }
     }
-
 
 }

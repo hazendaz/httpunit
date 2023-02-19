@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLMetaElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElement {
@@ -31,43 +30,35 @@ public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElem
         return new HTMLMetaElementImpl();
     }
 
-
     public String getContent() {
-        return getAttributeWithNoDefault( "content" );
+        return getAttributeWithNoDefault("content");
     }
-
 
     public String getHttpEquiv() {
-        return getAttributeWithNoDefault( "http-equiv" );
+        return getAttributeWithNoDefault("http-equiv");
     }
-
 
     public String getName() {
-        return getAttributeWithNoDefault( "name" );
+        return getAttributeWithNoDefault("name");
     }
-
 
     public String getScheme() {
-        return getAttributeWithNoDefault( "scheme" );
+        return getAttributeWithNoDefault("scheme");
     }
 
-
-    public void setContent( String content ) {
-        setAttribute( "content", content );
+    public void setContent(String content) {
+        setAttribute("content", content);
     }
 
-
-    public void setHttpEquiv( String httpEquiv ) {
-        setAttribute( "http-equiv", httpEquiv );
+    public void setHttpEquiv(String httpEquiv) {
+        setAttribute("http-equiv", httpEquiv);
     }
 
-
-    public void setName( String name ) {
-        setAttribute( "name", name );
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 
-
-    public void setScheme( String scheme ) {
-        setAttribute( "scheme", scheme );
+    public void setScheme(String scheme) {
+        setAttribute("scheme", scheme);
     }
 }

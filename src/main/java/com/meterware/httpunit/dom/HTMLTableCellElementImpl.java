@@ -25,192 +25,160 @@ import org.w3c.dom.html.HTMLTableCellElement;
 /**
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
-public class HTMLTableCellElementImpl extends HTMLElementImpl implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
+public class HTMLTableCellElementImpl extends HTMLElementImpl
+        implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 
     ElementImpl create() {
         return new HTMLTableCellElementImpl();
     }
 
-
-//------------------------------------------ HTMLContainerElement methods ----------------------------------------------
-
+    // ------------------------------------------ HTMLContainerElement methods
+    // ----------------------------------------------
 
     public HTMLCollection getLinks() {
-        return getHtmlDocument().getContainerDelegate().getLinks( this );
+        return getHtmlDocument().getContainerDelegate().getLinks(this);
     }
-
 
     public HTMLCollection getImages() {
-        return getHtmlDocument().getContainerDelegate().getImages( this );
+        return getHtmlDocument().getContainerDelegate().getImages(this);
     }
-
 
     public HTMLCollection getApplets() {
-        return getHtmlDocument().getContainerDelegate().getApplets( this );
+        return getHtmlDocument().getContainerDelegate().getApplets(this);
     }
-
 
     public HTMLCollection getForms() {
-        return getHtmlDocument().getContainerDelegate().getForms( this );
+        return getHtmlDocument().getContainerDelegate().getForms(this);
     }
-
 
     public HTMLCollection getAnchors() {
-        return getHtmlDocument().getContainerDelegate().getAnchors( this );
+        return getHtmlDocument().getContainerDelegate().getAnchors(this);
     }
 
-
-//-------------------------------------------- HTMLTableCellElement methods --------------------------------------------
-
+    // -------------------------------------------- HTMLTableCellElement methods
+    // --------------------------------------------
 
     public String getAbbr() {
-        return getAttributeWithNoDefault( "abbr" );
+        return getAttributeWithNoDefault("abbr");
     }
 
-
-    public void setAbbr( String abbr ) {
-        setAttribute( "abbr", abbr );
+    public void setAbbr(String abbr) {
+        setAttribute("abbr", abbr);
     }
-
 
     public String getAlign() {
-        return getAttributeWithNoDefault( "align" );
+        return getAttributeWithNoDefault("align");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
-
 
     public String getAxis() {
-        return getAttributeWithNoDefault( "axis" );
+        return getAttributeWithNoDefault("axis");
     }
 
-
-    public void setAxis( String axis ) {
-        setAttribute( "axis", axis );
+    public void setAxis(String axis) {
+        setAttribute("axis", axis);
     }
-
 
     public String getBgColor() {
-        return getAttributeWithNoDefault( "bgColor" );
+        return getAttributeWithNoDefault("bgColor");
     }
 
-
-    public void setBgColor( String bgColor ) {
-        setAttribute( "bgColor", bgColor );
+    public void setBgColor(String bgColor) {
+        setAttribute("bgColor", bgColor);
     }
-
 
     public int getCellIndex() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public String getCh() {
-        return getAttributeWithDefault( "char", "." );
+        return getAttributeWithDefault("char", ".");
     }
 
-
-    public void setCh( String ch ) {
-        setAttribute( "char", ch );
+    public void setCh(String ch) {
+        setAttribute("char", ch);
     }
-
 
     public String getChOff() {
-        return getAttributeWithNoDefault( "charoff" );
+        return getAttributeWithNoDefault("charoff");
     }
 
-
-    public void setChOff( String chOff ) {
-        setAttribute( "charoff", chOff );
+    public void setChOff(String chOff) {
+        setAttribute("charoff", chOff);
     }
-
 
     public int getColSpan() {
-        return getIntegerAttribute( "colspan", 1 );
+        return getIntegerAttribute("colspan", 1);
     }
 
-
-    public void setColSpan( int colSpan ) {
-        setAttribute( "colspan", colSpan );
+    public void setColSpan(int colSpan) {
+        setAttribute("colspan", colSpan);
     }
-
 
     public String getHeaders() {
-        return getAttributeWithNoDefault( "headers" );
+        return getAttributeWithNoDefault("headers");
     }
 
-
-    public void setHeaders( String headers ) {
-        setAttribute( "headers", headers );
+    public void setHeaders(String headers) {
+        setAttribute("headers", headers);
     }
-
 
     public String getHeight() {
-        return getAttributeWithNoDefault( "height" );
+        return getAttributeWithNoDefault("height");
     }
 
-
-    public void setHeight( String height ) {
-        setAttribute( "height", height );
+    public void setHeight(String height) {
+        setAttribute("height", height);
     }
-
 
     public boolean getNoWrap() {
-        return getBooleanAttribute( "nowrap" );
+        return getBooleanAttribute("nowrap");
     }
 
-
-    public void setNoWrap( boolean noWrap ) {
-        setAttribute( "nowrap", noWrap );
+    public void setNoWrap(boolean noWrap) {
+        setAttribute("nowrap", noWrap);
     }
-
 
     public int getRowSpan() {
-        return getIntegerAttribute( "rowspan", 1 );
+        return getIntegerAttribute("rowspan", 1);
     }
 
-
-    public void setRowSpan( int rowSpan ) {
-        setAttribute( "rowspan", rowSpan );
+    public void setRowSpan(int rowSpan) {
+        setAttribute("rowspan", rowSpan);
     }
-
 
     public String getScope() {
-        return getAttributeWithNoDefault( "scope" );
+        return getAttributeWithNoDefault("scope");
     }
 
-
-    public void setScope( String scope ) {
-        setAttribute( "scope", scope );
+    public void setScope(String scope) {
+        setAttribute("scope", scope);
     }
-
 
     public String getVAlign() {
-        return getAttributeWithDefault( "valign", "middle" );
+        return getAttributeWithDefault("valign", "middle");
     }
 
-
-    public void setVAlign( String vAlign ) {
-        setAttribute( "valign", vAlign );
+    public void setVAlign(String vAlign) {
+        setAttribute("valign", vAlign);
     }
-
 
     public String getWidth() {
-        return getAttributeWithNoDefault( "width" );
+        return getAttributeWithNoDefault("width");
     }
 
-
-    public void setWidth( String width ) {
-        setAttribute( "width", width );
+    public void setWidth(String width) {
+        setAttribute("width", width);
     }
 
-
-    public String getJavaAttributeName( String attributeName ) {
-        if (attributeName.equals( "char" )) return "ch";
-        if (attributeName.equals( "charoff" )) return "choff";
+    public String getJavaAttributeName(String attributeName) {
+        if (attributeName.equals("char"))
+            return "ch";
+        if (attributeName.equals("charoff"))
+            return "choff";
         return attributeName;
     }
 

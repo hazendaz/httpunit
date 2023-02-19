@@ -23,42 +23,40 @@ import java.net.URLEncoder;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
-*/
+ */
 public class URLEncodedString implements ParameterProcessor {
 
     public static final int DEFAULT_BUFFER_SIZE = 128;
 
-    private StringBuffer _buffer = new StringBuffer( DEFAULT_BUFFER_SIZE );
+    private StringBuffer _buffer = new StringBuffer(DEFAULT_BUFFER_SIZE);
 
     private boolean _haveParameters = false;
-
 
     public String getString() {
         return _buffer.toString();
     }
 
-
-    public void addParameter( String name, String value, String characterSet ) {
-        if (_haveParameters) _buffer.append( '&' );
-        _buffer.append( encode( name, characterSet ) );
-        if (value != null) _buffer.append( '=' ).append( encode( value, characterSet ) );
+    public void addParameter(String name, String value, String characterSet) {
+        if (_haveParameters)
+            _buffer.append('&');
+        _buffer.append(encode(name, characterSet));
+        if (value != null)
+            _buffer.append('=').append(encode(value, characterSet));
         _haveParameters = true;
     }
 
-
-    public void addFile( String parameterName, UploadFileSpec fileSpec ) {
-        throw new RuntimeException( "May not URL-encode a file upload request" );
+    public void addFile(String parameterName, UploadFileSpec fileSpec) {
+        throw new RuntimeException("May not URL-encode a file upload request");
     }
-
 
     /**
      * Returns a URL-encoded version of the string.
      **/
-    private String encode( String source, String characterSet ) {
+    private String encode(String source, String characterSet) {
         try {
-            return URLEncoder.encode( source, characterSet );
+            return URLEncoder.encode(source, characterSet);
         } catch (java.io.UnsupportedEncodingException e) {
-            return "???";    // XXX should pass the exception through as IOException ultimately
+            return "???"; // XXX should pass the exception through as IOException ultimately
         }
     }
 

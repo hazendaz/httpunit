@@ -31,45 +31,38 @@ public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLPar
         return new HTMLParagraphElementImpl();
     }
 
-
-//------------------------------------------ HTMLContainerElement methods ----------------------------------------------
-
+    // ------------------------------------------ HTMLContainerElement methods
+    // ----------------------------------------------
 
     public HTMLCollection getLinks() {
-        return getHtmlDocument().getContainerDelegate().getLinks( this );
+        return getHtmlDocument().getContainerDelegate().getLinks(this);
     }
-
 
     public HTMLCollection getImages() {
-        return getHtmlDocument().getContainerDelegate().getImages( this );
+        return getHtmlDocument().getContainerDelegate().getImages(this);
     }
-
 
     public HTMLCollection getApplets() {
-        return getHtmlDocument().getContainerDelegate().getApplets( this );
+        return getHtmlDocument().getContainerDelegate().getApplets(this);
     }
-
 
     public HTMLCollection getForms() {
-        return getHtmlDocument().getContainerDelegate().getForms( this );
+        return getHtmlDocument().getContainerDelegate().getForms(this);
     }
-
 
     public HTMLCollection getAnchors() {
-        return getHtmlDocument().getContainerDelegate().getAnchors( this );
+        return getHtmlDocument().getContainerDelegate().getAnchors(this);
     }
 
-
-//----------------------------------------- HTMLParagraphElement methods -----------------------------------------------
-
+    // ----------------------------------------- HTMLParagraphElement methods
+    // -----------------------------------------------
 
     public String getAlign() {
-        return getAttributeWithNoDefault( "align" );
+        return getAttributeWithNoDefault("align");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
 
 }

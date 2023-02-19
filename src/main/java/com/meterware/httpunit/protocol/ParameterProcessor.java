@@ -23,11 +23,10 @@ import java.io.IOException;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
-*/
+ */
 public interface ParameterProcessor {
 
-    void addParameter( String name, String value, String characterSet ) throws IOException;
+    void addParameter(String name, String value, String characterSet) throws IOException;
 
-
-    void addFile( String parameterName, UploadFileSpec fileSpec ) throws IOException;
+    void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException;
 }

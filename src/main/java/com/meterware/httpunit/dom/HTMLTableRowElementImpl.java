@@ -33,85 +33,71 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
         return new HTMLTableRowElementImpl();
     }
 
-
     public String getAlign() {
-        return getAttributeWithNoDefault( "align" );
+        return getAttributeWithNoDefault("align");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
-
 
     public String getBgColor() {
-        return getAttributeWithNoDefault( "bgColor" );
+        return getAttributeWithNoDefault("bgColor");
     }
 
-
-    public void setBgColor( String bgColor ) {
-        setAttribute( "bgColor", bgColor );
+    public void setBgColor(String bgColor) {
+        setAttribute("bgColor", bgColor);
     }
-
 
     public String getCh() {
-        return getAttributeWithDefault( "char", "." );
+        return getAttributeWithDefault("char", ".");
     }
 
-
-    public void setCh( String ch ) {
-        setAttribute( "char", ch );
+    public void setCh(String ch) {
+        setAttribute("char", ch);
     }
-
 
     public String getChOff() {
-        return getAttributeWithNoDefault( "charoff" );
+        return getAttributeWithNoDefault("charoff");
     }
 
-
-    public void setChOff( String chOff ) {
-        setAttribute( "charoff", chOff );
+    public void setChOff(String chOff) {
+        setAttribute("charoff", chOff);
     }
-
 
     public String getVAlign() {
-        return getAttributeWithDefault( "valign", "middle" );
+        return getAttributeWithDefault("valign", "middle");
     }
 
-
-    public void setVAlign( String vAlign ) {
-        setAttribute( "valign", vAlign );
+    public void setVAlign(String vAlign) {
+        setAttribute("valign", vAlign);
     }
 
-
-    public void deleteCell( int index ) throws DOMException {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void deleteCell(int index) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public HTMLCollection getCells() {
-        return HTMLCollectionImpl.createHTMLCollectionImpl( getElementsByTagNames( new String[] { "td", "th " } ) );
+        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { "td", "th " }));
     }
-
 
     public int getRowIndex() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
-
 
     public int getSectionRowIndex() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public HTMLElement insertCell( int index ) throws DOMException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public HTMLElement insertCell(int index) throws DOMException {
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
-
-    public String getJavaAttributeName( String attributeName ) {
-        if (attributeName.equals( "char" )) return "ch";
-        if (attributeName.equals( "charoff" )) return "choff";
+    public String getJavaAttributeName(String attributeName) {
+        if (attributeName.equals("char"))
+            return "ch";
+        if (attributeName.equals("charoff"))
+            return "choff";
         return attributeName;
     }
 

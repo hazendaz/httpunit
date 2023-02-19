@@ -23,54 +23,45 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract public class CharacterDataImpl extends NodeImpl implements CharacterData {
 
     private String _data;
 
-
-    protected void initialize( DocumentImpl ownerDocument, String data ) {
-        super.initialize( ownerDocument );
+    protected void initialize(DocumentImpl ownerDocument, String data) {
+        super.initialize(ownerDocument);
         _data = data;
     }
-
 
     public String getData() throws DOMException {
         return _data;
     }
 
-
-    public void setData( String data ) throws DOMException {
-        if (data == null) data = "";
+    public void setData(String data) throws DOMException {
+        if (data == null)
+            data = "";
         _data = data;
     }
-
 
     public int getLength() {
         return _data.length();
     }
 
-
-    public String substringData( int offset, int count ) throws DOMException {
+    public String substringData(int offset, int count) throws DOMException {
         return null;
     }
 
-
-    public void appendData( String arg ) throws DOMException {
+    public void appendData(String arg) throws DOMException {
     }
 
-
-    public void insertData( int offset, String arg ) throws DOMException {
+    public void insertData(int offset, String arg) throws DOMException {
     }
 
-
-    public void deleteData( int offset, int count ) throws DOMException {
+    public void deleteData(int offset, int count) throws DOMException {
     }
 
-
-    public void replaceData( int offset, int count, String arg ) throws DOMException {
+    public void replaceData(int offset, int count, String arg) throws DOMException {
     }
 
 }

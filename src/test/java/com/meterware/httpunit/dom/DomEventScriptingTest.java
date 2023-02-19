@@ -34,23 +34,20 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
     private Context _context;
     private static final Object[] NO_ARGS = new Object[0];
 
-
     @BeforeEach
     void setUp() throws Exception {
         _context = Context.enter();
         _context.initStandardObjects(null);
     }
 
-
     @AfterEach
     void tearDown() throws Exception {
         Context.exit();
     }
 
-
     /**
-     * Verifies that the 'onload' event for a body element is initially undefined if no corresponding attribute
-     * is defined.
+     * Verifies that the 'onload' event for a body element is initially undefined if no corresponding attribute is
+     * defined.
      */
     @Test
     void testNoOnloadEvent() throws Exception {
@@ -58,14 +55,13 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
         assertNull(body.getOnloadEvent(), "Found a default definition for 'onLoad' event");
     }
 
-
     /**
-     * Verifies that the 'onload' event for a body element is initially defined if a corresponding attribute
-     * is defined.
+     * Verifies that the 'onload' event for a body element is initially defined if a corresponding attribute is defined.
      */
     @Test
     void testInlineOnloadEvent() throws Exception {
-        HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body", new Object[][]{{"onload", "title='here'"}});
+        HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body",
+                new Object[][] { { "onload", "title='here'" } });
         assertNotNull(body.getOnloadEvent(), "Found no definition for 'onLoad' event");
         body.getOnloadEvent().call(_context, body, body, NO_ARGS);
         assertEquals("here", body.getTitle(), "Updated title");

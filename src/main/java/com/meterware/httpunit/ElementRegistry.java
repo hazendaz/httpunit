@@ -32,31 +32,28 @@ class ElementRegistry {
 
     private Map _map = new HashMap();
 
-
     /**
      * Registers an HttpUnit element for a node.
+     *
      * @return the registered element
      */
-    Object registerElement( Node node, HTMLElement htmlElement ) {
-        _map.put( node, htmlElement );
+    Object registerElement(Node node, HTMLElement htmlElement) {
+        _map.put(node, htmlElement);
         return htmlElement;
     }
-
 
     /**
      * Returns the HttpUnit element associated with the specified DOM element, if any.
      */
-    Object getRegisteredElement( Node node ) {
-        return _map.get( node );
+    Object getRegisteredElement(Node node) {
+        return _map.get(node);
     }
-
 
     Iterator iterator() {
         return _map.values().iterator();
     }
 
-
-    boolean hasNode( Node node ) {
-        return _map.containsKey( node );
+    boolean hasNode(Node node) {
+        return _map.containsKey(node);
     }
 }

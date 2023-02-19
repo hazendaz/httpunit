@@ -38,44 +38,36 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
     /** The request being wrapped. **/
     private HttpServletRequest _baseRequest;
 
-
-    static HttpServletRequest createIncludeRequestWrapper( HttpServletRequest request, RequestDispatcher dispatcher ) {
-        return new IncludeRequestWrapper( request, dispatcher );
+    static HttpServletRequest createIncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
+        return new IncludeRequestWrapper(request, dispatcher);
     }
 
-
-    static HttpServletRequest createForwardRequestWrapper( HttpServletRequest request, RequestDispatcher dispatcher ) {
-        return new ForwardRequestWrapper( request, dispatcher );
+    static HttpServletRequest createForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
+        return new ForwardRequestWrapper(request, dispatcher);
     }
 
-
-    DispatchedRequestWrapper( HttpServletRequest baseRequest, RequestDispatcher dispatcher ) {
-        super( baseRequest );
+    DispatchedRequestWrapper(HttpServletRequest baseRequest, RequestDispatcher dispatcher) {
+        super(baseRequest);
         _baseRequest = baseRequest;
         _requestContext = (RequestContext) dispatcher;
-        _requestContext.setParentRequest( baseRequest );
+        _requestContext.setParentRequest(baseRequest);
     }
-
 
     HttpServletRequest getBaseRequest() {
         return _baseRequest;
     }
 
-
-    public String getParameter( String s ) {
-        return _requestContext.getParameter( s );
+    public String getParameter(String s) {
+        return _requestContext.getParameter(s);
     }
-
 
     public Enumeration getParameterNames() {
         return _requestContext.getParameterNames();
     }
 
-
-    public String[] getParameterValues( String s ) {
-        return _requestContext.getParameterValues( s );
+    public String[] getParameterValues(String s) {
+        return _requestContext.getParameterValues(s);
     }
-
 
     public Map getParameterMap() {
         return _requestContext.getParameterMap();
@@ -83,66 +75,55 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 }
 
-
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
-    final static String REQUEST_URI  = "javax.servlet.include.request_uri";
+    final static String REQUEST_URI = "javax.servlet.include.request_uri";
     final static String CONTEXT_PATH = "javax.servlet.include.context_path";
     final static String SERVLET_PATH = "javax.servlet.include.servlet_path";
-    final static String PATH_INFO    = "javax.servlet.include.path_info";
+    final static String PATH_INFO = "javax.servlet.include.path_info";
     final static String QUERY_STRING = "javax.servlet.include.query_string";
 
     private Hashtable _attributes = new Hashtable();
 
-
-    IncludeRequestWrapper( HttpServletRequest request, RequestDispatcher dispatcher ) {
-        super( request, dispatcher );
-        _attributes.put( REQUEST_URI, ((RequestDispatcherImpl) dispatcher ).getRequestURI() );
-        _attributes.put( CONTEXT_PATH, request.getContextPath() );
-        _attributes.put( SERVLET_PATH, ((RequestDispatcherImpl) dispatcher ).getServletMetaData().getServletPath() );
-        final String pathInfo = ((RequestDispatcherImpl) dispatcher ).getServletMetaData().getPathInfo();
-        if (pathInfo != null) _attributes.put( PATH_INFO, pathInfo );
+    IncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
+        super(request, dispatcher);
+        _attributes.put(REQUEST_URI, ((RequestDispatcherImpl) dispatcher).getRequestURI());
+        _attributes.put(CONTEXT_PATH, request.getContextPath());
+        _attributes.put(SERVLET_PATH, ((RequestDispatcherImpl) dispatcher).getServletMetaData().getServletPath());
+        final String pathInfo = ((RequestDispatcherImpl) dispatcher).getServletMetaData().getPathInfo();
+        if (pathInfo != null)
+            _attributes.put(PATH_INFO, pathInfo);
     }
 
-
-    public Object getAttribute( String s ) {
-        Object result = _attributes.get( s );
-        return (result != null) ? result : super.getAttribute( s );
+    public Object getAttribute(String s) {
+        Object result = _attributes.get(s);
+        return (result != null) ? result : super.getAttribute(s);
     }
 
 }
-
 
 class ForwardRequestWrapper extends DispatchedRequestWrapper {
 
     private RequestDispatcherImpl _requestContext;
 
-    ForwardRequestWrapper( HttpServletRequest request, RequestDispatcher dispatcher ) {
-        super( request, dispatcher );
+    ForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
+        super(request, dispatcher);
         _requestContext = (RequestDispatcherImpl) dispatcher;
     }
-
 
     public String getRequestURI() {
         return _requestContext.getRequestURI();
     }
 
-
     public String getQueryString() {
         return super.getQueryString();
     }
-
 
     public String getServletPath() {
         return _requestContext.getServletMetaData().getServletPath();
     }
 
-
     public String getPathInfo() {
         return _requestContext.getServletMetaData().getPathInfo();
     }
 }
-
-
-
-

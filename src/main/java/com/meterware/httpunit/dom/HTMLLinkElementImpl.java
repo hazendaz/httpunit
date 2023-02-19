@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLLinkElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {
@@ -31,94 +30,76 @@ public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElem
         return new HTMLLinkElementImpl();
     }
 
-
     public String getCharset() {
-        return getAttributeWithNoDefault( "charset" );
+        return getAttributeWithNoDefault("charset");
     }
-
 
     public boolean getDisabled() {
-        return getBooleanAttribute( "disabled" );
+        return getBooleanAttribute("disabled");
     }
-
 
     public String getHref() {
-        return getAttributeWithNoDefault( "href" );
+        return getAttributeWithNoDefault("href");
     }
-
 
     public String getHreflang() {
-        return getAttributeWithNoDefault( "hreflang" );
+        return getAttributeWithNoDefault("hreflang");
     }
-
 
     public String getMedia() {
-        return getAttributeWithDefault( "media", "screen" );
+        return getAttributeWithDefault("media", "screen");
     }
-
 
     public String getRel() {
-        return getAttributeWithNoDefault( "rel" );
+        return getAttributeWithNoDefault("rel");
     }
-
 
     public String getRev() {
-        return getAttributeWithNoDefault( "rev" );
+        return getAttributeWithNoDefault("rev");
     }
-
 
     public String getTarget() {
-        return getAttributeWithNoDefault( "target" );
+        return getAttributeWithNoDefault("target");
     }
-
 
     public String getType() {
-        return getAttributeWithNoDefault( "type" );
+        return getAttributeWithNoDefault("type");
     }
 
-
-    public void setCharset( String charset ) {
-        setAttribute( "charset", charset );
+    public void setCharset(String charset) {
+        setAttribute("charset", charset);
     }
 
-
-    public void setDisabled( boolean disabled ) {
-        setAttribute( "disabled", disabled );
+    public void setDisabled(boolean disabled) {
+        setAttribute("disabled", disabled);
     }
 
-
-    public void setHref( String href ) {
-        setAttribute( "href", href );
+    public void setHref(String href) {
+        setAttribute("href", href);
     }
 
-
-    public void setHreflang( String hreflang ) {
-        setAttribute( "hreflang", hreflang );
+    public void setHreflang(String hreflang) {
+        setAttribute("hreflang", hreflang);
     }
 
-
-    public void setMedia( String media ) {
-        setAttribute( "media", media );
+    public void setMedia(String media) {
+        setAttribute("media", media);
     }
 
-
-    public void setRel( String rel ) {
-        setAttribute( "rel", rel );
+    public void setRel(String rel) {
+        setAttribute("rel", rel);
     }
 
-
-    public void setRev( String rev ) {
-        setAttribute( "rev", rev );
+    public void setRev(String rev) {
+        setAttribute("rev", rev);
     }
 
-
-    public void setTarget( String target ) {
-        setAttribute( "target", target );
+    public void setTarget(String target) {
+        setAttribute("target", target);
     }
 
-
-    public void setType( String type ) {
-        setAttribute( "type", type );
+    public void setType(String type) {
+        setAttribute("type", type);
     }
 
 }

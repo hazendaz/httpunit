@@ -22,7 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLImageElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {
@@ -31,132 +30,106 @@ public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageEl
         return new HTMLImageElementImpl();
     }
 
-
     public String getAlign() {
-        return getAttributeWithNoDefault( "align" );
+        return getAttributeWithNoDefault("align");
     }
-
 
     public String getAlt() {
-        return getAttributeWithNoDefault( "alt" );
+        return getAttributeWithNoDefault("alt");
     }
-
 
     public String getBorder() {
-        return getAttributeWithNoDefault( "border" );
+        return getAttributeWithNoDefault("border");
     }
-
 
     public String getHeight() {
-        return getAttributeWithNoDefault( "height" );
+        return getAttributeWithNoDefault("height");
     }
-
 
     public String getHspace() {
-        return getAttributeWithNoDefault( "hspace" );
+        return getAttributeWithNoDefault("hspace");
     }
-
 
     public boolean getIsMap() {
-        return getBooleanAttribute( "ismap" );
+        return getBooleanAttribute("ismap");
     }
-
 
     public String getLongDesc() {
-        return getAttributeWithNoDefault( "longdesc" );
+        return getAttributeWithNoDefault("longdesc");
     }
-
 
     public String getLowSrc() {
         return null;
     }
 
-
     public String getName() {
-        return getAttributeWithNoDefault( "name" );
+        return getAttributeWithNoDefault("name");
     }
-
 
     public String getSrc() {
-        return getAttributeWithNoDefault( "src" );
+        return getAttributeWithNoDefault("src");
     }
-
 
     public String getUseMap() {
-        return getAttributeWithNoDefault( "usemap" );
+        return getAttributeWithNoDefault("usemap");
     }
-
 
     public String getVspace() {
-        return getAttributeWithNoDefault( "vspace" );
+        return getAttributeWithNoDefault("vspace");
     }
-
 
     public String getWidth() {
-        return getAttributeWithNoDefault( "width" );
+        return getAttributeWithNoDefault("width");
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
 
-
-    public void setAlt( String alt ) {
-        setAttribute( "alt", alt );
+    public void setAlt(String alt) {
+        setAttribute("alt", alt);
     }
 
-
-    public void setBorder( String border ) {
-        setAttribute( "border", border );
+    public void setBorder(String border) {
+        setAttribute("border", border);
     }
 
-
-    public void setHeight( String height ) {
-        setAttribute( "height", height );
+    public void setHeight(String height) {
+        setAttribute("height", height);
     }
 
-
-    public void setHspace( String hspace ) {
-        setAttribute( "hspace", hspace );
+    public void setHspace(String hspace) {
+        setAttribute("hspace", hspace);
     }
 
-
-    public void setIsMap( boolean isMap ) {
-        setAttribute( "ismap", isMap );
+    public void setIsMap(boolean isMap) {
+        setAttribute("ismap", isMap);
     }
 
-
-    public void setLongDesc( String longDesc ) {
-        setAttribute( "longdesc", longDesc );
+    public void setLongDesc(String longDesc) {
+        setAttribute("longdesc", longDesc);
     }
 
-
-    public void setLowSrc( String lowSrc ) {
+    public void setLowSrc(String lowSrc) {
     }
 
-
-    public void setName( String name ) {
-        setAttribute( "name", name );
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 
-
-    public void setSrc( String src ) {
-        setAttribute( "src", src );
+    public void setSrc(String src) {
+        setAttribute("src", src);
     }
 
-
-    public void setUseMap( String useMap ) {
-        setAttribute( "usemap", useMap );
+    public void setUseMap(String useMap) {
+        setAttribute("usemap", useMap);
     }
 
-
-    public void setVspace( String vspace ) {
-        setAttribute( "vspace", vspace );
+    public void setVspace(String vspace) {
+        setAttribute("vspace", vspace);
     }
 
-
-    public void setWidth( String width ) {
-        setAttribute( "width", width );
+    public void setWidth(String width) {
+        setAttribute("width", width);
     }
 }

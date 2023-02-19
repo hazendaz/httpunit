@@ -38,13 +38,11 @@ class Base64Test {
         assertEquals("QWRtaW46Zm9vYmFy", Base64.encode("Admin:foobar"), "Result of encoding");
     }
 
-
     @Test
     void testDecode() {
         assertEquals("Aladdin:open sesame", Base64.decode("QWxhZGRpbjpvcGVuIHNlc2FtZQ=="), "Result of decoding");
         assertEquals("Admin:foobar", Base64.decode("QWRtaW46Zm9vYmFy"), "Result of decoding");
     }
-
 
     @Test
     void testExceptionDecoding() {
@@ -52,10 +50,8 @@ class Base64Test {
             Base64.decode("123");
             fail("valid Base64 codes have a multiple of 4 characters");
         } catch (Exception e) {
-            assertEquals("valid Base64 codes have a multiple of 4 characters",
-                    e.getMessage());
+            assertEquals("valid Base64 codes have a multiple of 4 characters", e.getMessage());
         }
     }
 
 }
-

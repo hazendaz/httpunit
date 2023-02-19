@@ -23,7 +23,6 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 interface ServletMetaData {
@@ -38,12 +37,10 @@ interface ServletMetaData {
      */
     String getServletPath();
 
-
     /**
      * Returns the path info beyond the servlet path.
      */
     String getPathInfo();
-
 
     /**
      * Returns an ordered list of the filters associated with this servlet.

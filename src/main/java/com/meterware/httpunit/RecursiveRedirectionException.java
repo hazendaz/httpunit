@@ -22,8 +22,8 @@ package com.meterware.httpunit;
 import java.net.URL;
 
 /**
- * Class used to indicate when a request to a resource resulted in an HTTP
- * redirect response that lead to a recursive loop of redirections
+ * Class used to indicate when a request to a resource resulted in an HTTP redirect response that lead to a recursive
+ * loop of redirections
  *
  * @author <a href="mailto:james.abley@gmail.com">James Abley </a>
  */
@@ -32,15 +32,13 @@ public class RecursiveRedirectionException extends RuntimeException {
     private URL url;
 
     /**
-     * Create a new <code>RecursiveRedirectionException</code> with the
-     * specified URL and cause.
+     * Create a new <code>RecursiveRedirectionException</code> with the specified URL and cause.
      *
      * @param url
      *            the {@link URL}that caused the recursive loop to be detected
      * @param cause
-     *            the cause (which is saved for later retrieval by the
-     *            {@link #getCause()}method). (A null value is permitted, and
-     *            indicates that the cause is nonexistent or unknown.)
+     *            the cause (which is saved for later retrieval by the {@link #getCause()}method). (A null value is
+     *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public RecursiveRedirectionException(URL url, Throwable cause) {
         super(cause);
@@ -48,16 +46,13 @@ public class RecursiveRedirectionException extends RuntimeException {
     }
 
     /**
-     * Create a new <code>RecursiveRedirectionException</code> with the
-     * specified URL and detail message.
+     * Create a new <code>RecursiveRedirectionException</code> with the specified URL and detail message.
      *
      * @param url
-     *            the <code>URL</code> that caused the recursive loop to be
-     *            detected. The URL is saved for later retrieval by
-     *            {@link #getURL()}
+     *            the <code>URL</code> that caused the recursive loop to be detected. The URL is saved for later
+     *            retrieval by {@link #getURL()}
      * @param message
-     *            the detail message. The detail message is saved for later
-     *            retrieval by {@link #getMessage()}
+     *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
      */
     public RecursiveRedirectionException(URL url, String message) {
         super(message);
@@ -65,23 +60,18 @@ public class RecursiveRedirectionException extends RuntimeException {
     }
 
     /**
-     * Create a new <code>RecursiveRedirectionException</code> with the
-     * specified URL, detail message and cause.
+     * Create a new <code>RecursiveRedirectionException</code> with the specified URL, detail message and cause.
      *
      * @param url
-     *            the <code>URL</code> that caused the recursive loop to be
-     *            detected. The URL is saved for later retrieval by
-     *            {@link #getURL()}
+     *            the <code>URL</code> that caused the recursive loop to be detected. The URL is saved for later
+     *            retrieval by {@link #getURL()}
      * @param message
-     *            the detail message. The detail message is saved for later
-     *            retrieval by {@link #getMessage()}
+     *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
      * @param cause
-     *            the cause (which is saved for later retrieval by the
-     *            {@link #getCause()}method). (A null value is permitted, and
-     *            indicates that the cause is nonexistent or unknown.)
+     *            the cause (which is saved for later retrieval by the {@link #getCause()}method). (A null value is
+     *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
-    public RecursiveRedirectionException(URL url, String message,
-            Throwable cause) {
+    public RecursiveRedirectionException(URL url, String message, Throwable cause) {
         super(message, cause);
         this.url = url;
     }

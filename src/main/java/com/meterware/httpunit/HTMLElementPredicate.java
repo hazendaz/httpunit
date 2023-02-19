@@ -39,15 +39,14 @@ package com.meterware.httpunit;
  *
  *******************************************************************************************************************/
 
-
 /**
- * An interface which can be used to define matching criteria for an HTML element. It can be passed to methods such
- * as WebRequest.getMatchingLink to define arbitrary matching criteria for web links.
+ * An interface which can be used to define matching criteria for an HTML element. It can be passed to methods such as
+ * WebRequest.getMatchingLink to define arbitrary matching criteria for web links.
  *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface HTMLElementPredicate {
 
-    public boolean matchesCriteria( Object htmlElement, Object criteria );
+    public boolean matchesCriteria(Object htmlElement, Object criteria);
 
 }

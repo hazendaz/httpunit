@@ -50,30 +50,38 @@ import org.xml.sax.SAXException;
  **/
 public interface Input extends IdentifiedDelegate, NamedDelegate {
 
-    Object get( String propertyName );
+    Object get(String propertyName);
 
     /**
      * set the given property to the given value
+     *
      * @param propertyName
      * @param value
      */
-    void set( String propertyName, Object value );
+    void set(String propertyName, Object value);
+
     /**
      * set the given attribute to the given value
+     *
      * @param attributeName
      * @param value
+     *
      * @since 1.7
      */
-    void setAttribute( String attributeName, Object value );
+    void setAttribute(String attributeName, Object value);
+
     /**
      * remove the given attribute
+     *
      * @param attributeName
+     *
      * @since 1.7
      */
-    void removeAttribute( String attributeName );
+    void removeAttribute(String attributeName);
 
     /**
      * simulate a click
+     *
      * @throws IOException
      * @throws SAXException
      */
@@ -81,9 +89,7 @@ public interface Input extends IdentifiedDelegate, NamedDelegate {
 
     /**
      * fire a on change event
-     *
      */
     public void sendOnChangeEvent();
-
 
 }

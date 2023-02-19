@@ -41,17 +41,12 @@ public class CookieTest {
         CookieProperties.reset();
     }
 
-
     @Test
     void testSimpleCookies() throws Exception {
-        CookieJar jar = new CookieJar(
-                new TestSource(new URL("http://www.meterware.com"),
-                        new String[]{"Reason=; path=/",
-                                "age=12, name= george",
-                                "type=short",
-                                "funky=ab$==",
-                                "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
-                                "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;"}));
+        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+                new String[] { "Reason=; path=/", "age=12, name= george", "type=short", "funky=ab$==",
+                        "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
+                        "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
         assertEquals("", jar.getCookieValue("Reason"), "cookie 'Reason' value");
         assertEquals("12", jar.getCookieValue("age"), "cookie 'age' value");
         assertEquals("george", jar.getCookieValue("name"), "cookie 'name' value");
@@ -59,39 +54,40 @@ public class CookieTest {
         assertEquals("ab$==", jar.getCookieValue("funky"), "cookie 'funky' value");
         assertEquals("3.0,en,us,AMERICA,Drew", jar.getCookieValue("p30waco_sso"), "cookie 'p30waco_sso' value");
         assertEquals("X", jar.getCookieValue("PORTAL30_SSO_TEST"), "cookie 'PORTAL30_SSO_TEST' value");
-        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", jar.getCookieValue("SESSION_ID"), "cookie 'SESSION_ID' value");
+        assertEquals("17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==", jar.getCookieValue("SESSION_ID"),
+                "cookie 'SESSION_ID' value");
     }
 
     /**
-     * test for double quoted cookies suggested by Mario V
-     * disabled since it indeed fails - FIXME - we need a patch here
+     * test for double quoted cookies suggested by Mario V disabled since it indeed fails - FIXME - we need a patch here
      *
      * @throws Exception
      */
     public void xtestDoubleQuoteCookies() throws Exception {
-        CookieJar jar = new CookieJar(
-                new TestSource(new URL("http://www.meterware.com"),
-                        new String[]{"NewUniversalCookie=\"mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm\"; Path=/"}));
+        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+                new String[] { "NewUniversalCookie=\"mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm\"; Path=/" }));
         Collection cookies = jar.getCookies();
         assertEquals(1, cookies.size(), "There should only be one cookie but there are " + cookies.size());
-        assertEquals("mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm", jar.getCookieValue("NewUniversalCookie"), "cookie 'NewUniversalCookie' value");
+        assertEquals("mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm", jar.getCookieValue("NewUniversalCookie"),
+                "cookie 'NewUniversalCookie' value");
     }
-
 
     @Test
     void testCookieMatching() throws Exception {
-        assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")), "Universal cookie could not be sent");
+        assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")),
+                "Universal cookie could not be sent");
 
-        checkMatching(1, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets/sample");
+        checkMatching(1, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+                "/servlets/sample");
 
         checkMatching(2, false, new URL("http://www.meterware.com/servlets/sample"), "meterware.com", "/");
         checkMatching(3, true, new URL("http://www.meterware.com/servlets/sample"), ".meterware.com", "/");
         checkMatching(4, false, new URL("http://www.meterware.com/servlets/sample"), ".httpunit.org", "/");
 
         checkMatching(5, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets");
-        checkMatching(6, false, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets/sample/data");
+        checkMatching(6, false, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+                "/servlets/sample/data");
     }
-
 
     private void checkMatching(int index, boolean success, URL url, String domain, String path) {
         HashMap attributes = new HashMap();
@@ -104,7 +100,6 @@ public class CookieTest {
             assertFalse(cookie.mayBeSentTo(url), "Cookie " + index + " allowed " + url);
         }
     }
-
 
     /**
      * check the CookieAcceptance
@@ -134,37 +129,39 @@ public class CookieTest {
      * @param urlString
      * @param specifiedDomain
      * @param specifiedPath
+     *
      * @throws MalformedURLException
      */
 
-    private void checkAcceptance(int index, boolean shouldAccept, String urlString,
-                                 String specifiedDomain, String specifiedPath) throws MalformedURLException {
+    private void checkAcceptance(int index, boolean shouldAccept, String urlString, String specifiedDomain,
+            String specifiedPath) throws MalformedURLException {
 
         CookieJar jar = newJar(urlString, specifiedDomain, specifiedPath);
 
         if (shouldAccept) {
-        	// modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
-        	// http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
-        	Cookie cookie = jar.getCookie( "name" );
-        	assertNotNull( cookie , "Rejected cookie " + index + "( " + specifiedDomain + " from " + urlString + ") should have been accepted");
-        	URL url = new URL( "http://" + urlString );
-        	assertTrue( cookie.mayBeSentTo(url), "Cookie " + index + " should be sent to the url ");
+            // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
+            // http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
+            Cookie cookie = jar.getCookie("name");
+            assertNotNull(cookie, "Rejected cookie " + index + "( " + specifiedDomain + " from " + urlString
+                    + ") should have been accepted");
+            URL url = new URL("http://" + urlString);
+            assertTrue(cookie.mayBeSentTo(url), "Cookie " + index + " should be sent to the url ");
 
         } else {
             assertNull(jar.getCookie("name"), "Cookie " + index + " should have been rejected");
         }
     }
 
-
     @Test
     void testCookieDefaults() throws Exception {
-        checkDefaults(1, "www.meterware.com/servlets/special", ".meterware.com", "/servlets", ".meterware.com", "/servlets");
-        checkDefaults(2, "www.meterware.com/servlets/special/myServlet", null, null, "www.meterware.com", "/servlets/special");
+        checkDefaults(1, "www.meterware.com/servlets/special", ".meterware.com", "/servlets", ".meterware.com",
+                "/servlets");
+        checkDefaults(2, "www.meterware.com/servlets/special/myServlet", null, null, "www.meterware.com",
+                "/servlets/special");
     }
 
-
     private void checkDefaults(int index, String urlString, String specifiedDomain, String specifiedPath,
-                               String expectedDomain, String expectedPath) throws MalformedURLException {
+            String expectedDomain, String expectedPath) throws MalformedURLException {
         CookieJar jar = newJar(urlString, specifiedDomain, specifiedPath);
         assertNotNull(jar.getCookie("name").getDomain(), "case " + index + " domain is null");
         assertEquals(expectedDomain, jar.getCookie("name").getDomain(), "case " + index + " domain");
@@ -172,40 +169,34 @@ public class CookieTest {
         assertEquals(expectedPath, jar.getCookie("name").getPath(), "case " + index + " path");
     }
 
-
-    private CookieJar newJar(String urlString, String specifiedDomain, String specifiedPath) throws MalformedURLException {
+    private CookieJar newJar(String urlString, String specifiedDomain, String specifiedPath)
+            throws MalformedURLException {
         StringBuilder header = new StringBuilder("name=value");
-        if (specifiedDomain != null) header.append("; domain=").append(specifiedDomain);
-        if (specifiedPath != null) header.append("; path=").append(specifiedPath);
+        if (specifiedDomain != null)
+            header.append("; domain=").append(specifiedDomain);
+        if (specifiedPath != null)
+            header.append("; path=").append(specifiedPath);
 
         return new CookieJar(new TestSource(new URL("http://" + urlString), header.toString()));
     }
 
     /**
-     * test cookie age and expiration handling
-     * see also Friday Fun: I Hate Cookies
+     * test cookie age and expiration handling see also Friday Fun: I Hate Cookies
      * http://www.mnot.net/blog/2006/10/27/cookie_fun
      *
-     * @throws Exception when an unexpected error occurs
+     * @throws Exception
+     *             when an unexpected error occurs
      */
     @Test
     void testCookieAge() throws Exception {
-        String ages[] = {"max-age=5000",
-                "Max-Age=3000",
-                "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
-                "Max-Age=2592000;expires=Tue, 29-Mar-2005 19:30:42 GMT",
-                "expires=Tue, 29-Mar-2005 19:30:42 GMT",
-                "Expires=Wednesday, 01-Jan-1970 00:00:00 GMT"
-        };
+        String ages[] = { "max-age=5000", "Max-Age=3000", "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
+                "Max-Age=2592000;expires=Tue, 29-Mar-2005 19:30:42 GMT", "expires=Tue, 29-Mar-2005 19:30:42 GMT",
+                "Expires=Wednesday, 01-Jan-1970 00:00:00 GMT" };
         long now = System.currentTimeMillis();
-        long expectedMilliSeconds[] = {now + 5000 * 1000,
-                now + 3000 * 1000,
-                now + 2592000 * 1000,
-                now + 2592000 * 1000,
-                1112124642000l,
-                0};
+        long expectedMilliSeconds[] = { now + 5000 * 1000, now + 3000 * 1000, now + 2592000 * 1000,
+                now + 2592000 * 1000, 1112124642000l, 0 };
 
-        for (int i = 0;i < ages.length;i++) {
+        for (int i = 0; i < ages.length; i++) {
             String cookieName = "cookie" + i;
             String header = cookieName + "=cookievalue;" + ages[i];
             TestSource source = new TestSource(new URL("http://www.somedomain.com/somepath/"), header);
@@ -215,22 +206,20 @@ public class CookieTest {
 
             long expiredTime = cookie.getExpiredTime();
             int grace = 3000;
-            assertTrue(expectedMilliSeconds[i] <= expiredTime,
-                    cookieName + " '" + ages[i] + "' expiration expect on or after" +
-                            expectedMilliSeconds[i] + " but was " + expiredTime);
-            assertTrue((expectedMilliSeconds[i]) + grace > expiredTime,
-                    cookieName + " '" + ages[i] + "' expiration expect before " +
-                            (expectedMilliSeconds[i] + grace) + " but was " + expiredTime);
-            //  assertEquals( cookieName + " expiration", expiredTime, expectedMilliSeconds[i] );
+            assertTrue(expectedMilliSeconds[i] <= expiredTime, cookieName + " '" + ages[i]
+                    + "' expiration expect on or after" + expectedMilliSeconds[i] + " but was " + expiredTime);
+            assertTrue((expectedMilliSeconds[i]) + grace > expiredTime, cookieName + " '" + ages[i]
+                    + "' expiration expect before " + (expectedMilliSeconds[i] + grace) + " but was " + expiredTime);
+            // assertEquals( cookieName + " expiration", expiredTime, expectedMilliSeconds[i] );
         }
     }
-
 
     @Test
     void testHeaderGeneration() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putCookie("zero", "nil");
-        jar.updateCookies(newJar("www.meterware.com/servlets/standard/AServlet", "first=ready, gone=expired;max-age=0"));
+        jar.updateCookies(
+                newJar("www.meterware.com/servlets/standard/AServlet", "first=ready, gone=expired;max-age=0"));
         jar.updateCookies(newJar("www.meterware.com/servlets/AnotherServlet", "second=set;max-age=1000"));
         jar.updateCookies(newJar("www.httpunit.org", "zero=go; domain=.httpunit.org"));
         jar.updateCookies(newJar("meterware.com", "fourth=money"));
@@ -240,8 +229,7 @@ public class CookieTest {
         checkHeader(3, jar, "zero=go", "fancy.httpunit.org/servlets/AskMe");
 
         HttpUserAgentTest.assertMatchingSet("Cookie names",
-                new String[]{"zero", "zero", "first", "second", "fourth", "gone"},
-                jar.getCookieNames());
+                new String[] { "zero", "zero", "first", "second", "fourth", "gone" }, jar.getCookieNames());
     }
 
     /**
@@ -299,16 +287,15 @@ public class CookieTest {
     }
 
     /**
-     * test for bug report [ 1672385 ] HttpOnly cookie looses all cookie info
-     * extended according to comment of 2010-04-22
+     * test for bug report [ 1672385 ] HttpOnly cookie looses all cookie info extended according to comment of
+     * 2010-04-22
      *
      * @throws Exception
      */
     @Test
     void testHttpOnlyCookies() throws Exception {
-        CookieJar jar = new CookieJar(
-                new TestSource(new URL("http://www.meterware.com"),
-                        new String[]{"myStuff=1234; path=/foo; HttpOnly"}));
+        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+                new String[] { "myStuff=1234; path=/foo; HttpOnly" }));
         assertEquals("1234", jar.getCookieValue("myStuff"), "cookie 'myStuff' value");
         // comment of 2010-04-22
         String path = jar.getCookie("myStuff").getPath();
@@ -316,24 +303,22 @@ public class CookieTest {
     }
 
     /**
-     * test for bug report [ 2076028 ] Cookies are handled incorrectly
-     * should also fit duplicate bug report 2871999
+     * test for bug report [ 2076028 ] Cookies are handled incorrectly should also fit duplicate bug report 2871999
      * https://sourceforge.net/tracker/?func=detail&aid=2871999&group_id=6550&atid=106550
      */
     @Test
     void testHttpOnlyCookiePath() throws Exception {
         CookieJar jar = new CookieJar(
-                new TestSource(new URL("http://www.meterware.com"),
-                        new String[]{"myStuff=1234; path=/; HttpOnly"}));
+                new TestSource(new URL("http://www.meterware.com"), new String[] { "myStuff=1234; path=/; HttpOnly" }));
         Cookie cookie = jar.getCookie("myStuff");
         String expected = "/";
-        assertEquals(cookie.getPath(), expected, "The cookie should have the path '" + expected + "' but has " + cookie.getPath());
+        assertEquals(cookie.getPath(), expected,
+                "The cookie should have the path '" + expected + "' but has " + cookie.getPath());
     }
 
     /**
-     * test for bug report [ 1533762 ] Valid cookies are rejected
-     * by Alexey Bulat
-     * TODO enable when working patch is available
+     * test for bug report [ 1533762 ] Valid cookies are rejected by Alexey Bulat TODO enable when working patch is
+     * available
      *
      * @throws Exception
      */
@@ -342,11 +327,10 @@ public class CookieTest {
         checkAcceptance(2, true, "admin.automation.testing.com.ru", ".testing.com.ru", null);
     }
 
-
-    private void checkHeader(int index, CookieJar jar, String expectedHeader, String targetURLString) throws MalformedURLException {
+    private void checkHeader(int index, CookieJar jar, String expectedHeader, String targetURLString)
+            throws MalformedURLException {
         assertEquals(expectedHeader, jar.getCookieHeaderField(new URL("http://" + targetURLString)), "header " + index);
     }
-
 
     @Test
     void testCookieReplacement() throws Exception {
@@ -359,11 +343,9 @@ public class CookieTest {
         checkHeader(1, jar, "first=ready; third=tomorrow", "www.meterware.com/servlets/standard");
     }
 
-
     private CookieJar newJar(String urlString, String setCookieHeader) throws MalformedURLException {
         return new CookieJar(new TestSource(new URL("http://" + urlString), setCookieHeader));
     }
-
 
     @Test
     void testLenientMatching() throws Exception {
@@ -376,9 +358,9 @@ public class CookieTest {
 
         CookieProperties.setPathMatchingStrict(false);
         checkAcceptance(11, true, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
-        checkMatching(12, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets/sample/data");
+        checkMatching(12, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+                "/servlets/sample/data");
     }
-
 
     @Test
     void testRejectionCallbacks() throws Exception {
@@ -386,12 +368,14 @@ public class CookieTest {
         CookieProperties.addCookieListener(listener);
 
         checkCallback(listener, 1, 0, "www.meterware.com/servlets/special", null, null);
-        checkCallback(listener, 2, CookieListener.PATH_NOT_PREFIX, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
+        checkCallback(listener, 2, CookieListener.PATH_NOT_PREFIX, "www.meterware.com/servlets/special",
+                ".meterware.com", "/servlets/ordinary");
         checkCallback(listener, 3, CookieListener.DOMAIN_ONE_DOT, "www.meterware.com/servlets/special", ".com", null);
-        checkCallback(listener, 4, CookieListener.DOMAIN_NOT_SOURCE_SUFFIX, "www.meterware.com/servlets/special", ".httpunit.org", null);
-        checkCallback(listener, 5, CookieListener.DOMAIN_TOO_MANY_LEVELS, "www.some.meterware.com/servlets/special", ".meterware.com", null);
+        checkCallback(listener, 4, CookieListener.DOMAIN_NOT_SOURCE_SUFFIX, "www.meterware.com/servlets/special",
+                ".httpunit.org", null);
+        checkCallback(listener, 5, CookieListener.DOMAIN_TOO_MANY_LEVELS, "www.some.meterware.com/servlets/special",
+                ".meterware.com", null);
     }
-
 
     /**
      * check the cookieListener call Back
@@ -402,10 +386,11 @@ public class CookieTest {
      * @param urlString
      * @param specifiedDomain
      * @param specifiedPath
+     *
      * @throws MalformedURLException
      */
-    private void checkCallback(MockListener listener, int index, int status, String urlString,
-                               String specifiedDomain, String specifiedPath) throws MalformedURLException {
+    private void checkCallback(MockListener listener, int index, int status, String urlString, String specifiedDomain,
+            String specifiedPath) throws MalformedURLException {
         if (status == 0) {
             listener.expectAcceptance(index);
         } else if (status == CookieListener.PATH_NOT_PREFIX) {
@@ -414,9 +399,9 @@ public class CookieTest {
             listener.expectRejection(index, "name", status, specifiedDomain);
         }
         newJar(urlString, specifiedDomain, specifiedPath);
-        if (status != 0) listener.confirmRejection();
+        if (status != 0)
+            listener.confirmRejection();
     }
-
 
     private class MockListener implements CookieListener {
 
@@ -426,12 +411,10 @@ public class CookieTest {
         private boolean _rejected;
         private int _cookieNum;
 
-
         void expectAcceptance(int cookieNum) {
             _cookieNum = cookieNum;
             _reason = -1;
         }
-
 
         void expectRejection(int cookieNum, String cookieName, int reason, String attribute) {
             _cookieNum = cookieNum;
@@ -441,21 +424,19 @@ public class CookieTest {
             _rejected = false;
         }
 
-
         void confirmRejection() {
             assertTrue(_rejected, "Cookie " + _cookieNum + " was not logged as rejected");
         }
-
 
         public void cookieRejected(String name, int reason, String attribute) {
             _rejected = true;
             assertEquals(_reason, reason, "Cookie " + _cookieNum + " rejection code");
             if (_attribute != null)
                 assertEquals(_attribute, attribute, "Cookie " + _cookieNum + " rejected attribute");
-            if (_cookieName != null) assertEquals(_cookieName, name, "Cookie " + _cookieNum + " name");
+            if (_cookieName != null)
+                assertEquals(_cookieName, name, "Cookie " + _cookieNum + " name");
         }
     }
-
 
     /**
      * create a TestSource for Cookies
@@ -473,25 +454,21 @@ public class CookieTest {
          */
 
         public TestSource(URL sourceURL, String header) {
-            this(sourceURL, new String[]{header});
+            this(sourceURL, new String[] { header });
         }
-
 
         public TestSource(URL sourceURL, String[] headers) {
             _sourceURL = sourceURL;
             _headers = headers;
         }
 
-
         public URL getURL() {
             return _sourceURL;
         }
-
 
         public String[] getHeaderFields(String fieldName) {
             return fieldName.equalsIgnoreCase("set-cookie") ? _headers : new String[0];
         }
     }
-
 
 }

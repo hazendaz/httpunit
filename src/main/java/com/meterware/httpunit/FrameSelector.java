@@ -48,67 +48,53 @@ package com.meterware.httpunit;
  **/
 public class FrameSelector {
 
-    public static FrameSelector TOP_FRAME = new FrameSelector( WebRequest.TOP_FRAME );
-    static FrameSelector NEW_FRAME = new FrameSelector( WebRequest.TOP_FRAME );
+    public static FrameSelector TOP_FRAME = new FrameSelector(WebRequest.TOP_FRAME);
+    static FrameSelector NEW_FRAME = new FrameSelector(WebRequest.TOP_FRAME);
 
     private String _name;
     private WebWindow _window;
     private FrameSelector _parent;
 
-
     FrameSelector() {
         _name = super.toString();
     }
 
-
-    FrameSelector( String name ) {
+    FrameSelector(String name) {
         _name = name;
     }
 
-
-    FrameSelector( String name, FrameSelector parent ) {
+    FrameSelector(String name, FrameSelector parent) {
         _name = name;
         _parent = parent;
     }
-
 
     String getName() {
         return _name;
     }
 
-
     FrameSelector getParent() {
         return _parent;
     }
-
 
     public String toString() {
         return "Frame Selector: [ " + getFullName() + " ]";
     }
 
-
     private String getFullName() {
-        return _name + (_parent == null ? "" : " in " + _parent.getFullName() );
+        return _name + (_parent == null ? "" : " in " + _parent.getFullName());
     }
-
 
     WebWindow getWindow() {
-        return _window != null ? _window
-                               : (_parent == null ? null : _parent.getWindow());
+        return _window != null ? _window : (_parent == null ? null : _parent.getWindow());
     }
 
-
-    static FrameSelector newTopFrame( WebWindow window ) {
-        return new FrameSelector( WebRequest.TOP_FRAME, window );
+    static FrameSelector newTopFrame(WebWindow window) {
+        return new FrameSelector(WebRequest.TOP_FRAME, window);
     }
 
-
-    private FrameSelector( String name, WebWindow window ) {
+    private FrameSelector(String name, WebWindow window) {
         _name = name;
         _window = window;
     }
 
-
 }
-
-

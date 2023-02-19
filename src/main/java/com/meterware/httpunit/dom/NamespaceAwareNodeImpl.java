@@ -39,9 +39,7 @@ package com.meterware.httpunit.dom;
  *
  *******************************************************************************************************************/
 
-
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 
@@ -51,27 +49,26 @@ public abstract class NamespaceAwareNodeImpl extends NodeImpl {
     private String _localName;
     private String _namespaceUri;
 
-
-    protected void initialize( DocumentImpl owner, String tagName ) {
-        initialize( owner );
+    protected void initialize(DocumentImpl owner, String tagName) {
+        initialize(owner);
         _localName = _tagName = tagName;
     }
 
-
     /**
      * initialize the name space
+     *
      * @param owner
      * @param namespaceURI
      * @param qualifiedName
      */
-    protected void initialize( DocumentImpl owner, String namespaceURI, String qualifiedName ) {
-        initialize( owner );
+    protected void initialize(DocumentImpl owner, String namespaceURI, String qualifiedName) {
+        initialize(owner);
         _tagName = qualifiedName;
         _namespaceUri = namespaceURI;
         if (qualifiedName.indexOf(':') < 0) {
             _localName = qualifiedName;
         } else {
-            _localName = qualifiedName.substring( qualifiedName.indexOf(':') + 1 );
+            _localName = qualifiedName.substring(qualifiedName.indexOf(':') + 1);
         }
         setParentScope(owner);
     }
@@ -80,16 +77,13 @@ public abstract class NamespaceAwareNodeImpl extends NodeImpl {
         return getTagName();
     }
 
-
     public String getTagName() {
         return _tagName;
     }
 
-
     public String getNamespaceURI() {
         return _namespaceUri;
     }
-
 
     public String getLocalName() {
         return _localName;

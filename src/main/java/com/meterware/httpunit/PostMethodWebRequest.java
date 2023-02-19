@@ -34,46 +34,45 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
     /**
      * Constructs a web request using a specific absolute url string.
      **/
-    public PostMethodWebRequest( String urlString ) {
-        this( urlString, false );
+    public PostMethodWebRequest(String urlString) {
+        this(urlString, false);
     }
-
 
     /**
      * Constructs a web request using a specific absolute url string, with optional mime encoding.
      **/
-    public PostMethodWebRequest( String urlString, boolean mimeEncoded ) {
-        super( urlString, mimeEncoded );
+    public PostMethodWebRequest(String urlString, boolean mimeEncoded) {
+        super(urlString, mimeEncoded);
     }
-
 
     /**
      * Constructs a web request with a specific target.
      **/
-    public PostMethodWebRequest( URL urlBase, String urlString, String target ) {
-        this( urlBase, urlString, target, false );
+    public PostMethodWebRequest(URL urlBase, String urlString, String target) {
+        this(urlBase, urlString, target, false);
     }
-
 
     /**
      * Constructs a web request with a specific target, with optional mime encoding.
      **/
-    public PostMethodWebRequest( URL urlBase, String urlString, String target, boolean mimeEncoded ) {
-        super( urlBase, urlString, target, mimeEncoded );
+    public PostMethodWebRequest(URL urlBase, String urlString, String target, boolean mimeEncoded) {
+        super(urlBase, urlString, target, mimeEncoded);
     }
-
 
     /**
      * Constructs a web request using a specific absolute url string and input stream.
-     * @param urlString the URL to which the request should be issued
-     * @param source    an input stream which will provide the body of this request
-     * @param contentType the MIME content type of the body, including any character set
+     *
+     * @param urlString
+     *            the URL to which the request should be issued
+     * @param source
+     *            an input stream which will provide the body of this request
+     * @param contentType
+     *            the MIME content type of the body, including any character set
      **/
-    public PostMethodWebRequest( String urlString, InputStream source, String contentType ) {
-        super( urlString, false );
-        _body = new InputStreamMessageBody( source, contentType );
+    public PostMethodWebRequest(String urlString, InputStream source, String contentType) {
+        super(urlString, false);
+        _body = new InputStreamMessageBody(source, contentType);
     }
-
 
     /**
      * Returns the HTTP method defined for this request.
@@ -82,60 +81,53 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
         return "POST";
     }
 
-
     /**
      * Returns the query string defined for this request.
      **/
     public String getQueryString() {
         try {
             URLEncodedString encoder = new URLEncodedString();
-            getParameterHolder().recordPredefinedParameters( encoder );
+            getParameterHolder().recordPredefinedParameters(encoder);
             return encoder.getString();
         } catch (IOException e) {
-            throw new RuntimeException( "Programming error: " + e );   // should never happen
+            throw new RuntimeException("Programming error: " + e); // should never happen
         }
     }
-
 
     /**
      * Returns true if selectFile may be called with this parameter.
      */
-    protected boolean maySelectFile( String parameterName ) {
-        return isMimeEncoded() && isFileParameter( parameterName );
+    protected boolean maySelectFile(String parameterName) {
+        return isMimeEncoded() && isFileParameter(parameterName);
     }
 
-//----------------------------- MessageBodyWebRequest methods ---------------------------
-
+    // ----------------------------- MessageBodyWebRequest methods ---------------------------
 
     protected MessageBody getMessageBody() {
         if (_body == null) {
-            _body = MessageBody.createPostMethodMessageBody( isMimeEncoded(), getCharacterSet() );
+            _body = MessageBody.createPostMethodMessageBody(isMimeEncoded(), getCharacterSet());
         }
         return _body;
     }
 
-//----------------------------------- package members -----------------------------------
-
+    // ----------------------------------- package members -----------------------------------
 
     /**
      * Constructs a web request for a form submitted by clicking a button.
      **/
-    PostMethodWebRequest( WebForm sourceForm, SubmitButton button, int x, int y ) {
-        this( sourceForm, sourceForm, button, x, y );
+    PostMethodWebRequest(WebForm sourceForm, SubmitButton button, int x, int y) {
+        this(sourceForm, sourceForm, button, x, y);
     }
 
-
-    PostMethodWebRequest( WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y ) {
-        super( sourceForm, parameterHolder, button, x, y );
+    PostMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
+        super(sourceForm, parameterHolder, button, x, y);
     }
-
 
     /**
      * Constructs a web request for a form submitted via a script.
      **/
-    PostMethodWebRequest( WebForm sourceForm ) {
-        super( sourceForm );
+    PostMethodWebRequest(WebForm sourceForm) {
+        super(sourceForm);
     }
 
 }
-

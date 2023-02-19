@@ -26,58 +26,47 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class NamedNodeMapImpl implements NamedNodeMap {
 
-
     private Hashtable _items;
-    private Node[]    _itemArray;
+    private Node[] _itemArray;
 
-
-    NamedNodeMapImpl( Hashtable items ) {
-        _items     = (Hashtable) items.clone();
-        _itemArray = (Node[]) _items.values().toArray( new Node[ _items.size() ] );
+    NamedNodeMapImpl(Hashtable items) {
+        _items = (Hashtable) items.clone();
+        _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);
     }
 
-
-    public Node getNamedItem( String name ) {
-        return (Node) _items.get( name );
+    public Node getNamedItem(String name) {
+        return (Node) _items.get(name);
     }
 
-
-    public Node setNamedItem( Node arg ) throws DOMException {
+    public Node setNamedItem(Node arg) throws DOMException {
         return null;
     }
 
-
-    public Node removeNamedItem( String name ) throws DOMException {
+    public Node removeNamedItem(String name) throws DOMException {
         return null;
     }
 
-
-    public Node item( int index ) {
-        return _itemArray[ index ];
+    public Node item(int index) {
+        return _itemArray[index];
     }
-
 
     public int getLength() {
         return _items.size();
     }
 
-
-    public Node getNamedItemNS( String namespaceURI, String localName ) {
+    public Node getNamedItemNS(String namespaceURI, String localName) {
         return null;
     }
 
-
-    public Node setNamedItemNS( Node arg ) throws DOMException {
+    public Node setNamedItemNS(Node arg) throws DOMException {
         return null;
     }
 
-
-    public Node removeNamedItemNS( String namespaceURI, String localName ) throws DOMException {
+    public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
         return null;
     }
 }

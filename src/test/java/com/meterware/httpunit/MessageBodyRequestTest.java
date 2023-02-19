@@ -42,25 +42,28 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 public class MessageBodyRequestTest extends HttpUnitTest {
 
-	/**
-	 * make a Request from the given parameters
-	 * @param resourceName
-	 * @param sourceData
-	 * @param contentType
-	 * @return the new WebRequest
-	 * @throws UnsupportedEncodingException
-	 */
-	public WebRequest makeRequest(String resourceName,String sourceData, String contentType) throws UnsupportedEncodingException{
+    /**
+     * make a Request from the given parameters
+     *
+     * @param resourceName
+     * @param sourceData
+     * @param contentType
+     *
+     * @return the new WebRequest
+     *
+     * @throws UnsupportedEncodingException
+     */
+    public WebRequest makeRequest(String resourceName, String sourceData, String contentType)
+            throws UnsupportedEncodingException {
         defineResource(resourceName, new BodyEcho());
-		InputStream source = new ByteArrayInputStream(sourceData
-				.getBytes(StandardCharsets.ISO_8859_1));
-		WebRequest wr = new PostMethodWebRequest(getHostPath() + "/"+resourceName,
-				source, contentType);
-		return wr;
-	}
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
+        WebRequest wr = new PostMethodWebRequest(getHostPath() + "/" + resourceName, source, contentType);
+        return wr;
+    }
 
     /**
      * test a generic Post request
+     *
      * @throws Exception
      */
     @Test
@@ -75,6 +78,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
 
     /**
      * test for Patch by Serge Maslyukov for empty content Types
+     *
      * @throws Exception
      */
     @Test
@@ -90,15 +94,12 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     void testPutRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
         String sourceData = "This is an interesting test\nWith two lines";
-        InputStream source = new ByteArrayInputStream(sourceData
-                .getBytes(StandardCharsets.ISO_8859_1));
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
 
         WebConversation wc = new WebConversation();
-        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
-                source, "text/plain");
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "text/plain");
         WebResponse response = wc.getResponse(wr);
-        assertEquals("\nPUT\n" + sourceData, response
-                .getText(), "Body response");
+        assertEquals("\nPUT\n" + sourceData, response.getText(), "Body response");
     }
 
     /**
@@ -108,18 +109,18 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     void testDownloadRequestUsingGetText() throws Exception {
         defineResource("ReportData", new BodyEcho());
         byte[] binaryData = new byte[256];
-        for (int i = 0;i <= 255;i++) {
+        for (int i = 0; i <= 255; i++) {
             binaryData[i] = (byte) i;
         }
 
-        InputStream source = new ByteArrayInputStream( binaryData );
+        InputStream source = new ByteArrayInputStream(binaryData);
 
         WebConversation wc = new WebConversation();
-        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random" );
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random");
         WebResponse response = wc.getResponse(wr);
         // currently the following line does not work:
         byte[] download = response.getText().getBytes(StandardCharsets.UTF_8);
-        // 	currently the following line works:
+        // currently the following line works:
         // byte[] download = getDownload( response );
         // and this one is now available ...
         download = response.getBytes();
@@ -129,13 +130,12 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     @Test
     void testDownloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
-        byte[] binaryData = new byte[]{0x01, 0x05, 0x0d, 0x0a, 0x02};
+        byte[] binaryData = new byte[] { 0x01, 0x05, 0x0d, 0x0a, 0x02 };
 
         InputStream source = new ByteArrayInputStream(binaryData);
 
         WebConversation wc = new WebConversation();
-        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData",
-                source, "application/random");
+        WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "application/random");
         WebResponse response = wc.getResponse(wr);
         byte[] download = response.getBytes();
         assertArrayEquals(binaryData, download, "Body response");
@@ -152,44 +152,45 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      */
     @Test
     void testHeaderOnlyWebRequest() throws Exception {
-        HeaderOnlyWebRequest r = new HeaderOnlyWebRequest(
-                "http://www.google.com");
+        HeaderOnlyWebRequest r = new HeaderOnlyWebRequest("http://www.google.com");
     }
 
-	/**
-	 * please do not copy this function any more - use getBytes instead ...
-	 * @param response
-	 * @return
-	 * @throws IOException
-	 */
-	private byte[] getDownload(WebResponse response) throws IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		InputStream inputStream = response.getInputStream();
+    /**
+     * please do not copy this function any more - use getBytes instead ...
+     *
+     * @param response
+     *
+     * @return
+     *
+     * @throws IOException
+     */
+    private byte[] getDownload(WebResponse response) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        InputStream inputStream = response.getInputStream();
 
-		byte[] buffer = new byte[8 * 1024];
-		int count = 0;
-		do {
-			outputStream.write(buffer, 0, count);
-			count = inputStream.read(buffer, 0, buffer.length);
-		} while (count != -1);
+        byte[] buffer = new byte[8 * 1024];
+        int count = 0;
+        do {
+            outputStream.write(buffer, 0, count);
+            count = inputStream.read(buffer, 0, buffer.length);
+        } while (count != -1);
 
-		inputStream.close();
-		return outputStream.toByteArray();
-	}
+        inputStream.close();
+        return outputStream.toByteArray();
+    }
 
 }
 
 class BodyEcho extends PseudoServlet {
-	/**
-	 * Returns a resource object as a result of a get request.
-	 **/
-	public WebResource getResponse(String method) {
-		String contentType = getHeader("Content-type");
-		if (contentType.startsWith("text")) {
-			return new WebResource(
-					"\n" + method + "\n" + new String(getBody()), contentType);
-		} else {
-			return new WebResource(getBody(), contentType);
-		}
-	}
+    /**
+     * Returns a resource object as a result of a get request.
+     **/
+    public WebResource getResponse(String method) {
+        String contentType = getHeader("Content-type");
+        if (contentType.startsWith("text")) {
+            return new WebResource("\n" + method + "\n" + new String(getBody()), contentType);
+        } else {
+            return new WebResource(getBody(), contentType);
+        }
+    }
 }

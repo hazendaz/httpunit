@@ -26,64 +26,66 @@ import java.util.List;
 
 //============================= exception class IllegalParameterValueException ======================================
 
-
 /**
  * This exception is thrown on an attempt to set a parameter to a value not permitted to it by the form.
  **/
 public class IllegalParameterValueException extends IllegalRequestParameterException {
 
+    /**
+     * construct an IllegalParameterValueException
+     *
+     * @param parameterName
+     *            - the name of the parameter
+     * @param badValue
+     *            - the bad value that is not allowed
+     * @param allowed
+     *            - the list of allowed values
+     */
+    public IllegalParameterValueException(String parameterName, String badValue, String[] allowed) {
+        _parameterName = parameterName;
+        _badValue = badValue;
+        _allowedValues = allowed;
+    }
 
-  /**
-   * construct an IllegalParameterValueException
-   * @param parameterName - the name of the parameter
-   * @param badValue - the bad value that is not allowed
-   * @param allowed - the list of allowed values
-   */
-  public IllegalParameterValueException( String parameterName, String badValue, String[] allowed ) {
-      _parameterName = parameterName;
-      _badValue      = badValue;
-      _allowedValues = allowed;
-  }
+    /**
+     * get the bad value from a list of Values
+     *
+     * @param values
+     *
+     * @return
+     */
+    protected static String getBadValue(List values) {
+        String result = "unknown bad value";
+        if (values.size() > 0) {
+            Object badValue = values.get(0);
+            result = badValue.toString();
+        }
+        return result;
+    }
 
-  /**
-   * get the bad value from a list of Values
-   * @param values
-   * @return
-   */
-  protected static String getBadValue(List values) {
-  	String result="unknown bad value";
-  	if (values.size()>0) {
-  		Object badValue=values.get(0);
-  		result=badValue.toString();
-  	}
-  	return result;
-  }
-
-  /**
-   *
-   * @param parameterName
-   * @param values
-   * @param allowed
-   */
-  public IllegalParameterValueException( String parameterName, List values, String[] allowed ) {
-  	this(parameterName,getBadValue(values),allowed);
-  }
-
+    /**
+     * @param parameterName
+     * @param values
+     * @param allowed
+     */
+    public IllegalParameterValueException(String parameterName, List values, String[] allowed) {
+        this(parameterName, getBadValue(values), allowed);
+    }
 
     public String getMessage() {
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
-        sb.append( "May not set parameter '" ).append( _parameterName ).append( "' to '" );
-        sb.append( _badValue ).append( "'. Value must be one of: { " );
+        sb.append("May not set parameter '").append(_parameterName).append("' to '");
+        sb.append(_badValue).append("'. Value must be one of: { ");
         for (int i = 0; i < _allowedValues.length; i++) {
-            if (i != 0) sb.append( ", " );
-            sb.append( "'"+ _allowedValues[i] +"'" );
+            if (i != 0)
+                sb.append(", ");
+            sb.append("'" + _allowedValues[i] + "'");
         }
-        sb.append( " }" );
+        sb.append(" }");
         return sb.toString();
     }
 
-
-    private String   _parameterName;
-    private String   _badValue;
+    private String _parameterName;
+    private String _badValue;
     private String[] _allowedValues;
 }

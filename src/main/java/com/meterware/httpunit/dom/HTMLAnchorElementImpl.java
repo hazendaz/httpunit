@@ -25,7 +25,6 @@ import java.net.URL;
 import org.w3c.dom.html.HTMLAnchorElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {
@@ -34,155 +33,133 @@ public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchor
         return new HTMLAnchorElementImpl();
     }
 
-
     public String getCharset() {
-        return getAttributeWithNoDefault( "charset" );
+        return getAttributeWithNoDefault("charset");
     }
 
-
     public String getHref() {
-        String relativeLocation = getAttributeWithNoDefault( "href" );
-        if (relativeLocation.indexOf( ':' ) > 0 || relativeLocation.equals( "#" )) {
+        String relativeLocation = getAttributeWithNoDefault("href");
+        if (relativeLocation.indexOf(':') > 0 || relativeLocation.equals("#")) {
             return relativeLocation;
         } else {
             try {
-                return new URL( ((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation ).toExternalForm();
+                return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();
             } catch (MalformedURLException e) {
                 return e.toString();
             }
         }
     }
 
-
     public String getHreflang() {
-        return getAttributeWithNoDefault( "hreflang" );
+        return getAttributeWithNoDefault("hreflang");
     }
-
 
     public String getRel() {
-        return getAttributeWithNoDefault( "rel" );
+        return getAttributeWithNoDefault("rel");
     }
-
 
     public String getRev() {
-        return getAttributeWithNoDefault( "rev" );
+        return getAttributeWithNoDefault("rev");
     }
-
 
     public String getTarget() {
-        return getAttributeWithNoDefault( "target" );
+        return getAttributeWithNoDefault("target");
     }
-
 
     public String getType() {
-        return getAttributeWithNoDefault( "type" );
+        return getAttributeWithNoDefault("type");
     }
 
-
-    public void setCharset( String charset ) {
-        setAttribute( "charset", charset );
+    public void setCharset(String charset) {
+        setAttribute("charset", charset);
     }
 
-
-    public void setHref( String href ) {
-        setAttribute( "href", href );
+    public void setHref(String href) {
+        setAttribute("href", href);
     }
 
-
-    public void setHreflang( String hreflang ) {
-        setAttribute( "hreflang", hreflang );
+    public void setHreflang(String hreflang) {
+        setAttribute("hreflang", hreflang);
     }
 
-
-    public void setRel( String rel ) {
-        setAttribute( "rel", rel );
+    public void setRel(String rel) {
+        setAttribute("rel", rel);
     }
 
-
-    public void setRev( String rev ) {
-        setAttribute( "rev", rev );
+    public void setRev(String rev) {
+        setAttribute("rev", rev);
     }
 
-
-    public void setTarget( String target ) {
-        setAttribute( "target", target );
+    public void setTarget(String target) {
+        setAttribute("target", target);
     }
 
-
-    public void setType( String type ) {
-        setAttribute( "type", type );
+    public void setType(String type) {
+        setAttribute("type", type);
     }
 
     /**
      * simulate blur
      */
     public void blur() {
-    	handleEvent("onblur");
+        handleEvent("onblur");
     }
 
     /**
      * simulate focus;
      */
     public void focus() {
-    	handleEvent("onfocus");
+        handleEvent("onfocus");
     }
 
     public String getAccessKey() {
-        return getAttributeWithNoDefault( "accesskey" );
+        return getAttributeWithNoDefault("accesskey");
     }
-
 
     public String getCoords() {
-        return getAttributeWithNoDefault( "coords" );
+        return getAttributeWithNoDefault("coords");
     }
-
 
     public String getName() {
-        return getAttributeWithNoDefault( "name" );
+        return getAttributeWithNoDefault("name");
     }
-
 
     public String getShape() {
-        return getAttributeWithNoDefault( "shape" );
+        return getAttributeWithNoDefault("shape");
     }
-
 
     public int getTabIndex() {
-        return getIntegerAttribute( "tabindex" );
+        return getIntegerAttribute("tabindex");
     }
 
-
-    public void setAccessKey( String accessKey ) {
-        setAttribute( "accesskey", accessKey );
+    public void setAccessKey(String accessKey) {
+        setAttribute("accesskey", accessKey);
     }
 
-
-    public void setCoords( String coords ) {
-        setAttribute( "coords", coords );
+    public void setCoords(String coords) {
+        setAttribute("coords", coords);
     }
 
-
-    public void setName( String name ) {
-        setAttribute( "name", name );
+    public void setName(String name) {
+        setAttribute("name", name);
     }
 
-
-    public void setShape( String shape ) {
-        setAttribute( "shape", shape );
+    public void setShape(String shape) {
+        setAttribute("shape", shape);
     }
 
-
-    public void setTabIndex( int tabIndex ) {
-        setAttribute( "tabindex", tabIndex );
+    public void setTabIndex(int tabIndex) {
+        setAttribute("tabindex", tabIndex);
     }
-
 
     public void doClickAction() {
-        if (null == getHref() || getHref().startsWith( "#" )) return;
+        if (null == getHref() || getHref().startsWith("#"))
+            return;
         try {
-            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest( this, "GET", getHref(), getTarget(), new byte[0] );
+            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, "GET", getHref(), getTarget(),
+                    new byte[0]);
         } catch (Exception e) {
-            throw new RuntimeException( "Error clicking link: " + e );
+            throw new RuntimeException("Error clicking link: " + e);
         }
     }
 }

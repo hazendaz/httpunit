@@ -36,66 +36,51 @@ abstract class ParameterHolder implements ParameterCollection {
     /**
      * Specifies the position at which an image button (if any) was clicked. This default implementation does nothing.
      **/
-    void selectImageButtonPosition( SubmitButton imageButton, int x, int y ) {}
-
+    void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
+    }
 
     /**
-     * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter processor.\
-     * These parameters always go on the URL, no matter what encoding method is used.
+     * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter
+     * processor.\ These parameters always go on the URL, no matter what encoding method is used.
      **/
-    abstract
-    void recordPredefinedParameters( ParameterProcessor processor ) throws IOException;
-
+    abstract void recordPredefinedParameters(ParameterProcessor processor) throws IOException;
 
     /**
      * Returns an array of all parameter names in this collection.
      **/
-    abstract
-    String[] getParameterNames();
-
+    abstract String[] getParameterNames();
 
     /**
      * Returns the multiple default values of the named parameter.
      **/
-    abstract
-    String[] getParameterValues( String name );
-
+    abstract String[] getParameterValues(String name);
 
     /**
      * Removes a parameter name from this collection.
      **/
-    abstract
-    void removeParameter( String name );
-
+    abstract void removeParameter(String name);
 
     /**
      * Sets the value of a parameter in a web request.
      **/
-    abstract
-    void setParameter( String name, String value );
-
+    abstract void setParameter(String name, String value);
 
     /**
      * Sets the multiple values of a parameter in a web request.
      **/
-    abstract
-    void setParameter( String name, String[] values );
-
+    abstract void setParameter(String name, String[] values);
 
     /**
      * Sets the multiple values of a file upload parameter in a web request.
      **/
-    abstract
-    void setParameter( String name, UploadFileSpec[] files );
-
+    abstract void setParameter(String name, UploadFileSpec[] files);
 
     /**
      * Returns true if the specified name is that of a file parameter. The default implementation returns false.
      */
-    boolean isFileParameter( String name ) {
+    boolean isFileParameter(String name) {
         return false;
     }
-
 
     /**
      * Returns the character set encoding for the request.
@@ -104,7 +89,5 @@ abstract class ParameterHolder implements ParameterCollection {
         return HttpUnitUtils.DEFAULT_CHARACTER_SET;
     }
 
-
-    abstract
-    boolean isSubmitAsMime();
+    abstract boolean isSubmitAsMime();
 }

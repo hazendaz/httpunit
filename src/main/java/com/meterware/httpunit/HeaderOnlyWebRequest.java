@@ -33,74 +33,65 @@ import org.w3c.dom.Element;
  **/
 public class HeaderOnlyWebRequest extends WebRequest {
 
-
     /**
      * Returns the query string defined for this request.
      **/
     public String getQueryString() {
         try {
             URLEncodedString encoder = new URLEncodedString();
-            getParameterHolder().recordPredefinedParameters( encoder );
-            getParameterHolder().recordParameters( encoder );
+            getParameterHolder().recordPredefinedParameters(encoder);
+            getParameterHolder().recordParameters(encoder);
             return encoder.getString();
         } catch (IOException e) {
-            throw new RuntimeException( "Programming error: " + e );   // should never happen
+            throw new RuntimeException("Programming error: " + e); // should never happen
         }
     }
 
     /**
-     * @param method the method to set
+     * @param method
+     *            the method to set
      */
     public void setMethod(String method) {
-    	this.method = method;
+        this.method = method;
     }
 
+    // -------------------------------- protected members ---------------------------
 
-//-------------------------------- protected members ---------------------------
-
-
-    protected HeaderOnlyWebRequest( URL urlBase, String urlString, FrameSelector frame, String target ) {
-        super( urlBase, urlString, frame, target );
+    protected HeaderOnlyWebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
+        super(urlBase, urlString, frame, target);
     }
 
-
-    protected HeaderOnlyWebRequest( URL urlBase, String urlString, String target ) {
-        super( urlBase, urlString, target );
+    protected HeaderOnlyWebRequest(URL urlBase, String urlString, String target) {
+        super(urlBase, urlString, target);
     }
 
-
-    protected HeaderOnlyWebRequest( WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target ) {
-        super( referer, sourceElement, urlBase, urlString, target );
+    protected HeaderOnlyWebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString,
+            String target) {
+        super(referer, sourceElement, urlBase, urlString, target);
     }
 
-
-    protected HeaderOnlyWebRequest( URL urlBase, String urlString ) {
-        super( urlBase, urlString );
+    protected HeaderOnlyWebRequest(URL urlBase, String urlString) {
+        super(urlBase, urlString);
     }
 
-
-    protected HeaderOnlyWebRequest( String urlString ) {
-        super( urlString );
+    protected HeaderOnlyWebRequest(String urlString) {
+        super(urlString);
     }
 
+    // ------------------------------------ package members --------------------------
 
-//------------------------------------ package members --------------------------
-
-
-    HeaderOnlyWebRequest( WebRequestSource requestSource ) {
-        super( requestSource, WebRequest.newParameterHolder( requestSource ) );
-        setHeaderField( REFERER_HEADER_NAME, requestSource.getBaseURL().toExternalForm() );
+    HeaderOnlyWebRequest(WebRequestSource requestSource) {
+        super(requestSource, WebRequest.newParameterHolder(requestSource));
+        setHeaderField(REFERER_HEADER_NAME, requestSource.getBaseURL().toExternalForm());
     }
 
-
-    HeaderOnlyWebRequest( WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y ) {
-        super( sourceForm, parameterHolder, button, x, y );
-        setHeaderField( REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm() );
+    HeaderOnlyWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
+        super(sourceForm, parameterHolder, button, x, y);
+        setHeaderField(REFERER_HEADER_NAME, sourceForm.getBaseURL().toExternalForm());
     }
 
-
-    HeaderOnlyWebRequest( URL urlBase, String urlString, FrameSelector frame ) {
-        super( urlBase, urlString, frame, frame.getName() );
+    HeaderOnlyWebRequest(URL urlBase, String urlString, FrameSelector frame) {
+        super(urlBase, urlString, frame, frame.getName());
     }
 
 }

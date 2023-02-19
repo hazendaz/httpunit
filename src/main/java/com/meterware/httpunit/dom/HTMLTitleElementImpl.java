@@ -24,7 +24,6 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTitleElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {
@@ -33,29 +32,27 @@ public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleEl
         return new HTMLTitleElementImpl();
     }
 
-
     public String getText() {
         Text contentNode = getContentNode();
         return contentNode == null ? "" : contentNode.getData();
     }
 
-
     private Text getContentNode() {
         NodeList childNodes = getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            if (childNodes.item(i).getNodeType() == TEXT_NODE) return (Text) childNodes.item(i);
+            if (childNodes.item(i).getNodeType() == TEXT_NODE)
+                return (Text) childNodes.item(i);
         }
         return null;
     }
 
-
-    public void setText( String text ) {
-        Text newChild = getOwnerDocument().createTextNode( text );
+    public void setText(String text) {
+        Text newChild = getOwnerDocument().createTextNode(text);
         Text oldChild = getContentNode();
         if (oldChild == null) {
-            appendChild( newChild );
+            appendChild(newChild);
         } else {
-            replaceChild( newChild, oldChild );
+            replaceChild(newChild, oldChild);
         }
     }
 }

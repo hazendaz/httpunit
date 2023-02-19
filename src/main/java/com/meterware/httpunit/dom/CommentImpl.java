@@ -24,51 +24,42 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class CommentImpl extends CharacterDataImpl implements Comment {
 
-
-    static CommentImpl createComment( DocumentImpl ownerDocument, String data ) {
+    static CommentImpl createComment(DocumentImpl ownerDocument, String data) {
         CommentImpl comment = new CommentImpl();
-        comment.initialize( ownerDocument, data );
+        comment.initialize(ownerDocument, data);
         return comment;
     }
 
-
-    public static Node importNode( DocumentImpl document, Comment comment ) {
-        return document.createComment( comment.getData() );
+    public static Node importNode(DocumentImpl document, Comment comment) {
+        return document.createComment(comment.getData());
     }
-
 
     public String getNodeName() {
         return "#comment";
     }
 
-
     public String getNodeValue() throws DOMException {
         return getData();
     }
 
-
-    public void setNodeValue( String nodeValue ) throws DOMException {
-        setData( nodeValue );
+    public void setNodeValue(String nodeValue) throws DOMException {
+        setData(nodeValue);
     }
-
 
     public short getNodeType() {
         return COMMENT_NODE;
     }
 
-
-    protected NodeImpl getChildIfPermitted( Node proposedChild ) {
-        throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Comment nodes may not have children" );
+    protected NodeImpl getChildIfPermitted(Node proposedChild) {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Comment nodes may not have children");
     }
 
-
-    void appendContents( StringBuffer sb ) {
-        sb.append( getData() );
+    void appendContents(StringBuffer sb) {
+        sb.append(getData());
     }
 
 }

@@ -60,7 +60,6 @@ class DomWindowTest extends AbstractHTMLElementTest {
         TestWindowProxy.assertLastProxyMethod("close");
     }
 
-
     /**
      * Writes to a document should appear in the window's document write buffer.
      */
@@ -74,7 +73,6 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     }
 
-
     private DomWindow createMainWindow() {
         DomWindow window = _htmlDocument.getWindow();
         _proxy = new TestWindowProxy(_htmlDocument);
@@ -82,7 +80,6 @@ class DomWindowTest extends AbstractHTMLElementTest {
         TestWindowProxy.clearProxyCalls();
         return window;
     }
-
 
     /**
      * Verifies that an alert request is sent to the proxy appropriately.
@@ -107,7 +104,6 @@ class DomWindowTest extends AbstractHTMLElementTest {
         assertTrue(window.confirm("Want to stay?"), "Should have said yes");
         TestWindowProxy.assertLastProxyMethod("confirm( Want to stay? )");
     }
-
 
     /**
      * Verifies that a prompt is sent to the proxy and the appropriate answer is returned.
@@ -151,7 +147,6 @@ class DomWindowTest extends AbstractHTMLElementTest {
     // todo test getFrames
     // todo test clearCaches, getDocumentWriteBuffer, clearDocumentWriteBuffer
 
-
     /**
      * Verifies simply the existence of some methods not currently implemented. Todo make them do something useful.
      */
@@ -163,6 +158,5 @@ class DomWindowTest extends AbstractHTMLElementTest {
         window.moveTo(10, 20);
         window.scrollTo(10, 20);
     }
-
 
 }

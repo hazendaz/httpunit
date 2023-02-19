@@ -23,7 +23,6 @@ import javax.servlet.Filter;
 import javax.servlet.ServletException;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 interface FilterMetaData {

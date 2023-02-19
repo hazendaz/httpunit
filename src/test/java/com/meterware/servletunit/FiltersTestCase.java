@@ -54,7 +54,6 @@ import org.xml.sax.InputSource;
  */
 class FiltersTestCase {
 
-
     final static FilterMetaData FILTER1 = new FilterMetaDataImpl(1);
     final static FilterMetaData FILTER2 = new FilterMetaDataImpl(2);
     final static FilterMetaData FILTER3 = new FilterMetaDataImpl(3);
@@ -62,9 +61,7 @@ class FiltersTestCase {
     final static FilterMetaData FILTER5 = new FilterMetaDataImpl(5);
     final static FilterMetaData FILTER6 = new FilterMetaDataImpl(6);
 
-
     private static boolean _servletCalled;
-
 
     /**
      * Verifies that the no-filter case is handled by servlet metadata.
@@ -73,13 +70,13 @@ class FiltersTestCase {
     void testNoFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
-        WebApplication application = new WebApplication(HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
+        WebApplication application = new WebApplication(
+                HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(0, filters.length, "number of associated filters");
     }
-
 
     /**
      * Verifies that a simple filter is associated with a servlet by its name.
@@ -89,14 +86,14 @@ class FiltersTestCase {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
-        WebApplication application = new WebApplication(HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
+        WebApplication application = new WebApplication(
+                HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(1, filters.length, "number of associated filters");
         assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
     }
-
 
     /**
      * Verifies that a simple filter will be called before a servlet with the same URL.
@@ -121,7 +118,6 @@ class FiltersTestCase {
         assertTrue(ic.isFilterActive(), "Did not pop back to filter");
         assertSame(filter, ic.getFilter(), "Restored filter");
     }
-
 
     /**
      * Verifies that a simple filter will be called before a servlet with the same URL.
@@ -153,7 +149,6 @@ class FiltersTestCase {
         assertSame(filter1, ic.getFilter(), "Restored filter 1");
     }
 
-
     /**
      * Verifies that request / response wrappering for filters is supported.
      */
@@ -182,7 +177,6 @@ class FiltersTestCase {
         assertSame(originalResponse, ic.getResponse(), "Filter response");
     }
 
-
     /**
      * Verifies that the filter chain invokes the servlet.
      */
@@ -203,7 +197,6 @@ class FiltersTestCase {
         assertSame(originalResponse, ic.getResponse(), "Response object after doFilter");
     }
 
-
     /**
      * Verifies that filters are automatically called.
      */
@@ -218,7 +211,6 @@ class FiltersTestCase {
         assertEquals("by-filter", wr.getText().trim(), "Filtered response ");
     }
 
-
     /**
      * Verifies that a simple filter is associated with a url pattern.
      */
@@ -228,14 +220,14 @@ class FiltersTestCase {
         wxs.addServlet("Simple", "/helpMe/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForUrl("Trivial", TrivialFilter.class, "/helpMe/*");
         wxs.addFilterForUrl("Other", AttributeFilter.class, "/Simple");
-        WebApplication application = new WebApplication(HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
+        WebApplication application = new WebApplication(
+                HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
         ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/helpMe/SimpleServlet"));
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(1, filters.length, "number of associated filters");
         assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
     }
-
 
     @Test
     void testFilterMapping() throws Exception {
@@ -247,24 +239,21 @@ class FiltersTestCase {
         map.put("/foo/bar/*", FILTER5);
         map.put("/foo/*", FILTER6);
 
-        checkMapping(map, "/catalog", new FilterMetaData[]{FILTER3});
-        checkMapping(map, "/catalog/racecar.bop", new FilterMetaData[]{FILTER4});
-        checkMapping(map, "/index.bop", new FilterMetaData[]{FILTER4});
-        checkMapping(map, "/foo/bar/index.html", new FilterMetaData[]{FILTER1, FILTER5, FILTER6});
-        checkMapping(map, "/foo/index.bop", new FilterMetaData[]{FILTER4, FILTER6});
-        checkMapping(map, "/baz", new FilterMetaData[]{FILTER2});
+        checkMapping(map, "/catalog", new FilterMetaData[] { FILTER3 });
+        checkMapping(map, "/catalog/racecar.bop", new FilterMetaData[] { FILTER4 });
+        checkMapping(map, "/index.bop", new FilterMetaData[] { FILTER4 });
+        checkMapping(map, "/foo/bar/index.html", new FilterMetaData[] { FILTER1, FILTER5, FILTER6 });
+        checkMapping(map, "/foo/index.bop", new FilterMetaData[] { FILTER4, FILTER6 });
+        checkMapping(map, "/baz", new FilterMetaData[] { FILTER2 });
         checkMapping(map, "/bazel", new FilterMetaData[0]);
-        checkMapping(map, "/baz/index.html", new FilterMetaData[]{FILTER2});
+        checkMapping(map, "/baz/index.html", new FilterMetaData[] { FILTER2 });
         checkMapping(map, "/something/else", new FilterMetaData[0]);
     }
 
-
     private void checkMapping(FilterUrlMap map, String urlString, FilterMetaData[] expectedFilters) {
-        assertEquals(Arrays.asList(expectedFilters),
-                Arrays.asList(map.getMatchingFilters(urlString)),
+        assertEquals(Arrays.asList(expectedFilters), Arrays.asList(map.getMatchingFilters(urlString)),
                 "Filters selected for '" + urlString + "'");
     }
-
 
     @Test
     void testFilterInitialization() throws Exception {
@@ -288,7 +277,7 @@ class FiltersTestCase {
         assertEquals("red", filterConfig.getInitParameter("color"), "init parameter 'red'");
 
         ArrayList names = new ArrayList();
-        for (Enumeration e = filterConfig.getInitParameterNames();e.hasMoreElements();) {
+        for (Enumeration e = filterConfig.getInitParameterNames(); e.hasMoreElements();) {
             String name = (String) e.nextElement();
             names.add(name);
         }
@@ -297,17 +286,14 @@ class FiltersTestCase {
         assertTrue(names.contains("age"), "'age' not found in enumeration");
     }
 
-
     // TODO combination of named and url filters (url filters go first)
     // TODO filter shutdown
     // TODO filters with request dispatchers
     // TODO filters throwing UnavailableException
 
-
     static class AttributeFilter implements Filter {
 
         private FilterConfig _filterConfig;
-
 
         public void init(FilterConfig filterConfig) throws ServletException {
             _filterConfig = filterConfig;
@@ -316,13 +302,13 @@ class FiltersTestCase {
         public void destroy() {
         }
 
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+                throws IOException, ServletException {
             servletRequest.setAttribute("called", "by-filter");
             filterChain.doFilter(servletRequest, servletResponse);
         }
 
     }
-
 
     static class TrivialFilter implements Filter {
 
@@ -332,13 +318,13 @@ class FiltersTestCase {
         public void destroy() {
         }
 
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+                throws IOException, ServletException {
             servletRequest.setAttribute("called", "trivially");
             filterChain.doFilter(servletRequest, servletResponse);
         }
 
     }
-
 
     static class SimpleGetServlet extends HttpServlet {
 
@@ -350,7 +336,6 @@ class FiltersTestCase {
             _servletCalled = true;
         }
     }
-
 
     static class FilterMetaDataImpl implements FilterMetaData {
 

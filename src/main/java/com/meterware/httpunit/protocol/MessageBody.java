@@ -25,25 +25,26 @@ import java.io.OutputStream;
 /**
  * An abstract class representing the body of a web request.
  **/
-abstract
-public class MessageBody {
+abstract public class MessageBody {
 
     private String _characterSet;
 
-
     /**
      * Creates a message body for a POST request, selecting an appropriate encoding.
-     * @param mimeEncoded if true, indicates that the request is using mime encoding.
-     * @param characterSet the character set of the request.
+     *
+     * @param mimeEncoded
+     *            if true, indicates that the request is using mime encoding.
+     * @param characterSet
+     *            the character set of the request.
+     *
      * @return an appropriate message body.
      */
-    public static MessageBody createPostMethodMessageBody( boolean mimeEncoded, String characterSet ) {
-        return mimeEncoded ? (MessageBody) new MimeEncodedMessageBody( characterSet )
-                           : (MessageBody) new URLEncodedMessageBody( characterSet );
+    public static MessageBody createPostMethodMessageBody(boolean mimeEncoded, String characterSet) {
+        return mimeEncoded ? (MessageBody) new MimeEncodedMessageBody(characterSet)
+                : (MessageBody) new URLEncodedMessageBody(characterSet);
     }
 
-
-    public MessageBody( String characterSet ) {
+    public MessageBody(String characterSet) {
         _characterSet = characterSet;
     }
 
@@ -54,18 +55,13 @@ public class MessageBody {
         return _characterSet;
     }
 
-
     /**
-     * Returns the content type of this message body. For text messages, this
-     * should include the character set.
+     * Returns the content type of this message body. For text messages, this should include the character set.
      **/
-    abstract
-    public String getContentType();
-
+    abstract public String getContentType();
 
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
-    abstract
-    public void writeTo( OutputStream outputStream, ParameterCollection parameters ) throws IOException;
+    abstract public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException;
 }

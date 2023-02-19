@@ -44,12 +44,11 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         HTMLBodyElement body = (HTMLBodyElement) _htmlDocument.createElement("body");
         _htmlDocument.appendChild(body);
 
-        _form = (HTMLFormElement) createElement("form", new String[][]{{"action", "go_here"}});
+        _form = (HTMLFormElement) createElement("form", new String[][] { { "action", "go_here" } });
         body.appendChild(_form);
         _form.setMethod("GET");
         _form.setAction("tryMe");
     }
-
 
     /**
      * Verifies that submitting a simple form works.
@@ -59,9 +58,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("text", "name").setValue("master");
         addInput("checkbox", "second").setChecked(true);
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that submitting a simple form from a button selects that button only.
@@ -73,9 +72,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("submit", "save", "none");
         HTMLInputElementImpl button = (HTMLInputElementImpl) addInput("submit", "save", "all");
         button.doClickAction();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on&save=all, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?name=master&second=on&save=all, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that characters in parameter names will be appropriately encoded.
@@ -84,9 +83,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
     void testEmbeddedEquals() throws Exception {
         addInput("text", "age=x", "12");
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that an empty "select" element does not transmit any parameter values.
@@ -96,9 +95,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("text", "age", "12");
         addSelect("empty");
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12, null, null )", TestWindowProxy.popProxyCall(),
+                "Expected response");
     }
-
 
     /**
      * Verifies that a select will send a value taken from the "value" attribute.
@@ -111,9 +110,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addOption(select, "blue", "azure").setAttribute("selected", "selected");
         addOption(select, "green", null);
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that a select will send a value taken from the text nodes following the option tags.
@@ -128,9 +127,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addOption(select, null, "blue").setAttribute("selected", "selected");
         addOption(select, null, "green").setAttribute("selected", "selected");
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue&color=green, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?age=12&color=blue&color=green, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that a radio button will send its value on submit.
@@ -141,9 +140,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("radio", "color", "blue").setChecked(true);
         addInput("radio", "color", "green");
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?color=blue, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     /**
      * Verifies that checkboxes will send their values on submit.
@@ -154,7 +153,8 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("checkbox", "color", "blue").setChecked(true);
         addInput("checkbox", "color", "green");
         _form.submit();
-        assertEquals("submitRequest( GET, http://localhost/tryMe?color=red&color=blue, null, null )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( GET, http://localhost/tryMe?color=red&color=blue, null, null )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
 
     /**
@@ -168,9 +168,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         addInput("checkbox", "color", "blue").setChecked(true);
         addInput("checkbox", "color", "green");
         _form.submit();
-        assertEquals("submitRequest( POST, http://localhost/tryMe, null, color=red&color=blue )", TestWindowProxy.popProxyCall(), "Expected response");
+        assertEquals("submitRequest( POST, http://localhost/tryMe, null, color=red&color=blue )",
+                TestWindowProxy.popProxyCall(), "Expected response");
     }
-
 
     private HTMLSelectElement addSelect(String name) {
         HTMLSelectElement select = (HTMLSelectElement) _htmlDocument.createElement("select");
@@ -179,15 +179,15 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         return select;
     }
 
-
     private HTMLOptionElement addOption(HTMLSelectElement select, String value, String label) {
         HTMLOptionElement option = (HTMLOptionElement) _htmlDocument.createElement("option");
         select.appendChild(option);
-        if (value != null) option.setValue(value);
-        if (label != null) select.appendChild(_htmlDocument.createTextNode(label));
+        if (value != null)
+            option.setValue(value);
+        if (label != null)
+            select.appendChild(_htmlDocument.createTextNode(label));
         return option;
     }
-
 
     private HTMLInputElement addInput(String type, String name) {
         HTMLInputElement element = (HTMLInputElement) _htmlDocument.createElement("input");
@@ -196,7 +196,6 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         _form.appendChild(element);
         return element;
     }
-
 
     private HTMLInputElement addInput(String type, String name, String value) {
         HTMLInputElement element = addInput(type, name);

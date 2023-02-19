@@ -29,7 +29,6 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLInputElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {
@@ -42,271 +41,238 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
         return new HTMLInputElementImpl();
     }
 
-
     /**
      * simulate blur
      */
     public void blur() {
-    	handleEvent("onblur");
+        handleEvent("onblur");
     }
-
 
     /**
      * simulate focus;
      */
     public void focus() {
-    	handleEvent("onfocus");
+        handleEvent("onfocus");
     }
-
 
     public void doClickAction() {
         getBehavior().click();
     }
 
-
     public void select() {
     }
 
-
     public String getAccept() {
-        return getAttributeWithNoDefault( "accept" );
+        return getAttributeWithNoDefault("accept");
     }
-
 
     public String getAccessKey() {
-        return getAttributeWithNoDefault( "accessKey" );
+        return getAttributeWithNoDefault("accessKey");
     }
-
 
     public String getAlign() {
-        return getAttributeWithDefault( "align", "bottom" );
+        return getAttributeWithDefault("align", "bottom");
     }
-
 
     public String getAlt() {
-        return getAttributeWithNoDefault( "alt" );
+        return getAttributeWithNoDefault("alt");
     }
-
 
     public boolean getChecked() {
         return getBehavior().getChecked();
     }
 
-
     public boolean getDefaultChecked() {
-        return getBooleanAttribute( "checked" );
+        return getBooleanAttribute("checked");
     }
-
 
     public String getDefaultValue() {
-        return getAttributeWithNoDefault( "value" );
+        return getAttributeWithNoDefault("value");
     }
-
 
     public int getMaxLength() {
-        return getIntegerAttribute( "maxlength" );
+        return getIntegerAttribute("maxlength");
     }
-
 
     public String getSize() {
-        return getAttributeWithNoDefault( "size" );
+        return getAttributeWithNoDefault("size");
     }
-
 
     public String getSrc() {
-        return getAttributeWithNoDefault( "src" );
+        return getAttributeWithNoDefault("src");
     }
-
 
     public String getUseMap() {
-        return getAttributeWithNoDefault( "useMap" );
+        return getAttributeWithNoDefault("useMap");
     }
 
-
-    public void setAccept( String accept ) {
-        setAttribute( "accept", accept );
+    public void setAccept(String accept) {
+        setAttribute("accept", accept);
     }
 
-
-    public void setAccessKey( String accessKey ) {
-        setAttribute( "accessKey", accessKey );
+    public void setAccessKey(String accessKey) {
+        setAttribute("accessKey", accessKey);
     }
 
-
-    public void setAlign( String align ) {
-        setAttribute( "align", align );
+    public void setAlign(String align) {
+        setAttribute("align", align);
     }
 
-
-    public void setAlt( String alt ) {
-        setAttribute( "alt", alt );
+    public void setAlt(String alt) {
+        setAttribute("alt", alt);
     }
 
-
-    public void setChecked( boolean checked ) {
-        getBehavior().setChecked( checked );
+    public void setChecked(boolean checked) {
+        getBehavior().setChecked(checked);
     }
 
-
-    public void setDefaultChecked( boolean defaultChecked ) {
-        setAttribute( "checked", defaultChecked );
+    public void setDefaultChecked(boolean defaultChecked) {
+        setAttribute("checked", defaultChecked);
     }
 
-
-    public void setDefaultValue( String defaultValue ) {
-        setAttribute( "value", defaultValue );
+    public void setDefaultValue(String defaultValue) {
+        setAttribute("value", defaultValue);
     }
 
-
-    public void setMaxLength( int maxLength ) {
-        setAttribute( "maxlength", maxLength );
+    public void setMaxLength(int maxLength) {
+        setAttribute("maxlength", maxLength);
     }
 
-
-    public void setSize( String size ) {
-        setAttribute( "size", size );
+    public void setSize(String size) {
+        setAttribute("size", size);
     }
 
-
-    public void setSrc( String src ) {
-        setAttribute( "src", src );
+    public void setSrc(String src) {
+        setAttribute("src", src);
     }
 
-
-    public void setUseMap( String useMap ) {
-        setAttribute( "useMap", useMap );
+    public void setUseMap(String useMap) {
+        setAttribute("useMap", useMap);
     }
-
 
     public String getValue() {
         return getBehavior().getValue();
     }
 
-
-    public void setValue( String value ) {
-        getBehavior().setValue( value );
+    public void setValue(String value) {
+        getBehavior().setValue(value);
     }
-
 
     public void reset() {
         getBehavior().reset();
     }
 
-
-    public void setAttribute( String name, String value ) throws DOMException {
-        super.setAttribute( name, value );
-        if (name.equalsIgnoreCase( "type" )) selectBehavior( getType().toLowerCase() );
+    public void setAttribute(String name, String value) throws DOMException {
+        super.setAttribute(name, value);
+        if (name.equalsIgnoreCase("type"))
+            selectBehavior(getType().toLowerCase());
     }
 
-
-    void addValues( ParameterProcessor processor, String characterSet ) throws IOException {
-        getBehavior().addValues( getName(), processor, characterSet );
+    void addValues(ParameterProcessor processor, String characterSet) throws IOException {
+        getBehavior().addValues(getName(), processor, characterSet);
     }
-
 
     public void silenceSubmitButton() {
         getBehavior().silenceSubmitButton();
     }
 
-
-    void setState( boolean checked ) {
+    void setState(boolean checked) {
         _checked = checked ? Boolean.TRUE : Boolean.FALSE;
     }
 
-
-    static boolean equals( String s1, String s2 ) {
-        return s1 == null ? s2 == null : s1.equals( s2 );
+    static boolean equals(String s1, String s2) {
+        return s1 == null ? s2 == null : s1.equals(s2);
     }
 
-
-    private void selectBehavior( String type ) {
-        if (type == null || type.equals( "text") || type.equals( "password" ) || type.equals( "hidden" )) {
-            _behavior = new EditableTextBehavior( this );
-        } else if (type.equals( "checkbox" )) {
-            _behavior = new CheckboxBehavior( this );
-        } else if (type.equals( "radio" )) {
-            _behavior = new RadioButtonBehavior( this );
-        } else if (type.equals( "reset" )) {
-            _behavior = new ResetButtonBehavior( this );
-        } else if (type.equals( "submit" )) {
-            _behavior = new SubmitButtonBehavior( this );
+    private void selectBehavior(String type) {
+        if (type == null || type.equals("text") || type.equals("password") || type.equals("hidden")) {
+            _behavior = new EditableTextBehavior(this);
+        } else if (type.equals("checkbox")) {
+            _behavior = new CheckboxBehavior(this);
+        } else if (type.equals("radio")) {
+            _behavior = new RadioButtonBehavior(this);
+        } else if (type.equals("reset")) {
+            _behavior = new ResetButtonBehavior(this);
+        } else if (type.equals("submit")) {
+            _behavior = new SubmitButtonBehavior(this);
         } else {
-            _behavior = new DefaultBehavior( this );
+            _behavior = new DefaultBehavior(this);
         }
     }
 
-
     private TypeSpecificBehavior getBehavior() {
-        if (_behavior == null) selectBehavior( getType().toLowerCase() );
+        if (_behavior == null)
+            selectBehavior(getType().toLowerCase());
         return _behavior;
     }
 
-
     interface TypeSpecificBehavior {
-        void setValue( String value );
+        void setValue(String value);
+
         String getValue();
 
         void reset();
+
         void click();
 
         boolean getChecked();
-        void setChecked( boolean checked );
 
+        void setChecked(boolean checked);
 
-        void addValues( String name, ParameterProcessor processor, String characterSet ) throws IOException;
-
+        void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException;
 
         void silenceSubmitButton();
     }
-
 
     class DefaultBehavior implements TypeSpecificBehavior {
 
         private HTMLElementImpl _element;
 
-        public DefaultBehavior( HTMLElementImpl element ) {
+        public DefaultBehavior(HTMLElementImpl element) {
             _element = element;
         }
-
 
         public String getValue() {
             return _value != null ? _value : getDefaultValue();
         }
 
-        public void setValue( String value ) {
-            if (HTMLInputElementImpl.equals( value, _value )) return;
+        public void setValue(String value) {
+            if (HTMLInputElementImpl.equals(value, _value))
+                return;
 
             _value = value;
-            reportPropertyChanged( "value" );
+            reportPropertyChanged("value");
         }
-
 
         public boolean getChecked() {
             return getDefaultChecked();
         }
 
-        public void setChecked( boolean checked ) {}
-
-        public void reset() {}
-
-        public void click() {}
-
-        protected void reportPropertyChanged( String propertyName ) {
-            _element.reportPropertyChanged( propertyName );
+        public void setChecked(boolean checked) {
         }
 
-        public void addValues( String name, ParameterProcessor processor, String characterSet ) throws IOException {
-            processor.addParameter( name, getValue(), characterSet );
+        public void reset() {
         }
 
-        public void silenceSubmitButton() {}
+        public void click() {
+        }
+
+        protected void reportPropertyChanged(String propertyName) {
+            _element.reportPropertyChanged(propertyName);
+        }
+
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+            processor.addParameter(name, getValue(), characterSet);
+        }
+
+        public void silenceSubmitButton() {
+        }
     }
-
 
     class EditableTextBehavior extends DefaultBehavior {
 
-        public EditableTextBehavior( HTMLElementImpl element ) {
-            super( element );
+        public EditableTextBehavior(HTMLElementImpl element) {
+            super(element);
         }
 
         public void reset() {
@@ -315,13 +281,12 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
 
     }
 
-
     class SubmitButtonBehavior extends DefaultBehavior {
 
         private boolean _sendWithSubmit;
 
-        public SubmitButtonBehavior( HTMLElementImpl element ) {
-            super( element );
+        public SubmitButtonBehavior(HTMLElementImpl element) {
+            super(element);
         }
 
         public void click() {
@@ -329,9 +294,10 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             ((HTMLFormElementImpl) getForm()).doSubmitAction();
         }
 
-        public void addValues( String name, ParameterProcessor processor, String characterSet ) throws IOException {
-            if (!_sendWithSubmit) return;
-            super.addValues( name, processor, characterSet );
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+            if (!_sendWithSubmit)
+                return;
+            super.addValues(name, processor, characterSet);
         }
 
         public void silenceSubmitButton() {
@@ -340,75 +306,69 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
 
     }
 
-
     class CheckboxBehavior extends DefaultBehavior {
 
-        public CheckboxBehavior( HTMLElementImpl element ) {
-            super( element );
+        public CheckboxBehavior(HTMLElementImpl element) {
+            super(element);
         }
 
         public boolean getChecked() {
             return _checked != null ? _checked.booleanValue() : getDefaultChecked();
         }
 
-        public void setChecked( boolean checked ) {
-            setState( checked );
+        public void setChecked(boolean checked) {
+            setState(checked);
         }
 
         public void reset() {
             _checked = null;
         }
 
-
         public void click() {
-            setChecked( !getChecked() );
+            setChecked(!getChecked());
         }
 
-
-        public void addValues( String name, ParameterProcessor processor, String characterSet ) throws IOException {
-            if (!getDisabled() && getChecked()) processor.addParameter( name, getFormValue(), characterSet );
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+            if (!getDisabled() && getChecked())
+                processor.addParameter(name, getFormValue(), characterSet);
         }
-
 
         private String getFormValue() {
             return _value == null ? "on" : _value;
         }
     }
 
-
     class RadioButtonBehavior extends CheckboxBehavior {
 
-        public RadioButtonBehavior( HTMLElementImpl element ) {
-            super( element );
+        public RadioButtonBehavior(HTMLElementImpl element) {
+            super(element);
         }
 
-
-        public void setChecked( boolean checked ) {
+        public void setChecked(boolean checked) {
             if (checked) {
                 HTMLCollection elements = getForm().getElements();
                 for (int i = 0; i < elements.getLength(); i++) {
                     Node node = elements.item(i);
-                    if (!(node instanceof HTMLInputElementImpl)) continue;
+                    if (!(node instanceof HTMLInputElementImpl))
+                        continue;
                     HTMLInputElementImpl input = (HTMLInputElementImpl) node;
-                    if (getName().equals( input.getName() ) && input.getType().equalsIgnoreCase( "radio" )) input.setState( false );
+                    if (getName().equals(input.getName()) && input.getType().equalsIgnoreCase("radio"))
+                        input.setState(false);
                 }
             }
-            setState( checked );
+            setState(checked);
         }
 
-
         public void click() {
-            setChecked( true );
+            setChecked(true);
         }
     }
 
-
     class ResetButtonBehavior extends DefaultBehavior {
 
-        public ResetButtonBehavior( HTMLElementImpl element ) {
-            super( element );
+        public ResetButtonBehavior(HTMLElementImpl element) {
+            super(element);
         }
-
 
         public void click() {
             getForm().reset();
@@ -416,4 +376,4 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
 
     }
 
- }
+}

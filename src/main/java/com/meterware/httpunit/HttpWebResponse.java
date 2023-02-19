@@ -41,87 +41,95 @@ class HttpWebResponse extends WebResponse {
 
     private String _referer;
 
-
     /**
      * Constructs a response object from an input stream.
-     * @param frame the target window or frame to which the request should be directed
-     * @param url the url from which the response was received
-     * @param connection the URL connection from which the response can be read
+     *
+     * @param frame
+     *            the target window or frame to which the request should be directed
+     * @param url
+     *            the url from which the response was received
+     * @param connection
+     *            the URL connection from which the response can be read
      **/
-    HttpWebResponse( WebConversation client, FrameSelector frame, URL url, URLConnection connection, boolean throwExceptionOnError ) throws IOException {
-        super( client, frame, url );
-        if (HttpUnitOptions.isLoggingHttpHeaders()) System.out.println( "\nReceived from " + url );
-        readHeaders( connection );
+    HttpWebResponse(WebConversation client, FrameSelector frame, URL url, URLConnection connection,
+            boolean throwExceptionOnError) throws IOException {
+        super(client, frame, url);
+        if (HttpUnitOptions.isLoggingHttpHeaders())
+            System.out.println("\nReceived from " + url);
+        readHeaders(connection);
 
         /** make sure that any IO exception for HTML received page happens here, not later. **/
         if (_responseCode < HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {
-        	InputStream inputStream = getInputStream( connection );
-            defineRawInputStream( new BufferedInputStream( inputStream ) );
+            InputStream inputStream = getInputStream(connection);
+            defineRawInputStream(new BufferedInputStream(inputStream));
             String contentType = getContentType();
-            if (contentType.startsWith( "text" ))	{
-            	loadResponseText();
+            if (contentType.startsWith("text")) {
+                loadResponseText();
             }
         }
     }
 
-
-    HttpWebResponse( WebConversation client, FrameSelector frame, WebRequest request, URLConnection connection, boolean throwExceptionOnError ) throws IOException {
-        this( client, frame, request.getURL(), connection, throwExceptionOnError );
+    HttpWebResponse(WebConversation client, FrameSelector frame, WebRequest request, URLConnection connection,
+            boolean throwExceptionOnError) throws IOException {
+        this(client, frame, request.getURL(), connection, throwExceptionOnError);
         super.setWithParse(!request.getMethod().equals("HEAD"));
         _referer = request.getReferer();
     }
 
-
-
     /**
      * get the input stream for the given connection
+     *
      * @param connection
+     *
      * @return
+     *
      * @throws IOException
      */
-    private InputStream getInputStream( URLConnection connection ) throws IOException {
-    	InputStream result=null;
-    	// check whether there is an error stream
-    	if (isResponseOnErrorStream( connection )) {
-    		result=((HttpURLConnection) connection).getErrorStream();
-    	} else  {
-    		// if there is no error stream it depends on the response code
-    		try {
-    			result=connection.getInputStream();
-    		} catch (java.io.FileNotFoundException fnfe) {
-    			// as of JDK 1.5 a null inputstream might have been returned here
-    			// see bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages
-    			// by Roger Lindsj?
-    			if (isErrorResponse(connection)) {
-    				// fake an empty error stream
-    				result=new ByteArrayInputStream(new byte[0]);
-    			} else {
-    				throw fnfe;
-    			}
-    		}
-    	}
-    	return result;
+    private InputStream getInputStream(URLConnection connection) throws IOException {
+        InputStream result = null;
+        // check whether there is an error stream
+        if (isResponseOnErrorStream(connection)) {
+            result = ((HttpURLConnection) connection).getErrorStream();
+        } else {
+            // if there is no error stream it depends on the response code
+            try {
+                result = connection.getInputStream();
+            } catch (java.io.FileNotFoundException fnfe) {
+                // as of JDK 1.5 a null inputstream might have been returned here
+                // see bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages
+                // by Roger Lindsj?
+                if (isErrorResponse(connection)) {
+                    // fake an empty error stream
+                    result = new ByteArrayInputStream(new byte[0]);
+                } else {
+                    throw fnfe;
+                }
+            }
+        }
+        return result;
     }
-
 
     /**
      * check whether a response code >=400 was received
+     *
      * @param connection
+     *
      * @return
      */
-    private boolean isErrorResponse(URLConnection connection ) {
-    	return _responseCode >= HttpURLConnection.HTTP_BAD_REQUEST;
+    private boolean isErrorResponse(URLConnection connection) {
+        return _responseCode >= HttpURLConnection.HTTP_BAD_REQUEST;
     }
 
     /**
      * check whether the response is on the error stream
+     *
      * @param connection
+     *
      * @return
      */
-    private boolean isResponseOnErrorStream( URLConnection connection ) {
-      return isErrorResponse(connection) && ((HttpURLConnection) connection).getErrorStream() != null;
+    private boolean isResponseOnErrorStream(URLConnection connection) {
+        return isErrorResponse(connection) && ((HttpURLConnection) connection).getErrorStream() != null;
     }
-
 
     /**
      * Returns the response code associated with this response.
@@ -130,7 +138,6 @@ class HttpWebResponse extends WebResponse {
         return _responseCode;
     }
 
-
     /**
      * Returns the response message associated with this response.
      **/
@@ -138,150 +145,141 @@ class HttpWebResponse extends WebResponse {
         return _responseMessage;
     }
 
-
     public String[] getHeaderFieldNames() {
         Vector names = new Vector();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement( e.nextElement() );
+            names.addElement(e.nextElement());
         }
-        String[] result = new String[ names.size() ];
-        names.copyInto( result );
+        String[] result = new String[names.size()];
+        names.copyInto(result);
         return result;
     }
-
 
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null.
      **/
-    public String getHeaderField( String fieldName ) {
-        String[] fields = (String[]) _headers.get( fieldName.toUpperCase());
+    public String getHeaderField(String fieldName) {
+        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());
         return fields == null ? null : fields[0];
     }
 
-
-    public String[] getHeaderFields( String fieldName ) {
-        String[] fields = (String[]) _headers.get( fieldName.toUpperCase());
+    public String[] getHeaderFields(String fieldName) {
+        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());
         return fields == null ? new String[0] : fields;
     }
 
-
     public String toString() {
-        StringBuilder sb = new StringBuilder( "HttpWebResponse [url=" );
-        sb.append( getURL() ).append( "; headers=" );
-        for (Enumeration e = _headers.keys(); e.hasMoreElements(); ) {
+        StringBuilder sb = new StringBuilder("HttpWebResponse [url=");
+        sb.append(getURL()).append("; headers=");
+        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             Object key = e.nextElement();
-            String[] values = (String[]) _headers.get( key );
+            String[] values = (String[]) _headers.get(key);
             for (int i = 0; i < values.length; i++) {
-                sb.append( "\n   " ).append( key ).append( ": " ).append( values[i] );
+                sb.append("\n   ").append(key).append(": ").append(values[i]);
             }
         }
-        sb.append( " ]" );
+        sb.append(" ]");
         return sb.toString();
     }
-
 
     String getReferer() {
         return _referer;
     }
 
+    // ------------------------------------- private members -------------------------------------
 
-//------------------------------------- private members -------------------------------------
+    private final static String FILE_ENCODING = System.getProperty("file.encoding");
 
+    private int _responseCode = HttpURLConnection.HTTP_OK;
+    private String _responseMessage = "OK";
 
-    private final static String FILE_ENCODING = System.getProperty( "file.encoding" );
-
-
-    private int       _responseCode    = HttpURLConnection.HTTP_OK;
-	private String    _responseMessage = "OK";
-
-	/**
-	 * set the responseCode to the given code and message
-	 * @param code
-	 * @param message
-	 */
-    private  void setResponseCode(int code, String message) {
-		_responseCode = code;
-		_responseMessage=message;
-	}
+    /**
+     * set the responseCode to the given code and message
+     *
+     * @param code
+     * @param message
+     */
+    private void setResponseCode(int code, String message) {
+        _responseCode = code;
+        _responseMessage = message;
+    }
 
     private Hashtable _headers = new Hashtable();
 
     /**
-     * read the response Header for the given connection and set the response code and
-     * message accordingly
+     * read the response Header for the given connection and set the response code and message accordingly
+     *
      * @param connection
+     *
      * @throws IOException
      */
-    private void readResponseHeader( HttpURLConnection connection ) throws IOException {
+    private void readResponseHeader(HttpURLConnection connection) throws IOException {
         if (!needStatusWorkaround()) {
-            setResponseCode(connection.getResponseCode(),connection.getResponseMessage());
+            setResponseCode(connection.getResponseCode(), connection.getResponseMessage());
         } else {
-             if (connection.getHeaderField(0) == null) throw new UnknownHostException( connection.getURL().toExternalForm() );
+            if (connection.getHeaderField(0) == null)
+                throw new UnknownHostException(connection.getURL().toExternalForm());
 
-            StringTokenizer st = new StringTokenizer( connection.getHeaderField(0) );
+            StringTokenizer st = new StringTokenizer(connection.getHeaderField(0));
             st.nextToken();
             if (!st.hasMoreTokens()) {
-                setResponseCode(HttpURLConnection.HTTP_OK,"OK");
-            } else try {
-                setResponseCode(Integer.parseInt( st.nextToken()) ,getRemainingTokens( st ));
-            } catch (NumberFormatException e) {
-                setResponseCode (HttpURLConnection.HTTP_INTERNAL_ERROR,"Cannot parse response header");
-            }
+                setResponseCode(HttpURLConnection.HTTP_OK, "OK");
+            } else
+                try {
+                    setResponseCode(Integer.parseInt(st.nextToken()), getRemainingTokens(st));
+                } catch (NumberFormatException e) {
+                    setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR, "Cannot parse response header");
+                }
         }
     }
 
     private boolean needStatusWorkaround() {
-        final String jdkVersion = System.getProperty( "java.version" );
-        return jdkVersion.startsWith( "1.2" ) || jdkVersion.startsWith( "1.3" );
+        final String jdkVersion = System.getProperty("java.version");
+        return jdkVersion.startsWith("1.2") || jdkVersion.startsWith("1.3");
     }
 
-
-    private String getRemainingTokens( StringTokenizer st ) {
-        StringBuilder messageBuffer = new StringBuilder( st.hasMoreTokens() ? st.nextToken() : "" );
+    private String getRemainingTokens(StringTokenizer st) {
+        StringBuilder messageBuffer = new StringBuilder(st.hasMoreTokens() ? st.nextToken() : "");
         while (st.hasMoreTokens()) {
-            messageBuffer.append( ' ' ).append( st.nextToken() );
+            messageBuffer.append(' ').append(st.nextToken());
         }
         return messageBuffer.toString();
     }
 
-
-    private void readHeaders( URLConnection connection ) throws IOException {
-        loadHeaders( connection );
+    private void readHeaders(URLConnection connection) throws IOException {
+        loadHeaders(connection);
         if (connection instanceof HttpURLConnection) {
-            readResponseHeader( (HttpURLConnection) connection );
+            readResponseHeader((HttpURLConnection) connection);
         } else {
-            setResponseCode (HttpURLConnection.HTTP_OK, "OK");
-            if (connection.getContentType().startsWith( "text" )) {
-                setContentTypeHeader( connection.getContentType() + "; charset=" + FILE_ENCODING );
+            setResponseCode(HttpURLConnection.HTTP_OK, "OK");
+            if (connection.getContentType().startsWith("text")) {
+                setContentTypeHeader(connection.getContentType() + "; charset=" + FILE_ENCODING);
             }
         }
     }
 
-
-    private void loadHeaders( URLConnection connection ) {
+    private void loadHeaders(URLConnection connection) {
         if (HttpUnitOptions.isLoggingHttpHeaders()) {
-            System.out.println( "Header:: " + connection.getHeaderField(0) );
+            System.out.println("Header:: " + connection.getHeaderField(0));
         }
         for (int i = 1; true; i++) {
-            String headerFieldKey = connection.getHeaderFieldKey( i );
+            String headerFieldKey = connection.getHeaderFieldKey(i);
             String headerField = connection.getHeaderField(i);
-            if (headerFieldKey == null || headerField == null) break;
+            if (headerFieldKey == null || headerField == null)
+                break;
             if (HttpUnitOptions.isLoggingHttpHeaders()) {
-                System.out.println( "Header:: " + headerFieldKey + ": " + headerField );
+                System.out.println("Header:: " + headerFieldKey + ": " + headerField);
             }
-            addHeader( headerFieldKey.toUpperCase(), headerField );
+            addHeader(headerFieldKey.toUpperCase(), headerField);
         }
 
         if (connection.getContentType() != null) {
-            setContentTypeHeader( connection.getContentType() );
+            setContentTypeHeader(connection.getContentType());
         }
     }
 
-
-
-    private void addHeader( String key, String field ) {
-        _headers.put( key, HttpUnitUtils.withNewValue( (String[]) _headers.get( key ), field ) );
+    private void addHeader(String key, String field) {
+        _headers.put(key, HttpUnitUtils.withNewValue((String[]) _headers.get(key), field));
     }
 
 }
-

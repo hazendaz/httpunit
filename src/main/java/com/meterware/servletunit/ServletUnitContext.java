@@ -29,29 +29,29 @@ class ServletUnitContext {
     private SessionListenerDispatcher _listenerDispatcher;
     private ServletContext _servletContext;
 
-
-    ServletUnitContext( String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher ) {
+    ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {
         _servletContext = servletContext;
         _contextPath = (contextPath != null ? contextPath : "");
         _listenerDispatcher = dispatcher;
     }
 
-
-	Set getSessionIDs() {
-		return _sessions.keySet();
-	}
-
+    Set getSessionIDs() {
+        return _sessions.keySet();
+    }
 
     /**
      * Returns an appropriate session for a request. If no cached session is
+     *
      * @param sessionId
-     * @param session the session cached by previous requests. May be null.
+     * @param session
+     *            the session cached by previous requests. May be null.
      * @param create
+     *
      * @return
      */
-    ServletUnitHttpSession getValidSession( String sessionId, ServletUnitHttpSession session, boolean create ) {
+    ServletUnitHttpSession getValidSession(String sessionId, ServletUnitHttpSession session, boolean create) {
         if (session == null && sessionId != null) {
-            session = getSession( sessionId );
+            session = getSession(sessionId);
         }
 
         if (session != null && session.isInvalid()) {
@@ -64,22 +64,20 @@ class ServletUnitContext {
         return session;
     }
 
-
     /**
      * Returns the session with the specified ID, if any.
      **/
-    ServletUnitHttpSession getSession( String id ) {
-        return (ServletUnitHttpSession) _sessions.get( id );
+    ServletUnitHttpSession getSession(String id) {
+        return (ServletUnitHttpSession) _sessions.get(id);
     }
-
 
     /**
      * Creates a new session with a unique ID.
      **/
     ServletUnitHttpSession newSession() {
-        ServletUnitHttpSession result = new ServletUnitHttpSession( _servletContext, _listenerDispatcher );
-        _sessions.put( result.getId(), result );
-        _listenerDispatcher.sendSessionCreated( result );
+        ServletUnitHttpSession result = new ServletUnitHttpSession(_servletContext, _listenerDispatcher);
+        _sessions.put(result.getId(), result);
+        _listenerDispatcher.sendSessionCreated(result);
         return result;
     }
 
@@ -90,13 +88,10 @@ class ServletUnitContext {
         return _contextPath;
     }
 
-
-//------------------------------- private members ---------------------------
-
+    // ------------------------------- private members ---------------------------
 
     private Hashtable _sessions = new Hashtable();
 
     private String _contextPath = null;
-
 
 }

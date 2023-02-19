@@ -46,7 +46,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("", response.getText(), "Contents");
     }
 
-
     @Test
     void testSimpleResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -64,13 +63,11 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("text/html; charset=iso-8859-1", response.getHeaderField("Content-type"), "Content header");
     }
 
-
     @Test
     void testEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
-        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" +
-                "<body>This has no data\n" +
-                "</body></html>\n";
+        String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
+                + "</body></html>\n";
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html; charset=iso-8859-8");
         PrintWriter pw = servletResponse.getWriter();
@@ -81,7 +78,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("iso-8859-8", response.getCharacterSet(), "Character set");
         assertEquals(hebrewTitle, response.getTitle(), "Title");
     }
-
 
     @Test
     void testLocale() throws Exception {
@@ -94,7 +90,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("text/html; charset=iso-8859-8", servletResponse.getHeaderField("Content-type"), "Content type");
 
     }
-
 
     @Test
     void testStreamResponse() throws Exception {
@@ -109,7 +104,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("Sample Page", response.getTitle(), "Title");
     }
 
-
     @Test
     void testStreamWriterAfterOutputStream() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -122,7 +116,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
-
     @Test
     void testStreamOutputStreamAfterWriter() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -133,7 +126,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         } catch (IllegalStateException e) {
         }
     }
-
 
     @Test
     void testSetBufferSizeAfterWrite() throws Exception {
@@ -149,7 +141,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
-
     @Test
     void testSetBufferSizeAfterStreamOutput() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -163,7 +154,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         } catch (IllegalStateException e) {
         }
     }
-
 
     @Test
     void testResetBuffer() throws Exception {
@@ -180,7 +170,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         } catch (IllegalStateException e) {
         }
     }
-
 
     /**
      * test isComitted flag after flushing buffer
@@ -223,7 +212,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("Tue, 09 Dec 1969 12:00:00 GMT", headerValue, "date header is wrong");
     }
 
-
     @Test
     void testMultipleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -248,7 +236,6 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("monkeyboy", headerList[0], "header is wrong");
     }
 
-
     @Test
     void testSendRedirect() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -259,5 +246,3 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
 }
-
-

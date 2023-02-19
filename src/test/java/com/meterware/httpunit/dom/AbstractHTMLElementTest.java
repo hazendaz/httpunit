@@ -33,7 +33,6 @@ import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLOptionElement;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract public class AbstractHTMLElementTest implements DomListener {
@@ -46,141 +45,140 @@ abstract public class AbstractHTMLElementTest implements DomListener {
         _htmlDocument = new HTMLDocumentImpl();
     }
 
-
-    protected void assertProperties( String comment, String name, HTMLElement[] elements, Object[] expectedValues ) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    protected void assertProperties(String comment, String name, HTMLElement[] elements, Object[] expectedValues)
+            throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         for (int i = 0; i < elements.length; i++) {
             HTMLElement element = elements[i];
-            assertEquals( expectedValues[i], AbstractHTMLElementTest.getProperty( element,  name ) , comment + " " + i);
+            assertEquals(expectedValues[i], AbstractHTMLElementTest.getProperty(element, name), comment + " " + i);
         }
     }
 
-
-    protected HTMLOptionElement createOption( String value, String text, boolean selected ) {
-        HTMLOptionElement optionElement = (HTMLOptionElement) createElement( "option", selected ? new String[][] { { "value", value }, { "selected", "true" } }
-                                                                             : new String[][] { { "value", value } } );
-        optionElement.appendChild( _htmlDocument.createTextNode( text ) );
+    protected HTMLOptionElement createOption(String value, String text, boolean selected) {
+        HTMLOptionElement optionElement = (HTMLOptionElement) createElement("option",
+                selected ? new String[][] { { "value", value }, { "selected", "true" } }
+                        : new String[][] { { "value", value } });
+        optionElement.appendChild(_htmlDocument.createTextNode(text));
         return optionElement;
     }
 
-
     /**
      * Performs a number of common tests for DOM elements. In the first test, the element is created with a set of
-     * attribute values and those values are then verified.
-     * In the second test, the element is created without any specified attributes and each attribute is compared with
-     * the default value. A write accessor is then sought for each attribute, which should be present unless it is
-     * marked as read-only. Finally, each attribute is set to a non-default value, which is then verified.
-     * A propertyChanged event should be thrown whenever the attribute is changed.
-     * The attributes array has 2-4 values per entry:<ol>
+     * attribute values and those values are then verified. In the second test, the element is created without any
+     * specified attributes and each attribute is compared with the default value. A write accessor is then sought for
+     * each attribute, which should be present unless it is marked as read-only. Finally, each attribute is set to a
+     * non-default value, which is then verified. A propertyChanged event should be thrown whenever the attribute is
+     * changed. The attributes array has 2-4 values per entry:
+     * <ol>
      * <li>the attribute name</li>
      * <li>a non-default value for the attribute</li>
      * <li>the default value for the attribute (defaults to null)</li>
      * <li>"ro" if the attribute is read-only (defaults to writeable)</li>
      */
-    protected void doElementTest( String tagName, Class interfaceName, Object[][] attributes ) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
-        Element qualifiedElement = createElement( tagName, attributes );
-        assertTrue( interfaceName.isAssignableFrom( qualifiedElement.getClass() ) , "node should be a " + interfaceName.getName() + " but is " + qualifiedElement.getClass().getName());
-        assertEquals( tagName.toUpperCase(), qualifiedElement.getNodeName() , "Tag name");
+    protected void doElementTest(String tagName, Class interfaceName, Object[][] attributes)
+            throws IntrospectionException, IllegalAccessException, InvocationTargetException {
+        Element qualifiedElement = createElement(tagName, attributes);
+        assertTrue(interfaceName.isAssignableFrom(qualifiedElement.getClass()),
+                "node should be a " + interfaceName.getName() + " but is " + qualifiedElement.getClass().getName());
+        assertEquals(tagName.toUpperCase(), qualifiedElement.getNodeName(), "Tag name");
 
         for (int i = 0; i < attributes.length; i++) {
             String propertyName = (String) attributes[i][0];
             Object propertyValue = attributes[i][1];
-            assertEquals( propertyValue, getProperty( qualifiedElement, propertyName ) , propertyName);
+            assertEquals(propertyValue, getProperty(qualifiedElement, propertyName), propertyName);
         }
 
-        Element element = createElement( tagName );
-        ((ElementImpl) element).addDomListener( this );
+        Element element = createElement(tagName);
+        ((ElementImpl) element).addDomListener(this);
         for (int i = 0; i < attributes.length; i++) {
             final String propertyName = (String) attributes[i][0];
             final Object propertyValue = attributes[i][1];
             Object defaultValue = attributes[i].length == 2 ? null : attributes[i][2];
             if (defaultValue == null) {
-                assertNull( getProperty( element, propertyName ) , propertyName + " should not be specified by default");
+                assertNull(getProperty(element, propertyName), propertyName + " should not be specified by default");
             } else {
-                assertEquals( defaultValue,  getProperty( element, propertyName ) ,  "default " + propertyName);
+                assertEquals(defaultValue, getProperty(element, propertyName), "default " + propertyName);
             }
 
-            Method writeMethod = AbstractHTMLElementTest.getWriteMethod( element, propertyName );
-            if (attributes[i].length > 3 && attributes[i][3].equals( "ro" )) {
-                assertNull( writeMethod , propertyName + " is not read-only");
+            Method writeMethod = AbstractHTMLElementTest.getWriteMethod(element, propertyName);
+            if (attributes[i].length > 3 && attributes[i][3].equals("ro")) {
+                assertNull(writeMethod, propertyName + " is not read-only");
             } else {
-                assertNotNull( "No modifier defined for " + propertyName );
+                assertNotNull("No modifier defined for " + propertyName);
                 clearReceivedEvents();
-                writeMethod.invoke( element, new Object[] { propertyValue } );
-                assertEquals( propertyValue, getProperty( element, propertyName ) , "modified " + propertyName);
-                expectPropertyChange( element, propertyName );
+                writeMethod.invoke(element, new Object[] { propertyValue });
+                assertEquals(propertyValue, getProperty(element, propertyName), "modified " + propertyName);
+                expectPropertyChange(element, propertyName);
             }
         }
     }
 
-
-    protected Element createElement( String tagName ) {
-        return createElement( tagName, new String[0][] );
+    protected Element createElement(String tagName) {
+        return createElement(tagName, new String[0][]);
     }
 
-
-    protected Element createElement( String tagName, Object[][] attributes ) {
-        Element element = _htmlDocument.createElement( tagName );
+    protected Element createElement(String tagName, Object[][] attributes) {
+        Element element = _htmlDocument.createElement(tagName);
         for (int i = 0; i < attributes.length; i++) {
             Object[] attribute = attributes[i];
-            element.setAttribute( (String) attribute[0], toAttributeValue( attribute[1] ) );
+            element.setAttribute((String) attribute[0], toAttributeValue(attribute[1]));
         }
         return element;
     }
 
-
-    private static String toAttributeValue( Object value ) {
+    private static String toAttributeValue(Object value) {
         return value == null ? null : value.toString();
     }
 
-
-    private static Object getProperty( Object element, final String propertyName ) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
-        PropertyDescriptor descriptor = getPropertyDescriptor( element, propertyName );
-        if (descriptor == null || descriptor.getReadMethod() == null) return null;
+    private static Object getProperty(Object element, final String propertyName)
+            throws IntrospectionException, IllegalAccessException, InvocationTargetException {
+        PropertyDescriptor descriptor = getPropertyDescriptor(element, propertyName);
+        if (descriptor == null || descriptor.getReadMethod() == null)
+            return null;
         Method readMethod = descriptor.getReadMethod();
         Object[] args = new Object[0];
-        return readMethod.invoke( element, args );
+        return readMethod.invoke(element, args);
 
     }
 
-
-    private static Method getWriteMethod( Object element, final String propertyName ) throws IntrospectionException {
-        PropertyDescriptor descriptor = getPropertyDescriptor( element, propertyName );
+    private static Method getWriteMethod(Object element, final String propertyName) throws IntrospectionException {
+        PropertyDescriptor descriptor = getPropertyDescriptor(element, propertyName);
         return descriptor == null ? null : descriptor.getWriteMethod();
     }
 
-
-    private static PropertyDescriptor getPropertyDescriptor( Object element, String propertyName ) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo( element.getClass(), Object.class );
+    private static PropertyDescriptor getPropertyDescriptor(Object element, String propertyName)
+            throws IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(element.getClass(), Object.class);
 
         int index;
-        while ((index = propertyName.indexOf( '-' )) >= 0) {
-            propertyName = propertyName.substring( 0, index ) + Character.toUpperCase( propertyName.charAt( index+1 ) ) + propertyName.substring( index+2 );
+        while ((index = propertyName.indexOf('-')) >= 0) {
+            propertyName = propertyName.substring(0, index) + Character.toUpperCase(propertyName.charAt(index + 1))
+                    + propertyName.substring(index + 2);
         }
-        if (element instanceof AttributeNameAdjusted) propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName( propertyName );
+        if (element instanceof AttributeNameAdjusted)
+            propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName(propertyName);
 
         PropertyDescriptor properties[] = beanInfo.getPropertyDescriptors();
         for (int i = 0; i < properties.length; i++) {
             PropertyDescriptor property = properties[i];
-            if (property.getName().equalsIgnoreCase( propertyName )) return property;
+            if (property.getName().equalsIgnoreCase(propertyName))
+                return property;
         }
         return null;
     }
-
 
     protected void clearReceivedEvents() {
         _eventsReceived.clear();
     }
 
-
-    protected void expectPropertyChange( Element element, String property ) {
-        assertFalse( _eventsReceived.isEmpty() , "Did not receive a property change event for " + element.getTagName() + "." + property);
+    protected void expectPropertyChange(Element element, String property) {
+        assertFalse(_eventsReceived.isEmpty(),
+                "Did not receive a property change event for " + element.getTagName() + "." + property);
     }
 
-//-------------------------------------- DomListener methods --------------------------------------------
+    // -------------------------------------- DomListener methods --------------------------------------------
 
-
-    public void propertyChanged( Element changedElement, String propertyName ) {
-        _eventsReceived.add( new Object[] { changedElement, propertyName } );
+    public void propertyChanged(Element changedElement, String propertyName) {
+        _eventsReceived.add(new Object[] { changedElement, propertyName });
     }
 
 }

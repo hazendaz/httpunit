@@ -26,33 +26,27 @@ import org.w3c.dom.html.HTMLButtonElement;
  */
 public class HTMLButtonElementImpl extends HTMLControl implements HTMLButtonElement {
 
-
     ElementImpl create() {
         return new HTMLButtonElementImpl();
     }
 
-
     public String getAccessKey() {
-        return getAttributeWithNoDefault( "accesskey" );
+        return getAttributeWithNoDefault("accesskey");
     }
 
-
-    public void setAccessKey( String accessKey ) {
-        setAttribute( "accesskey", accessKey );
+    public void setAccessKey(String accessKey) {
+        setAttribute("accesskey", accessKey);
     }
-
 
     public String getValue() {
-        return getAttributeWithNoDefault( "value" );
+        return getAttributeWithNoDefault("value");
     }
 
-
-    public void setValue( String value ) {
-        setAttribute( "value", value );
+    public void setValue(String value) {
+        setAttribute("value", value);
     }
-
 
     public String getType() {
-        return getAttributeWithDefault( "type", "submit" );
+        return getAttributeWithDefault("type", "submit");
     }
 }

@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,7 +53,6 @@ class RequestDispatcherTest {
     private ServletRunner _runner;
     private WebXMLString _wxs;
 
-
     /**
      * prepare the test
      */
@@ -67,16 +66,16 @@ class RequestDispatcherTest {
         _runner = new ServletRunner(_wxs.asInputStream(), "/sample");
     }
 
-
     @Test
     void testRequestDispatcherParameters() throws Exception {
-        InvocationContext ic = _runner.newClient().newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
-
+        InvocationContext ic = _runner.newClient()
+                .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 
         final HttpServletRequest request = ic.getRequest();
         final HttpServletResponse response = ic.getResponse();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        RequestDispatcher rd = servlet.getServletContext()
+                .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
 
         assertEquals("original", request.getParameter("param"), "param");
         assertEquals("first", request.getParameter("param1"), "param1");
@@ -100,20 +99,22 @@ class RequestDispatcherTest {
         assertEquals(RequestDispatcherServlet.class, ic.getServlet().getClass(), "Included servlet class");
     }
 
-
     @Test
     void testRequestDispatcherIncludePaths() throws Exception {
-        InvocationContext ic = _runner.newClient().newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
+        InvocationContext ic = _runner.newClient()
+                .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 
         final HttpServletRequest request = ic.getRequest();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        RequestDispatcher rd = servlet.getServletContext()
+                .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
 
         assertEquals("/sample/" + outerServletName, request.getRequestURI(), "request URI");
         assertEquals("/sample", request.getContextPath(), "context path attribute");
         assertEquals("/" + outerServletName, request.getServletPath(), "servlet path attribute");
         assertNull(request.getPathInfo(), "path info not null attribute");
-//        assertEquals( "query string attribute", "param=original&param1=first", request.getQueryString() ); TODO make this work
+        // assertEquals( "query string attribute", "param=original&param1=first", request.getQueryString() ); TODO make
+        // this work
 
         final HttpServletResponse response = ic.getResponse();
         ic.pushIncludeRequest(rd, request, response);
@@ -123,13 +124,14 @@ class RequestDispatcherTest {
         assertEquals("/sample", innerRequest.getContextPath(), "context path attribute");
         assertEquals("/" + outerServletName, innerRequest.getServletPath(), "servlet path attribute");
         assertNull(innerRequest.getPathInfo(), "path info not null attribute");
-//        assertEquals( "query string attribute", "param=original&param1=first", innerRequest.getQueryString() );
+        // assertEquals( "query string attribute", "param=original&param1=first", innerRequest.getQueryString() );
 
         assertEquals("/sample/" + innerServletName, innerRequest.getAttribute(REQUEST_URI), "request URI attribute");
         assertEquals("/sample", innerRequest.getAttribute(CONTEXT_PATH), "context path attribute");
         assertEquals("/" + innerServletName, innerRequest.getAttribute(SERVLET_PATH), "servlet path attribute");
         assertNull(innerRequest.getAttribute(PATH_INFO), "path info attribute not null");
-//        assertEquals( "query string attribute", "param=revised&param2=new", innerRequest.getAttribute( QUERY_STRING ) );
+        // assertEquals( "query string attribute", "param=revised&param2=new", innerRequest.getAttribute( QUERY_STRING )
+        // );
 
         ic.popRequest();
         final HttpServletRequest restoredRequest = ic.getRequest();
@@ -138,12 +140,12 @@ class RequestDispatcherTest {
         assertNull(restoredRequest.getAttribute(CONTEXT_PATH), "context path attribute not null");
         assertNull(restoredRequest.getAttribute(SERVLET_PATH), "servlet path attribute not null");
         assertNull(restoredRequest.getAttribute(PATH_INFO), "path info attribute not null");
-//        assertNull( "query string attribute not null", "param=revised&param2=new", restoredRequest.getAttribute( QUERY_STRING ) );
+        // assertNull( "query string attribute not null", "param=revised&param2=new", restoredRequest.getAttribute(
+        // QUERY_STRING ) );
     }
 
     /**
-     * test for fix of bug [ 1323031 ] getPathInfo does not decode request URL
-     * by Hugh Winkler -
+     * test for fix of bug [ 1323031 ] getPathInfo does not decode request URL by Hugh Winkler -
      */
     @Test
     void testDecodeRequestURL() throws Exception {
@@ -151,7 +153,8 @@ class RequestDispatcherTest {
 
         final HttpServletRequest request = ic.getRequest();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        RequestDispatcher rd = servlet.getServletContext()
+                .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
         String path = request.getPathInfo();
         String servletPath = request.getServletPath();
         // System.err.println("servletPath='"+servletPath+"'\npath='"+path+"'");
@@ -165,27 +168,30 @@ class RequestDispatcherTest {
      */
     @Test
     void testGetNamedDispatcher() throws Exception {
-        InvocationContext ic = _runner.newClient().newInvocation("http://localhost/sample/" + this.errorPageServletName);
+        InvocationContext ic = _runner.newClient()
+                .newInvocation("http://localhost/sample/" + this.errorPageServletName);
         final HttpServletRequest request = ic.getRequest();
         ErrorPageServlet servlet = (ErrorPageServlet) ic.getServlet();
         RequestDispatcher rd = servlet.getServletContext().getNamedDispatcher("errorPage");
         // !!! fixme assertTrue("the dispatcher returned by getNamedDispatcher should not be null",rd!=null);
     }
 
-
     @Test
     void testRequestDispatcherForwardPaths() throws Exception {
-        InvocationContext ic = _runner.newClient().newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
+        InvocationContext ic = _runner.newClient()
+                .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 
         final HttpServletRequest request = ic.getRequest();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        RequestDispatcher rd = servlet.getServletContext()
+                .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
 
         assertEquals("/sample/" + outerServletName, request.getRequestURI(), "request URI");
         assertEquals("/sample", request.getContextPath(), "context path attribute");
         assertEquals("/" + outerServletName, request.getServletPath(), "servlet path attribute");
         assertNull(request.getPathInfo(), "path info not null attribute");
-//        assertEquals( "query string attribute", "param=original&param1=first", request.getQueryString() ); TODO make this work
+        // assertEquals( "query string attribute", "param=original&param1=first", request.getQueryString() ); TODO make
+        // this work
 
         final HttpServletResponse response = ic.getResponse();
         ic.pushForwardRequest(rd, request, response);
@@ -195,7 +201,7 @@ class RequestDispatcherTest {
         assertEquals("/sample", innerRequest.getContextPath(), "context path attribute");
         assertEquals("/" + innerServletName, innerRequest.getServletPath(), "servlet path attribute");
         assertNull(innerRequest.getPathInfo(), "path info not null attribute");
-//        assertEquals( "query string attribute", "param=original&param1=first", innerRequest.getQueryString() );
+        // assertEquals( "query string attribute", "param=original&param1=first", innerRequest.getQueryString() );
 
         ic.popRequest();
         final HttpServletRequest restoredRequest = ic.getRequest();
@@ -204,13 +210,16 @@ class RequestDispatcherTest {
         assertNull(restoredRequest.getAttribute(CONTEXT_PATH), "context path attribute not null");
         assertNull(restoredRequest.getAttribute(SERVLET_PATH), "servlet path attribute not null");
         assertNull(restoredRequest.getAttribute(PATH_INFO), "path info attribute not null");
-//        assertNull( "query string attribute not null", "param=revised&param2=new", restoredRequest.getAttribute( QUERY_STRING ) );
+        // assertNull( "query string attribute not null", "param=revised&param2=new", restoredRequest.getAttribute(
+        // QUERY_STRING ) );
     }
 
     static class RequestDispatcherServlet extends HttpServlet {
 
-        public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/subdir/pagename.jsp?param=value&param2=value");
+        public void doGet(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
+            RequestDispatcher dispatcher = getServletContext()
+                    .getRequestDispatcher("/subdir/pagename.jsp?param=value&param2=value");
             dispatcher.forward(request, response);
         }
     }
@@ -219,14 +228,12 @@ class RequestDispatcherTest {
 
     }
 
-
     static class IncludedServlet extends HttpServlet {
 
         static String DESIRED_REQUEST_URI = "localhost/subdir/pagename.jsp";
         static String DESIRED_SERVLET_PATH = "/subdir/pagename.jsp";
         static String DESIRED_QUERY_STRING = "param=value&param2=value";
         static String DESIRED_OUTPUT = DESIRED_REQUEST_URI + DESIRED_QUERY_STRING + DESIRED_SERVLET_PATH;
-
 
         public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
             response.setContentType("text/plain");

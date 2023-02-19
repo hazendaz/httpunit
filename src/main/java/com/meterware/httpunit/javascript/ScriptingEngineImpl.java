@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import org.mozilla.javascript.*;
 
 /**
- *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {
@@ -37,7 +36,6 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     private static ArrayList _errorMessages = new ArrayList();
 
-
     /**
      * clear the list of error Messages
      */
@@ -45,68 +43,73 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
         _errorMessages.clear();
     }
 
-
     /**
      * access to the list of error Messages that were collected
+     *
      * @return the array with error Messages
      */
     static public String[] getErrorMessages() {
-        return (String[]) _errorMessages.toArray( new String[ _errorMessages.size() ] );
+        return (String[]) _errorMessages.toArray(new String[_errorMessages.size()]);
     }
-
 
     /**
      * handle Exceptions
-     * @param e - the exception to handle
-     * @param badScript - the script that caused the problem
+     *
+     * @param e
+     *            - the exception to handle
+     * @param badScript
+     *            - the script that caused the problem
      */
-    static public void handleScriptException( Exception e, String badScript ) {
-    	String errorMessage=badScript==null? e.getMessage():badScript + " failed: " + e;
-    	if (e instanceof EcmaError ||
-    			e instanceof EvaluatorException ||
-    			e instanceof ScriptException ||
-    			e instanceof JavaScriptException)	{
-   			if (JavaScript.isThrowExceptionsOnError())	{
-   				HttpUnitUtils.handleException(e);
-   				if (e instanceof ScriptException)
-   					throw (ScriptException)e;
-   				else
-   					throw new ScriptException( errorMessage );
-   			} else	{
-    				_errorMessages.add( errorMessage );
-    		}
-   		} else	{
-    		HttpUnitUtils.handleException(e);
-    		throw new RuntimeException( errorMessage );
-    	}
+    static public void handleScriptException(Exception e, String badScript) {
+        String errorMessage = badScript == null ? e.getMessage() : badScript + " failed: " + e;
+        if (e instanceof EcmaError || e instanceof EvaluatorException || e instanceof ScriptException
+                || e instanceof JavaScriptException) {
+            if (JavaScript.isThrowExceptionsOnError()) {
+                HttpUnitUtils.handleException(e);
+                if (e instanceof ScriptException)
+                    throw (ScriptException) e;
+                else
+                    throw new ScriptException(errorMessage);
+            } else {
+                _errorMessages.add(errorMessage);
+            }
+        } else {
+            HttpUnitUtils.handleException(e);
+            throw new RuntimeException(errorMessage);
+        }
     }
 
-//--------------------------------------- ScriptingEngine methods ------------------------------------------------------
+    // --------------------------------------- ScriptingEngine methods
+    // ------------------------------------------------------
 
-    public boolean supportsScriptLanguage( String language ) {
-        return language == null || language.toLowerCase().startsWith( "javascript" );
+    public boolean supportsScriptLanguage(String language) {
+        return language == null || language.toLowerCase().startsWith("javascript");
     }
-
 
     /**
      * run the given script
-     * @param language - the language of the script
-     * @param script - the script to run
+     *
+     * @param language
+     *            - the language of the script
+     * @param script
+     *            - the script to run
      */
-    public String runScript( String language, String script ) {
-        if (!supportsScriptLanguage( language )) return "";
+    public String runScript(String language, String script) {
+        if (!supportsScriptLanguage(language))
+            return "";
         try {
             script = script.trim();
-            if (script.startsWith( "<!--" )) {
-                script = withoutFirstLine( script );
-                if (script.endsWith( "-->" )) script = script.substring( 0, script.lastIndexOf( "-->" ));
+            if (script.startsWith("<!--")) {
+                script = withoutFirstLine(script);
+                if (script.endsWith("-->"))
+                    script = script.substring(0, script.lastIndexOf("-->"));
             }
             Context context = Context.enter();
-            context.initStandardObjects( null );
-            context.evaluateString( this, script, "httpunit", 0, null );
+            context.initStandardObjects(null);
+            context.evaluateString(this, script, "httpunit", 0, null);
             return getDocumentWriteBuffer();
         } catch (Exception e) {
-            handleScriptException( e, "Script '" + script + "'" );
+            handleScriptException(e, "Script '" + script + "'");
             return "";
         } finally {
             discardDocumentWriteBuffer();
@@ -114,92 +117,99 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
         }
     }
 
-
     /**
-     * handle the event that has the given script attached
-     * by compiling the eventScript as a function and  executing it
-     * @param eventScript - the script to use
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     *
      * @deprecated since 1.7 - use doEventScript instead
      */
-    public boolean doEvent( String eventScript ) {
-    	return doEventScript(eventScript);
-    }
-
-
-    /**
-    * handle the event that has the given script attached
-    * by compiling the eventScript as a function and  executing it
-    * @param eventScript - the script to use
-    */
-    public boolean doEventScript( String eventScript ) {
-    	if (eventScript.length() == 0) {
-      	return true;
-      }	else {
-        try {
-            Context context = Context.enter();
-            context.initStandardObjects( null );
-            context.setOptimizationLevel( -1 );
-            // wrap the eventScript into a function
-            Function f = context.compileFunction( this, "function x() { " + eventScript + "}", "httpunit", 0, null );
-            // call the function with no arguments
-            Object result = f.call( context, this, this, NO_ARGS );
-            // return the result of the function or false if it is not boolean
-            return (!(result instanceof Boolean)) || ((Boolean) result).booleanValue();
-        } catch (Exception e) {
-            handleScriptException( e, "Event '" + eventScript + "'" );
-            return false;
-        } finally {
-            Context.exit();
-        }
-      } // if
+    public boolean doEvent(String eventScript) {
+        return doEventScript(eventScript);
     }
 
     /**
-     * get the event Handler script for the event e.g. onchange, onmousedown, onclick, onmouseup
-     * execute the script if it's assigned by calling doEvent for the script
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     */
+    public boolean doEventScript(String eventScript) {
+        if (eventScript.length() == 0) {
+            return true;
+        } else {
+            try {
+                Context context = Context.enter();
+                context.initStandardObjects(null);
+                context.setOptimizationLevel(-1);
+                // wrap the eventScript into a function
+                Function f = context.compileFunction(this, "function x() { " + eventScript + "}", "httpunit", 0, null);
+                // call the function with no arguments
+                Object result = f.call(context, this, this, NO_ARGS);
+                // return the result of the function or false if it is not boolean
+                return (!(result instanceof Boolean)) || ((Boolean) result).booleanValue();
+            } catch (Exception e) {
+                handleScriptException(e, "Event '" + eventScript + "'");
+                return false;
+            } finally {
+                Context.exit();
+            }
+        } // if
+    }
+
+    /**
+     * get the event Handler script for the event e.g. onchange, onmousedown, onclick, onmouseup execute the script if
+     * it's assigned by calling doEvent for the script
+     *
      * @param eventName
+     *
      * @return
      */
     public boolean handleEvent(String eventName) {
-      throw new RuntimeException("pseudo - abstract handleEvent called ");
+        throw new RuntimeException("pseudo - abstract handleEvent called ");
     }
 
     /**
      * Evaluates the specified string as JavaScript. Will return null if the script has no return value.
-     * @param expression - the expression to evaluate
+     *
+     * @param expression
+     *            - the expression to evaluate
      */
-    public Object evaluateExpression( String expression ) {
+    public Object evaluateExpression(String expression) {
         try {
             Context context = Context.enter();
-            context.initStandardObjects( null );
-            Object result = context.evaluateString( this, expression, "httpunit", 0, null );
+            context.initStandardObjects(null);
+            Object result = context.evaluateString(this, expression, "httpunit", 0, null);
             return (result == null || result instanceof Undefined) ? null : result;
         } catch (Exception e) {
-            handleScriptException( e, "URL '" + expression + "'" );
+            handleScriptException(e, "URL '" + expression + "'");
             return null;
         } finally {
             Context.exit();
         }
     }
 
-//------------------------------------------ protected methods ---------------------------------------------------------
+    // ------------------------------------------ protected methods
+    // ---------------------------------------------------------
 
     protected String getDocumentWriteBuffer() {
-        throw new IllegalStateException( "may not run runScript() from " + getClass() );
+        throw new IllegalStateException("may not run runScript() from " + getClass());
     }
 
     protected void discardDocumentWriteBuffer() {
-        throw new IllegalStateException( "may not run runScript() from " + getClass() );
+        throw new IllegalStateException("may not run runScript() from " + getClass());
     }
 
-    private String withoutFirstLine( String script ) {
-        for (int i=0; i < script.length(); i++) {
-            if (isLineTerminator( script.charAt(i) )) return script.substring( i ).trim();
+    private String withoutFirstLine(String script) {
+        for (int i = 0; i < script.length(); i++) {
+            if (isLineTerminator(script.charAt(i)))
+                return script.substring(i).trim();
         }
         return "";
     }
 
-    private boolean isLineTerminator( char c ) {
+    private boolean isLineTerminator(char c) {
         return c == 0x0A || c == 0x0D;
     }
 }

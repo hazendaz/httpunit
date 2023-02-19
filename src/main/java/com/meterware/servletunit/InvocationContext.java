@@ -35,98 +35,95 @@ import javax.servlet.http.HttpServletResponse;
  **/
 public interface InvocationContext {
 
-
     /**
      * Returns the request to be processed by the servlet or filter.
      **/
     HttpServletRequest getRequest();
-
 
     /**
      * Returns the response which the servlet or filter should modify during its operation.
      **/
     HttpServletResponse getResponse();
 
-
     /**
      * Invokes the current servlet or filter.
+     *
      * @since 1.6
      */
     void service() throws ServletException, IOException;
 
-
     /**
-     * Returns the selected servlet, initialized to provide access to sessions
-     * and servlet context information.  Only valid to call if {@link #isFilterActive} returns false.
+     * Returns the selected servlet, initialized to provide access to sessions and servlet context information. Only
+     * valid to call if {@link #isFilterActive} returns false.
      **/
     Servlet getServlet() throws ServletException;
 
-
     /**
-     * Returns the final response from the servlet. Note that this method should
-     * only be invoked after all processing has been done to the servlet response.
+     * Returns the final response from the servlet. Note that this method should only be invoked after all processing
+     * has been done to the servlet response.
      **/
     WebResponse getServletResponse() throws IOException;
 
-
     /**
      * Returns the target frame for the original request.
+     *
      * @since 1.6
      */
     FrameSelector getFrame();
 
-
     /**
      * Adds a request dispatcher to this context to simulate an include request.
      */
-    void pushIncludeRequest( RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response ) throws ServletException;
-
+    void pushIncludeRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException;
 
     /**
      * Adds a request dispatcher to this context to simulate a forward request.
      */
-    void pushForwardRequest( RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response ) throws ServletException;
-
+    void pushForwardRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException;
 
     /**
      * Removes the top request dispatcher or filter from this context.
      */
     void popRequest();
 
-
     /**
      * Returns true if the current context is a filter, rather than a servlet.
+     *
      * @since 1.6
      */
     boolean isFilterActive();
 
-
     /**
      * Returns the current active filter object. Only valid to call if {@link #isFilterActive} returns true.
+     *
      * @since 1.6
      */
     Filter getFilter() throws ServletException;
 
-
     /**
      * Returns the current filter chain. Only valid to call if {@link #isFilterActive} returns true.
+     *
      * @since 1.6
      */
     FilterChain getFilterChain();
 
-
     /**
-     * Pushes the current filter onto the execution stack and switches to the next filter or the selected servlet.
-     * This can be used to simulate the effect of the {@link javax.servlet.FilterChain#doFilter doFilter} call.
-     * <br><b>Note:</b> this method specifies {@link ServletRequest} and {@link ServletResponse} because those are the
-     * types passed to {@link Filter#doFilter}; however, HttpUnit requires the objects to implement
-     * {@link HttpServletRequest} and {@link HttpServletResponse} because they will eventually be passed to an
+     * Pushes the current filter onto the execution stack and switches to the next filter or the selected servlet. This
+     * can be used to simulate the effect of the {@link javax.servlet.FilterChain#doFilter doFilter} call. <br>
+     * <b>Note:</b> this method specifies {@link ServletRequest} and {@link ServletResponse} because those are the types
+     * passed to {@link Filter#doFilter}; however, HttpUnit requires the objects to implement {@link HttpServletRequest}
+     * and {@link HttpServletResponse} because they will eventually be passed to an
      * {@link javax.servlet.http.HttpServlet}.
      *
-     * @param request the request to pass to the next filter. May be a wrapper.
-     * @param response the response object to pass to the next filter. May be a wrapper.
+     * @param request
+     *            the request to pass to the next filter. May be a wrapper.
+     * @param response
+     *            the response object to pass to the next filter. May be a wrapper.
+     *
      * @since 1.6
      */
-    void pushFilter( ServletRequest request, ServletResponse response );
+    void pushFilter(ServletRequest request, ServletResponse response);
 
 }

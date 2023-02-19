@@ -37,7 +37,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
 
     private static Hashtable _exemplars = new Hashtable();
     private DomWindow _window;
-    private StringBuffer _writeBuffer;
+    private StringBuilder _writeBuffer;
     private HTMLContainerDelegate _containerDelegate = new HTMLContainerDelegate(SKIP_IFRAMES);
 
     public void setIFramesEnabled(boolean enabled) {
@@ -299,9 +299,9 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return _window;
     }
 
-    StringBuffer getWriteBuffer() {
+    StringBuilder getWriteBuffer() {
         if (_writeBuffer == null)
-            _writeBuffer = new StringBuffer();
+            _writeBuffer = new StringBuilder();
         return _writeBuffer;
     }
 

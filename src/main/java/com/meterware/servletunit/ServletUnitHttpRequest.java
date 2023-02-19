@@ -656,7 +656,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @since 1.3
      */
     public StringBuffer getRequestURL() {
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
         try {
             url.append(_request.getURL().getProtocol()).append("://");
             url.append(_request.getURL().getHost());
@@ -666,7 +666,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         } catch (MalformedURLException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
-        return url;
+        return new StringBuffer(url);
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4

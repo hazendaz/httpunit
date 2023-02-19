@@ -131,14 +131,14 @@ class AuthenticationChallenge extends HttpHeader {
 
         private class Algorithm {
 
-            public void appendParams(StringBuffer sb, AuthenticationChallenge challenge, String userName,
+            public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
                     String password) {
                 appendDigestParams(sb, challenge.getProperty("realm"), challenge.getProperty("nonce"),
                         challenge.getRequestUri(), userName, password, challenge.getMethod(),
                         challenge.getProperty("opaque"));
             }
 
-            protected void appendDigestParams(StringBuffer sb, String realm, String nonce, String uri, String userName,
+            protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
                     String password, String method, String opaque) {
                 sb.append("username=").append(quote(userName));
                 append(sb, "realm", realm);
@@ -195,7 +195,7 @@ class AuthenticationChallenge extends HttpHeader {
                 return sb.toString();
             }
 
-            private void append(StringBuffer sb, String name, String value) {
+            private void append(StringBuilder sb, String name, String value) {
                 sb.append(",").append(name).append("=").append(quote(value));
             }
 
@@ -211,7 +211,7 @@ class AuthenticationChallenge extends HttpHeader {
 
         private class QopAlgorithm extends Algorithm {
 
-            protected void appendDigestParams(StringBuffer sb, String realm, String nonce, String uri, String userName,
+            protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
                     String password, String method, String opaque) {
                 super.appendDigestParams(sb, realm, nonce, uri, userName, password, method, opaque);
                 // append( sb, "qop", "auth" );
@@ -250,7 +250,7 @@ class AuthenticationChallenge extends HttpHeader {
         }
 
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-            StringBuffer sb = new StringBuffer("Digest ");
+            StringBuilder sb = new StringBuilder("Digest ");
             Algorithm algorithm = new Algorithm();
             algorithm.appendParams(sb, challenge, userName, password);
             return sb.toString();

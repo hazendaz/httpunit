@@ -62,7 +62,7 @@ public class TextImpl extends CharacterDataImpl implements Text {
         return document.createTextNode(text.getData());
     }
 
-    void appendContents(StringBuffer sb) {
+    void appendContents(StringBuilder sb) {
         sb.append(getData());
     }
 

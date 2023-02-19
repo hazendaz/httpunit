@@ -58,7 +58,7 @@ public class CommentImpl extends CharacterDataImpl implements Comment {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Comment nodes may not have children");
     }
 
-    void appendContents(StringBuffer sb) {
+    void appendContents(StringBuilder sb) {
         sb.append(getData());
     }
 

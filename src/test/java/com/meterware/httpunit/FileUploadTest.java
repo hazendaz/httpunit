@@ -406,7 +406,7 @@ class ByteArrayDataSource implements DataSource {
 
 class MimeEcho extends PseudoServlet {
     public WebResource getPostResponse() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         try {
             String contentType = getHeader("Content-Type");
             DataSource ds = new ByteArrayDataSource(contentType, getBody());
@@ -428,7 +428,7 @@ class MimeEcho extends PseudoServlet {
         return new WebResource(sb.toString(), "text/plain");
     }
 
-    private void appendPart(StringBuffer sb, MimeBodyPart mbp) throws IOException, MessagingException {
+    private void appendPart(StringBuilder sb, MimeBodyPart mbp) throws IOException, MessagingException {
         String[] disposition = mbp.getHeader("Content-Disposition");
         String name = getHeaderAttribute(disposition[0], "name");
         if (mbp.getFileName() == null) {
@@ -439,12 +439,12 @@ class MimeEcho extends PseudoServlet {
         }
     }
 
-    private void appendFieldValue(String parameterName, StringBuffer sb, MimeBodyPart mbp)
+    private void appendFieldValue(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
         sb.append(parameterName).append("=").append(URLEncoder.encode(mbp.getContent().toString()));
     }
 
-    private void appendFileSpecs(String parameterName, StringBuffer sb, MimeBodyPart mbp)
+    private void appendFileSpecs(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
         String filename = mbp.getFileName();
         filename = filename.substring(filename.lastIndexOf(File.separator) + 1);

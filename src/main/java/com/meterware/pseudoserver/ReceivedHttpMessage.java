@@ -41,7 +41,7 @@ abstract class ReceivedHttpMessage {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer(getClassName()).append("[ ");
+        StringBuilder sb = new StringBuilder(getClassName()).append("[ ");
         appendMessageHeader(sb);
         sb.append("\n");
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
@@ -70,7 +70,7 @@ abstract class ReceivedHttpMessage {
         return baos.toByteArray();
     }
 
-    void appendContents(StringBuffer sb) {
+    void appendContents(StringBuilder sb) {
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             Object key = e.nextElement();
             sb.append("      ").append(key).append(": ").append(_headers.get(key)).append("\n");
@@ -158,7 +158,7 @@ abstract class ReceivedHttpMessage {
         return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1);
     }
 
-    abstract void appendMessageHeader(StringBuffer sb);
+    abstract void appendMessageHeader(StringBuilder sb);
 
     abstract void interpretMessageHeader(String messageHeader);
 

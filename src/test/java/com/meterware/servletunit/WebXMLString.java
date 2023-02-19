@@ -86,7 +86,7 @@ class WebXMLString {
      * @return
      */
     String asText() {
-        StringBuffer result = new StringBuffer("<?xml version='1.0' encoding='UTF-8'?>\n");
+        StringBuilder result = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n");
         String doctype = "<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/"
                 + dtd + "'>";
         // if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems
@@ -150,7 +150,7 @@ class WebXMLString {
         return result.toString();
     }
 
-    private void appendLoadOnStartup(StringBuffer result, Object startupOrder) {
+    private void appendLoadOnStartup(StringBuilder result, Object startupOrder) {
         if (startupOrder == null)
             return;
         result.append("    <load-on-startup");
@@ -160,7 +160,7 @@ class WebXMLString {
             result.append("/>\n");
     }
 
-    private void appendParams(StringBuffer result, String tagName, Hashtable params) {
+    private void appendParams(StringBuilder result, String tagName, Hashtable params) {
         if (params == null)
             return;
         for (Iterator it = params.entrySet().iterator(); it.hasNext();) {

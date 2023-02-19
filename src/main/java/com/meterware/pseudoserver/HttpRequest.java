@@ -49,7 +49,7 @@ public class HttpRequest extends ReceivedHttpMessage {
         _protocol = st.nextToken();
     }
 
-    void appendMessageHeader(StringBuffer sb) {
+    void appendMessageHeader(StringBuilder sb) {
         sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);
     }
 

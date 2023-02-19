@@ -28,7 +28,7 @@ public class URLEncodedString implements ParameterProcessor {
 
     public static final int DEFAULT_BUFFER_SIZE = 128;
 
-    private StringBuffer _buffer = new StringBuffer(DEFAULT_BUFFER_SIZE);
+    private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);
 
     private boolean _haveParameters = false;
 

@@ -46,7 +46,7 @@ class ScriptFilter extends DefaultFilter {
     private HTMLConfiguration _configuration;
 
     /** A string buffer to collect the script. */
-    private StringBuffer _activeScriptBlock;
+    private StringBuilder _activeScriptBlock;
 
     /** The name of the current script language. **/
     private String _scriptLanguage;
@@ -84,7 +84,7 @@ class ScriptFilter extends DefaultFilter {
         if (!isSupportedScript(element, attrs)) {
             super.startElement(element, attrs, augs);
         } else {
-            _activeScriptBlock = new StringBuffer();
+            _activeScriptBlock = new StringBuilder();
             _scriptLanguage = getScriptLanguage(attrs);
             String srcAttribute = attrs.getValue("src");
             if (srcAttribute != null)

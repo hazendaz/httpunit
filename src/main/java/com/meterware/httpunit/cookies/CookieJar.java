@@ -396,7 +396,7 @@ public class CookieJar {
     class CookiePress {
 
         // the current value
-        private StringBuffer _value = new StringBuffer();
+        private StringBuilder _value = new StringBuilder();
         private HashMap _attributes = new HashMap();
         private URL _sourceURL;
 

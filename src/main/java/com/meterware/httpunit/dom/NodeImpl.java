@@ -303,12 +303,12 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     }
 
     String asText() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         appendContents(sb);
         return sb.toString();
     }
 
-    void appendContents(StringBuffer sb) {
+    void appendContents(StringBuilder sb) {
         NodeList nl = getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             ((NodeImpl) nl.item(i)).appendContents(sb);

@@ -500,7 +500,7 @@ public class JavaScript {
         private ElementArray _forms;
         private ElementArray _links;
         private ElementArray _images;
-        private StringBuffer _writeBuffer;
+        private StringBuilder _writeBuffer;
         private String _mimeType;
 
         public String getClassName() {
@@ -594,9 +594,9 @@ public class JavaScript {
             getWriteBuffer().append(string).append((char) 0x0D).append((char) 0x0A);
         }
 
-        protected StringBuffer getWriteBuffer() {
+        protected StringBuilder getWriteBuffer() {
             if (_writeBuffer == null)
-                _writeBuffer = new StringBuffer();
+                _writeBuffer = new StringBuilder();
             return _writeBuffer;
         }
 

@@ -114,7 +114,7 @@ class SocketConnection {
             super(inputStream);
         }
 
-        void appendMessageHeader(StringBuffer sb) {
+        void appendMessageHeader(StringBuilder sb) {
             sb.append(_protocol).append(' ').append(_responseCode).append(' ').append(_message);
         }
 

@@ -26,8 +26,7 @@ import junit.framework.TestCase;
  *
  * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
-abstract
-public class ServletTestCase extends TestCase {
+public abstract class ServletTestCase extends TestCase {
 
 	/**
 	 * construct a ServletTestCase with the given name

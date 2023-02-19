@@ -123,7 +123,9 @@ public class TextBlockTest extends HttpUnitTest {
         assertEquals("First bullet list item", "Red", unorderedList.getItems()[0].getText());
     }
 
-
+    // TODO JWL 2/19/2023 Test was not annotated and does not work, annotated this and add ignores for now.
+    @Ignore
+    @Test
     public void ntestFormattingDetection() throws Exception {
         String expectedText = "Here is some bold text and some bold italic text";
         defineWebPage("FormattedPage", "<p>Here is some <b>bold</b> text and some <b><i>bold italic</i></b> text</p>");

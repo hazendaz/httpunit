@@ -201,9 +201,24 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         setHeader( name, asHeaderValue( value ) );
     }
 
+    /**
+     * Adds a field to the response header with the given name and
+     * integer value.  If the field had already been set, the new value
+     * overwrites the previous one.  The <code>containsHeader</code>
+     * method can be used to test for the presence of a header before
+     * setting its value.
+     **/
+    public void setLongHeader( String name, long value ) {
+        setHeader( name, asHeaderLongValue( value ) );
+    }
+
 
     private String asHeaderValue( int value ) {
         return Integer.toString( value );
+    }
+
+    private String asHeaderLongValue( long value ) {
+        return Long.toString( value );
     }
 
 
@@ -572,7 +587,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         addCookieHeader();
         // BR 3301056 ServletUnit handling Content-Type incorrectly
         if (getHeaderFieldDirect("Content-Type")==null) {
-        	setHeader( "Content-Type", _contentType + "; charset=" + getCharacterEncoding() );
+            setHeader( "Content-Type", _contentType + "; charset=" + getCharacterEncoding() );
         }
         _headersComplete = true;
     }
@@ -614,26 +629,34 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
 
     public String getHeader(String name) {
-      // TODO Auto-generated method stub
-      return null;
+        return (String) _headers.get(name.toUpperCase());
     }
 
 
     public Collection<String> getHeaders(String name) {
-      // TODO Auto-generated method stub
-      return null;
+        ArrayList values;
+        synchronized (_headers) {
+            values = (ArrayList) _headers.get(name.toUpperCase());
+        }
+        if (values == null) {
+            return (Collections.EMPTY_LIST);
+        }
+        return values;
     }
 
 
     public Collection<String> getHeaderNames() {
-      // TODO Auto-generated method stub
-      return null;
+        if (!_headersComplete) completeHeaders();
+        Vector names = new Vector();
+        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
+            names.addElement( e.nextElement() );
+        }
+        return names;
     }
 
 
     public void setContentLengthLong(long len) {
-        // TODO Auto-generated method stub
-
+        setLongHeader( "Content-Length", len );
     }
 
 }
@@ -661,6 +684,5 @@ class ServletUnitOutputStream extends ServletOutputStream {
 
     public void setWriteListener(WriteListener writeListener) {
         // TODO Auto-generated method stub
-
     }
 }

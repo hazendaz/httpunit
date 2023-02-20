@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.servlet.*;
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.descriptor.JspConfigDescriptor;
+import jakarta.servlet.*;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 /**
  * This class is a private implementation of the ServletContext class.
@@ -54,7 +54,7 @@ public class ServletUnitServletContext implements ServletContext {
      * <p>
      * In a security conscious environment, the servlet container may return null for a given URL.
      **/
-    public javax.servlet.ServletContext getContext(java.lang.String A) {
+    public jakarta.servlet.ServletContext getContext(java.lang.String A) {
         return null;
     }
 
@@ -141,7 +141,7 @@ public class ServletUnitServletContext implements ServletContext {
      * relative to the current context root. Use getContext to obtain a RequestDispatcher for resources in foreign
      * contexts. This method returns null if the ServletContext cannot return a RequestDispatcher.
      **/
-    public javax.servlet.RequestDispatcher getRequestDispatcher(String path) {
+    public jakarta.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
             URL url = new URL("http", "localhost", _application.getContextPath() + path);
             return new RequestDispatcherImpl(_application, url);
@@ -161,7 +161,7 @@ public class ServletUnitServletContext implements ServletContext {
      * @param servletName
      *            - the name of the dispatcher to get
      **/
-    public javax.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
+    public jakarta.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
         final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);
         if (servletConfig == null)
             return null;
@@ -181,7 +181,7 @@ public class ServletUnitServletContext implements ServletContext {
 
         final Exception instantiationException = tempException;
 
-        return new javax.servlet.RequestDispatcher() {
+        return new jakarta.servlet.RequestDispatcher() {
 
             public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
 
@@ -230,7 +230,7 @@ public class ServletUnitServletContext implements ServletContext {
     /**
      * @deprecated as of Servlet API 2.1
      **/
-    public javax.servlet.Servlet getServlet(java.lang.String A) {
+    public jakarta.servlet.Servlet getServlet(java.lang.String A) {
         return null;
     }
 
@@ -474,17 +474,17 @@ public class ServletUnitServletContext implements ServletContext {
         return null;
     }
 
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className) {
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
         // TODO Auto-generated method stub
         return null;
     }

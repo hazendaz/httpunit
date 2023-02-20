@@ -21,8 +21,8 @@ package com.meterware.servletunit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

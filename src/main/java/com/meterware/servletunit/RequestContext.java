@@ -26,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author <a href="russgold@httpunit.org">Russell Gold</a>

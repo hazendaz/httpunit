@@ -25,11 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,11 +44,11 @@ class RequestDispatcherTest {
     final String decodeExampleName = "repository/Default%20repository";
     final String errorPageServletName = "errorPage";
 
-    final static String REQUEST_URI = "javax.servlet.include.request_uri";
-    final static String CONTEXT_PATH = "javax.servlet.include.context_path";
-    final static String SERVLET_PATH = "javax.servlet.include.servlet_path";
-    final static String PATH_INFO = "javax.servlet.include.path_info";
-    final static String QUERY_STRING = "javax.servlet.include.query_string";
+    final static String REQUEST_URI = "jakarta.servlet.include.request_uri";
+    final static String CONTEXT_PATH = "jakarta.servlet.include.context_path";
+    final static String SERVLET_PATH = "jakarta.servlet.include.servlet_path";
+    final static String PATH_INFO = "jakarta.servlet.include.path_info";
+    final static String QUERY_STRING = "jakarta.servlet.include.query_string";
 
     private ServletRunner _runner;
     private WebXMLString _wxs;

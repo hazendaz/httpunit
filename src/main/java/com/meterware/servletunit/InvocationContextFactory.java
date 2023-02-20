@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Dictionary;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * An interface for an object which acts as a factory of InvocationContexts

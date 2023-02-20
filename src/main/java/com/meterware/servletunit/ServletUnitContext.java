@@ -22,7 +22,7 @@ package com.meterware.servletunit;
 import java.util.*;
 import java.util.Hashtable;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 class ServletUnitContext {
 

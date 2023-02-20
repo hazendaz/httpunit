@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>

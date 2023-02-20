@@ -22,8 +22,8 @@ package com.meterware.servletunit;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 
 /**
  * This class acts as a test environment for servlets.

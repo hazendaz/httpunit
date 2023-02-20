@@ -42,12 +42,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -243,7 +243,7 @@ public class WebXMLTest {
         assertEquals("vanilla", sr.getContextParameter("icecream"), "Context parameter 'icecream'");
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
-        javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+        jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
         assertNotNull(sc, "ServletContext should not be null");
         assertEquals("vanilla", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
         assertEquals("waffle", sc.getInitParameter("cone"), "init parameter: cone");
@@ -268,7 +268,7 @@ public class WebXMLTest {
 
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
-        javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+        jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
         assertNotNull(sc, "ServletContext should not be null");
         assertEquals("strawberry", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
         assertNull(sc.getInitParameter("shoesize"), "ServletContext.getInitParameter() should be null");

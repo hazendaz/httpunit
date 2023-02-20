@@ -644,7 +644,7 @@ public class FormParametersTest extends HttpUnitTest {
      *
      * @throws Exception
      *             to activate test download
-     *             https://sourceforge.net/tracker/download.php?group_id=6550&atid=106550&file_id=274135&aid=1937946 and
+     *             https://sourceforge.net/tracker/download.php?group_id=6550&amp;atid=106550&amp;file_id=274135&amp;aid=1937946 and
      *             copy as index.html (or whatever - change url if necessary) to local host tested with real browser so
      *             deactivated
      */

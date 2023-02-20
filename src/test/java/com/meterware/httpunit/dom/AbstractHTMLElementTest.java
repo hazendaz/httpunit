@@ -73,6 +73,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
      * <li>a non-default value for the attribute</li>
      * <li>the default value for the attribute (defaults to null)</li>
      * <li>"ro" if the attribute is read-only (defaults to writeable)</li>
+     * </ol>
      */
     protected void doElementTest(String tagName, Class interfaceName, Object[][] attributes)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {

@@ -19,3 +19,7 @@ After getting ServletRunner to establish the Instance Manager, add the following
     final JasperInitializer jsp = new JasperInitializer();
     jsp.onStartup(null, this.runner.getSession(true).getServletContext());
 ```
+
+### Jakarta Support
+
+See 'jakarta' branch with support at release 2.0.0

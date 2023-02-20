@@ -281,7 +281,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     /**
      * test patch for [ 1705925 ] Bug in URL-decoding of GET-Request-Parameters
-     * http://sourceforge.net/tracker/index.php?func=detail&aid=1705925&group_id=6550&atid=106550
+     * http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1705925&amp;group_id=6550&amp;atid=106550
      *
      * @throws Exception
      */
@@ -302,7 +302,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     /**
      * test patch for [ 1705925 ] Bug in URL-decoding of GET-Request-Parameters
-     * http://sourceforge.net/tracker/index.php?func=detail&aid=1705925&group_id=6550&atid=106550
+     * http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1705925&amp;group_id=6550&amp;atid=106550
      *
      * @throws Exception
      */

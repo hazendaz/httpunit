@@ -21,8 +21,6 @@ package com.meterware.servletunit;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
@@ -31,13 +29,6 @@ import java.util.Vector;
 public abstract class ServletUnitTest {
 
     // ------------------------------------ protected members ------------------------------------------
-
-    protected Object[] toArray(Enumeration e) {
-        ArrayList result = new ArrayList();
-        while (e.hasMoreElements())
-            result.add(e.nextElement());
-        return result.toArray();
-    }
 
     protected void assertMatchingSet(String comment, Object[] expected, Object[] found) {
         Vector expectedItems = new Vector();

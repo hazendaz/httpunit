@@ -21,6 +21,9 @@ package com.meterware.servletunit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
@@ -97,11 +100,11 @@ class SessionTest extends ServletUnitTest {
         session.setAttribute("third", "III");
 
         assertMatchingSet("Attribute names", new String[] { "first", "second", "third" },
-                toArray(session.getAttributeNames()));
+                Collections.list(session.getAttributeNames()).toArray());
 
         session.removeAttribute("third");
         session.setAttribute("first", null);
-        assertMatchingSet("Attribute names", new String[] { "second" }, toArray(session.getAttributeNames()));
+        assertMatchingSet("Attribute names", new String[] { "second" }, Collections.list(session.getAttributeNames()).toArray());
     }
 
     @Test

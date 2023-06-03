@@ -24,7 +24,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -195,16 +195,16 @@ class JTidyPrintWriter extends PrintWriter {
     }
 
     private void reportError(String msg, int line, int column) {
-        Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
-        while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).error(_url, msg, line, column);
+        List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
+        for (HTMLParserListener listener : listeners) {
+            listener.error(_url, msg, line, column);
         }
     }
 
     private void reportWarning(String msg, int line, int column) {
-        Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
-        while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).warning(_url, msg, line, column);
+        List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
+        for (HTMLParserListener listener : listeners) {
+            listener.warning(_url, msg, line, column);
         }
     }
 }

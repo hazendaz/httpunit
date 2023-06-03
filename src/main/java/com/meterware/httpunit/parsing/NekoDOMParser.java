@@ -107,11 +107,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
                 domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
-        } catch (SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
             throw new RuntimeException(e.toString());
-        } catch (SAXNotSupportedException e) {
-            throw new RuntimeException(e.toString());
-        }
+        } 
 
     }
 

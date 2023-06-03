@@ -25,6 +25,7 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -146,7 +147,7 @@ class WebApplication implements SessionListenerDispatcher {
         for (int i = 0; i < nl.getLength(); i++) {
             String listenerName = XMLUtils.getChildNodeValue((Element) nl.item(i), "listener-class").trim();
             try {
-                Object listener = Class.forName(listenerName).newInstance();
+                Object listener = Class.forName(listenerName).getDeclaredConstructor().newInstance();
 
                 if (listener instanceof ServletContextListener)
                     _contextListeners.add(listener);
@@ -560,10 +561,10 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         synchronized Servlet getServlet()
-                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException {
+                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
             if (_servlet == null) {
                 Class servletClass = Class.forName(getClassName());
-                _servlet = (Servlet) servletClass.newInstance();
+                _servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();
                 String servletName = _servletName != null ? _servletName : _servlet.getClass().getName();
                 _servlet.init(new ServletUnitServletConfig(servletName, WebApplication.this, getInitParams()));
             }
@@ -610,7 +611,7 @@ class WebApplication implements SessionListenerDispatcher {
             try {
                 if (_filter == null) {
                     Class filterClass = Class.forName(getClassName());
-                    _filter = (Filter) filterClass.newInstance();
+                    _filter = (Filter) filterClass.getDeclaredConstructor().newInstance();
                     _filter.init(new FilterConfigImpl(_name, getServletContext(), getInitParams()));
                 }
 
@@ -619,7 +620,7 @@ class WebApplication implements SessionListenerDispatcher {
                 throw new ServletException("Did not find filter class: " + getClassName());
             } catch (IllegalAccessException e) {
                 throw new ServletException("Filter class " + getClassName() + " lacks a public no-arg constructor");
-            } catch (InstantiationException e) {
+            } catch (InstantiationException | IllegalArgumentException|InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new ServletException("Filter class " + getClassName() + " could not be instantiated.");
             } catch (ClassCastException e) {
                 throw new ServletException(
@@ -752,11 +753,7 @@ class WebApplication implements SessionListenerDispatcher {
                 return getConfiguration().getServlet();
             } catch (ClassNotFoundException e) {
                 throw new HttpNotFoundException(_url, e);
-            } catch (IllegalAccessException e) {
-                throw new HttpInternalErrorException(_url, e);
-            } catch (InstantiationException e) {
-                throw new HttpInternalErrorException(_url, e);
-            } catch (ClassCastException e) {
+            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new HttpInternalErrorException(_url, e);
             }
         }

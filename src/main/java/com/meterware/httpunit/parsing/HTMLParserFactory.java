@@ -251,10 +251,11 @@ abstract public class HTMLParserFactory {
     private static HTMLParser loadParserIfSupported(final String testClassName, final String parserClassName) {
         try {
             Class.forName(testClassName);
-            return (HTMLParser) Class.forName(parserClassName).newInstance();
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        } catch (ClassNotFoundException e) {
+            return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException
+                | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }

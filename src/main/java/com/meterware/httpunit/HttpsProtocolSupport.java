@@ -116,7 +116,7 @@ public abstract class HttpsProtocolSupport {
         try {
             Class providerClass = getHttpsProviderClass();
             if (!hasProvider(providerClass))
-                Security.addProvider((Provider) providerClass.newInstance());
+                Security.addProvider((Provider) providerClass.getDeclaredConstructor().newInstance());
             registerSSLProtocolHandler();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(

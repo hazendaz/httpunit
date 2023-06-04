@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
@@ -212,7 +213,7 @@ class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest("file:" + file.getAbsolutePath());
         WebResponse simplePage = wc.getResponse(request);
         assertEquals("A Sample Page", simplePage.getTitle(), "Title");
-        assertEquals(System.getProperty("file.encoding"), simplePage.getCharacterSet(), "Character set");
+        assertEquals(Charset.defaultCharset().displayName(), simplePage.getCharacterSet(), "Character set");
 
         file.delete();
     }

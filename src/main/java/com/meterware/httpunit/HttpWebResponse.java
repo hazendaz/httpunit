@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -195,7 +196,7 @@ class HttpWebResponse extends WebResponse {
 
     // ------------------------------------- private members -------------------------------------
 
-    private final static String FILE_ENCODING = System.getProperty("file.encoding");
+    private final static String FILE_ENCODING = Charset.defaultCharset().displayName();
 
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseMessage = "OK";

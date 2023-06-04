@@ -26,15 +26,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
-
-import org.apache.xerces.parsers.AbstractDOMParser;
-import org.apache.xerces.parsers.DOMParser;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLDocumentFilter;
-import org.apache.xerces.xni.parser.XMLErrorHandler;
-import org.apache.xerces.xni.parser.XMLParseException;
+import org.apache.xerces.impl.Constants;
+import org.htmlunit.cyberneko.HTMLConfiguration;
+import org.htmlunit.cyberneko.parsers.DOMParser;
+import org.htmlunit.cyberneko.xerces.dom.DOMMessageFormatter;
+import org.htmlunit.cyberneko.xerces.util.SAXMessageFormatter;
+import org.htmlunit.cyberneko.xerces.xni.XNIException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLConfigurationException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLDocumentFilter;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLErrorHandler;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLParseException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLParserConfiguration;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -61,6 +65,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     /** The document adapter. */
     private DocumentAdapter _documentAdapter;
+
+    /** The parser configuration. */
+    private XMLParserConfiguration fConfiguration;
 
     /**
      * construct a new NekoDomParser with the given adapter and url.
@@ -105,15 +112,14 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
         try {
             final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);
-            if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
+            if (HTMLParserFactory.isReturnHTMLDocument()) {
+                domParser.setProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.DOCUMENT_CLASS_NAME_PROPERTY, HTMLDocumentImpl.class.getName());
+            }
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
             throw new RuntimeException(e.toString());
         }
-
     }
 
     /**
@@ -123,12 +129,12 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      */
     private Element getCurrentElement() {
         try {
-            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
+            return (Element) getProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY);
         } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not recognized");
+            throw new RuntimeException(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY + " property not recognized");
         } catch (SAXNotSupportedException e) {
             e.printStackTrace();
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not supported");
+            throw new RuntimeException(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY + " property not supported");
         }
     }
 
@@ -141,8 +147,11 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *            the adapter
      */
     NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
-        super(configuration);
+        super(adapter);
         _documentAdapter = adapter;
+        if (HTMLParserFactory.isReturnHTMLDocument()) {
+            fConfiguration = configuration;
+        }
     }
 
     @Override
@@ -204,6 +213,60 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         public IOException getException() {
             return _cause;
         }
+    }
+
+    /**
+     * Query the value of a property.
+     *
+     * Return the current value of a property in a SAX2 parser.
+     * The parser might not recognize the property.
+     *
+     * @param propertyId The unique identifier (URI) of the property
+     *                   being set.
+     * @return The current value of the property.
+     * @exception org.xml.sax.SAXNotRecognizedException If the
+     *            requested property is not known.
+     * @exception SAXNotSupportedException If the
+     *            requested property is known but not supported.
+     */
+    public Object getProperty(String propertyId)
+        throws SAXNotRecognizedException, SAXNotSupportedException {
+
+       if (propertyId.equals(Constants.XERCES_PROPERTY_PREFIX + Constants.CURRENT_ELEMENT_NODE_PROPERTY)) {
+           boolean deferred = false;
+           try {
+               deferred = getFeature(Constants.XERCES_FEATURE_PREFIX + Constants.DEFER_NODE_EXPANSION_FEATURE);
+           }
+           catch (XMLConfigurationException e){
+               // ignore
+           }
+           if (deferred) {
+               throw new SAXNotSupportedException(
+                       DOMMessageFormatter.formatMessage(
+                       DOMMessageFormatter.DOM_DOMAIN,
+                       "CannotQueryDeferredNode", null));
+           }
+           return (fCurrentNode!=null &&
+                   fCurrentNode.getNodeType() == Node.ELEMENT_NODE)? fCurrentNode:null;
+       }
+
+        try {
+            return fConfiguration.getProperty(propertyId);
+        }
+        catch (XMLConfigurationException e) {
+            String identifier = e.getIdentifier();
+            if (e.getType() == XMLConfigurationException.NOT_RECOGNIZED) {
+                throw new SAXNotRecognizedException(
+                    SAXMessageFormatter.formatMessage( 
+                    "property-not-recognized", new Object [] {identifier}));
+            }
+            else {
+                throw new SAXNotSupportedException(
+                    SAXMessageFormatter.formatMessage(
+                    "property-not-supported", new Object [] {identifier}));
+            }
+        }
+
     }
 }
 

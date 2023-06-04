@@ -636,6 +636,7 @@ abstract public class WebClient {
             exception.setResponse(response);
             // shall we ignore errors?
             if (!getExceptionsThrownOnErrorStatus()) {
+                return;
             }
             throw exception;
         }

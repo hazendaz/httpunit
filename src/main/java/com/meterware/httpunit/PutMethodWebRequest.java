@@ -49,6 +49,7 @@ public class PutMethodWebRequest extends MessageBodyWebRequest {
     /**
      * Returns 'PUT' to indicate the method.
      **/
+    @Override
     public String getMethod() {
         return "PUT";
     }

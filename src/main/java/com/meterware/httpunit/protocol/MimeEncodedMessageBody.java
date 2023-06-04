@@ -36,6 +36,7 @@ class MimeEncodedMessageBody extends MessageBody {
     /**
      * Returns the content type of this message body.
      **/
+    @Override
     public String getContentType() {
         return "multipart/form-data; boundary=" + BOUNDARY;
     }
@@ -43,6 +44,7 @@ class MimeEncodedMessageBody extends MessageBody {
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
+    @Override
     public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
         MimeEncoding encoding = new MimeEncoding(outputStream);
         parameters.recordParameters(encoding);
@@ -55,11 +57,11 @@ class MimeEncodedMessageBody extends MessageBody {
     private String encode(String string) {
         char[] chars = string.toCharArray();
         StringBuilder sb = new StringBuilder(chars.length + 20);
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '\\') {
+        for (char element : chars) {
+            if (element == '\\') {
                 sb.append("\\\\"); // accomodate MS-DOS file paths ??? is this safe??
             } else {
-                sb.append(chars[i]);
+                sb.append(element);
             }
         }
         return sb.toString();
@@ -94,14 +96,14 @@ class MimeEncodedMessageBody extends MessageBody {
          * @param characterSet
          *            - the name of the characterSet to use
          */
+        @Override
         public void addParameter(String name, String value, String characterSet) throws IOException {
-            if (name == null || name.length() == 0)
+            if (name == null || name.length() == 0 || (value == null)) {
                 return;
-            if (value == null)
-                return;
+            }
             writeLn(_outputStream, "--" + BOUNDARY);
             writeLn(_outputStream, "Content-Disposition: form-data; name=\"" + name + '"'); // XXX need to handle
-                                                                                            // non-ascii names here
+            // non-ascii names here
             writeLn(_outputStream, "Content-Type: text/plain; charset=" + getCharacterSet());
             writeLn(_outputStream, "");
             writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
@@ -114,7 +116,7 @@ class MimeEncodedMessageBody extends MessageBody {
             StringBuilder sb = new StringBuilder();
             char[] chars = value.toCharArray();
             for (int i = 0; i < chars.length; i++) {
-                if (chars[i] == CR || (chars[i] == LF && (i == 0 || chars[i - 1] != CR))) {
+                if (chars[i] == CR || chars[i] == LF && (i == 0 || chars[i - 1] != CR)) {
                     sb.append(CR).append(LF);
                 } else {
                     sb.append(chars[i]);
@@ -123,6 +125,7 @@ class MimeEncodedMessageBody extends MessageBody {
             return sb.toString();
         }
 
+        @Override
         public void addFile(String name, UploadFileSpec spec) throws IOException {
             byte[] buffer = new byte[8 * 1024];
 

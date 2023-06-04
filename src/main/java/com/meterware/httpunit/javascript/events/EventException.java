@@ -33,6 +33,7 @@ public class EventException extends Exception {
      */
     private static final short UNSPECIFIED_EVENT_TYPE_ERR = 0;
 
+    private static final long serialVersionUID = 1L;
     /**
      * An integer indicating the type of error generated.
      */
@@ -58,6 +59,7 @@ public class EventException extends Exception {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getMessage() {
         return Short.toString(code);
     }

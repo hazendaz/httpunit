@@ -59,8 +59,9 @@ public class WebTable extends HTMLElementBase {
     }
 
     private TableCell[][] getCells() {
-        if (_cells == null)
+        if (_cells == null) {
             readTable();
+        }
         return _cells;
 
     }
@@ -69,8 +70,9 @@ public class WebTable extends HTMLElementBase {
      * Returns the number of columns in the table.
      **/
     public int getColumnCount() {
-        if (getCells().length == 0)
+        if (getCells().length == 0) {
             return 0;
+        }
         return getCells()[0].length;
     }
 
@@ -82,7 +84,7 @@ public class WebTable extends HTMLElementBase {
      **/
     public String getCellAsText(int row, int column) {
         TableCell cell = getTableCell(row, column);
-        return (cell == null) ? "" : cell.getText();
+        return cell == null ? "" : cell.getText();
     }
 
     /**
@@ -104,8 +106,9 @@ public class WebTable extends HTMLElementBase {
         for (int i = 0; i < getRowCount(); i++) {
             for (int j = 0; j < getColumnCount(); j++) {
                 final TableCell tableCell = getCells()[i][j];
-                if (tableCell != null && tableCell.getID().equals(id))
+                if (tableCell != null && tableCell.getID().equals(id)) {
                     return tableCell;
+                }
             }
         }
         return null;
@@ -125,31 +128,34 @@ public class WebTable extends HTMLElementBase {
         // look for rows and columns with any text in a non-spanning cell
         for (int row = 0; row < rowHasText.length; row++) {
             for (int col = 0; col < columnHasText.length; col++) {
-                if (getCellAsText(row, col).trim().length() == 0)
+                if (getCellAsText(row, col).trim().length() == 0) {
                     continue;
+                }
                 if (getTableCell(row, col).getColSpan() == 1 && getTableCell(row, col).getRowSpan() == 1) {
-                    if (!rowHasText[row])
+                    if (!rowHasText[row]) {
                         numRowsWithText++;
-                    if (!columnHasText[col])
+                    }
+                    if (!columnHasText[col]) {
                         numColumnsWithText++;
+                    }
                     rowHasText[row] = columnHasText[col] = true;
-                } else if (!spanningCells.containsKey(getTableCell(row, col))) {
-                    // gstamp: altered the original code to deal with two issues:
+                } else // gstamp: altered the original code to deal with two issues:
                     // Firstly only the coordinates of the first spanning cell
                     // are added to the Map. The old code was using the last
                     // set of coordinates.
                     // Secondly I mark the starting coordinates as containing
                     // text which keeps the next section of code from removing
                     // the starting row/column.
-                    if (spanningCells.get(getTableCell(row, col)) == null) {
-                        if (!rowHasText[row])
+                    if (!spanningCells.containsKey(getTableCell(row, col)) && (spanningCells.get(getTableCell(row, col)) == null)) {
+                        if (!rowHasText[row]) {
                             numRowsWithText++;
-                        if (!columnHasText[col])
+                        }
+                        if (!columnHasText[col]) {
                             numColumnsWithText++;
+                        }
                         rowHasText[row] = columnHasText[col] = true;
                         spanningCells.put(getTableCell(row, col), new int[] { row, col });
                     }
-                }
             }
         }
 
@@ -160,12 +166,12 @@ public class WebTable extends HTMLElementBase {
             int coords[] = (int[]) spanningCells.get(cell);
             boolean neededInRow = true;
             boolean neededInCol = true;
-            for (int i = coords[0]; neededInRow && (i < rowHasText.length)
-                    && (i < coords[0] + cell.getRowSpan()); i++) {
+            for (int i = coords[0]; neededInRow && i < rowHasText.length
+                    && i < coords[0] + cell.getRowSpan(); i++) {
                 neededInRow = !rowHasText[i];
             }
-            for (int j = coords[1]; neededInCol && (j < columnHasText.length)
-                    && (j < coords[1] + cell.getColSpan()); j++) {
+            for (int j = coords[1]; neededInCol && j < columnHasText.length
+                    && j < coords[1] + cell.getColSpan(); j++) {
                 neededInCol = !columnHasText[j];
             }
             if (neededInRow) {
@@ -182,13 +188,16 @@ public class WebTable extends HTMLElementBase {
 
         int targetRow = 0;
         for (int i = 0; i < rowHasText.length; i++) {
-            if (!rowHasText[i])
+            if (!rowHasText[i]) {
                 continue;
+            }
             int targetColumn = 0;
             for (int j = 0; j < columnHasText.length; j++) {
-                if (!columnHasText[j])
+                if (!columnHasText[j]) {
                     continue;
-                remainingCells[targetRow][targetColumn++] = _cells[i][j];
+                }
+                remainingCells[targetRow][targetColumn] = _cells[i][j];
+                targetColumn++;
             }
             targetRow++;
         }
@@ -218,8 +227,9 @@ public class WebTable extends HTMLElementBase {
         return NodeUtils.getNodeAttribute(_dom, "summary");
     }
 
+    @Override
     public String toString() {
-        String eol = System.getProperty("line.separator");
+        String eol = System.lineSeparator();
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("WebTable:").append(eol);
         for (int i = 0; i < getCells().length; i++) {
             sb.append("[").append(i).append("]: ");
@@ -236,10 +246,12 @@ public class WebTable extends HTMLElementBase {
         return sb.toString();
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();
     }
@@ -272,16 +284,16 @@ public class WebTable extends HTMLElementBase {
 
         for (int i = 0; i < rows.length; i++) {
             TableCell[] cells = rows[i].getCells();
-            for (int j = 0; j < cells.length; j++) {
-                int spannedRows = Math.min(columnsRequired.length - i, cells[j].getRowSpan());
+            for (TableCell cell : cells) {
+                int spannedRows = Math.min(columnsRequired.length - i, cell.getRowSpan());
                 for (int k = 0; k < spannedRows; k++) {
-                    columnsRequired[i + k] += cells[j].getColSpan();
+                    columnsRequired[i + k] += cell.getColSpan();
                 }
             }
         }
         int numColumns = 0;
-        for (int i = 0; i < columnsRequired.length; i++) {
-            numColumns = Math.max(numColumns, columnsRequired[i]);
+        for (int element : columnsRequired) {
+            numColumns = Math.max(numColumns, element);
         }
 
         _cells = new TableCell[columnsRequired.length][numColumns];
@@ -300,8 +312,9 @@ public class WebTable extends HTMLElementBase {
     }
 
     private void placeCell(int row, int column, TableCell cell) {
-        while (_cells[row][column] != null)
+        while (_cells[row][column] != null) {
             column++;
+        }
         _cells[row][column] = cell;
     }
 
@@ -328,44 +341,33 @@ public class WebTable extends HTMLElementBase {
     }
 
     static {
-        MATCH_FIRST_NONBLANK_CELL = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                WebTable table = ((WebTable) htmlElement);
-                for (int row = 0; row < table.getRowCount(); row++) {
-                    for (int col = 0; col < table.getColumnCount(); col++) {
-                        if (HttpUnitUtils.matches(table.getCellAsText(row, col).trim(), (String) criteria))
-                            return true;
+        MATCH_FIRST_NONBLANK_CELL = (htmlElement, criteria) -> {
+            WebTable table = (WebTable) htmlElement;
+            for (int row = 0; row < table.getRowCount(); row++) {
+                for (int col = 0; col < table.getColumnCount(); col++) {
+                    if (HttpUnitUtils.matches(table.getCellAsText(row, col).trim(), (String) criteria)) {
+                        return true;
                     }
                 }
-                return false;
             }
+            return false;
         };
 
-        MATCH_FIRST_NONBLANK_CELL_PREFIX = new HTMLElementPredicate() { // XXX find a way to do this w/o purging the
-                                                                        // table cells
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                WebTable table = ((WebTable) htmlElement);
-                for (int row = 0; row < table.getRowCount(); row++) {
-                    for (int col = 0; col < table.getColumnCount(); col++) {
-                        if (HttpUnitUtils.hasPrefix(table.getCellAsText(row, col).trim(), (String) criteria))
-                            return true;
+        MATCH_FIRST_NONBLANK_CELL_PREFIX = (htmlElement, criteria) -> {
+            WebTable table = (WebTable) htmlElement;
+            for (int row = 0; row < table.getRowCount(); row++) {
+                for (int col = 0; col < table.getColumnCount(); col++) {
+                    if (HttpUnitUtils.hasPrefix(table.getCellAsText(row, col).trim(), (String) criteria)) {
+                        return true;
                     }
                 }
-                return false;
             }
+            return false;
         };
 
-        MATCH_ID = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebTable) htmlElement).getID(), (String) criteria);
-            };
-        };
+        MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getID(), (String) criteria);
 
-        MATCH_SUMMARY = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(), (String) criteria);
-            };
-        };
+        MATCH_SUMMARY = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(), (String) criteria);
 
     }
 

@@ -52,6 +52,7 @@ public class WebConversation extends WebClient {
     /**
      * Creates a web response object which represents the response to the specified web request.
      **/
+    @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
             throws MalformedURLException, IOException {
         Properties savedProperties = (Properties) System.getProperties().clone();
@@ -63,10 +64,12 @@ public class WebConversation extends WebClient {
             URLConnection connection = openConnection(getRequestURL(request));
             // [ 1518901 ] enable http connect and read timeouts (needs JDK 1.5)
             // comment the next two line if you do not need this and have JDK <1.5
-            if (_connectTimeout >= 0)
+            if (_connectTimeout >= 0) {
                 connection.setConnectTimeout(_connectTimeout);
-            if (_readTimeout >= 0)
+            }
+            if (_readTimeout >= 0) {
                 connection.setReadTimeout(_readTimeout);
+            }
             if (HttpUnitOptions.isLoggingHttpHeaders()) {
                 String urlString = request.getURLString();
                 System.out.println("\nConnecting to " + request.getURL().getHost());
@@ -81,6 +84,7 @@ public class WebConversation extends WebClient {
         }
     }
 
+    @Override
     public void clearProxyServer() {
         _proxyHost = null;
     }
@@ -93,6 +97,7 @@ public class WebConversation extends WebClient {
      * @param proxyPort
      *            - the number of the port to use e.g. 8080
      */
+    @Override
     public void setProxyServer(String proxyHost, int proxyPort) {
         _proxyHost = proxyHost;
         _proxyPort = proxyPort;
@@ -141,15 +146,17 @@ public class WebConversation extends WebClient {
      */
     private URL getRequestURL(WebRequest request) throws MalformedURLException {
         DNSListener dnsListener = getClientProperties().getDnsListener();
-        if (dnsListener == null)
+        if (dnsListener == null) {
             return request.getURL();
+        }
 
         String hostName = request.getURL().getHost();
-        String portPortion = request.getURL().getPort() == -1 ? "" : (":" + request.getURL().getPort());
+        String portPortion = request.getURL().getPort() == -1 ? "" : ":" + request.getURL().getPort();
         setHeaderField("Host", hostName + portPortion);
         String actualHost = dnsListener.getIpAddress(hostName);
-        if (HttpUnitOptions.isLoggingHttpHeaders())
+        if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("Rerouting request to :: " + actualHost);
+        }
         return new URL(request.getURL().getProtocol(), actualHost, request.getURL().getPort(),
                 request.getURL().getFile());
     }
@@ -164,8 +171,9 @@ public class WebConversation extends WebClient {
      */
     private URLConnection openConnection(URL url) throws MalformedURLException, IOException {
         URLConnection connection = url.openConnection();
-        if (connection instanceof HttpURLConnection)
+        if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setInstanceFollowRedirects(false);
+        }
         connection.setUseCaches(false);
         return connection;
     }

@@ -28,6 +28,7 @@ import com.meterware.httpunit.dom.HTMLControl;
  **/
 public class ResetButton extends Button {
 
+    @Override
     public String getType() {
         return RESET_BUTTON_TYPE;
     }
@@ -39,6 +40,7 @@ public class ResetButton extends Button {
     /**
      * overridden button action
      */
+    @Override
     protected void doButtonAction(int x, int y) {
         getForm().reset();
     }

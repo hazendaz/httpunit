@@ -44,6 +44,7 @@ public class WebImage extends FixedURLWebRequestSource {
         _parsedHTML = parsedHTML;
     }
 
+    @Override
     public String getName() {
         return _element.getName();
     }
@@ -57,15 +58,13 @@ public class WebImage extends FixedURLWebRequestSource {
     }
 
     public WebLink getLink() {
-        return _parsedHTML.getFirstMatchingLink(new HTMLElementPredicate() {
-
-            public boolean matchesCriteria(Object link, Object parentNode) {
-                for (Node parent = (Node) parentNode; parent != null; parent = parent.getParentNode()) {
-                    if (parent.equals(((WebLink) link).getElement()))
-                        return true;
+        return _parsedHTML.getFirstMatchingLink((link, parentNode) -> {
+            for (Node parent = (Node) parentNode; parent != null; parent = parent.getParentNode()) {
+                if (parent.equals(((WebLink) link).getElement())) {
+                    return true;
                 }
-                return false;
             }
+            return false;
         }, _element.getParentNode());
     }
 
@@ -75,24 +74,29 @@ public class WebImage extends FixedURLWebRequestSource {
             super(WebImage.this);
         }
 
+        @Override
         public String getName() {
             return WebImage.this.getID().length() != 0 ? WebImage.this.getID() : WebImage.this.getName();
         }
 
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("src")) {
                 return getSource();
-            } else if (propertyName.equalsIgnoreCase("name")) {
+            }
+            if (propertyName.equalsIgnoreCase("name")) {
                 return getName();
             } else {
                 return super.get(propertyName);
             }
         }
 
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("src")) {
-                if (value != null)
+                if (value != null) {
                     _element.setSrc(value.toString());
+                }
             } else {
                 super.set(propertyName, value);
             }
@@ -101,6 +105,7 @@ public class WebImage extends FixedURLWebRequestSource {
 
     // ---------------------------------- WebRequestSource methods ------------------------------------------
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }

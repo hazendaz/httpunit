@@ -34,38 +34,47 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      * a dummy ScriptingEngine implementation
      */
     public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {
+        @Override
         public boolean supportsScriptLanguage(String language) {
             return false;
         }
 
+        @Override
         public String runScript(String language, String script) {
             return "";
         }
 
+        @Override
         public boolean doEventScript(String eventScript) {
             return true;
         }
 
+        @Override
         public boolean doEvent(String eventScript) {
             return true;
         }
 
+        @Override
         public boolean handleEvent(String eventName) {
             return true;
         }
 
+        @Override
         public Object evaluateExpression(String urlString) {
             return null;
         }
 
+        @Override
         public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
             return this;
         }
 
+        @Override
         public void clearCaches() {
         }
     };
 
+    @Override
     public boolean supportsScriptLanguage(String language) {
         return getScriptEngine().supportsScriptLanguage(language);
     }
@@ -78,6 +87,8 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      *
      * @deprecated since 1.7 - use doEventScript instead
      */
+    @Deprecated
+    @Override
     public boolean doEvent(String eventScript) {
         return doEventScript(eventScript);
     }
@@ -90,6 +101,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      *
      * @return true if the event has been handled.
      **/
+    @Override
     public boolean doEventScript(String eventScript) {
         return eventScript.length() == 0 || getScriptEngine().doEventScript(eventScript);
     }
@@ -103,6 +115,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      *
      * @return whether the event with the given name was handled
      */
+    @Override
     public boolean handleEvent(String eventName) {
         String eventScript = (String) get(eventName);
         return doEventScript(eventScript);
@@ -113,19 +126,23 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      *
      * @return the replacement text, which may be empty.
      **/
+    @Override
     public String runScript(String language, String script) {
-        return (script.length() == 0) ? "" : getScriptEngine().runScript(language, script);
+        return script.length() == 0 ? "" : getScriptEngine().runScript(language, script);
     }
 
     /**
      * Evaluates the specified javascript expression, returning its value.
      **/
+    @Override
     public Object evaluateExpression(String urlString) {
-        if (urlString.length() == 0)
+        if (urlString.length() == 0) {
             return null;
+        }
         return getScriptEngine().evaluateExpression(urlString);
     }
 
+    @Override
     public void clearCaches() {
         getScriptEngine().clearCaches();
     }

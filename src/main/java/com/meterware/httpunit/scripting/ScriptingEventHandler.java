@@ -54,6 +54,7 @@ public interface ScriptingEventHandler {
      *
      * @return true if the script is empty or the result of the script
      */
+    @Deprecated
     boolean doEvent(String eventScript);
 
     /**

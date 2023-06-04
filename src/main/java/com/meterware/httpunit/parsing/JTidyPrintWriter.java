@@ -46,34 +46,42 @@ class JTidyPrintWriter extends PrintWriter {
         _url = pageURL;
     }
 
+    @Override
     public void print(boolean b) {
         print(String.valueOf(b));
     }
 
+    @Override
     public void print(char c) {
         print(String.valueOf(c));
     }
 
+    @Override
     public void print(char[] s) {
         print(String.valueOf(s));
     }
 
+    @Override
     public void print(double d) {
         print(String.valueOf(d));
     }
 
+    @Override
     public void print(float f) {
         print(String.valueOf(f));
     }
 
+    @Override
     public void print(int i) {
         print(String.valueOf(i));
     }
 
+    @Override
     public void print(long l) {
         print(String.valueOf(l));
     }
 
+    @Override
     public void print(Object obj) {
         print(obj.toString());
     }
@@ -82,6 +90,7 @@ class JTidyPrintWriter extends PrintWriter {
      * Detects a new log if starting with "line", a warning if message starts with "Warning" and an error if it starts
      * with "Error"
      **/
+    @Override
     public void print(String s) {
         if (s.startsWith("line")) {
             if (!_logged && _line > 0 && _msg != null && _msg.length() > 0) {
@@ -117,52 +126,62 @@ class JTidyPrintWriter extends PrintWriter {
         }
     }
 
+    @Override
     public void println() {
         if (!_logged) {
             log();
         }
     }
 
+    @Override
     public void println(boolean x) {
         print(String.valueOf(x));
         println();
     }
 
+    @Override
     public void println(char c) {
         print(String.valueOf(c));
         println();
     }
 
+    @Override
     public void println(char[] c) {
         print(String.valueOf(c));
         println();
     }
 
+    @Override
     public void println(double d) {
         print(String.valueOf(d));
         println();
     }
 
+    @Override
     public void println(float f) {
         print(String.valueOf(f));
         println();
     }
 
+    @Override
     public void println(int i) {
         print(String.valueOf(i));
         println();
     }
 
+    @Override
     public void println(long l) {
         print(String.valueOf(l));
         println();
     }
 
+    @Override
     public void println(Object o) {
         print(o.toString());
         println();
     }
 
+    @Override
     public void println(String s) {
         print(s);
         println();

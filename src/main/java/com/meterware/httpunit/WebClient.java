@@ -27,7 +27,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.xml.sax.SAXException;
 
@@ -61,8 +67,9 @@ abstract public class WebClient {
     }
 
     public void setMainWindow(WebWindow mainWindow) {
-        if (!_openWindows.contains(mainWindow))
+        if (!_openWindows.contains(mainWindow)) {
             throw new IllegalArgumentException("May only select an open window owned by this client");
+        }
         _mainWindow = mainWindow;
     }
 
@@ -71,12 +78,14 @@ abstract public class WebClient {
     }
 
     public WebWindow getOpenWindow(String name) {
-        if (name == null || name.length() == 0)
+        if (name == null || name.length() == 0) {
             return null;
+        }
         for (Iterator i = _openWindows.iterator(); i.hasNext();) {
             WebWindow window = (WebWindow) i.next();
-            if (name.equals(window.getName()))
+            if (name.equals(window.getName())) {
                 return window;
+            }
         }
         return null;
     }
@@ -164,6 +173,7 @@ abstract public class WebClient {
      *
      * @deprecated as of 1.6, use #putCookie instead.
      **/
+    @Deprecated
     public void addCookie(String name, String value) {
         _cookieJar.addCookie(name, value);
     }
@@ -214,6 +224,7 @@ abstract public class WebClient {
      *
      * @deprecated as of 1.4.6. Use ClientProperties#setUserAgent instead.
      **/
+    @Deprecated
     public void setUserAgent(String userAgent) {
         getClientProperties().setUserAgent(userAgent);
     }
@@ -223,6 +234,7 @@ abstract public class WebClient {
      *
      * @deprecated as of 1.4.6. Use ClientProperties#getUserAgent instead.
      **/
+    @Deprecated
     public String getUserAgent() {
         return getClientProperties().getUserAgent();
     }
@@ -264,8 +276,7 @@ abstract public class WebClient {
         if (realm == null) {
             throw new Error("null realm while calling getCredentialsForRealm");
         }
-        PasswordAuthentication result = ((PasswordAuthentication) _credentials.get(realm));
-        return result;
+        return (PasswordAuthentication) _credentials.get(realm);
     }
 
     /**
@@ -301,7 +312,7 @@ abstract public class WebClient {
      */
     public int getProxyPort() {
         try {
-            return Integer.parseInt(System.getProperty("proxyPort"));
+            return Integer.getInteger("proxyPort");
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -343,8 +354,9 @@ abstract public class WebClient {
      */
     public void addClientListener(WebClientListener listener) {
         synchronized (_clientListeners) {
-            if (listener != null && !_clientListeners.contains(listener))
+            if (listener != null && !_clientListeners.contains(listener)) {
                 _clientListeners.add(listener);
+            }
         }
     }
 
@@ -362,8 +374,9 @@ abstract public class WebClient {
      */
     public void addWindowListener(WebWindowListener listener) {
         synchronized (_windowListeners) {
-            if (listener != null && !_windowListeners.contains(listener))
+            if (listener != null && !_windowListeners.contains(listener)) {
                 _windowListeners.add(listener);
+            }
         }
     }
 
@@ -388,8 +401,9 @@ abstract public class WebClient {
      * string.
      */
     public String popNextAlert() {
-        if (_alerts.isEmpty())
+        if (_alerts.isEmpty()) {
             return "";
+        }
         return (String) _alerts.removeFirst();
     }
 
@@ -429,11 +443,13 @@ abstract public class WebClient {
     protected Dictionary getHeaderFields(URL targetURL) {
         Hashtable result = (Hashtable) _headers.clone();
         result.put("User-Agent", getClientProperties().getUserAgent());
-        if (getClientProperties().isAcceptGzip())
+        if (getClientProperties().isAcceptGzip()) {
             result.put("Accept-Encoding", "gzip");
+        }
         AddHeaderIfNotNull(result, "Cookie", _cookieJar.getCookieHeaderField(targetURL));
-        if (_authorizationString == null)
+        if (_authorizationString == null) {
             _authorizationString = _fixedAuthorizationString;
+        }
         AddHeaderIfNotNull(result, "Authorization", _authorizationString);
         AddHeaderIfNotNull(result, "Proxy-Authorization", _proxyAuthorizationString);
         _authorizationString = null;
@@ -441,8 +457,9 @@ abstract public class WebClient {
     }
 
     private void AddHeaderIfNotNull(Hashtable result, final String headerName, final String headerValue) {
-        if (headerValue != null)
+        if (headerValue != null) {
             result.put(headerName, headerValue);
+        }
     }
 
     /**
@@ -481,8 +498,9 @@ abstract public class WebClient {
     }
 
     void updateClient(WebResponse response) throws IOException {
-        if (getClientProperties().isAcceptCookies())
+        if (getClientProperties().isAcceptCookies()) {
             _cookieJar.updateCookies(response.getCookieJar());
+        }
         validateHeaders(response);
     }
 
@@ -493,6 +511,7 @@ abstract public class WebClient {
      *
      * @return the cookie jar
      */
+    @Deprecated
     public CookieJar getCookieJar() {
         return _cookieJar;
     }
@@ -501,8 +520,9 @@ abstract public class WebClient {
             RequestContext requestContext) throws IOException, SAXException {
         if (response.getFrame() == FrameSelector.NEW_FRAME) {
             WebWindow window = new WebWindow(this, requestWindow.getCurrentPage());
-            if (!WebRequest.NEW_WINDOW.equalsIgnoreCase(requestTarget))
+            if (!WebRequest.NEW_WINDOW.equalsIgnoreCase(requestTarget)) {
                 window.setName(requestTarget);
+            }
             response.setFrame(window.getTopFrame());
             window.updateFrameContents(response, requestContext);
             _openWindows.add(window);
@@ -510,20 +530,24 @@ abstract public class WebClient {
         } else if (response.getFrame().getWindow() != null && response.getFrame().getWindow() != requestWindow) {
             response.getFrame().getWindow().updateFrameContents(response, requestContext);
         } else {
-            if (response.getFrame() == FrameSelector.TOP_FRAME)
+            if (response.getFrame() == FrameSelector.TOP_FRAME) {
                 response.setFrame(requestWindow.getTopFrame());
+            }
             requestWindow.updateFrameContents(response, requestContext);
         }
     }
 
     void close(WebWindow window) {
-        if (!_openWindows.contains(window))
+        if (!_openWindows.contains(window)) {
             throw new IllegalStateException("Window is already closed");
+        }
         _openWindows.remove(window);
-        if (_openWindows.isEmpty())
+        if (_openWindows.isEmpty()) {
             _openWindows.add(new WebWindow(this));
-        if (window.equals(_mainWindow))
+        }
+        if (window.equals(_mainWindow)) {
             _mainWindow = (WebWindow) _openWindows.get(0);
+        }
         reportWindowClosed(window);
     }
 
@@ -612,19 +636,18 @@ abstract public class WebClient {
             exception.setResponse(response);
             // shall we ignore errors?
             if (!getExceptionsThrownOnErrorStatus()) {
-                return;
-            } else {
-                throw exception;
             }
+            throw exception;
         }
     }
 
     FrameSelector findFrame(String target) {
-        for (int i = 0; i < _openWindows.size(); i++) {
-            WebWindow webWindow = (WebWindow) _openWindows.get(i);
+        for (Object _openWindow : _openWindows) {
+            WebWindow webWindow = (WebWindow) _openWindow;
             FrameSelector frame = webWindow.getFrame(target);
-            if (frame != null)
+            if (frame != null) {
                 return frame;
+            }
         }
         return null;
     }
@@ -650,14 +673,13 @@ abstract public class WebClient {
                 response.getHeaderField("WWW-Authenticate"));
         if (!challenge.needToAuthenticate()) {
             return response;
-        } else {
-            setOnetimeAuthenticationHeader(challenge.createAuthenticationHeader());
-            WebResponse response2 = newResponse(request, targetFrame);
-            if (response2.getHeaderField("WWW-Authenticate") != null && getExceptionsThrownOnErrorStatus()) {
-                throw AuthenticationChallenge.createException(response2.getHeaderField("WWW-Authenticate"));
-            }
-            return response2;
         }
+        setOnetimeAuthenticationHeader(challenge.createAuthenticationHeader());
+        WebResponse response2 = newResponse(request, targetFrame);
+        if (response2.getHeaderField("WWW-Authenticate") != null && getExceptionsThrownOnErrorStatus()) {
+            throw AuthenticationChallenge.createException(response2.getHeaderField("WWW-Authenticate"));
+        }
+        return response2;
     }
 
     private void setOnetimeAuthenticationHeader(String authorizationHeader) {
@@ -668,6 +690,8 @@ abstract public class WebClient {
 
     static public class HeaderDictionary extends Hashtable {
 
+        private static final long serialVersionUID = 1L;
+
         public void addEntries(Dictionary source) {
             for (Enumeration e = source.keys(); e.hasMoreElements();) {
                 Object key = e.nextElement();
@@ -675,14 +699,17 @@ abstract public class WebClient {
             }
         }
 
+        @Override
         public boolean containsKey(Object key) {
             return super.containsKey(matchPreviousFieldName(key.toString()));
         }
 
+        @Override
         public Object get(Object fieldName) {
             return super.get(matchPreviousFieldName(fieldName.toString()));
         }
 
+        @Override
         public Object put(Object fieldName, Object fieldValue) {
             fieldName = matchPreviousFieldName(fieldName.toString());
             Object oldValue = super.get(fieldName);
@@ -701,8 +728,9 @@ abstract public class WebClient {
         private String matchPreviousFieldName(String fieldName) {
             for (Enumeration e = keys(); e.hasMoreElements();) {
                 String key = (String) e.nextElement();
-                if (key.equalsIgnoreCase(fieldName))
+                if (key.equalsIgnoreCase(fieldName)) {
                     return key;
+                }
             }
             return fieldName;
         }
@@ -717,13 +745,15 @@ class RedirectWebRequest extends WebRequest {
 
     RedirectWebRequest(WebResponse response) {
         super(response.getURL(), response.getHeaderField("Location"), response.getFrame(), response.getFrameName());
-        if (response.getReferer() != null)
+        if (response.getReferer() != null) {
             setHeaderField("Referer", response.getReferer());
+        }
     }
 
     /**
      * Returns the HTTP method defined for this request.
      **/
+    @Override
     public String getMethod() {
         return "GET";
     }

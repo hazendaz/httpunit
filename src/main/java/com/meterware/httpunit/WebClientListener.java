@@ -50,10 +50,10 @@ public interface WebClientListener {
     /**
      * Invoked when the web client sends a request.
      */
-    public void requestSent(WebClient src, WebRequest req);
+    void requestSent(WebClient src, WebRequest req);
 
     /**
      * Invoked when the web client receives a response.
      */
-    public void responseReceived(WebClient src, WebResponse resp);
+    void responseReceived(WebClient src, WebResponse resp);
 }

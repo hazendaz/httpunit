@@ -46,6 +46,8 @@ package com.meterware.httpunit;
  **/
 public class ScriptException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     public ScriptException(String s) {
         super(s);
     }

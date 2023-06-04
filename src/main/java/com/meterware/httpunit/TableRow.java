@@ -54,10 +54,12 @@ public class TableRow extends HTMLElementBase {
         _cells.add(cell);
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return _webTable.getParentDelegate();
     }

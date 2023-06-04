@@ -27,13 +27,23 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLAppletElement;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLImageElement;
+import org.w3c.dom.html.HTMLTableCellElement;
+import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -41,7 +51,7 @@ import org.w3c.dom.html.*;
  **/
 public class ParsedHTML {
 
-    final static private HTMLElement[] NO_ELEMENTS = new HTMLElement[0];
+    final static private HTMLElement[] NO_ELEMENTS = {};
 
     final static private String[] TEXT_ELEMENTS = { "p", "h1", "h2", "h3", "h4", "h5", "h6" };
 
@@ -182,9 +192,10 @@ public class ParsedHTML {
     public TextBlock getFirstMatchingTextBlock(HTMLElementPredicate predicate, Object criteria) {
         loadElements();
         TextBlock[] blocks = getTextBlocks();
-        for (int i = 0; i < blocks.length; i++) {
-            if (predicate.matchesCriteria(blocks[i], criteria))
-                return blocks[i];
+        for (TextBlock block : blocks) {
+            if (predicate.matchesCriteria(block, criteria)) {
+                return block;
+            }
         }
         return null;
     }
@@ -199,8 +210,9 @@ public class ParsedHTML {
     public TextBlock getNextTextBlock(TextBlock block) {
         loadElements();
         int index = _blocksList.indexOf(block);
-        if (index < 0 || index == _blocksList.size() - 1)
+        if (index < 0 || index == _blocksList.size() - 1) {
             return null;
+        }
         return (TextBlock) _blocksList.get(index + 1);
     }
 
@@ -291,9 +303,8 @@ public class ParsedHTML {
         loadElements();
         if (dom instanceof Element) {
             return getElementsFromList(((Element) dom).getElementsByTagName(name));
-        } else {
-            return getElementsFromList(((Document) dom).getElementsByTagName(name));
         }
+        return getElementsFromList(((Document) dom).getElementsByTagName(name));
     }
 
     private HTMLElement[] getElementsFromList(NodeList nl) {
@@ -338,9 +349,10 @@ public class ParsedHTML {
      **/
     public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object criteria) {
         WebForm[] forms = getForms();
-        for (int i = 0; i < forms.length; i++) {
-            if (predicate.matchesCriteria(forms[i], criteria))
-                return forms[i];
+        for (WebForm form : forms) {
+            if (predicate.matchesCriteria(form, criteria)) {
+                return form;
+            }
         }
         return null;
     }
@@ -351,9 +363,10 @@ public class ParsedHTML {
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) {
         ArrayList matches = new ArrayList();
         WebForm[] forms = getForms();
-        for (int i = 0; i < forms.length; i++) {
-            if (predicate.matchesCriteria(forms[i], criteria))
-                matches.add(forms[i]);
+        for (WebForm form : forms) {
+            if (predicate.matchesCriteria(form, criteria)) {
+                matches.add(form);
+            }
         }
         return (WebForm[]) matches.toArray(new WebForm[matches.size()]);
     }
@@ -381,8 +394,9 @@ public class ParsedHTML {
             try {
                 _updateElements = false;
                 String language = NodeUtils.getNodeAttribute(element, "language", null);
-                if (!getResponse().getScriptingHandler().supportsScriptLanguage(language))
+                if (!getResponse().getScriptingHandler().supportsScriptLanguage(language)) {
                     _enableNoScriptNodes = true;
+                }
                 getResponse().getScriptingHandler().runScript(language, script);
             } finally {
                 clearCaches();
@@ -401,12 +415,11 @@ public class ParsedHTML {
         String scriptLocation = NodeUtils.getNodeAttribute(scriptNode, "src", null);
         if (scriptLocation == null) {
             return NodeUtils.asText(scriptNode.getChildNodes());
-        } else {
-            try {
-                return getIncludedScript(scriptLocation);
-            } catch (Exception e) {
-                throw new RuntimeException("Error loading included script: " + e);
-            }
+        }
+        try {
+            return getIncludedScript(scriptLocation);
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading included script: " + e);
         }
     }
 
@@ -424,27 +437,25 @@ public class ParsedHTML {
     String getIncludedScript(String srcAttribute) throws IOException {
         WebRequest req = new GetMethodWebRequest(getBaseURL(), srcAttribute);
         WebWindow window = getResponse().getWindow();
-        if (window == null)
+        if (window == null) {
             throw new IllegalStateException(
                     "Unable to retrieve script included by this response, since it was loaded by getResource(). Use getResponse() instead.");
+        }
         WebResponse response = window.getResource(req);
         // check whether the Source is available
         int code = response.getResponseCode();
         // if everything is o.k.
         if (code <= HttpURLConnection.HTTP_BAD_REQUEST) {
-            // return the text
-            String result = response.getText();
-            return result;
-        } else {
-            // in this case the text would be an error message
-            // we do not return it but set the
-            ScriptException se = new ScriptException(
-                    "reponseCode " + code + " on getIncludedScript for src='" + srcAttribute + "'");
-            String badScript = null;
-            // let scripting engine decide what to do with this exception (throw it or remember it ...)
-            HttpUnitOptions.getScriptingEngine().handleScriptException(se, badScript);
-            return "";
+            return response.getText();
         }
+        // in this case the text would be an error message
+        // we do not return it but set the
+        ScriptException se = new ScriptException(
+                "reponseCode " + code + " on getIncludedScript for src='" + srcAttribute + "'");
+        String badScript = null;
+        // let scripting engine decide what to do with this exception (throw it or remember it ...)
+        HttpUnitOptions.getScriptingEngine().handleScriptException(se, badScript);
+        return "";
     }
 
     /**
@@ -452,8 +463,9 @@ public class ParsedHTML {
      */
     private HTMLElement toNoscriptElement(Element element) {
         HTMLElement result = null;
-        if (!_enableNoScriptNodes)
+        if (!_enableNoScriptNodes) {
             result = new NoScriptElement(element);
+        }
         return result;
     }
 
@@ -469,16 +481,18 @@ public class ParsedHTML {
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
-                if (o instanceof ParsedHTML)
+                if (o instanceof ParsedHTML) {
                     ((ParsedHTML) o).addToList(htmlElement);
+                }
             }
         }
 
         protected void addToMaps(NodeUtils.PreOrderTraversal pot, Node node, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
-                if (o instanceof ParsedHTML)
+                if (o instanceof ParsedHTML) {
                     ((ParsedHTML) o).addToMaps(node, htmlElement);
+                }
             }
         }
 
@@ -515,6 +529,7 @@ public class ParsedHTML {
 
     static class DefaultElementFactory extends HTMLElementFactory {
 
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             // [ 1531005 ] getElementsWithAttribute **FIX**
             // if (element.getAttribute( "id" ).equals( "" )) {
@@ -523,16 +538,19 @@ public class ParsedHTML {
             return parsedHTML.toDefaultElement(element);
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
         }
     }
 
     private HTMLElement toDefaultElement(Element element) {
         return new HTMLElementBase(element) {
+            @Override
             public ScriptableDelegate newScriptable() {
                 return new HTMLElementScriptable(this);
             }
 
+            @Override
             public ScriptableDelegate getParentDelegate() {
                 return getResponse().getDocumentScriptable();
             }
@@ -540,31 +558,37 @@ public class ParsedHTML {
     }
 
     static class WebFormFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebForm(element);
         }
     }
 
     static class WebLinkFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toLinkAnchor(element);
         }
     }
 
     static class TextBlockFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toTextBlock(element);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
-                if (!(o instanceof ParsedHTML))
+                if (!(o instanceof ParsedHTML)) {
                     continue;
+                }
                 ((ParsedHTML) o).addToList(htmlElement);
                 break;
             }
@@ -574,10 +598,12 @@ public class ParsedHTML {
 
     static class ScriptFactory extends HTMLElementFactory {
 
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return null;
         }
 
+        @Override
         void recordElement(NodeUtils.PreOrderTraversal pot, Element element, ParsedHTML parsedHTML) {
             parsedHTML.interpretScriptElement(element);
         }
@@ -585,76 +611,92 @@ public class ParsedHTML {
 
     static class NoScriptFactory extends HTMLElementFactory {
 
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toNoscriptElement(element);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
     }
 
     static class WebFrameFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebFrame(element);
         }
     }
 
     static class WebIFrameFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebIFrame(element);
         }
 
+        @Override
         protected boolean isRecognized(ClientProperties properties) {
             return properties.isIframeSupported();
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
     }
 
     static class WebImageFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebImage(element);
         }
     }
 
     static class WebAppletFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebApplet(element);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
     }
 
     static class WebTableFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toWebTable(element);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
-                if (o instanceof ParsedHTML)
+                if (o instanceof ParsedHTML) {
                     ((ParsedHTML) o).addToList(htmlElement);
-                if (o instanceof TableCell)
+                }
+                if (o instanceof TableCell) {
                     break;
+                }
             }
         }
     }
 
     static class TableRowFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             WebTable wt = getWebTable(pot);
-            if (wt == null)
+            if (wt == null) {
                 return null;
+            }
             return wt.newTableRow((HTMLTableRowElement) element);
         }
 
@@ -662,20 +704,24 @@ public class ParsedHTML {
             return (WebTable) getClosestContext(pot, WebTable.class);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             getWebTable(pot).addRow((TableRow) htmlElement);
         }
     }
 
     static class TableCellFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             TableRow tr = getTableRow(pot);
-            if (tr == null)
+            if (tr == null) {
                 return null;
+            }
             return tr.newTableCell((HTMLTableCellElement) element);
         }
 
@@ -683,10 +729,12 @@ public class ParsedHTML {
             return (TableRow) getClosestContext(pot, TableRow.class);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             getTableRow(pot).addTableCell((TableCell) htmlElement);
         }
@@ -694,22 +742,21 @@ public class ParsedHTML {
 
     static class FormControlFactory extends HTMLElementFactory {
 
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             HTMLFormElement form = ((HTMLControl) element).getForm();
             if (form == null) {
                 return newControlWithoutForm(parsedHTML, element);
-            } else {
-                return parsedHTML.getWebForm(form).newFormControl(element);
             }
+            return parsedHTML.getWebForm(form).newFormControl(element);
         }
 
         private HTMLElement newControlWithoutForm(ParsedHTML parsedHTML, Element element) {
             if ((element.getNodeName().equalsIgnoreCase("button") || element.getNodeName().equalsIgnoreCase("input"))
                     && isValidNonFormButtonType(NodeUtils.getNodeAttribute(element, "type"))) {
                 return parsedHTML.toButtonWithoutForm(element);
-            } else {
-                return null;
             }
+            return null;
         }
 
         private boolean isValidNonFormButtonType(String buttonType) {
@@ -718,18 +765,22 @@ public class ParsedHTML {
     }
 
     static class WebListFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             return parsedHTML.toOrderedList(element);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             TextBlock textBlock = getTextBlock(pot);
-            if (textBlock != null)
+            if (textBlock != null) {
                 textBlock.addList((WebList) htmlElement);
+            }
         }
 
         private TextBlock getTextBlock(NodeUtils.PreOrderTraversal pot) {
@@ -738,10 +789,12 @@ public class ParsedHTML {
     }
 
     static class ListItemFactory extends HTMLElementFactory {
+        @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
             WebList webList = getWebList(pot);
-            if (webList == null)
+            if (webList == null) {
                 return null;
+            }
             return webList.addNewItem(element);
         }
 
@@ -749,10 +802,12 @@ public class ParsedHTML {
             return (WebList) getClosestContext(pot, WebList.class);
         }
 
+        @Override
         protected boolean addToContext() {
             return true;
         }
 
+        @Override
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
         }
     }
@@ -778,8 +833,8 @@ public class ParsedHTML {
         _htmlFactoryClasses.put("ul", new WebListFactory());
         _htmlFactoryClasses.put("li", new ListItemFactory());
 
-        for (int i = 0; i < TEXT_ELEMENTS.length; i++) {
-            _htmlFactoryClasses.put(TEXT_ELEMENTS[i], new TextBlockFactory());
+        for (String element : TEXT_ELEMENTS) {
+            _htmlFactoryClasses.put(element, new TextBlockFactory());
         }
 
         for (Iterator i = Arrays.asList(FormControl.getControlElementTags()).iterator(); i.hasNext();) {
@@ -793,34 +848,38 @@ public class ParsedHTML {
     }
 
     private void loadElements() {
-        if (!_updateElements)
+        if (!_updateElements) {
             return;
+        }
 
         NodeUtils.NodeAction action = new NodeUtils.NodeAction() {
+            @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
                 HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());
-                if (factory == null || !factory.isRecognized(getClientProperties()))
+                if (factory == null || !factory.isRecognized(getClientProperties()) || (pot.getClosestContext(ContentConcealer.class) != null)) {
                     return true;
-                if (pot.getClosestContext(ContentConcealer.class) != null)
-                    return true;
+                }
 
-                if (!_registry.hasNode(element))
+                if (!_registry.hasNode(element)) {
                     factory.recordElement(pot, element, ParsedHTML.this);
-                if (factory.addToContext())
+                }
+                if (factory.addToContext()) {
                     pot.pushContext(_registry.getRegisteredElement(element));
+                }
 
                 return true;
             }
 
+            @Override
             public void processTextNode(NodeUtils.PreOrderTraversal pot, Node textNode) {
-                if (textNode.getNodeValue().trim().length() == 0)
+                if (textNode.getNodeValue().trim().length() == 0) {
                     return;
+                }
 
                 Node parent = textNode.getParentNode();
-                if (!parent.getNodeName().equalsIgnoreCase("body"))
+                if (!parent.getNodeName().equalsIgnoreCase("body") || (pot.getClosestContext(ContentConcealer.class) != null)) {
                     return;
-                if (pot.getClosestContext(ContentConcealer.class) != null)
-                    return;
+                }
                 new HtmlElementRecorder().recordHtmlElement(pot, textNode, newTextBlock(textNode));
             }
         };
@@ -860,7 +919,7 @@ public class ParsedHTML {
      * @return
      */
     private WebLink toLinkAnchor(Element child) {
-        return (!isWebLink(child)) ? null : new WebLink(_response, _baseURL, child, _frame, _baseTarget, _characterSet);
+        return !isWebLink(child) ? null : new WebLink(_response, _baseURL, child, _frame, _baseTarget, _characterSet);
     }
 
     /**
@@ -881,7 +940,7 @@ public class ParsedHTML {
         if (!tagName.equalsIgnoreCase("area") && !tagName.equalsIgnoreCase("a")) {
         } else {
             // pre 1.7 code - still active
-            result = (node.getAttributes().getNamedItem("href") != null);
+            result = node.getAttributes().getNamedItem("href") != null;
             // proposed patch - not activated
             // result=true;
         }
@@ -914,10 +973,12 @@ public class ParsedHTML {
 
     private void addToMaps(Node node, HTMLElement htmlElement) {
         _registry.registerElement(node, htmlElement);
-        if (htmlElement.getID() != null)
+        if (htmlElement.getID() != null) {
             _elementsByID.put(htmlElement.getID(), htmlElement);
-        if (htmlElement.getName() != null)
+        }
+        if (htmlElement.getName() != null) {
             addNamedElement(htmlElement.getName(), htmlElement);
+        }
         if (htmlElement.getClassName() != null) {
             StringTokenizer tokenizer = new StringTokenizer(htmlElement.getClassName());
             String token;
@@ -938,24 +999,29 @@ public class ParsedHTML {
 
     private void addNamedElement(String name, HTMLElement htmlElement) {
         List list = (List) _elementsByName.get(name);
-        if (list == null)
+        if (list == null) {
             _elementsByName.put(name, list = new ArrayList());
+        }
         list.add(htmlElement);
     }
 
     private void addToList(HTMLElement htmlElement) {
         ArrayList list = getListForElement(htmlElement);
-        if (list != null)
+        if (list != null) {
             list.add(htmlElement);
+        }
     }
 
     private ArrayList getListForElement(HTMLElement element) {
-        if (element instanceof WebTable)
+        if (element instanceof WebTable) {
             return _tableList;
-        if (element instanceof WebFrame)
+        }
+        if (element instanceof WebFrame) {
             return _frameList;
-        if (element instanceof BlockElement)
+        }
+        if (element instanceof BlockElement) {
             return _blocksList;
+        }
         return null;
     }
 
@@ -986,9 +1052,10 @@ public class ParsedHTML {
      **/
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) {
         WebLink[] links = getLinks();
-        for (int i = 0; i < links.length; i++) {
-            if (predicate.matchesCriteria(links[i], criteria))
-                return links[i];
+        for (WebLink link : links) {
+            if (predicate.matchesCriteria(link, criteria)) {
+                return link;
+            }
         }
         return null;
     }
@@ -999,9 +1066,10 @@ public class ParsedHTML {
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) {
         ArrayList matches = new ArrayList();
         WebLink[] links = getLinks();
-        for (int i = 0; i < links.length; i++) {
-            if (predicate.matchesCriteria(links[i], criteria))
-                matches.add(links[i]);
+        for (WebLink link : links) {
+            if (predicate.matchesCriteria(link, criteria)) {
+                matches.add(link);
+            }
         }
         return (WebLink[]) matches.toArray(new WebLink[matches.size()]);
     }
@@ -1011,9 +1079,10 @@ public class ParsedHTML {
      **/
     public WebImage getImageWithName(String name) {
         WebImage[] images = getImages();
-        for (int i = 0; i < images.length; i++) {
-            if (HttpUnitUtils.matches(name, images[i].getName()))
-                return images[i];
+        for (WebImage image : images) {
+            if (HttpUnitUtils.matches(name, image.getName())) {
+                return image;
+            }
         }
         return null;
     }
@@ -1023,9 +1092,10 @@ public class ParsedHTML {
      **/
     public WebImage getImageWithSource(String source) {
         WebImage[] images = getImages();
-        for (int i = 0; i < images.length; i++) {
-            if (HttpUnitUtils.matches(source, images[i].getSource()))
-                return images[i];
+        for (WebImage image : images) {
+            if (HttpUnitUtils.matches(source, image.getSource())) {
+                return image;
+            }
         }
         return null;
     }
@@ -1035,9 +1105,10 @@ public class ParsedHTML {
      **/
     public WebImage getImageWithAltText(String altText) {
         WebImage[] images = getImages();
-        for (int i = 0; i < images.length; i++) {
-            if (HttpUnitUtils.matches(altText, images[i].getAltText()))
-                return images[i];
+        for (WebImage image : images) {
+            if (HttpUnitUtils.matches(altText, image.getAltText())) {
+                return image;
+            }
         }
         return null;
     }
@@ -1111,8 +1182,9 @@ public class ParsedHTML {
 
     // ---------------------------------- Object methods --------------------------------
 
+    @Override
     public String toString() {
-        return _baseURL.toExternalForm() + System.getProperty("line.separator") + _rootNode;
+        return _baseURL.toExternalForm() + System.lineSeparator() + _rootNode;
     }
 
     // ---------------------------------- package members --------------------------------
@@ -1122,12 +1194,14 @@ public class ParsedHTML {
      * a page fragment.
      */
     void setRootNode(Node rootNode) {
-        if (_rootNode != null && rootNode != _rootNode)
+        if (_rootNode != null && rootNode != _rootNode) {
             throw new IllegalStateException("The root node has already been defined as " + _rootNode
                     + " and cannot be redefined as " + rootNode);
+        }
         _rootNode = rootNode;
-        if (rootNode instanceof HTMLDocumentImpl)
+        if (rootNode instanceof HTMLDocumentImpl) {
             ((HTMLDocumentImpl) rootNode).setIFramesEnabled(getClientProperties().isIframeSupported());
+        }
         clearCaches();
     }
 
@@ -1174,8 +1248,9 @@ public class ParsedHTML {
     // ---------------------------------- private members --------------------------------
 
     Node getRootNode() {
-        if (_rootNode == null)
+        if (_rootNode == null) {
             throw new IllegalStateException("The root node has not been specified");
+        }
         return _rootNode;
     }
 
@@ -1183,19 +1258,19 @@ public class ParsedHTML {
      * Returns the table with the specified text in its summary attribute.
      **/
     private WebTable getTableSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
-        for (int i = 0; i < tables.length; i++) {
-            if (predicate.matchesCriteria(tables[i], value)) {
-                return tables[i];
-            } else {
-                for (int j = 0; j < tables[i].getRowCount(); j++) {
-                    for (int k = 0; k < tables[i].getColumnCount(); k++) {
-                        TableCell cell = tables[i].getTableCell(j, k);
-                        if (cell != null) {
-                            WebTable[] innerTables = cell.getTables();
-                            if (innerTables.length != 0) {
-                                WebTable result = getTableSatisfyingPredicate(innerTables, predicate, value);
-                                if (result != null)
-                                    return result;
+        for (WebTable table : tables) {
+            if (predicate.matchesCriteria(table, value)) {
+                return table;
+            }
+            for (int j = 0; j < table.getRowCount(); j++) {
+                for (int k = 0; k < table.getColumnCount(); k++) {
+                    TableCell cell = table.getTableCell(j, k);
+                    if (cell != null) {
+                        WebTable[] innerTables = cell.getTables();
+                        if (innerTables.length != 0) {
+                            WebTable result = getTableSatisfyingPredicate(innerTables, predicate, value);
+                            if (result != null) {
+                                return result;
                             }
                         }
                     }
@@ -1210,21 +1285,19 @@ public class ParsedHTML {
      **/
     private WebTable[] getTablesSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
         ArrayList matches = new ArrayList();
-        for (int i = 0; i < tables.length; i++) {
-            if (predicate.matchesCriteria(tables[i], value)) {
-                matches.add(tables[i]);
+        for (WebTable table : tables) {
+            if (predicate.matchesCriteria(table, value)) {
+                matches.add(table);
             }
-            for (int j = 0; j < tables[i].getRowCount(); j++) {
-                for (int k = 0; k < tables[i].getColumnCount(); k++) {
-                    TableCell cell = tables[i].getTableCell(j, k);
+            for (int j = 0; j < table.getRowCount(); j++) {
+                for (int k = 0; k < table.getColumnCount(); k++) {
+                    TableCell cell = table.getTableCell(j, k);
                     if (cell != null) {
                         WebTable[] innerTables = cell.getTables();
                         if (innerTables.length != 0) {
                             WebTable[] result = getTablesSatisfyingPredicate(innerTables, predicate, value);
                             if (result != null && result.length > 0) {
-                                for (int l = 0; l < result.length; l++) {
-                                    matches.add(result[l]);
-                                }
+                                matches.addAll(Arrays.asList(result));
                             }
                         }
                     }
@@ -1233,9 +1306,8 @@ public class ParsedHTML {
         }
         if (matches.size() > 0) {
             return (WebTable[]) matches.toArray(new WebTable[matches.size()]);
-        } else {
-            return null;
         }
+        return null;
     }
 
     class WebIFrame extends WebFrame implements ContentConcealer {
@@ -1254,10 +1326,12 @@ public class ParsedHTML {
             super(node);
         }
 
+        @Override
         public ScriptableDelegate newScriptable() {
             return null;
         }
 
+        @Override
         public ScriptableDelegate getParentDelegate() {
             return null;
         }

@@ -19,10 +19,26 @@
  */
 package com.meterware.httpunit.javascript;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.ClientProperties;
+import com.meterware.httpunit.HTMLPage;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebImage;
+import com.meterware.httpunit.WebLink;
+import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.javascript.events.EventException;
 import com.meterware.httpunit.javascript.events.EventTarget;
-import com.meterware.httpunit.scripting.*;
+import com.meterware.httpunit.scripting.DocumentElement;
+import com.meterware.httpunit.scripting.FormScriptable;
+import com.meterware.httpunit.scripting.IdentifiedDelegate;
+import com.meterware.httpunit.scripting.Input;
+import com.meterware.httpunit.scripting.NamedDelegate;
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+import com.meterware.httpunit.scripting.ScriptingEngine;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+import com.meterware.httpunit.scripting.SelectionOption;
+import com.meterware.httpunit.scripting.SelectionOptions;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +48,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
 import org.xml.sax.SAXException;
 
 /**
@@ -56,7 +77,7 @@ public class JavaScript {
      * Initiates JavaScript execution for the specified web response.
      */
     public static void run(WebResponse response) throws IllegalAccessException, InstantiationException,
-            InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
+    InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
         Context context = Context.enter();
         // suggest bug fix for large java scripts see
         // bug report [ 1216567 ] Exception for large javascripts
@@ -75,9 +96,10 @@ public class JavaScript {
      * Runs the onload event for the specified web response.
      */
     public static void load(WebResponse response) throws EvaluatorException, InstantiationException,
-            IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
-        if (!(response.getScriptableObject().getScriptEngine() instanceof JavaScriptEngine))
+    IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
+        if (!(response.getScriptableObject().getScriptEngine() instanceof JavaScriptEngine)) {
             run(response);
+        }
         response.getScriptableObject().load();
     }
 
@@ -105,6 +127,7 @@ public class JavaScript {
      */
     abstract static class JavaScriptEngine extends ScriptingEngineImpl implements EventTarget {
 
+        private static final long serialVersionUID = 1L;
         protected ScriptableDelegate _scriptable;
         protected JavaScriptEngine _parent;
         protected Map _eventListeners = new HashMap(); // Map<String,Set<EventListener>>
@@ -122,8 +145,9 @@ public class JavaScript {
             _scriptable = scriptable;
             _scriptable.setScriptEngine(this);
             _parent = parent;
-            if (parent != null)
+            if (parent != null) {
                 setParentScope(parent);
+            }
         }
 
         String getName() {
@@ -142,44 +166,55 @@ public class JavaScript {
          *
          * @return
          */
+        @Override
         public boolean handleEvent(String eventName) {
             return _scriptable.handleEvent(eventName);
         }
 
+        @Override
         public boolean has(String propertyName, Scriptable scriptable) {
             return super.has(propertyName, scriptable)
-                    || (_scriptable != null && _scriptable.get(propertyName) != null);
+                    || _scriptable != null && _scriptable.get(propertyName) != null;
         }
 
+        @Override
         public Object get(String propertyName, Scriptable scriptable) {
             Object result = super.get(propertyName, scriptable);
-            if (result != NOT_FOUND)
+            if (result != NOT_FOUND) {
                 return result;
-            if (_scriptable == null)
+            }
+            if (_scriptable == null) {
                 return NOT_FOUND;
+            }
 
             return convertIfNeeded(_scriptable.get(propertyName));
 
         }
 
+        @Override
         public Object get(int i, Scriptable scriptable) {
             Object result = super.get(i, scriptable);
-            if (result != NOT_FOUND)
+            if (result != NOT_FOUND) {
                 return result;
-            if (_scriptable == null)
+            }
+            if (_scriptable == null) {
                 return NOT_FOUND;
+            }
 
             return convertIfNeeded(_scriptable.get(i));
         }
 
         private Object convertIfNeeded(final Object property) {
-            if (property == null)
+            if (property == null) {
                 return NOT_FOUND;
+            }
 
-            if (property instanceof ScriptableDelegate[])
+            if (property instanceof ScriptableDelegate[]) {
                 return toScriptable((ScriptableDelegate[]) property);
-            if (!(property instanceof ScriptableDelegate))
+            }
+            if (!(property instanceof ScriptableDelegate)) {
                 return property;
+            }
             return toScriptable((ScriptableDelegate) property);
         }
 
@@ -191,6 +226,7 @@ public class JavaScript {
             return Context.getCurrentContext().newArray(this, delegates);
         }
 
+        @Override
         public void put(String propertyName, Scriptable scriptable, Object value) {
             if (_scriptable == null || _scriptable.get(propertyName) == null) {
                 super.put(propertyName, scriptable, value);
@@ -199,10 +235,12 @@ public class JavaScript {
             }
         }
 
+        @Override
         public String toString() {
             return (_scriptable == null ? "prototype " : "") + getClassName();
         }
 
+        @Override
         public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
             try {
                 return (ScriptingEngine) toScriptable(child);
@@ -212,11 +250,12 @@ public class JavaScript {
             }
         }
 
+        @Override
         public void clearCaches() {
         }
 
         protected static String toStringIfNotUndefined(Object object) {
-            return (object == null || Undefined.instance.equals(object)) ? null : object.toString();
+            return object == null || Undefined.instance.equals(object) ? null : object.toString();
         }
 
         /**
@@ -225,8 +264,9 @@ public class JavaScript {
         final Object toScriptable(ScriptableDelegate delegate) {
             if (delegate == null) {
                 return NOT_FOUND;
-            } else if (delegate.getScriptEngine() instanceof Scriptable) {
-                return (Scriptable) delegate.getScriptEngine();
+            }
+            if (delegate.getScriptEngine() instanceof Scriptable) {
+                return delegate.getScriptEngine();
             } else {
                 try {
                     JavaScriptEngine element = (JavaScriptEngine) Context.getCurrentContext().newObject(this,
@@ -254,24 +294,33 @@ public class JavaScript {
          *             IllegalArgumentException if the delegate is not known
          */
         private String getScriptableClassName(ScriptableDelegate delegate) {
-            if (delegate instanceof WebResponse.Scriptable)
+            if (delegate instanceof WebResponse.Scriptable) {
                 return "Window";
-            if (delegate instanceof HTMLPage.Scriptable)
+            }
+            if (delegate instanceof HTMLPage.Scriptable) {
                 return "Document";
-            if (delegate instanceof FormScriptable)
+            }
+            if (delegate instanceof FormScriptable) {
                 return "Form";
-            if (delegate instanceof WebLink.Scriptable)
+            }
+            if (delegate instanceof WebLink.Scriptable) {
                 return "Link";
-            if (delegate instanceof WebImage.Scriptable)
+            }
+            if (delegate instanceof WebImage.Scriptable) {
                 return "Image";
-            if (delegate instanceof SelectionOptions)
+            }
+            if (delegate instanceof SelectionOptions) {
                 return "Options";
-            if (delegate instanceof SelectionOption)
+            }
+            if (delegate instanceof SelectionOption) {
                 return "Option";
-            if (delegate instanceof Input)
+            }
+            if (delegate instanceof Input) {
                 return "Control";
-            if (delegate instanceof DocumentElement)
+            }
+            if (delegate instanceof DocumentElement) {
                 return "HTMLElement";
+            }
 
             throw new IllegalArgumentException("Unknown ScriptableDelegate class: " + delegate.getClass());
         }
@@ -289,6 +338,7 @@ public class JavaScript {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture) {
             if (useCapture) {
                 Set set = (Set) _eventCaptureListeners.get(type); // Set<Scriptable>
@@ -311,6 +361,7 @@ public class JavaScript {
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException {
             // TODO implement event dispatching & listener invocation
             // System.out.println(getClassName()+".dispatchEvent("+evt.get("type",evt)+")");
@@ -320,6 +371,7 @@ public class JavaScript {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture) {
             if (useCapture) {
                 Set set = (Set) _eventCaptureListeners.get(type); // Set<EventListener>
@@ -341,12 +393,14 @@ public class JavaScript {
      */
     static public class Window extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private Document _document;
         private Navigator _navigator;
         private Location _location;
         private Screen _screen;
         private ElementArray _frames;
 
+        @Override
         public String getClassName() {
             return "Window";
         }
@@ -406,6 +460,7 @@ public class JavaScript {
          *
          * @scriptable - the scriptable object to do the initialization for
          */
+        @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize(parent, scriptable);
@@ -474,15 +529,19 @@ public class JavaScript {
             return null;
         }
 
+        @Override
         public void clearCaches() {
-            if (_document != null)
+            if (_document != null) {
                 _document.clearCaches();
+            }
         }
 
+        @Override
         protected String getDocumentWriteBuffer() {
             return jsGet_document().getWriteBuffer().toString();
         }
 
+        @Override
         protected void discardDocumentWriteBuffer() {
             jsGet_document().clearWriteBuffer();
         }
@@ -497,16 +556,19 @@ public class JavaScript {
      */
     static public class Document extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private ElementArray _forms;
         private ElementArray _links;
         private ElementArray _images;
         private StringBuilder _writeBuffer;
         private String _mimeType;
 
+        @Override
         public String getClassName() {
             return "Document";
         }
 
+        @Override
         public void clearCaches() {
             _forms = _links = _images = null;
         }
@@ -516,20 +578,23 @@ public class JavaScript {
         }
 
         public Scriptable jsGet_images() throws SAXException {
-            if (_images == null)
+            if (_images == null) {
                 _images = toElementArray(getDelegate().getImages());
+            }
             return _images;
         }
 
         public Scriptable jsGet_links() throws SAXException {
-            if (_links == null)
+            if (_links == null) {
                 _links = toElementArray(getDelegate().getLinks());
+            }
             return _links;
         }
 
         public Scriptable jsGet_forms() throws SAXException {
-            if (_forms == null)
+            if (_forms == null) {
                 _forms = toElementArray(getDelegate().getForms());
+            }
             return _forms;
         }
 
@@ -551,8 +616,9 @@ public class JavaScript {
         }
 
         public void jsSet_location(String urlString) throws IOException, SAXException {
-            if (urlString.startsWith("color"))
+            if (urlString.startsWith("color")) {
                 return;
+            }
             getWindow().setLocation(urlString);
         }
 
@@ -562,18 +628,20 @@ public class JavaScript {
 
         public void jsSet_cookie(String cookieSpec) {
             final int equalsIndex = cookieSpec.indexOf('=');
-            if (equalsIndex < 0)
+            if (equalsIndex < 0) {
                 return;
+            }
             int endIndex = cookieSpec.indexOf(";", equalsIndex);
-            if (endIndex < 0)
+            if (endIndex < 0) {
                 endIndex = cookieSpec.length();
+            }
             String name = cookieSpec.substring(0, equalsIndex);
             String value = cookieSpec.substring(equalsIndex + 1, endIndex);
             getDelegate().setCookie(name, value);
         }
 
         private Window getWindow() {
-            return ((Window) _parent);
+            return (Window) _parent;
         }
 
         public void jsFunction_open(Object mimeType) {
@@ -595,8 +663,9 @@ public class JavaScript {
         }
 
         protected StringBuilder getWriteBuffer() {
-            if (_writeBuffer == null)
+            if (_writeBuffer == null) {
                 _writeBuffer = new StringBuilder();
+            }
             return _writeBuffer;
         }
 
@@ -608,16 +677,19 @@ public class JavaScript {
             return (HTMLPage.Scriptable) _scriptable;
         }
 
+        @Override
         public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture) {
             // TODO Auto-generated method stub
 
         }
 
+        @Override
         public boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture) {
             // TODO Auto-generated method stub
 
@@ -627,9 +699,11 @@ public class JavaScript {
 
     static public class Location extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private URL _url;
         private Window _window;
 
+        @Override
         public String getClassName() {
             return "Location";
         }
@@ -672,8 +746,9 @@ public class JavaScript {
         }
 
         public void jsSet_pathname(String newPath) throws SAXException, IOException {
-            if (!newPath.startsWith("/"))
+            if (!newPath.startsWith("/")) {
                 newPath = '/' + newPath;
+            }
             URL newURL = new URL(_url, newPath);
             _window.setLocation(newURL.toExternalForm());
         }
@@ -683,8 +758,9 @@ public class JavaScript {
         }
 
         public void jsSet_search(String newSearch) throws SAXException, IOException {
-            if (!newSearch.startsWith("?"))
+            if (!newSearch.startsWith("?")) {
                 newSearch = '?' + newSearch;
+            }
             _window.setLocation(jsGet_protocol() + "//" + jsGet_host() + jsGet_pathname() + newSearch);
         }
 
@@ -693,10 +769,12 @@ public class JavaScript {
          * Note that this method is necessary, since Rhino will only call the toString method directly if there are no
          * Rhino methods defined (jsGet_*, jsFunction_*, etc.)
          */
+        @Override
         public Object getDefaultValue(Class typeHint) {
             return _url.toExternalForm();
         }
 
+        @Override
         public String toString() {
             return _url.toExternalForm();
         }
@@ -705,9 +783,11 @@ public class JavaScript {
 
     static public class Style extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private String _display = "inline";
         private String _visibility = "visible";
 
+        @Override
         public String getClassName() {
             return "Style";
         }
@@ -731,8 +811,10 @@ public class JavaScript {
 
     static public class Navigator extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private ClientProperties _clientProperties;
 
+        @Override
         public String getClassName() {
             return "Navigator";
         }
@@ -773,12 +855,14 @@ public class JavaScript {
 
     static public class Screen extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private ClientProperties _clientProperties;
 
         void setClientProperties(ClientProperties clientProperties) {
             _clientProperties = clientProperties;
         }
 
+        @Override
         public String getClassName() {
             return "Screen";
         }
@@ -795,14 +879,13 @@ public class JavaScript {
 
     static public class ElementArray extends ScriptableObject {
 
+        private static final long serialVersionUID = 1L;
         private JavaScriptEngine _contents[] = new HTMLElement[0];
 
         static ElementArray newElementArray(Scriptable parent) {
             try {
                 return (ElementArray) Context.getCurrentContext().newObject(parent, "ElementArray");
-            } catch (EvaluatorException e) {
-                throw new RhinoException(e);
-            } catch (JavaScriptException e) {
+            } catch (EvaluatorException | JavaScriptException e) {
                 throw new RhinoException(e);
             }
         }
@@ -818,28 +901,30 @@ public class JavaScript {
             return _contents.length;
         }
 
+        @Override
         public String getClassName() {
             return "ElementArray";
         }
 
+        @Override
         public Object get(int i, Scriptable scriptable) {
             if (i >= 0 && i < _contents.length) {
                 return _contents[i];
-            } else {
-                return super.get(i, scriptable);
             }
+            return super.get(i, scriptable);
         }
 
+        @Override
         public Object get(String name, Scriptable scriptable) {
-            for (int i = 0; i < _contents.length; i++) {
-                JavaScriptEngine content = _contents[i];
-                if (name.equalsIgnoreCase(content.getID()))
+            for (JavaScriptEngine content : _contents) {
+                if (name.equalsIgnoreCase(content.getID())) {
                     return content;
+                }
             }
-            for (int i = 0; i < _contents.length; i++) {
-                JavaScriptEngine content = _contents[i];
-                if (name.equalsIgnoreCase(content.getName()))
+            for (JavaScriptEngine content : _contents) {
+                if (name.equalsIgnoreCase(content.getName())) {
                     return content;
+                }
             }
             return super.get(name, scriptable);
         }
@@ -854,9 +939,11 @@ public class JavaScript {
      */
     static public class HTMLElement extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private Style _style;
         private Document _document;
 
+        @Override
         public String getClassName() {
             return "HTMLElement";
         }
@@ -880,6 +967,7 @@ public class JavaScript {
             return _scriptable.get(attributeName);
         }
 
+        @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize(parent, scriptable);
@@ -891,6 +979,9 @@ public class JavaScript {
 
     static public class Image extends HTMLElement {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         public String getClassName() {
             return "Image";
         }
@@ -898,10 +989,14 @@ public class JavaScript {
 
     static public class Link extends HTMLElement {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         public Document jsGet_document() {
             return super.jsGet_document();
         }
 
+        @Override
         public String getClassName() {
             return "Link";
         }
@@ -912,8 +1007,10 @@ public class JavaScript {
      */
     static public class Form extends HTMLElement {
 
+        private static final long serialVersionUID = 1L;
         private ElementArray _controls;
 
+        @Override
         public String getClassName() {
             return "Form";
         }
@@ -979,8 +1076,10 @@ public class JavaScript {
      */
     static public class Control extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
         private Form _form;
 
+        @Override
         public String getClassName() {
             return "Control";
         }
@@ -1030,17 +1129,22 @@ public class JavaScript {
             myInput.sendOnChangeEvent();
         }
 
+        @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
             super.initialize(parent, scriptable);
-            if (parent instanceof Form)
+            if (parent instanceof Form) {
                 _form = (Form) parent;
+            }
         }
 
     }
 
     static public class Options extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         public String getClassName() {
             return "Options";
         }
@@ -1053,12 +1157,14 @@ public class JavaScript {
             getDelegate().setLength(length);
         }
 
+        @Override
         public void put(int i, Scriptable scriptable, Object object) {
             if (object == null) {
                 getDelegate().put(i, null);
             } else {
-                if (!(object instanceof Option))
+                if (!(object instanceof Option)) {
                     throw new IllegalArgumentException("May only add an Option to this array");
+                }
                 Option option = (Option) object;
                 getDelegate().put(i, option.getDelegate());
             }
@@ -1072,6 +1178,9 @@ public class JavaScript {
 
     static public class Option extends JavaScriptEngine {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         public String getClassName() {
             return "Option";
         }
@@ -1125,12 +1234,14 @@ public class JavaScript {
  */
 class RhinoException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
     private Exception _cause;
 
     public RhinoException(Exception cause) {
         _cause = cause;
     }
 
+    @Override
     public String getMessage() {
         return "Rhino exception: " + _cause;
     }

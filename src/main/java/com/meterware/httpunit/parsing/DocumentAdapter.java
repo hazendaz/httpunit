@@ -23,7 +23,6 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLDocument;
 
 /**
@@ -34,7 +33,7 @@ public interface DocumentAdapter {
     /**
      * Records the root (Document) node.
      */
-    public void setDocument(HTMLDocument document);
+    void setDocument(HTMLDocument document);
 
     /**
      * Returns the contents of an included script, given its src attribute.
@@ -47,10 +46,10 @@ public interface DocumentAdapter {
      * @throws java.io.IOException
      *             if there is a problem retrieving the script
      */
-    public String getIncludedScript(String srcAttribute) throws IOException;
+    String getIncludedScript(String srcAttribute) throws IOException;
 
     /**
      * Returns the Scriptable object associated with the document
      */
-    public ScriptingHandler getScriptingHandler();
+    ScriptingHandler getScriptingHandler();
 }

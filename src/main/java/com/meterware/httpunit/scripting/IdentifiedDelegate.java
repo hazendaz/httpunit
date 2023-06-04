@@ -44,6 +44,6 @@ package com.meterware.httpunit.scripting;
  **/
 public interface IdentifiedDelegate {
 
-    public String getID();
+    String getID();
 
 }

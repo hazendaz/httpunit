@@ -51,7 +51,7 @@ public interface EventTarget extends Scriptable {
      *            dispatched to any EventTargets beneath them in the tree. Events which are bubbling upward through the
      *            tree will not trigger an EventListener designated to use capture.
      */
-    public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture);
+    void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture);
 
     /**
      * This method allows the removal of event listeners from the event target. If an EventListener is removed from an
@@ -69,7 +69,7 @@ public interface EventTarget extends Scriptable {
      *            Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice
      *            versa.
      */
-    public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture);
+    void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture);
 
     /**
      * This method allows the dispatch of events into the implementations event model. Events dispatched in this manner
@@ -87,5 +87,5 @@ public interface EventTarget extends Scriptable {
      *             before dispatchEvent was called. Specification of the Event's type as null or an empty string will
      *             also trigger this exception.
      */
-    public boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException;
+    boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException;
 }

@@ -49,6 +49,7 @@ public class TableCell extends BlockElement {
      *
      * @deprecated as of 1.6, use #getText()
      */
+    @Deprecated
     public String asText() {
         return getText();
     }

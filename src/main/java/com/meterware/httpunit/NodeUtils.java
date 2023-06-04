@@ -51,12 +51,12 @@ public class NodeUtils {
         Node attribute = nnm.getNamedItem(attributeName);
         if (attribute == null) {
             return defaultValue;
-        } else
-            try {
-                return Integer.parseInt(attribute.getNodeValue());
-            } catch (NumberFormatException e) {
-                return defaultValue;
-            }
+        }
+        try {
+            return Integer.parseInt(attribute.getNodeValue());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -86,11 +86,12 @@ public class NodeUtils {
      */
     public static String getNodeAttribute(Node node, String attributeName, String defaultValue) {
         NamedNodeMap attributes = node.getAttributes();
-        if (attributes == null)
+        if (attributes == null) {
             return defaultValue;
+        }
 
         Node attribute = attributes.getNamedItem(attributeName);
-        return (attribute == null) ? defaultValue : attribute.getNodeValue();
+        return attribute == null ? defaultValue : attribute.getNodeValue();
     }
 
     /**
@@ -138,12 +139,12 @@ public class NodeUtils {
          * Does appropriate processing on specified element. Will return false if the subtree below the element should
          * be skipped.
          */
-        public boolean processElement(PreOrderTraversal traversal, Element element);
+        boolean processElement(PreOrderTraversal traversal, Element element);
 
         /**
          * Processes a text node.
          */
-        public void processTextNode(PreOrderTraversal traversal, Node textNode);
+        void processTextNode(PreOrderTraversal traversal, Node textNode);
     }
 
     /**
@@ -152,6 +153,7 @@ public class NodeUtils {
     public static String asText(NodeList rootNodes) {
         final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         NodeAction action = new NodeAction() {
+            @Override
             public boolean processElement(PreOrderTraversal traversal, Element node) {
                 String nodeName = node.getNodeName().toLowerCase();
                 if (nodeName.equals("p") || nodeName.equals("br") || nodeName.equalsIgnoreCase("tr")) {
@@ -164,6 +166,7 @@ public class NodeUtils {
                 return true;
             }
 
+            @Override
             public void processTextNode(PreOrderTraversal traversal, Node textNode) {
                 sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));
             }
@@ -208,14 +211,17 @@ public class NodeUtils {
             return new Iterator() {
                 private ListIterator _forwardIterator = stack.listIterator(stack.size());
 
+                @Override
                 public boolean hasNext() {
                     return _forwardIterator.hasPrevious();
                 }
 
+                @Override
                 public Object next() {
                     return _forwardIterator.previous();
                 }
 
+                @Override
                 public void remove() {
                     _forwardIterator.remove();
                 }
@@ -229,8 +235,9 @@ public class NodeUtils {
         public Object getClosestContext(Class matchingClass) {
             for (int i = _traversalContext.size() - 1; i >= 0; i--) {
                 Object o = _traversalContext.elementAt(i);
-                if (matchingClass.isInstance(o))
+                if (matchingClass.isInstance(o)) {
                     return o;
+                }
             }
             return null;
         }
@@ -246,8 +253,9 @@ public class NodeUtils {
                         action.processTextNode(this, node);
                     } else if (node.getNodeType() != Node.ELEMENT_NODE) {
                         continue;
-                    } else
+                    } else {
                         action.processElement(this, (Element) node);
+                    }
                     pushNodeList(node.getLastChild());
                 }
             }

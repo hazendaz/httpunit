@@ -91,6 +91,7 @@ abstract public class MessageBodyWebRequest extends WebRequest {
 
     // ---------------------------------- WebRequest methods --------------------------------
 
+    @Override
     protected void writeMessageBody(OutputStream stream) throws IOException {
         getMessageBody().writeTo(stream, getParameterHolder());
     }
@@ -98,6 +99,7 @@ abstract public class MessageBodyWebRequest extends WebRequest {
     /**
      * Performs any additional processing necessary to complete the request.
      **/
+    @Override
     protected void completeRequest(URLConnection connection) throws IOException {
         super.completeRequest(connection);
         connection.setDoInput(true);
@@ -109,10 +111,12 @@ abstract public class MessageBodyWebRequest extends WebRequest {
         stream.close();
     }
 
+    @Override
     protected String getContentType() {
         return getMessageBody().getContentType();
     }
 
+    @Override
     public boolean isMimeEncoded() {
         return _mimeEncoded;
     }
@@ -133,6 +137,7 @@ abstract public class MessageBodyWebRequest extends WebRequest {
         /**
          * Returns the content type of this message body.
          **/
+        @Override
         public String getContentType() {
             return _contentType;
         }
@@ -146,6 +151,7 @@ abstract public class MessageBodyWebRequest extends WebRequest {
          * @throws IOException
          *             if the tranmission fails
          */
+        @Override
         public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
             if (_source.markSupported()) {
                 mark();

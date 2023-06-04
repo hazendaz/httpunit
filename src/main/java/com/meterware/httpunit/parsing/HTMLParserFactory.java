@@ -63,8 +63,9 @@ public abstract class HTMLParserFactory {
      * Selects the JTidy parser, if present.
      */
     public static void useJTidyParser() {
-        if (_jtidyParser == null)
+        if (_jtidyParser == null) {
             throw new RuntimeException("JTidy parser not available");
+        }
         _htmlParser = _jtidyParser;
     }
 
@@ -72,8 +73,9 @@ public abstract class HTMLParserFactory {
      * Selects the NekoHTML parser, if present.
      */
     public static void useNekoHTMLParser() {
-        if (_nekoParser == null)
+        if (_nekoParser == null) {
             throw new RuntimeException("NekoHTML parser not available");
+        }
         _htmlParser = _nekoParser;
     }
 

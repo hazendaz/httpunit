@@ -27,7 +27,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -92,11 +96,10 @@ abstract public class WebRequest {
     public URL getURL() throws MalformedURLException {
         if (getURLBase() == null || getURLBase().toString().indexOf("?") < 0) {
             return newURL(getURLBase(), getURLString());
-        } else {
-            final String urlBaseString = getURLBase().toString();
-            URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
-            return newURL(newurlbase, getURLString());
         }
+        final String urlBaseString = getURLBase().toString();
+        URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
+        return newURL(newurlbase, getURLString());
     }
 
     /**
@@ -112,7 +115,8 @@ abstract public class WebRequest {
     private URL newURL(final URL base, final String spec) throws MalformedURLException {
         if (spec.toLowerCase().startsWith("javascript:")) {
             return new URL("javascript", null, -1, spec.substring("javascript:".length()), JAVASCRIPT_STREAM_HANDLER);
-        } else if (spec.toLowerCase().startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
+        }
+        if (spec.toLowerCase().startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
             return new URL("https", null, -1, spec.substring("https:".length()), HTTPS_STREAM_HANDLER);
         } else {
             if (getURLBase() == null || getURLString().indexOf(':') > 0) {
@@ -126,12 +130,14 @@ abstract public class WebRequest {
     }
 
     private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
-        if (base == null)
+        if (base == null) {
             return new URL(getNormalizedURL(spec));
-        else if (spec.startsWith(".."))
+        }
+        if (spec.startsWith("..")) {
             return new URL(getNormalizedURL(getURLDirectory(base) + spec));
-        else
+        } else {
             return new URL(base, getNormalizedURL(spec));
+        }
     }
 
     private String getURLDirectory(final URL base) {
@@ -142,18 +148,22 @@ abstract public class WebRequest {
 
     private String getNormalizedURL(String url) {
         int questionIndex = url.indexOf('?');
-        if (questionIndex < 0)
+        if (questionIndex < 0) {
             return getNormalizedPath(url);
+        }
         return getNormalizedPath(url.substring(0, questionIndex)) + url.substring(questionIndex);
     }
 
     private String getNormalizedPath(String path) {
-        if (path.lastIndexOf("//") > path.lastIndexOf("://") + 1)
+        if (path.lastIndexOf("//") > path.lastIndexOf("://") + 1) {
             return getNormalizedPath(stripDoubleSlashes(path));
-        if (path.indexOf("/../") > 0 || path.endsWith("/.."))
+        }
+        if (path.indexOf("/../") > 0 || path.endsWith("/..")) {
             return getNormalizedPath(stripUpNavigation(path));
-        if (path.indexOf("/./") > 0)
+        }
+        if (path.indexOf("/./") > 0) {
             return getNormalizedPath(stripInPlaceNavigation(path));
+        }
         return path;
     }
 
@@ -227,10 +237,12 @@ abstract public class WebRequest {
      * Sets the multiple values of a file upload parameter in a web request.
      **/
     public void setParameter(String parameterName, UploadFileSpec[] files) {
-        if (!maySelectFile(parameterName))
+        if (!maySelectFile(parameterName)) {
             throw new IllegalNonFileParameterException(parameterName);
-        if (!isMimeEncoded())
+        }
+        if (!isMimeEncoded()) {
             throw new MultipartFormRequiredException();
+        }
         _parameterHolder.setParameter(parameterName, files);
     }
 
@@ -243,8 +255,9 @@ abstract public class WebRequest {
      *                thrown if the request was not created from a form with an image button.
      **/
     public void setImageButtonClickPosition(int x, int y) throws IllegalRequestParameterException {
-        if (_button == null)
+        if (_button == null) {
             throw new IllegalButtonPositionException();
+        }
         _parameterHolder.selectImageButtonPosition(_button, x, y);
     }
 
@@ -284,10 +297,12 @@ abstract public class WebRequest {
     public String[] getRequestParameterNames() {
         final HashSet names = new HashSet();
         ParameterProcessor pp = new ParameterProcessor() {
+            @Override
             public void addParameter(String name, String value, String characterSet) throws IOException {
                 names.add(name);
             }
 
+            @Override
             public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
                 names.add(parameterName);
             }
@@ -328,6 +343,7 @@ abstract public class WebRequest {
 
     // ------------------------------------- Object methods ------------------------------------
 
+    @Override
     public String toString() {
         return getMethod() + " request for (" + getURLBase() + ") " + getURLString();
     }
@@ -412,9 +428,8 @@ abstract public class WebRequest {
     static ParameterHolder newParameterHolder(WebRequestSource requestSource) {
         if (HttpUnitOptions.getParameterValuesValidated()) {
             return requestSource;
-        } else {
-            return new UncheckedParameterHolder(requestSource);
         }
+        return new UncheckedParameterHolder(requestSource);
     }
 
     /**
@@ -431,8 +446,9 @@ abstract public class WebRequest {
     }
 
     private static String escape(String urlString) {
-        if (urlString.indexOf(' ') < 0)
+        if (urlString.indexOf(' ') < 0) {
             return urlString;
+        }
         StringBuilder sb = new StringBuilder();
 
         int start = 0;
@@ -441,10 +457,9 @@ abstract public class WebRequest {
             if (index < 0) {
                 sb.append(urlString.substring(start));
                 break;
-            } else {
-                sb.append(urlString.substring(start, index)).append("%20");
-                start = index + 1;
             }
+            sb.append(urlString.substring(start, index)).append("%20");
+            start = index + 1;
         } while (true);
         return sb.toString();
     }
@@ -481,8 +496,9 @@ abstract public class WebRequest {
      * Performs any additional processing necessary to complete the request.
      **/
     protected void completeRequest(URLConnection connection) throws IOException {
-        if (connection instanceof HttpURLConnection)
+        if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod(getMethod());
+        }
     }
 
     /**
@@ -501,9 +517,8 @@ abstract public class WebRequest {
         final String queryString = getQueryString();
         if (queryString.length() == 0) {
             return _urlString;
-        } else {
-            return _urlString + "?" + queryString;
         }
+        return _urlString + "?" + queryString;
     }
 
     final protected ParameterHolder getParameterHolder() {
@@ -527,8 +542,9 @@ abstract public class WebRequest {
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
             _headers = new Hashtable();
-            if (getContentType() != null)
+            if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
+            }
         }
         return _headers;
     }
@@ -541,11 +557,11 @@ abstract public class WebRequest {
         WebRequestSource wrs = _webRequestSource;
         if (wrs != null) {
             return wrs.getScriptingHandler();
-        } else if (_referringPage != null && _sourceElement != null) {
+        }
+        if (_referringPage != null && _sourceElement != null) {
             try {
                 _referringPage.getReceivedPage().getElement(_sourceElement).getScriptingHandler();
             } catch (SAXException e) {
-                return null;
             }
         }
         return null;
@@ -558,6 +574,7 @@ abstract public class WebRequest {
 
 class JavascriptURLStreamHandler extends URLStreamHandler {
 
+    @Override
     protected URLConnection openConnection(URL u) throws IOException {
         return null;
     }
@@ -567,6 +584,7 @@ class JavascriptURLStreamHandler extends URLStreamHandler {
 
 class HttpsURLStreamHandler extends URLStreamHandler {
 
+    @Override
     protected URLConnection openConnection(URL u) throws IOException {
         throw new RuntimeException(
                 "https support requires the Java Secure Sockets Extension. See http://java.sun.com/products/jsse");
@@ -580,10 +598,13 @@ class HttpsURLStreamHandler extends URLStreamHandler {
  **/
 class IllegalNonFileParameterException extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
+
     IllegalNonFileParameterException(String parameterName) {
         _parameterName = parameterName;
     }
 
+    @Override
     public String getMessage() {
         return "Parameter '" + _parameterName + "' is not a file parameter and may not be set to a file value.";
     }
@@ -599,9 +620,12 @@ class IllegalNonFileParameterException extends IllegalRequestParameterException 
  **/
 class MultipartFormRequiredException extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
+
     MultipartFormRequiredException() {
     }
 
+    @Override
     public String getMessage() {
         return "The request does not use multipart/form-data encoding, and cannot be used to upload files ";
     }
@@ -615,9 +639,12 @@ class MultipartFormRequiredException extends IllegalRequestParameterException {
  **/
 class IllegalButtonPositionException extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
+
     IllegalButtonPositionException() {
     }
 
+    @Override
     public String getMessage() {
         return "The request was not created with an image button, and cannot accept an image button click position";
     }

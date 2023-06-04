@@ -77,6 +77,7 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
     /**
      * Returns the HTTP method defined for this request.
      **/
+    @Override
     public String getMethod() {
         return "POST";
     }
@@ -84,6 +85,7 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
     /**
      * Returns the query string defined for this request.
      **/
+    @Override
     public String getQueryString() {
         try {
             URLEncodedString encoder = new URLEncodedString();
@@ -97,12 +99,14 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
     /**
      * Returns true if selectFile may be called with this parameter.
      */
+    @Override
     protected boolean maySelectFile(String parameterName) {
         return isMimeEncoded() && isFileParameter(parameterName);
     }
 
     // ----------------------------- MessageBodyWebRequest methods ---------------------------
 
+    @Override
     protected MessageBody getMessageBody() {
         if (_body == null) {
             _body = MessageBody.createPostMethodMessageBody(isMimeEncoded(), getCharacterSet());

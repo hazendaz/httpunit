@@ -36,15 +36,19 @@ public class URLEncodedString implements ParameterProcessor {
         return _buffer.toString();
     }
 
+    @Override
     public void addParameter(String name, String value, String characterSet) {
-        if (_haveParameters)
+        if (_haveParameters) {
             _buffer.append('&');
+        }
         _buffer.append(encode(name, characterSet));
-        if (value != null)
+        if (value != null) {
             _buffer.append('=').append(encode(value, characterSet));
+        }
         _haveParameters = true;
     }
 
+    @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) {
         throw new RuntimeException("May not URL-encode a file upload request");
     }

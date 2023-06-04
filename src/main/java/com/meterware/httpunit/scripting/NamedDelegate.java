@@ -44,6 +44,6 @@ package com.meterware.httpunit.scripting;
  **/
 public interface NamedDelegate {
 
-    public String getName();
+    String getName();
 
 }

@@ -40,5 +40,5 @@ public interface EventListener extends Scriptable {
      *            The Event contains contextual information about the event. It also contains the stopPropagation and
      *            preventDefault methods which are used in determining the event's flow and default action.
      */
-    public void jsFunction_handleEvent(Scriptable evt);
+    void jsFunction_handleEvent(Scriptable evt);
 }

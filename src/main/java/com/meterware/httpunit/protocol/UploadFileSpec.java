@@ -106,10 +106,10 @@ public class UploadFileSpec {
 
     private void guessContentType() {
         String extension = getExtension(_file.getName());
-        for (int i = 0; i < CONTENT_EXTENSIONS.length; i++) {
-            for (int j = 1; j < CONTENT_EXTENSIONS[i].length; j++) {
-                if (extension.equalsIgnoreCase(CONTENT_EXTENSIONS[i][j])) {
-                    _contentType = CONTENT_EXTENSIONS[i][0];
+        for (String[] element : CONTENT_EXTENSIONS) {
+            for (int j = 1; j < element.length; j++) {
+                if (extension.equalsIgnoreCase(element[j])) {
+                    _contentType = element[0];
                     return;
                 }
             }

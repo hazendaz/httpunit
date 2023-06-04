@@ -73,10 +73,12 @@ public class WebList extends HTMLElementBase {
         return (TextBlock[]) _items.toArray(new TextBlock[_items.size()]);
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();
     }

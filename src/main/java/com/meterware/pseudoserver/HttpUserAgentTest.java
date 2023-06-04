@@ -115,10 +115,11 @@ public class HttpUserAgentTest {
     }
 
     protected void assertImplement(String comment, Object[] objects, Class expectedClass) {
-        if (objects.length == 0)
+        if (objects.length == 0) {
             fail("No " + comment + " found.");
-        for (int i = 0; i < objects.length; i++) {
-            assertImplements(comment, objects[i], expectedClass);
+        }
+        for (Object object : objects) {
+            assertImplements(comment, object, expectedClass);
         }
     }
 
@@ -132,63 +133,70 @@ public class HttpUserAgentTest {
 
     protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
         Vector foundItems = new Vector();
-        while (found.hasMoreElements())
+        while (found.hasMoreElements()) {
             foundItems.addElement(found.nextElement());
+        }
 
         assertMatchingSet(comment, expected, foundItems);
     }
 
     private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
         Vector expectedItems = new Vector();
-        for (int i = 0; i < expected.length; i++)
-            expectedItems.addElement(expected[i]);
-        for (int i = 0; i < expected.length; i++) {
-            if (!foundItems.contains(expected[i])) {
-                fail(comment + ": expected " + asText(expected) + " but missing " + expected[i]);
+        for (Object element : expected) {
+            expectedItems.addElement(element);
+        }
+        for (Object element : expected) {
+            if (!foundItems.contains(element)) {
+                fail(comment + ": expected " + asText(expected) + " but missing " + element);
             } else {
-                foundItems.removeElement(expected[i]);
+                foundItems.removeElement(element);
             }
         }
 
-        if (!foundItems.isEmpty())
+        if (!foundItems.isEmpty()) {
             fail(comment + ": expected " + asText(expected) + " but found superfluous" + foundItems.firstElement());
+        }
     }
 
     public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
         Vector foundItems = new Vector();
-        for (int i = 0; i < found.length; i++)
-            foundItems.addElement(found[i]);
+        for (Object element : found) {
+            foundItems.addElement(element);
+        }
 
         Vector expectedItems = new Vector();
 
-        for (int i = 0; i < expected.length; i++)
-            expectedItems.addElement(expected[i]);
+        for (Object element : expected) {
+            expectedItems.addElement(element);
+        }
 
-        for (int i = 0; i < expected.length; i++) {
-            if (!foundItems.contains(expected[i])) {
+        for (Object element : expected) {
+            if (!foundItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                foundItems.removeElement(expected[i]);
+                foundItems.removeElement(element);
             }
         }
 
-        for (int i = 0; i < found.length; i++) {
-            if (!expectedItems.contains(found[i])) {
+        for (Object element : found) {
+            if (!expectedItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                expectedItems.removeElement(found[i]);
+                expectedItems.removeElement(element);
             }
         }
 
-        if (!foundItems.isEmpty())
+        if (!foundItems.isEmpty()) {
             fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
+        }
     }
 
     public static String asText(Object[] args) {
         StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < args.length; i++) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(",");
+            }
             sb.append('"').append(args[i]).append('"');
         }
         sb.append("}");
@@ -236,18 +244,22 @@ public class HttpUserAgentTest {
             _fullString = urlString;
 
             StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), "&");
-            while (st.hasMoreTokens())
+            while (st.hasMoreTokens()) {
                 _parameters.addElement(st.nextToken());
+            }
         }
 
+        @Override
         public String toString() {
             return _fullString;
         }
 
+        @Override
         public boolean equals(Object o) {
             return getClass().equals(o.getClass()) && equals((QuerySpec) o);
         }
 
+        @Override
         public int hashCode() {
             return _path.hashCode() ^ _parameters.size();
         }
@@ -259,12 +271,14 @@ public class HttpUserAgentTest {
         private boolean equals(QuerySpec o) {
             if (!_path.equals(o._path)) {
                 return false;
-            } else if (_parameters.size() != o._parameters.size()) {
+            }
+            if (_parameters.size() != o._parameters.size()) {
                 return false;
             } else {
                 for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {
-                    if (!_parameters.contains(e.nextElement()))
+                    if (!_parameters.contains(e.nextElement())) {
                         return false;
+                    }
                 }
                 return true;
             }

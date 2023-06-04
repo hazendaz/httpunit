@@ -33,10 +33,13 @@ package com.meterware.httpunit;
  *******************************************************************************************************************/
 class NotHTMLException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     NotHTMLException(String contentType) {
         _contentType = contentType;
     }
 
+    @Override
     public String getMessage() {
         return "The content type of the response is '" + _contentType
                 + "': it must be 'text/html' in order to be recognized as HTML";

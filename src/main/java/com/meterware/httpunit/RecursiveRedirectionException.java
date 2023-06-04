@@ -29,6 +29,7 @@ import java.net.URL;
  */
 public class RecursiveRedirectionException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
     private URL url;
 
     /**

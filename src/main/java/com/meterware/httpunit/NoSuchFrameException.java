@@ -44,10 +44,13 @@ package com.meterware.httpunit;
  **/
 class NoSuchFrameException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     NoSuchFrameException(String frameName) {
         _frameName = frameName;
     }
 
+    @Override
     public String getMessage() {
         return "No frame named " + _frameName + " is currently active";
     }

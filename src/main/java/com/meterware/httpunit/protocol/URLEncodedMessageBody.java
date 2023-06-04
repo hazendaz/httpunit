@@ -37,6 +37,7 @@ class URLEncodedMessageBody extends MessageBody {
     /**
      * Returns the content type of this message body.
      **/
+    @Override
     public String getContentType() {
         return "application/x-www-form-urlencoded"
                 + (!HttpUnitOptions.isPostIncludesCharset() ? "" : "; charset=" + getCharacterSet());
@@ -45,6 +46,7 @@ class URLEncodedMessageBody extends MessageBody {
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
+    @Override
     public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
         outputStream.write(getParameterString(parameters).getBytes(StandardCharsets.UTF_8));
     }

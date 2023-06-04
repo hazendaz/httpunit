@@ -30,39 +30,39 @@ public interface ScriptingEngineFactory {
     /**
      * Returns true if this engine is enabled.
      */
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /**
      * Associates a scripting engine with the specified HTML web response.
      **/
-    public void associate(WebResponse response);
+    void associate(WebResponse response);
 
     /**
      * Runs the 'onload' event (if any) for the specified HTML web response. Will associate a scripting engine with the
      * response if that has not already been done.
      **/
-    public void load(WebResponse response);
+    void load(WebResponse response);
 
     /**
      * Determines whether script errors result in exceptions or warning messages.
      */
-    public void setThrowExceptionsOnError(boolean throwExceptions);
+    void setThrowExceptionsOnError(boolean throwExceptions);
 
     /**
      * Returns true if script errors cause exceptions to be thrown.
      */
-    public boolean isThrowExceptionsOnError();
+    boolean isThrowExceptionsOnError();
 
     /**
      * Returns the accumulated script error messages encountered. Error messages are accumulated only if
      * 'throwExceptionsOnError' is disabled.
      */
-    public String[] getErrorMessages();
+    String[] getErrorMessages();
 
     /**
      * Clears the accumulated script error messages.
      */
-    public void clearErrorMessages();
+    void clearErrorMessages();
 
     /**
      * handle Exceptions
@@ -72,7 +72,7 @@ public interface ScriptingEngineFactory {
      * @param badScript
      *            - the script that caused the problem
      */
-    public void handleScriptException(Exception e, String badScript);
+    void handleScriptException(Exception e, String badScript);
 
     ScriptingHandler createHandler(HTMLElement elementBase);
 

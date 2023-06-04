@@ -30,11 +30,18 @@ import com.meterware.httpunit.scripting.NamedDelegate;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -112,10 +119,11 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     public boolean isHTML() {
         boolean result = false;
         // check the different content types
-        for (int i = 0; i < validContentTypes.length; i++) {
-            result = getContentType().equalsIgnoreCase(validContentTypes[i]);
-            if (result)
+        for (String validContentType : validContentTypes) {
+            result = getContentType().equalsIgnoreCase(validContentType);
+            if (result) {
                 break;
+            }
         } // for
         return result;
     }
@@ -123,6 +131,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the URL which invoked this response.
      **/
+    @Override
     public URL getURL() {
         return _pageURL;
     }
@@ -169,8 +178,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     void setFrame(FrameSelector frame) {
-        if (!_frame.getName().equals(frame.getName()))
+        if (!_frame.getName().equals(frame.getName())) {
             throw new IllegalArgumentException("May not modify the frame name");
+        }
         _frame = frame;
     }
 
@@ -217,7 +227,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     public int getContentLength() {
         if (_contentLength == UNINITIALIZED_INT) {
             String length = getHeaderField("Content-Length");
-            _contentLength = (length == null) ? -1 : Integer.parseInt(length);
+            _contentLength = length == null ? -1 : Integer.parseInt(length);
         }
         return _contentLength;
     }
@@ -226,8 +236,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns the content type of this response.
      **/
     public String getContentType() {
-        if (_contentType == null)
+        if (_contentType == null) {
             readContentTypeHeader();
+        }
         return _contentType;
     }
 
@@ -237,10 +248,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     public String getCharacterSet() {
         if (_characterSet == null) {
             readContentTypeHeader();
-            if (_characterSet == null)
+            if (_characterSet == null) {
                 setCharacterSet(getHeaderField("Charset"));
-            if (_characterSet == null)
+            }
+            if (_characterSet == null) {
                 setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());
+            }
         }
         return _characterSet;
     }
@@ -278,8 +291,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @throws IOException
      */
     public byte[] getBytes() throws IOException {
-        if (_responseText == null)
+        if (_responseText == null) {
             loadResponseText();
+        }
         return _bytes;
     }
 
@@ -290,8 +304,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the response text
      **/
     public String getText() throws IOException {
-        if (_responseText == null)
+        if (_responseText == null) {
             loadResponseText();
+        }
         return _responseText;
     }
 
@@ -299,8 +314,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns a buffered input stream for reading the contents of this reply.
      **/
     public InputStream getInputStream() throws IOException {
-        if (_inputStream == null)
+        if (_inputStream == null) {
             _inputStream = new ByteArrayInputStream(getText().getBytes(StandardCharsets.UTF_8));
+        }
         return _inputStream;
     }
 
@@ -343,8 +359,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the name of the desired frame as defined in the frameset.
      **/
     public WebResponse getSubframeContents(String subFrameName) {
-        if (_window == null)
+        if (_window == null) {
             throw new NoSuchFrameException(subFrameName);
+        }
         return _window.getSubframeContents(_frame, subFrameName);
     }
 
@@ -356,6 +373,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @throws SAXException
      *             thrown if there is an error parsing the response.
      */
+    @Override
     public HTMLElement getElementWithID(String id) throws SAXException {
         return getReceivedPage().getElementWithID(id);
     }
@@ -379,6 +397,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns a list of HTML element names contained in this HTML section.
      */
+    @Override
     public String[] getElementNames() throws SAXException {
         return getReceivedPage().getElementNames();
     }
@@ -386,6 +405,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the HTMLElements found in this segment with the specified name.
      */
+    @Override
     public HTMLElement[] getElementsWithName(String name) throws SAXException {
         return getReceivedPage().getElementsWithName(name);
     }
@@ -402,6 +422,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @since 1.6
      */
+    @Override
     public HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException {
         return getReceivedPage().getElementsWithAttribute(name, value);
     }
@@ -412,6 +433,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebForm[] getForms() throws SAXException {
         return getReceivedPage().getForms();
     }
@@ -422,6 +444,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebForm getFormWithName(String name) throws SAXException {
         return getReceivedPage().getFormWithName(name);
     }
@@ -432,6 +455,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebForm getFormWithID(String ID) throws SAXException {
         return getReceivedPage().getFormWithID(ID);
     }
@@ -442,6 +466,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getFirstMatchingForm(predicate, criteria);
     }
@@ -452,6 +477,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getMatchingForms(predicate, criteria);
     }
@@ -462,6 +488,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebLink[] getLinks() throws SAXException {
         return getReceivedPage().getLinks();
     }
@@ -472,6 +499,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebLink getLinkWith(String text) throws SAXException {
         return getReceivedPage().getLinkWith(text);
     }
@@ -482,6 +510,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebLink getLinkWithImageText(String text) throws SAXException {
         return getReceivedPage().getLinkWithImageText(text);
     }
@@ -512,6 +541,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getFirstMatchingLink(predicate, criteria);
     }
@@ -522,6 +552,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getMatchingLinks(predicate, criteria);
     }
@@ -532,6 +563,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebImage[] getImages() throws SAXException {
         return getReceivedPage().getImages();
     }
@@ -542,6 +574,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebImage getImageWithName(String source) throws SAXException {
         return getReceivedPage().getImageWithName(source);
     }
@@ -552,6 +585,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebImage getImageWithSource(String source) throws SAXException {
         return getReceivedPage().getImageWithSource(source);
     }
@@ -559,10 +593,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first image found in the page with the specified alt attribute.
      **/
+    @Override
     public WebImage getImageWithAltText(String altText) throws SAXException {
         return getReceivedPage().getImageWithAltText(altText);
     }
 
+    @Override
     public WebApplet[] getApplets() throws SAXException {
         return getReceivedPage().getApplets();
     }
@@ -572,6 +608,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @since 1.6
      */
+    @Override
     public TextBlock[] getTextBlocks() throws SAXException {
         return getReceivedPage().getTextBlocks();
     }
@@ -607,12 +644,11 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     public Document getDOM() throws SAXException {
         if (isHTML()) {
             return (Document) getReceivedPage().getDOM();
-        } else {
-            try {
-                return HttpUnitUtils.parse(new InputSource(new StringReader(getText())));
-            } catch (IOException e) {
-                throw new SAXException(e);
-            }
+        }
+        try {
+            return HttpUnitUtils.parse(new InputSource(new StringReader(getText())));
+        } catch (IOException e) {
+            throw new SAXException(e);
         }
     }
 
@@ -622,6 +658,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebTable[] getTables() throws SAXException {
         return getReceivedPage().getTables();
     }
@@ -632,6 +669,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the selected table, or null if none is found
      **/
+    @Override
     public WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getFirstMatchingTable(predicate, criteria);
     }
@@ -642,6 +680,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
+    @Override
     public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getMatchingTables(predicate, criteria);
     }
@@ -655,6 +694,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the selected table, or null if none is found
      **/
+    @Override
     public WebTable getTableStartingWith(String text) throws SAXException {
         return getReceivedPage().getTableStartingWith(text);
     }
@@ -668,6 +708,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the selected table, or null if none is found
      **/
+    @Override
     public WebTable getTableStartingWithPrefix(String text) throws SAXException {
         return getReceivedPage().getTableStartingWithPrefix(text);
     }
@@ -681,6 +722,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the selected table, or null if none is found
      **/
+    @Override
     public WebTable getTableWithSummary(String text) throws SAXException {
         return getReceivedPage().getTableWithSummary(text);
     }
@@ -694,6 +736,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the selected table, or null if none is found
      **/
+    @Override
     public WebTable getTableWithID(String text) throws SAXException {
         return getReceivedPage().getTableWithID(text);
     }
@@ -716,9 +759,11 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         _scriptingHandler = scriptingHandler;
     }
 
+    @Override
     public ScriptingHandler getScriptingHandler() {
-        if (_scriptingHandler == null)
+        if (_scriptingHandler == null) {
             _scriptingHandler = HttpUnitOptions.getScriptingEngine().createHandler(this);
+        }
         return _scriptingHandler;
     }
 
@@ -734,26 +779,24 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     public ScriptingHandler createDomScriptingHandler() {
         if (!isHTML()) {
             return new DomWindow(this);
-        } else {
-            try {
-                HTMLPage page = this.getReceivedPage();
-                Node rootNode = page.getRootNode();
-                HTMLDocumentImpl document = (HTMLDocumentImpl) rootNode;
-                DomWindow result = document.getWindow();
-                result.setProxy(this);
-                return result;
-            } catch (SAXException e) {
-                return new DomWindow(this);
-            }
+        }
+        try {
+            HTMLPage page = this.getReceivedPage();
+            Node rootNode = page.getRootNode();
+            HTMLDocumentImpl document = (HTMLDocumentImpl) rootNode;
+            DomWindow result = document.getWindow();
+            result.setProxy(this);
+            return result;
+        } catch (SAXException e) {
+            return new DomWindow(this);
         }
     }
 
     public static ScriptableDelegate newDelegate(String delegateClassName) {
         if (delegateClassName.equalsIgnoreCase("Option")) {
             return FormControl.newSelectionOption();
-        } else {
-            throw new IllegalArgumentException("No such scripting class supported: " + delegateClassName);
         }
+        throw new IllegalArgumentException("No such scripting class supported: " + delegateClassName);
     }
 
     HTMLPage.Scriptable getDocumentScriptable() {
@@ -770,36 +813,42 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the WebResponse as a DomWindowProxy
      */
+    @Override
     public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
-        if (relativeUrl == null || relativeUrl.trim().length() == 0)
+        if (relativeUrl == null || relativeUrl.trim().length() == 0) {
             relativeUrl = "about:";
+        }
         GetMethodWebRequest request = new GetMethodWebRequest(getURL(), relativeUrl, _frame, name);
-        WebResponse response = _window.getResponse(request);
-        return response;
+        return _window.getResponse(request);
     }
 
+    @Override
     public DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
             MessageBody requestBody) throws IOException, SAXException {
         if (method.equalsIgnoreCase("get")) {
             return getWindow().sendRequest(new GetMethodWebRequest(this, sourceElement, getURL(), location, target));
-        } else {
-            return null;
+        }
+        return null;
+    }
+
+    @Override
+    public void close() {
+        if (getFrameName().equals(WebRequest.TOP_FRAME)) {
+            _window.close();
         }
     }
 
-    public void close() {
-        if (getFrameName().equals(WebRequest.TOP_FRAME))
-            _window.close();
-    }
-
+    @Override
     public void alert(String message) {
         _client.postAlert(message);
     }
 
+    @Override
     public boolean confirm(String message) {
         return _client.getConfirmationResponse(message);
     }
 
+    @Override
     public String prompt(String prompt, String defaultResponse) {
         return _client.getUserResponse(prompt, defaultResponse);
     }
@@ -828,8 +877,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         public HTMLPage.Scriptable getDocument() {
             try {
-                if (!isHTML())
+                if (!isHTML()) {
                     replaceText(BLANK_HTML, HTML_CONTENT);
+                }
                 return getReceivedPage().getScriptableObject();
             } catch (SAXException e) {
                 throw new RuntimeException(e.toString());
@@ -865,17 +915,19 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         /**
          * Returns the value of the named property. Will return null if the property does not exist.
          **/
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equals("name")) {
                 return getName();
-            } else if (propertyName.equalsIgnoreCase("top")) {
+            }
+            if (propertyName.equalsIgnoreCase("top")) {
                 return _window.getFrameContents(WebRequest.TOP_FRAME).getScriptableObject();
             } else if (propertyName.equalsIgnoreCase("parent")) {
                 return _window.getParentFrameContents(_frame).getScriptableObject();
             } else if (propertyName.equalsIgnoreCase("opener")) {
                 return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;
             } else if (propertyName.equalsIgnoreCase("closed")) {
-                return (getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed()) ? Boolean.TRUE
+                return getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed() ? Boolean.TRUE
                         : Boolean.FALSE;
             } else {
                 try {
@@ -886,6 +938,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             }
         }
 
+        @Override
         public String getName() {
             String windowName = getFrameName().equals(WebRequest.TOP_FRAME) ? _window.getName() : getFrameName();
             return windowName.startsWith(WebWindow.NO_NAME) ? "" : windowName;
@@ -899,10 +952,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * Sets the value of the named property. Will throw a runtime exception if the property does not exist or cannot
          * accept the specified value.
          **/
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equals("name")) {
-                if (value == null)
+                if (value == null) {
                     value = "";
+                }
                 if (getFrameName().equals(WebRequest.TOP_FRAME)) {
                     _window.setName(value.toString());
                 }
@@ -922,6 +977,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     // ---------------------------------------- Object methods --------------------------------------------
 
+    @Override
     abstract public String toString();
 
     // ----------------------------------------- protected members -----------------------------------------------
@@ -1020,9 +1076,11 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @param contentType
      *            - the contenttype
      */
+    @Override
     public boolean replaceText(String text, String contentType) {
-        if (_parsingPage)
+        if (_parsingPage) {
             return false;
+        }
         _responseText = text;
         _inputStream = null;
         _page = null;
@@ -1033,9 +1091,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         try {
             readTags(text.getBytes(StandardCharsets.UTF_8));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Failure while attempting to reparse text: " + e);
-        } catch (MalformedURLException e) {
+        } catch (UnsupportedEncodingException | MalformedURLException e) {
             throw new RuntimeException("Failure while attempting to reparse text: " + e);
         }
         return true;
@@ -1047,9 +1103,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     WebRequest[] getFrameRequests() throws SAXException {
         WebFrame[] frames = getFrames();
         Vector requests = new Vector();
-        for (int i = 0; i < frames.length; i++) {
-            if (frames[i].hasInitialRequest()) {
-                requests.addElement(frames[i].getInitialRequest());
+        for (WebFrame frame : frames) {
+            if (frame.hasInitialRequest()) {
+                requests.addElement(frame.getInitialRequest());
             }
         }
 
@@ -1106,12 +1162,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     private ScriptingHandler _scriptingHandler;
 
     protected void loadResponseText() throws IOException {
-        if (_responseText != null)
+        if (_responseText != null) {
             throw new IllegalStateException("May only invoke loadResponseText once");
+        }
         _responseText = "";
 
-        InputStream inputStream = getInputStream();
-        try {
+        try (InputStream inputStream = getInputStream()) {
             final int contentLength = this.encodedUsingGZIP() ? -1 : getContentLength();
             int bytesRemaining = contentLength < 0 ? Integer.MAX_VALUE : contentLength;
             _bytes = readFromStream(inputStream, bytesRemaining);
@@ -1124,8 +1180,6 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
                 throw new IOException(
                         "Truncated message. Expected length: " + contentLength + ", Actual length: " + _bytes.length);
             }
-        } finally {
-            inputStream.close();
         }
     }
 
@@ -1137,15 +1191,16 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             do {
                 outputStream.write(buffer, 0, count);
                 maxBytes -= count;
-                if (maxBytes <= 0)
+                if (maxBytes <= 0) {
                     break;
+                }
                 count = inputStream.read(buffer, 0, Math.min(maxBytes, buffer.length));
             } while (count != -1);
         } else {
             do {
                 outputStream.write(buffer, 0, count);
                 int available = getAvailableBytes(inputStream);
-                count = (available == 0) ? -1 : inputStream.read(buffer, 0, buffer.length);
+                count = available == 0 ? -1 : inputStream.read(buffer, 0, buffer.length);
             } while (count != -1);
         }
 
@@ -1160,7 +1215,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             try {
                 Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);
             } catch (InterruptedException e) {
-                /* do nothing */ }
+            /* do nothing */ }
             available = inputStream.available();
         } while (available == 0 && timeLeft > 0);
         return available;
@@ -1178,10 +1233,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         ByteTagParser parser = new ByteTagParser(rawMessage);
         ByteTag tag = parser.getNextTag();
         while (tag != null) {
-            if (tag.getName().equalsIgnoreCase("meta"))
+            if (tag.getName().equalsIgnoreCase("meta")) {
                 processMetaTag(tag);
-            if (tag.getName().equalsIgnoreCase("base"))
+            }
+            if (tag.getName().equalsIgnoreCase("base")) {
                 processBaseTag(tag);
+            }
             // loop over a noscript region
             if (tag.getName().equalsIgnoreCase("noscript") && HttpUnitOptions.isScriptingEnabled()) {
                 do {
@@ -1193,10 +1250,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     private void processBaseTag(ByteTag tag) throws MalformedURLException {
-        if (tag.getAttribute("href") != null)
+        if (tag.getAttribute("href") != null) {
             _baseURL = new URL(getURL(), tag.getAttribute("href"));
-        if (tag.getAttribute("target") != null)
+        }
+        if (tag.getAttribute("target") != null) {
             _baseTarget = tag.getAttribute("target");
+        }
     }
 
     /**
@@ -1223,8 +1282,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     private boolean isHttpEquivMetaTag(ByteTag tag, String headerName) {
         String equiv1 = tag.getAttribute("http_equiv");
         String equiv2 = tag.getAttribute("http-equiv");
-        boolean result = headerName.equalsIgnoreCase(equiv1) || headerName.equalsIgnoreCase(equiv2);
-        return result;
+        return headerName.equalsIgnoreCase(equiv1) || headerName.equalsIgnoreCase(equiv2);
     }
 
     /**
@@ -1244,12 +1302,14 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * read the Refresh Request
      */
     private void readRefreshRequest() {
-        if (_refreshDelay >= 0)
+        if (_refreshDelay >= 0) {
             return;
+        }
         _refreshDelay = 0;
         String refreshHeader = _refreshHeader != null ? _refreshHeader : getHeaderField("Refresh");
-        if (refreshHeader == null)
+        if (refreshHeader == null) {
             return;
+        }
 
         int semicolonIndex = refreshHeader.indexOf(';');
         if (semicolonIndex < 0) {
@@ -1258,13 +1318,15 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             interpretRefreshHeaderElement(refreshHeader.substring(0, semicolonIndex), refreshHeader);
             interpretRefreshHeaderElement(refreshHeader.substring(semicolonIndex + 1), refreshHeader);
         }
-        if (_refreshRequest == null)
+        if (_refreshRequest == null) {
             _refreshRequest = new GetMethodWebRequest(_pageURL, _pageURL.toString(), _frame.getName());
+        }
     }
 
     private void interpretRefreshHeaderElement(String token, String refreshHeader) {
-        if (token.length() == 0)
+        if (token.length() == 0) {
             return;
+        }
         try {
             if (Character.isDigit(token.charAt(0))) {
                 _refreshDelay = Integer.parseInt(token);
@@ -1280,11 +1342,10 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         text = text.trim();
         if (!text.toUpperCase().startsWith("URL")) {
             return HttpUnitUtils.stripQuotes(text);
-        } else {
-            int splitIndex = text.indexOf('=');
-            String value = text.substring(splitIndex + 1).trim();
-            return HttpUnitUtils.replaceEntities(HttpUnitUtils.stripQuotes(value));
         }
+        int splitIndex = text.indexOf('=');
+        String value = text.substring(splitIndex + 1).trim();
+        return HttpUnitUtils.replaceEntities(HttpUnitUtils.stripQuotes(value));
     }
 
     private void inferContentType(String contentTypeHeader) {
@@ -1295,15 +1356,16 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     CookieJar getCookieJar() {
-        if (_cookies == null)
+        if (_cookies == null) {
             _cookies = new CookieJar(this);
+        }
         return _cookies;
     }
 
     private CookieJar _cookies;
 
     private void readContentTypeHeader() {
-        String contentHeader = (_contentHeader != null) ? _contentHeader : getHeaderField("Content-type");
+        String contentHeader = _contentHeader != null ? _contentHeader : getHeaderField("Content-type");
         if (contentHeader == null) {
             _contentType = HttpUnitOptions.getDefaultContentType();
             setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());
@@ -1315,16 +1377,17 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             } else {
                 _contentType = parts[0];
             }
-            if (parts[1] != null)
+            if (parts[1] != null) {
                 setCharacterSet(parts[1]);
+            }
         }
     }
 
     private WebFrame[] getFrames() throws SAXException {
-        if (isWithParse())
+        if (isWithParse()) {
             return getReceivedPage().getFrames();
-        else
-            return new WebFrame[0];
+        }
+        return new WebFrame[0];
     }
 
     /**
@@ -1338,13 +1401,15 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         if (_page == null) {
             try {
                 _parsingPage = true;
-                if (HttpUnitOptions.isCheckHtmlContentType() && !isHTML())
+                if (HttpUnitOptions.isCheckHtmlContentType() && !isHTML()) {
                     throw new NotHTMLException(getContentType());
+                }
                 _page = new HTMLPage(this, _frame, _baseURL, _baseTarget, getCharacterSet());
                 if (_withParse) {
                     _page.parse(getText(), _pageURL);
-                    if (_page == null)
+                    if (_page == null) {
                         throw new IllegalStateException("replaceText called in the middle of getReceivedPage()");
+                    }
                     ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);
                 }
             } catch (IOException e) {
@@ -1364,19 +1429,20 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     static String getDefaultEncoding() {
         if (_defaultEncoding == null) {
-            for (int i = 0; i < DEFAULT_ENCODING_CANDIDATES.length; i++) {
-                if (isSupportedCharacterSet(DEFAULT_ENCODING_CANDIDATES[i])) {
-                    return _defaultEncoding = DEFAULT_ENCODING_CANDIDATES[i];
+            for (String element : DEFAULT_ENCODING_CANDIDATES) {
+                if (isSupportedCharacterSet(element)) {
+                    return _defaultEncoding = element;
                 }
             }
-            _defaultEncoding = System.getProperty("file.encoding");
+            _defaultEncoding = Charset.defaultCharset().displayName();
         }
         return _defaultEncoding;
     }
 
     private void setCharacterSet(String characterSet) {
-        if (characterSet == null)
+        if (characterSet == null) {
             return;
+        }
 
         _characterSet = isSupportedCharacterSet(characterSet) ? characterSet : getDefaultEncoding();
     }
@@ -1416,8 +1482,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
                     getAttributes().put(attribute.toLowerCase(), nextToken());
                     attribute = "";
                 } else {
-                    if (attribute.length() > 0)
+                    if (attribute.length() > 0) {
                         getAttributes().put(attribute.toLowerCase(), "");
+                    }
                     attribute = token;
                 }
                 token = nextToken();
@@ -1432,13 +1499,15 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             return (String) getAttributes().get(attributeName);
         }
 
+        @Override
         public String toString() {
             return "ByteTag[ name=" + _name + ";attributes = " + _attributes + ']';
         }
 
         private Hashtable getAttributes() {
-            if (_attributes == null)
+            if (_attributes == null) {
                 _attributes = new Hashtable();
+            }
             return _attributes;
         }
 
@@ -1450,26 +1519,31 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         private String nextToken() {
             int start = _end + 1;
-            while (start < _buffer.length && Character.isWhitespace(_buffer[start]))
+            while (start < _buffer.length && Character.isWhitespace(_buffer[start])) {
                 start++;
+            }
             if (start >= _buffer.length) {
                 return "";
-            } else if (_buffer[start] == '"') {
-                for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '"'; _end++)
+            }
+            if (_buffer[start] == '"') {
+                for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '"'; _end++) {
                     ;
+                }
                 return new String(_buffer, start + 1, _end - start - 1);
             } else if (_buffer[start] == '\'') {
-                for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '\''; _end++)
+                for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '\''; _end++) {
                     ;
+                }
                 return new String(_buffer, start + 1, _end - start - 1);
             } else if (_buffer[start] == '=') {
                 _end = start;
                 return "=";
             } else {
                 for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '='
-                        && !Character.isWhitespace(_buffer[_end]); _end++)
+                        && !Character.isWhitespace(_buffer[_end]); _end++) {
                     ;
-                return new String(_buffer, start, (_end--) - start);
+                }
+                return new String(_buffer, start, _end-- - start);
             }
         }
     }
@@ -1485,8 +1559,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             ByteTag byteTag = null;
             do {
                 int _start = _end + 1;
-                while (_start < _buffer.length && _buffer[_start] != '<')
+                while (_start < _buffer.length && _buffer[_start] != '<') {
                     _start++;
+                }
                 // proposed patch for bug report
                 // [ 1376739 ] iframe tag not recognized if Javascript code contains '<'
                 // by Nathan Jakubiak
@@ -1496,17 +1571,20 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
                 // _end = _start+1;
                 // continue;
                 // }
-                for (_end = _start + 1; _end < _buffer.length && _buffer[_end] != '>'; _end++)
+                for (_end = _start + 1; _end < _buffer.length && _buffer[_end] != '>'; _end++) {
                     ;
-                if (_end >= _buffer.length || _end < _start)
+                }
+                if (_end >= _buffer.length || _end < _start) {
                     return null;
+                }
                 byteTag = new ByteTag(_buffer, _start + 1, _end - _start - 1);
                 if (byteTag.getName().equalsIgnoreCase("script")) {
                     _scriptDepth++;
                     return byteTag;
                 }
-                if (byteTag.getName().equalsIgnoreCase("/script"))
+                if (byteTag.getName().equalsIgnoreCase("/script")) {
                     _scriptDepth--;
+                }
             } while (_scriptDepth > 0);
             return byteTag;
         }
@@ -1561,6 +1639,7 @@ class DefaultWebResponse extends WebResponse {
     /**
      * Returns the response code associated with this response.
      **/
+    @Override
     public int getResponseCode() {
         return HttpURLConnection.HTTP_OK;
     }
@@ -1568,10 +1647,12 @@ class DefaultWebResponse extends WebResponse {
     /**
      * Returns the response message associated with this response.
      **/
+    @Override
     public String getResponseMessage() {
         return "OK";
     }
 
+    @Override
     public String[] getHeaderFieldNames() {
         return new String[] { "Content-type" };
     }
@@ -1579,19 +1660,21 @@ class DefaultWebResponse extends WebResponse {
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null.
      **/
+    @Override
     public String getHeaderField(String fieldName) {
         if (fieldName.equalsIgnoreCase("Content-type")) {
             return "text/html; charset=us-ascii";
-        } else {
-            return null;
         }
+        return null;
     }
 
+    @Override
     public String[] getHeaderFields(String fieldName) {
         String value = getHeaderField(fieldName);
         return value == null ? new String[0] : new String[] { value };
     }
 
+    @Override
     public String toString() {
         try {
             return "DefaultWebResponse [" + getText() + "]";

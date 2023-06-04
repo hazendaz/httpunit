@@ -90,6 +90,6 @@ public interface Input extends IdentifiedDelegate, NamedDelegate {
     /**
      * fire a on change event
      */
-    public void sendOnChangeEvent();
+    void sendOnChangeEvent();
 
 }

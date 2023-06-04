@@ -23,6 +23,7 @@ import com.meterware.httpunit.dom.HTMLInputElementImpl;
 
 public class RadioButtonFormControl extends BooleanFormControl {
 
+    @Override
     public String getType() {
         return RADIO_BUTTON_TYPE;
     }
@@ -34,10 +35,12 @@ public class RadioButtonFormControl extends BooleanFormControl {
     /**
      * Returns true if only one control of this kind can have a value.
      **/
+    @Override
     public boolean isExclusive() {
         return true;
     }
 
+    @Override
     public String getQueryValue() {
         return getValueAttribute();
     }

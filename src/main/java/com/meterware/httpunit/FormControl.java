@@ -375,7 +375,8 @@ public abstract class FormControl extends HTMLElementBase {
             } else {
                 return new Button(form, control);
             }
-        } else if (!node.getNodeName().equalsIgnoreCase("input")) {
+        }
+        if (!node.getNodeName().equalsIgnoreCase("input")) {
             return null;
         } else {
             HTMLInputElementImpl element = (HTMLInputElementImpl) node;

@@ -227,10 +227,9 @@ class InvocationContextImpl implements InvocationContext {
         }
         if (!_application.usesFormAuthentication()) {
             throw new IllegalStateException("Authorization required but no authentication method defined");
-        } else {
-            ((ServletUnitHttpSession) request.getSession()).setOriginalURL(requestURL);
-            return _application.getLoginURL();
         }
+        ((ServletUnitHttpSession) request.getSession()).setOriginalURL(requestURL);
+        return _application.getLoginURL();
     }
 
     private boolean userIsAuthorized(HttpServletRequest request, URL requestURL) {

@@ -44,9 +44,8 @@ abstract public class PseudoServlet {
         }
         if (methodType.equalsIgnoreCase("DELETE")) {
             return getDeleteResponse();
-        } else {
-            throw new UnknownMethodException(methodType);
         }
+        throw new UnknownMethodException(methodType);
     }
 
     /**

@@ -928,7 +928,8 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             }
             if (propertyName.equalsIgnoreCase("opener")) {
                 return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;
-            } else if (propertyName.equalsIgnoreCase("closed")) {
+            }
+            if (propertyName.equalsIgnoreCase("closed")) {
                 return getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed() ? Boolean.TRUE
                         : Boolean.FALSE;
             } else {
@@ -1542,13 +1543,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             if (_buffer[start] == '=') {
                 _end = start;
                 return "=";
-            } else {
-                for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '='
-                        && !Character.isWhitespace(_buffer[_end]); _end++) {
-
-                }
-                return new String(_buffer, start, _end-- - start);
             }
+            for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '='
+                    && !Character.isWhitespace(_buffer[_end]); _end++) {
+
+            }
+            return new String(_buffer, start, _end-- - start);
         }
     }
 

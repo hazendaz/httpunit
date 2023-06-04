@@ -370,7 +370,8 @@ public abstract class FormControl extends HTMLElementBase {
             final String type = control.getType();
             if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE)) {
                 return new SubmitButton(form, control);
-            } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
+            }
+            if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
                 return new ResetButton(form, control);
             } else {
                 return new Button(form, control);
@@ -378,30 +379,29 @@ public abstract class FormControl extends HTMLElementBase {
         }
         if (!node.getNodeName().equalsIgnoreCase("input")) {
             return null;
+        }
+        HTMLInputElementImpl element = (HTMLInputElementImpl) node;
+        final String type = element.getType();
+        if (type.equalsIgnoreCase(TEXT_TYPE)) {
+            return new TextFieldFormControl(form, element);
+        } else if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
+            return new PasswordFieldFormControl(form, element);
+        } else if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
+            return new HiddenFieldFormControl(form, element);
+        } else if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
+            return new RadioButtonFormControl(form, element);
+        } else if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
+            return new CheckboxFormControl(form, element);
+        } else if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
+            return new SubmitButton(form, element);
+        } else if (type.equalsIgnoreCase(BUTTON_TYPE)) {
+            return new Button(form, (HTMLControl) node);
+        } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
+            return new ResetButton(form, (HTMLControl) node);
+        } else if (type.equalsIgnoreCase(FILE_TYPE)) {
+            return new FileSubmitFormControl(form, element);
         } else {
-            HTMLInputElementImpl element = (HTMLInputElementImpl) node;
-            final String type = element.getType();
-            if (type.equalsIgnoreCase(TEXT_TYPE)) {
-                return new TextFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
-                return new PasswordFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
-                return new HiddenFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
-                return new RadioButtonFormControl(form, element);
-            } else if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
-                return new CheckboxFormControl(form, element);
-            } else if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
-                return new SubmitButton(form, element);
-            } else if (type.equalsIgnoreCase(BUTTON_TYPE)) {
-                return new Button(form, (HTMLControl) node);
-            } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
-                return new ResetButton(form, (HTMLControl) node);
-            } else if (type.equalsIgnoreCase(FILE_TYPE)) {
-                return new FileSubmitFormControl(form, element);
-            } else {
-                return new TextFieldFormControl(form, element);
-            }
+            return new TextFieldFormControl(form, element);
         }
     }
 

@@ -171,13 +171,12 @@ class FrameHolder {
         }
         if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame();
-        } else {
-            FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());
-            if (targetFrame == null) {
-                targetFrame = _window.getClient().findFrame(request.getTarget());
-            }
-            return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;
         }
+        FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());
+        if (targetFrame == null) {
+            targetFrame = _window.getClient().findFrame(request.getTarget());
+        }
+        return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;
     }
 
     void updateFrames(WebResponse response, FrameSelector frame, RequestContext requestContext)

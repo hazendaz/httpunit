@@ -932,12 +932,11 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             if (propertyName.equalsIgnoreCase("closed")) {
                 return getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed() ? Boolean.TRUE
                         : Boolean.FALSE;
-            } else {
-                try {
-                    return getSubframeContents(propertyName).getScriptableObject();
-                } catch (NoSuchFrameException e) {
-                    return super.get(propertyName);
-                }
+            }
+            try {
+                return getSubframeContents(propertyName).getScriptableObject();
+            } catch (NoSuchFrameException e) {
+                return super.get(propertyName);
             }
         }
 

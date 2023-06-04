@@ -386,23 +386,29 @@ public abstract class FormControl extends HTMLElementBase {
         }
         if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
             return new PasswordFieldFormControl(form, element);
-        } else if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
-            return new HiddenFieldFormControl(form, element);
-        } else if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
-            return new RadioButtonFormControl(form, element);
-        } else if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
-            return new CheckboxFormControl(form, element);
-        } else if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
-            return new SubmitButton(form, element);
-        } else if (type.equalsIgnoreCase(BUTTON_TYPE)) {
-            return new Button(form, (HTMLControl) node);
-        } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
-            return new ResetButton(form, (HTMLControl) node);
-        } else if (type.equalsIgnoreCase(FILE_TYPE)) {
-            return new FileSubmitFormControl(form, element);
-        } else {
-            return new TextFieldFormControl(form, element);
         }
+        if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
+            return new HiddenFieldFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
+            return new RadioButtonFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
+            return new CheckboxFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
+            return new SubmitButton(form, element);
+        }
+        if (type.equalsIgnoreCase(BUTTON_TYPE)) {
+            return new Button(form, (HTMLControl) node);
+        }
+        if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
+            return new ResetButton(form, (HTMLControl) node);
+        }
+        if (type.equalsIgnoreCase(FILE_TYPE)) {
+            return new FileSubmitFormControl(form, element);
+        }
+        return new TextFieldFormControl(form, element);
     }
 
     protected String emptyIfNull(String value) {

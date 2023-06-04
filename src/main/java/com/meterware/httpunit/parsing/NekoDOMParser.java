@@ -170,7 +170,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
 class ErrorHandler implements XMLErrorHandler {
 
-    private URL _url = null;
+    private URL _url;
 
     ErrorHandler(URL url) {
         _url = url;

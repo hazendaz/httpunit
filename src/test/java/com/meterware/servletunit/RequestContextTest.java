@@ -239,11 +239,6 @@ class RequestContextTest extends HttpUnitTest {
         }
 
         @Override
-        public boolean isRequestedSessionIdFromUrl() {
-            return false;
-        }
-
-        @Override
         public Object getAttribute(String s) {
             return null;
         }
@@ -357,11 +352,6 @@ class RequestContextTest extends HttpUnitTest {
 
         @Override
         public RequestDispatcher getRequestDispatcher(String s) {
-            return null;
-        }
-
-        @Override
-        public String getRealPath(String s) {
             return null;
         }
 

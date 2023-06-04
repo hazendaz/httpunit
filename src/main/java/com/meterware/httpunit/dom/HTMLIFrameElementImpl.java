@@ -134,8 +134,4 @@ public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrame
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public Document getContentDocument() {
-        return null; // To change body of implemented methods use File | Settings | File Templates.
-    }
 }

@@ -76,7 +76,6 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         setAttribute("label", label);
     }
 
-    @Override
     public void setSelected(boolean selected) {
         if (selected && getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {
             getSelect().clearSelected();

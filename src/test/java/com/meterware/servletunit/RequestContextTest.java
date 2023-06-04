@@ -239,6 +239,11 @@ class RequestContextTest extends HttpUnitTest {
         }
 
         @Override
+        public boolean isRequestedSessionIdFromUrl() {
+            return false;
+        }
+
+        @Override
         public Object getAttribute(String s) {
             return null;
         }
@@ -251,6 +256,10 @@ class RequestContextTest extends HttpUnitTest {
         @Override
         public String getCharacterEncoding() {
             return null;
+        }
+
+        @Override
+        public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
         }
 
         @Override

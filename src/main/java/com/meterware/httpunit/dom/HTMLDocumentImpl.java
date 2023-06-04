@@ -45,7 +45,7 @@ import org.w3c.dom.html.HTMLTitleElement;
 public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTMLContainerElement {
 
     private static final long serialVersionUID = 1L;
-    private static Hashtable _exemplars = new Hashtable();
+    private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
     private DomWindow _window;
     private StringBuilder _writeBuffer;
     private HTMLContainerDelegate _containerDelegate = new HTMLContainerDelegate(SKIP_IFRAMES);
@@ -240,8 +240,8 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
 
     @Override
     public NodeList getElementsByName(String elementName) {
-        ArrayList elements = new ArrayList();
-        for (Iterator each = preOrderIterator(); each.hasNext();) {
+        ArrayList<HTMLElementImpl> elements = new ArrayList<HTMLElementImpl>();
+        for (Iterator<?> each = preOrderIterator(); each.hasNext();) {
             Node node = (Node) each.next();
             if (!(node instanceof HTMLElementImpl)) {
                 continue;

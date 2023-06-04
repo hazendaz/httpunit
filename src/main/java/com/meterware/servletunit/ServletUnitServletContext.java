@@ -23,12 +23,12 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.servlet.*;
 import javax.servlet.ServletRegistration.Dynamic;
@@ -237,15 +237,17 @@ public class ServletUnitServletContext implements ServletContext {
     /**
      * @deprecated as of Servlet API 2.0
      **/
-    public java.util.Enumeration getServlets() {
-        return EMPTY_VECTOR.elements();
+    @Override
+    public java.util.Enumeration<Servlet> getServlets() {
+        return Collections.emptyEnumeration();
     }
 
     /**
      * @deprecated as of Servlet API 2.1
      **/
-    public java.util.Enumeration getServletNames() {
-        return EMPTY_VECTOR.elements();
+    @Override
+    public java.util.Enumeration<String> getServletNames() {
+        return Collections.emptyEnumeration();
     }
 
     /**
@@ -406,8 +408,6 @@ public class ServletUnitServletContext implements ServletContext {
 
     // ------------------------------------------- private members
     // ----------------------------------------------------
-
-    private final static Vector EMPTY_VECTOR = new Vector();
 
     private Hashtable _attributes = new Hashtable();
 

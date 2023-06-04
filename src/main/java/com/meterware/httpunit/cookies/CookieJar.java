@@ -549,12 +549,11 @@ public class CookieJar {
             if (CookieProperties.isDomainMatchingStrict()
                     && sourceHost.lastIndexOf(domainAttribute) > sourceHost.indexOf('.')) {
                 return CookieListener.DOMAIN_TOO_MANY_LEVELS;
-            } else {
-                // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
-                // http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
-                cookie.setDomain(domainAttribute);
-                return CookieListener.ACCEPTED;
             }
+            // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
+            // http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
+            cookie.setDomain(domainAttribute);
+            return CookieListener.ACCEPTED;
         }
 
         private boolean reportCookieRejected(int reason, String attribute, String source) {

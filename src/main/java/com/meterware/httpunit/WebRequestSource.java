@@ -377,9 +377,8 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
         }
         if (!_node.hasChildNodes()) {
             return "";
-        } else {
-            return NodeUtils.asText(_node.getChildNodes()).trim();
         }
+        return NodeUtils.asText(_node.getChildNodes()).trim();
     }
 
     @Override

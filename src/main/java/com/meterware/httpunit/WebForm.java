@@ -795,14 +795,13 @@ public class WebForm extends WebRequestSource {
             }
             if (propertyName.equals("length")) {
                 return Integer.valueOf(getFormControls().length);
-            } else {
-                final FormParameter parameter = getParameter(propertyName);
-                if (!parameter.isUnknown()) {
-                    return parameter.getScriptableObject();
-                }
-                FormControl control = getControlWithID(propertyName);
-                return control == null ? super.get(propertyName) : control.getScriptingHandler();
             }
+            final FormParameter parameter = getParameter(propertyName);
+            if (!parameter.isUnknown()) {
+                return parameter.getScriptableObject();
+            }
+            FormControl control = getControlWithID(propertyName);
+            return control == null ? super.get(propertyName) : control.getScriptingHandler();
         }
 
         /**

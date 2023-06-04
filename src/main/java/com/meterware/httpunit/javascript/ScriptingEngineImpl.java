@@ -79,9 +79,8 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
             HttpUnitUtils.handleException(e);
             if (e instanceof ScriptException) {
                 throw (ScriptException) e;
-            } else {
-                throw new ScriptException(errorMessage);
             }
+            throw new ScriptException(errorMessage);
         }
         _errorMessages.add(errorMessage);
     }

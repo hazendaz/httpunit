@@ -247,7 +247,7 @@ public class HttpUserAgentTest {
         private Vector _parameters = new Vector();
 
         private boolean equals(QuerySpec o) {
-            if (!_path.equals(o._path) || (_parameters.size() != o._parameters.size())) {
+            if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {
                 return false;
             }
             for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {

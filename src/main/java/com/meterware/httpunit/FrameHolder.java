@@ -120,9 +120,8 @@ class FrameHolder {
         }
         if (rootFrame.getParent() != null) {
             return lookupFrame(rootFrame.getParent(), target);
-        } else {
-            return null;
         }
+        return null;
     }
 
     private FrameSelector getFromSubframe(FrameSelector rootFrame, String target) {
@@ -166,7 +165,8 @@ class FrameHolder {
         }
         if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame();
-        } else if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {
+        }
+        if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();
         } else if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame();

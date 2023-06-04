@@ -224,7 +224,8 @@ class InvocationContextImpl implements InvocationContext {
         if (_application.usesBasicAuthentication()) {
             throw AuthorizationRequiredException
             .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
-        } else if (!_application.usesFormAuthentication()) {
+        }
+        if (!_application.usesFormAuthentication()) {
             throw new IllegalStateException("Authorization required but no authentication method defined");
         } else {
             ((ServletUnitHttpSession) request.getSession()).setOriginalURL(requestURL);

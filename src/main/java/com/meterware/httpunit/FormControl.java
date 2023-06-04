@@ -364,7 +364,8 @@ public abstract class FormControl extends HTMLElementBase {
         }
         if (node.getNodeName().equalsIgnoreCase("select")) {
             return new SelectionFormControl(form, (HTMLSelectElementImpl) node);
-        } else if (node.getNodeName().equalsIgnoreCase("button")) {
+        }
+        if (node.getNodeName().equalsIgnoreCase("button")) {
             HTMLControl control = (HTMLControl) node;
             final String type = control.getType();
             if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE)) {
@@ -560,9 +561,8 @@ abstract class BooleanFormControl extends FormControl {
             }
             if (propertyName.equalsIgnoreCase("defaultchecked")) {
                 return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
         @Override

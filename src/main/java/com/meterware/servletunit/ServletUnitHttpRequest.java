@@ -63,9 +63,6 @@ import javax.servlet.http.Part;
 class ServletUnitHttpRequest implements HttpServletRequest {
 
     private ServletInputStreamImpl _inputStream;
-    // TODO remove when test case for [ 1509117 ] getContentType()
-    // gets available
-    private String _contentType;
     private Vector _locales;
     private String _protocol;
     private boolean _secure;
@@ -106,7 +103,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         String contentTypeHeader = (String) _headers.get("Content-Type");
         if (contentTypeHeader != null) {
             String[] res = HttpUnitUtils.parseContentTypeHeader(contentTypeHeader);
-            _contentType = res[0];
             _charset = res[1];
             _requestContext.setMessageEncoding(_charset);
         }

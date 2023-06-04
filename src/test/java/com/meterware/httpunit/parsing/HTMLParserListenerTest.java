@@ -19,9 +19,17 @@
  */
 package com.meterware.httpunit.parsing;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HeadMethodWebRequest;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 
 import java.io.PrintWriter;
 import java.net.URL;
@@ -100,17 +108,19 @@ class HTMLParserListenerTest extends HttpUnitTest {
         try {
             HTMLParserFactory.setParserWarningsEnabled(true);
             HTMLParserFactory.setHTMLParser(new NekoHTMLParser() {
-                // @Override
+                @Override
                 public void parse(URL pageURL, String pageText, DocumentAdapter adapter) {
                     System.err.println("Parsing URL=" + pageURL + "\n" + pageText);
                     fail("Should not be parsing a HEAD request");
                 }
             });
             HTMLParserFactory.addHTMLParserListener(new HTMLParserListener() {
+                @Override
                 public void error(URL url, String msg, int line, int column) {
                     System.err.println("ERROR @url=" + url + ": (" + line + ", " + column + "):" + msg);
                 }
 
+                @Override
                 public void warning(URL url, String msg, int line, int column) {
                     System.err.println("WARN @url=" + url + ": (" + line + ", " + column + "):" + msg);
                 }
@@ -140,11 +150,13 @@ class HTMLParserListenerTest extends HttpUnitTest {
             _expectProblems = expectProblems;
         }
 
+        @Override
         public void warning(URL url, String msg, int line, int column) {
             _foundProblems = true;
             _badURL = url;
         }
 
+        @Override
         public void error(URL url, String msg, int line, int column) {
             assertTrue(_expectProblems, msg + " at line " + line + ", column " + column);
             _foundProblems = true;

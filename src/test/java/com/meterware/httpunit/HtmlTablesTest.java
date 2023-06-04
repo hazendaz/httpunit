@@ -117,15 +117,20 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Watches:", text[row][1]);
         row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Messages:", text[row][0]);
-        assertEquals("Messages:", text[row++][1]);
+        assertEquals("Messages:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Favourite Documents:", text[row][0]);
-        assertEquals("Favourite Documents:", text[row++][1]);
+        assertEquals("Favourite Documents:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
     }
 
     /**

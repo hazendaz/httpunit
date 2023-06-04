@@ -529,8 +529,8 @@ class WebPageTest extends HttpUnitTest {
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
         defineResource("main.html", "<html><head><title>main</title>\n" + "<base href=\"" + mainBaseURL.toExternalForm()
-                + "\">\n" + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"
-                + scriptToWriteAnotherDocument(simpleDocument(targetBaseURL), targetWindow) + "</body>\n</html>\n");
+        + "\">\n" + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"
+        + scriptToWriteAnotherDocument(simpleDocument(targetBaseURL), targetWindow) + "</body>\n</html>\n");
 
         WebConversation wc = new WebConversation();
         final WebResponse response = wc.getResponse(getHostPath() + "/main.html");

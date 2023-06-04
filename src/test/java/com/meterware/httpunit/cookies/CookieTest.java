@@ -50,7 +50,7 @@ public class CookieTest {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
                 new String[] { "Reason=; path=/", "age=12, name= george", "type=short", "funky=ab$==",
                         "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
-                        "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
+        "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
         assertEquals("", jar.getCookieValue("Reason"), "cookie 'Reason' value");
         assertEquals("12", jar.getCookieValue("age"), "cookie 'age' value");
         assertEquals("george", jar.getCookieValue("name"), "cookie 'name' value");

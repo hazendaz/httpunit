@@ -64,18 +64,18 @@ class HTMLTableTest extends AbstractHTMLElementTest {
     void testTableNodeCreation() throws Exception {
         doElementTest("td", HTMLTableCellElement.class,
                 new Object[][] { { "abbr", "lots" }, { "align", "center" }, { "axis", "age" }, { "bgColor", "red" },
-                        { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ },
-                        { "colspan", Integer.valueOf(3), Integer.valueOf(1) }, { "headers", "time,age" },
-                        { "height", "20" }, { "nowrap", Boolean.TRUE, Boolean.FALSE },
-                        { "rowspan", Integer.valueOf(15), Integer.valueOf(1) }, { "scope", "row" },
-                        { "valign", "top", "middle" }, { "width", "10" } });
+            { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ },
+            { "colspan", Integer.valueOf(3), Integer.valueOf(1) }, { "headers", "time,age" },
+            { "height", "20" }, { "nowrap", Boolean.TRUE, Boolean.FALSE },
+            { "rowspan", Integer.valueOf(15), Integer.valueOf(1) }, { "scope", "row" },
+            { "valign", "top", "middle" }, { "width", "10" } });
         doElementTest("th", HTMLTableCellElement.class, new Object[][] { { "abbr", "lots" } });
         doElementTest("tr", HTMLTableRowElement.class, new Object[][] { { "align", "center" }, { "bgColor", "red" },
-                { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ }, { "valign", "top", "middle" } });
+            { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ }, { "valign", "top", "middle" } });
         doElementTest("table", HTMLTableElement.class,
                 new Object[][] { { "align", "right", "center" }, { "bgColor", "red" }, { "border", "2" },
-                        { "cellpadding", "20" }, { "cellspacing", "20" }, { "frame", "above", "void" },
-                        { "rules", "groups", "none" }, { "summary", "blah blah" }, { "width", "5" } });
+            { "cellpadding", "20" }, { "cellspacing", "20" }, { "frame", "above", "void" },
+            { "rules", "groups", "none" }, { "summary", "blah blah" }, { "width", "5" } });
     }
 
     @Test

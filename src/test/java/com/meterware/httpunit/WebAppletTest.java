@@ -146,8 +146,8 @@ public class WebAppletTest extends HttpUnitTest {
     void testAppletFindFromApplet() throws Exception {
         defineWebPage("start",
                 "<applet name=first code='" + SimpleApplet.class.getName()
-                        + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
-                        + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
+                + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
+                + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
         mapToClasspath("/classes");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/start.html");

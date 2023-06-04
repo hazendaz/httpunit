@@ -19,13 +19,18 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -160,7 +165,7 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("y", button.positionParameterName("y"), "y param name");
         button.click(5, 15);
         WebResponse response = _wc.getCurrentPage();
-        URL url = response.getURL();
+        response.getURL();
         // reset for other test
         SubmitButton.setAllowUnnamedImageButton(oldAllowUnnamedImageButton);
         // System.err.println(url.getPath());
@@ -250,7 +255,7 @@ class WebFormTest extends HttpUnitTest {
         WebForm form = _wc.getResponse(getHostPath() + "/OneForm.html").getForms()[0];
         WebRequest request = form.getRequest();
         request.setParameter("name", "master");
-        assertFalse((request instanceof GetMethodWebRequest), "Should be a post request");
+        assertFalse(request instanceof GetMethodWebRequest, "Should be a post request");
         assertEquals(getHostPath() + "/servlet/Login", request.getURL().toExternalForm());
     }
 
@@ -319,8 +324,8 @@ class WebFormTest extends HttpUnitTest {
 
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">" + "<textarea name='" + fieldName
-                        + "' row='10' cols='20'>" + defaultValue + "</textarea>"
-                        + "<br><Input type=submit value = \"Submit\">" + "</form>");
+                + "' row='10' cols='20'>" + defaultValue + "</textarea>"
+                + "<br><Input type=submit value = \"Submit\">" + "</form>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebForm form = page.getForms()[0];
@@ -536,10 +541,10 @@ class WebFormTest extends HttpUnitTest {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=GET action=\"SayHello?speed=fast\">"
                 + "<input type=text name=name><input type=submit></form></body></html>");
         defineResource("SayHello?speed=fast&name=me", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
-                WebResource result = new WebResource(
+                return new WebResource(
                         "<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
-                return result;
             }
         });
 
@@ -561,10 +566,10 @@ class WebFormTest extends HttpUnitTest {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=POST action=\"SayHello?speed=fast\">"
                 + "<input type=text name=name><input type=submit></form></body></html>");
         defineResource("SayHello?speed=fast", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
-                WebResource result = new WebResource(
+                return new WebResource(
                         "<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
-                return result;
             }
         });
 
@@ -589,6 +594,7 @@ class WebFormTest extends HttpUnitTest {
         defineResource(sessionID + "/login", "<html><head></head>" + "<form method=POST action='SayHello'>"
                 + "<input type=text name=name><input type=submit></form></body></html>");
         defineResource(sessionID + "/SayHello", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource("<html><body><table><tr><td>Hello, there</td></tr></table></body></html>");
             }

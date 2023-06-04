@@ -19,9 +19,14 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import javax.servlet.ServletContext;
@@ -41,18 +46,23 @@ class SessionTest extends ServletUnitTest {
     @BeforeEach
     void setUp() throws Exception {
         _context = new ServletUnitContext(null, _servletContext, new SessionListenerDispatcher() {
+            @Override
             public void sendSessionCreated(HttpSession session) {
             }
 
+            @Override
             public void sendSessionDestroyed(HttpSession session) {
             }
 
+            @Override
             public void sendAttributeAdded(HttpSession session, String name, Object value) {
             }
 
+            @Override
             public void sendAttributeReplaced(HttpSession session, String name, Object oldValue) {
             }
 
+            @Override
             public void sendAttributeRemoved(HttpSession session, String name, Object oldValue) {
             }
         });
@@ -83,7 +93,6 @@ class SessionTest extends ServletUnitTest {
             Thread.sleep(50);
         } catch (InterruptedException e) {
         }
-        ;
         assertEquals(accessedAt, _context.getSession(session.getId()).getLastAccessedTime(), "Initial access time");
         session.access();
         assertTrue(accessedAt != _context.getSession(session.getId()).getLastAccessedTime(),

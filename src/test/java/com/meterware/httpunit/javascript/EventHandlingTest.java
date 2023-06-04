@@ -21,7 +21,9 @@ package com.meterware.httpunit.javascript;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebResponse;
 
 import java.io.IOException;
 
@@ -76,8 +78,7 @@ class EventHandlingTest extends HttpUnitTest {
      * @throws IOException
      */
     private WebResponse getResponse(String name) throws IOException, SAXException {
-        WebResponse response = _wc.getResponse(getHostPath() + "/" + name + ".html");
-        return response;
+        return _wc.getResponse(getHostPath() + "/" + name + ".html");
     }
 
     /**
@@ -95,7 +96,7 @@ class EventHandlingTest extends HttpUnitTest {
         String content = "";
         String name = "simple1";
         addResource(name, "only check addEventListener function available", onLoad, javaScript, content);
-        WebResponse response = getResponse(name);
+        getResponse(name);
         // System.out.println(response.getText());
         String alert = _wc.popNextAlert();
         assertEquals("found addEventListener", alert);

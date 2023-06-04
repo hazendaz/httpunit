@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.meterware.pseudoserver.HttpUserAgentTest;
 
@@ -30,7 +32,15 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLAnchorElement;
+import org.w3c.dom.html.HTMLAreaElement;
+import org.w3c.dom.html.HTMLBaseElement;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLDocument;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLIFrameElement;
+import org.w3c.dom.html.HTMLImageElement;
 
 /**
  * Test for HTMLDocumentImpl.

@@ -57,8 +57,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
             throws UnsupportedEncodingException {
         defineResource(resourceName, new BodyEcho());
         InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
-        WebRequest wr = new PostMethodWebRequest(getHostPath() + "/" + resourceName, source, contentType);
-        return wr;
+        return new PostMethodWebRequest(getHostPath() + "/" + resourceName, source, contentType);
     }
 
     /**
@@ -86,7 +85,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         String emptyContentType = ""; // this is an emptyContentType
         WebRequest wr = makeRequest("something", "some data", emptyContentType);
-        WebResponse response = wc.getResponse(wr);
+        wc.getResponse(wr);
         assertEquals("", wr.getContentType(), "Content-type");
     }
 
@@ -130,7 +129,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     @Test
     void testDownloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
-        byte[] binaryData = new byte[] { 0x01, 0x05, 0x0d, 0x0a, 0x02 };
+        byte[] binaryData = { 0x01, 0x05, 0x0d, 0x0a, 0x02 };
 
         InputStream source = new ByteArrayInputStream(binaryData);
 
@@ -152,7 +151,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      */
     @Test
     void testHeaderOnlyWebRequest() throws Exception {
-        HeaderOnlyWebRequest r = new HeaderOnlyWebRequest("http://www.google.com");
+        new HeaderOnlyWebRequest("http://www.google.com");
     }
 
     /**
@@ -185,12 +184,12 @@ class BodyEcho extends PseudoServlet {
     /**
      * Returns a resource object as a result of a get request.
      **/
+    @Override
     public WebResource getResponse(String method) {
         String contentType = getHeader("Content-type");
         if (contentType.startsWith("text")) {
             return new WebResource("\n" + method + "\n" + new String(getBody()), contentType);
-        } else {
-            return new WebResource(getBody(), contentType);
         }
+        return new WebResource(getBody(), contentType);
     }
 }

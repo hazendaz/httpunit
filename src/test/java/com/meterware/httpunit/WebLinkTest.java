@@ -19,7 +19,11 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -477,11 +481,11 @@ class WebLinkTest extends HttpUnitTest {
         defineWebPage("test2", "test page2");
         HttpUnitOptions.setLoggingHttpHeaders(false);
         HttpUnitOptions.setScriptingEnabled(false);
-        WebResponse mapPage = wc.getResponse(getHostPath() + "/test3.html");
+        wc.getResponse(getHostPath() + "/test3.html");
         WebLink link = wc.getCurrentPage().getLinkWith("test link");
         link.click();
 
-        String html2 = (wc.getCurrentPage().getText());
+        String html2 = wc.getCurrentPage().getText();
         assertTrue(html2.indexOf("test page2") > 0, "click should lead to page 2");
     }
 

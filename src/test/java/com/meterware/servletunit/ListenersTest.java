@@ -64,9 +64,11 @@ class ListenersTest extends EventAwareTestBase {
 
     static class ServletContextEventVerifier implements EventVerifier {
 
+        @Override
         public void verifyEvent(String eventLabel, Object eventObject) {
-            if (!(eventObject instanceof ServletContextEvent))
+            if (!(eventObject instanceof ServletContextEvent)) {
                 fail("Event " + eventLabel + " did not include a servlet context event");
+            }
         }
     }
 
@@ -101,9 +103,11 @@ class ListenersTest extends EventAwareTestBase {
 
     static class HttpSessionEventVerifier implements EventVerifier {
 
+        @Override
         public void verifyEvent(String eventLabel, Object eventObject) {
-            if (!(eventObject instanceof HttpSessionEvent))
+            if (!(eventObject instanceof HttpSessionEvent)) {
                 fail("Event " + eventLabel + " did not include an http session event");
+            }
         }
     }
 
@@ -149,9 +153,11 @@ class ListenersTest extends EventAwareTestBase {
         private String _name;
         private Object _value;
 
+        @Override
         public void verifyEvent(String eventLabel, Object eventObject) {
-            if (!(eventObject instanceof HttpSessionBindingEvent))
+            if (!(eventObject instanceof HttpSessionBindingEvent)) {
                 fail("Event " + eventLabel + " did not include an http session binding event");
+            }
             HttpSessionBindingEvent bindingChange = (HttpSessionBindingEvent) eventObject;
             assertEquals(_name, bindingChange.getName(), "Changed attribute name");
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
@@ -208,9 +214,11 @@ class ListenersTest extends EventAwareTestBase {
         private String _name;
         private Object _value;
 
+        @Override
         public void verifyEvent(String eventLabel, Object eventObject) {
-            if (!(eventObject instanceof ServletContextAttributeEvent))
+            if (!(eventObject instanceof ServletContextAttributeEvent)) {
                 fail("Event " + eventLabel + " did not include an http session binding event");
+            }
             ServletContextAttributeEvent bindingChange = (ServletContextAttributeEvent) eventObject;
             assertEquals(_name, bindingChange.getName(), "Changed attribute name");
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");

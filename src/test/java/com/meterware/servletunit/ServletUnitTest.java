@@ -34,36 +34,40 @@ public abstract class ServletUnitTest {
         Vector expectedItems = new Vector();
         Vector foundItems = new Vector();
 
-        for (int i = 0; i < expected.length; i++)
-            expectedItems.addElement(expected[i]);
-        for (int i = 0; i < found.length; i++)
-            foundItems.addElement(found[i]);
+        for (Object element : expected) {
+            expectedItems.addElement(element);
+        }
+        for (Object element : found) {
+            foundItems.addElement(element);
+        }
 
-        for (int i = 0; i < expected.length; i++) {
-            if (!foundItems.contains(expected[i])) {
+        for (Object element : expected) {
+            if (!foundItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                foundItems.removeElement(expected[i]);
+                foundItems.removeElement(element);
             }
         }
 
-        for (int i = 0; i < found.length; i++) {
-            if (!expectedItems.contains(found[i])) {
+        for (Object element : found) {
+            if (!expectedItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                expectedItems.removeElement(found[i]);
+                expectedItems.removeElement(element);
             }
         }
 
-        if (!foundItems.isEmpty())
+        if (!foundItems.isEmpty()) {
             fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
+        }
     }
 
     protected String asText(Object[] args) {
         StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < args.length; i++) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(",");
+            }
             sb.append('"').append(args[i]).append('"');
         }
         sb.append("}");

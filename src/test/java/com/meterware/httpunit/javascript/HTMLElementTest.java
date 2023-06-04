@@ -21,7 +21,9 @@ package com.meterware.httpunit.javascript;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

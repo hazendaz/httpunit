@@ -19,7 +19,11 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.applet.Applet;
 import java.lang.reflect.Method;
@@ -119,8 +123,8 @@ public class WebAppletTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/start.html");
         Applet applet = response.getApplets()[0].getApplet();
-        Method testMethod = applet.getClass().getMethod("getDocumentBuilder", new Class[0]);
-        Object result = testMethod.invoke(applet, new Object[0]);
+        Method testMethod = applet.getClass().getMethod("getDocumentBuilder");
+        Object result = testMethod.invoke(applet);
         assertEquals(DocumentBuilder.class.getName(), result.getClass().getSuperclass().getName(), "Superclass name");
     }
 
@@ -142,8 +146,8 @@ public class WebAppletTest extends HttpUnitTest {
     void testAppletFindFromApplet() throws Exception {
         defineWebPage("start",
                 "<applet name=first code='" + SimpleApplet.class.getName()
-                        + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
-                        + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
+                + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
+                + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
         mapToClasspath("/classes");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/start.html");
@@ -194,12 +198,18 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     public static class SimpleApplet extends Applet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     public static class SecondApplet extends SimpleApplet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     public static class XMLApplet extends Applet {
+        private static final long serialVersionUID = 1L;
+
         public DocumentBuilder getDocumentBuilder() throws Exception {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             return factory.newDocumentBuilder();

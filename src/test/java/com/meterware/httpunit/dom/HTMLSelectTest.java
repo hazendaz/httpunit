@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,8 +47,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
 
         _options = new HTMLOptionElement[] { createOption("red", "Vermillion", false),
                 createOption("blue", "Azure", true), createOption("green", "Chartreuse", false) };
-        for (int i = 0; i < _options.length; i++) {
-            HTMLOptionElement option = _options[i];
+        for (HTMLOptionElement option : _options) {
             _select.appendChild(option);
         }
     }

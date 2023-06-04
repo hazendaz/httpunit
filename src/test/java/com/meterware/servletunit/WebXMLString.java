@@ -102,13 +102,14 @@ class WebXMLString {
         // result.append( " xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee
         // http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'>\n" );
 
-        if (_displayName != null)
+        if (_displayName != null) {
             result.append("  <display-name>").append(_displayName).append("</display-name>");
+        }
         for (Iterator i = _contextParams.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             result.append("  <context-param>\n    <param-name>").append(entry.getKey());
             result.append("</param-name>\n    <param-value>").append(entry.getValue())
-                    .append("</param-value>\n  </context-param>\n");
+            .append("</param-value>\n  </context-param>\n");
         }
         for (int i = 0; i < _filters.size(); i++) {
             Object name = _filterNames.get(i);
@@ -119,11 +120,11 @@ class WebXMLString {
         }
         for (int i = 0; i < _filters.size(); i++) {
             result.append("  <filter-mapping>\n    <filter-name>").append(_filterNames.get(i))
-                    .append("</filter-name>\n");
+            .append("</filter-name>\n");
             result.append("    ").append(_filterMappings.get(_filterNames.get(i))).append("\n  </filter-mapping>\n");
         }
-        for (int i = 0; i < _listeners.size(); i++) {
-            Class aClass = (Class) _listeners.get(i);
+        for (Object _listener : _listeners) {
+            Class aClass = (Class) _listener;
             result.append("  <listener><listener-class>").append(aClass.getName());
             result.append("</listener-class></listener>\n");
         }
@@ -131,16 +132,16 @@ class WebXMLString {
             Object name = _servletNames.get(i);
             result.append("  <servlet>\n    <servlet-name>").append(name).append("</servlet-name>\n");
             result.append("    <servlet-class>").append(((Class) _servlets.get(i)).getName())
-                    .append("</servlet-class>\n");
+            .append("</servlet-class>\n");
             appendParams(result, "init-param", (Hashtable) _initParams.get(name));
             appendLoadOnStartup(result, _loadOnStartup.get(name));
             result.append("  </servlet>\n");
         }
         for (int i = _mappings.size() - 1; i >= 0; i--) {
             result.append("  <servlet-mapping>\n    <servlet-name>").append(_servletNames.get(i))
-                    .append("</servlet-name>\n");
+            .append("</servlet-name>\n");
             result.append("    <url-pattern>").append(_mappings.get(i))
-                    .append("</url-pattern>\n  </servlet-mapping>\n");
+            .append("</url-pattern>\n  </servlet-mapping>\n");
         }
         for (Enumeration e = _resources.elements(); e.hasMoreElements();) {
             result.append(((WebResourceSpec) e.nextElement()).asText());
@@ -151,23 +152,26 @@ class WebXMLString {
     }
 
     private void appendLoadOnStartup(StringBuilder result, Object startupOrder) {
-        if (startupOrder == null)
+        if (startupOrder == null) {
             return;
+        }
         result.append("    <load-on-startup");
-        if (startupOrder instanceof Number)
+        if (startupOrder instanceof Number) {
             result.append(">").append(startupOrder).append("</load-on-startup>\n");
-        else
+        } else {
             result.append("/>\n");
+        }
     }
 
     private void appendParams(StringBuilder result, String tagName, Hashtable params) {
-        if (params == null)
+        if (params == null) {
             return;
+        }
         for (Iterator it = params.entrySet().iterator(); it.hasNext();) {
             Map.Entry entry = (Map.Entry) it.next();
             result.append("    <").append(tagName).append(">\n      <param-name>").append(entry.getKey());
             result.append("</param-name>\n      <param-value>").append(entry.getValue())
-                    .append("</param-value>\n    </");
+            .append("</param-value>\n    </");
             result.append(tagName).append(">\n");
         }
     }

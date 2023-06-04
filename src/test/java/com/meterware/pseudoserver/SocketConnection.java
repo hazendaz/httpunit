@@ -50,8 +50,9 @@ class SocketConnection {
     }
 
     SocketResponse getResponse(String method, String path) throws IOException {
-        if (_isChunking)
+        if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
+        }
         sendHTTPLine(method + ' ' + path + " HTTP/1.1");
         sendHTTPLine("Host: " + _host);
         sendHTTPLine("Connection: Keep-Alive");
@@ -60,8 +61,9 @@ class SocketConnection {
     }
 
     SocketResponse getResponse(String method, String path, String body) throws IOException {
-        if (_isChunking)
+        if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
+        }
         sendHTTPLine(method + ' ' + path + " HTTP/1.1");
         sendHTTPLine("Host: " + _host);
         sendHTTPLine("Connection: Keep-Alive");
@@ -72,8 +74,9 @@ class SocketConnection {
     }
 
     void startChunkedResponse(String method, String path) throws IOException {
-        if (_isChunking)
+        if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
+        }
         sendHTTPLine(method + ' ' + path + " HTTP/1.1");
         sendHTTPLine("Host: " + _host);
         sendHTTPLine("Connection: Keep-Alive");
@@ -83,15 +86,17 @@ class SocketConnection {
     }
 
     public void sendChunk(String chunk) throws IOException {
-        if (!_isChunking)
+        if (!_isChunking) {
             throw new IllegalStateException("May not send a chunk when not in mid-request.");
+        }
         sendHTTPLine(Integer.toHexString(chunk.length()));
         sendHTTPLine(chunk);
     }
 
     SocketResponse getResponse() throws IOException {
-        if (!_isChunking)
+        if (!_isChunking) {
             throw new IllegalStateException("Not chunking a request.");
+        }
         _isChunking = false;
         sendHTTPLine("0");
         sendHTTPLine("");
@@ -114,10 +119,12 @@ class SocketConnection {
             super(inputStream);
         }
 
+        @Override
         void appendMessageHeader(StringBuilder sb) {
             sb.append(_protocol).append(' ').append(_responseCode).append(' ').append(_message);
         }
 
+        @Override
         void interpretMessageHeader(String messageHeader) {
             int s1 = messageHeader.indexOf(' ');
             int s2 = messageHeader.indexOf(' ', s1 + 1);

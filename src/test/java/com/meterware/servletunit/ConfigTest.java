@@ -19,7 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.HttpNotFoundException;
 import com.meterware.httpunit.WebClient;
@@ -68,7 +72,7 @@ class ConfigTest {
         sr.registerServlet(resourceName, ConfigServlet.class.getName());
         WebClient wc = sr.newClient();
         try {
-            WebResponse response = wc.getResponse("http://localhost/" + "ISB/" + resourceName);
+            wc.getResponse("http://localhost/" + "ISB/" + resourceName);
             fail("No Exception thrown");
         } catch (Throwable th) {
             // com.meterware.httpunit.HttpNotFoundException:
@@ -126,8 +130,10 @@ class ConfigTest {
     }
 
     static class ConfigServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content\r\n";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();

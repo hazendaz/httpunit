@@ -19,9 +19,16 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.beans.*;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -56,7 +63,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
     protected HTMLOptionElement createOption(String value, String text, boolean selected) {
         HTMLOptionElement optionElement = (HTMLOptionElement) createElement("option",
                 selected ? new String[][] { { "value", value }, { "selected", "true" } }
-                        : new String[][] { { "value", value } });
+        : new String[][] { { "value", value } });
         optionElement.appendChild(_htmlDocument.createTextNode(text));
         return optionElement;
     }
@@ -82,18 +89,18 @@ abstract public class AbstractHTMLElementTest implements DomListener {
                 "node should be a " + interfaceName.getName() + " but is " + qualifiedElement.getClass().getName());
         assertEquals(tagName.toUpperCase(), qualifiedElement.getNodeName(), "Tag name");
 
-        for (int i = 0; i < attributes.length; i++) {
-            String propertyName = (String) attributes[i][0];
-            Object propertyValue = attributes[i][1];
+        for (Object[] attribute : attributes) {
+            String propertyName = (String) attribute[0];
+            Object propertyValue = attribute[1];
             assertEquals(propertyValue, getProperty(qualifiedElement, propertyName), propertyName);
         }
 
         Element element = createElement(tagName);
         ((ElementImpl) element).addDomListener(this);
-        for (int i = 0; i < attributes.length; i++) {
-            final String propertyName = (String) attributes[i][0];
-            final Object propertyValue = attributes[i][1];
-            Object defaultValue = attributes[i].length == 2 ? null : attributes[i][2];
+        for (Object[] attribute : attributes) {
+            final String propertyName = (String) attribute[0];
+            final Object propertyValue = attribute[1];
+            Object defaultValue = attribute.length == 2 ? null : attribute[2];
             if (defaultValue == null) {
                 assertNull(getProperty(element, propertyName), propertyName + " should not be specified by default");
             } else {
@@ -101,12 +108,12 @@ abstract public class AbstractHTMLElementTest implements DomListener {
             }
 
             Method writeMethod = AbstractHTMLElementTest.getWriteMethod(element, propertyName);
-            if (attributes[i].length > 3 && attributes[i][3].equals("ro")) {
+            if (attribute.length > 3 && attribute[3].equals("ro")) {
                 assertNull(writeMethod, propertyName + " is not read-only");
             } else {
                 assertNotNull("No modifier defined for " + propertyName);
                 clearReceivedEvents();
-                writeMethod.invoke(element, new Object[] { propertyValue });
+                writeMethod.invoke(element, propertyValue);
                 assertEquals(propertyValue, getProperty(element, propertyName), "modified " + propertyName);
                 expectPropertyChange(element, propertyName);
             }
@@ -119,8 +126,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
 
     protected Element createElement(String tagName, Object[][] attributes) {
         Element element = _htmlDocument.createElement(tagName);
-        for (int i = 0; i < attributes.length; i++) {
-            Object[] attribute = attributes[i];
+        for (Object[] attribute : attributes) {
             element.setAttribute((String) attribute[0], toAttributeValue(attribute[1]));
         }
         return element;
@@ -133,10 +139,11 @@ abstract public class AbstractHTMLElementTest implements DomListener {
     private static Object getProperty(Object element, final String propertyName)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         PropertyDescriptor descriptor = getPropertyDescriptor(element, propertyName);
-        if (descriptor == null || descriptor.getReadMethod() == null)
+        if (descriptor == null || descriptor.getReadMethod() == null) {
             return null;
+        }
         Method readMethod = descriptor.getReadMethod();
-        Object[] args = new Object[0];
+        Object[] args = {};
         return readMethod.invoke(element, args);
 
     }
@@ -153,16 +160,17 @@ abstract public class AbstractHTMLElementTest implements DomListener {
         int index;
         while ((index = propertyName.indexOf('-')) >= 0) {
             propertyName = propertyName.substring(0, index) + Character.toUpperCase(propertyName.charAt(index + 1))
-                    + propertyName.substring(index + 2);
+            + propertyName.substring(index + 2);
         }
-        if (element instanceof AttributeNameAdjusted)
+        if (element instanceof AttributeNameAdjusted) {
             propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName(propertyName);
+        }
 
         PropertyDescriptor properties[] = beanInfo.getPropertyDescriptors();
-        for (int i = 0; i < properties.length; i++) {
-            PropertyDescriptor property = properties[i];
-            if (property.getName().equalsIgnoreCase(propertyName))
+        for (PropertyDescriptor property : properties) {
+            if (property.getName().equalsIgnoreCase(propertyName)) {
                 return property;
+            }
         }
         return null;
     }
@@ -178,6 +186,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
 
     // -------------------------------------- DomListener methods --------------------------------------------
 
+    @Override
     public void propertyChanged(Element changedElement, String propertyName) {
         _eventsReceived.add(new Object[] { changedElement, propertyName });
     }

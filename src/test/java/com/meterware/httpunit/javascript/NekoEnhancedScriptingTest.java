@@ -19,9 +19,15 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebLink;
+import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

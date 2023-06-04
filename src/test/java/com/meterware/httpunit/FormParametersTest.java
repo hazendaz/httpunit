@@ -19,7 +19,13 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.FormParameter.UnusedParameterValueException;
 import com.meterware.httpunit.FormParameter.UnusedUploadFileException;
@@ -662,8 +668,8 @@ public class FormParametersTest extends HttpUnitTest {
         WebForm form = response.getFormWithID("suchen");
         String param[] = form.getParameterNames();
 
-        for (int i = 0; i < param.length; i++) {
-            System.err.println(param[i]);
+        for (String element : param) {
+            System.err.println(element);
         }
         assertEquals(5, param.length, "expecting 5 params but found " + param.length);
     }

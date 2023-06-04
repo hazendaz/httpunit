@@ -19,9 +19,27 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.Button;
+import com.meterware.httpunit.DialogResponder;
+import com.meterware.httpunit.HTMLElement;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.SubmitButton;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebLink;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.protocol.UploadFileSpec;
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
@@ -99,7 +117,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
         defineWebPage("OnCommand",
                 "<html><head><title>test</title>\n" + "<script type='text/javascript'>\n" + "function show (attr) {\n" +
-                // TODO make this work
+                        // TODO make this work
                         "  var body=document.body;\n" + "  //var body=document.getElementById('thebody');\n"
                         + "  alert(body.getAttribute(attr));\n" + "}\n" + "</script></head>\n"
                         + "<body id='thebody' bgcolor='#FFFFCC' text='#E00000' link='#0000E0' alink='#000080' vlink='#000000'>\n"
@@ -114,8 +132,8 @@ public class FormScriptingTest extends HttpUnitTest {
         // System.err.println(response.getText());
 
         WebLink[] links = response.getLinks();
-        for (int i = 0; i < links.length; i++) {
-            links[i].click();
+        for (WebLink link : links) {
+            link.click();
         }
         String expected[] = { "#FFFFCC", "#E00000", "#0000E0", "#000080", "#000000" };
 
@@ -148,8 +166,8 @@ public class FormScriptingTest extends HttpUnitTest {
         // the page for testing externally
         // System.err.println(response.getText());
         WebLink[] links = response.getLinks();
-        for (int i = 0; i < links.length; i++) {
-            links[i].click();
+        for (WebLink link : links) {
+            link.click();
         }
         String expected[] = { "left" };
         for (int i = 0; i < links.length; i++) {
@@ -193,7 +211,7 @@ public class FormScriptingTest extends HttpUnitTest {
                 + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        String elementNames[] = response.getElementNames();
+        response.getElementNames();
         HTMLElement elements[] = response.getElementsByTagName("span");
         assertEquals(2, elements.length, "Two span elements should be found ");
         HTMLElement span1 = elements[0];
@@ -203,9 +221,7 @@ public class FormScriptingTest extends HttpUnitTest {
         String alert = wc.popNextAlert();
         assertEquals("rim_ModuleSearchResult=Drilldown=key_", alert, "function should have been triggered to alert");
         elements = response.getElementsWithAttribute("onclick", onclick);
-        int expected = 1;
-        // TODO check how 2 could be correct ...
-        expected = 2;
+        int expected = 2;
         assertEquals(elements.length, expected, expected + "elements should be found ");
         span1 = elements[0];
         span1.handleEvent("onclick");
@@ -543,8 +559,7 @@ public class FormScriptingTest extends HttpUnitTest {
         Button enableChange = form.getButtonWithID("enableChange");
         enableChange.click();
         WebResponse currentPage = wc.getCurrentPage();
-        form = currentPage.getFormWithName("spectrum");
-        return form;
+        return currentPage.getFormWithName("spectrum");
     }
 
     private void assertDisabledSubmitButtonCanNotBeClicked(WebForm form) {
@@ -594,6 +609,7 @@ public class FormScriptingTest extends HttpUnitTest {
     @Test
     void testSubmitViaScriptWithPostParams() throws Exception {
         defineResource("/servlet/TestServlet?param3=value3&param4=value4", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource("You made it!", "text/plain");
             }
@@ -1054,7 +1070,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         boolean oldDebug = HttpUnitUtils.setEXCEPTION_DEBUG(false);
         try {
-            WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
+            wc.getResponse(getHostPath() + "/OnCommand.html");
             fail("There should be a runtime exeption here");
             // java.lang.RuntimeException: Event 'viewSelect( document.the_form.choices )' failed:
             // java.lang.RuntimeException: invalid index 5 for Options redblue,
@@ -1343,9 +1359,9 @@ public class FormScriptingTest extends HttpUnitTest {
                 + "  <button name=\"html4-default\">html4-default</button>" + "</form>"
                 + "<script language=JavaScript>\n" + "  CheckForm();\n" + "</script>\n");
 
-        String[] expectedTypes = new String[] { "text", "textarea", "password", "submit", "reset", "button", "checkbox",
+        String[] expectedTypes = { "text", "textarea", "password", "submit", "reset", "button", "checkbox",
                 "radio", "select-one", "select-multiple", "file", "image", "hidden", "button", "submit", "reset",
-                "submit" };
+        "submit" };
 
         final PromptCollector collector = new PromptCollector();
         WebConversation wc = new WebConversation();
@@ -1358,11 +1374,13 @@ public class FormScriptingTest extends HttpUnitTest {
         public List confirmPromptsSeen = new ArrayList();
         public List responsePromptSeen = new ArrayList();
 
+        @Override
         public boolean getConfirmation(String confirmationPrompt) {
             confirmPromptsSeen.add(confirmationPrompt);
             return true;
         }
 
+        @Override
         public String getUserResponse(String prompt, String defaultResponse) {
             responsePromptSeen.add(prompt);
             return null;
@@ -1382,7 +1400,7 @@ public class FormScriptingTest extends HttpUnitTest {
                 + "  <input type=\"text\" name=\"last_name\" value=\"Bloggs\">" + "</form>"
                 + "<script language=JavaScript>\n" + "  CheckForm();\n" + "</script>\n");
 
-        String[] expectedPrompts = new String[] { "2" };
+        String[] expectedPrompts = { "2" };
 
         final PromptCollector collector = new PromptCollector();
         WebConversation wc = new WebConversation();
@@ -1440,7 +1458,7 @@ public class FormScriptingTest extends HttpUnitTest {
                 + "  <input type=\"text\" name=\"last_name\" value=\"Charlie\">" + "</form>"
                 + "<script language=JavaScript>\n" + "  CheckForm();\n" + "</script>\n");
 
-        String[] expectedValues = new String[] { "Alpha", "Bravo", "Charlie", "Alpha", "Bravo", "Charlie", "Charles" };
+        String[] expectedValues = { "Alpha", "Bravo", "Charlie", "Alpha", "Bravo", "Charlie", "Charles" };
 
         final PromptCollector collector = new PromptCollector();
         WebConversation wc = new WebConversation();

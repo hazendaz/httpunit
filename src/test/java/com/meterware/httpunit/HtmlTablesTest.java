@@ -19,7 +19,12 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,7 +108,8 @@ public class HtmlTablesTest extends HttpUnitTest {
         String[][] text = table.asText();
         int row = 0;
         assertEquals("Notifications:", text[row][0]);
-        assertEquals("Notifications:", text[row++][1]);
+        assertEquals("Notifications:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
         assertEquals("None", text[row++][1]);
         assertEquals("Watches:", text[row][0]);

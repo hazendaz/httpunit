@@ -19,7 +19,14 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -65,18 +72,23 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @BeforeEach
     void setUp() throws Exception {
         _context = new ServletUnitContext(null, null, new SessionListenerDispatcher() {
+            @Override
             public void sendSessionCreated(HttpSession session) {
             }
 
+            @Override
             public void sendSessionDestroyed(HttpSession session) {
             }
 
+            @Override
             public void sendAttributeAdded(HttpSession session, String name, Object value) {
             }
 
+            @Override
             public void sendAttributeReplaced(HttpSession session, String name, Object oldValue) {
             }
 
+            @Override
             public void sendAttributeRemoved(HttpSession session, String name, Object oldValue) {
             }
         });
@@ -125,8 +137,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
     private void assertContains(String comment, String string, Enumeration headerNames) {
         while (headerNames != null && headerNames.hasMoreElements()) {
             String name = (String) headerNames.nextElement();
-            if (name.equalsIgnoreCase(string))
+            if (name.equalsIgnoreCase(string)) {
                 return;
+            }
         }
         fail(comment + " does not contain " + string);
     }
@@ -288,8 +301,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     public void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_Hebrew() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
-        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use iso-8859-8 to encode the data, then string is URL
-                                                               // encoded
+        // encoded
         HttpUnitOptions.setDefaultCharacterSet("ISO-8859-8");
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("param1", "red");
@@ -309,8 +321,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_UTF8() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
-        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use utf-8 to encode the data, then string is URL
-                                                               // encoded
+        // encoded
         HttpUnitOptions.setDefaultCharacterSet("UTF-8");
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("param1", "red");
@@ -567,7 +578,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
                 NO_MESSAGE_BODY);
         request.getSession();
 
-        wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + (originalID + "BAD"));
+        wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + originalID + "BAD");
         request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable(), NO_MESSAGE_BODY);
 
         assertNull(request.getSession(false), "Unexpected session returned for bad cookie");
@@ -621,7 +632,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
                 NO_MESSAGE_BODY);
-        Locale[] expectedLocales = new Locale[] { Locale.getDefault() };
+        Locale[] expectedLocales = { Locale.getDefault() };
         verifyLocales(request, expectedLocales);
 
     }
@@ -693,7 +704,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      */
     @Test
     void testGetInputStreamSameObject() throws Exception {
-        byte[] bytes = new byte[0];
+        byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
@@ -706,7 +717,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     @Test
     void testGetInputStreamAfterGetReader() throws Exception {
-        byte[] bytes = new byte[0];
+        byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
@@ -737,7 +748,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     @Test
     void testGetReaderSameObject() throws Exception {
-        byte[] bytes = new byte[0];
+        byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
@@ -750,7 +761,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     @Test
     void testGetReaderAfterGetInputStream() throws Exception {
-        byte[] bytes = new byte[0];
+        byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
@@ -814,11 +825,13 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     private InvocationContextFactory _dummyfactory = new InvocationContextFactory() {
+        @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
                 Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
             return new InvocationContextImpl(client, null, targetFrame, request, clientHeaders, messageBody);
         }
 
+        @Override
         public HttpSession getSession(String sessionId, boolean create) {
             return _context.getValidSession(sessionId, null, create);
         }
@@ -845,7 +858,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     void testSuppliedCharEncoding() throws Exception { // xxx turn this back on
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use iso-8859-8 to encode the data, then string is URL
-                                                               // encoded
+        // encoded
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable(),
                 paramString.getBytes(StandardCharsets.ISO_8859_1));
@@ -896,22 +909,26 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("myhost", serverName, "server name");
     }
 
-    private final static byte[] NO_MESSAGE_BODY = new byte[0];
+    private final static byte[] NO_MESSAGE_BODY = {};
 
     private final static ServletMetaData NULL_SERVLET_REQUEST = new ServletMetaData() {
 
+        @Override
         public Servlet getServlet() throws ServletException {
             return null;
         }
 
+        @Override
         public String getServletPath() {
             return null;
         }
 
+        @Override
         public String getPathInfo() {
             return null;
         }
 
+        @Override
         public FilterMetaData[] getFilters() {
             return null;
         }

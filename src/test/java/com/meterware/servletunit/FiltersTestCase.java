@@ -19,7 +19,12 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebResponse;
@@ -295,13 +300,16 @@ class FiltersTestCase {
 
         private FilterConfig _filterConfig;
 
+        @Override
         public void init(FilterConfig filterConfig) throws ServletException {
             _filterConfig = filterConfig;
         }
 
+        @Override
         public void destroy() {
         }
 
+        @Override
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
                 throws IOException, ServletException {
             servletRequest.setAttribute("called", "by-filter");
@@ -312,12 +320,15 @@ class FiltersTestCase {
 
     static class TrivialFilter implements Filter {
 
+        @Override
         public void init(FilterConfig filterConfig) throws ServletException {
         }
 
+        @Override
         public void destroy() {
         }
 
+        @Override
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
                 throws IOException, ServletException {
             servletRequest.setAttribute("called", "trivially");
@@ -328,6 +339,9 @@ class FiltersTestCase {
 
     static class SimpleGetServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -345,10 +359,12 @@ class FiltersTestCase {
             _index = index;
         }
 
+        @Override
         public Filter getFilter() throws ServletException {
             return null;
         }
 
+        @Override
         public String toString() {
             return "Filter" + _index;
         }

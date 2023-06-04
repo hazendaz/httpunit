@@ -19,7 +19,10 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.HttpUnitUtils;
@@ -187,8 +190,9 @@ class JUnitServletTest {
                 return;
             }
         }
-        if (failed)
+        if (failed) {
             fail("No test result found for '" + name + "'");
+        }
     }
 
     @Test
@@ -214,15 +218,16 @@ class JUnitServletTest {
         _runner = new ServletRunner();
         MyFactory._runner = _runner;
         _runner.registerServlet("/JUnit", TestRunnerServlet.class.getName());
-        ServletUnitClient client = _runner.newClient();
-        return client;
+        return _runner.newClient();
     }
 
     // ===============================================================================================================
 
     static class SimpleGetServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -233,6 +238,8 @@ class JUnitServletTest {
 
     static class TestRunnerServlet extends JUnitServlet {
 
+        private static final long serialVersionUID = 1L;
+
         public TestRunnerServlet() {
             super(new MyFactory());
         }
@@ -241,11 +248,13 @@ class JUnitServletTest {
     protected static class MyFactory implements InvocationContextFactory {
         private static ServletRunner _runner;
 
+        @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
                 Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
             return new InvocationContextImpl(client, _runner, targetFrame, request, clientHeaders, messageBody);
         }
 
+        @Override
         public HttpSession getSession(String sessionId, boolean create) {
             return null;
         }

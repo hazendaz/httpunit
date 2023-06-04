@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.HttpURLConnection;
 
@@ -198,10 +200,10 @@ public class WebFrameTest extends HttpUnitTest {
 
     private String getNameOfFrameWithURL(WebConversation wc, String urlString) {
         String[] names = wc.getFrameNames();
-        for (int i = 0; i < names.length; i++) {
-            WebResponse candidate = wc.getFrameContents(names[i]);
+        for (String name : names) {
+            WebResponse candidate = wc.getFrameContents(name);
             if (candidate.getURL().toExternalForm().indexOf(urlString) >= 0) {
-                return names[i];
+                return name;
             }
         }
         return null;
@@ -209,8 +211,9 @@ public class WebFrameTest extends HttpUnitTest {
 
     private WebResponse getFrameWithURL(WebConversation wc, String urlString) {
         String name = getNameOfFrameWithURL(wc, urlString);
-        if (name == null)
+        if (name == null) {
             return null;
+        }
         return wc.getFrameContents(name);
     }
 
@@ -259,8 +262,8 @@ public class WebFrameTest extends HttpUnitTest {
             assertEquals(frameNames[i], expectedNames[i], "frame #" + i + " should be '" + expectedNames[i] + "'");
         }
         WebResponse bannerFrame = _wc.getFrameContents("Banner");
-        for (int i = 0; i < frameNames.length; i++) {
-            WebResponse subFrame = bannerFrame.getSubframeContents(frameNames[i]);
+        for (String frameName : frameNames) {
+            WebResponse subFrame = bannerFrame.getSubframeContents(frameName);
             assertNotNull(subFrame);
         }
     }
@@ -296,7 +299,6 @@ public class WebFrameTest extends HttpUnitTest {
         }
         WebResponse bannerFrame = _wc.getFrameContents("Banner");
         String[] subFrameNames = bannerFrame.getFrameNames();
-        String[] expectedSubNames = { "Menu", "Action" };
         for (int i = 1; i < subFrameNames.length; i++) {
             WebResponse subFrame = bannerFrame.getSubframeContents(subFrameNames[i]);
             assertNotNull(subFrame);
@@ -499,15 +501,14 @@ public class WebFrameTest extends HttpUnitTest {
 
         defineWebPage("Login", login);
         defineWebPage("LoginDialog", loginDialog);
-        WebResponse response = _wc.getResponse(getHostPath() + "/Login.html");
+        _wc.getResponse(getHostPath() + "/Login.html");
         WebResponse bottomFrame = _wc.getFrameContents("login"); // load the <Iframe>
         WebForm form = bottomFrame.getFormWithName("submit_to_parent");
         form.setParameter("name", "aa");
         form.setParameter("password", "xx");
         boolean oldDebug = HttpUnitUtils.setEXCEPTION_DEBUG(true);
         try {
-            WebResponse submitResponse = form.submit(); // This response contains the same page, does not log the user
-                                                        // in. Load the same //page
+            form.submit();
         } catch (ScriptException se) {
             // TODO clarify what should happen here ...
             String msg = se.getMessage();

@@ -44,7 +44,7 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
-*/
+ */
 
 /**
  * Tests for Bug Report [ 2264431 ] form.submit() sends multiple HTTP POSTS
@@ -123,24 +123,27 @@ public class PostTest {
      * a Servlet that counts the posts being done
      */
     static class TestServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         public static int postCount = 0;
         public static String location = null;
 
+        @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws IOException, ServletException {
             response.setContentType("text/html");
             response.getWriter()
-                    .println("<html>" + "<body>" + "<form action='" + location + resourceName
-                            + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
-                            + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
-                            + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
-                            + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
-                            + "</form>" + "</body>" + "</html>");
+            .println("<html>" + "<body>" + "<form action='" + location + resourceName
+                    + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
+                    + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
+                    + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
+                    + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
+                    + "</form>" + "</body>" + "</html>");
             /*
              * if (request instanceof Request) ((Request) request).setHandled(true);
              */
         }
 
+        @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 throws IOException, ServletException {
             postCount++;

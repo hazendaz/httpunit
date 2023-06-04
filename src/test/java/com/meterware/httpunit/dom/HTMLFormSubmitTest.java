@@ -26,7 +26,11 @@ import java.net.URL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLBodyElement;
+import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLInputElement;
+import org.w3c.dom.html.HTMLOptionElement;
+import org.w3c.dom.html.HTMLSelectElement;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -182,10 +186,12 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
     private HTMLOptionElement addOption(HTMLSelectElement select, String value, String label) {
         HTMLOptionElement option = (HTMLOptionElement) _htmlDocument.createElement("option");
         select.appendChild(option);
-        if (value != null)
+        if (value != null) {
             option.setValue(value);
-        if (label != null)
+        }
+        if (label != null) {
             select.appendChild(_htmlDocument.createTextNode(label));
+        }
         return option;
     }
 

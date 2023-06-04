@@ -153,8 +153,7 @@ class RequestDispatcherTest {
 
         final HttpServletRequest request = ic.getRequest();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        servlet.getServletContext()
-        .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
         request.getPathInfo();
         String servletPath = request.getServletPath();
         // System.err.println("servletPath='"+servletPath+"'\npath='"+path+"'");

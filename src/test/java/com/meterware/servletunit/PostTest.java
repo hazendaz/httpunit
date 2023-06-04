@@ -132,12 +132,12 @@ public class PostTest {
                 throws IOException, ServletException {
             response.setContentType("text/html");
             response.getWriter()
-            .println("<html>" + "<body>" + "<form action='" + location + resourceName
-                    + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
-                    + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
-                    + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
-                    + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
-                    + "</form>" + "</body>" + "</html>");
+                    .println("<html>" + "<body>" + "<form action='" + location + resourceName
+                            + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
+                            + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
+                            + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
+                            + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
+                            + "</form>" + "</body>" + "</html>");
             /*
              * if (request instanceof Request) ((Request) request).setHandled(true);
              */

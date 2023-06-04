@@ -324,8 +324,8 @@ class WebFormTest extends HttpUnitTest {
 
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">" + "<textarea name='" + fieldName
-                + "' row='10' cols='20'>" + defaultValue + "</textarea>"
-                + "<br><Input type=submit value = \"Submit\">" + "</form>");
+                        + "' row='10' cols='20'>" + defaultValue + "</textarea>"
+                        + "<br><Input type=submit value = \"Submit\">" + "</form>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebForm form = page.getForms()[0];

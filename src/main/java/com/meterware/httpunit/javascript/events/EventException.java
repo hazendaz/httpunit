@@ -27,12 +27,6 @@ package com.meterware.httpunit.javascript.events;
  * @version $Id$
  */
 public class EventException extends Exception {
-    /**
-     * If the Event's type was not specified by initializing the event before the method was called. Specification of
-     * the Event's type as null or an empty string will also trigger this exception.
-     */
-    private static final short UNSPECIFIED_EVENT_TYPE_ERR = 0;
-
     private static final long serialVersionUID = 1L;
     /**
      * An integer indicating the type of error generated.

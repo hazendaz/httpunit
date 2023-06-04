@@ -30,6 +30,8 @@ import java.net.URL;
  **/
 public class HttpInternalErrorException extends HttpException {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * construct an internal http error form an url
      *

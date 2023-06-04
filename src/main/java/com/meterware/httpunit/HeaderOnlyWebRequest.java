@@ -36,6 +36,7 @@ public class HeaderOnlyWebRequest extends WebRequest {
     /**
      * Returns the query string defined for this request.
      **/
+    @Override
     public String getQueryString() {
         try {
             URLEncodedString encoder = new URLEncodedString();

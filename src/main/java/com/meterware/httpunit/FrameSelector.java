@@ -76,6 +76,7 @@ public class FrameSelector {
         return _parent;
     }
 
+    @Override
     public String toString() {
         return "Frame Selector: [ " + getFullName() + " ]";
     }
@@ -85,7 +86,7 @@ public class FrameSelector {
     }
 
     WebWindow getWindow() {
-        return _window != null ? _window : (_parent == null ? null : _parent.getWindow());
+        return _window != null ? _window : _parent == null ? null : _parent.getWindow();
     }
 
     static FrameSelector newTopFrame(WebWindow window) {

@@ -29,12 +29,15 @@ import org.mozilla.javascript.ScriptableObject;
 public abstract class Event extends ScriptableObject {
     // -- Scriptable interface ------------------------------------------------------------------
 
+    private static final long serialVersionUID = 1L;
+
     /** JavaScript class name. */
     private static final String JS_CLASS_NAME = "Event";
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getClassName() {
         return JS_CLASS_NAME;
     }

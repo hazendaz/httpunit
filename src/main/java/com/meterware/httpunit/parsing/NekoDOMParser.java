@@ -129,6 +129,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         _documentAdapter = adapter;
     }
 
+    @Override
     public String getIncludedScript(String srcAttribute) {
         try {
             return _documentAdapter.getIncludedScript(srcAttribute);
@@ -137,10 +138,12 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         }
     }
 
+    @Override
     public boolean supportsScriptLanguage(String language) {
         return getScriptingHandler().supportsScriptLanguage(language);
     }
 
+    @Override
     public String runScript(final String language, final String scriptText) {
         getScriptingHandler().clearCaches();
         return getScriptingHandler().runScript(language, scriptText);
@@ -173,6 +176,7 @@ class ErrorHandler implements XMLErrorHandler {
         _url = url;
     }
 
+    @Override
     public void warning(String domain, String key, XMLParseException warningException) throws XNIException {
         if (HTMLParserFactory.isParserWarningsEnabled()) {
             System.out.println("At line " + warningException.getLineNumber() + ", column "
@@ -186,6 +190,7 @@ class ErrorHandler implements XMLErrorHandler {
         }
     }
 
+    @Override
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
@@ -194,6 +199,7 @@ class ErrorHandler implements XMLErrorHandler {
         }
     }
 
+    @Override
     public void fatalError(String domain, String key, XMLParseException fatalError) throws XNIException {
         error(domain, key, fatalError);
         throw fatalError;

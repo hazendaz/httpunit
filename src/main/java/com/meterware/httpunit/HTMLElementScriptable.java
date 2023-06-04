@@ -45,10 +45,12 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
      * @param propertyName
      *            - the name of the property to get
      */
+    @Override
     public Object get(String propertyName) {
         if (propertyName.equals("nodeName")) {
             return _element.getTagName();
-        } else if (propertyName.equals("tagName")) {
+        }
+        if (propertyName.equals("tagName")) {
             return _element.getTagName();
         } else if (propertyName.equalsIgnoreCase("title")) {
             return _element.getTitle();
@@ -89,6 +91,7 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
         _element.removeAttribute(attributeName);
     }
 
+    @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
         if (eventName.toLowerCase().equals("onclick")) {

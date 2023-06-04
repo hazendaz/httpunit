@@ -33,11 +33,8 @@ public class TableRow extends HTMLElementBase {
 
     private ArrayList _cells = new ArrayList();
     private WebTable _webTable;
-    private HTMLTableRowElement _element;
-
     TableRow(WebTable webTable, HTMLTableRowElement element) {
         super(element);
-        _element = element;
         _webTable = webTable;
     }
 

@@ -206,30 +206,8 @@ public class HttpUserAgentTest {
     protected String asBytes(String s) {
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            sb.append(Integer.toHexString(chars[i])).append(" ");
-        }
-        return sb.toString();
-    }
-
-    private boolean equals(byte[] first, byte[] second) {
-        if (first.length != second.length)
-            return false;
-        for (int i = 0; i < first.length; i++) {
-            if (first[i] != second[i])
-                return false;
-        }
-        return true;
-    }
-
-    private String toString(byte[] message) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < message.length; i++) {
-            if (i != 0 && (i % 4) == 0)
-                sb.append(' ');
-            if (message[i] >= 0 && message[i] < 16)
-                sb.append('0');
-            sb.append(Integer.toHexString(0xff & (int) message[i]));
+        for (char element : chars) {
+            sb.append(Integer.toHexString(element)).append(" ");
         }
         return sb.toString();
     }

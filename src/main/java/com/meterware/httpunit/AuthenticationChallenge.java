@@ -211,51 +211,10 @@ class AuthenticationChallenge extends HttpHeader {
             private String quote(String value) {
                 if (value.startsWith("\"")) {
                     return value;
-                } else {
-                    return "\"" + value + "\"";
                 }
+                return "\"" + value + "\"";
             }
 
-        }
-
-        private class QopAlgorithm extends Algorithm {
-
-            protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
-                    String password, String method, String opaque) {
-                super.appendDigestParams(sb, realm, nonce, uri, userName, password, method, opaque);
-                // append( sb, "qop", "auth" );
-                // append( sb, "nc", getNonceCount() );
-                // append( sb, "cnonce", getCNonce() );
-            }
-
-            protected String getResponse(String userName, String realm, String password, String nonce, String uri,
-                    String method) {
-                try {
-                    String a1 = A1(userName, password, realm, nonce);
-                    String a2 = A2(uri, method);
-                    String ha1 = H(a1);
-                    String ha2 = H(a2);
-                    return KD(ha1, nonce + ':' + ha2);
-                } catch (NoSuchAlgorithmException e) {
-                    return "";
-                } catch (UnsupportedEncodingException e) {
-                    return "";
-                }
-            }
-
-            protected String A1(String userName, String password, String realm, String nonce)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
-                return H(userName + ":" + realm + ":" + password) + ":" + nonce + ":" + getCNonce();
-            }
-
-            private String getCNonce() {
-                return ":";
-            }
-
-            protected String A2(String uri, String method) {
-                return super.A2(uri, method); // To change body of overridden methods use File | Settings | File
-                                              // Templates.
-            }
         }
 
         @Override

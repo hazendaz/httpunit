@@ -54,10 +54,9 @@ public class HTMLPage extends ParsedHTML {
      **/
     public String getTitle() throws SAXException {
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("title");
-        if (nl.getLength() == 0)
+        if ((nl.getLength() == 0) || !nl.item(0).hasChildNodes()) {
             return "";
-        if (!nl.item(0).hasChildNodes())
-            return "";
+        }
         return nl.item(0).getFirstChild().getNodeValue();
     }
 
@@ -65,15 +64,16 @@ public class HTMLPage extends ParsedHTML {
      * Returns the onLoad event script.
      */
     public String getOnLoadEvent() throws SAXException {
-        Element mainElement = getMainElement(((Document) getOriginalDOM()));
+        Element mainElement = getMainElement((Document) getOriginalDOM());
         return mainElement == null ? "" : mainElement.getAttribute("onload");
     }
 
     private Element getMainElement(Document document) {
         NodeList nl = document.getElementsByTagName("frameset");
-        if (nl.getLength() == 0)
+        if (nl.getLength() == 0) {
             nl = document.getElementsByTagName("body");
-        return nl.getLength() == 0 ? null : ((Element) nl.item(0));
+        }
+        return nl.getLength() == 0 ? null : (Element) nl.item(0);
     }
 
     /**
@@ -83,12 +83,14 @@ public class HTMLPage extends ParsedHTML {
     public String getExternalStyleSheet() throws SAXException {
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("link");
         int length = nl.getLength();
-        if (length == 0)
+        if (length == 0) {
             return "";
+        }
 
         for (int i = 0; i < length; i++) {
-            if ("stylesheet".equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), "rel")))
+            if ("stylesheet".equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), "rel"))) {
                 return NodeUtils.getNodeAttribute(nl.item(i), "href");
+            }
         }
         return "";
     }
@@ -126,28 +128,30 @@ public class HTMLPage extends ParsedHTML {
          * @param propertyName
          *            - the name of the property
          */
+        @Override
         public Object get(String propertyName) {
             NamedDelegate delegate = getNamedItem(getForms(), propertyName);
-            if (delegate != null)
+            if (delegate != null) {
                 return delegate;
+            }
 
             delegate = getNamedItem(getLinks(), propertyName);
-            if (delegate != null)
+            if (delegate != null) {
                 return delegate;
+            }
 
             delegate = getNamedItem(getImages(), propertyName);
-            if (delegate != null)
-                return delegate;
-
-            return null;
+            return delegate;
         }
 
         private NamedDelegate getNamedItem(ScriptingHandler[] items, String name) {
-            if (name == null)
+            if (name == null) {
                 return null;
-            for (int i = 0; i < items.length; i++) {
-                if (items[i] instanceof NamedDelegate && name.equals(((NamedDelegate) items[i]).getName()))
-                    return (NamedDelegate) items[i];
+            }
+            for (ScriptingHandler item : items) {
+                if (item instanceof NamedDelegate && name.equals(((NamedDelegate) item).getName())) {
+                    return (NamedDelegate) item;
+                }
             }
             return null;
         }
@@ -156,6 +160,7 @@ public class HTMLPage extends ParsedHTML {
          * Sets the value of the named property. Will throw a runtime exception if the property does not exist or cannot
          * accept the specified value.
          **/
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("location")) {
                 getResponse().getScriptableObject().set("location", value);
@@ -251,14 +256,17 @@ public class HTMLPage extends ParsedHTML {
      */
     public void parse(String text, URL pageURL) throws SAXException, IOException {
         HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {
+            @Override
             public void setDocument(HTMLDocument document) {
                 HTMLPage.this.setRootNode(document);
             }
 
+            @Override
             public String getIncludedScript(String srcAttribute) throws IOException {
                 return HTMLPage.this.getIncludedScript(srcAttribute);
             }
 
+            @Override
             public ScriptingHandler getScriptingHandler() {
                 return getResponse().getScriptingHandler();
             }

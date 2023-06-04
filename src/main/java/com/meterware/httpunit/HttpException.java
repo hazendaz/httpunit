@@ -29,6 +29,8 @@ import java.net.URL;
  **/
 public class HttpException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * throw a http Exception with the given responseCode
      *
@@ -83,6 +85,7 @@ public class HttpException extends RuntimeException {
      *
      * @return - the message of the Exception
      */
+    @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("Error on HTTP request: ");
         sb.append(_responseCode);
@@ -125,6 +128,7 @@ public class HttpException extends RuntimeException {
     /**
      * get the cause (if any)
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }

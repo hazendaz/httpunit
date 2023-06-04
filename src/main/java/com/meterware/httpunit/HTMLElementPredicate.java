@@ -47,6 +47,6 @@ package com.meterware.httpunit;
  **/
 public interface HTMLElementPredicate {
 
-    public boolean matchesCriteria(Object htmlElement, Object criteria);
+    boolean matchesCriteria(Object htmlElement, Object criteria);
 
 }

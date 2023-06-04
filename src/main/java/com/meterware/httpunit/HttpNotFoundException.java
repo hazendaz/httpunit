@@ -30,6 +30,8 @@ import java.net.URL;
  **/
 public class HttpNotFoundException extends HttpException {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * construct a HttpNotFoundException (404 Error)
      *

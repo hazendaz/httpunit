@@ -373,9 +373,8 @@ public abstract class FormControl extends HTMLElementBase {
             }
             if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
                 return new ResetButton(form, control);
-            } else {
-                return new Button(form, control);
             }
+            return new Button(form, control);
         }
         if (!node.getNodeName().equalsIgnoreCase("input")) {
             return null;
@@ -384,7 +383,8 @@ public abstract class FormControl extends HTMLElementBase {
         final String type = element.getType();
         if (type.equalsIgnoreCase(TEXT_TYPE)) {
             return new TextFieldFormControl(form, element);
-        } else if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
+        }
+        if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
             return new PasswordFieldFormControl(form, element);
         } else if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
             return new HiddenFieldFormControl(form, element);

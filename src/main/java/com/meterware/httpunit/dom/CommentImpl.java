@@ -28,6 +28,8 @@ import org.w3c.dom.Node;
  **/
 public class CommentImpl extends CharacterDataImpl implements Comment {
 
+    private static final long serialVersionUID = 1L;
+
     static CommentImpl createComment(DocumentImpl ownerDocument, String data) {
         CommentImpl comment = new CommentImpl();
         comment.initialize(ownerDocument, data);
@@ -38,26 +40,32 @@ public class CommentImpl extends CharacterDataImpl implements Comment {
         return document.createComment(comment.getData());
     }
 
+    @Override
     public String getNodeName() {
         return "#comment";
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return getData();
     }
 
+    @Override
     public void setNodeValue(String nodeValue) throws DOMException {
         setData(nodeValue);
     }
 
+    @Override
     public short getNodeType() {
         return COMMENT_NODE;
     }
 
+    @Override
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Comment nodes may not have children");
     }
 
+    @Override
     void appendContents(StringBuilder sb) {
         sb.append(getData());
     }

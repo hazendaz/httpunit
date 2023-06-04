@@ -27,6 +27,8 @@ import org.w3c.dom.Node;
  **/
 public class CDATASectionImpl extends TextImpl implements CDATASection {
 
+    private static final long serialVersionUID = 1L;
+
     public static CDATASection createCDATASection(DocumentImpl ownerDocument, String data) {
         CDATASectionImpl cdataSection = new CDATASectionImpl();
         cdataSection.initialize(ownerDocument, data);
@@ -37,10 +39,12 @@ public class CDATASectionImpl extends TextImpl implements CDATASection {
         return document.createCDATASection(cdataSection.getData());
     }
 
+    @Override
     public String getNodeName() {
         return "#cdata-section";
     }
 
+    @Override
     public short getNodeType() {
         return CDATA_SECTION_NODE;
     }

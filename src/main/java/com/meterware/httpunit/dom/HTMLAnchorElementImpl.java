@@ -29,71 +29,87 @@ import org.w3c.dom.html.HTMLAnchorElement;
  **/
 public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLAnchorElementImpl();
     }
 
+    @Override
     public String getCharset() {
         return getAttributeWithNoDefault("charset");
     }
 
+    @Override
     public String getHref() {
         String relativeLocation = getAttributeWithNoDefault("href");
         if (relativeLocation.indexOf(':') > 0 || relativeLocation.equals("#")) {
             return relativeLocation;
-        } else {
-            try {
-                return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();
-            } catch (MalformedURLException e) {
-                return e.toString();
-            }
+        }
+        try {
+            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();
+        } catch (MalformedURLException e) {
+            return e.toString();
         }
     }
 
+    @Override
     public String getHreflang() {
         return getAttributeWithNoDefault("hreflang");
     }
 
+    @Override
     public String getRel() {
         return getAttributeWithNoDefault("rel");
     }
 
+    @Override
     public String getRev() {
         return getAttributeWithNoDefault("rev");
     }
 
+    @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    @Override
     public String getType() {
         return getAttributeWithNoDefault("type");
     }
 
+    @Override
     public void setCharset(String charset) {
         setAttribute("charset", charset);
     }
 
+    @Override
     public void setHref(String href) {
         setAttribute("href", href);
     }
 
+    @Override
     public void setHreflang(String hreflang) {
         setAttribute("hreflang", hreflang);
     }
 
+    @Override
     public void setRel(String rel) {
         setAttribute("rel", rel);
     }
 
+    @Override
     public void setRev(String rev) {
         setAttribute("rev", rev);
     }
 
+    @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }
 
+    @Override
     public void setType(String type) {
         setAttribute("type", type);
     }
@@ -101,6 +117,7 @@ public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchor
     /**
      * simulate blur
      */
+    @Override
     public void blur() {
         handleEvent("onblur");
     }
@@ -108,53 +125,66 @@ public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchor
     /**
      * simulate focus;
      */
+    @Override
     public void focus() {
         handleEvent("onfocus");
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accesskey");
     }
 
+    @Override
     public String getCoords() {
         return getAttributeWithNoDefault("coords");
     }
 
+    @Override
     public String getName() {
         return getAttributeWithNoDefault("name");
     }
 
+    @Override
     public String getShape() {
         return getAttributeWithNoDefault("shape");
     }
 
+    @Override
     public int getTabIndex() {
         return getIntegerAttribute("tabindex");
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accesskey", accessKey);
     }
 
+    @Override
     public void setCoords(String coords) {
         setAttribute("coords", coords);
     }
 
+    @Override
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    @Override
     public void setShape(String shape) {
         setAttribute("shape", shape);
     }
 
+    @Override
     public void setTabIndex(int tabIndex) {
         setAttribute("tabindex", tabIndex);
     }
 
+    @Override
     public void doClickAction() {
-        if (null == getHref() || getHref().startsWith("#"))
+        if (null == getHref() || getHref().startsWith("#")) {
             return;
+        }
         try {
             ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, "GET", getHref(), getTarget(),
                     new byte[0]);

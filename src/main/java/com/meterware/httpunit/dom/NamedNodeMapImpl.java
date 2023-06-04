@@ -38,34 +38,42 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);
     }
 
+    @Override
     public Node getNamedItem(String name) {
         return (Node) _items.get(name);
     }
 
+    @Override
     public Node setNamedItem(Node arg) throws DOMException {
         return null;
     }
 
+    @Override
     public Node removeNamedItem(String name) throws DOMException {
         return null;
     }
 
+    @Override
     public Node item(int index) {
         return _itemArray[index];
     }
 
+    @Override
     public int getLength() {
         return _items.size();
     }
 
+    @Override
     public Node getNamedItemNS(String namespaceURI, String localName) {
         return null;
     }
 
+    @Override
     public Node setNamedItemNS(Node arg) throws DOMException {
         return null;
     }
 
+    @Override
     public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
         return null;
     }

@@ -52,8 +52,9 @@ class HTMLContainerDelegate {
         ArrayList elements = new ArrayList();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE)
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
+            }
 
             if (ParsedHTML.isWebLink(node)) {
                 elements.add(node);
@@ -74,8 +75,9 @@ class HTMLContainerDelegate {
         ArrayList elements = new ArrayList();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE)
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
+            }
 
             if ("form".equalsIgnoreCase(((Element) node).getTagName())) {
                 elements.add(node);

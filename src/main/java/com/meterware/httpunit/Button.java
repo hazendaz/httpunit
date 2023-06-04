@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit;
 
-import com.meterware.httpunit.dom.*;
+import com.meterware.httpunit.dom.HTMLButtonElementImpl;
+import com.meterware.httpunit.dom.HTMLControl;
+import com.meterware.httpunit.dom.HTMLInputElementImpl;
 import com.meterware.httpunit.protocol.ParameterProcessor;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
@@ -41,6 +43,7 @@ public class Button extends FormControl {
     // remember the last verifyEnabled result
     private boolean _wasEnabled = true;
 
+    @Override
     public String getType() {
         return BUTTON_TYPE;
     }
@@ -112,8 +115,9 @@ public class Button extends FormControl {
      */
     protected void verifyButtonEnabled() {
         rememberEnableState();
-        if (isDisabled())
+        if (isDisabled()) {
             throwDisabledException();
+        }
     }
 
     /**
@@ -128,15 +132,16 @@ public class Button extends FormControl {
      **/
     class DisabledButtonException extends IllegalStateException {
 
+        private static final long serialVersionUID = 1L;
         DisabledButtonException(Button button) {
             _name = button.getName();
             _value = button.getValue();
         }
 
+        @Override
         public String getMessage() {
-            String msg = "Button" + (getName().length() == 0 ? "" : " '" + getName() + "'")
+            return "Button" + (getName().length() == 0 ? "" : " '" + getName() + "'")
                     + " is disabled and may not be clicked.";
-            return msg;
         }
 
         protected String _name;
@@ -147,6 +152,7 @@ public class Button extends FormControl {
     /**
      * Returns true if this button is disabled, meaning that it cannot be clicked.
      **/
+    @Override
     public boolean isDisabled() {
         return super.isDisabled();
     }
@@ -179,42 +185,40 @@ public class Button extends FormControl {
     // -------------------------------------------------- FormControl methods
     // -----------------------------------------------
 
+    @Override
     protected String[] getValues() {
         return new String[0];
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
-        if (getForm() != null)
+        if (getForm() != null) {
             return super.getParentDelegate();
+        }
         return _baseResponse.getDocumentScriptable();
     }
 
     class Scriptable extends FormControl.Scriptable {
 
+        @Override
         public void click() throws IOException, SAXException {
             doButtonAction();
         }
     }
 
     static {
-        WITH_ID = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object button, Object id) {
-                return ((Button) button).getID().equals(id);
-            }
-        };
+        WITH_ID = (button, id) -> ((Button) button).getID().equals(id);
 
-        WITH_LABEL = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object button, Object label) {
-                return ((Button) button).getValue().equals(label);
-            }
-        };
+        WITH_LABEL = (button, label) -> ((Button) button).getValue().equals(label);
 
     }
 }

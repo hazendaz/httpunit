@@ -26,26 +26,34 @@ import org.w3c.dom.html.HTMLButtonElement;
  */
 public class HTMLButtonElementImpl extends HTMLControl implements HTMLButtonElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLButtonElementImpl();
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accesskey");
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accesskey", accessKey);
     }
 
+    @Override
     public String getValue() {
         return getAttributeWithNoDefault("value");
     }
 
+    @Override
     public void setValue(String value) {
         setAttribute("value", value);
     }
 
+    @Override
     public String getType() {
         return getAttributeWithDefault("type", "submit");
     }

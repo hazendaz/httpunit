@@ -26,78 +26,99 @@ import org.w3c.dom.html.HTMLLinkElement;
  **/
 public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLLinkElementImpl();
     }
 
+    @Override
     public String getCharset() {
         return getAttributeWithNoDefault("charset");
     }
 
+    @Override
     public boolean getDisabled() {
         return getBooleanAttribute("disabled");
     }
 
+    @Override
     public String getHref() {
         return getAttributeWithNoDefault("href");
     }
 
+    @Override
     public String getHreflang() {
         return getAttributeWithNoDefault("hreflang");
     }
 
+    @Override
     public String getMedia() {
         return getAttributeWithDefault("media", "screen");
     }
 
+    @Override
     public String getRel() {
         return getAttributeWithNoDefault("rel");
     }
 
+    @Override
     public String getRev() {
         return getAttributeWithNoDefault("rev");
     }
 
+    @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    @Override
     public String getType() {
         return getAttributeWithNoDefault("type");
     }
 
+    @Override
     public void setCharset(String charset) {
         setAttribute("charset", charset);
     }
 
+    @Override
     public void setDisabled(boolean disabled) {
         setAttribute("disabled", disabled);
     }
 
+    @Override
     public void setHref(String href) {
         setAttribute("href", href);
     }
 
+    @Override
     public void setHreflang(String hreflang) {
         setAttribute("hreflang", hreflang);
     }
 
+    @Override
     public void setMedia(String media) {
         setAttribute("media", media);
     }
 
+    @Override
     public void setRel(String rel) {
         setAttribute("rel", rel);
     }
 
+    @Override
     public void setRev(String rev) {
         setAttribute("rev", rev);
     }
 
+    @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }
 
+    @Override
     public void setType(String type) {
         setAttribute("type", type);
     }

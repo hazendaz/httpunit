@@ -26,30 +26,39 @@ import org.w3c.dom.html.HTMLStyleElement;
  **/
 public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLStyleElementImpl();
     }
 
+    @Override
     public boolean getDisabled() {
         return getBooleanAttribute("disabled");
     }
 
+    @Override
     public String getMedia() {
         return getAttributeWithDefault("media", "screen");
     }
 
+    @Override
     public String getType() {
         return getAttributeWithNoDefault("type");
     }
 
+    @Override
     public void setDisabled(boolean disabled) {
         setAttribute("disabled", disabled);
     }
 
+    @Override
     public void setMedia(String media) {
         setAttribute("media", media);
     }
 
+    @Override
     public void setType(String type) {
         setAttribute("type", type);
     }

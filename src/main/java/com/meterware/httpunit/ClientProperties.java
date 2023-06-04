@@ -204,6 +204,7 @@ public class ClientProperties {
      *
      * @return the overriding content type
      */
+    @Deprecated
     public String getOverrideContextType() {
         return getOverrideContentType();
     }
@@ -216,6 +217,7 @@ public class ClientProperties {
      *
      * @see setOverrideContentType
      */
+    @Deprecated
     public void setOverrideContextType(String overrideContentType) {
         setOverrideContentType(overrideContentType);
     }

@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
  */
 public class DomWindow extends AbstractDomComponent implements Scriptable {
 
+    private static final long serialVersionUID = 1L;
     private DomWindowProxy _proxy;
     private HTMLDocumentImpl _document;
 
@@ -100,9 +101,7 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
             }
             ScriptingHandler result = newWindow.getScriptingHandler();
             return (DomWindow) result;
-        } catch (IOException e) {
-            return null;
-        } catch (SAXException e) {
+        } catch (IOException | SAXException e) {
             return null;
         }
     }
@@ -162,10 +161,12 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
     public void scrollTo(int x, int y) {
     }
 
+    @Override
     protected String getDocumentWriteBuffer() {
         return _document.getWriteBuffer().toString();
     }
 
+    @Override
     protected void discardDocumentWriteBuffer() {
         _document.clearWriteBuffer();
     }

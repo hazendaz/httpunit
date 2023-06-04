@@ -30,27 +30,34 @@ import org.mozilla.javascript.Scriptable;
  */
 public abstract class AbstractDomComponent extends ScriptingEngineImpl implements Scriptable {
 
+    private static final long serialVersionUID = 1L;
     private static int _anonymousFunctionNum;
 
+    @Override
     public String getClassName() {
         return getClass().getName();
     }
 
+    @Override
     public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void clearCaches() {
     }
 
+    @Override
     public boolean has(String name, Scriptable start) {
         return super.has(name, start) || ScriptingSupport.hasNamedProperty(this, getJavaPropertyName(name), start);
     }
 
+    @Override
     public Object get(String propertyName, Scriptable scriptable) {
         Object result = super.get(propertyName, scriptable);
-        if (result != NOT_FOUND)
+        if (result != NOT_FOUND) {
             return result;
+        }
 
         return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);
     }
@@ -59,6 +66,7 @@ public abstract class AbstractDomComponent extends ScriptingEngineImpl implement
         return propertyName;
     }
 
+    @Override
     public void put(String propertyName, Scriptable initialObject, Object value) {
         super.put(propertyName, initialObject, value);
         ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);

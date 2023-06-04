@@ -30,12 +30,12 @@ public interface DialogResponder {
      * Invoked when the user agent needs to display a confirmation dialog. This method should return true to accept the
      * proposed action or false to reject it.
      */
-    public boolean getConfirmation(String confirmationPrompt);
+    boolean getConfirmation(String confirmationPrompt);
 
     /**
      * Invoked when the user agent needs to display a generic dialog and obtain a user response. This method should
      * return the user's answer.
      */
-    public String getUserResponse(String prompt, String defaultResponse);
+    String getUserResponse(String prompt, String defaultResponse);
 
 }

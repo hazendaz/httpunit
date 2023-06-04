@@ -31,6 +31,7 @@ import org.w3c.dom.html.HTMLElement;
  **/
 public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {
 
+    private static final long serialVersionUID = 1L;
     private NodeList _list;
 
     public static HTMLCollectionImpl createHTMLCollectionImpl(NodeList list) {
@@ -46,27 +47,34 @@ public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollecti
     // ------------------------------------------ HTMLCollection methods
     // --------------------------------------------------
 
+    @Override
     public int getLength() {
         return _list.getLength();
     }
 
+    @Override
     public Node item(int index) {
         return _list.item(index);
     }
 
+    @Override
     public Node namedItem(String name) {
-        if (name == null)
+        if (name == null) {
             return null;
+        }
 
         Node nodeByName = null;
         for (int i = 0; null == nodeByName && i < getLength(); i++) {
             Node node = item(i);
-            if (!(node instanceof HTMLElementImpl))
+            if (!(node instanceof HTMLElementImpl)) {
                 continue;
-            if (name.equalsIgnoreCase(((HTMLElement) node).getId()))
+            }
+            if (name.equalsIgnoreCase(((HTMLElement) node).getId())) {
                 return node;
-            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault("name")))
+            }
+            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault("name"))) {
                 nodeByName = node;
+            }
         }
         return nodeByName;
     }
@@ -74,26 +82,32 @@ public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollecti
     // ------------------------------------------ ScriptableObject methods
     // --------------------------------------------------
 
+    @Override
     public String getClassName() {
         return getClass().getName();
     }
 
+    @Override
     public Object get(String propertyName, Scriptable scriptable) {
         Object result = super.get(propertyName, scriptable);
-        if (result != NOT_FOUND)
+        if (result != NOT_FOUND) {
             return result;
+        }
 
         Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);
-        if (namedProperty != NOT_FOUND)
+        if (namedProperty != NOT_FOUND) {
             return namedProperty;
+        }
 
         Node namedItem = namedItem(propertyName);
         return namedItem == null ? NOT_FOUND : namedItem;
     }
 
+    @Override
     public Object get(int index, Scriptable start) {
-        if (index < 0 || index >= _list.getLength())
+        if (index < 0 || index >= _list.getLength()) {
             return NOT_FOUND;
+        }
         return item(index);
     }
 }

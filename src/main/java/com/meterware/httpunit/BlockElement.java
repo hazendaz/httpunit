@@ -41,10 +41,12 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the text value of this block.
      */
+    @Override
     public String getText() {
         if (_node == null) {
             return "";
-        } else if (_node.getNodeType() == Node.TEXT_NODE) {
+        }
+        if (_node.getNodeType() == Node.TEXT_NODE) {
             return _node.getNodeValue().trim();
         } else if (!_node.hasChildNodes()) {
             return "";
@@ -56,6 +58,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the tag for this block.
      */
+    @Override
     public String getTagName() {
         return _node == null ? "p" : _node.getNodeName();
     }
@@ -63,6 +66,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns a copy of the domain object model associated with this HTML segment.
      */
+    @Override
     public Node getDOM() {
         return super.getDOM();
     }
@@ -73,6 +77,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the ID associated with this element. IDs are unique throughout the HTML document.
      */
+    @Override
     public String getID() {
         return getAttribute("id");
     }
@@ -80,6 +85,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the class attribute associated with this element.
      */
+    @Override
     public String getClassName() {
         return getAttribute("class");
     }
@@ -87,6 +93,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the name associated with this element.
      */
+    @Override
     public String getName() {
         return getAttribute("name");
     }
@@ -94,6 +101,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the title associated with this element.
      */
+    @Override
     public String getTitle() {
         return getAttribute("title");
     }
@@ -101,6 +109,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns the delegate which supports scripting this element.
      */
+    @Override
     public ScriptingHandler getScriptingHandler() {
         if (_scriptable == null) {
             _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);
@@ -116,6 +125,8 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
      *
      * @deprecated since 1.7 - use doEventScript instead
      */
+    @Deprecated
+    @Override
     public boolean doEvent(String eventScript) {
         return doEventScript(eventScript);
     }
@@ -128,18 +139,22 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
      *
      * @return true if the event script was handled
      */
+    @Override
     public boolean doEventScript(String eventScript) {
         return this.getScriptingHandler().doEventScript(eventScript);
     }
 
+    @Override
     public boolean handleEvent(String eventName) {
         return this.getScriptingHandler().handleEvent(eventName);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return getResponse().getDocumentScriptable();
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
@@ -150,6 +165,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
      * @param name
      *            - the name of the attribute to get
      */
+    @Override
     public String getAttribute(final String name) {
         return NodeUtils.getNodeAttribute(_node, name);
     }
@@ -162,8 +178,9 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
      * @param value
      *            - the value to use
      */
+    @Override
     public void setAttribute(final String name, final Object value) {
-        NodeUtils.setNodeAttribute(_node, name, (value == null) ? null : value.toString());
+        NodeUtils.setNodeAttribute(_node, name, value == null ? null : value.toString());
     }
 
     /**
@@ -172,6 +189,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
      * @param name
      *            - the name of the attribute
      */
+    @Override
     public void removeAttribute(final String name) {
         NodeUtils.removeNodeAttribute(_node, name);
     }
@@ -179,10 +197,12 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     /**
      * Returns true if this element may have an attribute with the specified name.
      */
+    @Override
     public boolean isSupportedAttribute(String name) {
         return false;
     }
 
+    @Override
     public Node getNode() {
         return _node;
     }
@@ -190,6 +210,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     // ----------------------------------------------- Object methods
     // -------------------------------------------------------
 
+    @Override
     public boolean equals(Object obj) {
         return getClass().equals(obj.getClass()) && equals((BlockElement) obj);
     }
@@ -198,6 +219,7 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
         return _node.equals(block._node);
     }
 
+    @Override
     public int hashCode() {
         return _node.hashCode();
     }

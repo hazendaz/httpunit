@@ -31,33 +31,41 @@ import org.w3c.dom.NodeList;
  **/
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
+    private static final long serialVersionUID = 1L;
     private List _list;
 
     public NodeListImpl(List list) {
         _list = list;
     }
 
+    @Override
     public Node item(int index) {
         return (Node) _list.get(index);
     }
 
+    @Override
     public int getLength() {
         return _list.size();
     }
 
+    @Override
     public String getClassName() {
         return NodeListImpl.class.getName();
     }
 
+    @Override
     public Object get(String name, Scriptable start) {
-        if ("length".equals(name))
+        if ("length".equals(name)) {
             return Integer.valueOf(getLength());
+        }
         return NOT_FOUND;
     }
 
+    @Override
     public Object get(int index, Scriptable start) {
-        if (index < 0 || index >= getLength())
+        if (index < 0 || index >= getLength()) {
             return NOT_FOUND;
+        }
         return item(index);
     }
 }

@@ -28,6 +28,7 @@ public class DialogAdapter implements DialogResponder {
      * Invoked when the user agent needs to display a confirmation dialog. This default implementation confirms all
      * dialogs.
      */
+    @Override
     public boolean getConfirmation(String confirmationPrompt) {
         return true;
     }
@@ -36,6 +37,7 @@ public class DialogAdapter implements DialogResponder {
      * Invoked when the user agent needs to display a generic dialog and obtain a user response. This default
      * implementation returns the default response.
      */
+    @Override
     public String getUserResponse(String prompt, String defaultResponse) {
         return defaultResponse;
     }

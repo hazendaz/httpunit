@@ -26,8 +26,11 @@ import org.w3c.dom.html.HTMLTableCellElement;
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
 public class HTMLTableCellElementImpl extends HTMLElementImpl
-        implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
+implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLTableCellElementImpl();
     }
@@ -35,22 +38,27 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl
     // ------------------------------------------ HTMLContainerElement methods
     // ----------------------------------------------
 
+    @Override
     public HTMLCollection getLinks() {
         return getHtmlDocument().getContainerDelegate().getLinks(this);
     }
 
+    @Override
     public HTMLCollection getImages() {
         return getHtmlDocument().getContainerDelegate().getImages(this);
     }
 
+    @Override
     public HTMLCollection getApplets() {
         return getHtmlDocument().getContainerDelegate().getApplets(this);
     }
 
+    @Override
     public HTMLCollection getForms() {
         return getHtmlDocument().getContainerDelegate().getForms(this);
     }
 
+    @Override
     public HTMLCollection getAnchors() {
         return getHtmlDocument().getContainerDelegate().getAnchors(this);
     }
@@ -58,127 +66,159 @@ public class HTMLTableCellElementImpl extends HTMLElementImpl
     // -------------------------------------------- HTMLTableCellElement methods
     // --------------------------------------------
 
+    @Override
     public String getAbbr() {
         return getAttributeWithNoDefault("abbr");
     }
 
+    @Override
     public void setAbbr(String abbr) {
         setAttribute("abbr", abbr);
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public String getAxis() {
         return getAttributeWithNoDefault("axis");
     }
 
+    @Override
     public void setAxis(String axis) {
         setAttribute("axis", axis);
     }
 
+    @Override
     public String getBgColor() {
         return getAttributeWithNoDefault("bgColor");
     }
 
+    @Override
     public void setBgColor(String bgColor) {
         setAttribute("bgColor", bgColor);
     }
 
+    @Override
     public int getCellIndex() {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getCh() {
         return getAttributeWithDefault("char", ".");
     }
 
+    @Override
     public void setCh(String ch) {
         setAttribute("char", ch);
     }
 
+    @Override
     public String getChOff() {
         return getAttributeWithNoDefault("charoff");
     }
 
+    @Override
     public void setChOff(String chOff) {
         setAttribute("charoff", chOff);
     }
 
+    @Override
     public int getColSpan() {
         return getIntegerAttribute("colspan", 1);
     }
 
+    @Override
     public void setColSpan(int colSpan) {
         setAttribute("colspan", colSpan);
     }
 
+    @Override
     public String getHeaders() {
         return getAttributeWithNoDefault("headers");
     }
 
+    @Override
     public void setHeaders(String headers) {
         setAttribute("headers", headers);
     }
 
+    @Override
     public String getHeight() {
         return getAttributeWithNoDefault("height");
     }
 
+    @Override
     public void setHeight(String height) {
         setAttribute("height", height);
     }
 
+    @Override
     public boolean getNoWrap() {
         return getBooleanAttribute("nowrap");
     }
 
+    @Override
     public void setNoWrap(boolean noWrap) {
         setAttribute("nowrap", noWrap);
     }
 
+    @Override
     public int getRowSpan() {
         return getIntegerAttribute("rowspan", 1);
     }
 
+    @Override
     public void setRowSpan(int rowSpan) {
         setAttribute("rowspan", rowSpan);
     }
 
+    @Override
     public String getScope() {
         return getAttributeWithNoDefault("scope");
     }
 
+    @Override
     public void setScope(String scope) {
         setAttribute("scope", scope);
     }
 
+    @Override
     public String getVAlign() {
         return getAttributeWithDefault("valign", "middle");
     }
 
+    @Override
     public void setVAlign(String vAlign) {
         setAttribute("valign", vAlign);
     }
 
+    @Override
     public String getWidth() {
         return getAttributeWithNoDefault("width");
     }
 
+    @Override
     public void setWidth(String width) {
         setAttribute("width", width);
     }
 
+    @Override
     public String getJavaAttributeName(String attributeName) {
-        if (attributeName.equals("char"))
+        if (attributeName.equals("char")) {
             return "ch";
-        if (attributeName.equals("charoff"))
+        }
+        if (attributeName.equals("charoff")) {
             return "choff";
+        }
         return attributeName;
     }
 

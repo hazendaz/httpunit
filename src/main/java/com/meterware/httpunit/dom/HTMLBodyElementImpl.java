@@ -28,8 +28,10 @@ import org.w3c.dom.html.HTMLBodyElement;
  **/
 public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {
 
+    private static final long serialVersionUID = 1L;
     private HTMLEventHandler _onLoad = new HTMLEventHandler(this, "onload");
 
+    @Override
     ElementImpl create() {
         return new HTMLBodyElementImpl();
     }
@@ -38,58 +40,71 @@ public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElem
      * @return the onload event
      */
     public Function getOnloadEvent() {
-        if (getParentScope() == null && getOwnerDocument() instanceof Scriptable)
+        if (getParentScope() == null && getOwnerDocument() instanceof Scriptable) {
             setParentScope((Scriptable) getOwnerDocument());
+        }
         return _onLoad.getHandler();
     }
 
     // ----------------------------------------- HTMLBodyElement methods
     // ----------------------------------------------------
 
+    @Override
     public String getALink() {
         return getAttributeWithNoDefault("aLink");
     }
 
+    @Override
     public String getBackground() {
         return getAttributeWithNoDefault("background");
     }
 
+    @Override
     public String getBgColor() {
         return getAttributeWithNoDefault("bgColor");
     }
 
+    @Override
     public String getLink() {
         return getAttributeWithNoDefault("link");
     }
 
+    @Override
     public String getText() {
         return getAttributeWithNoDefault("text");
     }
 
+    @Override
     public String getVLink() {
         return getAttributeWithNoDefault("vLink");
     }
 
+    @Override
     public void setALink(String aLink) {
         setAttribute("aLink", aLink);
     }
 
+    @Override
     public void setBackground(String background) {
         setAttribute("background", background);
     }
 
+    @Override
     public void setBgColor(String bgColor) {
         setAttribute("bgColor", bgColor);
     }
 
+    @Override
     public void setLink(String link) {
         setAttribute("link", link);
     }
 
+    @Override
     public void setText(String text) {
         setAttribute("text", text);
     }
 
+    @Override
     public void setVLink(String vLink) {
         setAttribute("vLink", vLink);
     }

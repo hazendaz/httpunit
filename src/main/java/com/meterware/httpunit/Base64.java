@@ -51,8 +51,9 @@ public class Base64 {
 
         int numPadBytes = sourceBytes.length - source.length();
 
-        for (int i = target.length - numPadBytes; i < target.length; i++)
+        for (int i = target.length - numPadBytes; i < target.length; i++) {
             target[i] = '=';
+        }
         return new String(target);
     }
 
@@ -66,8 +67,8 @@ public class Base64 {
 
     private static void convert3To4(char[] source, int sourceIndex, char[] target) {
         target[0] = (char) (source[sourceIndex] >>> 2);
-        target[1] = (char) (((source[sourceIndex] & 0x03) << 4) | (source[sourceIndex + 1] >>> 4));
-        target[2] = (char) (((source[sourceIndex + 1] & 0x0f) << 2) | (source[sourceIndex + 2] >>> 6));
+        target[1] = (char) ((source[sourceIndex] & 0x03) << 4 | source[sourceIndex + 1] >>> 4);
+        target[2] = (char) ((source[sourceIndex + 1] & 0x0f) << 2 | source[sourceIndex + 2] >>> 6);
         target[3] = (char) (source[sourceIndex + 2] & 0x3f);
     }
 
@@ -80,10 +81,11 @@ public class Base64 {
      * @return the decoded strong
      */
     public static String decode(String source) {
-        if (source.length() % 4 != 0)
+        if (source.length() % 4 != 0) {
             throw new RuntimeException("valid Base64 codes have a multiple of 4 characters");
+        }
         int numGroups = source.length() / 4;
-        int numExtraBytes = source.endsWith("==") ? 2 : (source.endsWith("=") ? 1 : 0);
+        int numExtraBytes = source.endsWith("==") ? 2 : source.endsWith("=") ? 1 : 0;
         byte[] targetBytes = new byte[3 * numGroups];
         byte[] sourceBytes = new byte[4];
         for (int group = 0; group < numGroups; group++) {
@@ -96,9 +98,9 @@ public class Base64 {
     }
 
     private static void convert4To3(byte[] source, byte[] target, int targetIndex) {
-        target[targetIndex] = (byte) ((source[0] << 2) | (source[1] >>> 4));
-        target[targetIndex + 1] = (byte) (((source[1] & 0x0f) << 4) | (source[2] >>> 2));
-        target[targetIndex + 2] = (byte) (((source[2] & 0x03) << 6) | (source[3]));
+        target[targetIndex] = (byte) (source[0] << 2 | source[1] >>> 4);
+        target[targetIndex + 1] = (byte) ((source[1] & 0x0f) << 4 | source[2] >>> 2);
+        target[targetIndex + 2] = (byte) ((source[2] & 0x03) << 6 | source[3]);
     }
 
 }

@@ -31,26 +31,34 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
     // ---------------------------------------------- DocumentType methods
     // --------------------------------------------------
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     public NamedNodeMap getEntities() {
         return null;
     }
 
+    @Override
     public String getInternalSubset() {
         return null;
     }
 
+    @Override
     public String getName() {
         return null;
     }
 
+    @Override
     public NamedNodeMap getNotations() {
         return null;
     }
 
+    @Override
     public String getPublicId() {
         return null;
     }
 
+    @Override
     public String getSystemId() {
         return null;
     }
@@ -58,18 +66,22 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
     // ------------------------------------------------ NodeImpl methods
     // ----------------------------------------------------
 
+    @Override
     public String getNodeName() {
         return null;
     }
 
+    @Override
     public short getNodeType() {
         return 0;
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return null;
     }
 
+    @Override
     public void setNodeValue(String nodeValue) throws DOMException {
     }
 }

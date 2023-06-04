@@ -28,6 +28,7 @@ import org.w3c.dom.ProcessingInstruction;
  **/
 public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {
 
+    private static final long serialVersionUID = 1L;
     private String _target;
     private String _data;
 
@@ -47,30 +48,37 @@ public class ProcessingInstructionImpl extends NodeImpl implements ProcessingIns
         return createProcessingImpl(document, processingInstruction.getTarget(), processingInstruction.getData());
     }
 
+    @Override
     public String getNodeName() {
         return _target;
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return _data;
     }
 
+    @Override
     public void setNodeValue(String string) throws DOMException {
         setData(string);
     }
 
+    @Override
     public short getNodeType() {
         return PROCESSING_INSTRUCTION_NODE;
     }
 
+    @Override
     public String getTarget() {
         return _target;
     }
 
+    @Override
     public String getData() {
         return _data;
     }
 
+    @Override
     public void setData(String string) throws DOMException {
         _data = string;
     }

@@ -31,6 +31,7 @@ import java.util.List;
  **/
 public class IllegalParameterValueException extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
     /**
      * construct an IllegalParameterValueException
      *
@@ -72,13 +73,15 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
         this(parameterName, getBadValue(values), allowed);
     }
 
+    @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         sb.append("May not set parameter '").append(_parameterName).append("' to '");
         sb.append(_badValue).append("'. Value must be one of: { ");
         for (int i = 0; i < _allowedValues.length; i++) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(", ");
+            }
             sb.append("'" + _allowedValues[i] + "'");
         }
         sb.append(" }");

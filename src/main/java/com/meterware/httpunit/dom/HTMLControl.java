@@ -33,21 +33,26 @@ import org.w3c.dom.html.HTMLFormElement;
  **/
 public class HTMLControl extends HTMLElementImpl {
 
+    private static final long serialVersionUID = 1L;
+
     public boolean getDisabled() {
         return getBooleanAttribute("disabled");
     }
 
     public HTMLFormElement getForm() {
         Node parent = getParentNode();
-        while (parent != null && !("form".equalsIgnoreCase(parent.getNodeName())))
+        while (parent != null && !"form".equalsIgnoreCase(parent.getNodeName())) {
             parent = parent.getParentNode();
-        if (parent != null)
+        }
+        if (parent != null) {
             return (HTMLFormElement) parent;
+        }
 
         for (Iterator here = preOrderIterator(); here.hasNext();) {
             Object o = here.next();
-            if (o instanceof HTMLFormElement)
+            if (o instanceof HTMLFormElement) {
                 return getPreviousForm((HTMLFormElement) o);
+            }
         }
         return getLastFormInDocument();
     }
@@ -55,8 +60,9 @@ public class HTMLControl extends HTMLElementImpl {
     private HTMLFormElement getPreviousForm(HTMLFormElement nextForm) {
         HTMLCollection forms = getHtmlDocument().getForms();
         for (int i = 0; i < forms.getLength(); i++) {
-            if (nextForm == forms.item(i))
+            if (nextForm == forms.item(i)) {
                 return i == 0 ? null : (HTMLFormElement) forms.item(i - 1);
+            }
         }
         return null;
     }

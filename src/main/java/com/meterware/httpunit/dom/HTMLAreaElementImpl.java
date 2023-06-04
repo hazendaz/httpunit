@@ -29,10 +29,14 @@ import org.w3c.dom.html.HTMLAreaElement;
  **/
 public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLAreaElementImpl();
     }
 
+    @Override
     public String getHref() {
         try {
             return new URL(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl(),
@@ -42,62 +46,77 @@ public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElem
         }
     }
 
+    @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    @Override
     public void setHref(String href) {
         setAttribute("href", href);
     }
 
+    @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accesskey");
     }
 
+    @Override
     public String getCoords() {
         return getAttributeWithNoDefault("coords");
     }
 
+    @Override
     public String getShape() {
         return getAttributeWithNoDefault("shape");
     }
 
+    @Override
     public int getTabIndex() {
         return getIntegerAttribute("tabindex");
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accesskey", accessKey);
     }
 
+    @Override
     public void setCoords(String coords) {
         setAttribute("coords", coords);
     }
 
+    @Override
     public void setShape(String shape) {
         setAttribute("shape", shape);
     }
 
+    @Override
     public void setTabIndex(int tabIndex) {
         setAttribute("tabindex", tabIndex);
     }
 
+    @Override
     public String getAlt() {
         return getAttributeWithNoDefault("alt");
     }
 
+    @Override
     public boolean getNoHref() {
         return getBooleanAttribute("nohref");
     }
 
+    @Override
     public void setAlt(String alt) {
         setAttribute("alt", alt);
     }
 
+    @Override
     public void setNoHref(boolean noHref) {
         setAttribute("nohref", noHref);
     }

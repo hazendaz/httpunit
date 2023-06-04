@@ -54,21 +54,25 @@ class AuthenticationChallenge extends HttpHeader {
      * @return
      */
     boolean needToAuthenticate() {
-        if (getAuthenticationType() == null)
+        if (getAuthenticationType() == null) {
             return false;
-        if (getCredentialsForRealm() != null)
+        }
+        if (getCredentialsForRealm() != null) {
             return true;
-        if (!_client.getExceptionsThrownOnErrorStatus())
+        }
+        if (!_client.getExceptionsThrownOnErrorStatus()) {
             return false;
-        ;
+        }
+
 
         throw createAuthorizationRequiredException();
     }
 
     private String getAuthenticationType() {
         String result = getLabel();
-        if (_headerString != null && _headerString.equals("Negotiate"))
+        if (_headerString != null && _headerString.equals("Negotiate")) {
             result = null;
+        }
         return result;
     }
 
@@ -79,10 +83,12 @@ class AuthenticationChallenge extends HttpHeader {
     }
 
     private AuthenticationStrategy getAuthenticationStrategy() {
-        if (getAuthenticationType().equalsIgnoreCase("basic"))
+        if (getAuthenticationType().equalsIgnoreCase("basic")) {
             return BASIC_AUTHENTICATION;
-        if (getAuthenticationType().equalsIgnoreCase("digest"))
+        }
+        if (getAuthenticationType().equalsIgnoreCase("digest")) {
             return DIGEST_AUTHENTICATION;
+        }
         throw new RuntimeException("Unsupported authentication type '" + getAuthenticationType() + "'");
     }
 
@@ -98,8 +104,9 @@ class AuthenticationChallenge extends HttpHeader {
     private PasswordAuthentication getCredentialsForRealm() {
         String realm = getProperty("realm");
         PasswordAuthentication result = null;
-        if (realm != null)
+        if (realm != null) {
             result = _client.getCredentialsForRealm(realm);
+        }
         return result;
     }
 
@@ -121,6 +128,7 @@ class AuthenticationChallenge extends HttpHeader {
 
     private static class BasicAuthenticationStrategy implements AuthenticationStrategy {
 
+        @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
             return "Basic " + Base64.encode(userName + ':' + password);
         }
@@ -129,7 +137,7 @@ class AuthenticationChallenge extends HttpHeader {
 
     private static class DigestAuthenticationStrategy implements AuthenticationStrategy {
 
-        private class Algorithm {
+        private static class Algorithm {
 
             public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
                     String password) {
@@ -145,8 +153,9 @@ class AuthenticationChallenge extends HttpHeader {
                 append(sb, "nonce", nonce);
                 append(sb, "uri", uri);
                 append(sb, "response", getResponse(userName, realm, password, nonce, uri, method));
-                if (opaque != null)
+                if (opaque != null) {
                     append(sb, "opaque", opaque);
+                }
             }
 
             protected String getResponse(String userName, String realm, String password, String nonce, String uri,
@@ -157,9 +166,7 @@ class AuthenticationChallenge extends HttpHeader {
                     String ha1 = H(a1);
                     String ha2 = H(a2);
                     return KD(ha1, nonce + ':' + ha2);
-                } catch (NoSuchAlgorithmException e) {
-                    return "";
-                } catch (UnsupportedEncodingException e) {
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                     return "";
                 }
             }
@@ -183,12 +190,14 @@ class AuthenticationChallenge extends HttpHeader {
                 digest.update(data.getBytes(StandardCharsets.UTF_8));
                 byte[] bytes = digest.digest();
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < bytes.length; i++) {
-                    int aByte = bytes[i];
-                    if (aByte < 0)
+                for (byte element : bytes) {
+                    int aByte = element;
+                    if (aByte < 0) {
                         aByte += 256;
-                    if (aByte < 16)
+                    }
+                    if (aByte < 16) {
                         sb.append('0');
+                    }
                     sb.append(Integer.toHexString(aByte));
                 }
 
@@ -249,6 +258,7 @@ class AuthenticationChallenge extends HttpHeader {
             }
         }
 
+        @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
             StringBuilder sb = new StringBuilder("Digest ");
             Algorithm algorithm = new Algorithm();

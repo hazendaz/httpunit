@@ -45,6 +45,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
     /**
      * check whether this ScriptingEngineFactory is enabled
      */
+    @Override
     public boolean isEnabled() {
         try {
             Class.forName("org.mozilla.javascript.Context");
@@ -61,6 +62,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
      * @param response
      *            - the WebResponse to use
      */
+    @Override
     public void associate(WebResponse response) {
         try {
             // JavaScript.run( response ); // can't do this (yet?)
@@ -77,6 +79,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
      *
      * @param response
      */
+    @Override
     public void load(WebResponse response) {
         Function onLoadEvent = null;
         try {
@@ -84,20 +87,20 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
             context.initStandardObjects(null);
 
             HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();
-            if (!(htmlDocument instanceof HTMLDocumentImpl))
+            if (!(htmlDocument instanceof HTMLDocumentImpl)) {
                 return;
+            }
 
             HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();
-            if (body == null)
+            if (body == null) {
                 return;
+            }
             onLoadEvent = body.getOnloadEvent();
-            if (onLoadEvent == null)
+            if (onLoadEvent == null) {
                 return;
+            }
             onLoadEvent.call(context, body, body, new Object[0]);
-        } catch (JavaScriptException e) {
-            ScriptingEngineImpl.handleScriptException(e, onLoadEvent.toString());
-            // HttpUnitUtils.handleException(e);
-        } catch (EcmaError ee) {
+        } catch (JavaScriptException | EcmaError ee) {
             // throw ee;
             ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());
         } finally {
@@ -111,6 +114,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
      * @param throwExceptions
      *            - true if Exceptions should be thrown
      */
+    @Override
     public void setThrowExceptionsOnError(boolean throwExceptions) {
         JavaScript.setThrowExceptionsOnError(throwExceptions);
     }
@@ -120,22 +124,27 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
      *
      * @return - true if Exceptions should be thrown
      */
+    @Override
     public boolean isThrowExceptionsOnError() {
         return JavaScript.isThrowExceptionsOnError();
     }
 
+    @Override
     public String[] getErrorMessages() {
         return ScriptingEngineImpl.getErrorMessages();
     }
 
+    @Override
     public void clearErrorMessages() {
         ScriptingEngineImpl.clearErrorMessages();
     }
 
+    @Override
     public ScriptingHandler createHandler(HTMLElement elementBase) {
         return (ScriptingHandler) elementBase.getNode();
     }
 
+    @Override
     public ScriptingHandler createHandler(WebResponse response) {
         return response.createDomScriptingHandler();
     }
@@ -148,6 +157,7 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
      * @param badScript
      *            - the script that caused the problem
      */
+    @Override
     public void handleScriptException(Exception e, String badScript) {
         ScriptingEngineImpl.handleScriptException(e, badScript);
     }

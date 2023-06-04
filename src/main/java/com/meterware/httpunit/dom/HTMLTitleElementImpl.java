@@ -28,10 +28,14 @@ import org.w3c.dom.html.HTMLTitleElement;
  **/
 public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLTitleElementImpl();
     }
 
+    @Override
     public String getText() {
         Text contentNode = getContentNode();
         return contentNode == null ? "" : contentNode.getData();
@@ -40,12 +44,14 @@ public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleEl
     private Text getContentNode() {
         NodeList childNodes = getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            if (childNodes.item(i).getNodeType() == TEXT_NODE)
+            if (childNodes.item(i).getNodeType() == TEXT_NODE) {
                 return (Text) childNodes.item(i);
+            }
         }
         return null;
     }
 
+    @Override
     public void setText(String text) {
         Text newChild = getOwnerDocument().createTextNode(text);
         Text oldChild = getContentNode();

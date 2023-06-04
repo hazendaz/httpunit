@@ -78,16 +78,18 @@ public class CookieProperties {
      * Adds a listener for cookie events.
      */
     public static void addCookieListener(CookieListener listener) {
-        if (_listeners == null)
+        if (_listeners == null) {
             _listeners = new ArrayList();
+        }
         synchronized (_listeners) {
             _listeners.add(listener);
         }
     }
 
     public static void reportCookieRejected(int reason, String attribute, String source) {
-        if (_listeners == null)
+        if (_listeners == null) {
             return;
+        }
 
         List listeners;
         synchronized (_listeners) {

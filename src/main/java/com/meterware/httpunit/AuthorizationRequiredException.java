@@ -27,6 +27,7 @@ import java.util.Properties;
  **/
 public class AuthorizationRequiredException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
     public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
         Properties props = new Properties();
         props.put("realm", realm);
@@ -42,6 +43,7 @@ public class AuthorizationRequiredException extends RuntimeException {
         _properties = properties;
     }
 
+    @Override
     public String getMessage() {
         return _scheme + " authentication required: " + _properties;
     }
@@ -68,8 +70,9 @@ public class AuthorizationRequiredException extends RuntimeException {
     }
 
     private String unQuote(String value) {
-        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\""))
+        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\"")) {
             return value;
+        }
 
         return value.substring(1, value.length() - 1);
     }

@@ -26,109 +26,138 @@ import org.w3c.dom.html.HTMLImageElement;
  **/
 public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLImageElementImpl();
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    @Override
     public String getAlt() {
         return getAttributeWithNoDefault("alt");
     }
 
+    @Override
     public String getBorder() {
         return getAttributeWithNoDefault("border");
     }
 
+    @Override
     public String getHeight() {
         return getAttributeWithNoDefault("height");
     }
 
+    @Override
     public String getHspace() {
         return getAttributeWithNoDefault("hspace");
     }
 
+    @Override
     public boolean getIsMap() {
         return getBooleanAttribute("ismap");
     }
 
+    @Override
     public String getLongDesc() {
         return getAttributeWithNoDefault("longdesc");
     }
 
+    @Override
     public String getLowSrc() {
         return null;
     }
 
+    @Override
     public String getName() {
         return getAttributeWithNoDefault("name");
     }
 
+    @Override
     public String getSrc() {
         return getAttributeWithNoDefault("src");
     }
 
+    @Override
     public String getUseMap() {
         return getAttributeWithNoDefault("usemap");
     }
 
+    @Override
     public String getVspace() {
         return getAttributeWithNoDefault("vspace");
     }
 
+    @Override
     public String getWidth() {
         return getAttributeWithNoDefault("width");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public void setAlt(String alt) {
         setAttribute("alt", alt);
     }
 
+    @Override
     public void setBorder(String border) {
         setAttribute("border", border);
     }
 
+    @Override
     public void setHeight(String height) {
         setAttribute("height", height);
     }
 
+    @Override
     public void setHspace(String hspace) {
         setAttribute("hspace", hspace);
     }
 
+    @Override
     public void setIsMap(boolean isMap) {
         setAttribute("ismap", isMap);
     }
 
+    @Override
     public void setLongDesc(String longDesc) {
         setAttribute("longdesc", longDesc);
     }
 
+    @Override
     public void setLowSrc(String lowSrc) {
     }
 
+    @Override
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    @Override
     public void setSrc(String src) {
         setAttribute("src", src);
     }
 
+    @Override
     public void setUseMap(String useMap) {
         setAttribute("usemap", useMap);
     }
 
+    @Override
     public void setVspace(String vspace) {
         setAttribute("vspace", vspace);
     }
 
+    @Override
     public void setWidth(String width) {
         setAttribute("width", width);
     }

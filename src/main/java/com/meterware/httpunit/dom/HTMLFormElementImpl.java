@@ -40,6 +40,9 @@ import org.w3c.dom.html.HTMLFormElement;
  **/
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement, FormScriptable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLFormElementImpl();
     }
@@ -47,17 +50,20 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
     // ------------------------------- ScriptableObject methods
     // ----------------------------------------------------------
 
+    @Override
     public Object get(String propertyName, Scriptable scriptable) {
         HTMLCollection elements = getElements();
         for (int i = 0; i < elements.getLength(); i++) {
             Node node = elements.item(i);
             NamedNodeMap attributes = node.getAttributes();
             AttrImpl nameAttribute = (AttrImpl) attributes.getNamedItem("name");
-            if (nameAttribute != null && propertyName.equals(nameAttribute.getValue()))
+            if (nameAttribute != null && propertyName.equals(nameAttribute.getValue())) {
                 return node;
+            }
             AttrImpl idAttribute = (AttrImpl) attributes.getNamedItem("id");
-            if (idAttribute != null && propertyName.equals(idAttribute.getValue()))
+            if (idAttribute != null && propertyName.equals(idAttribute.getValue())) {
                 return node;
+            }
         }
         return super.get(propertyName, scriptable);
     }
@@ -65,40 +71,50 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
     // ------------------------------- HTMLFormElement methods
     // ----------------------------------------------------------
 
+    @Override
     public String getAcceptCharset() {
         return getAttributeWithDefault("accept-charset", "UNKNOWN");
     }
 
+    @Override
     public void setAcceptCharset(String acceptCharset) {
         setAttribute("accept-charset", acceptCharset);
     }
 
+    @Override
     public String getAction() {
         return getAttribute("action");
     }
 
+    @Override
     public void setAction(String action) {
         setAttribute("action", action);
     }
 
+    @Override
     public void setParameterValue(String name, String value) {
         Object control = get(name, null);
-        if (control instanceof ScriptableObject)
+        if (control instanceof ScriptableObject) {
             ((ScriptableObject) control).put("value", this, value);
+        }
     }
 
+    @Override
     public String getEnctype() {
         return getAttributeWithDefault("enctype", "application/x-www-form-urlencoded");
     }
 
+    @Override
     public void setEnctype(String enctype) {
         setAttribute("enctype", enctype);
     }
 
+    @Override
     public String getMethod() {
         return getAttributeWithDefault("method", "get");
     }
 
+    @Override
     public void setMethod(String method) {
         setAttribute("method", method);
     }
@@ -108,57 +124,70 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
      *
      * @see org.w3c.dom.html.HTMLFormElement#getName()
      */
+    @Override
     public String getName() {
         String result = getAttributeWithNoDefault("name");
-        if (result == null)
+        if (result == null) {
             result = this.getId();
+        }
         return result;
     }
 
+    @Override
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }
 
+    @Override
     public HTMLCollection getElements() {
         ArrayList elements = new ArrayList();
-        String[] names = new String[] { "INPUT", "TEXTAREA", "BUTTON", "SELECT" };
+        String[] names = { "INPUT", "TEXTAREA", "BUTTON", "SELECT" };
         for (Iterator each = preOrderIteratorAfterNode(); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node instanceof HTMLFormElement)
+            if (node instanceof HTMLFormElement) {
                 break;
+            }
 
-            if (node.getNodeType() != ELEMENT_NODE)
+            if (node.getNodeType() != ELEMENT_NODE) {
                 continue;
+            }
             String tagName = ((Element) node).getTagName();
-            for (int i = 0; i < names.length; i++) {
-                if (tagName.equalsIgnoreCase(names[i]))
+            for (String name : names) {
+                if (tagName.equalsIgnoreCase(name)) {
                     elements.add(node);
+                }
             }
         }
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
+    @Override
     public int getLength() {
         return 0;
     }
 
+    @Override
     public void reset() {
         HTMLCollection elements = getElements();
         for (int i = 0; i < elements.getLength(); i++) {
             Node node = elements.item(i);
-            if (node instanceof HTMLControl)
+            if (node instanceof HTMLControl) {
                 ((HTMLControl) node).reset();
+            }
         }
     }
 
+    @Override
     public void submit() {
         doSubmitAction();
     }
@@ -195,7 +224,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
             for (int i = 0; i < controls.getLength(); i++) {
                 ((HTMLControl) controls.item(i)).addValues(parameters, "us-ascii");
             }
-            if ((spec.indexOf("?") >= 0) && !(spec.toString().endsWith("?"))) {
+            if (spec.indexOf("?") >= 0 && !spec.toString().endsWith("?")) {
                 spec.append('&');
             } else {
                 spec.append('?');

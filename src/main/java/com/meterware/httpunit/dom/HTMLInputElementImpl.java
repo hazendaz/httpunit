@@ -33,10 +33,12 @@ import org.w3c.dom.html.HTMLInputElement;
  **/
 public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {
 
+    private static final long serialVersionUID = 1L;
     private String _value;
     private Boolean _checked;
     private TypeSpecificBehavior _behavior;
 
+    @Override
     ElementImpl create() {
         return new HTMLInputElementImpl();
     }
@@ -44,6 +46,7 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
     /**
      * simulate blur
      */
+    @Override
     public void blur() {
         handleEvent("onblur");
     }
@@ -51,127 +54,159 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
     /**
      * simulate focus;
      */
+    @Override
     public void focus() {
         handleEvent("onfocus");
     }
 
+    @Override
     public void doClickAction() {
         getBehavior().click();
     }
 
+    @Override
     public void select() {
     }
 
+    @Override
     public String getAccept() {
         return getAttributeWithNoDefault("accept");
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accessKey");
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithDefault("align", "bottom");
     }
 
+    @Override
     public String getAlt() {
         return getAttributeWithNoDefault("alt");
     }
 
+    @Override
     public boolean getChecked() {
         return getBehavior().getChecked();
     }
 
+    @Override
     public boolean getDefaultChecked() {
         return getBooleanAttribute("checked");
     }
 
+    @Override
     public String getDefaultValue() {
         return getAttributeWithNoDefault("value");
     }
 
+    @Override
     public int getMaxLength() {
         return getIntegerAttribute("maxlength");
     }
 
+    @Override
     public String getSize() {
         return getAttributeWithNoDefault("size");
     }
 
+    @Override
     public String getSrc() {
         return getAttributeWithNoDefault("src");
     }
 
+    @Override
     public String getUseMap() {
         return getAttributeWithNoDefault("useMap");
     }
 
+    @Override
     public void setAccept(String accept) {
         setAttribute("accept", accept);
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accessKey", accessKey);
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public void setAlt(String alt) {
         setAttribute("alt", alt);
     }
 
+    @Override
     public void setChecked(boolean checked) {
         getBehavior().setChecked(checked);
     }
 
+    @Override
     public void setDefaultChecked(boolean defaultChecked) {
         setAttribute("checked", defaultChecked);
     }
 
+    @Override
     public void setDefaultValue(String defaultValue) {
         setAttribute("value", defaultValue);
     }
 
+    @Override
     public void setMaxLength(int maxLength) {
         setAttribute("maxlength", maxLength);
     }
 
+    @Override
     public void setSize(String size) {
         setAttribute("size", size);
     }
 
+    @Override
     public void setSrc(String src) {
         setAttribute("src", src);
     }
 
+    @Override
     public void setUseMap(String useMap) {
         setAttribute("useMap", useMap);
     }
 
+    @Override
     public String getValue() {
         return getBehavior().getValue();
     }
 
+    @Override
     public void setValue(String value) {
         getBehavior().setValue(value);
     }
 
+    @Override
     public void reset() {
         getBehavior().reset();
     }
 
+    @Override
     public void setAttribute(String name, String value) throws DOMException {
         super.setAttribute(name, value);
-        if (name.equalsIgnoreCase("type"))
+        if (name.equalsIgnoreCase("type")) {
             selectBehavior(getType().toLowerCase());
+        }
     }
 
+    @Override
     void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         getBehavior().addValues(getName(), processor, characterSet);
     }
 
+    @Override
     public void silenceSubmitButton() {
         getBehavior().silenceSubmitButton();
     }
@@ -201,8 +236,9 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
     }
 
     private TypeSpecificBehavior getBehavior() {
-        if (_behavior == null)
+        if (_behavior == null) {
             selectBehavior(getType().toLowerCase());
+        }
         return _behavior;
     }
 
@@ -232,28 +268,35 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             _element = element;
         }
 
+        @Override
         public String getValue() {
             return _value != null ? _value : getDefaultValue();
         }
 
+        @Override
         public void setValue(String value) {
-            if (HTMLInputElementImpl.equals(value, _value))
+            if (HTMLInputElementImpl.equals(value, _value)) {
                 return;
+            }
 
             _value = value;
             reportPropertyChanged("value");
         }
 
+        @Override
         public boolean getChecked() {
             return getDefaultChecked();
         }
 
+        @Override
         public void setChecked(boolean checked) {
         }
 
+        @Override
         public void reset() {
         }
 
+        @Override
         public void click() {
         }
 
@@ -261,10 +304,12 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             _element.reportPropertyChanged(propertyName);
         }
 
+        @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
             processor.addParameter(name, getValue(), characterSet);
         }
 
+        @Override
         public void silenceSubmitButton() {
         }
     }
@@ -275,6 +320,7 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             super(element);
         }
 
+        @Override
         public void reset() {
             _value = null;
         }
@@ -289,17 +335,21 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             super(element);
         }
 
+        @Override
         public void click() {
             _sendWithSubmit = true;
             ((HTMLFormElementImpl) getForm()).doSubmitAction();
         }
 
+        @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
-            if (!_sendWithSubmit)
+            if (!_sendWithSubmit) {
                 return;
+            }
             super.addValues(name, processor, characterSet);
         }
 
+        @Override
         public void silenceSubmitButton() {
             _sendWithSubmit = false;
         }
@@ -312,25 +362,31 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             super(element);
         }
 
+        @Override
         public boolean getChecked() {
             return _checked != null ? _checked.booleanValue() : getDefaultChecked();
         }
 
+        @Override
         public void setChecked(boolean checked) {
             setState(checked);
         }
 
+        @Override
         public void reset() {
             _checked = null;
         }
 
+        @Override
         public void click() {
             setChecked(!getChecked());
         }
 
+        @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
-            if (!getDisabled() && getChecked())
+            if (!getDisabled() && getChecked()) {
                 processor.addParameter(name, getFormValue(), characterSet);
+            }
         }
 
         private String getFormValue() {
@@ -344,21 +400,25 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             super(element);
         }
 
+        @Override
         public void setChecked(boolean checked) {
             if (checked) {
                 HTMLCollection elements = getForm().getElements();
                 for (int i = 0; i < elements.getLength(); i++) {
                     Node node = elements.item(i);
-                    if (!(node instanceof HTMLInputElementImpl))
+                    if (!(node instanceof HTMLInputElementImpl)) {
                         continue;
+                    }
                     HTMLInputElementImpl input = (HTMLInputElementImpl) node;
-                    if (getName().equals(input.getName()) && input.getType().equalsIgnoreCase("radio"))
+                    if (getName().equals(input.getName()) && input.getType().equalsIgnoreCase("radio")) {
                         input.setState(false);
+                    }
                 }
             }
             setState(checked);
         }
 
+        @Override
         public void click() {
             setChecked(true);
         }
@@ -370,6 +430,7 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
             super(element);
         }
 
+        @Override
         public void click() {
             getForm().reset();
         }

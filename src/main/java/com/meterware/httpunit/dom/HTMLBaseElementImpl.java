@@ -26,22 +26,29 @@ import org.w3c.dom.html.HTMLBaseElement;
  **/
 public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLBaseElementImpl();
     }
 
+    @Override
     public String getHref() {
         return getAttributeWithNoDefault("href");
     }
 
+    @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    @Override
     public void setHref(String href) {
         setAttribute("href", href);
     }
 
+    @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }

@@ -27,90 +27,114 @@ import org.w3c.dom.html.HTMLIFrameElement;
  */
 public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLIFrameElementImpl();
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public String getFrameBorder() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setFrameBorder(String frameBorder) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getHeight() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setHeight(String height) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getLongDesc() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setLongDesc(String longDesc) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getMarginHeight() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setMarginHeight(String marginHeight) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getMarginWidth() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setMarginWidth(String marginWidth) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getName() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setName(String name) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getScrolling() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setScrolling(String scrolling) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getSrc() {
         return getAttributeWithNoDefault("src");
     }
 
+    @Override
     public void setSrc(String src) {
         setAttribute("src", src);
     }
 
+    @Override
     public String getWidth() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setWidth(String width) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public Document getContentDocument() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }

@@ -20,149 +20,190 @@
 package com.meterware.httpunit.dom;
 
 import org.w3c.dom.DOMException;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLTableCaptionElement;
+import org.w3c.dom.html.HTMLTableElement;
+import org.w3c.dom.html.HTMLTableSectionElement;
 
 /**
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
 public class HTMLTableElementImpl extends HTMLElementImpl implements HTMLTableElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLTableElementImpl();
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithDefault("align", "center");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public String getBgColor() {
         return getAttributeWithNoDefault("bgColor");
     }
 
+    @Override
     public void setBgColor(String bgColor) {
         setAttribute("bgColor", bgColor);
     }
 
+    @Override
     public String getBorder() {
         return getAttributeWithNoDefault("border");
     }
 
+    @Override
     public void setBorder(String border) {
         setAttribute("border", border);
     }
 
+    @Override
     public String getCellPadding() {
         return getAttributeWithNoDefault("cellpadding");
     }
 
+    @Override
     public void setCellPadding(String cellPadding) {
         setAttribute("cellpadding", cellPadding);
     }
 
+    @Override
     public String getCellSpacing() {
         return getAttributeWithNoDefault("cellspacing");
     }
 
+    @Override
     public void setCellSpacing(String cellSpacing) {
         setAttribute("cellspacing", cellSpacing);
     }
 
+    @Override
     public String getFrame() {
         return getAttributeWithDefault("frame", "void");
     }
 
+    @Override
     public void setFrame(String frame) {
         setAttribute("frame", frame);
     }
 
+    @Override
     public String getRules() {
         return getAttributeWithDefault("rules", "none");
     }
 
+    @Override
     public void setRules(String rules) {
         setAttribute("rules", rules);
     }
 
+    @Override
     public String getSummary() {
         return getAttributeWithNoDefault("summary");
     }
 
+    @Override
     public void setSummary(String summary) {
         setAttribute("summary", summary);
     }
 
+    @Override
     public String getWidth() {
         return getAttributeWithNoDefault("width");
     }
 
+    @Override
     public void setWidth(String width) {
         setAttribute("width", width);
     }
 
+    @Override
     public HTMLElement createCaption() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLElement createTFoot() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLElement createTHead() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void deleteCaption() {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void deleteRow(int index) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void deleteTFoot() {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void deleteTHead() {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLTableCaptionElement getCaption() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLCollection getRows() {
         return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagName("tr"));
     }
 
+    @Override
     public HTMLCollection getTBodies() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLTableSectionElement getTFoot() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLTableSectionElement getTHead() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public HTMLElement insertRow(int index) throws DOMException {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setCaption(HTMLTableCaptionElement caption) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setTFoot(HTMLTableSectionElement tFoot) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setTHead(HTMLTableSectionElement tHead) {
         // To change body of implemented methods use File | Settings | File Templates.
     }

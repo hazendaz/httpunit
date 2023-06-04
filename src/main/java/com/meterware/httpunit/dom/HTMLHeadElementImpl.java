@@ -26,14 +26,19 @@ import org.w3c.dom.html.HTMLHeadElement;
  **/
 public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLHeadElementImpl();
     }
 
+    @Override
     public String getProfile() {
         return getAttributeWithNoDefault("profile");
     }
 
+    @Override
     public void setProfile(String profile) {
         setAttribute("profile", profile);
     }

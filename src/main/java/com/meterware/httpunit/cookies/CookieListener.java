@@ -27,19 +27,19 @@ package com.meterware.httpunit.cookies;
 public interface CookieListener {
 
     /** Indicates that the cookie was accepted. **/
-    public final static int ACCEPTED = 0;
+    int ACCEPTED = 0;
 
     /** Indicates that the domain attribute has only one dot. **/
-    public final static int DOMAIN_ONE_DOT = 2;
+    int DOMAIN_ONE_DOT = 2;
 
     /** Indicates that the domain attribute is not a suffix of the source domain issuing the cookie. **/
-    public final static int DOMAIN_NOT_SOURCE_SUFFIX = 3;
+    int DOMAIN_NOT_SOURCE_SUFFIX = 3;
 
     /** Indicates that the source domain has an extra dot beyond those defined in the domain attribute. **/
-    public final static int DOMAIN_TOO_MANY_LEVELS = 4;
+    int DOMAIN_TOO_MANY_LEVELS = 4;
 
     /** Indicates that the source path does not begin with the path attribute. **/
-    public final static int PATH_NOT_PREFIX = 5;
+    int PATH_NOT_PREFIX = 5;
 
     /**
      * Invoked when a cookie is rejected by HttpUnit.

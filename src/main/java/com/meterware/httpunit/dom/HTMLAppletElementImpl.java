@@ -26,38 +26,49 @@ import org.w3c.dom.html.HTMLAppletElement;
  */
 public class HTMLAppletElementImpl extends HTMLElementImpl implements HTMLAppletElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLAppletElementImpl();
     }
 
+    @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    @Override
     public String getAlt() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setAlt(String alt) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getArchive() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setArchive(String archive) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getCode() {
         return getAttributeWithNoDefault("code");
     }
 
+    @Override
     public void setCode(String code) {
         setAttribute("code", code);
     }
@@ -65,58 +76,72 @@ public class HTMLAppletElementImpl extends HTMLElementImpl implements HTMLApplet
     /**
      * get the codebase of this applet modified for bug report [ 1895501 ] Handling no codebase attribute in APPLET tag
      */
+    @Override
     public String getCodeBase() {
         return getAttributeWithDefault("codebase", ".");
     }
 
+    @Override
     public void setCodeBase(String codeBase) {
         setAttribute("codebase", codeBase);
     }
 
+    @Override
     public String getHeight() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setHeight(String height) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getHspace() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setHspace(String hspace) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getName() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setName(String name) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getObject() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setObject(String object) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getVspace() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setVspace(String vspace) {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getWidth() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setWidth(String width) {
         // To change body of implemented methods use File | Settings | File Templates.
     }

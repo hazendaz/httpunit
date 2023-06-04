@@ -27,6 +27,9 @@ import org.w3c.dom.html.HTMLParagraphElement;
  */
 public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLParagraphElement, HTMLContainerElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLParagraphElementImpl();
     }
@@ -34,22 +37,27 @@ public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLPar
     // ------------------------------------------ HTMLContainerElement methods
     // ----------------------------------------------
 
+    @Override
     public HTMLCollection getLinks() {
         return getHtmlDocument().getContainerDelegate().getLinks(this);
     }
 
+    @Override
     public HTMLCollection getImages() {
         return getHtmlDocument().getContainerDelegate().getImages(this);
     }
 
+    @Override
     public HTMLCollection getApplets() {
         return getHtmlDocument().getContainerDelegate().getApplets(this);
     }
 
+    @Override
     public HTMLCollection getForms() {
         return getHtmlDocument().getContainerDelegate().getForms(this);
     }
 
+    @Override
     public HTMLCollection getAnchors() {
         return getHtmlDocument().getContainerDelegate().getAnchors(this);
     }
@@ -57,10 +65,12 @@ public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLPar
     // ----------------------------------------- HTMLParagraphElement methods
     // -----------------------------------------------
 
+    @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }

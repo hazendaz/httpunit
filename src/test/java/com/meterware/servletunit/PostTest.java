@@ -44,7 +44,7 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.jetty.servlet.ServletHolder;
-*/
+ */
 
 /**
  * Tests for Bug Report [ 2264431 ] form.submit() sends multiple HTTP POSTS
@@ -123,9 +123,11 @@ public class PostTest {
      * a Servlet that counts the posts being done
      */
     static class TestServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         public static int postCount = 0;
         public static String location = null;
 
+        @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws IOException, ServletException {
             response.setContentType("text/html");
@@ -141,6 +143,7 @@ public class PostTest {
              */
         }
 
+        @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 throws IOException, ServletException {
             postCount++;

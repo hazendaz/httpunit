@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 
 class ServletUnitHttpSession implements HttpSession {
 
-    final static public String SESSION_COOKIE_NAME = "JSESSION";
+    public static final String SESSION_COOKIE_NAME = "JSESSION";
 
     private ServletContext _servletContext;
     private SessionListenerDispatcher _listenerDispatcher;

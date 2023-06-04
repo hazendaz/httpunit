@@ -19,13 +19,21 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mozilla.javascript.ScriptableObject;
 import org.w3c.dom.Element;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLInputElement;
+import org.w3c.dom.html.HTMLTextAreaElement;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -140,8 +148,8 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         String[] values = { "on1", "on2" };
         boolean[] initialChecked = { false, true };
 
-        for (int i = 0; i < _checkbox.length; i++) {
-            _form.appendChild(_checkbox[i]);
+        for (HTMLInputElement element : _checkbox) {
+            _form.appendChild(element);
         }
 
         for (int i = 0; i < _checkbox.length; i++) {
@@ -175,10 +183,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
 
     @Test
     void testRadioButtons() throws Exception {
-        for (int i = 0; i < _radio1.length; i++)
-            _form.appendChild(_radio1[i]);
-        for (int i = 0; i < _radio2.length; i++)
-            _form.appendChild(_radio2[i]);
+        for (HTMLInputElement element : _radio1) {
+            _form.appendChild(element);
+        }
+        for (HTMLInputElement element : _radio2) {
+            _form.appendChild(element);
+        }
 
         verifyRadioButtons("radio 1 initial", _radio1, new boolean[] { false, true, false });
         verifyRadioButtons("radio 2 initial", _radio2, new boolean[] { false, false, false, true });
@@ -206,8 +216,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         HTMLElement[] elements = { _textField, _passwordField, _hiddenField, _textArea, _checkbox[0], _checkbox[1],
                 _resetInput, _submitInput };
         _form.appendChild(_htmlDocument.createElement("i")).appendChild(_htmlDocument.createTextNode("Some controls"));
-        for (int i = 0; i < elements.length; i++) {
-            HTMLElement element = elements[i];
+        for (HTMLElement element : elements) {
             _form.appendChild(element);
         }
         HTMLCollection collection = _form.getElements();
@@ -229,12 +238,10 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         HTMLElement[] elements = { _textField, _passwordField, _hiddenField, _textArea };
         HTMLElement[] improperElements = { _checkbox[0], _checkbox[1], _resetInput, _submitInput };
         _form.appendChild(_htmlDocument.createElement("i")).appendChild(_htmlDocument.createTextNode("Some controls"));
-        for (int i = 0; i < elements.length; i++) {
-            HTMLElement element = elements[i];
+        for (HTMLElement element : elements) {
             _form.appendChild(element);
         }
-        for (int i = 0; i < improperElements.length; i++) {
-            HTMLElement element = improperElements[i];
+        for (HTMLElement element : improperElements) {
             _body.appendChild(element);
         }
         Element form = _htmlDocument.createElement("form");

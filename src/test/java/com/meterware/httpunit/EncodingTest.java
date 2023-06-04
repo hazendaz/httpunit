@@ -43,7 +43,7 @@ class EncodingTest extends HttpUnitTest {
     @Test
     void testDecodeWithCharacterSetAsArg() throws Exception {
         String expected = "newpage\u30b5\u30f3\u30d7\u30eb"; // "\u30b5\u30f3\u30d7\u30eb" means "SAMPLE" in Japanese
-                                                             // EUC-JP characterSet
+        // EUC-JP characterSet
 
         String encodedString = "newpage%A5%B5%A5%F3%A5%D7%A5%EB";
         String actual = HttpUnitUtils.decode(encodedString, "EUC-JP");
@@ -144,6 +144,7 @@ class EncodingTest extends HttpUnitTest {
                 + "<input type=text name=name><input type=submit></form></body></html>");
         setResourceCharSet("HebrewForm.html", "iso-8859-8", true);
         defineResource("SayHello", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 try {
                     String name = getParameter("name")[0];
@@ -176,6 +177,7 @@ class EncodingTest extends HttpUnitTest {
     void testEncodedRequestWithoutForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
         defineResource("SayHello", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 try {
                     String name = getParameter("name")[0];

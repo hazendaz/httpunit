@@ -102,8 +102,9 @@ class WebXMLString {
         // result.append( " xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee
         // http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'>\n" );
 
-        if (_displayName != null)
+        if (_displayName != null) {
             result.append("  <display-name>").append(_displayName).append("</display-name>");
+        }
         for (Iterator i = _contextParams.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
             result.append("  <context-param>\n    <param-name>").append(entry.getKey());
@@ -122,8 +123,8 @@ class WebXMLString {
                     .append("</filter-name>\n");
             result.append("    ").append(_filterMappings.get(_filterNames.get(i))).append("\n  </filter-mapping>\n");
         }
-        for (int i = 0; i < _listeners.size(); i++) {
-            Class aClass = (Class) _listeners.get(i);
+        for (Object _listener : _listeners) {
+            Class aClass = (Class) _listener;
             result.append("  <listener><listener-class>").append(aClass.getName());
             result.append("</listener-class></listener>\n");
         }
@@ -151,18 +152,21 @@ class WebXMLString {
     }
 
     private void appendLoadOnStartup(StringBuilder result, Object startupOrder) {
-        if (startupOrder == null)
+        if (startupOrder == null) {
             return;
+        }
         result.append("    <load-on-startup");
-        if (startupOrder instanceof Number)
+        if (startupOrder instanceof Number) {
             result.append(">").append(startupOrder).append("</load-on-startup>\n");
-        else
+        } else {
             result.append("/>\n");
+        }
     }
 
     private void appendParams(StringBuilder result, String tagName, Hashtable params) {
-        if (params == null)
+        if (params == null) {
             return;
+        }
         for (Iterator it = params.entrySet().iterator(); it.hasNext();) {
             Map.Entry entry = (Map.Entry) it.next();
             result.append("    <").append(tagName).append(">\n      <param-name>").append(entry.getKey());

@@ -19,9 +19,26 @@
  */
 package com.meterware.httpunit.javascript;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.Button;
+import com.meterware.httpunit.DialogAdapter;
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.ScriptException;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebLink;
+import com.meterware.httpunit.WebResponse;
+import com.meterware.httpunit.WebWindow;
+import com.meterware.httpunit.WebWindowListener;
 
 import java.util.ArrayList;
 
@@ -116,7 +133,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      */
     @Test
     void testAvoidEndlessLoop() throws Exception {
-        WebConversation wc = doTestJavaScript("document.location='#node_selected';");
+        doTestJavaScript("document.location='#node_selected';");
     }
 
     /**
@@ -187,16 +204,16 @@ class ScriptingTest extends AbstractJavaScriptTest {
         AssertionError failure = null;
         // check 4 combinations of Exception and ScriptError status flags
         for (int i = 0; i < 4; i++) {
-            boolean throwScriptException = (i % 2) == 0; // true on case 0 and 2
-            boolean throwException = ((i / 2) % 2) == 0; // true on case 0 and 1
-            String testDescription = ("case " + i + " throwScriptException=" + throwScriptException + " throwException="
-                    + throwException);
+            boolean throwScriptException = i % 2 == 0; // true on case 0 and 2
+            boolean throwException = i / 2 % 2 == 0; // true on case 0 and 1
+            String testDescription = "case " + i + " throwScriptException=" + throwScriptException + " throwException="
+                    + throwException;
             HttpUnitOptions.setExceptionsThrownOnErrorStatus(throwException);
             HttpUnitOptions.setExceptionsThrownOnScriptError(throwScriptException);
             HttpUnitOptions.clearScriptErrorMessages();
             WebConversation wc = new WebConversation();
             try {
-                WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
+                wc.getResponse(getHostPath() + "/OnCommand.html");
                 // WebResponse response = wc.getResponse( getHostPath() + "/xyz.js" );
                 // assertEquals( 404, response.getResponseCode() );
                 if (throwScriptException) {
@@ -216,8 +233,9 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 failure = afe;
             }
         }
-        if (failure != null)
-            throw (failure);
+        if (failure != null) {
+            throw failure;
+        }
         // Restore exceptions state
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(originalState);
         HttpUnitOptions.setExceptionsThrownOnScriptError(originalScriptState);
@@ -330,6 +348,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
         WebConversation wc = new WebConversation();
         WebResponse wr = wc.getResponse(getHostPath() + "/OnCommand.html");
         wc.setDialogResponder(new DialogAdapter() {
+            @Override
             public boolean getConfirmation(String confirmationPrompt) {
                 assertEquals("go on?", confirmationPrompt, "Confirmation prompt");
                 return false;
@@ -354,6 +373,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals(wr, wc.getCurrentPage(), "Current page");
 
         wc.setDialogResponder(new DialogAdapter() {
+            @Override
             public String getUserResponse(String prompt, String defaultResponse) {
                 assertEquals("go on?", prompt, "Confirmation prompt");
                 assertEquals("no", defaultResponse, "Default response");
@@ -419,10 +439,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -453,10 +475,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -487,10 +511,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -513,10 +539,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -535,10 +563,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -563,10 +593,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         final ArrayList windowsOpened = new ArrayList();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 windowsOpened.add(window);
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
             }
         });
@@ -871,9 +903,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("calling onChange", firstAlert);
         String secondAlert = wc.popNextAlert();
         assertEquals("onChange has been called", secondAlert, "2nd");
-        String thirdAlert = wc.popNextAlert();
-        // TODO make this work
-        // assertEquals("3rd","onChange has been called",thirdAlert);
+        wc.popNextAlert();
     }
 
     /**
@@ -1011,11 +1041,11 @@ class ScriptingTest extends AbstractJavaScriptTest {
                          * "				form.action = 'Target.html';\n"+ "				form.submit(); \n"+
                          * "			} // if\n"+ "		} // if\n"+ "	} // for\n"+
                          */
-                        "} // verify_onBorrar\n" + "</script></head>\n" + "<body>\n"
-                        + "	<form id='someform' name='someform'>"
-                        + "		<input type='button' id='button1' class='button' value='say hi' onclick=\"alert('hi')\"/>"
-                        + "		<input type='button' id='delete' class='button' value='delete' onclick='verify_onBorrar(this.form)'/></form>\n"
-                        + "	</form>\n" + "</body></html>");
+                         "} // verify_onBorrar\n" + "</script></head>\n" + "<body>\n"
+                         + "	<form id='someform' name='someform'>"
+                         + "		<input type='button' id='button1' class='button' value='say hi' onclick=\"alert('hi')\"/>"
+                         + "		<input type='button' id='delete' class='button' value='delete' onclick='verify_onBorrar(this.form)'/></form>\n"
+                         + "	</form>\n" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/Popup.html");
         Button button1 = (Button) response.getElementWithID("button1");
@@ -1024,10 +1054,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("hi", alert1);
         Button button2 = (Button) response.getElementWithID("delete");
         button2.click();
-        String alert2 = wc.popNextAlert();
-        // TODO activate this check
-        // System.err.println("alert 2 is "+alert2);
-        // assertEquals("someform",alert2);
+        wc.popNextAlert();
     }
 
     /**
@@ -1046,7 +1073,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                         + "	var retValue = someFunction(); //Here some function is part of SomeScript.js\n" + "}\n"
                         + "</script></head><body onload='testFunction()'></body></html>");
         WebConversation wc = new WebConversation();
-        WebResponse response = wc.getResponse(getHostPath() + "/Script.html");
+        wc.getResponse(getHostPath() + "/Script.html");
         // com.meterware.httpunit.ScriptException: Event 'testFunction()' failed: org.mozilla.javascript.EcmaError:
         // ReferenceError: "someFunction" is not defined. (httpunit#1)
         String alert1 = wc.popNextAlert();
@@ -1075,7 +1102,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                         + "<script type='text/javascript'>fillSelect();</script>" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/testSelect.html");
-        final WebForm form = response.getFormWithName("the_form");
+        response.getFormWithName("the_form");
     }
 
     /**

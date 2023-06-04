@@ -73,5 +73,5 @@ class NekoHTMLParser implements HTMLParser {
         return true;
     }
 
-    final private static char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
+    private final static char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
 }

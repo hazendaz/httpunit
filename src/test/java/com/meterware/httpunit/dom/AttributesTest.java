@@ -19,14 +19,24 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -166,10 +176,12 @@ class AttributesTest {
             this(attrNode.getName(), attrNode.getValue());
         }
 
+        @Override
         public String toString() {
             return "NV Pair: {" + _name + "," + _value + "}";
         }
 
+        @Override
         public boolean equals(Object obj) {
             return getClass().equals(obj.getClass()) && equals((NVPair) obj);
         }
@@ -187,8 +199,7 @@ class AttributesTest {
             attributesMissing.add(new NVPair((Attr) attributes.item(i)));
         }
 
-        for (int i = 0; i < expectedAttributes.length; i++) {
-            NVPair expectedAttribute = expectedAttributes[i];
+        for (NVPair expectedAttribute : expectedAttributes) {
             assertTrue(attributesMissing.contains(expectedAttribute),
                     "Did not find attribute " + expectedAttribute + " in item sequence");
             assertEquals(expectedAttribute, new NVPair((Attr) attributes.getNamedItem(expectedAttribute.getName())),
@@ -208,8 +219,7 @@ class AttributesTest {
             attributesMissing.add(attributes.item(i));
         }
 
-        for (int i = 0; i < expectedAttributes.length; i++) {
-            Attr expectedAttribute = expectedAttributes[i];
+        for (Attr expectedAttribute : expectedAttributes) {
             assertTrue(attributesMissing.contains(expectedAttribute),
                     "Did not find attribute " + expectedAttribute + " in item sequence");
             assertSame(expectedAttribute, attributes.getNamedItem(expectedAttribute.getName()),

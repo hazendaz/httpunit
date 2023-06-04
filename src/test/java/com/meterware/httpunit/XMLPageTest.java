@@ -19,7 +19,10 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -99,17 +102,20 @@ public class XMLPageTest extends HttpUnitTest {
         NodeUtils.PreOrderTraversal pot = new NodeUtils.PreOrderTraversal(simplePage.getDOM());
         final StringBuilder sb = new StringBuilder();
         pot.perform(new NodeUtils.NodeAction() {
+            @Override
             public boolean processElement(NodeUtils.PreOrderTraversal traversal, Element element) {
                 if (element.getNodeName().toLowerCase().equals("main")) {
                     traversal.pushContext("x");
                 } else {
-                    for (Iterator i = traversal.getContexts(); i.hasNext();)
+                    for (Iterator i = traversal.getContexts(); i.hasNext();) {
                         sb.append(i.next());
+                    }
                     sb.append(element.getNodeName()).append("|");
                 }
                 return true;
             }
 
+            @Override
             public void processTextNode(NodeUtils.PreOrderTraversal traversal, Node textNode) {
             }
         });

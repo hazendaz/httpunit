@@ -153,9 +153,8 @@ class RequestDispatcherTest {
 
         final HttpServletRequest request = ic.getRequest();
         RequestDispatcherServlet servlet = (RequestDispatcherServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext()
-                .getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
-        String path = request.getPathInfo();
+        servlet.getServletContext().getRequestDispatcher("/" + innerServletName + "?param=revised&param2=new");
+        request.getPathInfo();
         String servletPath = request.getServletPath();
         // System.err.println("servletPath='"+servletPath+"'\npath='"+path+"'");
         assertEquals("/repository/Default repository", servletPath);
@@ -170,10 +169,9 @@ class RequestDispatcherTest {
     void testGetNamedDispatcher() throws Exception {
         InvocationContext ic = _runner.newClient()
                 .newInvocation("http://localhost/sample/" + this.errorPageServletName);
-        final HttpServletRequest request = ic.getRequest();
+        ic.getRequest();
         ErrorPageServlet servlet = (ErrorPageServlet) ic.getServlet();
-        RequestDispatcher rd = servlet.getServletContext().getNamedDispatcher("errorPage");
-        // !!! fixme assertTrue("the dispatcher returned by getNamedDispatcher should not be null",rd!=null);
+        servlet.getServletContext().getNamedDispatcher("errorPage");
     }
 
     @Test
@@ -216,6 +214,9 @@ class RequestDispatcherTest {
 
     static class RequestDispatcherServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
                 throws ServletException, IOException {
             RequestDispatcher dispatcher = getServletContext()
@@ -226,15 +227,19 @@ class RequestDispatcherTest {
 
     static class ErrorPageServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
     }
 
     static class IncludedServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
         static String DESIRED_REQUEST_URI = "localhost/subdir/pagename.jsp";
         static String DESIRED_SERVLET_PATH = "/subdir/pagename.jsp";
         static String DESIRED_QUERY_STRING = "param=value&param2=value";
         static String DESIRED_OUTPUT = DESIRED_REQUEST_URI + DESIRED_QUERY_STRING + DESIRED_SERVLET_PATH;
 
+        @Override
         public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
             response.setContentType("text/plain");
             String requestUri = (String) request.getAttribute(REQUEST_URI);

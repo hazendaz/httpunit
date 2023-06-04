@@ -19,7 +19,10 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.cookies.Cookie;
 import com.meterware.pseudoserver.PseudoServlet;
@@ -59,7 +62,6 @@ public class WebClientTest extends HttpUnitTest {
         try {
             wc.getResponse("http://no.such.host");
             fail("Should have rejected the request");
-        } catch (UnknownHostException e) {
         } catch (IOException e) {
             // if (!(e.getCause() instanceof UnknownHostException)) throw e;
         }
@@ -338,6 +340,7 @@ public class WebClientTest extends HttpUnitTest {
 
     class CookieEcho extends PseudoServlet {
 
+        @Override
         public WebResource getGetResponse() throws IOException {
             return new WebResource(getHeader("Cookie"));
         }
@@ -346,6 +349,7 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testHeaderFields() throws Exception {
         defineResource("getHeaders", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 StringBuilder sb = new StringBuilder();
                 sb.append(getHeader("Junky")).append("<-->").append(getHeader("User-Agent"));
@@ -363,6 +367,7 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource(getHeader("Authorization"), "text/plain");
             }
@@ -382,15 +387,15 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testOnDemandBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource webResource = new WebResource("unauthorized");
                     webResource.addHeader("WWW-Authenticate: Basic realm=\"testrealm\"");
                     return webResource;
-                } else {
-                    return new WebResource(header, "text/plain");
                 }
+                return new WebResource(header, "text/plain");
             }
         });
 
@@ -408,15 +413,15 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testOnDemandBasicAuthenticationInputStream() throws Exception {
         defineResource("postRequiringAuthentication", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource webResource = new WebResource("unauthorized");
                     webResource.addHeader("WWW-Authenticate: Basic realm=\"testrealm\"");
                     return webResource;
-                } else {
-                    return new WebResource(getBody(), "text/plain");
                 }
+                return new WebResource(getBody(), "text/plain");
             }
         });
 
@@ -443,15 +448,15 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testBasicAuthenticationRequestedForUnknownRealm() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource webResource = new WebResource("unauthorized");
                     webResource.addHeader("WWW-Authenticate: Basic realm=\"bogusrealm\"");
                     return webResource;
-                } else {
-                    return new WebResource(header, "text/plain");
                 }
+                return new WebResource(header, "text/plain");
             }
         });
 
@@ -474,15 +479,15 @@ public class WebClientTest extends HttpUnitTest {
     @Test
     void testAuthenticationNegotiateRequest() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
                 if (header == null) {
                     WebResource webResource = new WebResource("unauthorized");
                     webResource.addHeader("WWW-Authenticate: Negotiate");
                     return webResource;
-                } else {
-                    return new WebResource(header, "text/plain");
                 }
+                return new WebResource(header, "text/plain");
             }
         });
 
@@ -496,6 +501,7 @@ public class WebClientTest extends HttpUnitTest {
     @Disabled
     void testProxyServerAccessWithAuthentication() throws Exception {
         defineResource("http://someserver.com/sample", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource(getHeader("Proxy-Authorization"), "text/plain");
             }
@@ -515,30 +521,30 @@ public class WebClientTest extends HttpUnitTest {
      */
     public void testRfc2069DigestAuthentication(final boolean withOpaque) throws Exception {
         defineResource("/dir/index.html", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
-                if (header == null) {
-                    WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
-                    String headerStr = "WWW-Authenticate: Digest realm=\"testrealm@host.com\","
-                            + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";";
-                    if (withOpaque)
-                        headerStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
-                    resource.addHeader(headerStr);
-                    return resource;
-                } else {
+                if (header != null) {
                     return new WebResource(getHeader("Authorization"), "text/plain");
                 }
+                WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
+                String headerStr = "WWW-Authenticate: Digest realm=\"testrealm@host.com\","
+                        + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";";
+                if (withOpaque) {
+                    headerStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
+                }
+                resource.addHeader(headerStr);
+                return resource;
             }
         });
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm@host.com", "Mufasa", "CircleOfLife");
         WebResponse wr = wc.getResponse(getHostPath() + "/dir/index.html");
-        String expectedHeaderStr = "Digest username=\"Mufasa\"," + "       realm=\"testrealm@host.com\","
-                + "       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"," + "       uri=\"/dir/index.html\","
-                + "       response=\"1949323746fe6a43ef61f9606e7febea\"";
-        if (withOpaque)
-            expectedHeaderStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
-        HttpHeader expectedHeader = new HttpHeader(expectedHeaderStr);
+        StringBuilder expectedHeaderStr = new StringBuilder("Digest username=\"Mufasa\",").append("       realm=\"testrealm@host.com\",").append("       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",").append("       uri=\"/dir/index.html\",").append("       response=\"1949323746fe6a43ef61f9606e7febea\"");
+        if (withOpaque) {
+            expectedHeaderStr.append(", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
+        }
+        HttpHeader expectedHeader = new HttpHeader(expectedHeaderStr.toString());
         HttpHeader actualHeader = new HttpHeader(wr.getText());
         assertHeadersEquals(expectedHeader, actualHeader);
     }
@@ -571,6 +577,7 @@ public class WebClientTest extends HttpUnitTest {
     @Disabled
     void testQopDigestAuthenticationhttp_client() throws Exception {
         defineResource("/dir/index.html", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String header = getHeader("Authorization");
                 if (header == null) {
@@ -579,9 +586,8 @@ public class WebClientTest extends HttpUnitTest {
                             + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\","
                             + " opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
                     return resource;
-                } else {
-                    return new WebResource(getHeader("Authorization"), "text/plain");
                 }
+                return new WebResource(getHeader("Authorization"), "text/plain");
             }
         });
         String text = getPageContents(getHostPath() + "/dir/index.html", "testrealm@host.com", "Mufasa",
@@ -593,7 +599,7 @@ public class WebClientTest extends HttpUnitTest {
                 + "       cnonce=\"19530e1f777250e9d7ad02a93b187b9d\","
                 + "       response=\"943fad0655736f7a2342daef67186ce6\","
                 + "       opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
-        String cnonce = actualHeader.getProperty("cnonce");
+        actualHeader.getProperty("cnonce");
         assertHeadersEquals(expectedHeader, actualHeader);
     }
 
@@ -643,12 +649,15 @@ public class WebClientTest extends HttpUnitTest {
         private ArrayList _missingValues = new ArrayList();
         private ArrayList _extraValues = new ArrayList();
 
+        @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            if (!_missingValues.isEmpty())
+            if (!_missingValues.isEmpty()) {
                 sb.append("missing: ").append(_missingValues);
-            if (!_extraValues.isEmpty())
+            }
+            if (!_extraValues.isEmpty()) {
                 sb.append("extra: ").append(_extraValues);
+            }
             return sb.toString();
         }
 
@@ -689,6 +698,7 @@ public class WebClientTest extends HttpUnitTest {
         defineResource(formSource,
                 "<html><body><form action=\"" + resourceName + "\"><input type=submit></form></body></html>");
         defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String referer = getHeader("Referer");
                 return new WebResource(referer == null ? "null" : referer, "text/plain");
@@ -704,14 +714,16 @@ public class WebClientTest extends HttpUnitTest {
         response = wc.getResponse(page1);
         response = wc.getResponse(response.getLinks()[0].getRequest());
         String expected = page1;
-        if (!refererEnabled)
+        if (!refererEnabled) {
             expected = "null";
+        }
         assertEquals(expected, response.getText().trim(), "Link Referer header");
         response = wc.getResponse(page2);
         response = wc.getResponse(response.getForms()[0].getRequest());
         expected = page2;
-        if (!refererEnabled)
+        if (!refererEnabled) {
             expected = "null";
+        }
         assertEquals(expected, response.getText().trim(), "Form Referer header");
     }
 
@@ -742,6 +754,7 @@ public class WebClientTest extends HttpUnitTest {
         addResourceHeader(linkTarget, "Location: " + getHostPath() + '/' + resourceName);
 
         defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 String referer = getHeader("Referer");
                 return new WebResource(referer == null ? "null" : referer, "text/plain");
@@ -997,7 +1010,7 @@ public class WebClientTest extends HttpUnitTest {
         String url = "http://sourceforge.net/project/showfiles.php?group_id=6550";
         WebConversation conversation = new WebConversation();
         WebRequest request = new GetMethodWebRequest(url);
-        WebResponse response = conversation.getResponse(request);
+        conversation.getResponse(request);
     }
 
     private class CompressedPseudoServlet extends PseudoServlet {
@@ -1014,22 +1027,24 @@ public class WebClientTest extends HttpUnitTest {
             _suppressLengthHeader = suppressLengthHeader;
         }
 
+        @Override
         public WebResource getGetResponse() throws IOException {
             if (!userAcceptsGZIP()) {
                 return new WebResource(_responseText.getBytes(StandardCharsets.UTF_8), "text/plain");
-            } else {
-                WebResource result = new WebResource(getCompressedContents(), "text/plain");
-                if (_suppressLengthHeader)
-                    result.suppressAutomaticLengthHeader();
-                result.addHeader("Content-Encoding: gzip");
-                return result;
             }
+            WebResource result = new WebResource(getCompressedContents(), "text/plain");
+            if (_suppressLengthHeader) {
+                result.suppressAutomaticLengthHeader();
+            }
+            result.addHeader("Content-Encoding: gzip");
+            return result;
         }
 
         private boolean userAcceptsGZIP() {
             String header = getHeader("Accept-Encoding");
-            if (header == null)
+            if (header == null) {
                 return false;
+            }
             return header.toLowerCase().indexOf("gzip") >= 0;
         }
 
@@ -1100,10 +1115,12 @@ public class WebClientTest extends HttpUnitTest {
             _messageLog = messageLog;
         }
 
+        @Override
         public void requestSent(WebClient src, WebRequest req) {
             _messageLog.add(req);
         }
 
+        @Override
         public void responseReceived(WebClient src, WebResponse resp) {
             _messageLog.add(resp);
         }
@@ -1168,13 +1185,10 @@ public class WebClientTest extends HttpUnitTest {
     @Disabled
     void testDNSOverride() throws Exception {
         WebConversation wc = new WebConversation();
-        wc.getClientProperties().setDnsListener(new DNSListener() {
-            public String getIpAddress(String hostName) {
-                return "127.0.0.1";
-            }
-        });
+        wc.getClientProperties().setDnsListener(hostName -> "127.0.0.1");
 
         defineResource("whereAmI", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 WebResource webResource = new WebResource("found host header: " + getHeader("Host"));
                 webResource.addHeader("Set-Cookie: type=short");
@@ -1183,6 +1197,7 @@ public class WebClientTest extends HttpUnitTest {
         });
 
         defineResource("checkCookies", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource("found cookies: " + getHeader("Cookie"));
             }
@@ -1208,6 +1223,7 @@ public class WebClientTest extends HttpUnitTest {
         final String contentType = "text/plain";
 
         defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getDeleteResponse() {
                 return new WebResource(responseBody, contentType);
             }

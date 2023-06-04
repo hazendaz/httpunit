@@ -25,6 +25,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingEngineFactory;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -401,14 +402,14 @@ public abstract class HttpUnitOptions {
         if (_scriptingEngine == null) {
             try {
                 Class factoryClass = Class.forName(_scriptEngineClassName);
-                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.newInstance();
+                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor().newInstance();
                 _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;
                 _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);
             } catch (ClassNotFoundException e) {
                 disableScripting(e, "Unable to find scripting engine factory class ");
             } catch (InstantiationException e) {
                 disableScripting(e, "Unable to instantiate scripting engine factory class ");
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 disableScripting(e, "Unable to create scripting engine factory class ");
             }
         }

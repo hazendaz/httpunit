@@ -20,10 +20,15 @@
 package com.meterware.pseudoserver;
 
 import static java.lang.String.valueOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -44,10 +49,6 @@ class PseudoServerTest {
     @AfterEach
     void tearDownHttpUserAgentTest() throws Exception {
         support.tearDownServer();
-    }
-
-    private String getHostPath() {
-        return support.getHostPath();
     }
 
     private int getHostPort() throws IOException {
@@ -86,8 +87,9 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read()))
+        while (-1 != (b = is.read())) {
             sb.append((char) b);
+        }
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
@@ -107,8 +109,9 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read()))
+        while (-1 != (b = is.read())) {
             sb.append((char) b);
+        }
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("400") > 0, "Did not find expected error message");
@@ -130,8 +133,9 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read()))
+        while (-1 != (b = is.read())) {
             sb.append((char) b);
+        }
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
@@ -160,8 +164,9 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read()))
+        while (-1 != (b = is.read())) {
             sb.append((char) b);
+        }
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.1"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
@@ -185,8 +190,9 @@ class PseudoServerTest {
 
         StringBuilder sb = new StringBuilder();
         int b;
-        while (-1 != (b = is.read()))
+        while (-1 != (b = is.read())) {
             sb.append((char) b);
+        }
         String result = sb.toString();
         assertTrue(result.startsWith("HTTP/1.0"), "Did not find matching protocol");
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
@@ -200,6 +206,7 @@ class PseudoServerTest {
         String expectedResponse = prefix + name;
 
         support.defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource(prefix + getParameter("name")[0], "text/plain");
             }
@@ -219,6 +226,7 @@ class PseudoServerTest {
         String expectedResponse = prefix + name;
 
         support.defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource(prefix + getParameter("name")[0], "text/plain");
             }
@@ -239,6 +247,7 @@ class PseudoServerTest {
         String expectedResponse = prefix + name;
 
         support.defineResource(resourceName, new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource(prefix + getParameter("name")[0], "text/plain");
             }
@@ -259,6 +268,7 @@ class PseudoServerTest {
     @Test
     void testDisableContentTypeHeader() throws Exception {
         support.defineResource("simple", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 WebResource resource = new WebResource("a string");
                 resource.suppressAutomaticContentTypeHeader();
@@ -276,6 +286,7 @@ class PseudoServerTest {
     @Test
     void testChunkedRequest() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), "text/plain");
             }
@@ -295,6 +306,7 @@ class PseudoServerTest {
     @Test
     void testChunkedRequestFollowedByAnother() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), "text/plain");
             }
@@ -322,6 +334,7 @@ class PseudoServerTest {
     @Test
     void testChunkedResponse() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 WebResource webResource = new WebResource("5\r\nSent \r\n3\r\nin \r\n07\r\nchunks.\r\n0\r\n\r\n",
                         "text/plain");
@@ -355,10 +368,12 @@ class PseudoServerTest {
 
         private static final String GET_DATA = "This is from the TestMethodServlet - GET";
 
+        @Override
         public WebResource getResponse(String method) throws IOException {
             if (method.equals("GET")) {
                 return new WebResource(GET_DATA);
-            } else if (method.equals("HEAD")) {
+            }
+            if (method.equals("HEAD")) {
                 WebResource headResource = new WebResource("");
                 headResource.addHeader("test-header1:test-value1");
                 return headResource;
@@ -397,6 +412,7 @@ class PseudoServerTest {
     @Test
     void testPseudoServletRequestAccess() throws Exception {
         support.defineResource("/properties", new PseudoServlet() {
+            @Override
             public WebResource getGetResponse() {
                 return new WebResource(super.getRequest().getURI(), "text/plain");
             }
@@ -410,6 +426,7 @@ class PseudoServerTest {
     @Test
     void testLargeDelayedPseudoServletRequest() throws Exception {
         support.defineResource("/largeRequest", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() {
                 return new WebResource(super.getBody(), super.getHeader("CONTENT-TYPE"));
             }
@@ -420,9 +437,7 @@ class PseudoServerTest {
         sock.setTcpNoDelay(true);
         sock.setSoTimeout(5000);
 
-        byte[] requestData = null;
-        requestData = generateLongMIMEPostData().getBytes(StandardCharsets.UTF_8);
-
+        byte[] requestData = generateLongMIMEPostData().getBytes(StandardCharsets.UTF_8);
         String requestLine = "POST /largeRequest HTTP/1.1\r\n";
         String hostHeader = "localhost:" + valueOf(getHostPort()) + "\r\n";
         String clHeader = "Content-Length: " + valueOf(requestData.length) + "\r\n";
@@ -452,14 +467,14 @@ class PseudoServerTest {
         Thread.sleep(500);
 
         // Write the remaining request data
-        out.write(requestData, 200, (requestData.length - 200));
+        out.write(requestData, 200, requestData.length - 200);
         out.flush();
 
         // Read the response
         BufferedInputStream in = new BufferedInputStream(sock.getInputStream());
         int count = 0;
-        while ((in.read() != -1) && ++count < requestData.length) {
-            ;
+        while (in.read() != -1 && ++count < requestData.length) {
+
         }
 
         // Close the connection

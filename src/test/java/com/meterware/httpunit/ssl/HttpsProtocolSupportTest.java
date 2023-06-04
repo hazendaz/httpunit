@@ -47,8 +47,9 @@ class HttpsProtocolSupportTest {
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.SunJSSE_PROVIDER_CLASS;
         Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
-        if (sslProviders.length > 0)
+        if (sslProviders.length > 0) {
             expected = sslProviders[0].getClass().getName();
+        }
         assertEquals(expected, provider.getName(), "provider");
     }
 
@@ -61,8 +62,9 @@ class HttpsProtocolSupportTest {
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.IBMJSSE_PROVIDER_CLASS;
         Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
-        if (sslProviders.length > 0)
+        if (sslProviders.length > 0) {
             expected = sslProviders[0].getClass().getName();
+        }
         assertEquals(expected, provider.getName(), "provider");
     }
 

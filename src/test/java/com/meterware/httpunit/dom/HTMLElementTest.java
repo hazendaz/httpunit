@@ -19,14 +19,37 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.w3c.dom.html.*;
+import org.w3c.dom.html.HTMLAnchorElement;
+import org.w3c.dom.html.HTMLAppletElement;
+import org.w3c.dom.html.HTMLAreaElement;
+import org.w3c.dom.html.HTMLBaseElement;
+import org.w3c.dom.html.HTMLBodyElement;
+import org.w3c.dom.html.HTMLButtonElement;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLHeadElement;
+import org.w3c.dom.html.HTMLHtmlElement;
+import org.w3c.dom.html.HTMLIFrameElement;
+import org.w3c.dom.html.HTMLImageElement;
+import org.w3c.dom.html.HTMLInputElement;
+import org.w3c.dom.html.HTMLLinkElement;
+import org.w3c.dom.html.HTMLMetaElement;
+import org.w3c.dom.html.HTMLOptionElement;
+import org.w3c.dom.html.HTMLParagraphElement;
+import org.w3c.dom.html.HTMLSelectElement;
+import org.w3c.dom.html.HTMLStyleElement;
+import org.w3c.dom.html.HTMLTextAreaElement;
+import org.w3c.dom.html.HTMLTitleElement;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -314,15 +337,15 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     @Test
     void testAppletElement() throws Exception {
         doElementTest("applet", HTMLAppletElement.class, new Object[][] { { "align", "center" }, /*
-                                                                                                  * { "alt", "an applet"
-                                                                                                  * }, { "archive",
-                                                                                                  * "my.jar" },
-                                                                                                  */
-                { "code", "here.There" },
-                { "codebase", "there", "." }, /*
-                                               * { "height", "17" }, { "hspace", "2" }, { "name", "applet" }, {
-                                               * "object", "a file here" }, { "vspace", "3" }, { "width", "80"}
-                                               */ });
+         * { "alt", "an applet"
+         * }, { "archive",
+         * "my.jar" },
+         */
+            { "code", "here.There" },
+            { "codebase", "there", "." }, /*
+             * { "height", "17" }, { "hspace", "2" }, { "name", "applet" }, {
+             * "object", "a file here" }, { "vspace", "3" }, { "width", "80"}
+             */ });
     }
 
     // XXX form.getLength, form.submit

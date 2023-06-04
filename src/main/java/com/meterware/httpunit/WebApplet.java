@@ -23,6 +23,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.applet.Applet;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -150,10 +151,10 @@ public class WebApplet extends HTMLElementBase {
     }
 
     public Applet getApplet()
-            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         if (_applet == null) {
             ClassLoader cl = new URLClassLoader(getClassPath(), null);
-            Object o = cl.loadClass(getMainClassName()).newInstance();
+            Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();
             if (!(o instanceof Applet))
                 throw new RuntimeException(getMainClassName() + " is not an Applet");
             _applet = (Applet) o;

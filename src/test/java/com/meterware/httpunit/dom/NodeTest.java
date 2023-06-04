@@ -19,14 +19,25 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.*;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -387,11 +398,7 @@ class NodeTest {
      */
     @Test
     void testPreOrderIteratorWithMask() throws Exception {
-        Iterator each = ((NodeImpl) _element).preOrderIterator(new NodeImpl.IteratorMask() {
-            public boolean skipSubtree(Node subtreeRoot) {
-                return subtreeRoot == _foo1;
-            }
-        });
+        Iterator each = ((NodeImpl) _element).preOrderIterator(subtreeRoot -> subtreeRoot == _foo1);
         Node[] expectedNodes = { _element, _bar2 };
         for (int i = 0; i < expectedNodes.length; i++) {
             assertTrue(each.hasNext(), "Iterator prematurely terminated after " + i + " nodes");

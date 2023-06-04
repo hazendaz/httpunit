@@ -19,7 +19,11 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,7 +100,7 @@ class WebWindowTest extends HttpUnitTest {
         initialPage.getSubframeContents("here").getLinkWith("start").click();
         assertEquals(2, wc.getOpenWindows().length, "# Open windows");
         WebWindow other = wc.getOpenWindows()[1];
-        WebResponse result = other.getCurrentPage().getLinkWithID("go").click();
+        other.getCurrentPage().getLinkWithID("go").click();
         assertEquals("You made it!", initialPage.getSubframeContents("somewhere").getText(), "New frame contents");
     }
 
@@ -119,6 +123,7 @@ class WebWindowTest extends HttpUnitTest {
         final ArrayList closedWindows = new ArrayList();
         WebClient wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
+            @Override
             public void windowOpened(WebClient client, WebWindow window) {
                 try {
                     newWindowContents.add(window.getCurrentPage().getText());
@@ -127,6 +132,7 @@ class WebWindowTest extends HttpUnitTest {
                 }
             }
 
+            @Override
             public void windowClosed(WebClient client, WebWindow window) {
                 closedWindows.add(window);
             }

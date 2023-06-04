@@ -24,7 +24,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Enumeration;
+import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 
@@ -43,8 +43,6 @@ import org.xml.sax.SAXNotSupportedException;
  * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
  **/
 class NekoDOMParser extends DOMParser implements ScriptHandler {
-
-    // private static final String HTML_DOCUMENT_CLASS_NAME = "org.apache.html.dom.HTMLDocumentImpl";
 
     /** Error reporting feature identifier. */
     private static final String REPORT_ERRORS = "http://cyberneko.org/html/features/report-errors";
@@ -109,11 +107,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
                 domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
-        } catch (SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
             throw new RuntimeException(e.toString());
-        } catch (SAXNotSupportedException e) {
-            throw new RuntimeException(e.toString());
-        }
+        } 
 
     }
 
@@ -156,6 +152,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     }
 
     static class ScriptException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
         private IOException _cause;
 
         public ScriptException(IOException cause) {
@@ -182,17 +179,17 @@ class ErrorHandler implements XMLErrorHandler {
                     + warningException.getColumnNumber() + ": " + warningException.getMessage());
         }
 
-        Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
-        while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).warning(_url, warningException.getMessage(),
+        List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
+        for (HTMLParserListener listener : listeners) {
+            listener.warning(_url, warningException.getMessage(),
                     warningException.getLineNumber(), warningException.getColumnNumber());
         }
     }
 
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
-        Enumeration listeners = HTMLParserFactory.getHTMLParserListeners().elements();
-        while (listeners.hasMoreElements()) {
-            ((HTMLParserListener) listeners.nextElement()).error(_url, errorException.getMessage(),
+        List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
+        for (HTMLParserListener listener : listeners) {
+            listener.error(_url, errorException.getMessage(),
                     errorException.getLineNumber(), errorException.getColumnNumber());
         }
     }

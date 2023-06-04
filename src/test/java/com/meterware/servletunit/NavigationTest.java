@@ -115,6 +115,9 @@ class NavigationTest {
 
     static class OriginServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             resp.sendRedirect("http://localhost/target");
@@ -124,6 +127,9 @@ class NavigationTest {
 
     static class FowarderServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             getServletContext().getRequestDispatcher("/target").forward(req, resp);
         }
@@ -132,6 +138,9 @@ class NavigationTest {
 
     static class FowarderServlet2 extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             req.getRequestDispatcher("/target").forward(req, resp);
         }
@@ -140,6 +149,9 @@ class NavigationTest {
 
     static class FowarderServlet3 extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             req.getRequestDispatcher("target").forward(req, resp);
         }
@@ -147,8 +159,10 @@ class NavigationTest {
     }
 
     static class IncluderServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static final String PREFIX = "expecting: ";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.getWriter().print(PREFIX);
             getServletContext().getRequestDispatcher("/target?color=blue").include(req, resp);
@@ -156,6 +170,9 @@ class NavigationTest {
     }
 
     static class TargetServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();

@@ -19,7 +19,10 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,12 +71,12 @@ public class WebImageTest extends HttpUnitTest {
         for (int testIndex = 0; testIndex < testCounts.length; testIndex++) {
             int MANY_IMAGES_COUNT = testCounts[testIndex];
             // System.out.println(""+(testIndex+1)+". test many images with "+MANY_IMAGES_COUNT+" image links");
-            String html = "<html><head><title>A page with many images</title></head>\n" + "<body>\n";
+            StringBuilder html = new StringBuilder("<html><head><title>A page with many images</title></head>\n").append("<body>\n");
             for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
-                html += "<img src='image" + i + ".gif' alt='image#" + i + "'>\n";
+                html.append("<img src='image").append(i).append(".gif' alt='image#").append(i).append("'>\n");
             }
-            html += "</body></html>\n";
-            defineResource("manyImages" + testIndex + ".html", html);
+            html.append("</body></html>\n");
+            defineResource("manyImages" + testIndex + ".html", html.toString());
             WebConversation wc = new WebConversation();
             WebRequest request = new GetMethodWebRequest(getHostPath() + "/manyImages" + testIndex + ".html");
             WebResponse manyImagesPage = wc.getResponse(request);
@@ -95,20 +98,16 @@ public class WebImageTest extends HttpUnitTest {
         boolean withDebug = true;
         int i = 1;
         for (; i <= MAX_GIFTESTCOUNT; i++) {
-            if (withDebug) {
-                if (i % 500 == 0) {
-                    System.out.print(delim + i);
-                    delim = ", ";
-                    System.out.flush();
-                    if (i % 10000 == 0) {
-                        System.out.println();
-                    }
+            if (withDebug && (i % 500 == 0)) {
+                System.out.print(delim + i);
+                delim = ", ";
+                System.out.flush();
+                if (i % 10000 == 0) {
+                    System.out.println();
                 }
             }
             try {
-                WebResponse resp = wc.getResponse(url);
-                // Enable line below to not get too many open files / sockets
-                // resp.getInputStream().close();
+                wc.getResponse(url);
             } catch (java.net.BindException jnbe) {
                 String msg = "There should be no exception for " + url + " but there is as BindException '"
                         + jnbe.getMessage() + "' after " + i + " gif image accesses";

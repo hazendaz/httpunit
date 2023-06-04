@@ -19,7 +19,13 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
@@ -597,6 +603,7 @@ class FormSubmitTest extends HttpUnitTest {
                         + "  <input type='submit' name='apply' value='Apply'>" + "</form>");
         setResourceCharSet("abc/form.html", "iso-8859-3", true);
         defineResource("doit", new PseudoServlet() {
+            @Override
             public WebResource getPostResponse() throws IOException {
                 return new WebResource(new String(getBody()));
             }
@@ -639,16 +646,14 @@ class FormSubmitTest extends HttpUnitTest {
                 + "<input type=\"checkbox\" id=\"checkEnabled\"  name=checkEnabled checked>Enabled" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         String[] ids = { "checkDisabled", "checkEnabled" };
-        for (int i = 0; i < ids.length; i++) {
-            String id = ids[i];
+        for (String id : ids) {
             Object o = page.getElementWithID(id);
-            if (o instanceof FormControl) {
-                FormControl box = (FormControl) o;
-                boolean result = !box.isDisabled();
-            } else {
+            if (!(o instanceof FormControl)) {
                 throw new Exception("element with id " + id + "has invalid type " + o.getClass().getName()
                         + " expected was FormControl");
             }
+            FormControl box = (FormControl) o;
+            box.isDisabled();
         } // for
     }
 

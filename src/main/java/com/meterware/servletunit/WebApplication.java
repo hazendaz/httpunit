@@ -25,6 +25,7 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
@@ -46,7 +47,7 @@ import org.xml.sax.SAXException;
  **/
 class WebApplication implements SessionListenerDispatcher {
 
-    private final static SecurityConstraint NULL_SECURITY_CONSTRAINT = new NullSecurityConstraint();
+    private static final SecurityConstraint NULL_SECURITY_CONSTRAINT = new NullSecurityConstraint();
 
     private final ServletConfiguration SECURITY_CHECK_CONFIGURATION = new ServletConfiguration(
             SecurityCheckServlet.class.getName());
@@ -68,15 +69,15 @@ class WebApplication implements SessionListenerDispatcher {
     /** A mapping of servlet names to filter configurations. **/
     private Hashtable _filterMapping = new Hashtable();
 
-    private ArrayList _securityConstraints = new ArrayList();
+    private List<SecurityConstraint> _securityConstraints = new ArrayList<>();
 
-    private ArrayList _contextListeners = new ArrayList();
+    private List<ServletContextListener> _contextListeners = new ArrayList<>();
 
-    private ArrayList _contextAttributeListeners = new ArrayList();
+    private List<ServletContextAttributeListener> _contextAttributeListeners = new ArrayList<>();
 
-    private ArrayList _sessionListeners = new ArrayList();
+    private List<HttpSessionListener> _sessionListeners = new ArrayList<>();
 
-    private ArrayList _sessionAttributeListeners = new ArrayList();
+    private List<HttpSessionAttributeListener> _sessionAttributeListeners = new ArrayList<>();
 
     private boolean _useBasicAuthentication;
 
@@ -146,16 +147,16 @@ class WebApplication implements SessionListenerDispatcher {
         for (int i = 0; i < nl.getLength(); i++) {
             String listenerName = XMLUtils.getChildNodeValue((Element) nl.item(i), "listener-class").trim();
             try {
-                Object listener = Class.forName(listenerName).newInstance();
+                Object listener = Class.forName(listenerName).getDeclaredConstructor().newInstance();
 
                 if (listener instanceof ServletContextListener)
-                    _contextListeners.add(listener);
+                    _contextListeners.add((ServletContextListener) listener);
                 if (listener instanceof ServletContextAttributeListener)
-                    _contextAttributeListeners.add(listener);
+                    _contextAttributeListeners.add((ServletContextAttributeListener) listener);
                 if (listener instanceof HttpSessionListener)
-                    _sessionListeners.add(listener);
+                    _sessionListeners.add((HttpSessionListener) listener);
                 if (listener instanceof HttpSessionAttributeListener)
-                    _sessionAttributeListeners.add(listener);
+                    _sessionAttributeListeners.add((HttpSessionAttributeListener) listener);
             } catch (Throwable e) {
                 throw new RuntimeException("Unable to load context listener " + listenerName + ": " + e.toString());
             }
@@ -321,8 +322,7 @@ class WebApplication implements SessionListenerDispatcher {
     }
 
     private SecurityConstraint getControllingConstraint(String urlPath) {
-        for (Iterator i = _securityConstraints.iterator(); i.hasNext();) {
-            SecurityConstraint sc = (SecurityConstraint) i.next();
+        for (SecurityConstraint sc : _securityConstraints) {
             if (sc.controlsPath(urlPath))
                 return sc;
         }
@@ -345,47 +345,47 @@ class WebApplication implements SessionListenerDispatcher {
     // ---------------------------------------- SessionListenerDispatcher methods
     // -------------------------------------------
 
+    @Override
     public void sendSessionCreated(HttpSession session) {
         HttpSessionEvent event = new HttpSessionEvent(session);
 
-        for (Iterator i = _sessionListeners.iterator(); i.hasNext();) {
-            HttpSessionListener listener = (HttpSessionListener) i.next();
+        for (HttpSessionListener listener : _sessionListeners) {
             listener.sessionCreated(event);
         }
     }
 
+    @Override
     public void sendSessionDestroyed(HttpSession session) {
         HttpSessionEvent event = new HttpSessionEvent(session);
 
-        for (Iterator i = _sessionListeners.iterator(); i.hasNext();) {
-            HttpSessionListener listener = (HttpSessionListener) i.next();
+        for (HttpSessionListener listener : _sessionListeners) {
             listener.sessionDestroyed(event);
         }
     }
 
+    @Override
     public void sendAttributeAdded(HttpSession session, String name, Object value) {
         HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, value);
 
-        for (Iterator i = _sessionAttributeListeners.iterator(); i.hasNext();) {
-            HttpSessionAttributeListener listener = (HttpSessionAttributeListener) i.next();
+        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {
             listener.attributeAdded(event);
         }
     }
 
+    @Override
     public void sendAttributeReplaced(HttpSession session, String name, Object oldValue) {
         HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);
 
-        for (Iterator i = _sessionAttributeListeners.iterator(); i.hasNext();) {
-            HttpSessionAttributeListener listener = (HttpSessionAttributeListener) i.next();
+        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {
             listener.attributeReplaced(event);
         }
     }
 
+    @Override
     public void sendAttributeRemoved(HttpSession session, String name, Object oldValue) {
         HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);
 
-        for (Iterator i = _sessionAttributeListeners.iterator(); i.hasNext();) {
-            HttpSessionAttributeListener listener = (HttpSessionAttributeListener) i.next();
+        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {
             listener.attributeRemoved(event);
         }
     }
@@ -499,6 +499,8 @@ class WebApplication implements SessionListenerDispatcher {
 
     static class SecurityCheckServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             handleLogin(req, resp);
         }
@@ -523,8 +525,8 @@ class WebApplication implements SessionListenerDispatcher {
     // ============================================= ServletConfiguration class
     // =============================================
 
-    final static int DONT_AUTOLOAD = Integer.MIN_VALUE;
-    final static int ANY_LOAD_ORDER = Integer.MAX_VALUE;
+    static final int DONT_AUTOLOAD = Integer.MIN_VALUE;
+    static final int ANY_LOAD_ORDER = Integer.MAX_VALUE;
 
     class ServletConfiguration extends WebResourceConfiguration {
 
@@ -560,10 +562,10 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         synchronized Servlet getServlet()
-                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException {
+                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
             if (_servlet == null) {
                 Class servletClass = Class.forName(getClassName());
-                _servlet = (Servlet) servletClass.newInstance();
+                _servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();
                 String servletName = _servletName != null ? _servletName : _servlet.getClass().getName();
                 _servlet.init(new ServletUnitServletConfig(servletName, WebApplication.this, getInitParams()));
             }
@@ -610,7 +612,7 @@ class WebApplication implements SessionListenerDispatcher {
             try {
                 if (_filter == null) {
                     Class filterClass = Class.forName(getClassName());
-                    _filter = (Filter) filterClass.newInstance();
+                    _filter = (Filter) filterClass.getDeclaredConstructor().newInstance();
                     _filter.init(new FilterConfigImpl(_name, getServletContext(), getInitParams()));
                 }
 
@@ -619,7 +621,7 @@ class WebApplication implements SessionListenerDispatcher {
                 throw new ServletException("Did not find filter class: " + getClassName());
             } catch (IllegalAccessException e) {
                 throw new ServletException("Filter class " + getClassName() + " lacks a public no-arg constructor");
-            } catch (InstantiationException e) {
+            } catch (InstantiationException | IllegalArgumentException|InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new ServletException("Filter class " + getClassName() + " could not be instantiated.");
             } catch (ClassCastException e) {
                 throw new ServletException(
@@ -684,12 +686,11 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         private String[] _roles;
-        private ArrayList _roleList = new ArrayList();
-        private ArrayList _resources = new ArrayList();
+        private List<String> _roleList = new ArrayList<>();
+        private List<WebResourceCollection> _resources = new ArrayList<>();
 
         public WebResourceCollection getMatchingCollection(String urlPath) {
-            for (Iterator i = _resources.iterator(); i.hasNext();) {
-                WebResourceCollection wrc = (WebResourceCollection) i.next();
+            for (WebResourceCollection wrc : _resources) {
                 if (wrc.controlsPath(urlPath))
                     return wrc;
             }
@@ -705,15 +706,14 @@ class WebApplication implements SessionListenerDispatcher {
             }
 
             boolean controlsPath(String urlPath) {
-                for (Iterator i = _urlPatterns.iterator(); i.hasNext();) {
-                    String pattern = (String) i.next();
+                for (String pattern : _urlPatterns) {
                     if (patternMatches(pattern, urlPath))
                         return true;
                 }
                 return false;
             }
 
-            private ArrayList _urlPatterns = new ArrayList();
+            private List<String> _urlPatterns = new ArrayList<>();
         }
     }
 
@@ -752,11 +752,7 @@ class WebApplication implements SessionListenerDispatcher {
                 return getConfiguration().getServlet();
             } catch (ClassNotFoundException e) {
                 throw new HttpNotFoundException(_url, e);
-            } catch (IllegalAccessException e) {
-                throw new HttpInternalErrorException(_url, e);
-            } catch (InstantiationException e) {
-                throw new HttpInternalErrorException(_url, e);
-            } catch (ClassCastException e) {
+            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new HttpInternalErrorException(_url, e);
             }
         }
@@ -781,24 +777,22 @@ class WebApplication implements SessionListenerDispatcher {
             if (getConfiguration() == null)
                 return NO_FILTERS;
 
-            List filters = new ArrayList();
+            List<FilterMetaData> filters = new ArrayList<>();
             addFiltersForPath(filters, _fullServletPath);
             addFiltersForServletWithName(filters, getConfiguration().getServletName());
 
             return (FilterMetaData[]) filters.toArray(new FilterMetaData[filters.size()]);
         }
 
-        private void addFiltersForPath(List filters, String fullServletPath) {
+        private void addFiltersForPath(List<FilterMetaData>filters, String fullServletPath) {
             FilterMetaData[] matches = _filtersPerUrl.getMatchingFilters(fullServletPath);
-            for (int i = 0; i < matches.length; i++) {
-                filters.add(matches[i]);
-            }
+            Collections.addAll(filters, matches);
         }
 
-        private void addFiltersForServletWithName(List filters, String servletName) {
+        private void addFiltersForServletWithName(List<FilterMetaData> filters, String servletName) {
             if (servletName == null)
                 return;
-            List matches = (List) _filtersPerName.get(servletName);
+            List<FilterMetaData> matches = (List<FilterMetaData>) _filtersPerName.get(servletName);
             if (matches != null)
                 filters.addAll(matches);
         }

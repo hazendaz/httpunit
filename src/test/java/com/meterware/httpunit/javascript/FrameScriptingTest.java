@@ -21,7 +21,10 @@ package com.meterware.httpunit.javascript;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.HttpUnitTest;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebLink;
+import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,8 +57,8 @@ class FrameScriptingTest extends HttpUnitTest {
         buff.append("  window.parent.red.document.open(\"text/html\")\n");
         buff.append("  with (window.parent.red.document) {\n");
         final String[] lines = getMenuHtmlLines(getHostPath() + "/Menu/Page/Main.html", "Target.html");
-        for (int i = 0; i < lines.length; i++) {
-            buff.append("    write('").append(lines[i]).append("\\n").append("');\n");
+        for (String line : lines) {
+            buff.append("    write('").append(line).append("\\n").append("');\n");
         }
         buff.append("    close();\n");
         buff.append("  }\n");
@@ -80,7 +83,7 @@ class FrameScriptingTest extends HttpUnitTest {
         return new String[] { "<html><head><title>Menu</title>",
                 "<base href=\"" + baseUrlString + "\" target=\"blue\"></base>", "</head>", "<body>",
                 "This is the menu.<br>", "Link to <a href=\"" + linkUrlString + "\">target page</a>.",
-                "</body></html>" };
+        "</body></html>" };
     }
 
     /**
@@ -96,8 +99,7 @@ class FrameScriptingTest extends HttpUnitTest {
     private String getMenuHtml(final String baseUrlString, final String linkUrlString) {
         final String[] menuLines = getMenuHtmlLines(baseUrlString, linkUrlString);
         StringBuilder pageBuffer = new StringBuilder();
-        for (int i = 0; i < menuLines.length; i++) {
-            String line = menuLines[i];
+        for (String line : menuLines) {
             pageBuffer.append(line).append("\n");
         }
         return pageBuffer.toString();

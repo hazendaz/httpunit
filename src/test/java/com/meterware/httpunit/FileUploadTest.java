@@ -19,13 +19,23 @@
  */
 package com.meterware.httpunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.protocol.UploadFileSpec;
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
@@ -383,18 +393,22 @@ class ByteArrayDataSource implements DataSource {
         _inputStream = new ByteArrayInputStream(body);
     }
 
+    @Override
     public java.io.InputStream getInputStream() {
         return _inputStream;
     }
 
+    @Override
     public java.io.OutputStream getOutputStream() throws IOException {
         throw new IOException();
     }
 
+    @Override
     public java.lang.String getContentType() {
         return _contentType;
     }
 
+    @Override
     public java.lang.String getName() {
         return "test";
     }
@@ -405,6 +419,7 @@ class ByteArrayDataSource implements DataSource {
 }
 
 class MimeEcho extends PseudoServlet {
+    @Override
     public WebResource getPostResponse() {
         StringBuilder sb = new StringBuilder();
         try {
@@ -414,13 +429,11 @@ class MimeEcho extends PseudoServlet {
             int numParts = mm.getCount();
             for (int i = 0; i < numParts; i++) {
                 appendPart(sb, (MimeBodyPart) mm.getBodyPart(i));
-                if (i < numParts - 1)
+                if (i < numParts - 1) {
                     sb.append('&');
+                }
             }
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            sb.append("Oops: ").append(e);
-        } catch (IOException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
             sb.append("Oops: ").append(e);
         }
@@ -450,8 +463,9 @@ class MimeEcho extends PseudoServlet {
         filename = filename.substring(filename.lastIndexOf(File.separator) + 1);
         BufferedReader br = new BufferedReader(new StringReader(mbp.getContent().toString()));
         int numLines = 0;
-        while (br.readLine() != null)
+        while (br.readLine() != null) {
             numLines++;
+        }
 
         sb.append(parameterName).append(".name=").append(filename).append("&");
         sb.append(parameterName).append(".lines=").append(numLines);
@@ -474,10 +488,8 @@ class MimeEcho extends PseudoServlet {
                 }
             } else if (state == 1) {
                 name = token.trim();
-            } else if (state == 2) {
-                if (name.equalsIgnoreCase(attributeName)) {
-                    return stripQuotes(token.trim());
-                }
+            } else if ((state == 2) && name.equalsIgnoreCase(attributeName)) {
+                return stripQuotes(token.trim());
             }
         }
         return "";
@@ -486,9 +498,8 @@ class MimeEcho extends PseudoServlet {
     private String stripQuotes(String value) {
         if (value.startsWith("\"") && value.endsWith("\"")) {
             return value.substring(1, value.length() - 1);
-        } else {
-            return value;
         }
+        return value;
     }
 
 }

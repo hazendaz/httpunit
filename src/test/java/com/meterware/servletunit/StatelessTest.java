@@ -19,7 +19,9 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HttpNotFoundException;
@@ -235,8 +237,10 @@ class StatelessTest {
 
     static class SimpleGetServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content\r\n";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -247,15 +251,19 @@ class StatelessTest {
 
     static class AccessCountServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
         private int _numAccesses;
 
         private static int _numInstances = 0;
 
+        @Override
         public void init() throws ServletException {
             super.init();
             _numInstances++;
         }
 
+        @Override
         public void destroy() {
             super.destroy();
             _numInstances--;
@@ -265,6 +273,7 @@ class StatelessTest {
             return _numInstances;
         }
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -275,8 +284,10 @@ class StatelessTest {
 
     static class ParameterServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content\r\n";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             resp.addHeader("MyHeader", "value1");
@@ -287,6 +298,7 @@ class StatelessTest {
             pw.close();
         }
 
+        @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -297,9 +309,12 @@ class StatelessTest {
     }
 
     static class BodyEcho extends HttpServlet {
+        private static final long serialVersionUID = 1L;
+
         /**
          * Returns a resource object as a result of a get request.
          */
+        @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             int length = req.getIntHeader("Content-length");
             String contentType = req.getHeader("Content-type");
@@ -322,6 +337,9 @@ class StatelessTest {
 
     static class FormSubmissionServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
 
@@ -335,6 +353,7 @@ class StatelessTest {
             pw.close();
         }
 
+        @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -346,6 +365,9 @@ class StatelessTest {
 
     static class FrameTopServlet extends HttpServlet {
 
+        private static final long serialVersionUID = 1L;
+
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
 

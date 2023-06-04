@@ -53,8 +53,9 @@ class TestWindowProxy implements DomWindowProxy {
     }
 
     static String popProxyCall() {
-        if (_proxyCalls.isEmpty())
+        if (_proxyCalls.isEmpty()) {
             return "";
+        }
         return (String) _proxyCalls.pop();
     }
 
@@ -74,34 +75,41 @@ class TestWindowProxy implements DomWindowProxy {
         return _replacementText;
     }
 
+    @Override
     public ScriptingHandler getScriptingHandler() {
         return _document.getWindow();
     }
 
+    @Override
     public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
         HTMLDocumentImpl document = new HTMLDocumentImpl();
         document.setTitle(name + " (" + relativeUrl + ')');
         return new TestWindowProxy(document);
     }
 
+    @Override
     public void close() {
         pushProxyCall("close");
     }
 
+    @Override
     public void alert(String message) {
         pushProxyCall("alert( " + message + " )");
     }
 
+    @Override
     public boolean confirm(String message) {
         pushProxyCall("confirm( " + message + " )");
         return _answer.equals("yes");
     }
 
+    @Override
     public String prompt(String prompt, String defaultResponse) {
         pushProxyCall("prompt( " + prompt + " )");
         return _answer == null ? defaultResponse : _answer;
     }
 
+    @Override
     public boolean replaceText(String text, String contentType) {
         _replacementText = text;
         return true;
@@ -111,10 +119,12 @@ class TestWindowProxy implements DomWindowProxy {
         _url = url;
     }
 
+    @Override
     public URL getURL() {
         return _url;
     }
 
+    @Override
     public DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
             MessageBody requestBody) throws IOException, SAXException {
         pushProxyCall("submitRequest( " + method + ", " + location + ", " + target + ", "
@@ -123,8 +133,9 @@ class TestWindowProxy implements DomWindowProxy {
     }
 
     private String stringifyMessageBody(MessageBody requestBody) {
-        if (requestBody == null)
+        if (requestBody == null) {
             return "null";
+        }
         return "something";
     }
 }

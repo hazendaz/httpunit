@@ -19,7 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.PostMethodWebRequest;
@@ -208,14 +212,17 @@ class StatefulTest {
     }
 
     static class StatefulServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content\r\n";
 
+        @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             writeSelectMessage(req.getParameter("color"), resp.getWriter());
             setColor(req, req.getParameter("color"));
         }
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/plain");
             PrintWriter pw = resp.getWriter();
@@ -239,8 +246,9 @@ class StatefulTest {
 
         protected String getColor(HttpServletRequest req) throws ServletException {
             HttpSession session = req.getSession( /* create */ false);
-            if (session == null)
+            if (session == null) {
                 return null;
+            }
 
             return (String) session.getAttribute("color");
         }

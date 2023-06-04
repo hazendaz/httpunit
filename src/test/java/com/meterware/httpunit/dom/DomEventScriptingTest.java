@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit.dom;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +34,7 @@ import org.mozilla.javascript.Context;
 class DomEventScriptingTest extends AbstractHTMLElementTest {
 
     private Context _context;
-    private static final Object[] NO_ARGS = new Object[0];
+    private static final Object[] NO_ARGS = {};
 
     @BeforeEach
     void setUp() throws Exception {

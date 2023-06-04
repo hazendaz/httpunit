@@ -19,7 +19,9 @@
  */
 package com.meterware.httpunit.parsing;
 
-import java.util.Vector;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Factory for creating HTML parsers. Parser customization properties can be specified but do not necessarily work for
@@ -30,9 +32,9 @@ import java.util.Vector;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
  **/
-abstract public class HTMLParserFactory {
+public abstract class HTMLParserFactory {
 
-    private static Vector _listeners = new Vector();
+    private static List<HTMLParserListener> _listeners = new ArrayList<>();
     private static HTMLParser _jtidyParser;
     private static HTMLParser _nekoParser;
 
@@ -228,14 +230,14 @@ abstract public class HTMLParserFactory {
      * Remove an HTML Parser listener.
      **/
     public static void removeHTMLParserListener(HTMLParserListener el) {
-        _listeners.removeElement(el);
+        _listeners.remove(el);
     }
 
     /**
      * Add an HTML Parser listener.
      **/
     public static void addHTMLParserListener(HTMLParserListener el) {
-        _listeners.addElement(el);
+        _listeners.add(el);
     }
 
     // ------------------------------------- package protected members
@@ -244,17 +246,18 @@ abstract public class HTMLParserFactory {
     /**
      * Get the list of Html Error Listeners
      **/
-    static Vector getHTMLParserListeners() {
+    static List<HTMLParserListener> getHTMLParserListeners() {
         return _listeners;
     }
 
     private static HTMLParser loadParserIfSupported(final String testClassName, final String parserClassName) {
         try {
             Class.forName(testClassName);
-            return (HTMLParser) Class.forName(parserClassName).newInstance();
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        } catch (ClassNotFoundException e) {
+            return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException
+                | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }

@@ -19,7 +19,12 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.AuthorizationRequiredException;
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -472,10 +477,12 @@ public class WebXMLTest {
     // ===============================================================================================================
 
     static class SimpleLogonServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "<html><body>\r\n"
                 + "<form id='login' action='j_security_check' method='POST'>\r\n" + "  <input name='j_username' />\r\n"
                 + "  <input type='password' name='j_password' />\r\n" + "</form></body></html>";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -487,8 +494,10 @@ public class WebXMLTest {
     // ===============================================================================================================
 
     static class SimpleErrorServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "<html><body>Sorry could not login</body></html>";
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -500,26 +509,31 @@ public class WebXMLTest {
     // ===============================================================================================================
 
     static class SimpleGetServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
         static String RESPONSE_TEXT = "the desired content\r\n";
 
+        @Override
         public void init() throws ServletException {
             ServletConfig servletConfig = getServletConfig();
             String initialized = (String) servletConfig.getServletContext().getAttribute("initialized");
-            if (initialized == null)
+            if (initialized == null) {
                 initialized = getLocalName();
-            else
+            } else {
                 initialized = initialized + "," + getLocalName();
+            }
             servletConfig.getServletContext().setAttribute("initialized", initialized);
         }
 
         private String getLocalName() {
             String className = getClass().getName();
             int dollarIndex = className.indexOf('$');
-            if (dollarIndex < 0)
+            if (dollarIndex < 0) {
                 return className;
+            }
             return className.substring(dollarIndex + 1);
         }
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             resp.setContentType("text/html");
             PrintWriter pw = resp.getWriter();
@@ -529,18 +543,28 @@ public class WebXMLTest {
     }
 
     static class Servlet1 extends SimpleGetServlet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     static class Servlet2 extends SimpleGetServlet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     static class Servlet3 extends SimpleGetServlet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     static class Servlet4 extends SimpleGetServlet {
+
+        private static final long serialVersionUID = 1L;
     }
 
     static class Servlet5 extends SimpleGetServlet {
+
+        private static final long serialVersionUID = 1L;
     }
 
 }

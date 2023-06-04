@@ -19,7 +19,9 @@
  */
 package com.meterware.servletunit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
@@ -44,8 +46,9 @@ class EventAwareTestBase {
     }
 
     protected static void verifyEvents() {
-        if (!_events.isEmpty())
+        if (!_events.isEmpty()) {
             fail("Did not receive event " + _events.get(0));
+        }
     }
 
     protected static void clearEvents() {
@@ -53,7 +56,7 @@ class EventAwareTestBase {
     }
 
     interface EventVerifier {
-        public void verifyEvent(String eventLabel, Object eventObject);
+        void verifyEvent(String eventLabel, Object eventObject);
     }
 
 }
@@ -79,10 +82,12 @@ class EventData {
 
     void verifyEvent(String eventName, Object listener, Object event) {
         assertEquals(toString(), toEventString(eventName, listener.getClass()), "Event");
-        if (_verifier != null)
+        if (_verifier != null) {
             _verifier.verifyEvent(toString(), event);
+        }
     }
 
+    @Override
     public String toString() {
         return toEventString(_eventName, _listenerClass);
     }

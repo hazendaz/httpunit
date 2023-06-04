@@ -29,7 +29,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -71,8 +82,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
             Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {
-        if (context == null)
+        if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
+        }
 
         _servletRequest = servletRequest;
         _request = request;
@@ -98,8 +110,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             _charset = res[1];
             _requestContext.setMessageEncoding(_charset);
         }
-        if (_headers.get("Content-Length") == null)
+        if (_headers.get("Content-Length") == null) {
             _headers.put("Content-Length", Integer.toString(messageBody.length));
+        }
 
         boolean setBody =
                 // pre [ 1509117 ] getContentType()
@@ -107,7 +120,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
                 // );
                 // patch version:
                 _messageBody != null
-                        && (contentTypeHeader == null || contentTypeHeader.indexOf("x-www-form-urlencoded") >= 0);
+                && (contentTypeHeader == null || contentTypeHeader.indexOf("x-www-form-urlencoded") >= 0);
         if (setBody) {
             _requestContext.setMessageBody(_messageBody);
         }
@@ -119,6 +132,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the name of the authentication scheme used to protect the servlet, for example, "BASIC" or "SSL," or null
      * if the servlet was not protected.
      **/
+    @Override
     public String getAuthType() {
         return null;
     }
@@ -126,6 +140,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the query string that is contained in the request URL after the path.
      **/
+    @Override
     public String getQueryString() {
         return _request.getQueryString();
     }
@@ -134,14 +149,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns an array containing all of the Cookie objects the client sent with this request. This method returns null
      * if no cookies were sent.
      **/
+    @Override
     public Cookie[] getCookies() {
         if (_cookies.size() == 0) {
             return null;
-        } else {
-            Cookie[] result = new Cookie[_cookies.size()];
-            _cookies.copyInto(result);
-            return result;
         }
+        Cookie[] result = new Cookie[_cookies.size()];
+        _cookies.copyInto(result);
+        return result;
     }
 
     /**
@@ -149,6 +164,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * specified name, this method returns -1. If the header cannot be converted to an integer, this method throws a
      * NumberFormatException.
      **/
+    @Override
     public int getIntHeader(String name) {
         return Integer.parseInt(getHeader(name));
     }
@@ -160,6 +176,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * insensitive. If the request did not have a header of the specified name, this method returns -1. If the header
      * can't be converted to a date, the method throws an IllegalArgumentException.
      **/
+    @Override
     public long getDateHeader(String name) {
         try {
             String dateString = getHeader(name);
@@ -175,6 +192,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * specified name, this method returns null. The header name is case insensitive. You can use this method with any
      * request header.
      **/
+    @Override
     public String getHeader(String name) {
         return (String) _headers.get(name);
     }
@@ -184,6 +202,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * returns an empty enumeration. Some servlet containers do not allow do not allow servlets to access headers using
      * this method, in which case this method returns null.
      **/
+    @Override
     public Enumeration getHeaderNames() {
         return _headers.keys();
     }
@@ -192,6 +211,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the part of this request's URL that calls the servlet. This includes either the servlet name or a path to
      * the servlet, but does not include any extra path information or a query string.
      **/
+    @Override
     public String getServletPath() {
         return _servletRequest.getServletPath();
     }
@@ -199,6 +219,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the name of the HTTP method with which this request was made, for example, GET, POST, or PUT.
      **/
+    @Override
     public String getMethod() {
         return _request.getMethod();
     }
@@ -208,6 +229,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * path information follows the servlet path but precedes the query string. This method returns null if there was no
      * extra path information.
      **/
+    @Override
     public String getPathInfo() {
         return _servletRequest.getPathInfo();
     }
@@ -216,6 +238,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns any extra path information after the servlet name but before the query string, and translates it to a
      * real path. If the URL does not have any extra path information, this method returns null.
      **/
+    @Override
     public String getPathTranslated() {
         return null;
     }
@@ -223,6 +246,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Checks whether the requested session ID came in as a cookie.
      **/
+    @Override
     public boolean isRequestedSessionIdFromCookie() {
         return _sessionID != null;
     }
@@ -232,6 +256,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * not been authenticated. Whether the user name is sent with each subsequent request depends on the browser and
      * type of authentication.
      **/
+    @Override
     public String getRemoteUser() {
         return _userName;
     }
@@ -241,6 +266,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * For example, if the request specified an old (expired) session ID and the server has started a new session, this
      * method gets a new session with a new ID. If the request did not specify a session ID, this method returns null.
      **/
+    @Override
     public String getRequestedSessionId() {
         return _sessionID;
     }
@@ -249,6 +275,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the part of this request's URL from the protocol name up to the query string in the first line of the
      * HTTP request.
      **/
+    @Override
     public String getRequestURI() {
         return _requestContext.getRequestURI();
     }
@@ -258,6 +285,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * true, returns a new session. <br>
      * If create is false and the request has no valid HttpSession, this method returns null.
      **/
+    @Override
     public HttpSession getSession(boolean create) {
         _session = _context.getValidSession(getRequestedSessionId(), _session, create);
         return _session;
@@ -266,6 +294,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the current session associated with this request, or if the request does not have a session, creates one.
      **/
+    @Override
     public HttpSession getSession() {
         return getSession(true);
     }
@@ -273,6 +302,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Checks whether the requested session ID is still valid.
      **/
+    @Override
     public boolean isRequestedSessionIdValid() {
         return false;
     }
@@ -280,6 +310,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Checks whether the requested session ID came in as part of the request URL.
      **/
+    @Override
     public boolean isRequestedSessionIdFromURL() {
         return false;
     }
@@ -287,6 +318,8 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * @deprecated use #isRequestedSessionIdFromURL
      **/
+    @Deprecated
+    @Override
     public boolean isRequestedSessionIdFromUrl() {
         return isRequestedSessionIdFromURL();
     }
@@ -297,6 +330,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the length, in bytes, of the content contained in the request and sent by way of the input stream or -1
      * if the length is not known.
      **/
+    @Override
     public int getContentLength() {
         return getIntHeader("Content-length");
     }
@@ -306,6 +340,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * the servlet custom information about a request. This method returns <code>null</code> if no attribute of the
      * given name exists.
      **/
+    @Override
     public Object getAttribute(String name) {
         return _attributes.get(name);
     }
@@ -314,6 +349,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns an <code>Enumeration</code> containing the names of the attributes available to this request. This method
      * returns an empty <code>Enumeration</code> if the request has no attributes available to it.
      **/
+    @Override
     public Enumeration getAttributeNames() {
         return _attributes.keys();
     }
@@ -329,6 +365,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @exception IOException
      *                if an input or output exception occurred
      */
+    @Override
     public ServletInputStream getInputStream() throws IOException {
         if (_gotReader) {
             throw new IllegalStateException("getReader() has already been called for this request");
@@ -351,6 +388,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the name of the character encoding style used in this request. This method returns <code>null</code> if
      * the request does not use character encoding.
      **/
+    @Override
     public String getCharacterEncoding() {
         return _charset;
     }
@@ -361,6 +399,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * <code>Enumeration</code>. The input stream is empty when all the data returned by {@link #getInputStream} has
      * been read.
      **/
+    @Override
     public Enumeration getParameterNames() {
         return _requestContext.getParameterNames();
     }
@@ -369,20 +408,18 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the MIME type of the content of the request, or <code>null</code> if the type is not known. Same as the
      * value of the CGI variable CONTENT_TYPE.
      **/
+    @Override
     public String getContentType() {
         String result;
         result = _contentType;
-        /**
-         * suggested fix by bug report [ 1509117 ] getContentType() by Tom Parker
-         */
-        result = this.getHeader("Content-Type");
-        return result;
+        return this.getHeader("Content-Type");
     }
 
     /**
      * Returns the value of a request parameter as a <code>String</code>, or <code>null</code> if the parameter does not
      * exist. Request parameters are extra information sent with the request.
      **/
+    @Override
     public String getParameter(String name) {
         String[] parameters = getParameterValues(name);
         return parameters == null ? null : parameters[0];
@@ -393,6 +430,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * <code>null</code> if the parameter does not exist. For example, in an HTTP servlet, this method returns an array
      * of <code>String</code> objects containing the values of a query string or posted form.
      **/
+    @Override
     public String[] getParameterValues(String name) {
         return _requestContext.getParameterValues(name);
     }
@@ -401,6 +439,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the name and version of the protocol the request uses in the form
      * <i>protocol/majorVersion.minorVersion</i>, for example, HTTP/1.1.
      **/
+    @Override
     public String getProtocol() {
         return "HTTP/1.1";
     }
@@ -409,15 +448,16 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the name of the scheme used to make this request, for example, <code>http</code>, <code>https</code>, or
      * <code>ftp</code>. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
      **/
+    @Override
     public String getScheme() {
         String result = isSecure() ? "https" : "http";
-        result = _protocol;
-        return result;
+        return _protocol;
     }
 
     /**
      * Returns the fully qualified name of the client that sent the request.
      **/
+    @Override
     public String getRemoteHost() {
         return "localhost";
     }
@@ -425,6 +465,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the host name of the server that received the request.
      **/
+    @Override
     public String getServerName() {
         return _serverName;
     }
@@ -432,6 +473,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the port number on which this request was received.
      **/
+    @Override
     public int getServerPort() {
         return _serverPort;
     }
@@ -440,6 +482,8 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @deprecated As of Version 2.1 of the Java Servlet API, use {@link javax.servlet.ServletContext#getRealPath}
      *             instead.
      */
+    @Deprecated
+    @Override
     public String getRealPath(String path) {
         throwNotImplementedYet();
         return "";
@@ -454,6 +498,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @return the reader
      **/
+    @Override
     public BufferedReader getReader() throws IOException {
         if (_gotInputStream) {
             throw new IllegalStateException("getInputStream() has already been called on this request");
@@ -473,6 +518,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the Internet Protocol (IP) address of the client that sent the request.
      **/
+    @Override
     public String getRemoteAddr() {
         return LOOPBACK_ADDRESS;
     }
@@ -480,11 +526,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Stores an attribute in the context of this request. Attributes are reset between requests.
      **/
+    @Override
     public void setAttribute(String key, Object o) {
-        if (o == null)
+        if (o == null) {
             _attributes.remove(key);
-        else
+        } else {
             _attributes.put(key, o);
+        }
     }
 
     // --------------------------------- methods added to ServletRequest in Servlet API 2.2
@@ -493,6 +541,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
      **/
+    @Override
     public boolean isSecure() {
         return _secure;
     }
@@ -501,6 +550,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. If the
      * client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
      **/
+    @Override
     public Locale getLocale() {
         return (Locale) getPreferredLocales().firstElement();
     }
@@ -511,6 +561,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * provide an Accept-Language header, this method returns an Enumeration containing one Locale, the default locale
      * for the server.
      **/
+    @Override
     public java.util.Enumeration getLocales() {
         return getPreferredLocales().elements();
     }
@@ -546,6 +597,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Removes an attribute from this request. This method is not generally needed as attributes only persist as long as
      * the request is being handled.
      **/
+    @Override
     public void removeAttribute(String name) {
         _attributes.remove(name);
     }
@@ -559,10 +611,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * difference between this method and ServletContext.getRequestDispatcher(java.lang.String) is that this method can
      * take a relative path.
      **/
+    @Override
     public RequestDispatcher getRequestDispatcher(String path) {
         try {
-            if (!path.startsWith("/"))
+            if (!path.startsWith("/")) {
                 path = combinedPath(getServletPath(), path);
+            }
             return _servletRequest.getServlet().getServletConfig().getServletContext().getRequestDispatcher(path);
         } catch (ServletException e) {
             return null;
@@ -570,8 +624,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     }
 
     private String combinedPath(String basePath, String relativePath) {
-        if (basePath.indexOf('/') < 0)
+        if (basePath.indexOf('/') < 0) {
             return relativePath;
+        }
         return basePath.substring(0, basePath.lastIndexOf('/')) + '/' + relativePath;
     }
 
@@ -582,6 +637,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Returns a java.security.Principal object containing the name of the current authenticated user. If the user has
      * not been authenticated, the method returns null.
      **/
+    @Override
     public java.security.Principal getUserPrincipal() {
         return null;
     }
@@ -591,12 +647,15 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * and role membership can be defined using deployment descriptors. If the user has not been authenticated, the
      * method returns false.
      **/
+    @Override
     public boolean isUserInRole(String role) {
-        if (_roles == null)
+        if (_roles == null) {
             return false;
-        for (int i = 0; i < _roles.length; i++) {
-            if (role.equals(_roles[i]))
+        }
+        for (String _role : _roles) {
+            if (role.equals(_role)) {
                 return true;
+            }
         }
         return false;
     }
@@ -604,10 +663,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns all the values of the specified request header as an Enumeration of String objects.
      **/
+    @Override
     public java.util.Enumeration getHeaders(String name) {
         Vector list = new Vector();
-        if (_headers.containsKey(name))
+        if (_headers.containsKey(name)) {
             list.add(_headers.get(name));
+        }
         return list.elements();
     }
 
@@ -616,6 +677,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * first in a request URI. The path starts with a "/" character but does not end with a "/" character. For servlets
      * in the default (root) context, this method returns "".
      **/
+    @Override
     public String getContextPath() {
         return _context.getContextPath();
     }
@@ -629,6 +691,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @since 1.3
      **/
+    @Override
     public Map getParameterMap() {
         return _requestContext.getParameterMap();
     }
@@ -639,6 +702,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @since 1.3
      **/
+    @Override
     public void setCharacterEncoding(String charset) throws UnsupportedEncodingException {
         _charset = charset;
         _requestContext.setMessageEncoding(charset);
@@ -655,12 +719,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @since 1.3
      */
+    @Override
     public StringBuffer getRequestURL() {
         StringBuilder url = new StringBuilder();
         try {
             url.append(_request.getURL().getProtocol()).append("://");
             url.append(_request.getURL().getHost());
-            String portPortion = _request.getURL().getPort() == -1 ? "" : (":" + _request.getURL().getPort());
+            String portPortion = _request.getURL().getPort() == -1 ? "" : ":" + _request.getURL().getPort();
             url.append(portPortion);
             url.append(_request.getURL().getPath());
         } catch (MalformedURLException e) {
@@ -672,18 +737,22 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4
     // ----------------------------
 
+    @Override
     public int getRemotePort() {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getLocalName() {
         return "localhost";
     }
 
+    @Override
     public String getLocalAddr() {
         return "127.0.0.1";
     }
 
+    @Override
     public int getLocalPort() {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
@@ -755,16 +824,16 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     private void setCookiesFromHeader(Dictionary clientHeaders) {
         String cookieHeader = (String) clientHeaders.get("Cookie");
-        if (cookieHeader == null)
+        if (cookieHeader == null) {
             return;
+        }
 
         StringTokenizer st = new StringTokenizer(cookieHeader, ",;=", true);
         String lastToken = st.nextToken();
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            if (token.equals("=")) {
-                if (st.hasMoreTokens())
-                    addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));
+            if (token.equals("=") && st.hasMoreTokens()) {
+                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));
             }
             lastToken = token;
         }
@@ -791,25 +860,27 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             int dashIndex = range.indexOf('-');
             if (dashIndex < 0) {
                 return new Locale(range, "");
-            } else {
-                return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));
             }
+            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));
         }
 
         public Locale getLocale() {
             return _locale;
         }
 
+        @Override
         public int compareTo(Object o) {
-            if (!(o instanceof PrioritizedLocale))
+            if (!(o instanceof PrioritizedLocale)) {
                 throw new IllegalArgumentException("may only combine with other prioritized locales");
+            }
             PrioritizedLocale other = (PrioritizedLocale) o;
             return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())
-                    : (_priority < other._priority ? +1 : -1);
+                    : _priority < other._priority ? +1 : -1;
         }
 
     }
 
+    @Override
     public ServletContext getServletContext() {
         try {
             return _servletRequest.getServlet().getServletConfig().getServletContext();
@@ -818,72 +889,86 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    @Override
     public AsyncContext startAsync() throws IllegalStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
             throws IllegalStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public boolean isAsyncStarted() {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public boolean isAsyncSupported() {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public AsyncContext getAsyncContext() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public DispatcherType getDispatcherType() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
         // TODO Auto-generated method stub
         return false;
     }
 
+    @Override
     public void login(String username, String password) throws ServletException {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void logout() throws ServletException {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public Collection<Part> getParts() throws IOException, ServletException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Part getPart(String name) throws IOException, ServletException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public long getContentLengthLong() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public String changeSessionId() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) throws IOException, ServletException {
         // TODO Auto-generated method stub
         return null;

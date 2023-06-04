@@ -42,6 +42,7 @@ public class HttpRequest extends ReceivedHttpMessage {
         super(inputStream);
     }
 
+    @Override
     void interpretMessageHeader(String messageHeader) {
         StringTokenizer st = new StringTokenizer(messageHeader);
         _command = st.nextToken();
@@ -49,6 +50,7 @@ public class HttpRequest extends ReceivedHttpMessage {
         _protocol = st.nextToken();
     }
 
+    @Override
     void appendMessageHeader(StringBuilder sb) {
         sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);
     }
@@ -95,7 +97,8 @@ public class HttpRequest extends ReceivedHttpMessage {
     boolean wantsKeepAlive() {
         if ("Keep-alive".equalsIgnoreCase(getConnectionHeader())) {
             return true;
-        } else if (_protocol.equals("HTTP/1.1")) {
+        }
+        if (_protocol.equals("HTTP/1.1")) {
             return !"Close".equalsIgnoreCase(getConnectionHeader());
         } else {
             return false;
@@ -104,8 +107,9 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     private Hashtable readParameters(String content) {
         Hashtable parameters = new Hashtable();
-        if (content == null || content.trim().length() == 0)
+        if (content == null || content.trim().length() == 0) {
             return parameters;
+        }
 
         for (String spec : content.split("&")) {
             String[] split = spec.split("=");

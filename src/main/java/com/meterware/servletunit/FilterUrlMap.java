@@ -38,8 +38,9 @@ class FilterUrlMap {
         ArrayList matches = new ArrayList();
         for (int i = 0; i < _urlPatterns.size(); i++) {
             UrlPatternMatcher urlPattern = (UrlPatternMatcher) _urlPatterns.get(i);
-            if (urlPattern.matchesResourceName(resourceName))
+            if (urlPattern.matchesResourceName(resourceName)) {
                 matches.add(_filters.get(i));
+            }
         }
         return (FilterMetaData[]) matches.toArray(new FilterMetaData[matches.size()]);
     }
@@ -48,14 +49,15 @@ class FilterUrlMap {
 
 abstract class UrlPatternMatcher {
 
-    static UrlPatternMatcher[] _templates = new UrlPatternMatcher[] { new ExtensionUrlPatternMatcher(),
+    static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(),
             new PathMappingUrlPatternMatcher() };
 
     static UrlPatternMatcher newPatternMatcher(String pattern) {
-        for (int i = 0; i < _templates.length; i++) {
-            UrlPatternMatcher matcher = _templates[i].create(pattern);
-            if (matcher != null)
+        for (UrlPatternMatcher _template : _templates) {
+            UrlPatternMatcher matcher = _template.create(pattern);
+            if (matcher != null) {
                 return matcher;
+            }
         }
         return new ExactUrlPatternMatcher(pattern);
     }
@@ -78,10 +80,12 @@ class ExactUrlPatternMatcher extends UrlPatternMatcher {
         _pattern = pattern;
     }
 
+    @Override
     UrlPatternMatcher create(String pattern) {
         return new ExactUrlPatternMatcher(pattern);
     }
 
+    @Override
     boolean matchesResourceName(String resourceName) {
         return _pattern.equals(resourceName);
     }
@@ -97,10 +101,12 @@ class ExtensionUrlPatternMatcher extends UrlPatternMatcher {
         _suffix = suffix;
     }
 
+    @Override
     UrlPatternMatcher create(String pattern) {
         return !pattern.startsWith("*.") ? null : new ExtensionUrlPatternMatcher(pattern.substring(1));
     }
 
+    @Override
     boolean matchesResourceName(String resourceName) {
         return resourceName.endsWith(_suffix);
     }
@@ -118,6 +124,7 @@ class PathMappingUrlPatternMatcher extends UrlPatternMatcher {
         _prefix = exactPath + '/';
     }
 
+    @Override
     UrlPatternMatcher create(String pattern) {
         return !handlesPattern(pattern) ? null
                 : new PathMappingUrlPatternMatcher(pattern.substring(0, pattern.length() - 2));
@@ -127,6 +134,7 @@ class PathMappingUrlPatternMatcher extends UrlPatternMatcher {
         return pattern.startsWith("/") && pattern.endsWith("/*");
     }
 
+    @Override
     boolean matchesResourceName(String resourceName) {
         return resourceName.startsWith(_prefix) || resourceName.equals(_exactPath);
     }

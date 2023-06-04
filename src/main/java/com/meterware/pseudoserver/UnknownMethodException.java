@@ -22,6 +22,8 @@ package com.meterware.pseudoserver;
 import java.io.IOException;
 
 class UnknownMethodException extends IOException {
+    private static final long serialVersionUID = 1L;
+
     UnknownMethodException(String method) {
         _method = method;
     }

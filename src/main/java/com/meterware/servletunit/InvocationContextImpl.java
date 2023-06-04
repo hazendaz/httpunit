@@ -19,7 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.AuthorizationRequiredException;
+import com.meterware.httpunit.FrameSelector;
+import com.meterware.httpunit.HttpException;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -27,7 +31,13 @@ import java.net.URL;
 import java.util.Dictionary;
 import java.util.Stack;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +61,7 @@ class InvocationContextImpl implements InvocationContext {
     /**
      * Returns the request to be processed by the servlet or filter.
      **/
+    @Override
     public HttpServletRequest getRequest() {
         return getContext().getRequest();
     }
@@ -58,6 +69,7 @@ class InvocationContextImpl implements InvocationContext {
     /**
      * Returns the response which the servlet or filter should modify during its operation.
      **/
+    @Override
     public HttpServletResponse getResponse() {
         return getContext().getResponse();
     }
@@ -65,6 +77,7 @@ class InvocationContextImpl implements InvocationContext {
     /**
      * Invokes the current servlet or filter.
      */
+    @Override
     public void service() throws ServletException, IOException {
         if (isFilterActive()) {
             getFilter().doFilter(getRequest(), getResponse(), getFilterChain());
@@ -76,6 +89,7 @@ class InvocationContextImpl implements InvocationContext {
     /**
      * Returns the selected servlet, initialized to provide access to sessions and servlet context information.
      **/
+    @Override
     public Servlet getServlet() throws ServletException {
         return getContext().getServlet();
     }
@@ -84,9 +98,11 @@ class InvocationContextImpl implements InvocationContext {
      * Returns the final response from the servlet. Note that this method should only be invoked after all processing
      * has been done to the servlet response.
      **/
+    @Override
     public WebResponse getServletResponse() throws IOException {
-        if (_contextStack.size() != 1)
+        if (_contextStack.size() != 1) {
             throw new IllegalStateException("Have not returned from all request dispatchers");
+        }
         if (_webResponse == null) {
             HttpSession session = getRequest().getSession( /* create */ false);
             if (session != null && session.isNew()) {
@@ -100,26 +116,32 @@ class InvocationContextImpl implements InvocationContext {
         return _webResponse;
     }
 
+    @Override
     public FrameSelector getFrame() {
         return _frame;
     }
 
+    @Override
     public void pushIncludeRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-        if (isFilterActive())
+        if (isFilterActive()) {
             throw new IllegalStateException("May not push an include request when no servlet is active");
+        }
         _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createIncludeRequestWrapper(request, rd),
                 response, ((RequestDispatcherImpl) rd).getServletMetaData()));
     }
 
+    @Override
     public void pushForwardRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-        if (isFilterActive())
+        if (isFilterActive()) {
             throw new IllegalStateException("May not push a forward request when no servlet is active");
+        }
         _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createForwardRequestWrapper(request, rd),
                 response, ((RequestDispatcherImpl) rd).getServletMetaData()));
     }
 
+    @Override
     public void popRequest() {
         if (getContext().mayPopFilter()) {
             getContext().popFilter();
@@ -130,30 +152,33 @@ class InvocationContextImpl implements InvocationContext {
         }
     }
 
+    @Override
     public boolean isFilterActive() {
         return getContext().isFilterActive();
     }
 
+    @Override
     public Filter getFilter() throws ServletException {
         return getContext().getFilter();
     }
 
+    @Override
     public FilterChain getFilterChain() {
-        return new FilterChain() {
-            public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse)
-                    throws IOException, ServletException {
-                pushFilter(servletRequest, servletResponse);
-                service();
-                popRequest();
-            }
-        };
+        return (servletRequest, servletResponse) -> {
+            pushFilter(servletRequest, servletResponse);
+            service();
+            popRequest();
+         };
     }
 
+    @Override
     public void pushFilter(ServletRequest request, ServletResponse response) {
         getContext().pushFilter(request, response);
     }
 
     class AccessDeniedException extends HttpException {
+        private static final long serialVersionUID = 1L;
+
         public AccessDeniedException(URL baseURL) {
             super(403, "Access Denied", baseURL);
         }
@@ -173,14 +198,16 @@ class InvocationContextImpl implements InvocationContext {
         URL requestURL = request.getURL();
         final ServletUnitHttpRequest suhr = new ServletUnitHttpRequest(_application.getServletRequest(requestURL),
                 request, runner.getContext(), clientHeaders, messageBody);
-        if (_application.usesBasicAuthentication())
+        if (_application.usesBasicAuthentication()) {
             suhr.readBasicAuthentication();
-        else if (_application.usesFormAuthentication())
+        } else if (_application.usesFormAuthentication()) {
             suhr.readFormAuthentication();
+        }
 
         HttpSession session = suhr.getSession( /* create */ false);
-        if (session != null)
+        if (session != null) {
             ((ServletUnitHttpSession) session).access();
+        }
 
         _effectiveURL = computeEffectiveUrl(suhr, requestURL);
         _contextStack.push(new ExecutionContext(suhr, new ServletUnitHttpResponse(),
@@ -190,11 +217,12 @@ class InvocationContextImpl implements InvocationContext {
     private URL computeEffectiveUrl(HttpServletRequest request, URL requestURL) {
         if (!_application.requiresAuthorization(requestURL) || userIsAuthorized(request, requestURL)) {
             return requestURL;
-        } else if (request.getRemoteUser() != null) {
+        }
+        if (request.getRemoteUser() != null) {
             throw new AccessDeniedException(requestURL);
         } else if (_application.usesBasicAuthentication()) {
             throw AuthorizationRequiredException
-                    .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
+            .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
         } else if (!_application.usesFormAuthentication()) {
             throw new IllegalStateException("Authorization required but no authentication method defined");
         } else {
@@ -205,9 +233,10 @@ class InvocationContextImpl implements InvocationContext {
 
     private boolean userIsAuthorized(HttpServletRequest request, URL requestURL) {
         String[] roles = _application.getPermittedRoles(requestURL);
-        for (int i = 0; i < roles.length; i++) {
-            if (request.isUserInRole(roles[i]))
+        for (String role : roles) {
+            if (request.isUserInRole(role)) {
                 return true;
+            }
         }
         return false;
     }
@@ -231,8 +260,9 @@ class InvocationContextImpl implements InvocationContext {
         }
 
         Servlet getServlet() throws ServletException {
-            if (isFilterActive())
+            if (isFilterActive()) {
                 throw new IllegalStateException("Current context is a filter - may not request servlet.");
+            }
             return _metaData.getServlet();
         }
 
@@ -245,18 +275,22 @@ class InvocationContextImpl implements InvocationContext {
         }
 
         public Filter getFilter() throws ServletException {
-            if (!isFilterActive())
+            if (!isFilterActive()) {
                 throw new IllegalStateException("Current context is a servlet - may not request filter.");
+            }
             return _metaData.getFilters()[getFilterIndex()].getFilter();
         }
 
         public void pushFilter(ServletRequest request, ServletResponse response) {
-            if (!isFilterActive())
+            if (!isFilterActive()) {
                 throw new IllegalStateException("Current context is a servlet - may not push filter.");
-            if (!(request instanceof HttpServletRequest))
+            }
+            if (!(request instanceof HttpServletRequest)) {
                 throw new IllegalArgumentException("HttpUnit does not support non-HTTP request wrappers");
-            if (!(response instanceof HttpServletResponse))
+            }
+            if (!(response instanceof HttpServletResponse)) {
                 throw new IllegalArgumentException("HttpUnit does not support non-HTTP response wrappers");
+            }
 
             _filterStack.push(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));
         }

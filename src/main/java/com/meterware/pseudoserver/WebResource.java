@@ -52,15 +52,19 @@ public class WebResource {
 
     public void addHeader(String header) {
         _headers.addElement(header);
-        if (header.toLowerCase().startsWith("content-type"))
+        if (header.toLowerCase().startsWith("content-type")) {
             _hasExplicitContentTypeHeader = true;
-        if (header.toLowerCase().startsWith("content-length"))
+        }
+        if (header.toLowerCase().startsWith("content-length")) {
             _hasExplicitContentLengthHeader = true;
-        if (header.trim().toLowerCase().startsWith("connection") && header.trim().toLowerCase().endsWith("close"))
+        }
+        if (header.trim().toLowerCase().startsWith("connection") && header.trim().toLowerCase().endsWith("close")) {
             _closesConnection = true;
+        }
         if (header.trim().toLowerCase().startsWith("transfer-encoding")
-                && header.trim().toLowerCase().endsWith("chunked"))
+                && header.trim().toLowerCase().endsWith("chunked")) {
             _isChunked = true;
+        }
     }
 
     public void setCharacterSet(String characterSet) {
@@ -104,10 +108,12 @@ public class WebResource {
 
     String[] getHeaders() throws UnsupportedEncodingException {
         final Vector effectiveHeaders = (Vector) _headers.clone();
-        if (!_hasExplicitContentTypeHeader)
+        if (!_hasExplicitContentTypeHeader) {
             effectiveHeaders.add(getContentTypeHeader());
-        if (_stream == null && !_hasExplicitContentLengthHeader && !isChunked())
+        }
+        if (_stream == null && !_hasExplicitContentLengthHeader && !isChunked()) {
             effectiveHeaders.add(getContentLengthHeader());
+        }
         String[] headers = new String[effectiveHeaders.size()];
         effectiveHeaders.copyInto(headers);
         return headers;
@@ -124,7 +130,7 @@ public class WebResource {
     void writeTo(OutputStream outputStream) throws IOException {
         if (_stream == null) {
             outputStream.write(getContentsAsBytes());
-        } else if (_stream != null) {
+        } else {
             byte[] buffer = new byte[8 * 1024];
             int count = 0;
             do {
@@ -136,8 +142,7 @@ public class WebResource {
 
     static String toString(byte[] contentsAsBytes) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < contentsAsBytes.length; i++) {
-            byte contentsAsByte = contentsAsBytes[i];
+        for (byte contentsAsByte : contentsAsBytes) {
             sb.append(Integer.toHexString(contentsAsByte)).append(' ');
         }
         return sb.toString();
@@ -146,7 +151,8 @@ public class WebResource {
     private byte[] getContentsAsBytes() throws UnsupportedEncodingException {
         if (_contents != null) {
             return _contents;
-        } else if (_string != null) {
+        }
+        if (_string != null) {
             return _string.getBytes(getCharacterSet());
         } else {
             throw new IllegalStateException("Cannot get bytes from stream");
@@ -168,15 +174,15 @@ public class WebResource {
     String getCharacterSetParameter() {
         if (!_sendCharacterSet) {
             return "";
-        } else {
-            return "; charset=" + _characterSet;
         }
+        return "; charset=" + _characterSet;
     }
 
     int getResponseCode() {
         return _responseCode;
     }
 
+    @Override
     public String toString() {
         return "WebResource [code=" + _responseCode + "; type = " + _contentType + "; charset = " + _characterSet
                 + "]\n" + getContentsAsString();
@@ -185,9 +191,8 @@ public class WebResource {
     private String getContentsAsString() {
         if (_string != null) {
             return _string;
-        } else {
-            return "<< hex bytes >>";
         }
+        return "<< hex bytes >>";
     }
 
     private byte[] _contents;

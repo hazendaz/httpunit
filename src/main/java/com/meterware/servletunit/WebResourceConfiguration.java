@@ -39,8 +39,9 @@ abstract class WebResourceConfiguration {
 
     WebResourceConfiguration(String className, Hashtable initParams) {
         _className = className;
-        if (initParams != null)
+        if (initParams != null) {
             _initParams = initParams;
+        }
     }
 
     WebResourceConfiguration(Element resourceElement, String resourceNodeName) throws SAXException {

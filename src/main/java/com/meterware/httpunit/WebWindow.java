@@ -94,8 +94,9 @@ public class WebWindow {
      * Closes this window.
      */
     public void close() {
-        if (!_closed)
+        if (!_closed) {
             _client.close(this);
+        }
         _closed = true;
     }
 
@@ -157,13 +158,8 @@ public class WebWindow {
             final RequestContext requestContext = new RequestContext();
             final WebResponse response = getSubframeResponse(request, requestContext);
             requestContext.runScripts();
-            result = response == null ? null : response.getWindow().getFrameContents(response.getFrame()); // javascript
-                                                                                                           // might
-                                                                                                           // replace
-                                                                                                           // the
-                                                                                                           // response
-                                                                                                           // in its
-                                                                                                           // frame
+            // javascript might replace the response in its frame
+            result = response == null ? null : response.getWindow().getFrameContents(response.getFrame());
         } finally {
             if (null != request && request.equals(_initialRequest)) {
                 _redirects.clear();
@@ -200,9 +196,9 @@ public class WebWindow {
         _client.updateClient(response);
         if (getClient().getClientProperties().isAutoRefresh() && response.getRefreshRequest() != null) {
             WebRequest request = response.getRefreshRequest();
-            WebResponse result = getResponse(request);
-            return result;
-        } else if (shouldFollowRedirect(response)) {
+            return getResponse(request);
+        }
+        if (shouldFollowRedirect(response)) {
             delay(HttpUnitOptions.getRedirectDelay());
             return getResponse(new RedirectWebRequest(response));
         } else {
@@ -227,16 +223,18 @@ public class WebWindow {
             response = _client.createResponse(request, targetFrame);
         } else {
             ScriptingHandler handler = request.getSourceScriptingHandler();
-            if (handler == null)
+            if (handler == null) {
                 handler = getCurrentPage().getScriptingHandler();
+            }
             Object result = handler.evaluateExpression(urlString);
             if (result != null) {
                 response = new DefaultWebResponse(_client, targetFrame, request.getURL(), result.toString());
             }
         }
 
-        if (response != null)
+        if (response != null) {
             _client.tellListeners(response);
+        }
         return response;
     }
 
@@ -265,8 +263,9 @@ public class WebWindow {
      **/
     public WebResponse getFrameContents(String frameName) {
         WebResponse response = _frameContents.get(frameName);
-        if (response == null)
+        if (response == null) {
             throw new NoSuchFrameException(frameName);
+        }
         return response;
     }
 
@@ -324,8 +323,9 @@ public class WebWindow {
      * Delays the specified amount of time.
      **/
     private void delay(int numMilliseconds) {
-        if (numMilliseconds == 0)
+        if (numMilliseconds == 0) {
             return;
+        }
         try {
             Thread.sleep(numMilliseconds);
         } catch (InterruptedException e) {
@@ -344,9 +344,8 @@ public class WebWindow {
         boolean isAutoredirect = getClient().getClientProperties().isAutoRedirect();
         boolean hasLocation = response.getHeaderField("Location") != null;
         int responseCode = response.getResponseCode();
-        boolean result = isAutoredirect && responseCode >= HttpURLConnection.HTTP_MOVED_PERM
+        return isAutoredirect && responseCode >= HttpURLConnection.HTTP_MOVED_PERM
                 && responseCode <= HttpURLConnection.HTTP_MOVED_TEMP && hasLocation;
-        return result;
     }
 
     /**
@@ -360,8 +359,9 @@ public class WebWindow {
         // first check whether redirect is configured for this response
         // this is the old pre [ 1155415 ] Handle redirect instructions which can lead to a loop
         // shouldFollowRedirect method - just renamed
-        if (!redirectConfigured(response))
+        if (!redirectConfigured(response)) {
             return false;
+        }
         // now do the recursion check
         String redirectLocation = response.getHeaderField("Location");
 
@@ -379,29 +379,29 @@ public class WebWindow {
         }
 
         switch (response.getResponseCode()) {
-            case HttpURLConnection.HTTP_MOVED_PERM:
-            case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
-                int count = 0;
-                if (null != url) {
-                    Integer value = (Integer) _redirects.get(url);
-                    if (null != value) {
-                        // We have already been instructed to redirect to that
-                        // location in the course of this attempt to resolve the
-                        // resource
+        case HttpURLConnection.HTTP_MOVED_PERM:
+        case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
+            int count = 0;
+            if (null != url) {
+                Integer value = (Integer) _redirects.get(url);
+                if (null != value) {
+                    // We have already been instructed to redirect to that
+                    // location in the course of this attempt to resolve the
+                    // resource
 
-                        count = value.intValue();
+                    count = value.intValue();
 
-                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();
+                    int maxRedirects = getClient().getClientProperties().getMaxRedirects();
 
-                        if (count == maxRedirects) {
-                            throw new RecursiveRedirectionException(url, "Maximum number of redirects exceeded");
-                        }
+                    if (count == maxRedirects) {
+                        throw new RecursiveRedirectionException(url, "Maximum number of redirects exceeded");
                     }
-
-                    count++;
-                    _redirects.put(url, Integer.valueOf(count));
                 }
-                break;
+
+                count++;
+                _redirects.put(url, Integer.valueOf(count));
+            }
+            break;
         }
         return redirectLocation != null;
     }

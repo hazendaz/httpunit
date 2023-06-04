@@ -35,7 +35,8 @@ abstract public class PseudoServlet {
     public WebResource getResponse(String methodType) throws IOException {
         if (methodType.equalsIgnoreCase("GET")) {
             return getGetResponse();
-        } else if (methodType.equalsIgnoreCase("PUT")) {
+        }
+        if (methodType.equalsIgnoreCase("PUT")) {
             return getPutResponse();
         } else if (methodType.equalsIgnoreCase("POST")) {
             return getPostResponse();

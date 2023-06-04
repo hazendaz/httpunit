@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import java.util.*;
 import java.util.Hashtable;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -31,7 +31,7 @@ class ServletUnitContext {
 
     ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {
         _servletContext = servletContext;
-        _contextPath = (contextPath != null ? contextPath : "");
+        _contextPath = contextPath != null ? contextPath : "";
         _listenerDispatcher = dispatcher;
     }
 

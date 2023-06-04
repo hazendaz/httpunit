@@ -44,9 +44,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Returns the maximum time interval, in seconds, that the servlet engine will keep this session open between client
      * requests. You can set the maximum time interval with the setMaxInactiveInterval method.
      **/
+    @Override
     public int getMaxInactiveInterval() {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _maxInactiveInterval;
     }
 
@@ -54,9 +56,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Specifies the maximum length of time, in seconds, that the servlet engine keeps this session if no user requests
      * have been made of the session.
      **/
+    @Override
     public void setMaxInactiveInterval(int interval) {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         _maxInactiveInterval = interval;
     }
 
@@ -64,9 +68,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Returns a string containing the unique identifier assigned to this session. The identifier is assigned by the
      * servlet engine and is implementation dependent.
      **/
+    @Override
     public String getId() {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _id;
     }
 
@@ -76,9 +82,11 @@ class ServletUnitHttpSession implements HttpSession {
      * @exception IllegalStateException
      *                if you attempt to get the session's creation time after the session has been invalidated
      **/
+    @Override
     public long getCreationTime() {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _creationTime;
     }
 
@@ -86,9 +94,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Returns the last time the client sent a request associated with this session, as the number of milliseconds since
      * midnight January 1, 1970 GMT.
      **/
+    @Override
     public long getLastAccessedTime() {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _lastAccessedTime;
     }
 
@@ -97,6 +107,7 @@ class ServletUnitHttpSession implements HttpSession {
      * server used only cookie-based sessions, and the client had disabled the use of cookies, then a session would be
      * new.
      **/
+    @Override
     public boolean isNew() {
         return _isNew;
     }
@@ -104,6 +115,7 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * Invalidates this session and unbinds any objects bound to it.
      **/
+    @Override
     public void invalidate() {
         _listenerDispatcher.sendSessionDestroyed(this);
         _invalid = true;
@@ -113,6 +125,8 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * @deprecated no replacement.
      **/
+    @Deprecated
+    @Override
     public HttpSessionContext getSessionContext() {
         return null;
     }
@@ -120,6 +134,8 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * @deprecated as of JSDK 2.2, use getAttribute
      **/
+    @Deprecated
+    @Override
     public Object getValue(String name) {
         return getAttribute(name);
     }
@@ -127,6 +143,8 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * @deprecated as of JSDK 2.2, use setAttribute
      **/
+    @Deprecated
+    @Override
     public void putValue(String name, Object value) {
         setAttribute(name, value);
     }
@@ -134,6 +152,8 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * @deprecated as of JSDK 2.2, use removeAttribute
      **/
+    @Deprecated
+    @Override
     public void removeValue(String name) {
         removeAttribute(name);
     }
@@ -141,18 +161,23 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * @deprecated as of JSDK 2.2, use getAttributeNames.
      **/
+    @Deprecated
+    @Override
     public String[] getValueNames() {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return (String[]) _values.keySet().toArray(new String[_values.size()]);
     }
 
     /**
      * Returns the object bound with the specified name in this session or null if no object of that name exists.
      **/
+    @Override
     public Object getAttribute(String name) {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _values.get(name);
     }
 
@@ -160,9 +185,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Binds an object to this session, using the name specified. If an object of the same name is already bound to the
      * session, the object is replaced.
      **/
+    @Override
     public void setAttribute(String name, Object value) {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
 
         if (value == null) {
             removeAttribute(name);
@@ -180,9 +207,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Removes the object bound with the specified name from this session. If the session does not have an object bound
      * with the specified name, this method does nothing.
      **/
+    @Override
     public void removeAttribute(String name) {
-        if (_invalid)
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         if (_values.containsKey(name)) {
             Object oldValue = _values.get(name);
             _values.remove(name);
@@ -194,9 +223,11 @@ class ServletUnitHttpSession implements HttpSession {
      * Returns an array containing the names of all the objects bound to this session. This method is useful, for
      * example, when you want to delete all the objects bound to this session.
      **/
-    public Enumeration getAttributeNames() {
-        if (_invalid)
+    @Override
+    public Enumeration<String> getAttributeNames() {
+        if (_invalid) {
             throw new IllegalStateException();
+        }
         return _values.keys();
     }
 
@@ -207,6 +238,7 @@ class ServletUnitHttpSession implements HttpSession {
      *
      * @since 1.3
      **/
+    @Override
     public ServletContext getServletContext() {
         return _servletContext;
     }

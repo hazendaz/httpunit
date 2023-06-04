@@ -57,18 +57,22 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
         return _baseRequest;
     }
 
+    @Override
     public String getParameter(String s) {
         return _requestContext.getParameter(s);
     }
 
+    @Override
     public Enumeration getParameterNames() {
         return _requestContext.getParameterNames();
     }
 
+    @Override
     public String[] getParameterValues(String s) {
         return _requestContext.getParameterValues(s);
     }
 
+    @Override
     public Map getParameterMap() {
         return _requestContext.getParameterMap();
     }
@@ -91,13 +95,15 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
         _attributes.put(CONTEXT_PATH, request.getContextPath());
         _attributes.put(SERVLET_PATH, ((RequestDispatcherImpl) dispatcher).getServletMetaData().getServletPath());
         final String pathInfo = ((RequestDispatcherImpl) dispatcher).getServletMetaData().getPathInfo();
-        if (pathInfo != null)
+        if (pathInfo != null) {
             _attributes.put(PATH_INFO, pathInfo);
+        }
     }
 
+    @Override
     public Object getAttribute(String s) {
         Object result = _attributes.get(s);
-        return (result != null) ? result : super.getAttribute(s);
+        return result != null ? result : super.getAttribute(s);
     }
 
 }
@@ -111,18 +117,22 @@ class ForwardRequestWrapper extends DispatchedRequestWrapper {
         _requestContext = (RequestDispatcherImpl) dispatcher;
     }
 
+    @Override
     public String getRequestURI() {
         return _requestContext.getRequestURI();
     }
 
+    @Override
     public String getQueryString() {
         return super.getQueryString();
     }
 
+    @Override
     public String getServletPath() {
         return _requestContext.getServletMetaData().getServletPath();
     }
 
+    @Override
     public String getPathInfo() {
         return _requestContext.getServletMetaData().getPathInfo();
     }

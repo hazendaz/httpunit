@@ -40,18 +40,22 @@ class FilterConfigImpl implements FilterConfig {
         _initParams = initParams;
     }
 
+    @Override
     public String getFilterName() {
         return _name;
     }
 
+    @Override
     public ServletContext getServletContext() {
         return _servletContext;
     }
 
+    @Override
     public String getInitParameter(String s) {
         return (String) _initParams.get(s);
     }
 
+    @Override
     public Enumeration getInitParameterNames() {
         return _initParams.keys();
     }

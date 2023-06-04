@@ -51,8 +51,9 @@ class ServletUnitWebResponse extends WebResponse {
         /** make sure that any IO exception for HTML received page happens here, not later. **/
         if (getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {
             defineRawInputStream(new ByteArrayInputStream(_response.getContents()));
-            if (getContentType().startsWith("text"))
+            if (getContentType().startsWith("text")) {
                 loadResponseText();
+            }
         }
     }
 
@@ -74,6 +75,7 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Returns the response code associated with this response.
      **/
+    @Override
     public int getResponseCode() {
         return _response.getStatus();
     }
@@ -81,10 +83,12 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Returns the response message associated with this response.
      **/
+    @Override
     public String getResponseMessage() {
         return _response.getMessage();
     }
 
+    @Override
     public String[] getHeaderFieldNames() {
         return _response.getHeaderFieldNames();
     }
@@ -92,14 +96,17 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null.
      **/
+    @Override
     public String getHeaderField(String fieldName) {
         return _response.getHeaderField(fieldName);
     }
 
+    @Override
     public String[] getHeaderFields(String fieldName) {
         return _response.getHeaderFields(fieldName);
     }
 
+    @Override
     public String toString() {
         return "[ _response = " + _response + "]";
     }

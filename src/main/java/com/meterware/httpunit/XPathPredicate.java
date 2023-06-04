@@ -19,9 +19,14 @@
  */
 package com.meterware.httpunit;
 
-import javax.xml.xpath.*;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Provides an HTMLElement Predicate that is capable of matching based on an XPath node specification. This allows for
@@ -77,11 +82,13 @@ public class XPathPredicate implements HTMLElementPredicate {
      * @param criteria
      *            - the criteria to check
      */
+    @Override
     public boolean matchesCriteria(final Object someElement, final Object criteria) {
 
         // this condition should normally be false
-        if (!(someElement instanceof HTMLElement))
+        if (!(someElement instanceof HTMLElement)) {
             return false;
+        }
 
         HTMLElement htmlElement = (HTMLElement) someElement;
 

@@ -41,9 +41,10 @@ public abstract class ServletTestCase extends TestCase {
      * Returns a client object which can access the servlet context in which this test is running.
      */
     final protected ServletUnitClient newClient() {
-        if (_invocationContextFactory == null)
+        if (_invocationContextFactory == null) {
             throw new RuntimeException(
                     "ServletTestCase.newClient called before setInvocationContextFactory was called");
+        }
         return ServletUnitClient.newClient(_invocationContextFactory);
     }
 
@@ -53,9 +54,10 @@ public abstract class ServletTestCase extends TestCase {
      * @param invocationContextFactory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
-        if (invocationContextFactory == null)
+        if (invocationContextFactory == null) {
             throw new RuntimeException(
                     "setInvocationContextFactory called with null invocationContextFactory parameter");
+        }
         _invocationContextFactory = invocationContextFactory;
     }
 

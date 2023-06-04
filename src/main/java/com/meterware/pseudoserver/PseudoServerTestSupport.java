@@ -46,8 +46,9 @@ public class PseudoServerTestSupport extends ExternalResource {
     }
 
     public void tearDownServer() {
-        if (_server != null)
+        if (_server != null) {
             _server.shutDown();
+        }
     }
 
     public void mapToClasspath(String directory) {
@@ -93,9 +94,9 @@ public class PseudoServerTestSupport extends ExternalResource {
      */
     public void defineWebPage(String xmlns, String pageName, String body) {
         String preamble = "";
-        if (xmlns == null)
+        if (xmlns == null) {
             xmlns = "";
-        else {
+        } else {
             preamble = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
             preamble += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
             xmlns = " xmlns=\"" + xmlns + "\"";

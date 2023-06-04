@@ -62,6 +62,7 @@ public class ServletRunner {
      * @param webXMLFileSpec
      *            the full path to the web.xml file
      */
+    @Deprecated
     public ServletRunner(String webXMLFileSpec) throws IOException, SAXException {
         _application = new WebApplication(HttpUnitUtils.newParser().parse(webXMLFileSpec));
         completeInitialization(null);
@@ -78,6 +79,7 @@ public class ServletRunner {
      * @param contextPath
      *            the context path
      */
+    @Deprecated
     public ServletRunner(String webXMLFileSpec, String contextPath) throws IOException, SAXException {
         this(new File(webXMLFileSpec), contextPath);
     }
@@ -232,6 +234,7 @@ public class ServletRunner {
      *
      * @deprecated - test case for this function deactivated wf 2007-12-30
      */
+    @Deprecated
     public void setContextParameter(String name, Object value) {
         getApplication().getServletContext().setAttribute(name, value);
     }
@@ -253,16 +256,20 @@ public class ServletRunner {
 
     public static class JasperJSPServletDescriptor implements JSPServletDescriptor {
 
+        @Override
         public String getClassName() {
             return "org.apache.jasper.servlet.JspServlet";
         }
 
+        @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
             Hashtable params = new Hashtable();
-            if (classPath != null)
+            if (classPath != null) {
                 params.put("classpath", classPath);
-            if (workingDirectory != null)
+            }
+            if (workingDirectory != null) {
                 params.put("scratchdir", workingDirectory);
+            }
             return params;
         }
     }
@@ -291,20 +298,23 @@ public class ServletRunner {
     private ServletUnitContext _context;
 
     private InvocationContextFactory _factory = new InvocationContextFactory() {
+        @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
                 Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
             return new InvocationContextImpl(client, ServletRunner.this, targetFrame, request, clientHeaders,
                     messageBody);
         }
 
+        @Override
         public HttpSession getSession(String sessionId, boolean create) {
             return _context.getValidSession(sessionId, null, create);
         }
     };
 
     private ServletUnitClient getClient() {
-        if (_client == null)
+        if (_client == null) {
             _client = newClient();
+        }
         return _client;
     }
 

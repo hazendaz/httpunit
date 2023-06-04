@@ -456,7 +456,8 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
             Node parent = node.getParentNode();
             if (parent == null) {
                 return false;
-            } else if (parent.isSameNode(_doNotLeaveNode)) {
+            }
+            if (parent.isSameNode(_doNotLeaveNode)) {
                 return true;
             } else {
                 return isChild(parent);

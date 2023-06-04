@@ -74,9 +74,8 @@ public class JUnitServlet extends HttpServlet {
         }
         if ("xml".equalsIgnoreCase(formatterName)) {
             return new XMLResultsFormatter();
-        } else {
-            return new HTMLResultsFormatter();
         }
+        return new HTMLResultsFormatter();
     }
 
     private InvocationContextFactory _factory;

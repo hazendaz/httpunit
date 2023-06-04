@@ -214,7 +214,7 @@ public class FormParameter {
     boolean isMultiValuedParameter() {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
-            if (control.isMultiValued() || (!control.isExclusive() && controls.length > 1)) {
+            if (control.isMultiValued() || !control.isExclusive() && controls.length > 1) {
                 return true;
             }
         }

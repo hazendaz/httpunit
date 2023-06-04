@@ -439,35 +439,34 @@ public class PseudoServer {
         }
         if (resource instanceof PseudoServlet) {
             return getResource((PseudoServlet) resource, request);
-        } else {
-            if (request.getURI().endsWith(".class")) {
-                for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
-                    String directory = (String) iterator.next();
-                    if (request.getURI().startsWith(directory)) {
-                        String resourceName = request.getURI().substring(directory.length() + 1);
-                        return new WebResource(getClass().getClassLoader().getResourceAsStream(resourceName),
-                                "application/class", 200);
-                    }
+        }
+        if (request.getURI().endsWith(".class")) {
+            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
+                String directory = (String) iterator.next();
+                if (request.getURI().startsWith(directory)) {
+                    String resourceName = request.getURI().substring(directory.length() + 1);
+                    return new WebResource(getClass().getClassLoader().getResourceAsStream(resourceName),
+                            "application/class", 200);
                 }
-            } else if (request.getURI().endsWith(".zip") || request.getURI().endsWith(".jar")) {
-                for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
-                    String directory = (String) iterator.next();
-                    if (request.getURI().startsWith(directory)) {
-                        String resourceName = request.getURI().substring(directory.length() + 1);
-                        String classPath = System.getProperty("java.class.path");
-                        StringTokenizer st = new StringTokenizer(classPath, ":;,");
-                        while (st.hasMoreTokens()) {
-                            String file = st.nextToken();
-                            if (file.endsWith(resourceName)) {
-                                File f = new File(file);
-                                return new WebResource(new FileInputStream(f), "application/zip", 200);
-                            }
+            }
+        } else if (request.getURI().endsWith(".zip") || request.getURI().endsWith(".jar")) {
+            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
+                String directory = (String) iterator.next();
+                if (request.getURI().startsWith(directory)) {
+                    String resourceName = request.getURI().substring(directory.length() + 1);
+                    String classPath = System.getProperty("java.class.path");
+                    StringTokenizer st = new StringTokenizer(classPath, ":;,");
+                    while (st.hasMoreTokens()) {
+                        String file = st.nextToken();
+                        if (file.endsWith(resourceName)) {
+                            File f = new File(file);
+                            return new WebResource(new FileInputStream(f), "application/zip", 200);
                         }
                     }
                 }
             }
-            return null;
         }
+        return null;
     }
 
     private String withoutParameters(String uri) {

@@ -267,17 +267,16 @@ public class JavaScript {
             }
             if (delegate.getScriptEngine() instanceof Scriptable) {
                 return delegate.getScriptEngine();
-            } else {
-                try {
-                    JavaScriptEngine element = (JavaScriptEngine) Context.getCurrentContext().newObject(this,
-                            getScriptableClassName(delegate));
-                    element.initialize(this, delegate);
-                    return element;
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw new RhinoException(e);
-                }
+            }
+            try {
+                JavaScriptEngine element = (JavaScriptEngine) Context.getCurrentContext().newObject(this,
+                        getScriptableClassName(delegate));
+                element.initialize(this, delegate);
+                return element;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RhinoException(e);
             }
         }
 

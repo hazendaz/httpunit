@@ -38,7 +38,8 @@ abstract public class PseudoServlet {
         }
         if (methodType.equalsIgnoreCase("PUT")) {
             return getPutResponse();
-        } else if (methodType.equalsIgnoreCase("POST")) {
+        }
+        if (methodType.equalsIgnoreCase("POST")) {
             return getPostResponse();
         } else if (methodType.equalsIgnoreCase("DELETE")) {
             return getDeleteResponse();

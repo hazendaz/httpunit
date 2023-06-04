@@ -40,9 +40,8 @@ abstract class XMLUtils {
         }
         if (defaultValue == null) {
             throw new SAXException("Node <" + root.getNodeName() + "> has no child named <" + childNodeName + ">");
-        } else {
-            return defaultValue;
         }
+        return defaultValue;
     }
 
     static String getTextValue(Node node) throws SAXException {

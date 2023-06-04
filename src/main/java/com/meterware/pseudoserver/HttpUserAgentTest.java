@@ -247,19 +247,15 @@ public class HttpUserAgentTest {
         private Vector _parameters = new Vector();
 
         private boolean equals(QuerySpec o) {
-            if (!_path.equals(o._path)) {
+            if (!_path.equals(o._path) || (_parameters.size() != o._parameters.size())) {
                 return false;
             }
-            if (_parameters.size() != o._parameters.size()) {
-                return false;
-            } else {
-                for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {
-                    if (!_parameters.contains(e.nextElement())) {
-                        return false;
-                    }
+            for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {
+                if (!_parameters.contains(e.nextElement())) {
+                    return false;
                 }
-                return true;
             }
+            return true;
         }
     }
 }

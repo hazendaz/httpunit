@@ -125,7 +125,8 @@ public class HttpHeader {
                 sb.append(chars[i]);
                 i++;
                 while (i < chars.length && chars[i] != '"') {
-                    sb.append(chars[i++]);
+                    sb.append(chars[i]);
+                    i++;
                 }
                 sb.append('"');
                 if (i < chars.length)

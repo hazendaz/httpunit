@@ -289,7 +289,7 @@ public class CookieJar {
      * @return
      */
     private boolean compareDomain(String domain, String newDomain) {
-        if ((domain.charAt(0) == '.' && newDomain.endsWith(domain)) || (newDomain.charAt(0) == '.' && domain.endsWith(newDomain))) {
+        if (domain.charAt(0) == '.' && newDomain.endsWith(domain) || newDomain.charAt(0) == '.' && domain.endsWith(newDomain)) {
             return true;
         }
 
@@ -379,7 +379,7 @@ public class CookieJar {
                 while (st.nextToken() != StreamTokenizer.TT_EOF) {
                     String tokenContent = st.sval;
                     // fix expires comma delimiter token problem
-                    if (tokenContent.toLowerCase().startsWith("expires=") && (st.nextToken() != StreamTokenizer.TT_EOF)) {
+                    if (tokenContent.toLowerCase().startsWith("expires=") && st.nextToken() != StreamTokenizer.TT_EOF) {
                         tokenContent += "," + st.sval;
                     } // if // if
                     tokenContent = tokenContent.trim();
@@ -491,8 +491,8 @@ public class CookieJar {
                 }
             }
 
-            if ((cookie.getDomain() == null) || (!CookieProperties.isDomainMatchingStrict()
-                    && cookie.getDomain().equalsIgnoreCase(_sourceURL.getHost()))) {
+            if (cookie.getDomain() == null || !CookieProperties.isDomainMatchingStrict()
+                    && cookie.getDomain().equalsIgnoreCase(_sourceURL.getHost())) {
                 cookie.setDomain(_sourceURL.getHost());
             } else {
                 int status = getDomainAttributeStatus(cookie, _sourceURL.getHost());
@@ -545,7 +545,8 @@ public class CookieJar {
             }
             if (!sourceHost.endsWith(domainAttribute)) {
                 return CookieListener.DOMAIN_NOT_SOURCE_SUFFIX;
-            } else if (CookieProperties.isDomainMatchingStrict()
+            }
+            if (CookieProperties.isDomainMatchingStrict()
                     && sourceHost.lastIndexOf(domainAttribute) > sourceHost.indexOf('.')) {
                 return CookieListener.DOMAIN_TOO_MANY_LEVELS;
             } else {

@@ -361,7 +361,8 @@ public abstract class FormControl extends HTMLElementBase {
         }
         if (node.getNodeName().equalsIgnoreCase("textarea")) {
             return new TextAreaFormControl(form, (HTMLTextAreaElementImpl) node);
-        } else if (node.getNodeName().equalsIgnoreCase("select")) {
+        }
+        if (node.getNodeName().equalsIgnoreCase("select")) {
             return new SelectionFormControl(form, (HTMLSelectElementImpl) node);
         } else if (node.getNodeName().equalsIgnoreCase("button")) {
             HTMLControl control = (HTMLControl) node;
@@ -451,9 +452,8 @@ public abstract class FormControl extends HTMLElementBase {
             }
             if (propertyName.equalsIgnoreCase("type")) {
                 return FormControl.this.getType();
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
         /**
@@ -557,7 +557,8 @@ abstract class BooleanFormControl extends FormControl {
             }
             if (propertyName.equalsIgnoreCase("checked")) {
                 return isChecked() ? Boolean.TRUE : Boolean.FALSE;
-            } else if (propertyName.equalsIgnoreCase("defaultchecked")) {
+            }
+            if (propertyName.equalsIgnoreCase("defaultchecked")) {
                 return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;
             } else {
                 return super.get(propertyName);
@@ -798,9 +799,8 @@ abstract class TextFormControl extends FormControl {
             }
             if (propertyName.equalsIgnoreCase("defaultValue")) {
                 return getDefaultValue();
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
         @Override

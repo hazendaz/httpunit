@@ -187,7 +187,8 @@ public class HttpUnitUtils {
                 try {
                     i++;
                     int u = Character.digit((char) pArray[i], 16);
-                    int l = Character.digit((char) pArray[++i], 16);
+                    i++;
+                    int l = Character.digit((char) pArray[i], 16);
                     if (u == -1 || l == -1) {
                         throw new IllegalArgumentException("Invalid URL encoding");
                     }
@@ -389,7 +390,7 @@ public class HttpUnitUtils {
                 inQuotes = !inQuotes;
                 sb.append(aChar);
                 // append everything in quotes and printable chars above space
-            } else if (inQuotes || (aChar > ' ')) {
+            } else if (inQuotes || aChar > ' ') {
                 sb.append(aChar);
             } else if (aChar == ' ') {
                 // encode spaces

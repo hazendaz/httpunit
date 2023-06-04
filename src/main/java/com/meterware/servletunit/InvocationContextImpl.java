@@ -168,7 +168,7 @@ class InvocationContextImpl implements InvocationContext {
             pushFilter(servletRequest, servletResponse);
             service();
             popRequest();
-         };
+        };
     }
 
     @Override
@@ -220,7 +220,8 @@ class InvocationContextImpl implements InvocationContext {
         }
         if (request.getRemoteUser() != null) {
             throw new AccessDeniedException(requestURL);
-        } else if (_application.usesBasicAuthentication()) {
+        }
+        if (_application.usesBasicAuthentication()) {
             throw AuthorizationRequiredException
             .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
         } else if (!_application.usesFormAuthentication()) {

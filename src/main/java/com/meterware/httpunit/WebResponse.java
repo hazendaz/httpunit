@@ -922,7 +922,8 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             }
             if (propertyName.equalsIgnoreCase("top")) {
                 return _window.getFrameContents(WebRequest.TOP_FRAME).getScriptableObject();
-            } else if (propertyName.equalsIgnoreCase("parent")) {
+            }
+            if (propertyName.equalsIgnoreCase("parent")) {
                 return _window.getParentFrameContents(_frame).getScriptableObject();
             } else if (propertyName.equalsIgnoreCase("opener")) {
                 return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;
@@ -1527,12 +1528,13 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             }
             if (_buffer[start] == '"') {
                 for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '"'; _end++) {
-                    ;
+
                 }
                 return new String(_buffer, start + 1, _end - start - 1);
-            } else if (_buffer[start] == '\'') {
+            }
+            if (_buffer[start] == '\'') {
                 for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '\''; _end++) {
-                    ;
+
                 }
                 return new String(_buffer, start + 1, _end - start - 1);
             } else if (_buffer[start] == '=') {
@@ -1541,7 +1543,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             } else {
                 for (_end = start + 1; _end < _buffer.length && _buffer[_end] != '='
                         && !Character.isWhitespace(_buffer[_end]); _end++) {
-                    ;
+
                 }
                 return new String(_buffer, start, _end-- - start);
             }
@@ -1572,7 +1574,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
                 // continue;
                 // }
                 for (_end = _start + 1; _end < _buffer.length && _buffer[_end] != '>'; _end++) {
-                    ;
+
                 }
                 if (_end >= _buffer.length || _end < _start) {
                     return null;

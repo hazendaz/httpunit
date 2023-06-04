@@ -54,7 +54,7 @@ public class HTMLPage extends ParsedHTML {
      **/
     public String getTitle() throws SAXException {
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("title");
-        if ((nl.getLength() == 0) || !nl.item(0).hasChildNodes()) {
+        if (nl.getLength() == 0 || !nl.item(0).hasChildNodes()) {
             return "";
         }
         return nl.item(0).getFirstChild().getNodeValue();
@@ -140,8 +140,7 @@ public class HTMLPage extends ParsedHTML {
                 return delegate;
             }
 
-            delegate = getNamedItem(getImages(), propertyName);
-            return delegate;
+            return getNamedItem(getImages(), propertyName);
         }
 
         private NamedDelegate getNamedItem(ScriptingHandler[] items, String name) {

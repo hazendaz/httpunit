@@ -82,9 +82,8 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
             } else {
                 throw new ScriptException(errorMessage);
             }
-        } else {
-            _errorMessages.add(errorMessage);
         }
+        _errorMessages.add(errorMessage);
     }
 
     // --------------------------------------- ScriptingEngine methods

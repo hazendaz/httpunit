@@ -86,9 +86,8 @@ public class WebImage extends FixedURLWebRequestSource {
             }
             if (propertyName.equalsIgnoreCase("name")) {
                 return getName();
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
         @Override

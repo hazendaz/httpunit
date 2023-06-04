@@ -146,7 +146,7 @@ public class WebTable extends HTMLElementBase {
                     // Secondly I mark the starting coordinates as containing
                     // text which keeps the next section of code from removing
                     // the starting row/column.
-                    if (!spanningCells.containsKey(getTableCell(row, col)) && (spanningCells.get(getTableCell(row, col)) == null)) {
+                    if (!spanningCells.containsKey(getTableCell(row, col)) && spanningCells.get(getTableCell(row, col)) == null) {
                         if (!rowHasText[row]) {
                             numRowsWithText++;
                         }

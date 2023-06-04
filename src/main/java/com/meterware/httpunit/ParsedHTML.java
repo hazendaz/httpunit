@@ -856,7 +856,7 @@ public class ParsedHTML {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
                 HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());
-                if (factory == null || !factory.isRecognized(getClientProperties()) || (pot.getClosestContext(ContentConcealer.class) != null)) {
+                if (factory == null || !factory.isRecognized(getClientProperties()) || pot.getClosestContext(ContentConcealer.class) != null) {
                     return true;
                 }
 
@@ -877,7 +877,7 @@ public class ParsedHTML {
                 }
 
                 Node parent = textNode.getParentNode();
-                if (!parent.getNodeName().equalsIgnoreCase("body") || (pot.getClosestContext(ContentConcealer.class) != null)) {
+                if (!parent.getNodeName().equalsIgnoreCase("body") || pot.getClosestContext(ContentConcealer.class) != null) {
                     return;
                 }
                 new HtmlElementRecorder().recordHtmlElement(pot, textNode, newTextBlock(textNode));

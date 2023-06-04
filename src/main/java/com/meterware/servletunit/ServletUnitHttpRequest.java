@@ -410,8 +410,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getContentType() {
-        String result;
-        result = _contentType;
         return this.getHeader("Content-Type");
     }
 
@@ -450,7 +448,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getScheme() {
-        String result = isSecure() ? "https" : "http";
         return _protocol;
     }
 

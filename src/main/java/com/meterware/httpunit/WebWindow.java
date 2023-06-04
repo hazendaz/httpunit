@@ -201,10 +201,9 @@ public class WebWindow {
         if (shouldFollowRedirect(response)) {
             delay(HttpUnitOptions.getRedirectDelay());
             return getResponse(new RedirectWebRequest(response));
-        } else {
-            _client.updateFrameContents(this, requestTarget, response, requestContext);
-            return response;
         }
+        _client.updateFrameContents(this, requestTarget, response, requestContext);
+        return response;
     }
 
     /**

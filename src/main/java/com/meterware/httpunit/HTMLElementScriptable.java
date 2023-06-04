@@ -47,12 +47,10 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
      */
     @Override
     public Object get(String propertyName) {
-        if (propertyName.equals("nodeName")) {
+        if (propertyName.equals("nodeName") || propertyName.equals("tagName")) {
             return _element.getTagName();
         }
-        if (propertyName.equals("tagName")) {
-            return _element.getTagName();
-        } else if (propertyName.equalsIgnoreCase("title")) {
+        if (propertyName.equalsIgnoreCase("title")) {
             return _element.getTitle();
         } else if (_element.isSupportedAttribute(propertyName)) {
             return _element.getAttribute(propertyName);

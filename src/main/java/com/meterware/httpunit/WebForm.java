@@ -94,7 +94,6 @@ public class WebForm extends WebRequestSource {
      * @since 1.6
      **/
     public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
-        WebResponse result = null;
         if (button == null) {
             throw new IllegalSubmitButtonException("?", "?");
         }
@@ -793,7 +792,8 @@ public class WebForm extends WebRequestSource {
             }
             if (propertyName.equals("action")) {
                 return getAction();
-            } else if (propertyName.equals("length")) {
+            }
+            if (propertyName.equals("length")) {
                 return Integer.valueOf(getFormControls().length);
             } else {
                 final FormParameter parameter = getParameter(propertyName);

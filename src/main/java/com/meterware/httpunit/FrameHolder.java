@@ -117,7 +117,8 @@ class FrameHolder {
         }
         if (rootFrame.getName().equals(target)) {
             return rootFrame;
-        } else if (rootFrame.getParent() != null) {
+        }
+        if (rootFrame.getParent() != null) {
             return lookupFrame(rootFrame.getParent(), target);
         } else {
             return null;
@@ -162,7 +163,8 @@ class FrameHolder {
         }
         if (WebRequest.TOP_FRAME.equalsIgnoreCase(request.getTarget())) {
             return _topFrame;
-        } else if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {
+        }
+        if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame();
         } else if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {
             return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();

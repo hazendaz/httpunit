@@ -19,7 +19,6 @@
  */
 package com.meterware.httpunit.dom;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**

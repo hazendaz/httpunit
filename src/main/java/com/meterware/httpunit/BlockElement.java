@@ -48,7 +48,8 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
         }
         if (_node.getNodeType() == Node.TEXT_NODE) {
             return _node.getNodeValue().trim();
-        } else if (!_node.hasChildNodes()) {
+        }
+        if (!_node.hasChildNodes()) {
             return "";
         } else {
             return NodeUtils.asText(_node.getChildNodes()).trim();

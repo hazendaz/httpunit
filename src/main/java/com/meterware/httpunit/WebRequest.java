@@ -118,15 +118,14 @@ abstract public class WebRequest {
         }
         if (spec.toLowerCase().startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
             return new URL("https", null, -1, spec.substring("https:".length()), HTTPS_STREAM_HANDLER);
-        } else {
-            if (getURLBase() == null || getURLString().indexOf(':') > 0) {
-                if (getURLString().indexOf(':') <= 0) {
-                    throw new RuntimeException("No protocol specified in URL '" + getURLString() + "'");
-                }
-                HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));
-            }
-            return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
         }
+        if (getURLBase() == null || getURLString().indexOf(':') > 0) {
+            if (getURLString().indexOf(':') <= 0) {
+                throw new RuntimeException("No protocol specified in URL '" + getURLString() + "'");
+            }
+            HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));
+        }
+        return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
     }
 
     private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
@@ -135,9 +134,8 @@ abstract public class WebRequest {
         }
         if (spec.startsWith("..")) {
             return new URL(getNormalizedURL(getURLDirectory(base) + spec));
-        } else {
-            return new URL(base, getNormalizedURL(spec));
         }
+        return new URL(base, getNormalizedURL(spec));
     }
 
     private String getURLDirectory(final URL base) {

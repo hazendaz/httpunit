@@ -154,9 +154,8 @@ public class WebResource {
         }
         if (_string != null) {
             return _string.getBytes(getCharacterSet());
-        } else {
-            throw new IllegalStateException("Cannot get bytes from stream");
         }
+        throw new IllegalStateException("Cannot get bytes from stream");
     }
 
     private String getContentTypeHeader() {

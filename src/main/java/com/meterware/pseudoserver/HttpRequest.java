@@ -100,9 +100,8 @@ public class HttpRequest extends ReceivedHttpMessage {
         }
         if (_protocol.equals("HTTP/1.1")) {
             return !"Close".equalsIgnoreCase(getConnectionHeader());
-        } else {
-            return false;
         }
+        return false;
     }
 
     private Hashtable readParameters(String content) {

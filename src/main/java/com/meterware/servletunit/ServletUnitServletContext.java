@@ -110,7 +110,7 @@ public class ServletUnitServletContext implements ServletContext {
             // state of code until 2014-02 - before proposal of Aki Yoshida
             // return resourceFile == null ? null : resourceFile.toURL();
 
-            return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURL();
+            return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();
         } catch (MalformedURLException e) {
             return null;
         }

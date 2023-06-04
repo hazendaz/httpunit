@@ -235,22 +235,6 @@ public class ServletUnitServletContext implements ServletContext {
     }
 
     /**
-     * @deprecated as of Servlet API 2.0
-     **/
-    @Override
-    public java.util.Enumeration<Servlet> getServlets() {
-        return Collections.emptyEnumeration();
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    @Override
-    public java.util.Enumeration<String> getServletNames() {
-        return Collections.emptyEnumeration();
-    }
-
-    /**
      * Writes the specified message to a servlet log file, usually an event log. The name and type of the servlet log
      * file is specific to the servlet container.
      **/

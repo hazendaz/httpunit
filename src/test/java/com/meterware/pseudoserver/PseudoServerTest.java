@@ -383,9 +383,8 @@ class PseudoServerTest {
                 optionsResource.addHeader("Allow:GET");
                 optionsResource.addHeader("test-header1:test-value1");
                 return optionsResource;
-            } else {
-                return super.getResponse(method);
             }
+            return super.getResponse(method);
         }
     }
 

@@ -98,7 +98,7 @@ public class WebImageTest extends HttpUnitTest {
         boolean withDebug = true;
         int i = 1;
         for (; i <= MAX_GIFTESTCOUNT; i++) {
-            if (withDebug && (i % 500 == 0)) {
+            if (withDebug && i % 500 == 0) {
                 System.out.print(delim + i);
                 delim = ", ";
                 System.out.flush();

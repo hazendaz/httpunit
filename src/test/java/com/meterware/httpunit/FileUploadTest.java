@@ -488,7 +488,7 @@ class MimeEcho extends PseudoServlet {
                 }
             } else if (state == 1) {
                 name = token.trim();
-            } else if ((state == 2) && name.equalsIgnoreCase(attributeName)) {
+            } else if (state == 2 && name.equalsIgnoreCase(attributeName)) {
                 return stripQuotes(token.trim());
             }
         }

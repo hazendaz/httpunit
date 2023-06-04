@@ -377,7 +377,8 @@ class PseudoServerTest {
                 WebResource headResource = new WebResource("");
                 headResource.addHeader("test-header1:test-value1");
                 return headResource;
-            } else if (method.equals("OPTIONS")) {
+            }
+            if (method.equals("OPTIONS")) {
                 WebResource optionsResource = new WebResource(GET_DATA);
                 optionsResource.addHeader("Allow:GET");
                 optionsResource.addHeader("test-header1:test-value1");

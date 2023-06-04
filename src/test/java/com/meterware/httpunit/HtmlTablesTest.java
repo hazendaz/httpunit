@@ -111,7 +111,8 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Notifications:", text[row][1]);
         row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Watches:", text[row][0]);
         assertEquals("Watches:", text[row++][1]);
         assertEquals("", text[row][0]);

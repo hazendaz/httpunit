@@ -32,7 +32,7 @@
 
     <groupId>com.github.hazendaz.httpunit</groupId>
     <artifactId>httpunit</artifactId>
-    <version>1.12.2-SNAPSHOT</version>
+    <version>1.12.2</version>
 
     <name>httpunit</name>
     <description>A library for testing websites programmatically</description>
@@ -50,7 +50,7 @@
         <url>https://github.com/hazendaz/httpunit</url>
         <developerConnection>scm:git:https://github.com/hazendaz/httpunit.git</developerConnection>
         <connection>scm:git:https://github.com/hazendaz/httpunit.git</connection>
-      <tag>HEAD</tag>
+      <tag>httpunit-1.12.2</tag>
   </scm>
     <distributionManagement>
         <site>

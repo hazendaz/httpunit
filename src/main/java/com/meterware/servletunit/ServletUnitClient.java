@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,12 @@
  */
 package com.meterware.servletunit;
 
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.FrameSelector;
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HttpInternalErrorException;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -56,6 +61,7 @@ public class ServletUnitClient extends WebClient {
     /**
      * Specifies a proxy server to use for requests from this client.
      */
+    @Override
     public void setProxyServer(String proxyHost, int proxyPort) {
         // not implemented
     }
@@ -87,8 +93,9 @@ public class ServletUnitClient extends WebClient {
      */
     InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
         ByteArrayOutputStream baos = getMessageBody(request);
-        if (_invocationContextFactory == null)
+        if (_invocationContextFactory == null) {
             throw new RuntimeException("newInvocation called with null _invocationContextFactory");
+        }
         return _invocationContextFactory.newInvocation(this, frame, request, getHeaderFields(request.getURL()),
                 baos.toByteArray());
     }
@@ -121,8 +128,9 @@ public class ServletUnitClient extends WebClient {
     public HttpSession getSession(boolean create) {
         HttpSession session = _invocationContextFactory
                 .getSession(getCookieValue(ServletUnitHttpSession.SESSION_COOKIE_NAME), create);
-        if (session != null)
+        if (session != null) {
             putCookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());
+        }
         return session;
     }
 
@@ -131,6 +139,7 @@ public class ServletUnitClient extends WebClient {
     /**
      * Creates a web response object which represents the response to the specified web request.
      **/
+    @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
             throws MalformedURLException, IOException {
 
@@ -151,8 +160,9 @@ public class ServletUnitClient extends WebClient {
     // --------------------------------- package methods ---------------------------------------
 
     private ServletUnitClient(InvocationContextFactory factory) {
-        if (factory == null)
+        if (factory == null) {
             throw new RuntimeException("constructor for ServletUnitClient called with null factory parameter");
+        }
         _invocationContextFactory = factory;
     }
 }

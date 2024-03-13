@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -76,6 +76,7 @@ public class FrameSelector {
         return _parent;
     }
 
+    @Override
     public String toString() {
         return "Frame Selector: [ " + getFullName() + " ]";
     }
@@ -85,7 +86,7 @@ public class FrameSelector {
     }
 
     WebWindow getWindow() {
-        return _window != null ? _window : (_parent == null ? null : _parent.getWindow());
+        return _window != null ? _window : _parent == null ? null : _parent.getWindow();
     }
 
     static FrameSelector newTopFrame(WebWindow window) {

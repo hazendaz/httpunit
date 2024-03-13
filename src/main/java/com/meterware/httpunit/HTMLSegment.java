@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -34,24 +34,24 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      */
-    public HTMLElement getElementWithID(String id) throws SAXException;
+    HTMLElement getElementWithID(String id) throws SAXException;
 
     /**
      * Returns the HTMLElements found in this segment with the specified name.
      */
-    public HTMLElement[] getElementsWithName(String name) throws SAXException;
+    HTMLElement[] getElementsWithName(String name) throws SAXException;
 
     /**
      * Returns the HTMLElements found with the specified attribute value.
      *
      * @since 1.6
      */
-    public HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException;
+    HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException;
 
     /**
      * Returns a list of HTML element names contained in this HTML section.
      */
-    public String[] getElementNames() throws SAXException;
+    String[] getElementNames() throws SAXException;
 
     /**
      * Returns the forms found in this HTML segment in the order in which they appear.
@@ -59,7 +59,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebForm[] getForms() throws SAXException;
+    WebForm[] getForms() throws SAXException;
 
     /**
      * Returns the form found in this HTML segment with the specified ID.
@@ -67,7 +67,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebForm getFormWithID(String ID) throws SAXException;
+    WebForm getFormWithID(String ID) throws SAXException;
 
     /**
      * Returns the form found in this HTML segment with the specified name.
@@ -75,7 +75,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebForm getFormWithName(String name) throws SAXException;
+    WebForm getFormWithName(String name) throws SAXException;
 
     /**
      * Returns the first form found in the page matching the specified criteria.
@@ -83,7 +83,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
-    public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object value) throws SAXException;
+    WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object value) throws SAXException;
 
     /**
      * Returns all forms found in the page matching the specified criteria.
@@ -91,7 +91,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
-    public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) throws SAXException;
+    WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) throws SAXException;
 
     /**
      * Returns the links found in this HTML segment in the order in which they appear.
@@ -99,7 +99,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebLink[] getLinks() throws SAXException;
+    WebLink[] getLinks() throws SAXException;
 
     /**
      * Returns the first link which contains the specified text.
@@ -107,7 +107,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebLink getLinkWith(String text) throws SAXException;
+    WebLink getLinkWith(String text) throws SAXException;
 
     /**
      * Returns the first link which contains an image with the specified text as its 'alt' attribute.
@@ -115,7 +115,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebLink getLinkWithImageText(String text) throws SAXException;
+    WebLink getLinkWithImageText(String text) throws SAXException;
 
     /**
      * Returns the first link found in the page matching the specified criteria.
@@ -123,7 +123,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
-    public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object value) throws SAXException;
+    WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object value) throws SAXException;
 
     /**
      * Returns all links found in the page matching the specified criteria.
@@ -131,7 +131,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
-    public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) throws SAXException;
+    WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) throws SAXException;
 
     /**
      * Returns the images found in the page in the order in which they appear.
@@ -139,7 +139,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebImage[] getImages() throws SAXException;
+    WebImage[] getImages() throws SAXException;
 
     /**
      * Returns the image found in the page with the specified name.
@@ -147,7 +147,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebImage getImageWithName(String name) throws SAXException;
+    WebImage getImageWithName(String name) throws SAXException;
 
     /**
      * Returns the first image found in the page with the specified src attribute.
@@ -155,7 +155,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebImage getImageWithSource(String source) throws SAXException;
+    WebImage getImageWithSource(String source) throws SAXException;
 
     /**
      * Returns the first image found in the page with the specified alt attribute.
@@ -163,7 +163,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebImage getImageWithAltText(String source) throws SAXException;
+    WebImage getImageWithAltText(String source) throws SAXException;
 
     /**
      * Returns the applets found in the page in the order in which they appear.
@@ -171,7 +171,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebApplet[] getApplets() throws SAXException;
+    WebApplet[] getApplets() throws SAXException;
 
     /**
      * Returns the top-level block elements found in the page in the order in which they appear.
@@ -181,7 +181,7 @@ public interface HTMLSegment {
      *
      * @since 1.6
      */
-    public TextBlock[] getTextBlocks() throws SAXException;
+    TextBlock[] getTextBlocks() throws SAXException;
 
     /**
      * Returns the top-level tables found in this HTML segment in the order in which they appear.
@@ -189,7 +189,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebTable[] getTables() throws SAXException;
+    WebTable[] getTables() throws SAXException;
 
     /**
      * Returns the first table in the response which matches the specified predicate and value. Will recurse into any
@@ -197,7 +197,7 @@ public interface HTMLSegment {
      *
      * @return the selected table, or null if none is found
      **/
-    public WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) throws SAXException;
+    WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) throws SAXException;
 
     /**
      * Returns all tables found in the page matching the specified criteria.
@@ -205,7 +205,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the response.
      **/
-    public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) throws SAXException;
+    WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) throws SAXException;
 
     /**
      * Returns the first table in this HTML segment which has the specified text as the full text of its first non-blank
@@ -216,7 +216,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebTable getTableStartingWith(final String text) throws SAXException;
+    WebTable getTableStartingWith(final String text) throws SAXException;
 
     /**
      * Returns the first table in this HTML segment which has the specified text as a prefix of the text in its first
@@ -227,7 +227,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebTable getTableStartingWithPrefix(String text) throws SAXException;
+    WebTable getTableStartingWithPrefix(String text) throws SAXException;
 
     /**
      * Returns the first table in this HTML segment which has the specified text as its summary attribute. Will recurse
@@ -238,7 +238,7 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebTable getTableWithSummary(String summary) throws SAXException;
+    WebTable getTableWithSummary(String summary) throws SAXException;
 
     /**
      * Returns the first table in this HTML segment which has the specified text as its ID attribute. Will recurse into
@@ -249,6 +249,6 @@ public interface HTMLSegment {
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
      **/
-    public WebTable getTableWithID(final String ID) throws SAXException;
+    WebTable getTableWithID(final String ID) throws SAXException;
 
 }

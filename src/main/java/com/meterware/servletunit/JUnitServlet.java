@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -44,6 +44,8 @@ import junit.runner.BaseTestRunner;
  **/
 public class JUnitServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
     public JUnitServlet() {
     }
 
@@ -51,6 +53,7 @@ public class JUnitServlet extends HttpServlet {
         _factory = factory;
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ResultsFormatter formatter = getResultsFormatter(request.getParameter("format"));
@@ -68,11 +71,11 @@ public class JUnitServlet extends HttpServlet {
     private ResultsFormatter getResultsFormatter(String formatterName) {
         if ("text".equalsIgnoreCase(formatterName)) {
             return new TextResultsFormatter();
-        } else if ("xml".equalsIgnoreCase(formatterName)) {
-            return new XMLResultsFormatter();
-        } else {
-            return new HTMLResultsFormatter();
         }
+        if ("xml".equalsIgnoreCase(formatterName)) {
+            return new XMLResultsFormatter();
+        }
+        return new HTMLResultsFormatter();
     }
 
     private InvocationContextFactory _factory;
@@ -104,28 +107,36 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
+        @Override
         public void addError(Test test, Throwable throwable) {
         }
 
+        @Override
         public void addFailure(Test test, AssertionFailedError error) {
         }
 
+        @Override
         public void endTest(Test test) {
         }
 
+        @Override
         protected void runFailed(String s) {
             reportCannotRunTest(_writer, s);
         }
 
+        @Override
         public void startTest(Test test) {
         }
 
+        @Override
         public void testStarted(String s) {
         }
 
+        @Override
         public void testEnded(String s) {
         }
 
+        @Override
         public void testFailed(int i, Test test, Throwable throwable) {
         }
 
@@ -152,30 +163,31 @@ public class JUnitServlet extends HttpServlet {
         protected abstract void displayFooter(PrintWriter writer);
 
         protected String sgmlEscape(String s) {
-            if (s == null)
+            if (s == null) {
                 return "NULL";
+            }
             StringBuilder result = new StringBuilder(s.length());
             char[] chars = s.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 switch (chars[i]) {
-                    case '&':
-                        result.append("&amp;");
-                        break;
-                    case '<':
-                        result.append("&lt;");
-                        break;
-                    case '>':
-                        result.append("&gt;");
-                        break;
-                    case LF:
-                        if (i > 0 && chars[i - 1] == CR) {
-                            result.append(chars[i]);
-                            break;
-                        }
-                    case CR:
-                        result.append(getLineBreak());
-                    default:
+                case '&':
+                    result.append("&amp;");
+                    break;
+                case '<':
+                    result.append("&lt;");
+                    break;
+                case '>':
+                    result.append("&gt;");
+                    break;
+                case LF:
+                    if (i > 0 && chars[i - 1] == CR) {
                         result.append(chars[i]);
+                        break;
+                    }
+                case CR:
+                    result.append(getLineBreak());
+                default:
+                    result.append(chars[i]);
                 }
             }
             return result.toString();
@@ -188,12 +200,14 @@ public class JUnitServlet extends HttpServlet {
 
     abstract static class DisplayedResultsFormatter extends ResultsFormatter {
 
+        @Override
         protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString) {
             displayHeader(writer, testClassName, getFormatted(testResult.runCount(), "test"), elapsedTimeString,
                     testResult.wasSuccessful() ? "OK" : "Problems Occurred");
         }
 
+        @Override
         protected void displayResults(PrintWriter writer, TestResult testResult) {
             if (!testResult.wasSuccessful()) {
                 displayProblems(writer, "failure", testResult.failureCount(), testResult.failures());
@@ -237,31 +251,38 @@ public class JUnitServlet extends HttpServlet {
 
     static class TextResultsFormatter extends DisplayedResultsFormatter {
 
+        @Override
         String getContentType() {
             return "text/plain";
         }
 
+        @Override
         protected void displayHeader(PrintWriter writer, String testClassName, String testCountText,
                 String elapsedTimeString, String resultString) {
             writer.println(testClassName + " (" + testCountText + "): " + resultString);
         }
 
+        @Override
         protected void displayFooter(PrintWriter writer) {
         }
 
+        @Override
         protected void displayProblemTitle(PrintWriter writer, String title) {
             writer.println();
             writer.println(title + ':');
         }
 
+        @Override
         protected void displayProblemDetailHeader(PrintWriter writer, int i, String testName) {
             writer.println(i + ". " + testName + ":");
         }
 
+        @Override
         protected void displayProblemDetailFooter(PrintWriter writer) {
             writer.println();
         }
 
+        @Override
         protected void displayProblemDetail(PrintWriter writer, String message) {
             writer.println(message);
         }
@@ -269,10 +290,12 @@ public class JUnitServlet extends HttpServlet {
 
     static class HTMLResultsFormatter extends DisplayedResultsFormatter {
 
+        @Override
         String getContentType() {
             return "text/html";
         }
 
+        @Override
         protected void displayHeader(PrintWriter writer, String testClassName, String testCountText,
                 String elapsedTimeString, String resultString) {
             writer.println("<html><head><title>Test Suite: " + testClassName + "</title>");
@@ -287,24 +310,29 @@ public class JUnitServlet extends HttpServlet {
             writer.println("<td>" + resultString + "</td></tr>");
         }
 
+        @Override
         protected void displayFooter(PrintWriter writer) {
             writer.println("</table>");
             writer.println("</body></html>");
         }
 
+        @Override
         protected void displayProblemTitle(PrintWriter writer, String title) {
             writer.println("<tr><td colspan=3>" + title + "</td></tr>");
         }
 
+        @Override
         protected void displayProblemDetailHeader(PrintWriter writer, int i, String testName) {
             writer.println("<tr><td class='detail' align='right'>" + i + "</td>");
             writer.println("<td class='detail'>" + testName + "</td><td class='detail'>");
         }
 
+        @Override
         protected void displayProblemDetailFooter(PrintWriter writer) {
             writer.println("</td></tr>");
         }
 
+        @Override
         protected void displayProblemDetail(PrintWriter writer, String message) {
             writer.println(sgmlEscape(message));
         }
@@ -313,16 +341,18 @@ public class JUnitServlet extends HttpServlet {
 
     static class XMLResultsFormatter extends ResultsFormatter {
 
+        @Override
         String getContentType() {
             return "text/xml;charset=UTF-8";
         }
 
+        @Override
         protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString) {
             writer.println("<?xml version='1.0' encoding='UTF-8' ?>\n" + "<testsuite name=" + asAttribute(testClassName)
-                    + " tests=" + asAttribute(testResult.runCount()) + " failures="
-                    + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
-                    + " time=" + asAttribute(elapsedTimeString) + ">");
+            + " tests=" + asAttribute(testResult.runCount()) + " failures="
+            + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
+            + " time=" + asAttribute(elapsedTimeString) + ">");
         }
 
         private String asAttribute(int value) {
@@ -333,10 +363,12 @@ public class JUnitServlet extends HttpServlet {
             return '"' + sgmlEscape(value) + '"';
         }
 
+        @Override
         protected void displayFooter(PrintWriter writer) {
             writer.println("</testsuite>");
         }
 
+        @Override
         protected void displayResults(PrintWriter writer, TestResult testResult) {
             displayResults(writer, "failure", testResult.failures());
             displayResults(writer, "error", testResult.errors());
@@ -349,7 +381,7 @@ public class JUnitServlet extends HttpServlet {
                 writer.print("    <" + failureNodeName + " type="
                         + asAttribute(failure.thrownException().getClass().getName()) + " message="
                         + asAttribute(failure.exceptionMessage()));
-                if (!displayException(failure)) {
+                if (!displayException()) {
                     writer.println("/>");
                 } else {
                     writer.println(">");
@@ -360,10 +392,11 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
-        private boolean displayException(TestFailure failure) {
+        private boolean displayException() {
             return true;
         }
 
+        @Override
         protected String getLineBreak() {
             return "";
         }

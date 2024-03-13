@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,10 +33,13 @@ package com.meterware.httpunit;
  *******************************************************************************************************************/
 class NotHTMLException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     NotHTMLException(String contentType) {
         _contentType = contentType;
     }
 
+    @Override
     public String getMessage() {
         return "The content type of the response is '" + _contentType
                 + "': it must be 'text/html' in order to be recognized as HTML";

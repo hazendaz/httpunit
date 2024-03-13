@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,34 +38,42 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);
     }
 
+    @Override
     public Node getNamedItem(String name) {
         return (Node) _items.get(name);
     }
 
+    @Override
     public Node setNamedItem(Node arg) throws DOMException {
         return null;
     }
 
+    @Override
     public Node removeNamedItem(String name) throws DOMException {
         return null;
     }
 
+    @Override
     public Node item(int index) {
         return _itemArray[index];
     }
 
+    @Override
     public int getLength() {
         return _items.size();
     }
 
+    @Override
     public Node getNamedItemNS(String namespaceURI, String localName) {
         return null;
     }
 
+    @Override
     public Node setNamedItemNS(Node arg) throws DOMException {
         return null;
     }
 
+    @Override
     public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
         return null;
     }

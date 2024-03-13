@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,7 +28,16 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -124,13 +133,15 @@ class WebApplication implements SessionListenerDispatcher {
      * Constructs an application spec from an XML document.
      */
     WebApplication(Document document, File file, String contextPath) throws MalformedURLException, SAXException {
-        if (contextPath != null && contextPath.length() > 0 && !contextPath.startsWith("/"))
+        if (contextPath != null && contextPath.length() > 0 && !contextPath.startsWith("/")) {
             throw new IllegalArgumentException("Context path " + contextPath + " must start with '/'");
+        }
         _contextDir = file;
         _contextPath = contextPath == null ? "" : contextPath;
         NodeList nl = document.getElementsByTagName("display-name");
-        if (nl.getLength() > 0)
+        if (nl.getLength() > 0) {
             _displayName = XMLUtils.getTextValue(nl.item(0)).trim();
+        }
 
         registerServlets(document);
         registerFilters(document);
@@ -149,14 +160,18 @@ class WebApplication implements SessionListenerDispatcher {
             try {
                 Object listener = Class.forName(listenerName).getDeclaredConstructor().newInstance();
 
-                if (listener instanceof ServletContextListener)
+                if (listener instanceof ServletContextListener) {
                     _contextListeners.add((ServletContextListener) listener);
-                if (listener instanceof ServletContextAttributeListener)
+                }
+                if (listener instanceof ServletContextAttributeListener) {
                     _contextAttributeListeners.add((ServletContextAttributeListener) listener);
-                if (listener instanceof HttpSessionListener)
+                }
+                if (listener instanceof HttpSessionListener) {
                     _sessionListeners.add((HttpSessionListener) listener);
-                if (listener instanceof HttpSessionAttributeListener)
+                }
+                if (listener instanceof HttpSessionAttributeListener) {
                     _sessionAttributeListeners.add((HttpSessionAttributeListener) listener);
+                }
             } catch (Throwable e) {
                 throw new RuntimeException("Unable to load context listener " + listenerName + ": " + e.toString());
             }
@@ -323,8 +338,9 @@ class WebApplication implements SessionListenerDispatcher {
 
     private SecurityConstraint getControllingConstraint(String urlPath) {
         for (SecurityConstraint sc : _securityConstraints) {
-            if (sc.controlsPath(urlPath))
+            if (sc.controlsPath(urlPath)) {
                 return sc;
+            }
         }
         return NULL_SECURITY_CONSTRAINT;
     }
@@ -333,9 +349,8 @@ class WebApplication implements SessionListenerDispatcher {
         String relativePath = path.startsWith("/") ? path.substring(1) : path;
         if (_contextDir == null) {
             return new File(relativePath);
-        } else {
-            return new File(_contextDir, relativePath);
         }
+        return new File(_contextDir, relativePath);
     }
 
     Hashtable getContextParameters() {
@@ -396,11 +411,13 @@ class WebApplication implements SessionListenerDispatcher {
     private void registerFilters(Document document) throws SAXException {
         Hashtable nameToClass = new Hashtable();
         NodeList nl = document.getElementsByTagName("filter");
-        for (int i = 0; i < nl.getLength(); i++)
+        for (int i = 0; i < nl.getLength(); i++) {
             registerFilterClass(nameToClass, (Element) nl.item(i));
+        }
         nl = document.getElementsByTagName("filter-mapping");
-        for (int i = 0; i < nl.getLength(); i++)
+        for (int i = 0; i < nl.getLength(); i++) {
             registerFilter(nameToClass, (Element) nl.item(i));
+        }
         this._filters = nameToClass;
     }
 
@@ -441,12 +458,14 @@ class WebApplication implements SessionListenerDispatcher {
             _authenticationRealm = XMLUtils.getChildNodeValue(loginConfigElement, "realm-name", "");
             if (authenticationMethod.equalsIgnoreCase("BASIC")) {
                 _useBasicAuthentication = true;
-                if (_authenticationRealm.length() == 0)
+                if (_authenticationRealm.length() == 0) {
                     throw new SAXException("No realm specified for BASIC Authorization");
+                }
             } else if (authenticationMethod.equalsIgnoreCase("FORM")) {
                 _useFormAuthentication = true;
-                if (_authenticationRealm.length() == 0)
+                if (_authenticationRealm.length() == 0) {
                     throw new SAXException("No realm specified for FORM Authorization");
+                }
                 _loginURL = new URL("http", "localhost",
                         _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-login-page"));
                 _errorURL = new URL("http", "localhost",
@@ -458,11 +477,13 @@ class WebApplication implements SessionListenerDispatcher {
     private void registerServlets(Document document) throws SAXException {
         Hashtable nameToClass = new Hashtable();
         NodeList nl = document.getElementsByTagName("servlet");
-        for (int i = 0; i < nl.getLength(); i++)
+        for (int i = 0; i < nl.getLength(); i++) {
             registerServletClass(nameToClass, (Element) nl.item(i));
+        }
         nl = document.getElementsByTagName("servlet-mapping");
-        for (int i = 0; i < nl.getLength(); i++)
+        for (int i = 0; i < nl.getLength(); i++) {
             registerServlet(nameToClass, (Element) nl.item(i));
+        }
         this._servlets = nameToClass;
     }
 
@@ -501,10 +522,12 @@ class WebApplication implements SessionListenerDispatcher {
 
         private static final long serialVersionUID = 1L;
 
+        @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             handleLogin(req, resp);
         }
 
+        @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             handleLogin(req, resp);
         }
@@ -548,8 +571,9 @@ class WebApplication implements SessionListenerDispatcher {
                     "org.apache.jasper.servlet.JspServlet"));
             _servletName = XMLUtils.getChildNodeValue(servletElement, "servlet-name");
             _jspFile = XMLUtils.getChildNodeValue(servletElement, "jsp-file", "");
-            if ("".equals(_jspFile))
+            if ("".equals(_jspFile)) {
                 _jspFile = null;
+            }
             final NodeList loadOrder = servletElement.getElementsByTagName("load-on-startup");
             for (int i = 0; i < loadOrder.getLength(); i++) {
                 String order = XMLUtils.getTextValue(loadOrder.item(i));
@@ -573,15 +597,18 @@ class WebApplication implements SessionListenerDispatcher {
             return _servlet;
         }
 
+        @Override
         synchronized void destroyResource() {
-            if (_servlet != null)
+            if (_servlet != null) {
                 _servlet.destroy();
+            }
         }
 
         String getServletName() {
             return _servletName;
         }
 
+        @Override
         boolean isLoadOnStartup() {
             return _loadOrder != DONT_AUTOLOAD;
         }
@@ -608,6 +635,7 @@ class WebApplication implements SessionListenerDispatcher {
             _name = name;
         }
 
+        @Override
         public synchronized Filter getFilter() throws ServletException {
             try {
                 if (_filter == null) {
@@ -629,13 +657,16 @@ class WebApplication implements SessionListenerDispatcher {
             }
         }
 
+        @Override
         boolean isLoadOnStartup() {
             return false;
         }
 
+        @Override
         synchronized void destroyResource() {
-            if (_filter != null)
+            if (_filter != null) {
                 _filter.destroy();
+            }
         }
     }
 
@@ -651,12 +682,14 @@ class WebApplication implements SessionListenerDispatcher {
 
     static class NullSecurityConstraint implements SecurityConstraint {
 
-        private static final String[] NO_ROLES = new String[0];
+        private static final String[] NO_ROLES = {};
 
+        @Override
         public boolean controlsPath(String urlPath) {
             return false;
         }
 
+        @Override
         public String[] getPermittedRoles() {
             return NO_ROLES;
         }
@@ -666,21 +699,25 @@ class WebApplication implements SessionListenerDispatcher {
 
         SecurityConstraintImpl(Element root) throws SAXException {
             final NodeList roleNames = root.getElementsByTagName("role-name");
-            for (int i = 0; i < roleNames.getLength(); i++)
+            for (int i = 0; i < roleNames.getLength(); i++) {
                 _roleList.add(XMLUtils.getTextValue(roleNames.item(i)));
+            }
 
             final NodeList resources = root.getElementsByTagName("web-resource-collection");
-            for (int i = 0; i < resources.getLength(); i++)
+            for (int i = 0; i < resources.getLength(); i++) {
                 _resources.add(new WebResourceCollection((Element) resources.item(i)));
+            }
         }
 
+        @Override
         public boolean controlsPath(String urlPath) {
             return getMatchingCollection(urlPath) != null;
         }
 
+        @Override
         public String[] getPermittedRoles() {
             if (_roles == null) {
-                _roles = (String[]) _roleList.toArray(new String[_roleList.size()]);
+                _roles = _roleList.toArray(new String[_roleList.size()]);
             }
             return _roles;
         }
@@ -691,8 +728,9 @@ class WebApplication implements SessionListenerDispatcher {
 
         public WebResourceCollection getMatchingCollection(String urlPath) {
             for (WebResourceCollection wrc : _resources) {
-                if (wrc.controlsPath(urlPath))
+                if (wrc.controlsPath(urlPath)) {
                     return wrc;
+                }
             }
             return null;
         }
@@ -701,14 +739,16 @@ class WebApplication implements SessionListenerDispatcher {
 
             WebResourceCollection(Element root) throws SAXException {
                 final NodeList urlPatterns = root.getElementsByTagName("url-pattern");
-                for (int i = 0; i < urlPatterns.getLength(); i++)
+                for (int i = 0; i < urlPatterns.getLength(); i++) {
                     _urlPatterns.add(XMLUtils.getTextValue(urlPatterns.item(i)));
+                }
             }
 
             boolean controlsPath(String urlPath) {
                 for (String pattern : _urlPatterns) {
-                    if (patternMatches(pattern, urlPath))
+                    if (patternMatches(pattern, urlPath)) {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -717,7 +757,7 @@ class WebApplication implements SessionListenerDispatcher {
         }
     }
 
-    static final FilterMetaData[] NO_FILTERS = new FilterMetaData[0];
+    static final FilterMetaData[] NO_FILTERS = {};
 
     static class ServletRequestImpl implements ServletMetaData {
 
@@ -744,9 +784,11 @@ class WebApplication implements SessionListenerDispatcher {
          * @throws ServletException
          *             - e.g. if no configuration is available
          */
+        @Override
         public Servlet getServlet() throws ServletException {
-            if (getConfiguration() == null)
+            if (getConfiguration() == null) {
                 throw new HttpNotFoundException("No servlet mapping defined", _url);
+            }
 
             try {
                 return getConfiguration().getServlet();
@@ -760,6 +802,7 @@ class WebApplication implements SessionListenerDispatcher {
         /**
          * get the ServletPath the decoded ServletPath
          */
+        @Override
         public String getServletPath() {
             return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getServletPath(_fullServletPath));
         }
@@ -769,19 +812,22 @@ class WebApplication implements SessionListenerDispatcher {
          *
          * @return the decode path
          */
+        @Override
         public String getPathInfo() {
             return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getPathInfo(_fullServletPath));
         }
 
+        @Override
         public FilterMetaData[] getFilters() {
-            if (getConfiguration() == null)
+            if (getConfiguration() == null) {
                 return NO_FILTERS;
+            }
 
             List<FilterMetaData> filters = new ArrayList<>();
             addFiltersForPath(filters, _fullServletPath);
             addFiltersForServletWithName(filters, getConfiguration().getServletName());
 
-            return (FilterMetaData[]) filters.toArray(new FilterMetaData[filters.size()]);
+            return filters.toArray(new FilterMetaData[filters.size()]);
         }
 
         private void addFiltersForPath(List<FilterMetaData>filters, String fullServletPath) {
@@ -790,11 +836,13 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         private void addFiltersForServletWithName(List<FilterMetaData> filters, String servletName) {
-            if (servletName == null)
+            if (servletName == null) {
                 return;
+            }
             List<FilterMetaData> matches = (List<FilterMetaData>) _filtersPerName.get(servletName);
-            if (matches != null)
+            if (matches != null) {
                 filters.addAll(matches);
+            }
         }
 
         private ServletConfiguration getConfiguration() {
@@ -850,15 +898,18 @@ class WebApplication implements SessionListenerDispatcher {
 
         public PartialMatchWebResourceMapping(WebResourceConfiguration configuration, String prefix) {
             super(configuration);
-            if (!prefix.endsWith("/*"))
+            if (!prefix.endsWith("/*")) {
                 throw new IllegalArgumentException(prefix + " does not end with '/*'");
+            }
             _prefix = prefix.substring(0, prefix.length() - 2);
         }
 
+        @Override
         String getServletPath(String requestPath) {
             return _prefix;
         }
 
+        @Override
         String getPathInfo(String requestPath) {
             return requestPath.length() > _prefix.length() ? requestPath.substring(_prefix.length()) : null;
         }
@@ -901,39 +952,38 @@ class WebApplication implements SessionListenerDispatcher {
 
         ServletMetaData get(URL url) {
             String file = url.getFile();
-            if (!file.startsWith(_contextPath))
+            if (!file.startsWith(_contextPath)) {
                 throw new HttpNotFoundException("File path does not begin with '" + _contextPath + "'", url);
+            }
 
             String servletPath = getServletPath(file.substring(_contextPath.length()));
 
             if (servletPath.endsWith("j_security_check")) {
                 return new ServletRequestImpl(url, servletPath, SECURITY_CHECK_MAPPING, _filterMapping,
                         _filterUrlMapping);
-            } else {
-                return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping,
-                        _filterUrlMapping);
             }
+            return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping,
+                    _filterUrlMapping);
         }
 
         private String getServletPath(String urlFile) {
             if (urlFile.indexOf('?') < 0) {
                 return urlFile;
-            } else {
-                return urlFile.substring(0, urlFile.indexOf('?'));
             }
+            return urlFile.substring(0, urlFile.indexOf('?'));
         }
 
         public void destroyWebResources() {
-            if (_defaultMapping != null)
+            if (_defaultMapping != null) {
                 _defaultMapping.destroyResource();
+            }
             destroyWebResources(_exactMatches);
             destroyWebResources(_extensions);
             destroyWebResources(_urlTree);
         }
 
         private void destroyWebResources(Map map) {
-            for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-                Object o = iterator.next();
+            for (Object o : map.values()) {
                 if (o instanceof WebResourceMapping) {
                     WebResourceMapping webResourceMapping = (WebResourceMapping) o;
                     webResourceMapping.destroyResource();
@@ -945,20 +995,20 @@ class WebApplication implements SessionListenerDispatcher {
 
         void autoLoadServlets() {
             ArrayList autoLoadable = new ArrayList();
-            if (_defaultMapping != null && _defaultMapping.getConfiguration().isLoadOnStartup())
+            if (_defaultMapping != null && _defaultMapping.getConfiguration().isLoadOnStartup()) {
                 autoLoadable.add(_defaultMapping.getConfiguration());
+            }
             collectAutoLoadableServlets(autoLoadable, _exactMatches);
             collectAutoLoadableServlets(autoLoadable, _extensions);
             collectAutoLoadableServlets(autoLoadable, _urlTree);
-            if (autoLoadable.isEmpty())
+            if (autoLoadable.isEmpty()) {
                 return;
+            }
 
-            Collections.sort(autoLoadable, new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    ServletConfiguration sc1 = (ServletConfiguration) o1;
-                    ServletConfiguration sc2 = (ServletConfiguration) o2;
-                    return (sc1.getLoadOrder() <= sc2.getLoadOrder()) ? -1 : +1;
-                }
+            Collections.sort(autoLoadable, (o1, o2) -> {
+                ServletConfiguration sc1 = (ServletConfiguration) o1;
+                ServletConfiguration sc2 = (ServletConfiguration) o2;
+                return sc1.getLoadOrder() <= sc2.getLoadOrder() ? -1 : +1;
             });
             for (Iterator iterator = autoLoadable.iterator(); iterator.hasNext();) {
                 ServletConfiguration servletConfiguration = (ServletConfiguration) iterator.next();
@@ -973,12 +1023,12 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         private void collectAutoLoadableServlets(Collection collection, Map map) {
-            for (Iterator iterator = map.values().iterator(); iterator.hasNext();) {
-                Object o = iterator.next();
+            for (Object o : map.values()) {
                 if (o instanceof WebResourceMapping) {
                     WebResourceMapping servletMapping = (WebResourceMapping) o;
-                    if (servletMapping.getConfiguration().isLoadOnStartup())
+                    if (servletMapping.getConfiguration().isLoadOnStartup()) {
                         collection.add(servletMapping.getConfiguration());
+                    }
                 } else {
                     collectAutoLoadableServlets(collection, (Map) o);
                 }
@@ -986,25 +1036,31 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         private WebResourceMapping getMapping(String url) {
-            if (_exactMatches.containsKey(url))
+            if (_exactMatches.containsKey(url)) {
                 return (WebResourceMapping) _exactMatches.get(url);
+            }
 
             Map context = getContextForLongestPathPrefix(url);
-            if (context.containsKey("*"))
+            if (context.containsKey("*")) {
                 return (WebResourceMapping) context.get("*");
+            }
 
-            if (_extensions.containsKey(getExtension(url)))
+            if (_extensions.containsKey(getExtension(url))) {
                 return (WebResourceMapping) _extensions.get(getExtension(url));
+            }
 
-            if (_urlTree.containsKey("/"))
+            if (_urlTree.containsKey("/")) {
                 return (WebResourceMapping) _urlTree.get("/");
+            }
 
-            if (_defaultMapping != null)
+            if (_defaultMapping != null) {
                 return _defaultMapping;
+            }
 
             final String prefix = "/servlet/";
-            if (!url.startsWith(prefix))
+            if (!url.startsWith(prefix)) {
                 return null;
+            }
 
             String className = url.substring(prefix.length());
             try {
@@ -1021,8 +1077,9 @@ class WebApplication implements SessionListenerDispatcher {
             ParsedPath path = new ParsedPath(url);
             while (path.hasNext()) {
                 String part = path.next();
-                if (!context.containsKey(part))
+                if (!context.containsKey(part)) {
                     break;
+                }
                 context = (Map) context.get(part);
             }
             return context;
@@ -1032,9 +1089,8 @@ class WebApplication implements SessionListenerDispatcher {
             int index = url.lastIndexOf('.');
             if (index == -1 || index >= url.length() - 1) {
                 return "";
-            } else {
-                return url.substring(index + 1);
             }
+            return url.substring(index + 1);
         }
 
     }
@@ -1080,7 +1136,7 @@ class ParsedPath {
      * Returns true if there are more parts left, otherwise false
      */
     public final boolean hasNext() {
-        return (position < path.length());
+        return position < path.length();
     }
 
     /**

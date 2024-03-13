@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,6 +27,7 @@ import org.w3c.dom.DOMException;
  **/
 abstract public class CharacterDataImpl extends NodeImpl implements CharacterData {
 
+    private static final long serialVersionUID = 1L;
     private String _data;
 
     protected void initialize(DocumentImpl ownerDocument, String data) {
@@ -34,33 +35,42 @@ abstract public class CharacterDataImpl extends NodeImpl implements CharacterDat
         _data = data;
     }
 
+    @Override
     public String getData() throws DOMException {
         return _data;
     }
 
+    @Override
     public void setData(String data) throws DOMException {
-        if (data == null)
+        if (data == null) {
             data = "";
+        }
         _data = data;
     }
 
+    @Override
     public int getLength() {
         return _data.length();
     }
 
+    @Override
     public String substringData(int offset, int count) throws DOMException {
         return null;
     }
 
+    @Override
     public void appendData(String arg) throws DOMException {
     }
 
+    @Override
     public void insertData(int offset, String arg) throws DOMException {
     }
 
+    @Override
     public void deleteData(int offset, int count) throws DOMException {
     }
 
+    @Override
     public void replaceData(int offset, int count, String arg) throws DOMException {
     }
 

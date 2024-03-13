@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebForm extends WebRequestSource {
-    private final static String[] NO_VALUES = new String[0];
+    private final static String[] NO_VALUES = {};
 
     private Button[] _buttons;
 
@@ -83,8 +83,7 @@ public class WebForm extends WebRequestSource {
      * inhibits the submission, will return the updated contents of the frame containing this form.
      **/
     public WebResponse submit(SubmitButton button) throws IOException, SAXException {
-        WebResponse result = submit(button, 0, 0);
-        return result;
+        return submit(button, 0, 0);
     }
 
     /**
@@ -95,12 +94,11 @@ public class WebForm extends WebRequestSource {
      * @since 1.6
      **/
     public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
-        WebResponse result = null;
-        if (button == null)
+        if (button == null) {
             throw new IllegalSubmitButtonException("?", "?");
+        }
         button.doOnClickSequence(x, y);
-        result = getCurrentFrameContents();
-        return result;
+        return getCurrentFrameContents();
     }
 
     /**
@@ -113,6 +111,7 @@ public class WebForm extends WebRequestSource {
         return submit(SubmitButton.createFakeSubmitButton(this /* fake */));
     }
 
+    @Override
     protected WebResponse submitRequest(String event, WebRequest request) throws IOException, SAXException {
         try {
             return super.submitRequest(event, request);
@@ -159,9 +158,10 @@ public class WebForm extends WebRequestSource {
      **/
     public boolean hasParameterStartingWithPrefix(String prefix) {
         String[] names = getParameterNames();
-        for (int i = 0; i < names.length; i++) {
-            if (names[i].startsWith(prefix))
+        for (String name : names) {
+            if (name.startsWith(prefix)) {
                 return true;
+            }
         }
         return false;
     }
@@ -173,10 +173,10 @@ public class WebForm extends WebRequestSource {
         if (_buttons == null) {
             FormControl[] controls = getFormControls();
             ArrayList buttonList = new ArrayList();
-            for (int i = 0; i < controls.length; i++) {
-                FormControl control = controls[i];
-                if (control instanceof Button)
+            for (FormControl control : controls) {
+                if (control instanceof Button) {
                     buttonList.add(control);
+                }
             }
             _buttons = (Button[]) buttonList.toArray(new Button[buttonList.size()]);
         }
@@ -185,9 +185,10 @@ public class WebForm extends WebRequestSource {
 
     public Button getButton(HTMLElementPredicate predicate, Object criteria) {
         Button[] buttons = getButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            if (predicate.matchesCriteria(buttons[i], criteria))
-                return buttons[i];
+        for (Button button : buttons) {
+            if (predicate.matchesCriteria(button, criteria)) {
+                return button;
+            }
         }
         return null;
     }
@@ -217,9 +218,9 @@ public class WebForm extends WebRequestSource {
      **/
     public SubmitButton getSubmitButton(String name) {
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttons[i].getName().equals(name)) {
-                return buttons[i];
+        for (SubmitButton button : buttons) {
+            if (button.getName().equals(name)) {
+                return button;
             }
         }
         return null;
@@ -231,9 +232,9 @@ public class WebForm extends WebRequestSource {
      **/
     public SubmitButton getSubmitButton(String name, String value) {
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttons[i].getName().equals(name) && buttons[i].getValue().equals(value)) {
-                return buttons[i];
+        for (SubmitButton button : buttons) {
+            if (button.getName().equals(name) && button.getValue().equals(value)) {
+                return button;
             }
         }
         return null;
@@ -245,9 +246,9 @@ public class WebForm extends WebRequestSource {
      **/
     public SubmitButton getSubmitButtonWithID(String ID) {
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttons[i].getID().equals(ID)) {
-                return buttons[i];
+        for (SubmitButton button : buttons) {
+            if (button.getID().equals(ID)) {
+                return button;
             }
         }
         return null;
@@ -259,8 +260,9 @@ public class WebForm extends WebRequestSource {
      **/
     public WebRequest getRequest(String submitButtonName, String submitButtonValue) {
         SubmitButton sb = getSubmitButton(submitButtonName, submitButtonValue);
-        if (sb == null)
+        if (sb == null) {
             throw new IllegalSubmitButtonException(submitButtonName, submitButtonValue);
+        }
         return getRequest(sb);
     }
 
@@ -270,8 +272,9 @@ public class WebForm extends WebRequestSource {
      **/
     public WebRequest getRequest(String submitButtonName) {
         SubmitButton sb = getSubmitButton(submitButtonName);
-        if (sb == null)
+        if (sb == null) {
             throw new IllegalSubmitButtonException(submitButtonName, "");
+        }
         return getRequest(sb);
     }
 
@@ -295,13 +298,15 @@ public class WebForm extends WebRequestSource {
      *            - the y position
      **/
     public WebRequest getRequest(SubmitButton button, int x, int y) {
-        if (button == null)
+        if (button == null) {
             button = getDefaultButton();
+        }
 
         if (HttpUnitOptions.getParameterValuesValidated()) {
             if (button == null) {
                 throw new IllegalUnnamedSubmitButtonException();
-            } else if (button.isFake()) {
+            }
+            if (button.isFake()) {
                 // bypass checks
             } else if (!getSubmitButtonVector().contains(button)) {
                 throw new IllegalSubmitButtonException(button);
@@ -314,16 +319,15 @@ public class WebForm extends WebRequestSource {
         }
 
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setPressed(false);
+        for (SubmitButton button2 : buttons) {
+            button2.setPressed(false);
         }
         button.setPressed(true);
 
         if (getMethod().equalsIgnoreCase("post")) {
             return new PostMethodWebRequest(this, button, x, y);
-        } else {
-            return new GetMethodWebRequest(this, WebRequest.newParameterHolder(this), button, x, y);
         }
+        return new GetMethodWebRequest(this, WebRequest.newParameterHolder(this), button, x, y);
     }
 
     /**
@@ -341,33 +345,32 @@ public class WebForm extends WebRequestSource {
      * scripts will be run when it is submitted.
      **/
     public WebRequest newUnvalidatedRequest(SubmitButton button, int x, int y) {
-        if (button == null)
+        if (button == null) {
             button = getDefaultButton();
+        }
 
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setPressed(false);
+        for (SubmitButton button2 : buttons) {
+            button2.setPressed(false);
         }
         button.setPressed(true);
 
         if (getMethod().equalsIgnoreCase("post")) {
             return new PostMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);
-        } else {
-            return new GetMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);
         }
+        return new GetMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);
     }
 
     private WebRequest getScriptedSubmitRequest() {
         SubmitButton[] buttons = getSubmitButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setPressed(false);
+        for (SubmitButton button : buttons) {
+            button.setPressed(false);
         }
 
         if (getMethod().equalsIgnoreCase("post")) {
             return new PostMethodWebRequest(this);
-        } else {
-            return new GetMethodWebRequest(this);
         }
+        return new GetMethodWebRequest(this);
 
     }
 
@@ -417,6 +420,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns true if this form is to be submitted using mime encoding (the default is URL encoding).
      **/
+    @Override
     public boolean isSubmitAsMime() {
         return "multipart/form-data".equalsIgnoreCase(getAttribute("enctype"));
     }
@@ -429,17 +433,19 @@ public class WebForm extends WebRequestSource {
      * Resets all parameters to their initial values.
      */
     public void reset() {
-        if (handleEvent("onreset"))
+        if (handleEvent("onreset")) {
             resetControls();
+        }
     }
 
     private void resetControls() {
         FormControl[] controls = getFormControls();
-        for (int i = 0; i < controls.length; i++) {
-            controls[i].reset();
+        for (FormControl control : controls) {
+            control.reset();
         }
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
@@ -450,6 +456,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns the character set encoding for this form.
      **/
+    @Override
     public String getCharacterSet() {
         return _characterSet;
     }
@@ -457,6 +464,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns true if the named parameter accepts files for upload.
      **/
+    @Override
     public boolean isFileParameter(String name) {
         return getParameter(name).isFileParameter();
     }
@@ -464,6 +472,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns an array containing the names of the parameters defined for this form.
      **/
+    @Override
     public String[] getParameterNames() {
         ArrayList parameterNames = new ArrayList(getFormParameters().keySet());
         return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
@@ -472,6 +481,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns the multiple default values of the named parameter.
      **/
+    @Override
     public String[] getParameterValues(String name) {
         final FormParameter parameter = getParameter(name);
         return parameter.getValues();
@@ -504,6 +514,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Creates and returns a web request which will simulate the submission of this form with an unnamed submit button.
      **/
+    @Override
     public WebRequest getRequest() {
         return getRequest((SubmitButton) null);
     }
@@ -520,15 +531,18 @@ public class WebForm extends WebRequestSource {
      * Records a parameter defined by including it in the destination URL. Ignores any parameters whose name matches a
      * form control.
      **/
+    @Override
     protected void addPresetParameter(String name, String value) {
         FormControl[] formControls = getFormControls();
-        for (int i = 0; i < formControls.length; i++) {
-            if (formControls[i].getName().equals(name))
+        for (FormControl formControl : formControls) {
+            if (formControl.getName().equals(name)) {
                 return;
+            }
         }
         _presets.add(new PresetFormParameter(this, name, value));
     }
 
+    @Override
     protected String getEmptyParameterValue() {
         return null;
     }
@@ -539,6 +553,7 @@ public class WebForm extends WebRequestSource {
     /**
      * Specifies the position at which an image button (if any) was clicked.
      **/
+    @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
         imageButton.setLocation(x, y);
     }
@@ -548,26 +563,29 @@ public class WebForm extends WebRequestSource {
      * processor.\ These parameters always go on the URL, no matter what encoding method is used.
      **/
 
+    @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
         FormControl[] controls = getPresetParameters();
-        for (int i = 0; i < controls.length; i++) {
-            controls[i].addValues(processor, getCharacterSet());
+        for (FormControl control : controls) {
+            control.addValues(processor, getCharacterSet());
         }
     }
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
+    @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
         FormControl[] controls = getFormControls();
-        for (int i = 0; i < controls.length; i++) {
-            controls[i].addValues(processor, getCharacterSet());
+        for (FormControl control : controls) {
+            control.addValues(processor, getCharacterSet());
         }
     }
 
     /**
      * Removes a parameter name from this collection.
      **/
+    @Override
     public void removeParameter(String name) {
         setParameter(name, NO_VALUES);
     }
@@ -580,6 +598,7 @@ public class WebForm extends WebRequestSource {
      * @param value
      *            - the value of the parameter
      **/
+    @Override
     public void setParameter(String name, String value) {
         setParameter(name, new String[] { value });
     }
@@ -591,16 +610,17 @@ public class WebForm extends WebRequestSource {
      * @param name
      * @param values
      */
+    @Override
     public void setParameter(String name, final String[] values) {
         FormParameter parameter = getParameter(name);
-        if (parameter.isUnknown())
+        if (parameter.isUnknown()) {
             throw new NoSuchParameterException(name);
+        }
         if (parameter.isFileParameter()) {
-            if (values == NO_VALUES) {
-                parameter.setFiles(new UploadFileSpec[0]);
-            } else {
+            if (values != NO_VALUES) {
                 throw new InvalidFileParameterException(name, values);
             }
+            parameter.setFiles(new UploadFileSpec[0]);
         } else {
             parameter.setValues(values);
         }
@@ -610,10 +630,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Sets the multiple values of a file upload parameter in a web request.
      **/
+    @Override
     public void setParameter(String name, UploadFileSpec[] files) {
         FormParameter parameter = getParameter(name);
-        if ((parameter == null) || (!parameter.isFileParameter()))
+        if (parameter == null || !parameter.isFileParameter()) {
             throw new NoSuchParameterException(name);
+        }
         parameter.setFiles(files);
     }
 
@@ -640,8 +662,9 @@ public class WebForm extends WebRequestSource {
      */
     public void toggleCheckbox(String name) {
         FormParameter parameter = getParameter(name);
-        if (parameter == null)
+        if (parameter == null) {
             throw new NoSuchParameterException(name);
+        }
         parameter.toggleCheckbox();
     }
 
@@ -661,8 +684,9 @@ public class WebForm extends WebRequestSource {
      */
     public void toggleCheckbox(String name, String value) {
         FormParameter parameter = getParameter(name);
-        if (parameter == null)
+        if (parameter == null) {
             throw new NoSuchParameterException(name);
+        }
         parameter.toggleCheckbox(value);
     }
 
@@ -681,8 +705,9 @@ public class WebForm extends WebRequestSource {
      */
     public void setCheckbox(String name, boolean state) {
         FormParameter parameter = getParameter(name);
-        if (parameter == null)
+        if (parameter == null) {
             throw new NoSuchParameterException(name);
+        }
         parameter.setValue(state);
     }
 
@@ -704,8 +729,9 @@ public class WebForm extends WebRequestSource {
      */
     public void setCheckbox(String name, String value, boolean state) {
         FormParameter parameter = getParameter(name);
-        if (parameter == null)
+        if (parameter == null) {
             throw new NoSuchParameterException(name);
+        }
         parameter.setValue(value, state);
     }
 
@@ -717,6 +743,7 @@ public class WebForm extends WebRequestSource {
             return WebForm.this.getAction();
         }
 
+        @Override
         public void setAction(String newAction) {
             setDestination(newAction);
             _presetParameters = null;
@@ -735,6 +762,7 @@ public class WebForm extends WebRequestSource {
          *
          * @return the name
          */
+        @Override
         public String getName() {
             return WebForm.this.getName().length() != 0 ? WebForm.this.getName() : WebForm.this.getID();
         }
@@ -744,6 +772,7 @@ public class WebForm extends WebRequestSource {
          *
          * @return the id
          */
+        @Override
         public String getID() {
             return WebForm.this.getID();
         }
@@ -756,20 +785,23 @@ public class WebForm extends WebRequestSource {
          *
          * @return the Object for the property
          */
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equals("target")) {
                 return getTarget();
-            } else if (propertyName.equals("action")) {
-                return getAction();
-            } else if (propertyName.equals("length")) {
-                return Integer.valueOf(getFormControls().length);
-            } else {
-                final FormParameter parameter = getParameter(propertyName);
-                if (!parameter.isUnknown())
-                    return parameter.getScriptableObject();
-                FormControl control = getControlWithID(propertyName);
-                return control == null ? super.get(propertyName) : control.getScriptingHandler();
             }
+            if (propertyName.equals("action")) {
+                return getAction();
+            }
+            if (propertyName.equals("length")) {
+                return Integer.valueOf(getFormControls().length);
+            }
+            final FormParameter parameter = getParameter(propertyName);
+            if (!parameter.isUnknown()) {
+                return parameter.getScriptableObject();
+            }
+            FormControl control = getControlWithID(propertyName);
+            return control == null ? super.get(propertyName) : control.getScriptingHandler();
         }
 
         /**
@@ -781,6 +813,7 @@ public class WebForm extends WebRequestSource {
          * @param value
          *            - the new value
          **/
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equals("target")) {
                 setTargetAttribute(value.toString());
@@ -797,6 +830,7 @@ public class WebForm extends WebRequestSource {
             }
         }
 
+        @Override
         public void setParameterValue(String name, String value) {
             final Object scriptableObject = getParameter(name).getScriptableObject();
             if (scriptableObject instanceof ScriptableDelegate) {
@@ -843,10 +877,10 @@ public class WebForm extends WebRequestSource {
      */
     public FormControl getControlWithID(String id) {
         FormControl[] controls = getFormControls();
-        for (int i = 0; i < controls.length; i++) {
-            FormControl control = controls[i];
-            if (control.getID().equals(id))
+        for (FormControl control : controls) {
+            if (control.getID().equals(id)) {
                 return control;
+            }
         }
         return null;
     }
@@ -857,9 +891,8 @@ public class WebForm extends WebRequestSource {
     private SubmitButton getDefaultButton() {
         if (getSubmitButtons().length == 1) {
             return getSubmitButtons()[0];
-        } else {
-            return getSubmitButton("");
         }
+        return getSubmitButton("");
     }
 
     /**
@@ -872,8 +905,7 @@ public class WebForm extends WebRequestSource {
         if (_buttonVector == null) {
             _buttonVector = new Vector();
             FormControl[] controls = getFormControls();
-            for (int i = 0; i < controls.length; i++) {
-                FormControl control = controls[i];
+            for (FormControl control : controls) {
                 if (control instanceof SubmitButton) {
                     SubmitButton sb = (SubmitButton) control;
                     sb.rememberEnableState();
@@ -884,8 +916,9 @@ public class WebForm extends WebRequestSource {
             /**
              * make sure that there is always at least one submit button if none is in the Vector add a faked one
              */
-            if (_buttonVector.isEmpty())
+            if (_buttonVector.isEmpty()) {
                 _buttonVector.addElement(SubmitButton.createFakeSubmitButton(this));
+            }
         }
         return _buttonVector;
     }
@@ -918,9 +951,8 @@ public class WebForm extends WebRequestSource {
     private FormControl getControlForNode(Node node) {
         if (_registry.hasNode(node)) {
             return (FormControl) _registry.getRegisteredElement(node);
-        } else {
-            return (FormControl) _registry.registerElement(node, newFormControl(node));
         }
+        return (FormControl) _registry.registerElement(node, newFormControl(node));
     }
 
     /**
@@ -931,7 +963,7 @@ public class WebForm extends WebRequestSource {
      * @return the form parameter with this name
      */
     public FormParameter getParameter(String name) {
-        final FormParameter parameter = ((FormParameter) getFormParameters().get(name));
+        final FormParameter parameter = (FormParameter) getFormParameters().get(name);
         return parameter != null ? parameter : FormParameter.getUNKNOWN_PARAMETER();
     }
 
@@ -947,24 +979,21 @@ public class WebForm extends WebRequestSource {
     }
 
     private void loadFormParameters(Map formParameters, FormControl[] controls) {
-        for (int i = 0; i < controls.length; i++) {
-            if (controls[i].getName().length() == 0)
+        for (FormControl control : controls) {
+            if (control.getName().length() == 0) {
                 continue;
-            FormParameter parameter = (FormParameter) formParameters.get(controls[i].getName());
+            }
+            FormParameter parameter = (FormParameter) formParameters.get(control.getName());
             if (parameter == null) {
                 parameter = new FormParameter();
-                formParameters.put(controls[i].getName(), parameter);
+                formParameters.put(control.getName(), parameter);
             }
-            parameter.addControl(controls[i]);
+            parameter.addControl(control);
         }
     }
 
     static {
-        MATCH_NAME = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebForm) htmlElement).getName(), (String) criteria);
-            }
-        };
+        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebForm) htmlElement).getName(), (String) criteria);
 
     }
 
@@ -976,6 +1005,7 @@ public class WebForm extends WebRequestSource {
      **/
     class InvalidFileParameterException extends IllegalRequestParameterException {
 
+        private static final long serialVersionUID = 1L;
         /**
          * construct a new InvalidFileParameterException for the given parameter name and value list
          *
@@ -990,16 +1020,15 @@ public class WebForm extends WebRequestSource {
         /**
          * get the message for this exception
          */
+        @Override
         public String getMessage() {
-            String valueList = "";
+            StringBuilder valueList = new StringBuilder();
             String delim = "";
-            for (int i = 0; i < _values.length; i++) {
-                valueList += delim + "'" + _values[i] + "'";
+            for (String _value : _values) {
+                valueList.append(delim).append("'").append(_value).append("'");
                 delim = ", ";
             }
-            String msg = "The file parameter with the name '" + _parameterName
-                    + "' must have type File but the string values " + valueList + " where supplied";
-            return msg;
+            return "The file parameter with the name '" + _parameterName + "' must have type File but the string values " + valueList.append(" where supplied").toString();
         }
 
         private String _parameterName;
@@ -1011,10 +1040,13 @@ public class WebForm extends WebRequestSource {
      **/
     class NoSuchParameterException extends IllegalRequestParameterException {
 
+        private static final long serialVersionUID = 1L;
+
         NoSuchParameterException(String parameterName) {
             _parameterName = parameterName;
         }
 
+        @Override
         public String getMessage() {
             return "No parameter named '" + _parameterName + "' is defined in the form";
         }
@@ -1032,9 +1064,12 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalUnnamedSubmitButtonException extends IllegalRequestParameterException {
 
+        private static final long serialVersionUID = 1L;
+
         IllegalUnnamedSubmitButtonException() {
         }
 
+        @Override
         public String getMessage() {
             return "This form has more than one submit button, none unnamed. You must specify the button to be used.";
         }
@@ -1049,6 +1084,7 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalSubmitButtonException extends IllegalRequestParameterException {
 
+        private static final long serialVersionUID = 1L;
         IllegalSubmitButtonException(SubmitButton button) {
             _name = button.getName();
             _value = button.getValue();
@@ -1059,6 +1095,7 @@ public class WebForm extends WebRequestSource {
             _value = value;
         }
 
+        @Override
         public String getMessage() {
             return "Specified submit button (name=\"" + _name + "\" value=\"" + _value + "\") not part of this form.";
         }
@@ -1088,6 +1125,7 @@ class PresetFormParameter extends FormControl {
     /**
      * Returns the name of this control..
      **/
+    @Override
     public String getName() {
         return _name;
     }
@@ -1095,6 +1133,7 @@ class PresetFormParameter extends FormControl {
     /**
      * Returns true if this control is read-only.
      **/
+    @Override
     public boolean isReadOnly() {
         return true;
     }
@@ -1102,6 +1141,7 @@ class PresetFormParameter extends FormControl {
     /**
      * Returns true if this control accepts free-form text.
      **/
+    @Override
     public boolean isTextControl() {
         return true;
     }
@@ -1109,11 +1149,14 @@ class PresetFormParameter extends FormControl {
     /**
      * Remove any required values for this control from the list, throwing an exception if they are missing.
      **/
+    @Override
     void claimRequiredValues(List values) {
-        if (_value != null)
+        if (_value != null) {
             claimValueIsRequired(values, _value);
+        }
     }
 
+    @Override
     public String getType() {
         return UNDEFINED_TYPE;
     }
@@ -1122,12 +1165,15 @@ class PresetFormParameter extends FormControl {
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
      **/
+    @Override
     public String[] getValues() {
-        if (_values == null)
+        if (_values == null) {
             _values = new String[] { _value };
+        }
         return _values;
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         processor.addParameter(_name, _value, characterSet);
     }

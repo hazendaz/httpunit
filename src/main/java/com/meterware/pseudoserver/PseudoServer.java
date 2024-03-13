@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,11 +21,26 @@ package com.meterware.pseudoserver;
 
 import com.meterware.httpunit.HttpUnitUtils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * A basic simulated web-server for testing user agents without a web server.
@@ -114,6 +129,7 @@ public class PseudoServer {
             throw new RuntimeException(e);
         }
         Thread t = new Thread("PseudoServer " + _serverNum) {
+            @Override
             public void run() {
                 while (_active) {
                     try {
@@ -146,8 +162,9 @@ public class PseudoServer {
     }
 
     private void debug(String message) {
-        if (!_debug)
+        if (!_debug) {
             return;
+        }
         message = replaceDebugToken(message, "thread", "thread (" + Thread.currentThread().getName() + ")");
         message = replaceDebugToken(message, "server", "server " + _serverNum);
         System.out.println("** " + message);
@@ -216,8 +233,9 @@ public class PseudoServer {
      **/
     public void setSendCharacterSet(String name, boolean enabled) {
         WebResource resource = (WebResource) _resources.get(asResourceName(name));
-        if (resource == null)
+        if (resource == null) {
             throw new IllegalArgumentException("No defined resource " + name);
+        }
         resource.setSendCharacterSet(enabled);
     }
 
@@ -264,14 +282,14 @@ public class PseudoServer {
     private String asResourceName(String rawName) {
         if (rawName.startsWith("http:") || rawName.startsWith("/")) {
             return escape(rawName);
-        } else {
-            return escape("/" + rawName);
         }
+        return escape("/" + rawName);
     }
 
     private static String escape(String urlString) {
-        if (urlString.indexOf(' ') < 0)
+        if (urlString.indexOf(' ') < 0) {
             return urlString;
+        }
         StringBuilder sb = new StringBuilder();
 
         int start = 0;
@@ -280,16 +298,16 @@ public class PseudoServer {
             if (index < 0) {
                 sb.append(urlString.substring(start));
                 break;
-            } else {
-                sb.append(urlString.substring(start, index)).append("%20");
-                start = index + 1;
             }
+            sb.append(urlString.substring(start, index)).append("%20");
+            start = index + 1;
         } while (true);
         return sb.toString();
     }
 
     private void handleNewConnection(final Socket socket) {
         Thread t = new Thread("PseudoServer " + _serverNum + " connection " + (++_connectionNum)) {
+            @Override
             public void run() {
                 try {
                     serveRequests(socket);
@@ -313,8 +331,9 @@ public class PseudoServer {
             while (_active) {
                 HttpRequest request = new HttpRequest(inputStream);
                 boolean keepAlive = respondToRequest(request, outputStream);
-                if (!keepAlive)
+                if (!keepAlive) {
                     break;
+                }
                 while (_active && 0 == inputStream.available()) {
                     try {
                         Thread.sleep(INPUT_POLL_INTERVAL);
@@ -363,17 +382,16 @@ public class PseudoServer {
                 resource = setErrorResource(uri, errorCode, errorMessage);
                 // set the errorCode for this response
                 response.setResponse(errorCode, errorMessage);
-            } else {
-                if (resource.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    response.setResponse(resource.getResponseCode(), "");
-                }
+            } else if (resource.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                response.setResponse(resource.getResponseCode(), "");
             }
-            if (resource.closesConnection())
+            if (resource.closesConnection()) {
                 keepAlive = false;
+            }
             String[] headers = resource.getHeaders();
-            for (int i = 0; i < headers.length; i++) {
-                debug("Server thread sending header: " + headers[i]);
-                response.addHeader(headers[i]);
+            for (String header : headers) {
+                debug("Server thread sending header: " + header);
+                response.addHeader(header);
             }
         } catch (UnknownMethodException e) {
             response.setResponse(HttpURLConnection.HTTP_BAD_METHOD, "unsupported method: " + e.getMethod());
@@ -410,16 +428,19 @@ public class PseudoServer {
      */
     private WebResource getResource(HttpRequest request) throws IOException {
         Object resource = _resources.get(request.getURI());
-        if (resource == null)
+        if (resource == null) {
             resource = _resources.get(withoutParameters(request.getURI()));
+        }
 
         // check the method of the request
         String command = request.getCommand();
         if ((command.equals("GET") || command.equals("HEAD")) && resource instanceof WebResource) {
             return (WebResource) resource;
-        } else if (resource instanceof PseudoServlet) {
+        }
+        if (resource instanceof PseudoServlet) {
             return getResource((PseudoServlet) resource, request);
-        } else if (request.getURI().endsWith(".class")) {
+        }
+        if (request.getURI().endsWith(".class")) {
             for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
                 String directory = (String) iterator.next();
                 if (request.getURI().startsWith(directory)) {
@@ -428,7 +449,6 @@ public class PseudoServer {
                             "application/class", 200);
                 }
             }
-            return null;
         } else if (request.getURI().endsWith(".zip") || request.getURI().endsWith(".jar")) {
             for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {
                 String directory = (String) iterator.next();
@@ -445,10 +465,8 @@ public class PseudoServer {
                     }
                 }
             }
-            return null;
-        } else {
-            return null;
         }
+        return null;
     }
 
     private String withoutParameters(String uri) {
@@ -516,14 +534,16 @@ class HttpResponseStream {
 
     void write(WebResource resource) throws IOException {
         flushHeaders();
-        if (resource != null)
+        if (resource != null) {
             resource.writeTo(_stream);
+        }
         _stream.flush();
     }
 
     private void setCharacterSet(String characterSet) throws UnsupportedEncodingException {
-        if (_pw != null)
+        if (_pw != null) {
             _pw.flush();
+        }
         _pw = new PrintWriter(new OutputStreamWriter(_stream, characterSet));
     }
 
@@ -574,11 +594,13 @@ class RecordingOutputStream extends OutputStream {
         _log = log;
     }
 
+    @Override
     public void write(int b) throws IOException {
         _nestedStream.write(b);
         _log.println("sending " + Integer.toHexString(b));
     }
 
+    @Override
     public void write(byte b[], int offset, int len) throws IOException {
         _nestedStream.write(b, offset, len);
         _log.print("sending");
@@ -599,10 +621,12 @@ class RecordingInputStream extends InputStream {
         _log = log;
     }
 
+    @Override
     public int read() throws IOException {
         int value = _nestedStream.read();
-        if (value != -1)
+        if (value != -1) {
             _log.print(' ' + Integer.toHexString(value));
+        }
         return value;
     }
 }

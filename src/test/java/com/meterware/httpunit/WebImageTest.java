@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -98,7 +98,7 @@ public class WebImageTest extends HttpUnitTest {
         boolean withDebug = true;
         int i = 1;
         for (; i <= MAX_GIFTESTCOUNT; i++) {
-            if (withDebug && (i % 500 == 0)) {
+            if (withDebug && i % 500 == 0) {
                 System.out.print(delim + i);
                 delim = ", ";
                 System.out.flush();

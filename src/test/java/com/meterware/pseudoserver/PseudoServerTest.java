@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -377,14 +377,14 @@ class PseudoServerTest {
                 WebResource headResource = new WebResource("");
                 headResource.addHeader("test-header1:test-value1");
                 return headResource;
-            } else if (method.equals("OPTIONS")) {
+            }
+            if (method.equals("OPTIONS")) {
                 WebResource optionsResource = new WebResource(GET_DATA);
                 optionsResource.addHeader("Allow:GET");
                 optionsResource.addHeader("test-header1:test-value1");
                 return optionsResource;
-            } else {
-                return super.getResponse(method);
             }
+            return super.getResponse(method);
         }
     }
 

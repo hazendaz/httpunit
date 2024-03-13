@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -78,16 +78,18 @@ public class CookieProperties {
      * Adds a listener for cookie events.
      */
     public static void addCookieListener(CookieListener listener) {
-        if (_listeners == null)
+        if (_listeners == null) {
             _listeners = new ArrayList();
+        }
         synchronized (_listeners) {
             _listeners.add(listener);
         }
     }
 
     public static void reportCookieRejected(int reason, String attribute, String source) {
-        if (_listeners == null)
+        if (_listeners == null) {
             return;
+        }
 
         List listeners;
         synchronized (_listeners) {

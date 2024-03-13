@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,6 +33,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
  **/
 public class JavaScriptEngineFactory implements ScriptingEngineFactory {
 
+    @Override
     public boolean isEnabled() {
         try {
             Class.forName("org.mozilla.javascript.Context");
@@ -43,6 +44,7 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
         }
     }
 
+    @Override
     public void associate(WebResponse response) {
         try {
             JavaScript.run(response);
@@ -54,6 +56,7 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
         }
     }
 
+    @Override
     public void load(WebResponse response) {
         try {
             JavaScript.load(response);
@@ -65,14 +68,17 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
         }
     }
 
+    @Override
     public void setThrowExceptionsOnError(boolean throwExceptions) {
         JavaScript.setThrowExceptionsOnError(throwExceptions);
     }
 
+    @Override
     public boolean isThrowExceptionsOnError() {
         return JavaScript.isThrowExceptionsOnError();
     }
 
+    @Override
     public String[] getErrorMessages() {
         return ScriptingEngineImpl.getErrorMessages();
     }
@@ -80,20 +86,24 @@ public class JavaScriptEngineFactory implements ScriptingEngineFactory {
     /**
      * delegate the handling for Script exceptions
      */
+    @Override
     public void handleScriptException(Exception e, String badScript) {
         ScriptingEngineImpl.handleScriptException(e, badScript);
     }
 
+    @Override
     public void clearErrorMessages() {
         ScriptingEngineImpl.clearErrorMessages();
     }
 
+    @Override
     public ScriptingHandler createHandler(HTMLElement elementBase) {
         ScriptableDelegate delegate = elementBase.newScriptable();
         delegate.setScriptEngine(elementBase.getParentDelegate().getScriptEngine(delegate));
         return delegate;
     }
 
+    @Override
     public ScriptingHandler createHandler(WebResponse response) {
         return response.createJavascriptScriptingHandler();
     }

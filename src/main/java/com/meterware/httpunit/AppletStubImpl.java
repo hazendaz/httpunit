@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -37,6 +37,7 @@ class AppletStubImpl implements AppletStub {
      *
      * @return <code>true</code> if the applet is active; <code>false</code> otherwise.
      */
+    @Override
     public boolean isActive() {
         return false;
     }
@@ -61,6 +62,7 @@ class AppletStubImpl implements AppletStub {
      *
      * @see AppletStub#getCodeBase()
      */
+    @Override
     public URL getDocumentBase() {
         return null;
     }
@@ -70,6 +72,7 @@ class AppletStubImpl implements AppletStub {
      *
      * @return the <code>URL</code> of the applet.
      */
+    @Override
     public URL getCodeBase() {
         return null;
     }
@@ -92,6 +95,7 @@ class AppletStubImpl implements AppletStub {
      *
      * @return the value of the named parameter, or <tt>null</tt> if not set.
      */
+    @Override
     public String getParameter(String name) {
         return _webApplet.getParameter(name);
     }
@@ -101,6 +105,7 @@ class AppletStubImpl implements AppletStub {
      *
      * @return the applet's context.
      */
+    @Override
     public AppletContext getAppletContext() {
         return new AppletContextImpl(_webApplet);
     }
@@ -113,6 +118,7 @@ class AppletStubImpl implements AppletStub {
      * @param height
      *            the new requested height for the applet.
      */
+    @Override
     public void appletResize(int width, int height) {
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import java.util.*;
 import java.util.Hashtable;
+import java.util.Set;
 
 import jakarta.servlet.ServletContext;
 
@@ -31,7 +31,7 @@ class ServletUnitContext {
 
     ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {
         _servletContext = servletContext;
-        _contextPath = (contextPath != null ? contextPath : "");
+        _contextPath = contextPath != null ? contextPath : "";
         _listenerDispatcher = dispatcher;
     }
 

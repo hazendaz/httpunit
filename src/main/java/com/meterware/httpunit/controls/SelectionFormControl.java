@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,31 +49,36 @@ public class SelectionFormControl extends FormControl {
 
     private Options _selectionOptions;
 
+    @Override
     public String getType() {
-        return (isMultiValued() ? MULTIPLE_TYPE : SINGLE_TYPE);
+        return isMultiValued() ? MULTIPLE_TYPE : SINGLE_TYPE;
     }
 
     public SelectionFormControl(WebForm form, HTMLSelectElementImpl element) {
         super(form, element);
-        if (!element.getNodeName().equalsIgnoreCase("select"))
+        if (!element.getNodeName().equalsIgnoreCase("select")) {
             throw new RuntimeException("Not a select element");
+        }
 
         int size = NodeUtils.getAttributeValue(element, "size", 0);
         _multiSelect = NodeUtils.isNodeAttributePresent(element, "multiple");
-        _listBox = size > 1 || (_multiSelect && size != 1);
+        _listBox = size > 1 || _multiSelect && size != 1;
 
         _selectionOptions = _listBox ? (Options) new MultiSelectOptions(element)
                 : (Options) new SingleSelectOptions(element);
     }
 
+    @Override
     public String[] getValues() {
         return _selectionOptions.getSelectedValues();
     }
 
+    @Override
     public String[] getOptionValues() {
         return _selectionOptions.getValues();
     }
 
+    @Override
     public String[] getDisplayedOptions() {
         return _selectionOptions.getDisplayedText();
     }
@@ -81,6 +86,7 @@ public class SelectionFormControl extends FormControl {
     /**
      * Returns true if a single control can have multiple values.
      **/
+    @Override
     public boolean isMultiValued() {
         return _multiSelect;
     }
@@ -95,18 +101,21 @@ public class SelectionFormControl extends FormControl {
          *
          * @return the Object for the property
          */
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("options")) {
                 return _selectionOptions;
-            } else if (propertyName.equalsIgnoreCase("length")) {
-                return Integer.valueOf(getOptionValues().length);
-            } else if (propertyName.equalsIgnoreCase("value")) {
-                return getSelectedValue();
-            } else if (propertyName.equalsIgnoreCase("selectedIndex")) {
-                return Integer.valueOf(_selectionOptions.getFirstSelectedIndex());
-            } else {
-                return super.get(propertyName);
             }
+            if (propertyName.equalsIgnoreCase("length")) {
+                return Integer.valueOf(getOptionValues().length);
+            }
+            if (propertyName.equalsIgnoreCase("value")) {
+                return getSelectedValue();
+            }
+            if (propertyName.equalsIgnoreCase("selectedIndex")) {
+                return Integer.valueOf(_selectionOptions.getFirstSelectedIndex());
+            }
+            return super.get(propertyName);
         }
 
         /**
@@ -117,13 +126,14 @@ public class SelectionFormControl extends FormControl {
          *
          * @return the object at the given index
          */
+        @Override
         public Object get(int index) {
             return _selectionOptions.get(index);
         }
 
         private String getSelectedValue() {
             String[] values = getValues();
-            return (values.length == 0 ? "" : values[0]);
+            return values.length == 0 ? "" : values[0];
         }
 
         /**
@@ -134,14 +144,16 @@ public class SelectionFormControl extends FormControl {
          * @param value
          *            - the value to assign to the property
          */
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("value")) {
                 ArrayList values = new ArrayList();
                 values.add(value);
                 _selectionOptions.claimUniqueValues(values);
             } else if (propertyName.equalsIgnoreCase("selectedIndex")) {
-                if (!(value instanceof Number))
+                if (!(value instanceof Number)) {
                     throw new RuntimeException("selectedIndex must be set to an integer");
+                }
                 _selectionOptions.setSelectedIndex(((Number) value).intValue());
             } else if (propertyName.equalsIgnoreCase("length")) {
                 _selectionOptions.setLength(((Number) value).intValue());
@@ -151,29 +163,36 @@ public class SelectionFormControl extends FormControl {
         }
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
     void updateRequiredParameters(Hashtable required) {
-        if (isReadOnly())
+        if (isReadOnly()) {
             required.put(getName(), getValues());
+        }
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-        if (isDisabled())
+        if (isDisabled()) {
             return;
+        }
         for (int i = 0; i < getValues().length; i++) {
             processor.addParameter(getName(), getValues()[i], characterSet);
         }
     }
 
+    @Override
     protected void claimUniqueValue(List values) {
         boolean changed = _selectionOptions.claimUniqueValues(values);
-        if (changed)
+        if (changed) {
             sendOnChangeEvent();
+        }
     }
 
+    @Override
     protected void reset() {
         _selectionOptions.reset();
     }
@@ -201,8 +220,9 @@ public class SelectionFormControl extends FormControl {
         }
 
         void addValueIfSelected(List list) {
-            if (_selected)
+            if (_selected) {
                 list.add(_value);
+            }
         }
 
         void setIndex(Options container, int index) {
@@ -212,6 +232,7 @@ public class SelectionFormControl extends FormControl {
 
         // ------------------------- SelectionOption methods ------------------------------
 
+        @Override
         public void initialize(String text, String value, boolean defaultSelected, boolean selected) {
             _text = text;
             _value = value;
@@ -219,36 +240,45 @@ public class SelectionFormControl extends FormControl {
             _selected = selected;
         }
 
+        @Override
         public int getIndex() {
             return _index;
         }
 
+        @Override
         public String getText() {
             return _text;
         }
 
+        @Override
         public void setText(String text) {
             _text = text;
         }
 
+        @Override
         public String getValue() {
             return _value;
         }
 
+        @Override
         public void setValue(String value) {
             _value = value;
         }
 
+        @Override
         public boolean isDefaultSelected() {
             return _defaultSelected;
         }
 
+        @Override
         public void setSelected(boolean selected) {
             _selected = selected;
-            if (selected)
+            if (selected) {
                 _container.optionSet(_index);
+            }
         }
 
+        @Override
         public boolean isSelected() {
             return _selected;
         }
@@ -300,31 +330,34 @@ public class SelectionFormControl extends FormControl {
 
         String[] getSelectedValues() {
             ArrayList list = new ArrayList();
-            for (int i = 0; i < _options.length; i++) {
-                _options[i].addValueIfSelected(list);
+            for (Option _option : _options) {
+                _option.addValueIfSelected(list);
             }
-            if (!_listBox && list.isEmpty() && _options.length > 0)
+            if (!_listBox && list.isEmpty() && _options.length > 0) {
                 list.add(_options[0].getValue());
+            }
             return (String[]) list.toArray(new String[list.size()]);
         }
 
         void reset() {
-            for (int i = 0; i < _options.length; i++) {
-                _options[i].reset();
+            for (Option _option : _options) {
+                _option.reset();
             }
         }
 
         String[] getDisplayedText() {
             String[] displayedText = new String[_options.length];
-            for (int i = 0; i < displayedText.length; i++)
+            for (int i = 0; i < displayedText.length; i++) {
                 displayedText[i] = _options[i].getText();
+            }
             return displayedText;
         }
 
         String[] getValues() {
             String[] values = new String[_options.length];
-            for (int i = 0; i < values.length; i++)
+            for (int i = 0; i < values.length; i++) {
                 values[i] = _options[i].getValue();
+            }
             return values;
         }
 
@@ -333,7 +366,7 @@ public class SelectionFormControl extends FormControl {
          **/
         void setSelectedIndex(int index) {
             for (int i = 0; i < _options.length; i++) {
-                _options[i]._selected = (i == index);
+                _options[i]._selected = i == index;
             }
         }
 
@@ -342,14 +375,16 @@ public class SelectionFormControl extends FormControl {
          */
         int getFirstSelectedIndex() {
             for (int i = 0; i < _options.length; i++) {
-                if (_options[i].isSelected())
+                if (_options[i].isSelected()) {
                     return i;
+                }
             }
             return noOptionSelectedIndex();
         }
 
         protected abstract int noOptionSelectedIndex();
 
+        @Override
         public int getLength() {
             return _options.length;
         }
@@ -358,9 +393,11 @@ public class SelectionFormControl extends FormControl {
          * Modified by gklopp - 12/19/2005 [ 1396835 ] Javascript : length of a select element cannot be increased Bug
          * corrected : The length can be greater than the original length
          */
+        @Override
         public void setLength(int length) {
-            if (length < 0)
+            if (length < 0) {
                 return;
+            }
             Option[] newArray = new Option[length];
             System.arraycopy(_options, 0, newArray, 0, Math.min(length, _options.length));
             for (int i = _options.length; i < length; i++) {
@@ -369,13 +406,16 @@ public class SelectionFormControl extends FormControl {
             _options = newArray;
         }
 
+        @Override
         public void put(int i, SelectionOption option) {
-            if (i < 0)
+            if (i < 0) {
                 return;
+            }
 
             if (option == null) {
-                if (i >= _options.length)
+                if (i >= _options.length) {
                     return;
+                }
                 deleteOptionsEntry(i);
             } else {
                 if (i >= _options.length) {
@@ -384,8 +424,9 @@ public class SelectionFormControl extends FormControl {
                 }
                 _options[i] = (Option) option;
                 _options[i].setIndex(this, i);
-                if (option.isSelected())
+                if (option.isSelected()) {
                     ensureUniqueOption(_options, i);
+                }
             }
         }
 
@@ -415,20 +456,22 @@ public class SelectionFormControl extends FormControl {
          *
          * @since [ 1124057 ] Out of Bounds Exception should be avoided
          */
+        @Override
         public Object get(int index) {
             // if the index is out of bounds
             if (index < 0 || index >= _options.length) {
                 // create a user friendly error message
-                String msg = "invalid index " + index + " for Options ";
+                StringBuilder msg = new StringBuilder("invalid index ").append(index).append(" for Options ");
                 // by listing all possible options
                 for (int i = 0; i < _options.length; i++) {
-                    msg = msg + (_options[i]._text);
-                    if (i < _options.length - 1)
-                        msg = msg + ",";
+                    msg.append(_options[i]._text);
+                    if (i < _options.length - 1) {
+                        msg.append(",");
+                    }
                 } // for
-                  // now throw a RunTimeException that would
-                  // have happened anyways with a less friendly message
-                throw new RuntimeException(msg);
+                // now throw a RunTimeException that would
+                // have happened anyways with a less friendly message
+                throw new RuntimeException(msg.toString());
             } // if
             return _options[index];
         } // get
@@ -442,13 +485,12 @@ public class SelectionFormControl extends FormControl {
             NamedNodeMap nnm = optionNode.getAttributes();
             if (nnm.getNamedItem("value") != null) {
                 return getValue(nnm.getNamedItem("value"));
-            } else {
-                return displayedText;
             }
+            return displayedText;
         }
 
         private String getValue(Node node) {
-            return (node == null) ? "" : emptyIfNull(node.getNodeValue());
+            return node == null ? "" : emptyIfNull(node.getNodeValue());
         }
     }
 
@@ -458,12 +500,14 @@ public class SelectionFormControl extends FormControl {
             super(selectionNode);
         }
 
+        @Override
         protected void ensureUniqueOption(Option[] options, int i) {
             for (int j = 0; j < options.length; j++) {
-                options[j]._selected = (i == j);
+                options[j]._selected = i == j;
             }
         }
 
+        @Override
         protected int noOptionSelectedIndex() {
             return 0;
         }
@@ -472,19 +516,22 @@ public class SelectionFormControl extends FormControl {
          * claim the values be aware of [ 1100437 ] Patch for ClassCastException in FormControl TODO implement patch if
          * test get's available - the (String) cast might fail
          */
+        @Override
         protected boolean claimUniqueValues(List values, Option[] options) {
             boolean changed = false;
             for (int i = 0; i < values.size(); i++) {
                 String value = (String) values.get(i);
                 for (int j = 0; j < options.length; j++) {
                     boolean selected = value.equals(options[j].getValue());
-                    if (selected != options[j].isSelected())
+                    if (selected != options[j].isSelected()) {
                         changed = true;
+                    }
                     options[j].setSelected(selected);
                     if (selected) {
                         values.remove(value);
-                        for (++j; j < options.length; j++)
+                        for (++j; j < options.length; j++) {
                             options[j].setSelected(false);
+                        }
                         return changed;
                     }
                 }
@@ -500,22 +547,27 @@ public class SelectionFormControl extends FormControl {
             super(selectionNode);
         }
 
+        @Override
         protected void ensureUniqueOption(Option[] options, int i) {
         }
 
+        @Override
         protected int noOptionSelectedIndex() {
             return -1;
         }
 
+        @Override
         protected boolean claimUniqueValues(List values, Option[] options) {
             boolean changed = false;
-            for (int i = 0; i < options.length; i++) {
-                final boolean newValue = values.contains(options[i].getValue());
-                if (newValue != options[i].isSelected())
+            for (Option option : options) {
+                final boolean newValue = values.contains(option.getValue());
+                if (newValue != option.isSelected()) {
                     changed = true;
-                options[i].setSelected(newValue);
-                if (newValue)
-                    values.remove(options[i].getValue());
+                }
+                option.setSelected(newValue);
+                if (newValue) {
+                    values.remove(option.getValue());
+                }
             }
             return changed;
         }

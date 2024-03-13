@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,32 +28,40 @@ import org.w3c.dom.Text;
  **/
 public class TextImpl extends CharacterDataImpl implements Text {
 
+    private static final long serialVersionUID = 1L;
+
     static TextImpl createText(DocumentImpl ownerDocument, String data) {
         TextImpl text = new TextImpl();
         text.initialize(ownerDocument, data);
         return text;
     }
 
+    @Override
     public String getNodeName() {
         return "#text";
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return getData();
     }
 
+    @Override
     public void setNodeValue(String nodeValue) throws DOMException {
         setData(nodeValue);
     }
 
+    @Override
     public short getNodeType() {
         return TEXT_NODE;
     }
 
+    @Override
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Text nodes may not have children");
     }
 
+    @Override
     public Text splitText(int offset) throws DOMException {
         return null;
     }
@@ -62,6 +70,7 @@ public class TextImpl extends CharacterDataImpl implements Text {
         return document.createTextNode(text.getData());
     }
 
+    @Override
     void appendContents(StringBuilder sb) {
         sb.append(getData());
     }
@@ -69,14 +78,17 @@ public class TextImpl extends CharacterDataImpl implements Text {
     // ------------------------------------- DOM level 3 methods
     // ------------------------------------------------------------
 
+    @Override
     public boolean isElementContentWhitespace() {
         return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getWholeText() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public Text replaceWholeText(String content) throws DOMException {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }

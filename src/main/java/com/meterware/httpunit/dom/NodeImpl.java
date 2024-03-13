@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,7 +23,13 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import org.w3c.dom.*;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**
@@ -31,6 +37,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
  **/
 abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
+    private static final long serialVersionUID = 1L;
     private DocumentImpl _ownerDocument;
     private NodeImpl _parentNode;
     private NodeImpl _firstChild;
@@ -38,17 +45,15 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     private NodeImpl _previousSibling;
     private Hashtable _userData = new Hashtable();
 
-    static IteratorMask SKIP_IFRAMES = new IteratorMask() {
-        public boolean skipSubtree(Node subtreeRoot) {
-            return subtreeRoot instanceof HTMLIFrameElement;
-        }
-    };
+    static IteratorMask SKIP_IFRAMES = subtreeRoot -> subtreeRoot instanceof HTMLIFrameElement;
 
     protected void initialize(DocumentImpl ownerDocument) {
-        if (_ownerDocument != null)
+        if (_ownerDocument != null) {
             throw new IllegalStateException("NodeImpl already initialized");
-        if (ownerDocument == null)
+        }
+        if (ownerDocument == null) {
             throw new IllegalArgumentException("No owner document specified");
+        }
         _ownerDocument = ownerDocument;
     }
 
@@ -61,10 +66,12 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     // ----------------------------------------------- Node methods
     // ---------------------------------------------------------
 
+    @Override
     public Node getParentNode() {
         return _parentNode;
     }
 
+    @Override
     public NodeList getChildNodes() {
         ArrayList list = new ArrayList();
         for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {
@@ -73,40 +80,50 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         return new NodeListImpl(list);
     }
 
+    @Override
     public Node getFirstChild() {
         return _firstChild;
     }
 
+    @Override
     public Node getLastChild() {
-        if (_firstChild == null)
+        if (_firstChild == null) {
             return null;
+        }
 
         Node child = _firstChild;
-        while (child.getNextSibling() != null)
+        while (child.getNextSibling() != null) {
             child = child.getNextSibling();
+        }
         return child;
     }
 
+    @Override
     public Node getPreviousSibling() {
         return _previousSibling;
     }
 
+    @Override
     public Node getNextSibling() {
         return _nextSibling;
     }
 
+    @Override
     public NamedNodeMap getAttributes() {
         return null;
     }
 
+    @Override
     public Document getOwnerDocument() {
         return _ownerDocument;
     }
 
+    @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         NodeImpl refChildNode = (NodeImpl) refChild;
-        if (refChildNode.getParentNode() != this)
+        if (refChildNode.getParentNode() != this) {
             throw new DOMException(DOMException.NOT_FOUND_ERR, "Must specify an existing child as the reference");
+        }
         NodeImpl newChildNode = getChildIfPermitted(newChild);
         removeFromTree(newChildNode);
         newChildNode._parentNode = this;
@@ -131,21 +148,26 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         }
     }
 
+    @Override
     public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         insertBefore(newChild, oldChild);
         return removeChild(oldChild);
     }
 
+    @Override
     public Node removeChild(Node oldChild) throws DOMException {
-        if (oldChild.getParentNode() != this)
+        if (oldChild.getParentNode() != this) {
             throw new DOMException(DOMException.NOT_FOUND_ERR, "May only remove a node from its own parent");
+        }
         removeFromTree((NodeImpl) oldChild);
         return oldChild;
     }
 
+    @Override
     public Node appendChild(Node newChild) throws DOMException {
-        if (newChild == null)
+        if (newChild == null) {
             throw new IllegalArgumentException("child to append may not be null");
+        }
 
         NodeImpl childNode = getChildIfPermitted(newChild);
         removeFromTree(childNode);
@@ -159,15 +181,18 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     }
 
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
-        if (!(proposedChild instanceof NodeImpl))
+        if (!(proposedChild instanceof NodeImpl)) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                     "Specified node is from a different DOM implementation");
+        }
         NodeImpl childNode = (NodeImpl) proposedChild;
-        if (getOwnerDocument() != childNode._ownerDocument)
+        if (getOwnerDocument() != childNode._ownerDocument) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Specified node is from a different document");
+        }
         for (Node parent = this; parent != null; parent = parent.getParentNode()) {
-            if (proposedChild == parent)
+            if (proposedChild == parent) {
                 throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "May not add node as its own descendant");
+            }
         }
 
         return childNode;
@@ -175,40 +200,50 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     private void setNextSibling(NodeImpl sibling) {
         _nextSibling = sibling;
-        if (sibling != null)
+        if (sibling != null) {
             sibling._previousSibling = this;
+        }
     }
 
+    @Override
     public boolean hasChildNodes() {
         return _firstChild != null;
     }
 
+    @Override
     public Node cloneNode(boolean deep) {
         return getOwnerDocument().importNode(this, deep);
     }
 
+    @Override
     public void normalize() {
     }
 
+    @Override
     public boolean isSupported(String feature, String version) {
         return false;
     }
 
+    @Override
     public String getNamespaceURI() {
         return null;
     }
 
+    @Override
     public String getPrefix() {
         return null;
     }
 
+    @Override
     public void setPrefix(String prefix) throws DOMException {
     }
 
+    @Override
     public String getLocalName() {
         return null;
     }
 
+    @Override
     public boolean hasAttributes() {
         return false;
     }
@@ -216,50 +251,62 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     // ------------------------------------ DOM level 3 methods
     // -------------------------------------------------------------
 
+    @Override
     public Object setUserData(String key, Object data, UserDataHandler handler) {
         return _userData.put(key, data);
     }
 
+    @Override
     public Object getUserData(String key) {
         return _userData.get(key);
     }
 
+    @Override
     public Object getFeature(String feature, String version) {
         return null;
     }
 
+    @Override
     public boolean isEqualNode(Node arg) {
         return false; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String lookupNamespaceURI(String prefix) {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getBaseURI() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public short compareDocumentPosition(Node other) throws DOMException {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public String getTextContent() throws DOMException {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setTextContent(String textContent) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public boolean isSameNode(Node other) {
         return this == other;
     }
 
+    @Override
     public String lookupPrefix(String namespaceURI) {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public boolean isDefaultNamespace(String namespaceURI) {
         return false; // To change body of implemented methods use File | Settings | File Templates.
     }
@@ -275,10 +322,12 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     private void appendElementsWithTag(String name, ArrayList matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-            if (child.getNodeType() != ELEMENT_NODE)
+            if (child.getNodeType() != ELEMENT_NODE) {
                 continue;
-            if (name.equals("*") || ((Element) child).getTagName().equalsIgnoreCase(name))
+            }
+            if (name.equals("*") || ((Element) child).getTagName().equalsIgnoreCase(name)) {
                 matchingElements.add(child);
+            }
             ((NodeImpl) child).appendElementsWithTag(name, matchingElements);
         }
     }
@@ -291,12 +340,14 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     void appendElementsWithTags(String[] names, ArrayList matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-            if (child.getNodeType() != ELEMENT_NODE)
+            if (child.getNodeType() != ELEMENT_NODE) {
                 continue;
+            }
             String tagName = ((Element) child).getTagName();
-            for (int i = 0; i < names.length; i++) {
-                if (tagName.equalsIgnoreCase(names[i]))
+            for (String name : names) {
+                if (tagName.equalsIgnoreCase(name)) {
                     matchingElements.add(child);
+                }
             }
             ((NodeImpl) child).appendElementsWithTags(names, matchingElements);
         }
@@ -346,12 +397,12 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         return new PreOrderIterator(PreOrderIterator.nextNode(this), mask);
     }
 
+    @Override
     protected String getJavaPropertyName(String propertyName) {
         if (propertyName.equals("document")) {
             return "ownerDocument";
-        } else {
-            return propertyName;
         }
+        return propertyName;
     }
 
     /**
@@ -367,7 +418,6 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
      */
     static class PreOrderIterator implements Iterator {
         private NodeImpl _nextNode;
-        private NodeImpl _startNode;
         private IteratorMask _mask;
         private NodeImpl _doNotLeaveNode = null;
 
@@ -402,18 +452,15 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
             }
             if (_doNotLeaveNode == null) {
                 return true;
-            } else {
-                Node parent = node.getParentNode();
-                if (parent == null) {
-                    return false;
-                } else {
-                    if (parent.isSameNode(_doNotLeaveNode)) {
-                        return true;
-                    } else {
-                        return isChild(parent);
-                    }
-                }
             }
+            Node parent = node.getParentNode();
+            if (parent == null) {
+                return false;
+            }
+            if (parent.isSameNode(_doNotLeaveNode)) {
+                return true;
+            }
+            return isChild(parent);
         }
 
         /**
@@ -423,7 +470,6 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
          */
         PreOrderIterator(NodeImpl currentNode) {
             _nextNode = currentNode;
-            _startNode = currentNode;
         }
 
         /**
@@ -440,6 +486,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         /**
          * is there still a next node?
          */
+        @Override
         public boolean hasNext() {
             return null != _nextNode;
         }
@@ -447,34 +494,41 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
         /**
          * move one step in the tree
          */
+        @Override
         public Object next() {
             NodeImpl currentNode = _nextNode;
             _nextNode = nextNode(_nextNode);
-            while (_mask != null && _nextNode != null && _mask.skipSubtree(_nextNode))
+            while (_mask != null && _nextNode != null && _mask.skipSubtree(_nextNode)) {
                 _nextNode = nextSubtree(_nextNode);
+            }
             // check that we fit the doNotLeaveNode condition in case there is one
-            if (!isChild(_nextNode))
+            if (!isChild(_nextNode)) {
                 _nextNode = null;
+            }
             return currentNode;
         }
 
+        @Override
         public void remove() {
             throw new java.lang.UnsupportedOperationException();
         }
 
         static NodeImpl nextNode(NodeImpl node) {
-            if (node._firstChild != null)
+            if (node._firstChild != null) {
                 return node._firstChild;
+            }
             return nextSubtree(node);
         }
 
         private static NodeImpl nextSubtree(NodeImpl node) {
-            if (node._nextSibling != null)
+            if (node._nextSibling != null) {
                 return node._nextSibling;
+            }
             while (node._parentNode != null) {
                 node = node._parentNode;
-                if (node._nextSibling != null)
+                if (node._nextSibling != null) {
                     return node._nextSibling;
+                }
             }
             return null;
         }

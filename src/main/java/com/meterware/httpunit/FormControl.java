@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,10 +20,14 @@
 package com.meterware.httpunit;
 
 import com.meterware.httpunit.controls.SelectionFormControl;
-import com.meterware.httpunit.dom.*;
+import com.meterware.httpunit.dom.HTMLControl;
+import com.meterware.httpunit.dom.HTMLInputElementImpl;
+import com.meterware.httpunit.dom.HTMLSelectElementImpl;
+import com.meterware.httpunit.dom.HTMLTextAreaElementImpl;
 import com.meterware.httpunit.protocol.ParameterProcessor;
 import com.meterware.httpunit.protocol.UploadFileSpec;
-import com.meterware.httpunit.scripting.*;
+import com.meterware.httpunit.scripting.Input;
+import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -40,7 +44,7 @@ import org.xml.sax.SAXException;
  **/
 public abstract class FormControl extends HTMLElementBase {
 
-    final static String[] NO_VALUE = new String[0];
+    final static String[] NO_VALUE = {};
 
     private final WebForm _form;
     private HTMLControl _control;
@@ -116,6 +120,7 @@ public abstract class FormControl extends HTMLElementBase {
         return _form;
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return (ScriptableDelegate) getForm().getScriptingHandler();
     }
@@ -240,6 +245,7 @@ public abstract class FormControl extends HTMLElementBase {
      *
      * @deprecated since 1.7 use doOnChangeEvent instead
      */
+    @Deprecated
     protected void sendOnChangeEvent() {
         doOnChangeEvent();
     }
@@ -256,6 +262,7 @@ public abstract class FormControl extends HTMLElementBase {
      *
      * @deprecated since 1.7 use doOnClickEvent instead
      */
+    @Deprecated
     protected void sendOnClickEvent() {
         doOnClickEvent();
     }
@@ -272,6 +279,7 @@ public abstract class FormControl extends HTMLElementBase {
      *
      * @deprecated since 1.7 use doOnMouseUpEvent instead
      */
+    @Deprecated
     protected void sendOnMouseUpEvent() {
         doOnMouseUpEvent();
     }
@@ -288,6 +296,7 @@ public abstract class FormControl extends HTMLElementBase {
      *
      * @deprecated since 1.7 use doOnMouseDownEvent instead
      */
+    @Deprecated
     protected void sendOnMouseDownEvent() {
         doOnMouseDownEvent();
     }
@@ -303,6 +312,7 @@ public abstract class FormControl extends HTMLElementBase {
      * Creates and returns a scriptable object for this control. Subclasses should override this if they use a different
      * implementation of Scriptable.
      */
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
@@ -324,9 +334,10 @@ public abstract class FormControl extends HTMLElementBase {
      * Removes the specified required value from the list of values, throwing an exception if it is missing.
      **/
     final protected void claimValueIsRequired(List values, final String value) {
-        if (!values.contains(value))
+        if (!values.contains(value)) {
             throw new MissingParameterValueException(getName(), value,
                     (String[]) values.toArray(new String[values.size()]));
+        }
         values.remove(value);
     }
 
@@ -347,51 +358,61 @@ public abstract class FormControl extends HTMLElementBase {
     static FormControl newFormParameter(WebForm form, Node node) {
         if (node.getNodeType() != Node.ELEMENT_NODE) {
             return null;
-        } else if (node.getNodeName().equalsIgnoreCase("textarea")) {
+        }
+        if (node.getNodeName().equalsIgnoreCase("textarea")) {
             return new TextAreaFormControl(form, (HTMLTextAreaElementImpl) node);
-        } else if (node.getNodeName().equalsIgnoreCase("select")) {
+        }
+        if (node.getNodeName().equalsIgnoreCase("select")) {
             return new SelectionFormControl(form, (HTMLSelectElementImpl) node);
-        } else if (node.getNodeName().equalsIgnoreCase("button")) {
+        }
+        if (node.getNodeName().equalsIgnoreCase("button")) {
             HTMLControl control = (HTMLControl) node;
             final String type = control.getType();
             if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE)) {
                 return new SubmitButton(form, control);
-            } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
+            }
+            if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
                 return new ResetButton(form, control);
-            } else {
-                return new Button(form, control);
             }
-        } else if (!node.getNodeName().equalsIgnoreCase("input")) {
-            return null;
-        } else {
-            HTMLInputElementImpl element = (HTMLInputElementImpl) node;
-            final String type = element.getType();
-            if (type.equalsIgnoreCase(TEXT_TYPE)) {
-                return new TextFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
-                return new PasswordFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
-                return new HiddenFieldFormControl(form, element);
-            } else if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
-                return new RadioButtonFormControl(form, element);
-            } else if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
-                return new CheckboxFormControl(form, element);
-            } else if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
-                return new SubmitButton(form, element);
-            } else if (type.equalsIgnoreCase(BUTTON_TYPE)) {
-                return new Button(form, (HTMLControl) node);
-            } else if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
-                return new ResetButton(form, (HTMLControl) node);
-            } else if (type.equalsIgnoreCase(FILE_TYPE)) {
-                return new FileSubmitFormControl(form, element);
-            } else {
-                return new TextFieldFormControl(form, element);
-            }
+            return new Button(form, control);
         }
+        if (!node.getNodeName().equalsIgnoreCase("input")) {
+            return null;
+        }
+        HTMLInputElementImpl element = (HTMLInputElementImpl) node;
+        final String type = element.getType();
+        if (type.equalsIgnoreCase(TEXT_TYPE)) {
+            return new TextFieldFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(PASSWORD_TYPE)) {
+            return new PasswordFieldFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(HIDDEN_TYPE)) {
+            return new HiddenFieldFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {
+            return new RadioButtonFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {
+            return new CheckboxFormControl(form, element);
+        }
+        if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {
+            return new SubmitButton(form, element);
+        }
+        if (type.equalsIgnoreCase(BUTTON_TYPE)) {
+            return new Button(form, (HTMLControl) node);
+        }
+        if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {
+            return new ResetButton(form, (HTMLControl) node);
+        }
+        if (type.equalsIgnoreCase(FILE_TYPE)) {
+            return new FileSubmitFormControl(form, element);
+        }
+        return new TextFieldFormControl(form, element);
     }
 
     protected String emptyIfNull(String value) {
-        return (value == null) ? "" : value;
+        return value == null ? "" : value;
     }
 
     /**
@@ -404,6 +425,7 @@ public abstract class FormControl extends HTMLElementBase {
          *
          * @return the name of this scriptable
          */
+        @Override
         public String getName() {
             return FormControl.this.getName();
         }
@@ -413,6 +435,7 @@ public abstract class FormControl extends HTMLElementBase {
          *
          * @return the id of this scriptable
          */
+        @Override
         public String getID() {
             return FormControl.this.getID();
         }
@@ -430,14 +453,15 @@ public abstract class FormControl extends HTMLElementBase {
          * @param propertyName
          *            - the name of the property to get
          */
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("name")) {
                 return FormControl.this.getName();
-            } else if (propertyName.equalsIgnoreCase("type")) {
-                return FormControl.this.getType();
-            } else {
-                return super.get(propertyName);
             }
+            if (propertyName.equalsIgnoreCase("type")) {
+                return FormControl.this.getType();
+            }
+            return super.get(propertyName);
         }
 
         /**
@@ -448,6 +472,7 @@ public abstract class FormControl extends HTMLElementBase {
          * @param value
          *            - the value to use
          */
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("value")) {
                 setValueAttribute(value.toString());
@@ -466,6 +491,7 @@ public abstract class FormControl extends HTMLElementBase {
          * @param value
          *            - the value to use
          */
+        @Override
         public void setAttribute(String attributeName, Object value) {
             // Value set by JavaScript, make sure attribute is supported
             supportAttribute(attributeName);
@@ -475,6 +501,7 @@ public abstract class FormControl extends HTMLElementBase {
         /**
          * allow calling click for this control
          */
+        @Override
         public void click() throws IOException, SAXException {
             // TODO check whether the empty body of this method was correct
             // call onclick event handler
@@ -502,6 +529,7 @@ public abstract class FormControl extends HTMLElementBase {
         /**
          * allow firing a sendOnChangeEvent
          */
+        @Override
         public void sendOnChangeEvent() {
             // TODO check why the test for this does not work although
             // the javascript function call is done in the corresponding testcase
@@ -523,24 +551,28 @@ abstract class BooleanFormControl extends FormControl {
 
     private HTMLInputElementImpl _element;
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
     class Scriptable extends FormControl.Scriptable {
 
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("value")) {
                 return getQueryValue();
-            } else if (propertyName.equalsIgnoreCase("checked")) {
-                return isChecked() ? Boolean.TRUE : Boolean.FALSE;
-            } else if (propertyName.equalsIgnoreCase("defaultchecked")) {
-                return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;
-            } else {
-                return super.get(propertyName);
             }
+            if (propertyName.equalsIgnoreCase("checked")) {
+                return isChecked() ? Boolean.TRUE : Boolean.FALSE;
+            }
+            if (propertyName.equalsIgnoreCase("defaultchecked")) {
+                return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;
+            }
+            return super.get(propertyName);
         }
 
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("checked")) {
                 setChecked(value instanceof Boolean && ((Boolean) value).booleanValue());
@@ -559,10 +591,12 @@ abstract class BooleanFormControl extends FormControl {
     private String readDisplayedValue(Node node) {
         Node nextSibling = node.getNextSibling();
         while (nextSibling != null && nextSibling.getNodeType() != Node.TEXT_NODE
-                && nextSibling.getNodeType() != Node.ELEMENT_NODE)
+                && nextSibling.getNodeType() != Node.ELEMENT_NODE) {
             nextSibling = nextSibling.getNextSibling();
-        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE)
+        }
+        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {
             return "";
+        }
         return nextSibling.getNodeValue();
     }
 
@@ -570,10 +604,12 @@ abstract class BooleanFormControl extends FormControl {
         return _element.getChecked();
     }
 
+    @Override
     protected String getValueAttribute() {
         return emptyIfNull(_element.getValue());
     }
 
+    @Override
     protected void setValueAttribute(String value) {
         _element.setValue(value);
     }
@@ -586,6 +622,7 @@ abstract class BooleanFormControl extends FormControl {
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
      **/
+    @Override
     public String[] getValues() {
         return isChecked() ? toArray(getQueryValue()) : NO_VALUE;
     }
@@ -593,25 +630,31 @@ abstract class BooleanFormControl extends FormControl {
     /**
      * Returns the values permitted in this control.
      **/
+    @Override
     public String[] getOptionValues() {
-        return (isReadOnly() && !isChecked()) ? NO_VALUE : toArray(getQueryValue());
+        return isReadOnly() && !isChecked() ? NO_VALUE : toArray(getQueryValue());
     }
 
+    @Override
     protected String[] getDisplayedOptions() {
         return _displayedValue;
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-        if (isChecked() && !isDisabled())
+        if (isChecked() && !isDisabled()) {
             processor.addParameter(getName(), getQueryValue(), characterSet);
+        }
     }
 
     /**
      * Remove any required values for this control from the list, throwing an exception if they are missing.
      **/
+    @Override
     void claimRequiredValues(List values) {
-        if (isValueRequired())
+        if (isValueRequired()) {
             claimValueIsRequired(values, getQueryValue());
+        }
     }
 
     protected boolean isValueRequired() {
@@ -627,6 +670,7 @@ abstract class BooleanFormControl extends FormControl {
 
 class CheckboxFormControl extends BooleanFormControl {
 
+    @Override
     public String getType() {
         return CHECKBOX_TYPE;
     }
@@ -635,14 +679,18 @@ class CheckboxFormControl extends BooleanFormControl {
         super(form, element);
     }
 
+    @Override
     protected void claimUniqueValue(List values) {
-        if (isValueRequired())
+        if (isValueRequired()) {
             return;
+        }
         setState(values.contains(getQueryValue()));
-        if (isChecked())
+        if (isChecked()) {
             values.remove(getQueryValue());
+        }
     }
 
+    @Override
     String getQueryValue() {
         final String value = getValueAttribute();
         return value.length() == 0 ? "on" : value;
@@ -651,6 +699,7 @@ class CheckboxFormControl extends BooleanFormControl {
     /**
      * Toggles the value of this control.
      */
+    @Override
     public void toggle() {
         setState(!isChecked());
     }
@@ -658,11 +707,13 @@ class CheckboxFormControl extends BooleanFormControl {
     /**
      * Sets the state of this boolean control. Triggers the 'onclick' event if the state has changed.
      */
+    @Override
     public void setState(boolean state) {
         boolean wasChecked = isChecked();
         setChecked(state);
-        if (isChecked() != wasChecked)
+        if (isChecked() != wasChecked) {
             sendOnClickEvent();
+        }
     }
 }
 
@@ -676,6 +727,7 @@ abstract class TextFormControl extends FormControl {
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
      **/
+    @Override
     public String[] getValues() {
         return new String[] { getValue() };
     }
@@ -689,17 +741,21 @@ abstract class TextFormControl extends FormControl {
     /**
      * Returns true to indicate that this control accepts free-form text.
      **/
+    @Override
     public boolean isTextControl() {
         return true;
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-        if (!isDisabled() && getName().length() > 0)
+        if (!isDisabled() && getName().length() > 0) {
             processor.addParameter(getName(), getValues()[0], characterSet);
+        }
     }
 
     /**
@@ -708,9 +764,11 @@ abstract class TextFormControl extends FormControl {
      * @param values
      *            - the list of values
      */
+    @Override
     void claimValue(List values) {
-        if (isReadOnly())
+        if (isReadOnly()) {
             return;
+        }
 
         String oldValue = getValue();
         if (values.isEmpty()) {
@@ -720,15 +778,19 @@ abstract class TextFormControl extends FormControl {
             values.remove(0);
         }
         boolean same = oldValue == null && getValue() == null;
-        if (oldValue != null)
+        if (oldValue != null) {
             same = oldValue.equals(getValue());
-        if (!same)
+        }
+        if (!same) {
             sendOnChangeEvent();
+        }
     }
 
+    @Override
     void claimRequiredValues(List values) {
-        if (isReadOnly())
+        if (isReadOnly()) {
             claimValueIsRequired(values);
+        }
     }
 
     protected void claimValueIsRequired(List values) {
@@ -737,23 +799,25 @@ abstract class TextFormControl extends FormControl {
 
     class Scriptable extends FormControl.Scriptable {
 
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("value")) {
                 return getValue();
-            } else if (propertyName.equalsIgnoreCase("defaultValue")) {
-                return getDefaultValue();
-            } else {
-                return super.get(propertyName);
             }
+            if (propertyName.equalsIgnoreCase("defaultValue")) {
+                return getDefaultValue();
+            }
+            return super.get(propertyName);
         }
 
+        @Override
         public void set(String propertyName, Object value) {
             if (!propertyName.equalsIgnoreCase("value")) {
                 super.set(propertyName, value);
             } else if (value instanceof Number) {
                 setValue(HttpUnitUtils.trimmedValue((Number) value));
             } else {
-                setValue((value == null) ? null : value.toString());
+                setValue(value == null ? null : value.toString());
             }
         }
     }
@@ -763,6 +827,7 @@ class TextFieldFormControl extends TextFormControl {
 
     private HTMLInputElementImpl _element;
 
+    @Override
     public String getType() {
         return TEXT_TYPE;
     }
@@ -773,14 +838,17 @@ class TextFieldFormControl extends TextFormControl {
         supportAttribute("maxlength");
     }
 
+    @Override
     protected String getDefaultValue() {
         return _element.getDefaultValue();
     }
 
+    @Override
     protected String getValue() {
         return emptyIfNull(_element.getValue());
     }
 
+    @Override
     protected void setValue(String value) {
         _element.setValue(value);
     }
@@ -788,6 +856,7 @@ class TextFieldFormControl extends TextFormControl {
 
 class PasswordFieldFormControl extends TextFieldFormControl {
 
+    @Override
     public String getType() {
         return PASSWORD_TYPE;
     }
@@ -802,6 +871,7 @@ class PasswordFieldFormControl extends TextFieldFormControl {
  */
 class HiddenFieldFormControl extends TextFieldFormControl {
 
+    @Override
     public String getType() {
         return HIDDEN_TYPE;
     }
@@ -810,13 +880,16 @@ class HiddenFieldFormControl extends TextFieldFormControl {
         super(form, element);
     }
 
+    @Override
     void claimRequiredValues(List values) {
         claimValueIsRequired(values);
     }
 
+    @Override
     void claimValue(List values) {
     }
 
+    @Override
     public boolean isHidden() {
         return true;
     }
@@ -831,18 +904,22 @@ class TextAreaFormControl extends TextFormControl {
         _element = element;
     }
 
+    @Override
     public String getType() {
         return TEXTAREA_TYPE;
     }
 
+    @Override
     protected String getDefaultValue() {
         return _element.getDefaultValue();
     }
 
+    @Override
     protected String getValue() {
         return _element.getValue();
     }
 
+    @Override
     protected void setValue(String value) {
         _element.setValue(value);
     }
@@ -859,24 +936,26 @@ class FileSubmitFormControl extends FormControl {
      *
      * @return the constant FILE_TYPE
      */
+    @Override
     public String getType() {
         return FILE_TYPE;
     }
 
     private UploadFileSpec _fileToUpload;
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
 
     class Scriptable extends FormControl.Scriptable {
 
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("value")) {
                 return getSelectedName();
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
     }
@@ -888,6 +967,7 @@ class FileSubmitFormControl extends FormControl {
     /**
      * Returns true if this control accepts a file for upload.
      **/
+    @Override
     public boolean isFileParameter() {
         return true;
     }
@@ -895,6 +975,7 @@ class FileSubmitFormControl extends FormControl {
     /**
      * Returns the name of the selected file, if any.
      */
+    @Override
     public String[] getValues() {
         return new String[] { getSelectedName() };
     }
@@ -906,6 +987,7 @@ class FileSubmitFormControl extends FormControl {
     /**
      * Specifies a number of file upload specifications for this control.
      **/
+    @Override
     void claimUploadSpecification(List files) {
         if (files.isEmpty()) {
             _fileToUpload = null;
@@ -915,6 +997,7 @@ class FileSubmitFormControl extends FormControl {
         }
     }
 
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         if (!isDisabled() && _fileToUpload != null) {
             processor.addFile(getName(), _fileToUpload);
@@ -929,19 +1012,22 @@ class FileSubmitFormControl extends FormControl {
  **/
 class MissingParameterValueException extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
     MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {
         _parameterName = parameterName;
         _missingValue = missingValue;
         _proposedValues = proposed;
     }
 
+    @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
         sb.append("Parameter '").append(_parameterName).append("' must have the value '");
         sb.append(_missingValue).append("'. Attempted to set it to: { ");
         for (int i = 0; i < _proposedValues.length; i++) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(", ");
+            }
             sb.append(_proposedValues[i]);
         }
         sb.append(" }");

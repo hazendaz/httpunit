@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -45,18 +45,18 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
      * @param propertyName
      *            - the name of the property to get
      */
+    @Override
     public Object get(String propertyName) {
-        if (propertyName.equals("nodeName")) {
+        if (propertyName.equals("nodeName") || propertyName.equals("tagName")) {
             return _element.getTagName();
-        } else if (propertyName.equals("tagName")) {
-            return _element.getTagName();
-        } else if (propertyName.equalsIgnoreCase("title")) {
-            return _element.getTitle();
-        } else if (_element.isSupportedAttribute(propertyName)) {
-            return _element.getAttribute(propertyName);
-        } else {
-            return super.get(propertyName);
         }
+        if (propertyName.equalsIgnoreCase("title")) {
+            return _element.getTitle();
+        }
+        if (_element.isSupportedAttribute(propertyName)) {
+            return _element.getAttribute(propertyName);
+        }
+        return super.get(propertyName);
     }
 
     /**
@@ -89,6 +89,7 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
         _element.removeAttribute(attributeName);
     }
 
+    @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
         if (eventName.toLowerCase().equals("onclick")) {

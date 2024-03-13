@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,6 +27,7 @@ import java.util.Properties;
  **/
 public class AuthorizationRequiredException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
     public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
         Properties props = new Properties();
         props.put("realm", realm);
@@ -42,6 +43,7 @@ public class AuthorizationRequiredException extends RuntimeException {
         _properties = properties;
     }
 
+    @Override
     public String getMessage() {
         return _scheme + " authentication required: " + _properties;
     }
@@ -68,8 +70,9 @@ public class AuthorizationRequiredException extends RuntimeException {
     }
 
     private String unQuote(String value) {
-        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\""))
+        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\"")) {
             return value;
+        }
 
         return value.substring(1, value.length() - 1);
     }

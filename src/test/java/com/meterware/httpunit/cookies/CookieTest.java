@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -50,7 +50,7 @@ public class CookieTest {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
                 new String[] { "Reason=; path=/", "age=12, name= george", "type=short", "funky=ab$==",
                         "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
-                        "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
+        "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
         assertEquals("", jar.getCookieValue("Reason"), "cookie 'Reason' value");
         assertEquals("12", jar.getCookieValue("age"), "cookie 'age' value");
         assertEquals("george", jar.getCookieValue("name"), "cookie 'name' value");

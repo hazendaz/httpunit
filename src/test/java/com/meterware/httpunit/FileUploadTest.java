@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -488,7 +488,7 @@ class MimeEcho extends PseudoServlet {
                 }
             } else if (state == 1) {
                 name = token.trim();
-            } else if ((state == 2) && name.equalsIgnoreCase(attributeName)) {
+            } else if (state == 2 && name.equalsIgnoreCase(attributeName)) {
                 return stripQuotes(token.trim());
             }
         }

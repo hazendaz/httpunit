@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -48,7 +48,7 @@ public class TextBlock extends BlockElement {
      * Returns any lists embedded in this text block.
      */
     public WebList[] getLists() {
-        return (WebList[]) (_lists.toArray(new WebList[_lists.size()]));
+        return (WebList[]) _lists.toArray(new WebList[_lists.size()]);
     }
 
     void addList(WebList webList) {
@@ -60,20 +60,18 @@ public class TextBlock extends BlockElement {
     }
 
     static {
-        MATCH_CLASS = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                if (criteria == null)
-                    criteria = "";
-                return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase(criteria.toString());
-            };
+        MATCH_CLASS = (htmlElement, criteria) -> {
+            if (criteria == null) {
+                criteria = "";
+            }
+            return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase(criteria.toString());
         };
 
-        MATCH_TAG = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                if (criteria == null)
-                    criteria = "";
-                return criteria.toString().equalsIgnoreCase(((BlockElement) htmlElement).getTagName());
-            };
+        MATCH_TAG = (htmlElement, criteria) -> {
+            if (criteria == null) {
+                criteria = "";
+            }
+            return criteria.toString().equalsIgnoreCase(((BlockElement) htmlElement).getTagName());
         };
     }
 }

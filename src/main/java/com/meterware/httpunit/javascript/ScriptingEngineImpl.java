@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -25,14 +25,22 @@ import com.meterware.httpunit.scripting.ScriptingEngine;
 
 import java.util.ArrayList;
 
-import org.mozilla.javascript.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.EcmaError;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {
 
-    private final static Object[] NO_ARGS = new Object[0];
+    private static final long serialVersionUID = 1L;
+
+    private final static Object[] NO_ARGS = {};
 
     private static ArrayList _errorMessages = new ArrayList();
 
@@ -62,26 +70,25 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      */
     static public void handleScriptException(Exception e, String badScript) {
         String errorMessage = badScript == null ? e.getMessage() : badScript + " failed: " + e;
-        if (e instanceof EcmaError || e instanceof EvaluatorException || e instanceof ScriptException
-                || e instanceof JavaScriptException) {
-            if (JavaScript.isThrowExceptionsOnError()) {
-                HttpUnitUtils.handleException(e);
-                if (e instanceof ScriptException)
-                    throw (ScriptException) e;
-                else
-                    throw new ScriptException(errorMessage);
-            } else {
-                _errorMessages.add(errorMessage);
-            }
-        } else {
+        if (!(e instanceof EcmaError) && !(e instanceof EvaluatorException) && !(e instanceof ScriptException)
+                && !(e instanceof JavaScriptException)) {
             HttpUnitUtils.handleException(e);
             throw new RuntimeException(errorMessage);
         }
+        if (JavaScript.isThrowExceptionsOnError()) {
+            HttpUnitUtils.handleException(e);
+            if (e instanceof ScriptException) {
+                throw (ScriptException) e;
+            }
+            throw new ScriptException(errorMessage);
+        }
+        _errorMessages.add(errorMessage);
     }
 
     // --------------------------------------- ScriptingEngine methods
     // ------------------------------------------------------
 
+    @Override
     public boolean supportsScriptLanguage(String language) {
         return language == null || language.toLowerCase().startsWith("javascript");
     }
@@ -94,15 +101,18 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      * @param script
      *            - the script to run
      */
+    @Override
     public String runScript(String language, String script) {
-        if (!supportsScriptLanguage(language))
+        if (!supportsScriptLanguage(language)) {
             return "";
+        }
         try {
             script = script.trim();
             if (script.startsWith("<!--")) {
                 script = withoutFirstLine(script);
-                if (script.endsWith("-->"))
+                if (script.endsWith("-->")) {
                     script = script.substring(0, script.lastIndexOf("-->"));
+                }
             }
             Context context = Context.enter();
             context.initStandardObjects(null);
@@ -125,6 +135,8 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      *
      * @deprecated since 1.7 - use doEventScript instead
      */
+    @Deprecated
+    @Override
     public boolean doEvent(String eventScript) {
         return doEventScript(eventScript);
     }
@@ -135,27 +147,27 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      * @param eventScript
      *            - the script to use
      */
+    @Override
     public boolean doEventScript(String eventScript) {
         if (eventScript.length() == 0) {
             return true;
-        } else {
-            try {
-                Context context = Context.enter();
-                context.initStandardObjects(null);
-                context.setOptimizationLevel(-1);
-                // wrap the eventScript into a function
-                Function f = context.compileFunction(this, "function x() { " + eventScript + "}", "httpunit", 0, null);
-                // call the function with no arguments
-                Object result = f.call(context, this, this, NO_ARGS);
-                // return the result of the function or false if it is not boolean
-                return (!(result instanceof Boolean)) || ((Boolean) result).booleanValue();
-            } catch (Exception e) {
-                handleScriptException(e, "Event '" + eventScript + "'");
-                return false;
-            } finally {
-                Context.exit();
-            }
-        } // if
+        }
+        try {
+            Context context = Context.enter();
+            context.initStandardObjects(null);
+            context.setOptimizationLevel(-1);
+            // wrap the eventScript into a function
+            Function f = context.compileFunction(this, "function x() { " + eventScript + "}", "httpunit", 0, null);
+            // call the function with no arguments
+            Object result = f.call(context, this, this, NO_ARGS);
+            // return the result of the function or false if it is not boolean
+            return !(result instanceof Boolean) || ((Boolean) result).booleanValue();
+        } catch (Exception e) {
+            handleScriptException(e, "Event '" + eventScript + "'");
+            return false;
+        } finally {
+            Context.exit();
+        }
     }
 
     /**
@@ -166,6 +178,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      *
      * @return
      */
+    @Override
     public boolean handleEvent(String eventName) {
         throw new RuntimeException("pseudo - abstract handleEvent called ");
     }
@@ -176,12 +189,13 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      * @param expression
      *            - the expression to evaluate
      */
+    @Override
     public Object evaluateExpression(String expression) {
         try {
             Context context = Context.enter();
             context.initStandardObjects(null);
             Object result = context.evaluateString(this, expression, "httpunit", 0, null);
-            return (result == null || result instanceof Undefined) ? null : result;
+            return result == null || result instanceof Undefined ? null : result;
         } catch (Exception e) {
             handleScriptException(e, "URL '" + expression + "'");
             return null;
@@ -203,8 +217,9 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     private String withoutFirstLine(String script) {
         for (int i = 0; i < script.length(); i++) {
-            if (isLineTerminator(script.charAt(i)))
+            if (isLineTerminator(script.charAt(i))) {
                 return script.substring(i).trim();
+            }
         }
         return "";
     }

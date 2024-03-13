@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -146,8 +146,8 @@ public class WebAppletTest extends HttpUnitTest {
     void testAppletFindFromApplet() throws Exception {
         defineWebPage("start",
                 "<applet name=first code='" + SimpleApplet.class.getName()
-                        + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
-                        + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
+                + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
+                + SecondApplet.class.getName() + ".class' codebase=/classes width=100 height=100></applet>");
         mapToClasspath("/classes");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/start.html");

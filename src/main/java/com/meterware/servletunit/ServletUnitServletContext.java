@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -54,6 +58,7 @@ public class ServletUnitServletContext implements ServletContext {
      * <p>
      * In a security conscious environment, the servlet container may return null for a given URL.
      **/
+    @Override
     public jakarta.servlet.ServletContext getContext(java.lang.String A) {
         return null;
     }
@@ -62,6 +67,7 @@ public class ServletUnitServletContext implements ServletContext {
      * Returns the major version of the Java Servlet API that this servlet container supports. All implementations that
      * comply with Version 2.4 must have this method return the integer 2.
      **/
+    @Override
     public int getMajorVersion() {
         return 4;
     }
@@ -70,6 +76,7 @@ public class ServletUnitServletContext implements ServletContext {
      * Returns the minor version of the Servlet API that this servlet container supports. All implementations that
      * comply with Version 2.4 must have this method return the integer 4.
      **/
+    @Override
     public int getMinorVersion() {
         return 0;
     }
@@ -79,6 +86,7 @@ public class ServletUnitServletContext implements ServletContext {
      * by the configuration of the servlet container, and may be specified in a web application deployment descriptor.
      * Common MIME types are "text/html" and "image/gif".
      **/
+    @Override
     public java.lang.String getMimeType(String filePath) {
         return URLConnection.getFileNameMap().getContentTypeFor(filePath);
     }
@@ -99,6 +107,7 @@ public class ServletUnitServletContext implements ServletContext {
      * of an execution. This method has a different purpose than java.lang.Class.getResource, which looks up resources
      * based on a class loader. This method does not use class loaders.
      **/
+    @Override
     public java.net.URL getResource(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
@@ -125,6 +134,7 @@ public class ServletUnitServletContext implements ServletContext {
      * java.lang.Class.getResourceAsStream, which uses a class loader. This method allows servlet containers to make a
      * resource available to a servlet from any location, without using a class loader.
      **/
+    @Override
     public java.io.InputStream getResourceAsStream(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
@@ -141,13 +151,12 @@ public class ServletUnitServletContext implements ServletContext {
      * relative to the current context root. Use getContext to obtain a RequestDispatcher for resources in foreign
      * contexts. This method returns null if the ServletContext cannot return a RequestDispatcher.
      **/
+    @Override
     public jakarta.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
             URL url = new URL("http", "localhost", _application.getContextPath() + path);
             return new RequestDispatcherImpl(_application, url);
-        } catch (ServletException e) {
-            return null;
-        } catch (MalformedURLException e) {
+        } catch (ServletException | MalformedURLException e) {
             return null;
         }
     }
@@ -161,10 +170,12 @@ public class ServletUnitServletContext implements ServletContext {
      * @param servletName
      *            - the name of the dispatcher to get
      **/
+    @Override
     public jakarta.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
         final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);
-        if (servletConfig == null)
+        if (servletConfig == null) {
             return null;
+        }
 
         Servlet tempServlet;
         Exception tempException;
@@ -183,6 +194,7 @@ public class ServletUnitServletContext implements ServletContext {
 
         return new jakarta.servlet.RequestDispatcher() {
 
+            @Override
             public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
 
                 if (instantiationException != null) {
@@ -190,15 +202,12 @@ public class ServletUnitServletContext implements ServletContext {
                     if (instantiationException instanceof ServletException) {
                         throw (ServletException) instantiationException;
 
-                    } else {
-
-                        ServletException e = new ServletException(instantiationException.getMessage());
-
-                        e.initCause(instantiationException);
-
-                        throw e;
-
                     }
+                    ServletException e = new ServletException(instantiationException.getMessage());
+
+                    e.initCause(instantiationException);
+
+                    throw e;
 
                 }
 
@@ -209,15 +218,15 @@ public class ServletUnitServletContext implements ServletContext {
                 servlet.service(request, response);
             }
 
+            @Override
             public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
                 if (instantiationException != null) {
                     if (instantiationException instanceof ServletException) {
                         throw (ServletException) instantiationException;
-                    } else {
-                        ServletException e = new ServletException(instantiationException.getMessage());
-                        e.initCause(instantiationException);
-                        throw e;
                     }
+                    ServletException e = new ServletException(instantiationException.getMessage());
+                    e.initCause(instantiationException);
+                    throw e;
                 }
                 if (servletConfig.getJspFile() != null) {
                     request.setAttribute("org.apache.catalina.jsp_file", servletConfig.getJspFile());
@@ -228,31 +237,19 @@ public class ServletUnitServletContext implements ServletContext {
     }
 
     /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    public jakarta.servlet.Servlet getServlet(java.lang.String A) {
-        return null;
-    }
-
-    /**
      * Writes the specified message to a servlet log file, usually an event log. The name and type of the servlet log
      * file is specific to the servlet container.
      **/
+    @Override
     public void log(String message) {
         _logStream.println(message);
-    }
-
-    /**
-     * @deprecated use log( String, Throwable )
-     **/
-    public void log(Exception e, String message) {
-        log(message, e);
     }
 
     /**
      * Writes an explanatory message and a stack trace for a given Throwable exception to the servlet log file. The name
      * and type of the servlet log file is specific to the servlet container, usually an event log.
      **/
+    @Override
     public void log(String message, Throwable t) {
         _logStream.print(message);
         _logStream.print(":");
@@ -269,6 +266,7 @@ public class ServletUnitServletContext implements ServletContext {
      * cannot translate the virtual path to a real path for any reason (such as when the content is being made available
      * from a .war archive).
      **/
+    @Override
     public String getRealPath(String path) {
         return _application.getResourceFile(path).getAbsolutePath();
     }
@@ -281,6 +279,7 @@ public class ServletUnitServletContext implements ServletContext {
      * JavaServer Web Dev Kit/1.0. The servlet container may return other optional information after the primary string
      * in parentheses, for example, JavaServer Web Dev Kit/1.0 (JDK 1.1.6; Windows NT 4.0 x86).
      **/
+    @Override
     public String getServerInfo() {
         return DEFAULT_SERVER_INFO;
     }
@@ -291,7 +290,8 @@ public class ServletUnitServletContext implements ServletContext {
      * application". For example, it can provide a webmaster's email address or the name of a system that holds critical
      * data.
      **/
-    public java.lang.String getInitParameter(String name) {
+    @Override
+    public String getInitParameter(String name) {
         return (String) getContextParams().get(name);
     }
 
@@ -299,7 +299,8 @@ public class ServletUnitServletContext implements ServletContext {
      * Returns the names of the context's initialization parameters as an Enumeration of String objects, or an empty
      * Enumeration if the context has no initialization parameters.
      **/
-    public java.util.Enumeration getInitParameterNames() {
+    @Override
+    public Enumeration<String> getInitParameterNames() {
         return getContextParams().keys();
     }
 
@@ -309,14 +310,17 @@ public class ServletUnitServletContext implements ServletContext {
      * interface. See your server documentation for information about its attributes. A list of supported attributes can
      * be retrieved using getAttributeNames.
      **/
+    @Override
     public Object getAttribute(String name) {
         return _attributes.get(name);
     }
 
-    public Enumeration getAttributeNames() {
+    @Override
+    public Enumeration<String> getAttributeNames() {
         return _attributes.keys();
     }
 
+    @Override
     public void setAttribute(String name, Object attribute) {
         if (!_attributes.containsKey(name)) {
             _attributes.put(name, attribute);
@@ -328,6 +332,7 @@ public class ServletUnitServletContext implements ServletContext {
         }
     }
 
+    @Override
     public void removeAttribute(String name) {
         Object oldValue = _attributes.get(name);
         _attributes.remove(name);
@@ -356,7 +361,8 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @since HttpUnit 1.3
      */
-    public Set getResourcePaths(String path) {
+    @Override
+    public Set<String> getResourcePaths(String path) {
         return null;
     }
 
@@ -368,6 +374,7 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @since HttpUnit 1.3
      */
+    @Override
     public String getServletContextName() {
         return _application.getDisplayName();
     }
@@ -375,6 +382,7 @@ public class ServletUnitServletContext implements ServletContext {
     // -------------------------------------- servlet-api 2.5 additions
     // -----------------------------------------------
 
+    @Override
     public String getContextPath() {
         return null;
     }
@@ -413,141 +421,175 @@ public class ServletUnitServletContext implements ServletContext {
         this._logStream = logStream;
     }
 
+    @Override
     public int getEffectiveMajorVersion() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public int getEffectiveMinorVersion() {
         // TODO Auto-generated method stub
         return 0;
     }
 
+    @Override
     public boolean setInitParameter(String name, String value) {
         getContextParams().put(name, value);
         return true;
     }
 
+    @Override
     public Dynamic addServlet(String servletName, String className) {
         return null;
     }
 
+    @Override
     public Dynamic addServlet(String servletName, Servlet servlet) {
         return null;
     }
 
+    @Override
     public Dynamic addServlet(String servletName, Class<? extends Servlet> servletClass) {
         return null;
     }
 
+    @Override
     public <T extends Servlet> T createServlet(Class<T> clazz) throws ServletException {
         return null;
     }
 
+    @Override
     public ServletRegistration getServletRegistration(String servletName) {
         return null;
     }
 
+    @Override
     public Map<String, ? extends ServletRegistration> getServletRegistrations() {
         return null;
     }
 
+    @Override
     public FilterRegistration.Dynamic addFilter(String filterName, String className) {
         return null;
     }
 
+    @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
         return null;
     }
 
+    @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
         return null;
     }
 
+    @Override
     public <T extends Filter> T createFilter(Class<T> clazz) throws ServletException {
         return null;
     }
 
+    @Override
     public FilterRegistration getFilterRegistration(String filterName) {
         return null;
     }
 
+    @Override
     public Map<String, ? extends FilterRegistration> getFilterRegistrations() {
         return null;
     }
 
+    @Override
     public SessionCookieConfig getSessionCookieConfig() {
         return null;
     }
 
+    @Override
     public void setSessionTrackingModes(Set<SessionTrackingMode> sessionTrackingModes) {
 
     }
 
+    @Override
     public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
         return null;
     }
 
+    @Override
     public Set<SessionTrackingMode> getEffectiveSessionTrackingModes() {
         return null;
     }
 
+    @Override
     public void addListener(String className) {
 
     }
 
+    @Override
     public <T extends EventListener> void addListener(T t) {
 
     }
 
+    @Override
     public void addListener(Class<? extends EventListener> listenerClass) {
 
     }
 
+    @Override
     public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException {
         return null;
     }
 
+    @Override
     public JspConfigDescriptor getJspConfigDescriptor() {
         return null;
     }
 
+    @Override
     public ClassLoader getClassLoader() {
         return ServletUnitServletContext.class.getClassLoader();
     }
 
+    @Override
     public void declareRoles(String... roleNames) {
 
     }
 
+    @Override
     public String getVirtualServerName() {
         return null;
     }
 
+    @Override
     public Dynamic addJspFile(String servletName, String jspFile) {
         return null;
     }
 
+    @Override
     public int getSessionTimeout() {
         return 0;
     }
 
+    @Override
     public void setSessionTimeout(int sessionTimeout) {
 
     }
 
+    @Override
     public String getRequestCharacterEncoding() {
         return null;
     }
 
+    @Override
     public void setRequestCharacterEncoding(String encoding) {
 
     }
 
+    @Override
     public String getResponseCharacterEncoding() {
         return null;
     }
 
+    @Override
     public void setResponseCharacterEncoding(String encoding) {
 
     }

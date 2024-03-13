@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -39,8 +39,9 @@ abstract class WebResourceConfiguration {
 
     WebResourceConfiguration(String className, Hashtable initParams) {
         _className = className;
-        if (initParams != null)
+        if (initParams != null) {
             _initParams = initParams;
+        }
     }
 
     WebResourceConfiguration(Element resourceElement, String resourceNodeName) throws SAXException {

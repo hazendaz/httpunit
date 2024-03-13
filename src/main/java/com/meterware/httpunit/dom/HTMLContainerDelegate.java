@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -52,8 +52,9 @@ class HTMLContainerDelegate {
         ArrayList elements = new ArrayList();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE)
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
+            }
 
             if (ParsedHTML.isWebLink(node)) {
                 elements.add(node);
@@ -74,8 +75,9 @@ class HTMLContainerDelegate {
         ArrayList elements = new ArrayList();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
-            if (node.getNodeType() != Node.ELEMENT_NODE)
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
+            }
 
             if ("form".equalsIgnoreCase(((Element) node).getTagName())) {
                 elements.add(node);

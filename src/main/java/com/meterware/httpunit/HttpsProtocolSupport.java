@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -99,8 +99,8 @@ public abstract class HttpsProtocolSupport {
      */
     static void verifyProtocolSupport(String protocol) {
         if (protocol.equalsIgnoreCase("http")) {
-            return;
-        } else if (protocol.equalsIgnoreCase("https")) {
+        }
+        if (protocol.equalsIgnoreCase("https")) {
             validateHttpsProtocolSupport();
         }
     }
@@ -115,8 +115,9 @@ public abstract class HttpsProtocolSupport {
     private static void verifyHttpsSupport() {
         try {
             Class providerClass = getHttpsProviderClass();
-            if (!hasProvider(providerClass))
+            if (!hasProvider(providerClass)) {
                 Security.addProvider((Provider) providerClass.getDeclaredConstructor().newInstance());
+            }
             registerSSLProtocolHandler();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(
@@ -151,9 +152,10 @@ public abstract class HttpsProtocolSupport {
 
     private static boolean hasProvider(Class providerClass) {
         Provider[] list = Security.getProviders();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i].getClass().equals(providerClass))
+        for (Provider element : list) {
+            if (element.getClass().equals(providerClass)) {
                 return true;
+            }
         }
         return false;
     }
@@ -166,14 +168,17 @@ public abstract class HttpsProtocolSupport {
         final SSLContext context = SSLContext.getInstance("TLS");
         context.init(null, new X509TrustManager[] { new X509TrustManager() {
             // @Override
+            @Override
             public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             // @Override
+            @Override
             public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             }
 
             // @Override
+            @Override
             public X509Certificate[] getAcceptedIssuers() {
                 return null;
             }

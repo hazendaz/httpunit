@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
  **/
 class JTidyHTMLParser implements HTMLParser {
 
+    @Override
     public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {
         Document jtidyDocument = getParser(pageURL)
                 .parseDOM(new ByteArrayInputStream(pageText.getBytes(StandardCharsets.UTF_8)), null);
@@ -45,28 +46,34 @@ class JTidyHTMLParser implements HTMLParser {
         NodeList nl = jtidyDocument.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node importedNode = nl.item(i);
-            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE)
+            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE) {
                 htmlDocument.appendChild(htmlDocument.importNode(importedNode, true));
+            }
         }
         adapter.setDocument(htmlDocument);
     }
 
+    @Override
     public String getCleanedText(String string) {
-        return (string == null) ? "" : string.replace(NBSP, ' ');
+        return string == null ? "" : string.replace(NBSP, ' ');
     }
 
+    @Override
     public boolean supportsPreserveTagCase() {
         return false;
     }
 
+    @Override
     public boolean supportsForceTagCase() {
         return false;
     }
 
+    @Override
     public boolean supportsReturnHTMLDocument() {
         return true;
     }
 
+    @Override
     public boolean supportsParserWarnings() {
         return true;
     }

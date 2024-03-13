@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -31,7 +31,7 @@ import java.util.Hashtable;
  **/
 final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
 
-    private static final String[] NO_VALUES = new String[0];
+    private static final String[] NO_VALUES = {};
     private final String _characterSet;
 
     private Hashtable _parameters = new Hashtable();
@@ -56,11 +56,13 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     // ----------------------------------- ParameterProcessor methods
     // -------------------------------------------------------
 
+    @Override
     public void addParameter(String name, String value, String characterSet) throws IOException {
         Object[] values = (Object[]) _parameters.get(name);
         _parameters.put(name, HttpUnitUtils.withNewValue(values, value));
     }
 
+    @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
         Object[] values = (Object[]) _parameters.get(parameterName);
         _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));
@@ -72,6 +74,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     /**
      * Specifies the position at which an image button (if any) was clicked.
      **/
+    @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
         if (imageButton.isValidImageButton()) {
             setParameter(imageButton.positionParameterName("x"), Integer.toString(x));
@@ -82,28 +85,31 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     /**
      * Does nothing, since unchecked requests treat all parameters the same.
      **/
+    @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
     }
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
+    @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
         Enumeration e = _parameters.keys();
 
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();
             Object[] values = (Object[]) _parameters.get(name);
-            for (int i = 0; i < values.length; i++) {
-                if (values[i] instanceof String || values[i] == null) {
-                    processor.addParameter(name, (String) values[i], _characterSet);
-                } else if (values[i] instanceof UploadFileSpec) {
-                    processor.addFile(name, (UploadFileSpec) values[i]);
+            for (Object value : values) {
+                if (value instanceof String || value == null) {
+                    processor.addParameter(name, (String) value, _characterSet);
+                } else if (value instanceof UploadFileSpec) {
+                    processor.addFile(name, (UploadFileSpec) value);
                 }
             }
         }
     }
 
+    @Override
     String[] getParameterNames() {
         return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);
     }
@@ -113,10 +119,12 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
         return values.length == 0 ? null : values[0];
     }
 
+    @Override
     String[] getParameterValues(String name) {
         Object[] values = (Object[]) _parameters.get(name);
-        if (values == null)
+        if (values == null) {
             return NO_VALUES;
+        }
 
         String[] result = new String[values.length];
         for (int i = 0; i < result.length; i++) {
@@ -126,30 +134,37 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
         return result;
     }
 
+    @Override
     void removeParameter(String name) {
         _parameters.remove(name);
     }
 
+    @Override
     void setParameter(String name, String value) {
         _parameters.put(name, new Object[] { value });
     }
 
+    @Override
     void setParameter(String name, String[] values) {
         _parameters.put(name, values);
     }
 
+    @Override
     void setParameter(String name, UploadFileSpec[] files) {
         _parameters.put(name, files);
     }
 
+    @Override
     boolean isFileParameter(String name) {
         return true;
     }
 
+    @Override
     String getCharacterSet() {
         return _characterSet;
     }
 
+    @Override
     boolean isSubmitAsMime() {
         return _submitAsMime;
     }

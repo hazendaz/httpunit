@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,8 +28,10 @@ import org.w3c.dom.html.HTMLTextAreaElement;
  **/
 public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextAreaElement {
 
+    private static final long serialVersionUID = 1L;
     private String _value;
 
+    @Override
     ElementImpl create() {
         return new HTMLTextAreaElementImpl();
     }
@@ -37,6 +39,7 @@ public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextArea
     /**
      * simulate blur
      */
+    @Override
     public void blur() {
         handleEvent("onblur");
     }
@@ -44,18 +47,22 @@ public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextArea
     /**
      * simulate focus;
      */
+    @Override
     public void focus() {
         handleEvent("onfocus");
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accesskey");
     }
 
+    @Override
     public int getCols() {
         return getIntegerAttribute("cols");
     }
 
+    @Override
     public String getDefaultValue() {
         Node node = getFirstChild();
 
@@ -70,21 +77,26 @@ public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextArea
         return node.getNodeValue();
     }
 
+    @Override
     public int getRows() {
         return getIntegerAttribute("rows");
     }
 
+    @Override
     public void select() {
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accesskey", accessKey);
     }
 
+    @Override
     public void setCols(int cols) {
         setAttribute("cols", cols);
     }
 
+    @Override
     public void setDefaultValue(String defaultValue) {
         Text textNode = getOwnerDocument().createTextNode(defaultValue);
         Node child = getFirstChild();
@@ -95,18 +107,22 @@ public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextArea
         }
     }
 
+    @Override
     public void setRows(int rows) {
         setAttribute("rows", rows);
     }
 
+    @Override
     public String getValue() {
         return _value != null ? _value : getDefaultValue();
     }
 
+    @Override
     public void setValue(String value) {
         _value = value;
     }
 
+    @Override
     public void reset() {
         _value = null;
     }

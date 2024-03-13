@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,6 +23,7 @@ import com.meterware.httpunit.dom.HTMLInputElementImpl;
 
 public class RadioButtonFormControl extends BooleanFormControl {
 
+    @Override
     public String getType() {
         return RADIO_BUTTON_TYPE;
     }
@@ -34,10 +35,12 @@ public class RadioButtonFormControl extends BooleanFormControl {
     /**
      * Returns true if only one control of this kind can have a value.
      **/
+    @Override
     public boolean isExclusive() {
         return true;
     }
 
+    @Override
     public String getQueryValue() {
         return getValueAttribute();
     }

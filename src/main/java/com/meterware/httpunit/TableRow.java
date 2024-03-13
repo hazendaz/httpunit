@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,11 +33,8 @@ public class TableRow extends HTMLElementBase {
 
     private ArrayList _cells = new ArrayList();
     private WebTable _webTable;
-    private HTMLTableRowElement _element;
-
     TableRow(WebTable webTable, HTMLTableRowElement element) {
         super(element);
-        _element = element;
         _webTable = webTable;
     }
 
@@ -54,10 +51,12 @@ public class TableRow extends HTMLElementBase {
         _cells.add(cell);
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return _webTable.getParentDelegate();
     }

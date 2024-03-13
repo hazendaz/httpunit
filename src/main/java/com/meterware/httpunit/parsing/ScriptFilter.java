@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -71,7 +71,7 @@ class ScriptFilter extends DefaultFilter {
 
     public void startDocument(XMLLocator locator, String encoding, Augmentations augs) throws XNIException {
         _activeScriptBlock = null;
-        _systemID = (locator == null) ? "" : (locator.getLiteralSystemId() + "_");
+        _systemID = locator == null ? "" : locator.getLiteralSystemId() + "_";
         _scriptIndex = 0;
         super.startDocument(locator, encoding, null, augs);
     }
@@ -80,6 +80,7 @@ class ScriptFilter extends DefaultFilter {
      * Invoked for a start element. If the element is a <script>, overrides the normal behavior to begin collecting the
      * script text.
      */
+    @Override
     public void startElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
         if (!isSupportedScript(element, attrs)) {
             super.startElement(element, attrs, augs);
@@ -87,14 +88,16 @@ class ScriptFilter extends DefaultFilter {
             _activeScriptBlock = new StringBuilder();
             _scriptLanguage = getScriptLanguage(attrs);
             String srcAttribute = attrs.getValue("src");
-            if (srcAttribute != null)
+            if (srcAttribute != null) {
                 _activeScriptBlock.append(_scriptHandler.getIncludedScript(srcAttribute));
+            }
         }
     }
 
     private boolean isSupportedScript(QName element, XMLAttributes attrs) {
-        if (!element.rawname.equalsIgnoreCase("script") || attrs == null)
+        if (!element.rawname.equalsIgnoreCase("script") || attrs == null) {
             return false;
+        }
         String value = getScriptLanguage(attrs);
         return HttpUnitOptions.isScriptingEnabled() && _scriptHandler.supportsScriptLanguage(value);
     }
@@ -103,12 +106,14 @@ class ScriptFilter extends DefaultFilter {
         return attrs == null ? null : attrs.getValue("language");
     }
 
+    @Override
     public void emptyElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
         if (!isSupportedScript(element, attrs)) {
             super.emptyElement(element, attrs, augs);
         }
     }
 
+    @Override
     public void characters(XMLString text, Augmentations augs) throws XNIException {
         if (_activeScriptBlock != null) {
             _activeScriptBlock.append(text.ch, text.offset, text.length);
@@ -117,6 +122,7 @@ class ScriptFilter extends DefaultFilter {
         }
     }
 
+    @Override
     public void endElement(QName element, Augmentations augs) throws XNIException {
         if (_activeScriptBlock == null) {
             super.endElement(element, augs);

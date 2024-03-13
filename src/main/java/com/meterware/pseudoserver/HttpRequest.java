@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,6 +42,7 @@ public class HttpRequest extends ReceivedHttpMessage {
         super(inputStream);
     }
 
+    @Override
     void interpretMessageHeader(String messageHeader) {
         StringTokenizer st = new StringTokenizer(messageHeader);
         _command = st.nextToken();
@@ -49,6 +50,7 @@ public class HttpRequest extends ReceivedHttpMessage {
         _protocol = st.nextToken();
     }
 
+    @Override
     void appendMessageHeader(StringBuilder sb) {
         sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);
     }
@@ -95,17 +97,18 @@ public class HttpRequest extends ReceivedHttpMessage {
     boolean wantsKeepAlive() {
         if ("Keep-alive".equalsIgnoreCase(getConnectionHeader())) {
             return true;
-        } else if (_protocol.equals("HTTP/1.1")) {
-            return !"Close".equalsIgnoreCase(getConnectionHeader());
-        } else {
-            return false;
         }
+        if (_protocol.equals("HTTP/1.1")) {
+            return !"Close".equalsIgnoreCase(getConnectionHeader());
+        }
+        return false;
     }
 
     private Hashtable readParameters(String content) {
         Hashtable parameters = new Hashtable();
-        if (content == null || content.trim().length() == 0)
+        if (content == null || content.trim().length() == 0) {
             return parameters;
+        }
 
         for (String spec : content.split("&")) {
             String[] split = spec.split("=");

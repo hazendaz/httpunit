@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,31 +38,31 @@ public interface HTMLParser {
      * Parses the specified text string as a Document, registering it in the HTMLPage. Any error reporting will be
      * annotated with the specified URL.
      */
-    public void parse(URL baseURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException;
+    void parse(URL baseURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException;
 
     /**
      * Removes any string artifacts placed in the text by the parser. For example, a parser may choose to encode an HTML
      * entity as a special character. This method should convert that character to normal text.
      */
-    public String getCleanedText(String string);
+    String getCleanedText(String string);
 
     /**
      * Returns true if this parser supports preservation of the case of tag and attribute names.
      */
-    public boolean supportsPreserveTagCase();
+    boolean supportsPreserveTagCase();
 
     /**
      * Returns true if this parser supports forcing the upper/lower case of tag and attribute names.
      */
-    public boolean supportsForceTagCase();
+    boolean supportsForceTagCase();
 
     /**
      * Returns true if this parser can return an HTMLDocument object.
      */
-    public boolean supportsReturnHTMLDocument();
+    boolean supportsReturnHTMLDocument();
 
     /**
      * Returns true if this parser can display parser warnings.
      */
-    public boolean supportsParserWarnings();
+    boolean supportsParserWarnings();
 }

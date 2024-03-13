@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -48,6 +48,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the ID associated with this request source.
      */
+    @Override
     public String getID() {
         return getAttribute("id");
     }
@@ -55,6 +56,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the class associated with this request source.
      */
+    @Override
     public String getClassName() {
         return getAttribute("class");
     }
@@ -62,6 +64,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the name associated with this request source.
      */
+    @Override
     public String getName() {
         return getAttribute("name");
     }
@@ -69,6 +72,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the title associated with this request source.
      */
+    @Override
     public String getTitle() {
         return getAttribute("title");
     }
@@ -79,9 +83,8 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     public String getTarget() {
         if (getSpecifiedTarget().length() == 0) {
             return _defaultTarget;
-        } else {
-            return getSpecifiedTarget();
         }
+        return getSpecifiedTarget();
     }
 
     /**
@@ -89,6 +92,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      *
      * @deprecated as of 1.6, use #getFrame
      */
+    @Deprecated
     public String getPageFrame() {
         return _frame.getName();
     }
@@ -107,9 +111,8 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
         final int hashIndex = getDestination().indexOf('#');
         if (hashIndex < 0) {
             return "";
-        } else {
-            return getDestination().substring(hashIndex + 1);
         }
+        return getDestination().substring(hashIndex + 1);
     }
 
     /**
@@ -127,11 +130,13 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns an array containing the names of any parameters to be sent on a request based on this request source.
      */
+    @Override
     abstract public String[] getParameterNames();
 
     /**
      * Returns the values of the named parameter.
      */
+    @Override
     abstract public String[] getParameterValues(String name);
 
     /**
@@ -139,8 +144,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     String getRelativePage() {
         final String url = getRelativeURL();
-        if (HttpUnitUtils.isJavaScriptURL(url))
+        if (HttpUnitUtils.isJavaScriptURL(url)) {
             return url;
+        }
         final int questionMarkIndex = url.indexOf("?");
         if (questionMarkIndex >= 1 && questionMarkIndex < url.length() - 1) {
             return url.substring(0, questionMarkIndex);
@@ -155,8 +161,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     protected String getRelativeURL() {
         String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));
-        if (result.trim().length() == 0)
+        if (result.trim().length() == 0) {
             result = getBaseURL().getFile();
+        }
         return result;
     }
 
@@ -177,8 +184,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     WebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
             String defaultTarget) {
-        if (node == null)
+        if (node == null) {
             throw new IllegalArgumentException("node must not be null");
+        }
         _baseResponse = response;
         _node = node;
         _baseURL = baseURL;
@@ -224,8 +232,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     final protected void loadDestinationParameters() {
         StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);
-        while (st.hasMoreTokens())
+        while (st.hasMoreTokens()) {
             stripOneParameter(st.nextToken());
+        }
     }
 
     /**
@@ -241,10 +250,12 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     protected WebResponse submitRequest(String event, final WebRequest request) throws IOException, SAXException {
         WebResponse response = null;
-        if (doEventScript(event))
+        if (doEventScript(event)) {
             response = submitRequest(request);
-        if (response == null)
+        }
+        if (response == null) {
             response = getCurrentFrameContents();
+        }
         return response;
     }
 
@@ -256,6 +267,8 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      *
      * @deprecated since 1.7 - use doEventScript instead
      */
+    @Deprecated
+    @Override
     public boolean doEvent(String eventScript) {
         return doEventScript(eventScript);
     }
@@ -268,10 +281,12 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      *
      * @return whether the script was handled
      */
+    @Override
     public boolean doEventScript(String eventScript) {
         return this.getScriptingHandler().doEventScript(eventScript);
     }
 
+    @Override
     public boolean handleEvent(String eventName) {
         return this.getScriptingHandler().handleEvent(eventName);
     }
@@ -310,6 +325,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * @param name
      *            - the name of the attribute to get
      */
+    @Override
     public String getAttribute(final String name) {
         return NodeUtils.getNodeAttribute(_node, name);
     }
@@ -322,8 +338,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * @param value
      *            - the value to use
      */
+    @Override
     public void setAttribute(final String name, final Object value) {
-        NodeUtils.setNodeAttribute(getNode(), name, (value == null) ? null : value.toString());
+        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());
     }
 
     /**
@@ -332,14 +349,17 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * @param name
      *            - the name of the attribute to remove
      */
+    @Override
     public void removeAttribute(final String name) {
         NodeUtils.removeNodeAttribute(getNode(), name);
     }
 
+    @Override
     public boolean isSupportedAttribute(String name) {
         return false;
     }
 
+    @Override
     public Node getNode() {
         return _node;
     }
@@ -347,18 +367,21 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the text value of this block.
      */
+    @Override
     public String getText() {
         if (_node == null) {
             return "";
-        } else if (_node.getNodeType() == Node.TEXT_NODE) {
-            return _node.getNodeValue().trim();
-        } else if (!_node.hasChildNodes()) {
-            return "";
-        } else {
-            return NodeUtils.asText(_node.getChildNodes()).trim();
         }
+        if (_node.getNodeType() == Node.TEXT_NODE) {
+            return _node.getNodeValue().trim();
+        }
+        if (!_node.hasChildNodes()) {
+            return "";
+        }
+        return NodeUtils.asText(_node.getChildNodes()).trim();
     }
 
+    @Override
     public String getTagName() {
         return _node.getNodeName();
     }
@@ -405,10 +428,12 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     private String getParametersString() {
         String url = HttpUnitUtils.trimFragment(getDestination());
-        if (url.trim().length() == 0)
+        if (url.trim().length() == 0) {
             url = getBaseURL().toExternalForm();
-        if (HttpUnitUtils.isJavaScriptURL(url))
+        }
+        if (HttpUnitUtils.isJavaScriptURL(url)) {
             return "";
+        }
         final int questionMarkIndex = url.indexOf("?");
         if (questionMarkIndex >= 1 && questionMarkIndex < url.length() - 1) {
             return url.substring(questionMarkIndex + 1);
@@ -421,9 +446,9 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     private void stripOneParameter(String param) {
         final int index = param.indexOf("=");
-        String value = ((index < 0) ? null
-                : ((index == param.length() - 1) ? getEmptyParameterValue() : decode(param.substring(index + 1))));
-        String name = (index < 0) ? decode(param) : decode(param.substring(0, index));
+        String value = index < 0 ? null
+                : index == param.length() - 1 ? getEmptyParameterValue() : decode(param.substring(index + 1));
+        String name = index < 0 ? decode(param) : decode(param.substring(0, index));
         addPresetParameter(name, value);
     }
 
@@ -436,6 +461,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the scriptable delegate.
      */
+    @Override
     public ScriptingHandler getScriptingHandler() {
         if (_scriptable == null) {
             _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);
@@ -443,6 +469,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
         return _scriptable;
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return getBaseResponse().getDocumentScriptable();
     }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,15 +36,19 @@ public class URLEncodedString implements ParameterProcessor {
         return _buffer.toString();
     }
 
+    @Override
     public void addParameter(String name, String value, String characterSet) {
-        if (_haveParameters)
+        if (_haveParameters) {
             _buffer.append('&');
+        }
         _buffer.append(encode(name, characterSet));
-        if (value != null)
+        if (value != null) {
             _buffer.append('=').append(encode(value, characterSet));
+        }
         _haveParameters = true;
     }
 
+    @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) {
         throw new RuntimeException("May not URL-encode a file upload request");
     }

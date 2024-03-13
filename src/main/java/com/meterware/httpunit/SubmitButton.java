@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,8 +33,9 @@ public class SubmitButton extends Button {
 
     private boolean _fake;
 
+    @Override
     public String getType() {
-        return (isImageButton() ? IMAGE_BUTTON_TYPE : SUBMIT_BUTTON_TYPE);
+        return isImageButton() ? IMAGE_BUTTON_TYPE : SUBMIT_BUTTON_TYPE;
     }
 
     /**
@@ -51,8 +52,9 @@ public class SubmitButton extends Button {
      * @since 1.6
      */
     public void click(int x, int y) throws IOException, SAXException {
-        if (!isImageButton())
+        if (!isImageButton()) {
             throw new IllegalStateException("May only specify positions for an image button");
+        }
         doOnClickSequence(x, y);
     }
 
@@ -66,20 +68,24 @@ public class SubmitButton extends Button {
      * @param y
      *            - y coordinate
      */
+    @Override
     protected void doButtonAction(int x, int y) throws IOException, SAXException {
         getForm().doFormSubmit(this, x, y);
     }
 
     // ------------------------------------ Object methods ----------------------------------------
 
+    @Override
     public String toString() {
         return "Submit with " + getName() + "=" + getValue();
     }
 
+    @Override
     public int hashCode() {
         return getName().hashCode() + getValue().hashCode();
     }
 
+    @Override
     public boolean equals(Object o) {
         return getClass().equals(o.getClass()) && equals((SubmitButton) o);
     }
@@ -136,8 +142,9 @@ public class SubmitButton extends Button {
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
      **/
+    @Override
     protected String[] getValues() {
-        return (isDisabled() || !_pressed) ? NO_VALUE : toArray(getValue());
+        return isDisabled() || !_pressed ? NO_VALUE : toArray(getValue());
     }
 
     /**
@@ -168,8 +175,9 @@ public class SubmitButton extends Button {
     public boolean isValidImageButton() {
         String buttonName = getName();
         boolean valid = this.isImageButton();
-        if (!allowUnnamedImageButton)
+        if (!allowUnnamedImageButton) {
             valid = valid && buttonName != null && buttonName.length() > 0;
+        }
         return valid;
     }
 
@@ -202,6 +210,7 @@ public class SubmitButton extends Button {
      * @throws IOException
      *             if addValues fails
      */
+    @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         if (_pressed && !isDisabled()) {
             String buttonName = getName();
@@ -232,6 +241,7 @@ public class SubmitButton extends Button {
         return getName().equals(button.getName()) && (getName().length() == 0 || getValue().equals(button.getValue()));
     }
 
+    @Override
     public void throwDisabledException() {
         throw new DisabledSubmitButtonException(this);
     }
@@ -241,10 +251,13 @@ public class SubmitButton extends Button {
      **/
     class DisabledSubmitButtonException extends DisabledButtonException {
 
+        private static final long serialVersionUID = 1L;
+
         DisabledSubmitButtonException(SubmitButton button) {
             super(button);
         }
 
+        @Override
         public String getMessage() {
             return "The specified button (name='" + _name + "' value='" + _value
                     + "' is disabled and may not be used to submit this form.";

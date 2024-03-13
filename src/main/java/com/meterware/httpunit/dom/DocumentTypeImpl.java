@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -31,26 +31,34 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
     // ---------------------------------------------- DocumentType methods
     // --------------------------------------------------
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     public NamedNodeMap getEntities() {
         return null;
     }
 
+    @Override
     public String getInternalSubset() {
         return null;
     }
 
+    @Override
     public String getName() {
         return null;
     }
 
+    @Override
     public NamedNodeMap getNotations() {
         return null;
     }
 
+    @Override
     public String getPublicId() {
         return null;
     }
 
+    @Override
     public String getSystemId() {
         return null;
     }
@@ -58,18 +66,22 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
     // ------------------------------------------------ NodeImpl methods
     // ----------------------------------------------------
 
+    @Override
     public String getNodeName() {
         return null;
     }
 
+    @Override
     public short getNodeType() {
         return 0;
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return null;
     }
 
+    @Override
     public void setNodeValue(String nodeValue) throws DOMException {
     }
 }

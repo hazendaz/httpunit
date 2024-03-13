@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,18 +38,22 @@ abstract class HTMLElementBase implements HTMLElement {
     private ScriptingHandler _scriptable;
     private Set _supportedAttributes = new HashSet();
 
+    @Override
     public String getID() {
         return getAttribute("id");
     }
 
+    @Override
     public String getClassName() {
         return getAttribute("class");
     }
 
+    @Override
     public String getTitle() {
         return getAttribute("title");
     }
 
+    @Override
     public String getName() {
         return getAttribute("name");
     }
@@ -57,6 +61,7 @@ abstract class HTMLElementBase implements HTMLElement {
     /**
      * Returns a scriptable object which can act as a proxy for this control.
      */
+    @Override
     public ScriptingHandler getScriptingHandler() {
         if (_scriptable == null) {
             _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);
@@ -72,6 +77,8 @@ abstract class HTMLElementBase implements HTMLElement {
      *
      * @deprecated since 1.7 - use doEventScript instead
      */
+    @Deprecated
+    @Override
     public boolean doEvent(String eventScript) {
         return doEventScript(eventScript);
     }
@@ -79,10 +86,12 @@ abstract class HTMLElementBase implements HTMLElement {
     /**
      * optional do the event if it's defined
      */
+    @Override
     public boolean doEventScript(String eventScript) {
         return this.getScriptingHandler().doEventScript(eventScript);
     }
 
+    @Override
     public boolean handleEvent(String eventName) {
         return this.getScriptingHandler().handleEvent(eventName);
     }
@@ -90,18 +99,21 @@ abstract class HTMLElementBase implements HTMLElement {
     /**
      * Returns the text value of this block.
      */
+    @Override
     public String getText() {
         if (_node == null) {
             return "";
-        } else if (_node.getNodeType() == Node.TEXT_NODE) {
-            return _node.getNodeValue().trim();
-        } else if (!_node.hasChildNodes()) {
-            return "";
-        } else {
-            return NodeUtils.asText(_node.getChildNodes()).trim();
         }
+        if (_node.getNodeType() == Node.TEXT_NODE) {
+            return _node.getNodeValue().trim();
+        }
+        if (!_node.hasChildNodes()) {
+            return "";
+        }
+        return NodeUtils.asText(_node.getChildNodes()).trim();
     }
 
+    @Override
     public String getTagName() {
         return _node.getNodeName();
     }
@@ -129,6 +141,7 @@ abstract class HTMLElementBase implements HTMLElement {
      *
      * @return the attribute
      */
+    @Override
     public String getAttribute(final String name) {
         return NodeUtils.getNodeAttribute(getNode(), name);
     }
@@ -141,8 +154,9 @@ abstract class HTMLElementBase implements HTMLElement {
      * @param value
      *            - the value to set
      */
+    @Override
     public void setAttribute(final String name, final Object value) {
-        NodeUtils.setNodeAttribute(getNode(), name, (value == null) ? null : value.toString());
+        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());
     }
 
     /**
@@ -151,10 +165,12 @@ abstract class HTMLElementBase implements HTMLElement {
      * @param name
      *            - the name of the attribute to remove
      */
+    @Override
     public void removeAttribute(final String name) {
         NodeUtils.removeNodeAttribute(getNode(), name);
     }
 
+    @Override
     public boolean isSupportedAttribute(String name) {
         return _supportedAttributes.contains(name);
     }
@@ -163,6 +179,7 @@ abstract class HTMLElementBase implements HTMLElement {
         return NodeUtils.getNodeAttribute(getNode(), name, defaultValue);
     }
 
+    @Override
     public Node getNode() {
         return _node;
     }
@@ -175,6 +192,7 @@ abstract class HTMLElementBase implements HTMLElement {
      * Creates and returns a scriptable object for this control. Subclasses should override this if they use a different
      * implementation of Scriptable.
      */
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }

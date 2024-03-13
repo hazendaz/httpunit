@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -31,33 +31,41 @@ import org.w3c.dom.NodeList;
  **/
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
+    private static final long serialVersionUID = 1L;
     private List _list;
 
     public NodeListImpl(List list) {
         _list = list;
     }
 
+    @Override
     public Node item(int index) {
         return (Node) _list.get(index);
     }
 
+    @Override
     public int getLength() {
         return _list.size();
     }
 
+    @Override
     public String getClassName() {
         return NodeListImpl.class.getName();
     }
 
+    @Override
     public Object get(String name, Scriptable start) {
-        if ("length".equals(name))
+        if ("length".equals(name)) {
             return Integer.valueOf(getLength());
+        }
         return NOT_FOUND;
     }
 
+    @Override
     public Object get(int index, Scriptable start) {
-        if (index < 0 || index >= getLength())
+        if (index < 0 || index >= getLength()) {
             return NOT_FOUND;
+        }
         return item(index);
     }
 }

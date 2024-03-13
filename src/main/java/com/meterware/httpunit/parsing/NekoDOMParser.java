@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -129,6 +129,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         _documentAdapter = adapter;
     }
 
+    @Override
     public String getIncludedScript(String srcAttribute) {
         try {
             return _documentAdapter.getIncludedScript(srcAttribute);
@@ -137,10 +138,12 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         }
     }
 
+    @Override
     public boolean supportsScriptLanguage(String language) {
         return getScriptingHandler().supportsScriptLanguage(language);
     }
 
+    @Override
     public String runScript(final String language, final String scriptText) {
         getScriptingHandler().clearCaches();
         return getScriptingHandler().runScript(language, scriptText);
@@ -167,12 +170,13 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
 class ErrorHandler implements XMLErrorHandler {
 
-    private URL _url = null;
+    private URL _url;
 
     ErrorHandler(URL url) {
         _url = url;
     }
 
+    @Override
     public void warning(String domain, String key, XMLParseException warningException) throws XNIException {
         if (HTMLParserFactory.isParserWarningsEnabled()) {
             System.out.println("At line " + warningException.getLineNumber() + ", column "
@@ -186,6 +190,7 @@ class ErrorHandler implements XMLErrorHandler {
         }
     }
 
+    @Override
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
@@ -194,6 +199,7 @@ class ErrorHandler implements XMLErrorHandler {
         }
     }
 
+    @Override
     public void fatalError(String domain, String key, XMLParseException fatalError) throws XNIException {
         error(domain, key, fatalError);
         throw fatalError;

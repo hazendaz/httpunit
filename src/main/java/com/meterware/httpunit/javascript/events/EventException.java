@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,12 +27,7 @@ package com.meterware.httpunit.javascript.events;
  * @version $Id$
  */
 public class EventException extends Exception {
-    /**
-     * If the Event's type was not specified by initializing the event before the method was called. Specification of
-     * the Event's type as null or an empty string will also trigger this exception.
-     */
-    private static final short UNSPECIFIED_EVENT_TYPE_ERR = 0;
-
+    private static final long serialVersionUID = 1L;
     /**
      * An integer indicating the type of error generated.
      */
@@ -58,6 +53,7 @@ public class EventException extends Exception {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getMessage() {
         return Short.toString(code);
     }

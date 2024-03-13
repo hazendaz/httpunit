@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,9 +41,10 @@ public abstract class ServletTestCase extends TestCase {
      * Returns a client object which can access the servlet context in which this test is running.
      */
     final protected ServletUnitClient newClient() {
-        if (_invocationContextFactory == null)
+        if (_invocationContextFactory == null) {
             throw new RuntimeException(
                     "ServletTestCase.newClient called before setInvocationContextFactory was called");
+        }
         return ServletUnitClient.newClient(_invocationContextFactory);
     }
 
@@ -53,9 +54,10 @@ public abstract class ServletTestCase extends TestCase {
      * @param invocationContextFactory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
-        if (invocationContextFactory == null)
+        if (invocationContextFactory == null) {
             throw new RuntimeException(
                     "setInvocationContextFactory called with null invocationContextFactory parameter");
+        }
         _invocationContextFactory = invocationContextFactory;
     }
 

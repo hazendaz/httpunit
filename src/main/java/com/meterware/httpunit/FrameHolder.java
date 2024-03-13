@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,7 +21,10 @@ package com.meterware.httpunit;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.xml.sax.SAXException;
 
@@ -55,23 +58,26 @@ class FrameHolder {
     }
 
     WebResponse getFrameContents(FrameSelector targetFrame) {
-        if (targetFrame == FrameSelector.TOP_FRAME)
+        if (targetFrame == FrameSelector.TOP_FRAME) {
             targetFrame = getTopFrame();
+        }
         WebResponse response = get(targetFrame);
-        if (response == null)
+        if (response == null) {
             throw new NoSuchFrameException(targetFrame.getName());
+        }
         return response;
     }
 
     WebResponse getSubframeContents(FrameSelector frame, String subFrameName) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);
-        if (subframes == null)
+        if (subframes == null) {
             throw new NoSuchFrameException(subFrameName);
+        }
 
-        for (int i = 0; i < subframes.length; i++) {
-            FrameSelector subframe = subframes[i];
-            if (subframe.getName().equalsIgnoreCase(subFrameName))
+        for (FrameSelector subframe : subframes) {
+            if (subframe.getName().equalsIgnoreCase(subFrameName)) {
                 return get(subframe);
+            }
         }
         throw new NoSuchFrameException(subFrameName);
     }
@@ -94,10 +100,12 @@ class FrameHolder {
     }
 
     private FrameSelector getFrame(FrameSelector rootFrame, String target) {
-        if (target.equalsIgnoreCase(WebRequest.TOP_FRAME))
+        if (target.equalsIgnoreCase(WebRequest.TOP_FRAME)) {
             return _topFrame;
-        if (target.equalsIgnoreCase(rootFrame.getName()))
+        }
+        if (target.equalsIgnoreCase(rootFrame.getName())) {
             return rootFrame;
+        }
 
         return lookupFrame(rootFrame, target);
     }
@@ -106,28 +114,32 @@ class FrameHolder {
         FrameSelector result = getFromSubframe(rootFrame, target);
         if (result != null) {
             return result;
-        } else if (rootFrame.getName().equals(target)) {
-            return rootFrame;
-        } else if (rootFrame.getParent() != null) {
-            return lookupFrame(rootFrame.getParent(), target);
-        } else {
-            return null;
         }
+        if (rootFrame.getName().equals(target)) {
+            return rootFrame;
+        }
+        if (rootFrame.getParent() != null) {
+            return lookupFrame(rootFrame.getParent(), target);
+        }
+        return null;
     }
 
     private FrameSelector getFromSubframe(FrameSelector rootFrame, String target) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(rootFrame);
-        if (subframes == null)
+        if (subframes == null) {
             return null;
-
-        for (int i = 0; i < subframes.length; i++) {
-            if (subframes[i].getName().equalsIgnoreCase(target))
-                return subframes[i];
         }
-        for (int i = 0; i < subframes.length; i++) {
-            FrameSelector result = getFromSubframe(subframes[i], target);
-            if (result != null)
+
+        for (FrameSelector subframe : subframes) {
+            if (subframe.getName().equalsIgnoreCase(target)) {
+                return subframe;
+            }
+        }
+        for (FrameSelector subframe : subframes) {
+            FrameSelector result = getFromSubframe(subframe, target);
+            if (result != null) {
                 return result;
+            }
         }
         return null;
     }
@@ -147,20 +159,24 @@ class FrameHolder {
     FrameSelector getTargetFrame(WebRequest request) {
         if (WebRequest.NEW_WINDOW.equalsIgnoreCase(request.getTarget())) {
             return FrameSelector.NEW_FRAME;
-        } else if (WebRequest.TOP_FRAME.equalsIgnoreCase(request.getTarget())) {
-            return _topFrame;
-        } else if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {
-            return request.getSourceFrame();
-        } else if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {
-            return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();
-        } else if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {
-            return request.getSourceFrame();
-        } else {
-            FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());
-            if (targetFrame == null)
-                targetFrame = _window.getClient().findFrame(request.getTarget());
-            return (targetFrame != null) ? targetFrame : FrameSelector.NEW_FRAME;
         }
+        if (WebRequest.TOP_FRAME.equalsIgnoreCase(request.getTarget())) {
+            return _topFrame;
+        }
+        if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {
+            return request.getSourceFrame();
+        }
+        if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {
+            return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();
+        }
+        if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {
+            return request.getSourceFrame();
+        }
+        FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());
+        if (targetFrame == null) {
+            targetFrame = _window.getClient().findFrame(request.getTarget());
+        }
+        return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;
     }
 
     void updateFrames(WebResponse response, FrameSelector frame, RequestContext requestContext)
@@ -174,9 +190,9 @@ class FrameHolder {
             WebRequest[] requests = response.getFrameRequests();
             if (requests.length > 0) {
                 createSubFrames(frame, response.getFrameSelectors());
-                for (int i = 0; i < requests.length; i++) {
-                    if (requests[i].getURLString().length() != 0) {
-                        response.getWindow().getSubframeResponse(requests[i], requestContext);
+                for (WebRequest request : requests) {
+                    if (request.getURLString().length() != 0) {
+                        response.getWindow().getSubframeResponse(request, requestContext);
                     }
                 }
             }
@@ -185,20 +201,21 @@ class FrameHolder {
 
     private void removeSubFrames(FrameSelector frame) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);
-        if (subframes == null)
+        if (subframes == null) {
             return;
+        }
 
         _subframes.remove(frame);
-        for (int i = 0; i < subframes.length; i++) {
-            removeSubFrames(subframes[i]);
-            _contents.remove(subframes[i]);
+        for (FrameSelector subframe : subframes) {
+            removeSubFrames(subframe);
+            _contents.remove(subframe);
         }
     }
 
     private void createSubFrames(FrameSelector frame, FrameSelector[] subframes) {
         _subframes.put(frame, subframes);
-        for (int i = 0; i < subframes.length; i++) {
-            _contents.put(subframes[i], WebResponse.createBlankResponse());
+        for (FrameSelector subframe : subframes) {
+            _contents.put(subframe, WebResponse.createBlankResponse());
         }
     }
 
@@ -207,8 +224,9 @@ class FrameHolder {
      * frame.
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
-        if (relativeName == null || relativeName.length() == 0)
+        if (relativeName == null || relativeName.length() == 0) {
             return new FrameSelector();
+        }
         return new FrameSelector(relativeName, parentFrame);
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,6 +28,7 @@ import org.w3c.dom.html.HTMLElement;
  */
 public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
+    private static final long serialVersionUID = 1L;
     public final static String UNSPECIFIED_ATTRIBUTE = null;
 
     ElementImpl create() {
@@ -41,46 +42,57 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
     public void doClickAction() {
     }
 
+    @Override
     public String getId() {
         return getAttributeWithNoDefault("id");
     }
 
+    @Override
     public void setId(String id) {
         setAttribute("id", id);
     }
 
+    @Override
     public String getTitle() {
         return getAttributeWithNoDefault("title");
     }
 
+    @Override
     public void setTitle(String title) {
         setAttribute("title", title);
     }
 
+    @Override
     public String getLang() {
         return getAttributeWithNoDefault("lang");
     }
 
+    @Override
     public void setLang(String lang) {
         setAttribute("lang", lang);
     }
 
+    @Override
     public String getDir() {
         return getAttributeWithNoDefault("dir");
     }
 
+    @Override
     public void setDir(String dir) {
         setAttribute("dir", dir);
     }
 
+    @Override
     public String getClassName() {
         return getAttributeWithNoDefault("class");
     }
 
+    @Override
     public void setClassName(String className) {
         setAttribute("class", className);
     }
 
+    @Override
     public NodeList getElementsByTagName(String name) {
         return super.getElementsByTagName(((HTMLDocumentImpl) getOwnerDocument()).toNodeCase(name));
     }
@@ -89,14 +101,16 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
     // -----------------------------------------------------
 
     final protected String getAttributeWithDefault(String attributeName, String defaultValue) {
-        if (hasAttribute(attributeName))
+        if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
+        }
         return defaultValue;
     }
 
     final protected String getAttributeWithNoDefault(String attributeName) {
-        if (hasAttribute(attributeName))
+        if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
+        }
         return UNSPECIFIED_ATTRIBUTE;
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,7 +23,12 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * A collection of HTTP cookies, which can interact with cookie and set-cookie header values.
@@ -70,8 +75,8 @@ public class CookieJar {
      *            - the recipe to use
      */
     private void findCookies(String cookieHeader[], CookieRecipe recipe) {
-        for (int i = 0; i < cookieHeader.length; i++) {
-            recipe.findCookies(cookieHeader[i]);
+        for (String element : cookieHeader) {
+            recipe.findCookies(element);
         }
     }
 
@@ -89,6 +94,7 @@ public class CookieJar {
      *
      * @deprecated as of 1.6, use #putCookie
      **/
+    @Deprecated
     public void addCookie(String name, String value) {
         _globalCookies.add(new Cookie(name, value));
     }
@@ -127,7 +133,7 @@ public class CookieJar {
         }
 
         // only add it if it does not already exist
-        if (foundCookie == false) {
+        if (!foundCookie) {
             _globalCookies.add(new Cookie(name, value));
         }
     }
@@ -140,14 +146,16 @@ public class CookieJar {
     public void putSingleUseCookie(String name, String value, String domain, String path) {
         for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {
             Cookie cookie = (Cookie) iterator.next();
-            if (name.equals(cookie.getName()))
+            if (name.equals(cookie.getName())) {
                 return;
+            }
         }
 
         for (Iterator iterator = _cookies.iterator(); iterator.hasNext();) {
             Cookie cookie = (Cookie) iterator.next();
-            if (name.equals(cookie.getName()))
+            if (name.equals(cookie.getName())) {
                 iterator.remove();
+            }
         }
 
         _cookies.add(new Cookie(name, value, domain, path));
@@ -194,17 +202,20 @@ public class CookieJar {
      * Returns the value of the specified cookie.
      **/
     public Cookie getCookie(String name) {
-        if (name == null)
+        if (name == null) {
             throw new IllegalArgumentException("getCookieValue: no name specified");
+        }
         for (Iterator iterator = _cookies.iterator(); iterator.hasNext();) {
             Cookie cookie = (Cookie) iterator.next();
-            if (name.equals(cookie.getName()))
+            if (name.equals(cookie.getName())) {
                 return cookie;
+            }
         }
         for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {
             Cookie cookie = (Cookie) iterator.next();
-            if (name.equals(cookie.getName()))
+            if (name.equals(cookie.getName())) {
                 return cookie;
+            }
         }
         return null;
     }
@@ -214,25 +225,30 @@ public class CookieJar {
      * is defined.
      **/
     public String getCookieHeaderField(URL targetURL) {
-        if (_cookies.isEmpty() && _globalCookies.isEmpty())
+        if (_cookies.isEmpty() && _globalCookies.isEmpty()) {
             return null;
+        }
         StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);
         HashSet restrictedCookies = new HashSet();
         for (Iterator i = _cookies.iterator(); i.hasNext();) {
             Cookie cookie = (Cookie) i.next();
-            if (!cookie.mayBeSentTo(targetURL))
+            if (!cookie.mayBeSentTo(targetURL)) {
                 continue;
+            }
             restrictedCookies.add(cookie.getName());
-            if (sb.length() != 0)
+            if (sb.length() != 0) {
                 sb.append("; ");
+            }
             sb.append(cookie.getName()).append('=').append(cookie.getValue());
         }
         for (Iterator i = _globalCookies.iterator(); i.hasNext();) {
             Cookie cookie = (Cookie) i.next();
-            if (restrictedCookies.contains(cookie.getName()))
+            if (restrictedCookies.contains(cookie.getName())) {
                 continue;
-            if (sb.length() != 0)
+            }
+            if (sb.length() != 0) {
                 sb.append("; ");
+            }
             sb.append(cookie.getName()).append('=').append(cookie.getValue());
         }
         return sb.length() == 0 ? null : sb.toString();
@@ -255,11 +271,9 @@ public class CookieJar {
         _cookies.remove(cookie);
         for (Iterator i = _cookies.iterator(); i.hasNext();) {
             Cookie c = (Cookie) i.next();
-            if (c.getName().equals(cookie.getName())) {
-                if (compareDomain(c.getDomain(), cookie.getDomain())) {
-                    if (c.getPath() != null && cookie.getPath() != null && c.getPath().equals(cookie.getPath())) {
-                        i.remove();
-                    }
+            if (c.getName().equals(cookie.getName()) && compareDomain(c.getDomain(), cookie.getDomain())) {
+                if (c.getPath() != null && cookie.getPath() != null && c.getPath().equals(cookie.getPath())) {
+                    i.remove();
                 }
             }
         }
@@ -275,10 +289,7 @@ public class CookieJar {
      * @return
      */
     private boolean compareDomain(String domain, String newDomain) {
-        if (domain.charAt(0) == '.' && newDomain.endsWith(domain)) {
-            return true;
-        }
-        if (newDomain.charAt(0) == '.' && domain.endsWith(newDomain)) {
+        if (domain.charAt(0) == '.' && newDomain.endsWith(domain) || newDomain.charAt(0) == '.' && domain.endsWith(newDomain)) {
             return true;
         }
 
@@ -310,13 +321,13 @@ public class CookieJar {
                 } else if (isCookieReservedWord(token)) {
                     _press.clear();
                 } else {
-                    _press.addToken(token, lastCharOf((i == 0) ? "" : (String) tokens.elementAt(i - 1)));
+                    _press.addToken(token, lastCharOf(i == 0 ? "" : (String) tokens.elementAt(i - 1)));
                 }
             }
         }
 
         private char lastCharOf(String string) {
-            return (string.length() == 0) ? ' ' : string.charAt(string.length() - 1);
+            return string.length() == 0 ? ' ' : string.charAt(string.length() - 1);
         }
 
         /**
@@ -326,9 +337,8 @@ public class CookieJar {
         private int getEqualsIndex(String token) {
             if (!token.endsWith("==")) {
                 return token.indexOf('=');
-            } else {
-                return getEqualsIndex(token.substring(0, token.length() - 2));
             }
+            return getEqualsIndex(token.substring(0, token.length() - 2));
         }
 
         /**
@@ -369,11 +379,9 @@ public class CookieJar {
                 while (st.nextToken() != StreamTokenizer.TT_EOF) {
                     String tokenContent = st.sval;
                     // fix expires comma delimiter token problem
-                    if (tokenContent.toLowerCase().startsWith("expires=")) {
-                        if (st.nextToken() != StreamTokenizer.TT_EOF) {
-                            tokenContent += "," + st.sval;
-                        } // if
-                    } // if
+                    if (tokenContent.toLowerCase().startsWith("expires=") && st.nextToken() != StreamTokenizer.TT_EOF) {
+                        tokenContent += "," + st.sval;
+                    } // if // if
                     tokenContent = tokenContent.trim();
                     tokens.addElement(tokenContent);
                 }
@@ -425,8 +433,9 @@ public class CookieJar {
          */
         void addToken(String token, char lastChar) {
             _value.insert(0, token);
-            if (lastChar != '=')
+            if (lastChar != '=') {
                 _value.insert(0, ',');
+            }
         }
 
         /**
@@ -459,8 +468,9 @@ public class CookieJar {
          * @param cookie
          */
         private void addCookieIfValid(Cookie cookie) {
-            if (acceptCookie(cookie))
+            if (acceptCookie(cookie)) {
                 addUniqueCookie(cookie);
+            }
         }
 
         /**
@@ -481,9 +491,7 @@ public class CookieJar {
                 }
             }
 
-            if (cookie.getDomain() == null) {
-                cookie.setDomain(_sourceURL.getHost());
-            } else if (!CookieProperties.isDomainMatchingStrict()
+            if (cookie.getDomain() == null || !CookieProperties.isDomainMatchingStrict()
                     && cookie.getDomain().equalsIgnoreCase(_sourceURL.getHost())) {
                 cookie.setDomain(_sourceURL.getHost());
             } else {
@@ -506,9 +514,8 @@ public class CookieJar {
             if (!CookieProperties.isPathMatchingStrict() || sourcePath.length() == 0
                     || sourcePath.startsWith(pathAttribute)) {
                 return CookieListener.ACCEPTED;
-            } else {
-                return CookieListener.PATH_NOT_PREFIX;
             }
+            return CookieListener.PATH_NOT_PREFIX;
         }
 
         /**
@@ -529,22 +536,24 @@ public class CookieJar {
             if (domainAttribute.equals(sourceHost)) {
                 return CookieListener.ACCEPTED;
             }
-            if (!domainAttribute.startsWith("."))
+            if (!domainAttribute.startsWith(".")) {
                 domainAttribute = '.' + domainAttribute;
+            }
 
             if (domainAttribute.lastIndexOf('.') == 0) {
                 return CookieListener.DOMAIN_ONE_DOT;
-            } else if (!sourceHost.endsWith(domainAttribute)) {
+            }
+            if (!sourceHost.endsWith(domainAttribute)) {
                 return CookieListener.DOMAIN_NOT_SOURCE_SUFFIX;
-            } else if (CookieProperties.isDomainMatchingStrict()
+            }
+            if (CookieProperties.isDomainMatchingStrict()
                     && sourceHost.lastIndexOf(domainAttribute) > sourceHost.indexOf('.')) {
                 return CookieListener.DOMAIN_TOO_MANY_LEVELS;
-            } else {
-                // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
-                // http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
-                cookie.setDomain(domainAttribute);
-                return CookieListener.ACCEPTED;
             }
+            // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
+            // http://sourceforge.net/tracker/?func=detail&aid=2825872&group_id=6550&atid=106550
+            cookie.setDomain(domainAttribute);
+            return CookieListener.ACCEPTED;
         }
 
         private boolean reportCookieRejected(int reason, String attribute, String source) {
@@ -568,12 +577,14 @@ public class CookieJar {
          *
          * @return true - if the string is the name of a valid cookie attribute
          */
+        @Override
         protected boolean isCookieAttribute(String stringLowercase) {
             return stringLowercase.equals("path") || stringLowercase.equals("domain")
                     || stringLowercase.equals("expires") || stringLowercase.equals("comment")
                     || stringLowercase.equals("max-age") || stringLowercase.equals("version");
         }
 
+        @Override
         protected boolean isCookieReservedWord(String token) {
             return token.equalsIgnoreCase("secure");
         }
@@ -585,6 +596,7 @@ public class CookieJar {
      **/
     class RFC2965CookieRecipe extends CookieRecipe {
 
+        @Override
         protected boolean isCookieAttribute(String stringLowercase) {
             return stringLowercase.equals("path") || stringLowercase.equals("domain")
                     || stringLowercase.equals("comment") || stringLowercase.equals("commenturl")
@@ -592,6 +604,7 @@ public class CookieJar {
                     || stringLowercase.equals("$version") || stringLowercase.equals("port");
         }
 
+        @Override
         protected boolean isCookieReservedWord(String token) {
             return token.equalsIgnoreCase("discard") || token.equalsIgnoreCase("secure");
         }

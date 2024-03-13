@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -144,8 +144,7 @@ public class Cookie {
         try {
             // SimpleDateFormat isn't thread-safe
             synchronized (originalCookieFormat) {
-                long age = originalCookieFormat.parse(dateValue).getTime();
-                return age;
+                return originalCookieFormat.parse(dateValue).getTime();
             }
         } catch (ParseException e) {
             return 0;
@@ -195,15 +194,19 @@ public class Cookie {
         _domain = domain;
     }
 
+    @Override
     public int hashCode() {
         int hashCode = _name.hashCode();
-        if (_domain != null)
+        if (_domain != null) {
             hashCode ^= _domain.hashCode();
-        if (_path != null)
+        }
+        if (_path != null) {
             hashCode ^= _path.hashCode();
+        }
         return hashCode;
     }
 
+    @Override
     public boolean equals(Object obj) {
         return obj.getClass() == getClass() && equals((Cookie) obj);
     }
@@ -214,7 +217,7 @@ public class Cookie {
     }
 
     private boolean equalProperties(String first, String second) {
-        return first == second || (first != null && first.equals(second));
+        return first == second || first != null && first.equals(second);
     }
 
     /**
@@ -223,8 +226,7 @@ public class Cookie {
      * @return true if the _expiredTime is higher than the current System time
      */
     public boolean isExpired() {
-        boolean expired = _expiredTime != 0 && _expiredTime <= System.currentTimeMillis();
-        return expired;
+        return _expiredTime != 0 && _expiredTime <= System.currentTimeMillis();
     }
 
     /**
@@ -236,10 +238,12 @@ public class Cookie {
      * @return true if the cookie is not expired and the path is accepted if a domain is set
      */
     public boolean mayBeSentTo(URL url) {
-        if (getDomain() == null)
+        if (getDomain() == null) {
             return true;
-        if (isExpired())
+        }
+        if (isExpired()) {
             return false;
+        }
 
         return acceptHost(getDomain(), url.getHost()) && acceptPath(getPath(), url.getPath());
     }
@@ -266,7 +270,7 @@ public class Cookie {
      */
     private static boolean acceptHost(String hostPattern, String hostName) {
         return hostPattern.equalsIgnoreCase(hostName)
-                || (hostPattern.startsWith(".") && hostName.endsWith(hostPattern));
+                || hostPattern.startsWith(".") && hostName.endsWith(hostPattern);
     }
 
 }

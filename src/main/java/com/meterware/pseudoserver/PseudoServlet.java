@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,15 +35,17 @@ abstract public class PseudoServlet {
     public WebResource getResponse(String methodType) throws IOException {
         if (methodType.equalsIgnoreCase("GET")) {
             return getGetResponse();
-        } else if (methodType.equalsIgnoreCase("PUT")) {
-            return getPutResponse();
-        } else if (methodType.equalsIgnoreCase("POST")) {
-            return getPostResponse();
-        } else if (methodType.equalsIgnoreCase("DELETE")) {
-            return getDeleteResponse();
-        } else {
-            throw new UnknownMethodException(methodType);
         }
+        if (methodType.equalsIgnoreCase("PUT")) {
+            return getPutResponse();
+        }
+        if (methodType.equalsIgnoreCase("POST")) {
+            return getPostResponse();
+        }
+        if (methodType.equalsIgnoreCase("DELETE")) {
+            return getDeleteResponse();
+        }
+        throw new UnknownMethodException(methodType);
     }
 
     /**

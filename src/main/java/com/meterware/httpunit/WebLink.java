@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -66,12 +66,12 @@ public class WebLink extends FixedURLWebRequestSource {
      *
      * @since 1.6
      **/
+    @Override
     public String getText() {
         if (getElement().getNodeName().equalsIgnoreCase("area")) {
             return getAttribute("alt");
-        } else {
-            return super.getText();
         }
+        return super.getText();
     }
 
     /**
@@ -79,6 +79,7 @@ public class WebLink extends FixedURLWebRequestSource {
      *
      * @deprecated as of 1.6, use #getText instead
      **/
+    @Deprecated
     public String asText() {
         return getText();
     }
@@ -108,18 +109,20 @@ public class WebLink extends FixedURLWebRequestSource {
             super(WebLink.this);
         }
 
+        @Override
         public String getName() {
             return WebLink.this.getID().length() != 0 ? WebLink.this.getID() : WebLink.this.getName();
         }
 
+        @Override
         public Object get(String propertyName) {
             if (propertyName.equalsIgnoreCase("href")) {
                 return getReference().toExternalForm();
-            } else {
-                return super.get(propertyName);
             }
+            return super.get(propertyName);
         }
 
+        @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equals("href")) {
                 setDestination((String) value);
@@ -140,6 +143,7 @@ public class WebLink extends FixedURLWebRequestSource {
     // ----------------------------------------- WebRequestSource methods
     // ---------------------------------------------------
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new Scriptable();
     }
@@ -156,35 +160,15 @@ public class WebLink extends FixedURLWebRequestSource {
     }
 
     static {
-        MATCH_URL_STRING = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(), (String) criteria);
-            }
-        };
+        MATCH_URL_STRING = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(), (String) criteria);
 
-        MATCH_TEXT = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebLink) htmlElement).getText(), (String) criteria);
-            }
-        };
+        MATCH_TEXT = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getText(), (String) criteria);
 
-        MATCH_CONTAINED_TEXT = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.contains(((WebLink) htmlElement).getText(), (String) criteria);
-            }
-        };
+        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getText(), (String) criteria);
 
-        MATCH_ID = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);
-            }
-        };
+        MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);
 
-        MATCH_NAME = new HTMLElementPredicate() {
-            public boolean matchesCriteria(Object htmlElement, Object criteria) {
-                return HttpUnitUtils.matches(((WebLink) htmlElement).getName(), (String) criteria);
-            }
-        };
+        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getName(), (String) criteria);
 
     }
 

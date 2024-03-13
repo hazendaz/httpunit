@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,11 +22,13 @@ package com.meterware.httpunit;
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AudioClip;
-import java.awt.*;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -47,6 +49,7 @@ class AppletContextImpl implements AppletContext {
      *
      * @return the audio clip at the specified URL.
      */
+    @Override
     public AudioClip getAudioClip(URL url) {
         return null;
     }
@@ -66,6 +69,7 @@ class AppletContextImpl implements AppletContext {
      *
      * @see Image
      */
+    @Override
     public Image getImage(URL url) {
         return null;
     }
@@ -79,12 +83,14 @@ class AppletContextImpl implements AppletContext {
      *
      * @return the applet with the given name, or <code>null</code> if not found.
      */
+    @Override
     public Applet getApplet(String name) {
         try {
             WebApplet[] webApplets = _webApplet.getAppletsInPage();
-            for (int i = 0; i < webApplets.length; i++) {
-                if (webApplets[i].getName().equals(name))
-                    return webApplets[i].getApplet();
+            for (WebApplet webApplet : webApplets) {
+                if (webApplet.getName().equals(name)) {
+                    return webApplet.getApplet();
+                }
             }
         } catch (Exception e) {
         }
@@ -96,12 +102,13 @@ class AppletContextImpl implements AppletContext {
      *
      * @return an enumeration of all applets in the document represented by this applet context.
      */
+    @Override
     public Enumeration getApplets() {
         WebApplet[] webApplets = _webApplet.getAppletsInPage();
         Vector v = new Vector();
         try {
-            for (int i = 0; i < webApplets.length; i++) {
-                v.add(webApplets[i].getApplet());
+            for (WebApplet webApplet : webApplets) {
+                v.add(webApplet.getApplet());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,6 +124,7 @@ class AppletContextImpl implements AppletContext {
      * @param url
      *            an absolute URL giving the location of the document.
      */
+    @Override
     public void showDocument(URL url) {
         showDocument(url, _webApplet.getBaseTarget());
     }
@@ -160,6 +168,7 @@ class AppletContextImpl implements AppletContext {
      * @param target
      *            a <code>String</code> indicating where to display the page.
      */
+    @Override
     public void showDocument(URL url, String target) {
         _webApplet.sendRequest(url, target);
     }
@@ -171,6 +180,7 @@ class AppletContextImpl implements AppletContext {
      * @param status
      *            a string to display in the status window.
      */
+    @Override
     public void showStatus(String status) {
     }
 
@@ -189,6 +199,7 @@ class AppletContextImpl implements AppletContext {
      *
      * @since JDK1.4
      */
+    @Override
     public InputStream getStream(String key) {
         return null;
     }
@@ -204,6 +215,7 @@ class AppletContextImpl implements AppletContext {
      *
      * @since JDK1.4
      */
+    @Override
     public Iterator getStreamKeys() {
         return null;
     }
@@ -228,6 +240,7 @@ class AppletContextImpl implements AppletContext {
      *
      * @since JDK1.4
      */
+    @Override
     public void setStream(String key, InputStream stream) throws IOException {
     }
 }

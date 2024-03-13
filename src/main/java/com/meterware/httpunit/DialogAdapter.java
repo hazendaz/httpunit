@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,6 +28,7 @@ public class DialogAdapter implements DialogResponder {
      * Invoked when the user agent needs to display a confirmation dialog. This default implementation confirms all
      * dialogs.
      */
+    @Override
     public boolean getConfirmation(String confirmationPrompt) {
         return true;
     }
@@ -36,6 +37,7 @@ public class DialogAdapter implements DialogResponder {
      * Invoked when the user agent needs to display a generic dialog and obtain a user response. This default
      * implementation returns the default response.
      */
+    @Override
     public String getUserResponse(String prompt, String defaultResponse) {
         return defaultResponse;
     }

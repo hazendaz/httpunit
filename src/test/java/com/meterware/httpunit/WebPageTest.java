@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
@@ -212,7 +213,7 @@ class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest("file:" + file.getAbsolutePath());
         WebResponse simplePage = wc.getResponse(request);
         assertEquals("A Sample Page", simplePage.getTitle(), "Title");
-        assertEquals(System.getProperty("file.encoding"), simplePage.getCharacterSet(), "Character set");
+        assertEquals(Charset.defaultCharset().displayName(), simplePage.getCharacterSet(), "Character set");
 
         file.delete();
     }
@@ -528,8 +529,8 @@ class WebPageTest extends HttpUnitTest {
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
         defineResource("main.html", "<html><head><title>main</title>\n" + "<base href=\"" + mainBaseURL.toExternalForm()
-                + "\">\n" + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"
-                + scriptToWriteAnotherDocument(simpleDocument(targetBaseURL), targetWindow) + "</body>\n</html>\n");
+        + "\">\n" + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"
+        + scriptToWriteAnotherDocument(simpleDocument(targetBaseURL), targetWindow) + "</body>\n</html>\n");
 
         WebConversation wc = new WebConversation();
         final WebResponse response = wc.getResponse(getHostPath() + "/main.html");

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -37,25 +37,27 @@ abstract class XMLUtils {
         NodeList nl = root.getElementsByTagName(childNodeName);
         if (nl.getLength() == 1) {
             return getTextValue(nl.item(0)).trim();
-        } else if (defaultValue == null) {
-            throw new SAXException("Node <" + root.getNodeName() + "> has no child named <" + childNodeName + ">");
-        } else {
-            return defaultValue;
         }
+        if (defaultValue == null) {
+            throw new SAXException("Node <" + root.getNodeName() + "> has no child named <" + childNodeName + ">");
+        }
+        return defaultValue;
     }
 
     static String getTextValue(Node node) throws SAXException {
         Node textNode = node.getFirstChild();
-        if (textNode == null)
+        if (textNode == null) {
             return "";
-        if (textNode.getNodeType() != Node.TEXT_NODE)
+        }
+        if (textNode.getNodeType() != Node.TEXT_NODE) {
             throw new SAXException("No text value found for <" + node.getNodeName() + "> node");
+        }
         return textNode.getNodeValue();
     }
 
     static boolean hasChildNode(Element root, String childNodeName) {
         NodeList nl = root.getElementsByTagName(childNodeName);
-        return (nl.getLength() > 0);
+        return nl.getLength() > 0;
     }
 
 }

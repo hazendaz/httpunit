@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,12 @@
  */
 package com.meterware.pseudoserver;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -40,6 +45,7 @@ abstract class ReceivedHttpMessage {
         readMessageBody(inputStream);
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getClassName()).append("[ ");
         appendMessageHeader(sb);
@@ -65,8 +71,9 @@ abstract class ReceivedHttpMessage {
         }
 
         b = inputStream.read();
-        if (b != LF)
+        if (b != LF) {
             throw new IOException("Bad header line termination: " + b);
+        }
         return baos.toByteArray();
     }
 
@@ -104,7 +111,7 @@ abstract class ReceivedHttpMessage {
             byte[] buffer = new byte[1024];
             int total = 0;
             int count = -1;
-            while ((total < totalExpected) && ((count = inputStream.read(buffer)) != -1)) {
+            while (total < totalExpected && (count = inputStream.read(buffer)) != -1) {
                 baos.write(buffer, 0, count);
                 total += count;
             }
@@ -143,8 +150,9 @@ abstract class ReceivedHttpMessage {
         String header = readHeaderLine(inputStream);
         while (header.length() > 0) {
             if (header.charAt(0) <= ' ') {
-                if (lastHeader == null)
+                if (lastHeader == null) {
                     continue;
+                }
                 _headers.put(lastHeader, _headers.get(lastHeader) + header.trim());
             } else {
                 lastHeader = header.substring(0, header.indexOf(':')).toUpperCase();

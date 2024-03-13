@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -24,7 +24,12 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.Node;
 
@@ -35,7 +40,7 @@ import org.w3c.dom.Node;
  **/
 abstract class FixedURLWebRequestSource extends WebRequestSource {
 
-    private static final String[] NO_VALUES = new String[0];
+    private static final String[] NO_VALUES = {};
     private Map _presetParameterMap;
     private ArrayList _presetParameterList;
     private String _characterSet;
@@ -52,6 +57,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Creates and returns a web request which will simulate clicking on this link.
      **/
+    @Override
     public WebRequest getRequest() {
         return new GetMethodWebRequest(this);
     }
@@ -59,6 +65,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Returns an array containing the names of any parameters defined as part of this link's URL.
      **/
+    @Override
     public String[] getParameterNames() {
         ArrayList parameterNames = new ArrayList(getPresetParameterMap().keySet());
         return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
@@ -67,20 +74,24 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Returns the multiple default values of the named parameter.
      **/
+    @Override
     public String[] getParameterValues(String name) {
         final String[] values = (String[]) getPresetParameterMap().get(name);
         return values == null ? NO_VALUES : values;
     }
 
+    @Override
     protected void addPresetParameter(String name, String value) {
         _presetParameterMap.put(name, HttpUnitUtils.withNewValue((String[]) _presetParameterMap.get(name), value));
         _presetParameterList.add(new PresetParameter(name, value));
     }
 
+    @Override
     protected String getEmptyParameterValue() {
         return "";
     }
 
+    @Override
     protected void setDestination(String destination) {
         super.setDestination(destination);
         _presetParameterList = null;
@@ -93,6 +104,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Specifies the position at which an image button (if any) was clicked.
      **/
+    @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
         throw new IllegalNonFormParametersRequest();
     }
@@ -102,12 +114,14 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      * processor.\ These parameters always go on the URL, no matter what encoding method is used.
      **/
 
+    @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
     }
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
+    @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
         Iterator i = getPresetParameterList().iterator();
         while (i.hasNext()) {
@@ -119,6 +133,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Removes a parameter name from this collection.
      **/
+    @Override
     void removeParameter(String name) {
         throw new IllegalNonFormParametersRequest();
     }
@@ -126,6 +141,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Sets the value of a parameter in a web request.
      **/
+    @Override
     void setParameter(String name, String value) {
         setParameter(name, new String[] { value });
     }
@@ -133,27 +149,30 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Sets the multiple values of a parameter in a web request.
      **/
+    @Override
     void setParameter(String name, String[] values) {
         if (values == null) {
             throw new IllegalArgumentException("May not supply a null argument array to setParameter()");
-        } else if (!getPresetParameterMap().containsKey(name)) {
-            throw new IllegalNonFormParametersRequest();
-        } else if (!equals(getParameterValues(name), values)) {
+        }
+        if (!getPresetParameterMap().containsKey(name) || !equals(getParameterValues(name), values)) {
             throw new IllegalNonFormParametersRequest();
         }
     }
 
+    @Override
     String getCharacterSet() {
         return _characterSet;
     }
 
     private boolean equals(String[] left, String[] right) {
-        if (left.length != right.length)
+        if (left.length != right.length) {
             return false;
+        }
         List rightValues = Arrays.asList(right);
-        for (int i = 0; i < left.length; i++) {
-            if (!rightValues.contains(left[i]))
+        for (String element : left) {
+            if (!rightValues.contains(element)) {
                 return false;
+            }
         }
         return true;
     }
@@ -161,6 +180,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Sets the multiple values of a file upload parameter in a web request.
      **/
+    @Override
     void setParameter(String name, UploadFileSpec[] files) {
         throw new IllegalNonFormParametersRequest();
     }
@@ -168,23 +188,27 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     /**
      * Returns true if the specified parameter is a file field.
      **/
+    @Override
     boolean isFileParameter(String name) {
         return false;
     }
 
+    @Override
     boolean isSubmitAsMime() {
         return false;
     }
 
     private Map getPresetParameterMap() {
-        if (_presetParameterMap == null)
+        if (_presetParameterMap == null) {
             loadPresetParameters();
+        }
         return _presetParameterMap;
     }
 
     private ArrayList getPresetParameterList() {
-        if (_presetParameterList == null)
+        if (_presetParameterList == null) {
             loadPresetParameters();
+        }
         return _presetParameterList;
     }
 
@@ -216,9 +240,12 @@ class PresetParameter {
 
 class IllegalNonFormParametersRequest extends IllegalRequestParameterException {
 
+    private static final long serialVersionUID = 1L;
+
     public IllegalNonFormParametersRequest() {
     }
 
+    @Override
     public String getMessage() {
         return "May not modify parameters for a request not derived from a form with parameter checking enabled.";
     }

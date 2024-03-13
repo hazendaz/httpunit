@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,13 +23,19 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.TypeInfo;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
 
+    private static final long serialVersionUID = 1L;
     private Hashtable _attributes = new Hashtable();
     private ArrayList _listeners = new ArrayList();
 
@@ -65,21 +71,26 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
     // ---------------------------------------- Element methods
     // -------------------------------------------------------------
 
+    @Override
     public short getNodeType() {
         return ELEMENT_NODE;
     }
 
+    @Override
     public String getNodeValue() throws DOMException {
         return null;
     }
 
+    @Override
     public void setNodeValue(String nodeValue) throws DOMException {
     }
 
+    @Override
     public boolean hasAttributes() {
         return !_attributes.isEmpty();
     }
 
+    @Override
     public NamedNodeMap getAttributes() {
         return new NamedNodeMapImpl(_attributes);
     }
@@ -90,14 +101,17 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
      * @param name
      *            - the name of the attribute to get
      */
+    @Override
     public String getAttribute(String name) {
         Attr attr = getAttributeNode(name);
         return attr == null ? "" : attr.getValue();
     }
 
+    @Override
     public void setAttribute(String name, String value) throws DOMException {
-        if (value.equals(getAttribute(name)))
+        if (value.equals(getAttribute(name))) {
             return;
+        }
 
         Attr attribute = getOwnerDocument().createAttribute(name);
         attribute.setValue(value);
@@ -113,6 +127,7 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
      *
      * @return
      */
+    @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
         if (eventName.toLowerCase().equals("onclick")) {
@@ -126,75 +141,93 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
         return result;
     }
 
+    @Override
     public void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
         Attr attribute = getOwnerDocument().createAttributeNS(namespaceURI, qualifiedName);
         attribute.setValue(value);
         setAttributeNodeNS(attribute);
     }
 
+    @Override
     public void removeAttribute(String name) throws DOMException {
         _attributes.remove(name);
     }
 
+    @Override
     public Attr getAttributeNode(String name) {
         return (Attr) _attributes.get(name);
     }
 
+    @Override
     public Attr setAttributeNode(Attr newAttr) throws DOMException {
-        if (newAttr.getOwnerDocument() != getOwnerDocument())
+        if (newAttr.getOwnerDocument() != getOwnerDocument()) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                     "attribute must be from the same document as the element");
+        }
 
         ((AttrImpl) newAttr).setOwnerElement(this);
         AttrImpl oldAttr = (AttrImpl) _attributes.put(newAttr.getName(), newAttr);
-        if (oldAttr != null)
+        if (oldAttr != null) {
             oldAttr.setOwnerElement(null);
+        }
         return oldAttr;
     }
 
+    @Override
     public Attr setAttributeNodeNS(Attr newAttr) throws DOMException {
-        if (newAttr.getOwnerDocument() != getOwnerDocument())
+        if (newAttr.getOwnerDocument() != getOwnerDocument()) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                     "attribute must be from the same document as the element");
+        }
 
         ((AttrImpl) newAttr).setOwnerElement(this);
         AttrImpl oldAttr = (AttrImpl) _attributes.put(newAttr.getName(), newAttr);
-        if (oldAttr != null)
+        if (oldAttr != null) {
             oldAttr.setOwnerElement(null);
+        }
         return oldAttr;
     }
 
+    @Override
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-        if (!_attributes.containsValue(oldAttr))
+        if (!_attributes.containsValue(oldAttr)) {
             throw new DOMException(DOMException.NOT_FOUND_ERR, "Specified attribute is not defined for this element");
+        }
 
         AttrImpl removedAttr = (AttrImpl) _attributes.remove(oldAttr.getName());
-        if (removedAttr != null)
+        if (removedAttr != null) {
             removedAttr.setOwnerElement(null);
+        }
         return removedAttr;
     }
 
+    @Override
     public boolean hasAttribute(String name) {
         return _attributes.containsKey(name);
     }
 
     // ----------------------- namespaces are not supported at present --------------------------------
 
+    @Override
     public String getAttributeNS(String namespaceURI, String localName) {
         return null;
     }
 
+    @Override
     public void removeAttributeNS(String namespaceURI, String localName) throws DOMException {
     }
 
+    @Override
     public Attr getAttributeNodeNS(String namespaceURI, String localName) {
         return null;
     }
 
+    @Override
     public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         return null;
     }
 
+    @Override
     public boolean hasAttributeNS(String namespaceURI, String localName) {
         return false;
     }
@@ -205,26 +238,31 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
         for (int i = 0; i < attributes.getLength(); i++) {
             copy.setAttributeNode((Attr) document.importNode(attributes.item(i), false));
         }
-        if (deep)
+        if (deep) {
             document.importChildren(original, copy);
+        }
         return copy;
     }
 
     // ------------------------------------- DOM level 3 methods
     // ------------------------------------------------------------
 
+    @Override
     public TypeInfo getSchemaTypeInfo() {
         return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setIdAttribute(String name, boolean isId) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }

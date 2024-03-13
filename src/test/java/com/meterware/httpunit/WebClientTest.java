@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -528,12 +527,11 @@ public class WebClientTest extends HttpUnitTest {
                     return new WebResource(getHeader("Authorization"), "text/plain");
                 }
                 WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
-                String headerStr = "WWW-Authenticate: Digest realm=\"testrealm@host.com\","
-                        + " nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";";
+                StringBuilder headerStr = new StringBuilder("WWW-Authenticate: Digest realm=\"testrealm@host.com\",").append(" nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";");
                 if (withOpaque) {
-                    headerStr += ", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"";
+                    headerStr.append(", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
                 }
-                resource.addHeader(headerStr);
+                resource.addHeader(headerStr.toString());
                 return resource;
             }
         });

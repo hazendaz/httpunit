@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -111,19 +111,26 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Notifications:", text[row][1]);
         row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Watches:", text[row][0]);
-        assertEquals("Watches:", text[row++][1]);
+        assertEquals("Watches:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Messages:", text[row][0]);
-        assertEquals("Messages:", text[row++][1]);
+        assertEquals("Messages:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
         assertEquals("Favourite Documents:", text[row][0]);
-        assertEquals("Favourite Documents:", text[row++][1]);
+        assertEquals("Favourite Documents:", text[row][1]);
+        row++;
         assertEquals("", text[row][0]);
-        assertEquals("None", text[row++][1]);
+        assertEquals("None", text[row][1]);
+        row++;
     }
 
     /**

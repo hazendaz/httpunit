@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,26 +26,34 @@ import org.w3c.dom.html.HTMLButtonElement;
  */
 public class HTMLButtonElementImpl extends HTMLControl implements HTMLButtonElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLButtonElementImpl();
     }
 
+    @Override
     public String getAccessKey() {
         return getAttributeWithNoDefault("accesskey");
     }
 
+    @Override
     public void setAccessKey(String accessKey) {
         setAttribute("accesskey", accessKey);
     }
 
+    @Override
     public String getValue() {
         return getAttributeWithNoDefault("value");
     }
 
+    @Override
     public void setValue(String value) {
         setAttribute("value", value);
     }
 
+    @Override
     public String getType() {
         return getAttributeWithDefault("type", "submit");
     }

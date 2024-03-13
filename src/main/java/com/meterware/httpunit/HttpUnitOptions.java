@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,14 +38,7 @@ import java.util.Vector;
  * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public abstract class HttpUnitOptions {
-    /**
-     * ID for Revision Control System - will show in the class file and can be looked for using the ident command of RCS
-     */
-    private final static String RCSID = "$Id$";
-
     public static final String ORIGINAL_SCRIPTING_ENGINE_FACTORY = "com.meterware.httpunit.javascript.JavaScriptEngineFactory";
-    private static final String NEW_SCRIPTING_ENGINE_FACTORY = "com.meterware.httpunit.dom.DomBasedScriptingEngineFactory";
-
     // comment out the scripting engine not to be used by allowing the appropriate number of asterisks in the comment on
     // the next line (1 or 2)
     /**/
@@ -81,6 +74,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#isAcceptCookies();
      */
+    @Deprecated
     public static boolean isAcceptCookies() {
         return ClientProperties.getDefaultProperties().isAcceptCookies();
     }
@@ -90,6 +84,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#setAcceptCookies();
      */
+    @Deprecated
     public static void setAcceptCookies(boolean acceptCookies) {
         ClientProperties.getDefaultProperties().setAcceptCookies(acceptCookies);
     }
@@ -100,6 +95,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#isAcceptGzip();
      **/
+    @Deprecated
     public static boolean isAcceptGzip() {
         return ClientProperties.getDefaultProperties().isAcceptGzip();
     }
@@ -109,6 +105,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#setAcceptGzip();
      */
+    @Deprecated
     public static void setAcceptGzip(boolean acceptGzip) {
         ClientProperties.getDefaultProperties().setAcceptGzip(acceptGzip);
     }
@@ -192,6 +189,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.2, use HTMLParserFactory#isParserWarningsEnabled
      **/
+    @Deprecated
     public static boolean getParserWarningsEnabled() {
         return HTMLParserFactory.isParserWarningsEnabled();
     }
@@ -201,6 +199,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.2, use HTMLParserFactory#setParserWarningsEnabled
      **/
+    @Deprecated
     public static void setParserWarningsEnabled(boolean enabled) {
         HTMLParserFactory.setParserWarningsEnabled(enabled);
     }
@@ -224,6 +223,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.6, use WebForm#newUnvalidatedRequest() to obtain a request without parameter validation.
      **/
+    @Deprecated
     public static boolean getParameterValuesValidated() {
         return _parameterValuesValidated;
     }
@@ -237,6 +237,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.6, use WebForm#newUnvalidatedRequest() to obtain a request without parameter validation.
      **/
+    @Deprecated
     public static void setParameterValuesValidated(boolean validated) {
         _parameterValuesValidated = validated;
     }
@@ -308,6 +309,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#isAutoRedirect();
      **/
+    @Deprecated
     public static boolean getAutoRedirect() {
         return ClientProperties.getDefaultProperties().isAutoRedirect();
     }
@@ -318,6 +320,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#setAutoRedirect();
      **/
+    @Deprecated
     public static void setAutoRedirect(boolean autoRedirect) {
         ClientProperties.getDefaultProperties().setAutoRedirect(autoRedirect);
     }
@@ -345,6 +348,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#isAutoRefresh();
      **/
+    @Deprecated
     public static boolean getAutoRefresh() {
         return ClientProperties.getDefaultProperties().isAutoRefresh();
     }
@@ -356,6 +360,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.3, use ClientProperties#setAutoRefresh();
      **/
+    @Deprecated
     public static void setAutoRefresh(boolean autoRefresh) {
         ClientProperties.getDefaultProperties().setAutoRefresh(autoRefresh);
     }
@@ -365,6 +370,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.2, use HTMLParserfactory#removeHTMLParserListener
      **/
+    @Deprecated
     public static void removeHtmlErrorListener(HTMLParserListener el) {
         HTMLParserFactory.removeHTMLParserListener(el);
     }
@@ -374,6 +380,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.2, use HTMLParserfactory#addHTMLParserListener
      **/
+    @Deprecated
     public static void addHtmlErrorListener(HTMLParserListener el) {
         HTMLParserFactory.addHTMLParserListener(el);
     }
@@ -383,6 +390,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated as of 1.5.2, removed with no replacement
      **/
+    @Deprecated
     public static Vector getHtmlErrorListeners() {
         return null;
     }
@@ -478,38 +486,48 @@ public abstract class HttpUnitOptions {
     private static final String DEFAULT_CONTENT_TYPE = "text/html";
 
     private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {
+        @Override
         public boolean isEnabled() {
             return false;
         }
 
+        @Override
         public void associate(WebResponse response) {
         }
 
+        @Override
         public void load(WebResponse response) {
         }
 
+        @Override
         public void setThrowExceptionsOnError(boolean throwExceptions) {
         }
 
+        @Override
         public boolean isThrowExceptionsOnError() {
             return false;
         }
 
+        @Override
         public String[] getErrorMessages() {
             return new String[0];
         }
 
+        @Override
         public void clearErrorMessages() {
         }
 
+        @Override
         public ScriptingHandler createHandler(HTMLElement element) {
             return ScriptableDelegate.NULL_SCRIPT_ENGINE;
         }
 
+        @Override
         public ScriptingHandler createHandler(WebResponse response) {
             return ScriptableDelegate.NULL_SCRIPT_ENGINE;
         }
 
+        @Override
         public void handleScriptException(Exception e, String badScript) {
             // happily ignore and exception
         }
@@ -520,9 +538,11 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated for new Scripting engine
      */
+    @Deprecated
     public static void addCustomAttribute(String attributeName) {
-        if (_customAttributes == null)
+        if (_customAttributes == null) {
             _customAttributes = new HashSet();
+        }
         _customAttributes.add(attributeName);
     }
 
@@ -531,6 +551,7 @@ public abstract class HttpUnitOptions {
      *
      * @deprecated for new scripting engine
      */
+    @Deprecated
     static Set getCustomAttributes() {
         return _customAttributes;
     }

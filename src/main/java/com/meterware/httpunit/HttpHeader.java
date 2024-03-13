@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,8 @@
  */
 package com.meterware.httpunit;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -59,13 +60,16 @@ public class HttpHeader {
         }
     }
 
+    @Override
     public boolean equals(Object obj) {
-        if (!getClass().equals(obj.getClass()))
+        if (!getClass().equals(obj.getClass())) {
             return false;
+        }
         return getLabel().equals(((HttpHeader) obj).getLabel())
                 && getProperties().equals(((HttpHeader) obj).getProperties());
     }
 
+    @Override
     public String toString() {
         return getLabel() + " " + getProperties();
     }
@@ -75,8 +79,9 @@ public class HttpHeader {
     }
 
     private String unQuote(String value) {
-        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\""))
+        if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\"")) {
             return value;
+        }
 
         return value.substring(1, value.length() - 1);
     }
@@ -94,38 +99,54 @@ public class HttpHeader {
         StringBuilder sb = new StringBuilder();
 
         while (i < chars.length) {
-            while (i < chars.length && Character.isWhitespace(chars[i]))
+            while (i < chars.length && Character.isWhitespace(chars[i])) {
                 i++;
-            while (i < chars.length && Character.isJavaIdentifierPart(chars[i]))
-                sb.append(chars[i++]);
+            }
+            while (i < chars.length && Character.isJavaIdentifierPart(chars[i])) {
+                sb.append(chars[i]);
+                i++;
+            }
             String name = sb.toString();
             sb.setLength(0);
-            while (i < chars.length && chars[i] != '=')
+            while (i < chars.length && chars[i] != '=') {
                 i++;
-            if (i == chars.length)
+            }
+            if (i == chars.length) {
                 break;
+            }
             i++; // skip '='
-            while (i < chars.length && Character.isWhitespace(chars[i]))
+            while (i < chars.length && Character.isWhitespace(chars[i])) {
                 i++;
-            if (i == chars.length)
+            }
+            if (i == chars.length) {
                 break;
+            }
             if (chars[i] == '"') {
-                sb.append(chars[i++]);
-                while (i < chars.length && chars[i] != '"')
-                    sb.append(chars[i++]);
+                sb.append(chars[i]);
+                i++;
+                while (i < chars.length && chars[i] != '"') {
+                    sb.append(chars[i]);
+                    i++;
+                }
                 sb.append('"');
                 if (i < chars.length)
+                {
                     i++; // skip close quote
+                }
             } else {
-                while (i < chars.length && Character.isJavaIdentifierPart(chars[i]))
-                    sb.append(chars[i++]);
+                while (i < chars.length && Character.isJavaIdentifierPart(chars[i])) {
+                    sb.append(chars[i]);
+                    i++;
+                }
             }
             properties.setProperty(name, sb.toString());
             sb.setLength(0);
-            while (i < chars.length && chars[i] != ',')
+            while (i < chars.length && chars[i] != ',') {
                 i++;
-            if (i == chars.length)
+            }
+            if (i == chars.length) {
                 break;
+            }
             i++; // skip '='
         }
         return properties;

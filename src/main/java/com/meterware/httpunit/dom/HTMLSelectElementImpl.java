@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -34,19 +34,23 @@ import org.w3c.dom.html.HTMLSelectElement;
  **/
 public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElement {
 
+    private static final long serialVersionUID = 1L;
     public static final String TYPE_SELECT_ONE = "select-one";
     public static final String TYPE_SELECT_MULTIPLE = "select-multiple";
 
+    @Override
     ElementImpl create() {
         return new HTMLSelectElementImpl();
     }
 
+    @Override
     public void add(HTMLElement element, HTMLElement before) throws DOMException {
     }
 
     /**
      * simulate blur
      */
+    @Override
     public void blur() {
         handleEvent("onblur");
     }
@@ -54,61 +58,74 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
     /**
      * simulate focus;
      */
+    @Override
     public void focus() {
         handleEvent("onfocus");
     }
 
+    @Override
     public String getType() {
         return isMultiSelect() ? TYPE_SELECT_MULTIPLE : TYPE_SELECT_ONE;
     }
 
     private boolean isMultiSelect() {
-        return (getMultiple() && getSize() > 1);
+        return getMultiple() && getSize() > 1;
     }
 
+    @Override
     public int getLength() {
         return getOptions().getLength();
     }
 
+    @Override
     public boolean getMultiple() {
         return getBooleanAttribute("multiple");
     }
 
+    @Override
     public HTMLCollection getOptions() {
         return HTMLCollectionImpl
                 .createHTMLCollectionImpl(getElementsByTagName(getHtmlDocument().toNodeCase("option")));
     }
 
+    @Override
     public int getSelectedIndex() {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            if (((HTMLOptionElement) options.item(i)).getSelected())
+            if (((HTMLOptionElement) options.item(i)).getSelected()) {
                 return i;
+            }
         }
         return isMultiSelect() ? -1 : 0;
     }
 
+    @Override
     public String getValue() {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            HTMLOptionElement optionElement = ((HTMLOptionElement) options.item(i));
-            if (optionElement.getSelected())
+            HTMLOptionElement optionElement = (HTMLOptionElement) options.item(i);
+            if (optionElement.getSelected()) {
                 return optionElement.getValue();
+            }
         }
-        return (isMultiSelect() || options.getLength() == 0) ? null : ((HTMLOptionElement) options.item(0)).getValue();
+        return isMultiSelect() || options.getLength() == 0 ? null : ((HTMLOptionElement) options.item(0)).getValue();
     }
 
+    @Override
     public int getSize() {
         return getIntegerAttribute("size");
     }
 
+    @Override
     public void remove(int index) {
     }
 
+    @Override
     public void setMultiple(boolean multiple) {
         setAttribute("multiple", multiple);
     }
 
+    @Override
     public void setSelectedIndex(int selectedIndex) {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
@@ -117,6 +134,7 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
         }
     }
 
+    @Override
     public void setSize(int size) {
         setAttribute("size", size);
     }
@@ -124,8 +142,9 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
     int getIndexOf(HTMLOptionElementImpl option) {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {
-            if (options.item(i) == option)
+            if (options.item(i) == option) {
                 return i;
+            }
         }
         throw new IllegalStateException("option is not part of this select");
     }
@@ -134,6 +153,7 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
         setSelectedIndex(-1);
     }
 
+    @Override
     void addValues(ParameterProcessor processor, String characterSet) throws IOException {
         HTMLCollection options = getOptions();
         String name = getName();
@@ -142,10 +162,12 @@ public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElem
         }
     }
 
+    @Override
     public void setValue(String value) {
         setAttribute("value", value);
     }
 
+    @Override
     public void reset() {
         HTMLCollection options = getOptions();
         for (int i = 0; i < options.getLength(); i++) {

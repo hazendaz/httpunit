@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,38 +26,49 @@ import org.w3c.dom.html.HTMLMetaElement;
  **/
 public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElement {
 
+    private static final long serialVersionUID = 1L;
+
+    @Override
     ElementImpl create() {
         return new HTMLMetaElementImpl();
     }
 
+    @Override
     public String getContent() {
         return getAttributeWithNoDefault("content");
     }
 
+    @Override
     public String getHttpEquiv() {
         return getAttributeWithNoDefault("http-equiv");
     }
 
+    @Override
     public String getName() {
         return getAttributeWithNoDefault("name");
     }
 
+    @Override
     public String getScheme() {
         return getAttributeWithNoDefault("scheme");
     }
 
+    @Override
     public void setContent(String content) {
         setAttribute("content", content);
     }
 
+    @Override
     public void setHttpEquiv(String httpEquiv) {
         setAttribute("http-equiv", httpEquiv);
     }
 
+    @Override
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    @Override
     public void setScheme(String scheme) {
         setAttribute("scheme", scheme);
     }

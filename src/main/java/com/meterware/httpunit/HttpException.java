@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,6 +28,8 @@ import java.net.URL;
  * @author Russell Gold
  **/
 public class HttpException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * throw a http Exception with the given responseCode
@@ -83,6 +85,7 @@ public class HttpException extends RuntimeException {
      *
      * @return - the message of the Exception
      */
+    @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append("Error on HTTP request: ");
         sb.append(_responseCode);
@@ -125,6 +128,7 @@ public class HttpException extends RuntimeException {
     /**
      * get the cause (if any)
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }

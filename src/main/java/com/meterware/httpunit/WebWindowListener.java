@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,10 +49,10 @@ public interface WebWindowListener {
     /**
      * Invoked when the web client opens a new window.
      */
-    public void windowOpened(WebClient client, WebWindow window);
+    void windowOpened(WebClient client, WebWindow window);
 
     /**
      * Invoked when the web client closes a window.
      */
-    public void windowClosed(WebClient client, WebWindow window);
+    void windowClosed(WebClient client, WebWindow window);
 }

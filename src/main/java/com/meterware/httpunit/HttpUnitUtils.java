@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -65,7 +65,7 @@ public class HttpUnitUtils {
      */
     public static boolean isEclipse() {
         StackTraceElement[] ste = new Throwable().getStackTrace();
-        return (ste[ste.length - 1].getClassName().startsWith("org.eclipse.jdt"));
+        return ste[ste.length - 1].getClassName().startsWith("org.eclipse.jdt");
     }
 
     /**
@@ -78,7 +78,7 @@ public class HttpUnitUtils {
      * @return a string array with the content type and the content char set
      **/
     public static String[] parseContentTypeHeader(String header) {
-        String[] result = new String[] { "text/plain", null };
+        String[] result = { "text/plain", null };
         if (header.trim().length() > 0) {
             StringTokenizer st = new StringTokenizer(header, ";= ");
             result[0] = st.nextToken();
@@ -103,10 +103,12 @@ public class HttpUnitUtils {
      * @return the stripped value
      */
     public static String stripQuotes(String value) {
-        if (value.startsWith("'") || value.startsWith("\""))
+        if (value.startsWith("'") || value.startsWith("\"")) {
             value = value.substring(1);
-        if (value.endsWith("'") || value.endsWith("\""))
+        }
+        if (value.endsWith("'") || value.endsWith("\"")) {
             value = value.substring(0, value.length() - 1);
+        }
         return value;
     }
 
@@ -124,14 +126,17 @@ public class HttpUnitUtils {
      */
     static String trimmedValue(Number number) {
         String rawNumber = number.toString();
-        if (rawNumber.indexOf('.') == -1)
+        if (rawNumber.indexOf('.') == -1) {
             return rawNumber;
+        }
 
         int index = rawNumber.length();
-        while (rawNumber.charAt(index - 1) == '0')
+        while (rawNumber.charAt(index - 1) == '0') {
             index--;
-        if (rawNumber.charAt(index - 1) == '.')
+        }
+        if (rawNumber.charAt(index - 1) == '.') {
             index--;
+        }
         return rawNumber.substring(0, index);
     }
 
@@ -150,8 +155,9 @@ public class HttpUnitUtils {
      */
     public static String decode(String string, String charset) {
         try {
-            if (string == null)
+            if (string == null) {
                 return null;
+            }
 
             return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), charset);
         } catch (UnsupportedEncodingException e) {
@@ -179,10 +185,13 @@ public class HttpUnitUtils {
                 buffer.write(b);
             } else {
                 try {
-                    int u = Character.digit((char) pArray[++i], 16);
-                    int l = Character.digit((char) pArray[++i], 16);
-                    if (u == -1 || l == -1)
+                    i++;
+                    int u = Character.digit((char) pArray[i], 16);
+                    i++;
+                    int l = Character.digit((char) pArray[i], 16);
+                    if (u == -1 || l == -1) {
                         throw new IllegalArgumentException("Invalid URL encoding");
+                    }
                     buffer.write((char) ((u << 4) + l));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     throw new IllegalArgumentException("Invalid URL encoding");
@@ -229,8 +238,7 @@ public class HttpUnitUtils {
     public static Document parse(InputSource inputSource) throws SAXException, IOException {
         DocumentBuilder db = newParser();
         try {
-            Document doc = db.parse(inputSource);
-            return doc;
+            return db.parse(inputSource);
         } catch (java.net.MalformedURLException mue) {
             if (EXCEPTION_DEBUG) {
                 String msg = mue.getMessage();
@@ -256,8 +264,7 @@ public class HttpUnitUtils {
     public static Document parse(InputStream inputStream) throws SAXException, IOException {
         DocumentBuilder db = newParser();
         try {
-            Document doc = db.parse(inputStream);
-            return doc;
+            return db.parse(inputStream);
         } catch (java.net.MalformedURLException mue) {
             if (EXCEPTION_DEBUG) {
                 String msg = mue.getMessage();
@@ -325,9 +332,8 @@ public class HttpUnitUtils {
     static boolean contains(String string, String substring) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
             return string.toUpperCase().indexOf(substring.toUpperCase()) >= 0;
-        } else {
-            return string.indexOf(substring) >= 0;
         }
+        return string.indexOf(substring) >= 0;
     }
 
     /**
@@ -337,9 +343,8 @@ public class HttpUnitUtils {
     static boolean hasPrefix(String string, String prefix) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
             return string.toUpperCase().startsWith(prefix.toUpperCase());
-        } else {
-            return string.startsWith(prefix);
         }
+        return string.startsWith(prefix);
     }
 
     /**
@@ -349,9 +354,8 @@ public class HttpUnitUtils {
     static boolean matches(String string1, String string2) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
             return string1.equalsIgnoreCase(string2);
-        } else {
-            return string1.equals(string2);
         }
+        return string1.equals(string2);
     }
 
     /**
@@ -363,8 +367,7 @@ public class HttpUnitUtils {
      * @return - true if this is a javascript url
      */
     static boolean isJavaScriptURL(String urlString) {
-        boolean result = urlString.toLowerCase().startsWith("javascript:");
-        return result;
+        return urlString.toLowerCase().startsWith("javascript:");
     }
 
     /**
@@ -373,24 +376,21 @@ public class HttpUnitUtils {
     static String encodeSpaces(String s) {
         s = s.trim();
         // if no spaces we are fine
-        if (s.indexOf(' ') < 0)
+        if (s.indexOf(' ') < 0) {
             return s;
+        }
 
         boolean inQuotes = false;
         StringBuilder sb = new StringBuilder();
         char[] chars = s.toCharArray();
         // loop over oper the chars of the URL
-        for (int i = 0; i < chars.length; i++) {
-            // get the current character
-            char aChar = chars[i];
+        for (char aChar : chars) {
             // toggle quotation and add quote
             if (aChar == '"' || aChar == '\'') {
                 inQuotes = !inQuotes;
                 sb.append(aChar);
                 // append everything in quotes and printable chars above space
-            } else if (inQuotes) {
-                sb.append(aChar);
-            } else if (aChar > ' ') {
+            } else if (inQuotes || aChar > ' ') {
                 sb.append(aChar);
             } else if (aChar == ' ') {
                 // encode spaces
@@ -406,8 +406,9 @@ public class HttpUnitUtils {
         int ampIndex;
         while ((ampIndex = string.indexOf('&', i)) >= 0) {
             int semiColonIndex = string.indexOf(';', ampIndex + 1);
-            if (semiColonIndex < 0)
+            if (semiColonIndex < 0) {
                 break;
+            }
             i = ampIndex + 1;
 
             String entityName = string.substring(ampIndex + 1, semiColonIndex);
@@ -423,21 +424,24 @@ public class HttpUnitUtils {
      * Strips the fragment identifier (if any) from the Url.
      */
     static String trimFragment(String rawUrl) {
-        if (isJavaScriptURL(rawUrl))
+        if (isJavaScriptURL(rawUrl)) {
             return rawUrl;
+        }
         final int hashIndex = rawUrl.indexOf('#');
         return hashIndex < 0 ? rawUrl : rawUrl.substring(0, hashIndex);
     }
 
     static class ClasspathEntityResolver implements EntityResolver {
 
+        @Override
         public InputSource resolveEntity(String publicID, String systemID) {
-            if (systemID == null)
+            if (systemID == null) {
                 return null;
+            }
 
             String localName = systemID;
             if (localName.indexOf("/") > 0) {
-                localName = localName.substring(localName.lastIndexOf("/") + 1, localName.length());
+                localName = localName.substring(localName.lastIndexOf("/") + 1);
             }
 
             try {

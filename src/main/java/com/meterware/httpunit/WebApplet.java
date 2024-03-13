@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -73,7 +73,7 @@ public class WebApplet extends HTMLElementBase {
 
     private String getCodeBase() {
         final String codeBaseAttribute = _element.getCodeBase();
-        return codeBaseAttribute.endsWith("/") ? codeBaseAttribute : (codeBaseAttribute + "/");
+        return codeBaseAttribute.endsWith("/") ? codeBaseAttribute : codeBaseAttribute + "/";
     }
 
     /**
@@ -84,8 +84,7 @@ public class WebApplet extends HTMLElementBase {
         if (className.endsWith(CLASS_EXTENSION)) {
             className = className.substring(0, className.lastIndexOf(CLASS_EXTENSION));
         }
-        className = className.replace('/', '.').replace('\\', '.');
-        return className;
+        return className.replace('/', '.').replace('\\', '.');
     }
 
     /**
@@ -107,16 +106,18 @@ public class WebApplet extends HTMLElementBase {
      */
     public String getArchiveSpecification() {
         String specification = getParameter("archive");
-        if (specification == null)
+        if (specification == null) {
             specification = getAttribute("archive");
+        }
         return specification;
     }
 
     List getArchiveList() throws MalformedURLException {
         ArrayList al = new ArrayList();
         StringTokenizer st = new StringTokenizer(getArchiveSpecification(), ",");
-        while (st.hasMoreTokens())
+        while (st.hasMoreTokens()) {
             al.add(new URL(getCodeBaseURL(), st.nextToken()));
+        }
         return al;
     }
 
@@ -155,8 +156,9 @@ public class WebApplet extends HTMLElementBase {
         if (_applet == null) {
             ClassLoader cl = new URLClassLoader(getClassPath(), null);
             Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();
-            if (!(o instanceof Applet))
+            if (!(o instanceof Applet)) {
                 throw new RuntimeException(getMainClassName() + " is not an Applet");
+            }
             _applet = (Applet) o;
             _applet.setStub(new AppletStubImpl(this));
         }
@@ -193,10 +195,12 @@ public class WebApplet extends HTMLElementBase {
         }
     }
 
+    @Override
     public ScriptableDelegate newScriptable() {
         return new HTMLElementScriptable(this);
     }
 
+    @Override
     public ScriptableDelegate getParentDelegate() {
         return _response.getDocumentScriptable();
     }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,7 +23,6 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLDocument;
 
 /**
@@ -34,7 +33,7 @@ public interface DocumentAdapter {
     /**
      * Records the root (Document) node.
      */
-    public void setDocument(HTMLDocument document);
+    void setDocument(HTMLDocument document);
 
     /**
      * Returns the contents of an included script, given its src attribute.
@@ -47,10 +46,10 @@ public interface DocumentAdapter {
      * @throws java.io.IOException
      *             if there is a problem retrieving the script
      */
-    public String getIncludedScript(String srcAttribute) throws IOException;
+    String getIncludedScript(String srcAttribute) throws IOException;
 
     /**
      * Returns the Scriptable object associated with the document
      */
-    public ScriptingHandler getScriptingHandler();
+    ScriptingHandler getScriptingHandler();
 }

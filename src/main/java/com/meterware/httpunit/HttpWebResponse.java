@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -54,8 +55,9 @@ class HttpWebResponse extends WebResponse {
     HttpWebResponse(WebConversation client, FrameSelector frame, URL url, URLConnection connection,
             boolean throwExceptionOnError) throws IOException {
         super(client, frame, url);
-        if (HttpUnitOptions.isLoggingHttpHeaders())
+        if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("\nReceived from " + url);
+        }
         readHeaders(connection);
 
         /** make sure that any IO exception for HTML received page happens here, not later. **/
@@ -98,12 +100,11 @@ class HttpWebResponse extends WebResponse {
                 // as of JDK 1.5 a null inputstream might have been returned here
                 // see bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages
                 // by Roger Lindsj?
-                if (isErrorResponse(connection)) {
-                    // fake an empty error stream
-                    result = new ByteArrayInputStream(new byte[0]);
-                } else {
+                if (!isErrorResponse(connection)) {
                     throw fnfe;
                 }
+                // fake an empty error stream
+                result = new ByteArrayInputStream(new byte[0]);
             }
         }
         return result;
@@ -134,6 +135,7 @@ class HttpWebResponse extends WebResponse {
     /**
      * Returns the response code associated with this response.
      **/
+    @Override
     public int getResponseCode() {
         return _responseCode;
     }
@@ -141,10 +143,12 @@ class HttpWebResponse extends WebResponse {
     /**
      * Returns the response message associated with this response.
      **/
+    @Override
     public String getResponseMessage() {
         return _responseMessage;
     }
 
+    @Override
     public String[] getHeaderFieldNames() {
         Vector names = new Vector();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
@@ -158,37 +162,41 @@ class HttpWebResponse extends WebResponse {
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null.
      **/
+    @Override
     public String getHeaderField(String fieldName) {
         String[] fields = (String[]) _headers.get(fieldName.toUpperCase());
         return fields == null ? null : fields[0];
     }
 
+    @Override
     public String[] getHeaderFields(String fieldName) {
         String[] fields = (String[]) _headers.get(fieldName.toUpperCase());
         return fields == null ? new String[0] : fields;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HttpWebResponse [url=");
         sb.append(getURL()).append("; headers=");
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             Object key = e.nextElement();
             String[] values = (String[]) _headers.get(key);
-            for (int i = 0; i < values.length; i++) {
-                sb.append("\n   ").append(key).append(": ").append(values[i]);
+            for (String value : values) {
+                sb.append("\n   ").append(key).append(": ").append(value);
             }
         }
         sb.append(" ]");
         return sb.toString();
     }
 
+    @Override
     String getReferer() {
         return _referer;
     }
 
     // ------------------------------------- private members -------------------------------------
 
-    private final static String FILE_ENCODING = System.getProperty("file.encoding");
+    private final static String FILE_ENCODING = Charset.defaultCharset().displayName();
 
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseMessage = "OK";
@@ -217,19 +225,21 @@ class HttpWebResponse extends WebResponse {
         if (!needStatusWorkaround()) {
             setResponseCode(connection.getResponseCode(), connection.getResponseMessage());
         } else {
-            if (connection.getHeaderField(0) == null)
+            if (connection.getHeaderField(0) == null) {
                 throw new UnknownHostException(connection.getURL().toExternalForm());
+            }
 
             StringTokenizer st = new StringTokenizer(connection.getHeaderField(0));
             st.nextToken();
             if (!st.hasMoreTokens()) {
                 setResponseCode(HttpURLConnection.HTTP_OK, "OK");
-            } else
+            } else {
                 try {
                     setResponseCode(Integer.parseInt(st.nextToken()), getRemainingTokens(st));
                 } catch (NumberFormatException e) {
                     setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR, "Cannot parse response header");
                 }
+            }
         }
     }
 
@@ -265,8 +275,9 @@ class HttpWebResponse extends WebResponse {
         for (int i = 1; true; i++) {
             String headerFieldKey = connection.getHeaderFieldKey(i);
             String headerField = connection.getHeaderField(i);
-            if (headerFieldKey == null || headerField == null)
+            if (headerFieldKey == null || headerField == null) {
                 break;
+            }
             if (HttpUnitOptions.isLoggingHttpHeaders()) {
                 System.out.println("Header:: " + headerFieldKey + ": " + headerField);
             }

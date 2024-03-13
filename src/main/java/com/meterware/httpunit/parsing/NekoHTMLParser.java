@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,6 +42,7 @@ class NekoHTMLParser implements HTMLParser {
      * @param pageText
      * @param adapter
      */
+    @Override
     public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {
         try {
             NekoDOMParser parser = NekoDOMParser.newParser(adapter, pageURL);
@@ -53,22 +54,27 @@ class NekoHTMLParser implements HTMLParser {
         }
     }
 
+    @Override
     public String getCleanedText(String string) {
-        return (string == null) ? "" : string.replace(NBSP, ' ');
+        return string == null ? "" : string.replace(NBSP, ' ');
     }
 
+    @Override
     public boolean supportsPreserveTagCase() {
         return false;
     }
 
+    @Override
     public boolean supportsForceTagCase() {
         return false;
     }
 
+    @Override
     public boolean supportsReturnHTMLDocument() {
         return true;
     }
 
+    @Override
     public boolean supportsParserWarnings() {
         return true;
     }

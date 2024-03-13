@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -24,7 +24,10 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -43,8 +46,9 @@ class RequestContext {
     RequestContext(URL url) {
         _url = url;
         String file = _url.getFile();
-        if (file.indexOf('?') >= 0)
+        if (file.indexOf('?') >= 0) {
             loadParameters(file.substring(file.indexOf('?') + 1) /* urlEncoded */ );
+        }
     }
 
     void setParentRequest(HttpServletRequest parentRequest) {
@@ -85,8 +89,9 @@ class RequestContext {
      * name have_equals -> initial: record parameter with null value have_value -> initial: record parameter with value
      **/
     void loadParameters(String queryString) {
-        if (queryString.length() == 0)
+        if (queryString.length() == 0) {
             return;
+        }
         StringTokenizer st = new StringTokenizer(queryString, "&=", /* return tokens */ true);
         int state = STATE_INITIAL;
         String name = null;
@@ -96,8 +101,9 @@ class RequestContext {
             String token = st.nextToken();
             if (token.equals("&")) {
                 state = STATE_INITIAL;
-                if (name != null && value != null)
+                if (name != null && value != null) {
                     addParameter(name, value);
+                }
                 name = value = null;
             } else if (token.equals("=")) {
                 if (state == STATE_HAVE_NAME) {
@@ -114,8 +120,9 @@ class RequestContext {
                 state = STATE_HAVE_VALUE;
             }
         }
-        if (name != null && value != null)
+        if (name != null && value != null) {
             addParameter(name, value);
+        }
     }
 
     private void addParameter(String name, String encodedValue) {
@@ -146,8 +153,7 @@ class RequestContext {
             } else {
                 _visibleParameters = new Hashtable();
                 final Map parameterMap = _parentRequest.getParameterMap();
-                for (Iterator i = parameterMap.keySet().iterator(); i.hasNext();) {
-                    Object key = i.next();
+                for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));
                 }
                 for (Enumeration e = _parameters.keys(); e.hasMoreElements();) {
@@ -177,7 +183,7 @@ class RequestContext {
 
     private String getMessageEncoding() {
         return _messageEncoding == null ?
-        /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
+                /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
                 HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;
     }
 

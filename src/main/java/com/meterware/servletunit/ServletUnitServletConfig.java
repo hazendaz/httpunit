@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,6 +42,7 @@ class ServletUnitServletConfig implements ServletConfig {
     /**
      * Returns the value of the specified init parameter, or null if no such init parameter is defined.
      **/
+    @Override
     public String getInitParameter(String name) {
         return (String) _initParameters.get(name);
     }
@@ -49,6 +50,7 @@ class ServletUnitServletConfig implements ServletConfig {
     /**
      * Returns an enumeration over the names of the init parameters.
      **/
+    @Override
     public Enumeration getInitParameterNames() {
         return _initParameters.keys();
     }
@@ -56,6 +58,7 @@ class ServletUnitServletConfig implements ServletConfig {
     /**
      * Returns the current servlet context.
      **/
+    @Override
     public ServletContext getServletContext() {
         return _context;
     }
@@ -63,6 +66,7 @@ class ServletUnitServletConfig implements ServletConfig {
     /**
      * Returns the registered name of the servlet, or its class name if it is not registered.
      **/
+    @Override
     public java.lang.String getServletName() {
         return _name;
     }

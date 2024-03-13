@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlockElement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">BlockElement.java</span></div><h1>BlockElement.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.net.URL;
+
+import org.w3c.dom.Node;
+
+/**
+ * Represents a block-level element such as a paragraph or table cell, which can contain other elements.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ *
+ * @since 1.6
+ */
+abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
+
+    private ScriptingHandler _scriptable;
+    private Node _node;
+
+    /**
+     * Returns the text value of this block.
+     */
+    @Override
+    public String getText() {
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (_node == null) {</span>
+<span class="nc" id="L47">            return &quot;&quot;;</span>
+        }
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L50">            return _node.getNodeValue().trim();</span>
+        }
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
+<span class="nc" id="L53">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L55">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
+    }
+
+    /**
+     * Returns the tag for this block.
+     */
+    @Override
+    public String getTagName() {
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        return _node == null ? &quot;p&quot; : _node.getNodeName();</span>
+    }
+
+    /**
+     * Returns a copy of the domain object model associated with this HTML segment.
+     */
+    @Override
+    public Node getDOM() {
+<span class="nc" id="L71">        return super.getDOM();</span>
+    }
+
+    // -------------------------------- HTMLElement methods
+    // ---------------------------------------
+
+    /**
+     * Returns the ID associated with this element. IDs are unique throughout the HTML document.
+     */
+    @Override
+    public String getID() {
+<span class="fc" id="L82">        return getAttribute(&quot;id&quot;);</span>
+    }
+
+    /**
+     * Returns the class attribute associated with this element.
+     */
+    @Override
+    public String getClassName() {
+<span class="fc" id="L90">        return getAttribute(&quot;class&quot;);</span>
+    }
+
+    /**
+     * Returns the name associated with this element.
+     */
+    @Override
+    public String getName() {
+<span class="fc" id="L98">        return getAttribute(&quot;name&quot;);</span>
+    }
+
+    /**
+     * Returns the title associated with this element.
+     */
+    @Override
+    public String getTitle() {
+<span class="fc" id="L106">        return getAttribute(&quot;title&quot;);</span>
+    }
+
+    /**
+     * Returns the delegate which supports scripting this element.
+     */
+    @Override
+    public ScriptingHandler getScriptingHandler() {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (_scriptable == null) {</span>
+<span class="fc" id="L115">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+        }
+<span class="fc" id="L117">        return _scriptable;</span>
+    }
+
+    /**
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     *
+     * @deprecated since 1.7 - use doEventScript instead
+     */
+    @Deprecated
+    @Override
+    public boolean doEvent(String eventScript) {
+<span class="nc" id="L131">        return doEventScript(eventScript);</span>
+    }
+
+    /**
+     * optional do the event if it's defined
+     *
+     * @param eventScript
+     *            - the script to work on
+     *
+     * @return true if the event script was handled
+     */
+    @Override
+    public boolean doEventScript(String eventScript) {
+<span class="nc" id="L144">        return this.getScriptingHandler().doEventScript(eventScript);</span>
+    }
+
+    @Override
+    public boolean handleEvent(String eventName) {
+<span class="nc" id="L149">        return this.getScriptingHandler().handleEvent(eventName);</span>
+    }
+
+    @Override
+    public ScriptableDelegate getParentDelegate() {
+<span class="fc" id="L154">        return getResponse().getDocumentScriptable();</span>
+    }
+
+    @Override
+    public ScriptableDelegate newScriptable() {
+<span class="fc" id="L159">        return new HTMLElementScriptable(this);</span>
+    }
+
+    /**
+     * get the attribute with the given name
+     *
+     * @param name
+     *            - the name of the attribute to get
+     */
+    @Override
+    public String getAttribute(final String name) {
+<span class="fc" id="L170">        return NodeUtils.getNodeAttribute(_node, name);</span>
+    }
+
+    /**
+     * set the attribute with the given name to the given value
+     *
+     * @param name
+     *            - the name of the attribute to set
+     * @param value
+     *            - the value to use
+     */
+    @Override
+    public void setAttribute(final String name, final Object value) {
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        NodeUtils.setNodeAttribute(_node, name, value == null ? null : value.toString());</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * remove the attribute with the given name
+     *
+     * @param name
+     *            - the name of the attribute
+     */
+    @Override
+    public void removeAttribute(final String name) {
+<span class="nc" id="L194">        NodeUtils.removeNodeAttribute(_node, name);</span>
+<span class="nc" id="L195">    }</span>
+
+    /**
+     * Returns true if this element may have an attribute with the specified name.
+     */
+    @Override
+    public boolean isSupportedAttribute(String name) {
+<span class="nc" id="L202">        return false;</span>
+    }
+
+    @Override
+    public Node getNode() {
+<span class="nc" id="L207">        return _node;</span>
+    }
+
+    // ----------------------------------------------- Object methods
+    // -------------------------------------------------------
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L215" title="2 of 4 branches missed.">        return getClass().equals(obj.getClass()) &amp;&amp; equals((BlockElement) obj);</span>
+    }
+
+    private boolean equals(BlockElement block) {
+<span class="fc" id="L219">        return _node.equals(block._node);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L224">        return _node.hashCode();</span>
+    }
+
+    // ------------------------------------- protected members
+    // --------------------------------------------------------------
+
+    protected BlockElement(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
+            String characterSet) {
+<span class="fc" id="L232">        super(response, frame, baseURL, baseTarget, rootNode, characterSet);</span>
+<span class="fc" id="L233">        _node = rootNode;</span>
+<span class="fc" id="L234">    }</span>
+
+    protected int getAttributeValue(Node node, String attributeName, int defaultValue) {
+<span class="nc" id="L237">        return NodeUtils.getAttributeValue(node, attributeName, defaultValue);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

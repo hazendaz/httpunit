@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpRequest.java</span></div><h1>ServletUnitHttpRequest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import com.meterware.httpunit.Base64;
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.WebClient;
+import com.meterware.httpunit.WebRequest;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import javax.servlet.AsyncContext;
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
+import javax.servlet.http.Part;
+
+/**
+ * This class represents a servlet request created from a WebRequest.
+ **/
+class ServletUnitHttpRequest implements HttpServletRequest {
+
+    private ServletInputStreamImpl _inputStream;
+    private Vector _locales;
+    private String _protocol;
+    private boolean _secure;
+    private RequestContext _requestContext;
+    private String _charset;
+    private boolean _gotReader;
+    private boolean _gotInputStream;
+    private BufferedReader _reader;
+    private int _serverPort;
+    private String _serverName;
+
+    /**
+     * Constructs a ServletUnitHttpRequest from a WebRequest object.
+     **/
+    ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
+<span class="fc" id="L81">            Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (context == null) {</span>
+<span class="nc" id="L83">            throw new IllegalArgumentException(&quot;Context must not be null&quot;);</span>
+        }
+
+<span class="fc" id="L86">        _servletRequest = servletRequest;</span>
+<span class="fc" id="L87">        _request = request;</span>
+<span class="fc" id="L88">        _context = context;</span>
+<span class="fc" id="L89">        _headers = new WebClient.HeaderDictionary();</span>
+<span class="fc" id="L90">        _headers.addEntries(clientHeaders);</span>
+<span class="fc" id="L91">        _headers.addEntries(request.getHeaders());</span>
+<span class="fc" id="L92">        setCookiesFromHeader(_headers);</span>
+<span class="fc" id="L93">        _messageBody = messageBody;</span>
+<span class="fc" id="L94">        _protocol = request.getURL().getProtocol().toLowerCase();</span>
+<span class="fc" id="L95">        _secure = _protocol.endsWith(&quot;s&quot;);</span>
+<span class="fc" id="L96">        _serverName = request.getURL().getHost();</span>
+<span class="fc" id="L97">        _serverPort = request.getURL().getPort();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (_serverPort == -1) {</span>
+<span class="fc" id="L99">            _serverPort = request.getURL().getDefaultPort();</span>
+        }
+
+<span class="fc" id="L102">        _requestContext = new RequestContext(request.getURL());</span>
+<span class="fc" id="L103">        String contentTypeHeader = (String) _headers.get(&quot;Content-Type&quot;);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (contentTypeHeader != null) {</span>
+<span class="fc" id="L105">            String[] res = HttpUnitUtils.parseContentTypeHeader(contentTypeHeader);</span>
+<span class="fc" id="L106">            _charset = res[1];</span>
+<span class="fc" id="L107">            _requestContext.setMessageEncoding(_charset);</span>
+        }
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (_headers.get(&quot;Content-Length&quot;) == null) {</span>
+<span class="fc" id="L110">            _headers.put(&quot;Content-Length&quot;, Integer.toString(messageBody.length));</span>
+        }
+
+<span class="pc bpc" id="L113" title="1 of 4 branches missed.">        boolean setBody =</span>
+                // pre [ 1509117 ] getContentType()
+                // _messageBody != null &amp;&amp; (_contentType == null || _contentType.indexOf( &quot;x-www-form-urlencoded&quot; ) &gt;= 0
+                // );
+                // patch version:
+                _messageBody != null
+<span class="fc bfc" id="L119" title="All 2 branches covered.">                &amp;&amp; (contentTypeHeader == null || contentTypeHeader.indexOf(&quot;x-www-form-urlencoded&quot;) &gt;= 0);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (setBody) {</span>
+<span class="fc" id="L121">            _requestContext.setMessageBody(_messageBody);</span>
+        }
+<span class="fc" id="L123">    }</span>
+
+    // ----------------------------------------- HttpServletRequest methods --------------------------
+
+    /**
+     * Returns the name of the authentication scheme used to protect the servlet, for example, &quot;BASIC&quot; or &quot;SSL,&quot; or null
+     * if the servlet was not protected.
+     **/
+    @Override
+    public String getAuthType() {
+<span class="fc" id="L133">        return null;</span>
+    }
+
+    /**
+     * Returns the query string that is contained in the request URL after the path.
+     **/
+    @Override
+    public String getQueryString() {
+<span class="fc" id="L141">        return _request.getQueryString();</span>
+    }
+
+    /**
+     * Returns an array containing all of the Cookie objects the client sent with this request. This method returns null
+     * if no cookies were sent.
+     **/
+    @Override
+    public Cookie[] getCookies() {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (_cookies.size() == 0) {</span>
+<span class="fc" id="L151">            return null;</span>
+        }
+<span class="fc" id="L153">        Cookie[] result = new Cookie[_cookies.size()];</span>
+<span class="fc" id="L154">        _cookies.copyInto(result);</span>
+<span class="fc" id="L155">        return result;</span>
+    }
+
+    /**
+     * Returns the value of the specified request header as an int. If the request does not have a header of the
+     * specified name, this method returns -1. If the header cannot be converted to an integer, this method throws a
+     * NumberFormatException.
+     **/
+    @Override
+    public int getIntHeader(String name) {
+<span class="fc" id="L165">        return Integer.parseInt(getHeader(name));</span>
+    }
+
+    /**
+     * Returns the value of the specified request header as a long value that represents a Date object. Use this method
+     * with headers that contain dates, such as If-Modified-Since. &lt;br&gt;
+     * The date is returned as the number of milliseconds since January 1, 1970 GMT. The header name is case
+     * insensitive. If the request did not have a header of the specified name, this method returns -1. If the header
+     * can't be converted to a date, the method throws an IllegalArgumentException.
+     **/
+    @Override
+    public long getDateHeader(String name) {
+        try {
+<span class="fc" id="L178">            String dateString = getHeader(name);</span>
+<span class="fc" id="L179">            Date headerDate = new Date(dateString);</span>
+<span class="fc" id="L180">            return headerDate.getTime();</span>
+<span class="fc" id="L181">        } catch (Exception e) {</span>
+<span class="fc" id="L182">            return -1;</span>
+        }
+    }
+
+    /**
+     * Returns the value of the specified request header as a String. If the request did not include a header of the
+     * specified name, this method returns null. The header name is case insensitive. You can use this method with any
+     * request header.
+     **/
+    @Override
+    public String getHeader(String name) {
+<span class="fc" id="L193">        return (String) _headers.get(name);</span>
+    }
+
+    /**
+     * Returns an enumeration of all the header names this request contains. If the request has no headers, this method
+     * returns an empty enumeration. Some servlet containers do not allow do not allow servlets to access headers using
+     * this method, in which case this method returns null.
+     **/
+    @Override
+    public Enumeration getHeaderNames() {
+<span class="fc" id="L203">        return _headers.keys();</span>
+    }
+
+    /**
+     * Returns the part of this request's URL that calls the servlet. This includes either the servlet name or a path to
+     * the servlet, but does not include any extra path information or a query string.
+     **/
+    @Override
+    public String getServletPath() {
+<span class="fc" id="L212">        return _servletRequest.getServletPath();</span>
+    }
+
+    /**
+     * Returns the name of the HTTP method with which this request was made, for example, GET, POST, or PUT.
+     **/
+    @Override
+    public String getMethod() {
+<span class="fc" id="L220">        return _request.getMethod();</span>
+    }
+
+    /**
+     * Returns any extra path information associated with the URL the client sent when it made this request. The extra
+     * path information follows the servlet path but precedes the query string. This method returns null if there was no
+     * extra path information.
+     **/
+    @Override
+    public String getPathInfo() {
+<span class="fc" id="L230">        return _servletRequest.getPathInfo();</span>
+    }
+
+    /**
+     * Returns any extra path information after the servlet name but before the query string, and translates it to a
+     * real path. If the URL does not have any extra path information, this method returns null.
+     **/
+    @Override
+    public String getPathTranslated() {
+<span class="nc" id="L239">        return null;</span>
+    }
+
+    /**
+     * Checks whether the requested session ID came in as a cookie.
+     **/
+    @Override
+    public boolean isRequestedSessionIdFromCookie() {
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        return _sessionID != null;</span>
+    }
+
+    /**
+     * Returns the login of the user making this request, if the user has been authenticated, or null if the user has
+     * not been authenticated. Whether the user name is sent with each subsequent request depends on the browser and
+     * type of authentication.
+     **/
+    @Override
+    public String getRemoteUser() {
+<span class="fc" id="L257">        return _userName;</span>
+    }
+
+    /**
+     * Returns the session ID specified by the client. This may not be the same as the ID of the actual session in use.
+     * For example, if the request specified an old (expired) session ID and the server has started a new session, this
+     * method gets a new session with a new ID. If the request did not specify a session ID, this method returns null.
+     **/
+    @Override
+    public String getRequestedSessionId() {
+<span class="fc" id="L267">        return _sessionID;</span>
+    }
+
+    /**
+     * Returns the part of this request's URL from the protocol name up to the query string in the first line of the
+     * HTTP request.
+     **/
+    @Override
+    public String getRequestURI() {
+<span class="fc" id="L276">        return _requestContext.getRequestURI();</span>
+    }
+
+    /**
+     * Returns the current HttpSession associated with this request or, if there is no current session and create is
+     * true, returns a new session. &lt;br&gt;
+     * If create is false and the request has no valid HttpSession, this method returns null.
+     **/
+    @Override
+    public HttpSession getSession(boolean create) {
+<span class="fc" id="L286">        _session = _context.getValidSession(getRequestedSessionId(), _session, create);</span>
+<span class="fc" id="L287">        return _session;</span>
+    }
+
+    /**
+     * Returns the current session associated with this request, or if the request does not have a session, creates one.
+     **/
+    @Override
+    public HttpSession getSession() {
+<span class="fc" id="L295">        return getSession(true);</span>
+    }
+
+    /**
+     * Checks whether the requested session ID is still valid.
+     **/
+    @Override
+    public boolean isRequestedSessionIdValid() {
+<span class="nc" id="L303">        return false;</span>
+    }
+
+    /**
+     * Checks whether the requested session ID came in as part of the request URL.
+     **/
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+<span class="nc" id="L311">        return false;</span>
+    }
+
+    /**
+     * @deprecated use #isRequestedSessionIdFromURL
+     **/
+    @Deprecated
+    @Override
+    public boolean isRequestedSessionIdFromUrl() {
+<span class="nc" id="L320">        return isRequestedSessionIdFromURL();</span>
+    }
+
+    // --------------------------------- ServletRequest methods ----------------------------------------------------
+
+    /**
+     * Returns the length, in bytes, of the content contained in the request and sent by way of the input stream or -1
+     * if the length is not known.
+     **/
+    @Override
+    public int getContentLength() {
+<span class="fc" id="L331">        return getIntHeader(&quot;Content-length&quot;);</span>
+    }
+
+    /**
+     * Returns the value of the named attribute as an &lt;code&gt;Object&lt;/code&gt;. This method allows the servlet engine to give
+     * the servlet custom information about a request. This method returns &lt;code&gt;null&lt;/code&gt; if no attribute of the
+     * given name exists.
+     **/
+    @Override
+    public Object getAttribute(String name) {
+<span class="fc" id="L341">        return _attributes.get(name);</span>
+    }
+
+    /**
+     * Returns an &lt;code&gt;Enumeration&lt;/code&gt; containing the names of the attributes available to this request. This method
+     * returns an empty &lt;code&gt;Enumeration&lt;/code&gt; if the request has no attributes available to it.
+     **/
+    @Override
+    public Enumeration getAttributeNames() {
+<span class="fc" id="L350">        return _attributes.keys();</span>
+    }
+
+    /**
+     * Retrieves binary data from the body of the request as a {@link ServletInputStream}, which gives you the ability
+     * to read one line at a time.
+     *
+     * @return a {@link ServletInputStream} object containing the body of the request
+     *
+     * @exception IllegalStateException
+     *                if the {@link #getReader} method has already been called for this request
+     * @exception IOException
+     *                if an input or output exception occurred
+     */
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        if (_gotReader) {</span>
+<span class="fc" id="L367">            throw new IllegalStateException(&quot;getReader() has already been called for this request&quot;);</span>
+        }
+<span class="fc" id="L369">        initializeInputStream();</span>
+<span class="fc" id="L370">        _gotInputStream = true;</span>
+<span class="fc" id="L371">        return _inputStream;</span>
+    }
+
+    /**
+     * initialize the inputStream
+     */
+    private void initializeInputStream() {
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        if (_inputStream == null) {</span>
+<span class="fc" id="L379">            _inputStream = new ServletInputStreamImpl(_messageBody);</span>
+        }
+<span class="fc" id="L381">    }</span>
+
+    /**
+     * Returns the name of the character encoding style used in this request. This method returns &lt;code&gt;null&lt;/code&gt; if
+     * the request does not use character encoding.
+     **/
+    @Override
+    public String getCharacterEncoding() {
+<span class="fc" id="L389">        return _charset;</span>
+    }
+
+    /**
+     * Returns an &lt;code&gt;Enumeration&lt;/code&gt; of &lt;code&gt;String&lt;/code&gt; objects containing the names of the parameters
+     * contained in this request. If the request has no parameters or if the input stream is empty, returns an empty
+     * &lt;code&gt;Enumeration&lt;/code&gt;. The input stream is empty when all the data returned by {@link #getInputStream} has
+     * been read.
+     **/
+    @Override
+    public Enumeration getParameterNames() {
+<span class="nc" id="L400">        return _requestContext.getParameterNames();</span>
+    }
+
+    /**
+     * Returns the MIME type of the content of the request, or &lt;code&gt;null&lt;/code&gt; if the type is not known. Same as the
+     * value of the CGI variable CONTENT_TYPE.
+     **/
+    @Override
+    public String getContentType() {
+<span class="fc" id="L409">        return this.getHeader(&quot;Content-Type&quot;);</span>
+    }
+
+    /**
+     * Returns the value of a request parameter as a &lt;code&gt;String&lt;/code&gt;, or &lt;code&gt;null&lt;/code&gt; if the parameter does not
+     * exist. Request parameters are extra information sent with the request.
+     **/
+    @Override
+    public String getParameter(String name) {
+<span class="fc" id="L418">        String[] parameters = getParameterValues(name);</span>
+<span class="fc bfc" id="L419" title="All 2 branches covered.">        return parameters == null ? null : parameters[0];</span>
+    }
+
+    /**
+     * Returns an array of &lt;code&gt;String&lt;/code&gt; objects containing all of the values the given request parameter has, or
+     * &lt;code&gt;null&lt;/code&gt; if the parameter does not exist. For example, in an HTTP servlet, this method returns an array
+     * of &lt;code&gt;String&lt;/code&gt; objects containing the values of a query string or posted form.
+     **/
+    @Override
+    public String[] getParameterValues(String name) {
+<span class="fc" id="L429">        return _requestContext.getParameterValues(name);</span>
+    }
+
+    /**
+     * Returns the name and version of the protocol the request uses in the form
+     * &lt;i&gt;protocol/majorVersion.minorVersion&lt;/i&gt;, for example, HTTP/1.1.
+     **/
+    @Override
+    public String getProtocol() {
+<span class="nc" id="L438">        return &quot;HTTP/1.1&quot;;</span>
+    }
+
+    /**
+     * Returns the name of the scheme used to make this request, for example, &lt;code&gt;http&lt;/code&gt;, &lt;code&gt;https&lt;/code&gt;, or
+     * &lt;code&gt;ftp&lt;/code&gt;. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
+     **/
+    @Override
+    public String getScheme() {
+<span class="fc" id="L447">        return _protocol;</span>
+    }
+
+    /**
+     * Returns the fully qualified name of the client that sent the request.
+     **/
+    @Override
+    public String getRemoteHost() {
+<span class="nc" id="L455">        return &quot;localhost&quot;;</span>
+    }
+
+    /**
+     * Returns the host name of the server that received the request.
+     **/
+    @Override
+    public String getServerName() {
+<span class="fc" id="L463">        return _serverName;</span>
+    }
+
+    /**
+     * Returns the port number on which this request was received.
+     **/
+    @Override
+    public int getServerPort() {
+<span class="fc" id="L471">        return _serverPort;</span>
+    }
+
+    /**
+     * @deprecated As of Version 2.1 of the Java Servlet API, use {@link javax.servlet.ServletContext#getRealPath}
+     *             instead.
+     */
+    @Deprecated
+    @Override
+    public String getRealPath(String path) {
+<span class="nc" id="L481">        throwNotImplementedYet();</span>
+<span class="nc" id="L482">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Returns the body of the request as a &lt;code&gt;BufferedReader&lt;/code&gt; that translates character set encodings.
+     *
+     * @since [ 1221537 ] Patch: ServletUnitHttpRequest.getReader not implemented yet
+     *
+     * @author Tim - timmorrow (SourceForge)
+     *
+     * @return the reader
+     **/
+    @Override
+    public BufferedReader getReader() throws IOException {
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        if (_gotInputStream) {</span>
+<span class="fc" id="L497">            throw new IllegalStateException(&quot;getInputStream() has already been called on this request&quot;);</span>
+        }
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        if (_reader == null) {</span>
+<span class="fc" id="L500">            initializeInputStream();</span>
+<span class="fc" id="L501">            String encoding = getCharacterEncoding();</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">            if (encoding == null) {</span>
+<span class="fc" id="L503">                encoding = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+            }
+<span class="fc" id="L505">            _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));</span>
+<span class="fc" id="L506">            _gotReader = true;</span>
+        }
+<span class="fc" id="L508">        return _reader;</span>
+    }
+
+    /**
+     * Returns the Internet Protocol (IP) address of the client that sent the request.
+     **/
+    @Override
+    public String getRemoteAddr() {
+<span class="nc" id="L516">        return LOOPBACK_ADDRESS;</span>
+    }
+
+    /**
+     * Stores an attribute in the context of this request. Attributes are reset between requests.
+     **/
+    @Override
+    public void setAttribute(String key, Object o) {
+<span class="fc bfc" id="L524" title="All 2 branches covered.">        if (o == null) {</span>
+<span class="fc" id="L525">            _attributes.remove(key);</span>
+        } else {
+<span class="fc" id="L527">            _attributes.put(key, o);</span>
+        }
+<span class="fc" id="L529">    }</span>
+
+    // --------------------------------- methods added to ServletRequest in Servlet API 2.2
+    // ------------------------------------------------
+
+    /**
+     * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
+     **/
+    @Override
+    public boolean isSecure() {
+<span class="fc" id="L539">        return _secure;</span>
+    }
+
+    /**
+     * Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. If the
+     * client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
+     **/
+    @Override
+    public Locale getLocale() {
+<span class="fc" id="L548">        return (Locale) getPreferredLocales().firstElement();</span>
+    }
+
+    /**
+     * Returns an Enumeration of Locale objects indicating, in decreasing order starting with the preferred locale, the
+     * locales that are acceptable to the client based on the Accept-Language header. If the client request doesn't
+     * provide an Accept-Language header, this method returns an Enumeration containing one Locale, the default locale
+     * for the server.
+     **/
+    @Override
+    public java.util.Enumeration getLocales() {
+<span class="fc" id="L559">        return getPreferredLocales().elements();</span>
+    }
+
+    /**
+     * Parses the accept-language header to obtain a vector of preferred locales
+     *
+     * @return the preferred locales, sorted by qvalue
+     */
+    private Vector getPreferredLocales() {
+<span class="fc bfc" id="L568" title="All 2 branches covered.">        if (_locales == null) {</span>
+<span class="fc" id="L569">            _locales = new Vector();</span>
+<span class="fc" id="L570">            String languages = getHeader(&quot;accept-language&quot;);</span>
+<span class="fc bfc" id="L571" title="All 2 branches covered.">            if (languages == null) {</span>
+<span class="fc" id="L572">                _locales.add(Locale.getDefault());</span>
+            } else {
+<span class="fc" id="L574">                StringTokenizer st = new StringTokenizer(languages, &quot;,&quot;);</span>
+<span class="fc" id="L575">                ArrayList al = new ArrayList();</span>
+<span class="fc bfc" id="L576" title="All 2 branches covered.">                while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L577">                    String token = st.nextToken();</span>
+<span class="fc" id="L578">                    al.add(new PrioritizedLocale(token));</span>
+<span class="fc" id="L579">                }</span>
+<span class="fc" id="L580">                Collections.sort(al);</span>
+<span class="fc bfc" id="L581" title="All 2 branches covered.">                for (Iterator iterator = al.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L582">                    _locales.add(((PrioritizedLocale) iterator.next()).getLocale());</span>
+                }
+            }
+        }
+<span class="fc" id="L586">        return _locales;</span>
+    }
+
+    /**
+     * Removes an attribute from this request. This method is not generally needed as attributes only persist as long as
+     * the request is being handled.
+     **/
+    @Override
+    public void removeAttribute(String name) {
+<span class="nc" id="L595">        _attributes.remove(name);</span>
+<span class="nc" id="L596">    }</span>
+
+    /**
+     * Returns a RequestDispatcher object that acts as a wrapper for the resource located at the given path. A
+     * RequestDispatcher object can be used to forward a request to the resource or to include the resource in a
+     * response. The resource can be dynamic or static. The pathname specified may be relative, although it cannot
+     * extend outside the current servlet context. If the path begins with a &quot;/&quot; it is interpreted as relative to the
+     * current context root. This method returns null if the servlet container cannot return a RequestDispatcher. The
+     * difference between this method and ServletContext.getRequestDispatcher(java.lang.String) is that this method can
+     * take a relative path.
+     **/
+    @Override
+    public RequestDispatcher getRequestDispatcher(String path) {
+        try {
+<span class="fc bfc" id="L610" title="All 2 branches covered.">            if (!path.startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L611">                path = combinedPath(getServletPath(), path);</span>
+            }
+<span class="fc" id="L613">            return _servletRequest.getServlet().getServletConfig().getServletContext().getRequestDispatcher(path);</span>
+<span class="nc" id="L614">        } catch (ServletException e) {</span>
+<span class="nc" id="L615">            return null;</span>
+        }
+    }
+
+    private String combinedPath(String basePath, String relativePath) {
+<span class="pc bpc" id="L620" title="1 of 2 branches missed.">        if (basePath.indexOf('/') &lt; 0) {</span>
+<span class="nc" id="L621">            return relativePath;</span>
+        }
+<span class="fc" id="L623">        return basePath.substring(0, basePath.lastIndexOf('/')) + '/' + relativePath;</span>
+    }
+
+    // --------------------------------- methods added to HttpServletRequest in Servlet API 2.2
+    // ------------------------------------------------
+
+    /**
+     * Returns a java.security.Principal object containing the name of the current authenticated user. If the user has
+     * not been authenticated, the method returns null.
+     **/
+    @Override
+    public java.security.Principal getUserPrincipal() {
+<span class="nc" id="L635">        return null;</span>
+    }
+
+    /**
+     * Returns a boolean indicating whether the authenticated user is included in the specified logical &quot;role&quot;. Roles
+     * and role membership can be defined using deployment descriptors. If the user has not been authenticated, the
+     * method returns false.
+     **/
+    @Override
+    public boolean isUserInRole(String role) {
+<span class="fc bfc" id="L645" title="All 2 branches covered.">        if (_roles == null) {</span>
+<span class="fc" id="L646">            return false;</span>
+        }
+<span class="fc bfc" id="L648" title="All 2 branches covered.">        for (String _role : _roles) {</span>
+<span class="fc bfc" id="L649" title="All 2 branches covered.">            if (role.equals(_role)) {</span>
+<span class="fc" id="L650">                return true;</span>
+            }
+        }
+<span class="fc" id="L653">        return false;</span>
+    }
+
+    /**
+     * Returns all the values of the specified request header as an Enumeration of String objects.
+     **/
+    @Override
+    public java.util.Enumeration getHeaders(String name) {
+<span class="fc" id="L661">        Vector list = new Vector();</span>
+<span class="pc bpc" id="L662" title="1 of 2 branches missed.">        if (_headers.containsKey(name)) {</span>
+<span class="fc" id="L663">            list.add(_headers.get(name));</span>
+        }
+<span class="fc" id="L665">        return list.elements();</span>
+    }
+
+    /**
+     * Returns the portion of the request URI that indicates the context of the request. The context path always comes
+     * first in a request URI. The path starts with a &quot;/&quot; character but does not end with a &quot;/&quot; character. For servlets
+     * in the default (root) context, this method returns &quot;&quot;.
+     **/
+    @Override
+    public String getContextPath() {
+<span class="fc" id="L675">        return _context.getContextPath();</span>
+    }
+
+    // --------------------------------------- methods added to ServletRequest in Servlet API 2.3
+    // ----------------------------
+
+    /**
+     * Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the
+     * request. For HTTP servlets, parameters are contained in the query string or posted form data.
+     *
+     * @since 1.3
+     **/
+    @Override
+    public Map getParameterMap() {
+<span class="fc" id="L689">        return _requestContext.getParameterMap();</span>
+    }
+
+    /**
+     * Overrides the name of the character encoding used in the body of this request. This method must be called prior
+     * to reading request parameters or reading input using getReader().
+     *
+     * @since 1.3
+     **/
+    @Override
+    public void setCharacterEncoding(String charset) throws UnsupportedEncodingException {
+<span class="fc" id="L700">        _charset = charset;</span>
+<span class="fc" id="L701">        _requestContext.setMessageEncoding(charset);</span>
+<span class="fc" id="L702">    }</span>
+
+    // --------------------------------------- methods added to HttpServletRequest in Servlet API 2.3
+    // ----------------------------
+
+    /**
+     * Reconstructs the URL the client used to make the request. The returned URL contains a protocol, server name, port
+     * number, and server path, but it does not include query string parameters. Because this method returns a
+     * StringBuffer, not a string, you can modify the URL easily, for example, to append query parameters. This method
+     * is useful for creating redirect messages and for reporting errors.
+     *
+     * @since 1.3
+     */
+    @Override
+    public StringBuffer getRequestURL() {
+<span class="fc" id="L717">        StringBuilder url = new StringBuilder();</span>
+        try {
+<span class="fc" id="L719">            url.append(_request.getURL().getProtocol()).append(&quot;://&quot;);</span>
+<span class="fc" id="L720">            url.append(_request.getURL().getHost());</span>
+<span class="fc bfc" id="L721" title="All 2 branches covered.">            String portPortion = _request.getURL().getPort() == -1 ? &quot;&quot; : &quot;:&quot; + _request.getURL().getPort();</span>
+<span class="fc" id="L722">            url.append(portPortion);</span>
+<span class="fc" id="L723">            url.append(_request.getURL().getPath());</span>
+<span class="nc" id="L724">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L725">            throw new RuntimeException(&quot;unable to read URL from request: &quot; + _request);</span>
+<span class="fc" id="L726">        }</span>
+<span class="fc" id="L727">        return new StringBuffer(url);</span>
+    }
+
+    // --------------------------------------- methods added to ServletRequest in Servlet API 2.4
+    // ----------------------------
+
+    @Override
+    public int getRemotePort() {
+<span class="nc" id="L735">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public String getLocalName() {
+<span class="nc" id="L740">        return &quot;localhost&quot;;</span>
+    }
+
+    @Override
+    public String getLocalAddr() {
+<span class="nc" id="L745">        return &quot;127.0.0.1&quot;;</span>
+    }
+
+    @Override
+    public int getLocalPort() {
+<span class="nc" id="L750">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    // --------------------------------------------- package members ----------------------------------------------
+
+    private void addCookie(Cookie cookie) {
+<span class="fc" id="L756">        _cookies.addElement(cookie);</span>
+<span class="fc bfc" id="L757" title="All 2 branches covered.">        if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {</span>
+<span class="fc" id="L758">            _sessionID = cookie.getValue();</span>
+        }
+<span class="fc" id="L760">    }</span>
+
+    private ServletUnitHttpSession getServletSession() {
+<span class="fc" id="L763">        return (ServletUnitHttpSession) getSession();</span>
+    }
+
+    void readFormAuthentication() {
+<span class="fc bfc" id="L767" title="All 2 branches covered.">        if (getSession( /* create */ false) != null) {</span>
+<span class="fc" id="L768">            recordAuthenticationInfo(getServletSession().getUserName(), getServletSession().getRoles());</span>
+        }
+<span class="fc" id="L770">    }</span>
+
+    void readBasicAuthentication() {
+<span class="fc" id="L773">        String authorizationHeader = (String) _headers.get(&quot;Authorization&quot;);</span>
+
+<span class="fc bfc" id="L775" title="All 2 branches covered.">        if (authorizationHeader != null) {</span>
+<span class="fc" id="L776">            String userAndPassword = Base64.decode(authorizationHeader.substring(authorizationHeader.indexOf(' ') + 1));</span>
+<span class="fc" id="L777">            int colonPos = userAndPassword.indexOf(':');</span>
+<span class="fc" id="L778">            recordAuthenticationInfo(userAndPassword.substring(0, colonPos),</span>
+<span class="fc" id="L779">                    toArray(userAndPassword.substring(colonPos + 1)));</span>
+        }
+<span class="fc" id="L781">    }</span>
+
+    static String[] toArray(String roleList) {
+<span class="fc" id="L784">        StringTokenizer st = new StringTokenizer(roleList, &quot;,&quot;);</span>
+<span class="fc" id="L785">        String[] result = new String[st.countTokens()];</span>
+<span class="fc bfc" id="L786" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L787">            result[i] = st.nextToken();</span>
+        }
+<span class="fc" id="L789">        return result;</span>
+    }
+
+    void recordAuthenticationInfo(String userName, String[] roles) {
+<span class="fc" id="L793">        _userName = userName;</span>
+<span class="fc" id="L794">        _roles = roles;</span>
+<span class="fc" id="L795">    }</span>
+
+    // --------------------------------------------- private members ----------------------------------------------
+
+    final static private String LOOPBACK_ADDRESS = &quot;127.0.0.1&quot;;
+
+    private WebRequest _request;
+    private ServletMetaData _servletRequest;
+    private WebClient.HeaderDictionary _headers;
+    private ServletUnitContext _context;
+    private ServletUnitHttpSession _session;
+<span class="fc" id="L806">    private Hashtable _attributes = new Hashtable();</span>
+<span class="fc" id="L807">    private Vector _cookies = new Vector();</span>
+    private String _sessionID;
+    private byte[] _messageBody;
+
+    private String _userName;
+    private String[] _roles;
+
+    private void throwNotImplementedYet() {
+<span class="nc" id="L815">        throw new RuntimeException(&quot;Not implemented yet&quot;);</span>
+    }
+
+    private void setCookiesFromHeader(Dictionary clientHeaders) {
+<span class="fc" id="L819">        String cookieHeader = (String) clientHeaders.get(&quot;Cookie&quot;);</span>
+<span class="fc bfc" id="L820" title="All 2 branches covered.">        if (cookieHeader == null) {</span>
+<span class="fc" id="L821">            return;</span>
+        }
+
+<span class="fc" id="L824">        StringTokenizer st = new StringTokenizer(cookieHeader, &quot;,;=&quot;, true);</span>
+<span class="fc" id="L825">        String lastToken = st.nextToken();</span>
+<span class="fc bfc" id="L826" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L827">            String token = st.nextToken();</span>
+<span class="pc bpc" id="L828" title="1 of 4 branches missed.">            if (token.equals(&quot;=&quot;) &amp;&amp; st.hasMoreTokens()) {</span>
+<span class="fc" id="L829">                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));</span>
+            }
+<span class="fc" id="L831">            lastToken = token;</span>
+<span class="fc" id="L832">        }</span>
+<span class="fc" id="L833">    }</span>
+
+    static class PrioritizedLocale implements Comparable {
+
+        private Locale _locale;
+        private float _priority;
+
+<span class="fc" id="L840">        PrioritizedLocale(String languageSpec) {</span>
+<span class="fc" id="L841">            int semiIndex = languageSpec.indexOf(';');</span>
+<span class="fc bfc" id="L842" title="All 2 branches covered.">            if (semiIndex &lt; 0) {</span>
+<span class="fc" id="L843">                _priority = 1;</span>
+<span class="fc" id="L844">                _locale = parseLocale(languageSpec);</span>
+            } else {
+<span class="fc" id="L846">                _priority = Float.parseFloat(languageSpec.substring(languageSpec.indexOf('=', semiIndex) + 1));</span>
+<span class="fc" id="L847">                _locale = parseLocale(languageSpec.substring(0, semiIndex));</span>
+            }
+<span class="fc" id="L849">        }</span>
+
+        private Locale parseLocale(String range) {
+<span class="fc" id="L852">            range = range.trim();</span>
+<span class="fc" id="L853">            int dashIndex = range.indexOf('-');</span>
+<span class="fc bfc" id="L854" title="All 2 branches covered.">            if (dashIndex &lt; 0) {</span>
+<span class="fc" id="L855">                return new Locale(range, &quot;&quot;);</span>
+            }
+<span class="fc" id="L857">            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));</span>
+        }
+
+        public Locale getLocale() {
+<span class="fc" id="L861">            return _locale;</span>
+        }
+
+        @Override
+        public int compareTo(Object o) {
+<span class="pc bpc" id="L866" title="1 of 2 branches missed.">            if (!(o instanceof PrioritizedLocale)) {</span>
+<span class="nc" id="L867">                throw new IllegalArgumentException(&quot;may only combine with other prioritized locales&quot;);</span>
+            }
+<span class="fc" id="L869">            PrioritizedLocale other = (PrioritizedLocale) o;</span>
+<span class="pc bpc" id="L870" title="1 of 2 branches missed.">            return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())</span>
+<span class="fc bfc" id="L871" title="All 2 branches covered.">                    : _priority &lt; other._priority ? +1 : -1;</span>
+        }
+
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        try {
+<span class="nc" id="L879">            return _servletRequest.getServlet().getServletConfig().getServletContext();</span>
+<span class="nc" id="L880">        } catch (ServletException e) {</span>
+<span class="nc" id="L881">            return null;</span>
+        }
+    }
+
+    @Override
+    public AsyncContext startAsync() throws IllegalStateException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L888">        return null;</span>
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
+            throws IllegalStateException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L895">        return null;</span>
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L901">        return false;</span>
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L907">        return false;</span>
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L913">        return null;</span>
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L919">        return null;</span>
+    }
+
+    @Override
+    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L925">        return false;</span>
+    }
+
+    @Override
+    public void login(String username, String password) throws ServletException {
+        // TODO Auto-generated method stub
+
+<span class="nc" id="L932">    }</span>
+
+    @Override
+    public void logout() throws ServletException {
+        // TODO Auto-generated method stub
+
+<span class="nc" id="L938">    }</span>
+
+    @Override
+    public Collection&lt;Part&gt; getParts() throws IOException, ServletException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L943">        return null;</span>
+    }
+
+    @Override
+    public Part getPart(String name) throws IOException, ServletException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L949">        return null;</span>
+    }
+
+    @Override
+    public long getContentLengthLong() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L955">        return 0;</span>
+    }
+
+    @Override
+    public String changeSessionId() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L961">        return null;</span>
+    }
+
+    @Override
+    public &lt;T extends HttpUpgradeHandler&gt; T upgrade(Class&lt;T&gt; handlerClass) throws IOException, ServletException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L967">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

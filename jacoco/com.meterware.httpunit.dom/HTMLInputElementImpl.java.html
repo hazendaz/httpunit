@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLInputElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLInputElementImpl.java</span></div><h1>HTMLInputElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import com.meterware.httpunit.protocol.ParameterProcessor;
+
+import java.io.IOException;
+
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLInputElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L34">public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {</span>
+
+    private static final long serialVersionUID = 1L;
+    private String _value;
+    private Boolean _checked;
+    private TypeSpecificBehavior _behavior;
+
+    @Override
+    ElementImpl create() {
+<span class="fc" id="L43">        return new HTMLInputElementImpl();</span>
+    }
+
+    /**
+     * simulate blur
+     */
+    @Override
+    public void blur() {
+<span class="nc" id="L51">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * simulate focus;
+     */
+    @Override
+    public void focus() {
+<span class="nc" id="L59">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L60">    }</span>
+
+    @Override
+    public void doClickAction() {
+<span class="fc" id="L64">        getBehavior().click();</span>
+<span class="fc" id="L65">    }</span>
+
+    @Override
+    public void select() {
+<span class="nc" id="L69">    }</span>
+
+    @Override
+    public String getAccept() {
+<span class="fc" id="L73">        return getAttributeWithNoDefault(&quot;accept&quot;);</span>
+    }
+
+    @Override
+    public String getAccessKey() {
+<span class="fc" id="L78">        return getAttributeWithNoDefault(&quot;accessKey&quot;);</span>
+    }
+
+    @Override
+    public String getAlign() {
+<span class="fc" id="L83">        return getAttributeWithDefault(&quot;align&quot;, &quot;bottom&quot;);</span>
+    }
+
+    @Override
+    public String getAlt() {
+<span class="fc" id="L88">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+    }
+
+    @Override
+    public boolean getChecked() {
+<span class="fc" id="L93">        return getBehavior().getChecked();</span>
+    }
+
+    @Override
+    public boolean getDefaultChecked() {
+<span class="fc" id="L98">        return getBooleanAttribute(&quot;checked&quot;);</span>
+    }
+
+    @Override
+    public String getDefaultValue() {
+<span class="fc" id="L103">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
+    }
+
+    @Override
+    public int getMaxLength() {
+<span class="fc" id="L108">        return getIntegerAttribute(&quot;maxlength&quot;);</span>
+    }
+
+    @Override
+    public String getSize() {
+<span class="fc" id="L113">        return getAttributeWithNoDefault(&quot;size&quot;);</span>
+    }
+
+    @Override
+    public String getSrc() {
+<span class="fc" id="L118">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+    }
+
+    @Override
+    public String getUseMap() {
+<span class="fc" id="L123">        return getAttributeWithNoDefault(&quot;useMap&quot;);</span>
+    }
+
+    @Override
+    public void setAccept(String accept) {
+<span class="fc" id="L128">        setAttribute(&quot;accept&quot;, accept);</span>
+<span class="fc" id="L129">    }</span>
+
+    @Override
+    public void setAccessKey(String accessKey) {
+<span class="fc" id="L133">        setAttribute(&quot;accessKey&quot;, accessKey);</span>
+<span class="fc" id="L134">    }</span>
+
+    @Override
+    public void setAlign(String align) {
+<span class="fc" id="L138">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L139">    }</span>
+
+    @Override
+    public void setAlt(String alt) {
+<span class="fc" id="L143">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L144">    }</span>
+
+    @Override
+    public void setChecked(boolean checked) {
+<span class="fc" id="L148">        getBehavior().setChecked(checked);</span>
+<span class="fc" id="L149">    }</span>
+
+    @Override
+    public void setDefaultChecked(boolean defaultChecked) {
+<span class="fc" id="L153">        setAttribute(&quot;checked&quot;, defaultChecked);</span>
+<span class="fc" id="L154">    }</span>
+
+    @Override
+    public void setDefaultValue(String defaultValue) {
+<span class="fc" id="L158">        setAttribute(&quot;value&quot;, defaultValue);</span>
+<span class="fc" id="L159">    }</span>
+
+    @Override
+    public void setMaxLength(int maxLength) {
+<span class="fc" id="L163">        setAttribute(&quot;maxlength&quot;, maxLength);</span>
+<span class="fc" id="L164">    }</span>
+
+    @Override
+    public void setSize(String size) {
+<span class="fc" id="L168">        setAttribute(&quot;size&quot;, size);</span>
+<span class="fc" id="L169">    }</span>
+
+    @Override
+    public void setSrc(String src) {
+<span class="fc" id="L173">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L174">    }</span>
+
+    @Override
+    public void setUseMap(String useMap) {
+<span class="fc" id="L178">        setAttribute(&quot;useMap&quot;, useMap);</span>
+<span class="fc" id="L179">    }</span>
+
+    @Override
+    public String getValue() {
+<span class="fc" id="L183">        return getBehavior().getValue();</span>
+    }
+
+    @Override
+    public void setValue(String value) {
+<span class="fc" id="L188">        getBehavior().setValue(value);</span>
+<span class="fc" id="L189">    }</span>
+
+    @Override
+    public void reset() {
+<span class="fc" id="L193">        getBehavior().reset();</span>
+<span class="fc" id="L194">    }</span>
+
+    @Override
+    public void setAttribute(String name, String value) throws DOMException {
+<span class="fc" id="L198">        super.setAttribute(name, value);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (name.equalsIgnoreCase(&quot;type&quot;)) {</span>
+<span class="fc" id="L200">            selectBehavior(getType().toLowerCase());</span>
+        }
+<span class="fc" id="L202">    }</span>
+
+    @Override
+    void addValues(ParameterProcessor processor, String characterSet) throws IOException {
+<span class="fc" id="L206">        getBehavior().addValues(getName(), processor, characterSet);</span>
+<span class="fc" id="L207">    }</span>
+
+    @Override
+    public void silenceSubmitButton() {
+<span class="fc" id="L211">        getBehavior().silenceSubmitButton();</span>
+<span class="fc" id="L212">    }</span>
+
+    void setState(boolean checked) {
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        _checked = checked ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc" id="L216">    }</span>
+
+    static boolean equals(String s1, String s2) {
+<span class="pc bpc" id="L219" title="1 of 4 branches missed.">        return s1 == null ? s2 == null : s1.equals(s2);</span>
+    }
+
+    private void selectBehavior(String type) {
+<span class="pc bpc" id="L223" title="1 of 8 branches missed.">        if (type == null || type.equals(&quot;text&quot;) || type.equals(&quot;password&quot;) || type.equals(&quot;hidden&quot;)) {</span>
+<span class="fc" id="L224">            _behavior = new EditableTextBehavior(this);</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        } else if (type.equals(&quot;checkbox&quot;)) {</span>
+<span class="fc" id="L226">            _behavior = new CheckboxBehavior(this);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        } else if (type.equals(&quot;radio&quot;)) {</span>
+<span class="fc" id="L228">            _behavior = new RadioButtonBehavior(this);</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        } else if (type.equals(&quot;reset&quot;)) {</span>
+<span class="fc" id="L230">            _behavior = new ResetButtonBehavior(this);</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        } else if (type.equals(&quot;submit&quot;)) {</span>
+<span class="fc" id="L232">            _behavior = new SubmitButtonBehavior(this);</span>
+        } else {
+<span class="fc" id="L234">            _behavior = new DefaultBehavior(this);</span>
+        }
+<span class="fc" id="L236">    }</span>
+
+    private TypeSpecificBehavior getBehavior() {
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (_behavior == null) {</span>
+<span class="fc" id="L240">            selectBehavior(getType().toLowerCase());</span>
+        }
+<span class="fc" id="L242">        return _behavior;</span>
+    }
+
+    interface TypeSpecificBehavior {
+        void setValue(String value);
+
+        String getValue();
+
+        void reset();
+
+        void click();
+
+        boolean getChecked();
+
+        void setChecked(boolean checked);
+
+        void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException;
+
+        void silenceSubmitButton();
+    }
+
+    class DefaultBehavior implements TypeSpecificBehavior {
+
+        private HTMLElementImpl _element;
+
+<span class="fc" id="L267">        public DefaultBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L268">            _element = element;</span>
+<span class="fc" id="L269">        }</span>
+
+        @Override
+        public String getValue() {
+<span class="fc bfc" id="L273" title="All 2 branches covered.">            return _value != null ? _value : getDefaultValue();</span>
+        }
+
+        @Override
+        public void setValue(String value) {
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if (HTMLInputElementImpl.equals(value, _value)) {</span>
+<span class="fc" id="L279">                return;</span>
+            }
+
+<span class="fc" id="L282">            _value = value;</span>
+<span class="fc" id="L283">            reportPropertyChanged(&quot;value&quot;);</span>
+<span class="fc" id="L284">        }</span>
+
+        @Override
+        public boolean getChecked() {
+<span class="nc" id="L288">            return getDefaultChecked();</span>
+        }
+
+        @Override
+        public void setChecked(boolean checked) {
+<span class="nc" id="L293">        }</span>
+
+        @Override
+        public void reset() {
+<span class="fc" id="L297">        }</span>
+
+        @Override
+        public void click() {
+<span class="nc" id="L301">        }</span>
+
+        protected void reportPropertyChanged(String propertyName) {
+<span class="fc" id="L304">            _element.reportPropertyChanged(propertyName);</span>
+<span class="fc" id="L305">        }</span>
+
+        @Override
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+<span class="fc" id="L309">            processor.addParameter(name, getValue(), characterSet);</span>
+<span class="fc" id="L310">        }</span>
+
+        @Override
+        public void silenceSubmitButton() {
+<span class="fc" id="L314">        }</span>
+    }
+
+    class EditableTextBehavior extends DefaultBehavior {
+
+<span class="fc" id="L319">        public EditableTextBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L320">            super(element);</span>
+<span class="fc" id="L321">        }</span>
+
+        @Override
+        public void reset() {
+<span class="fc" id="L325">            _value = null;</span>
+<span class="fc" id="L326">        }</span>
+
+    }
+
+    class SubmitButtonBehavior extends DefaultBehavior {
+
+        private boolean _sendWithSubmit;
+
+<span class="fc" id="L334">        public SubmitButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L335">            super(element);</span>
+<span class="fc" id="L336">        }</span>
+
+        @Override
+        public void click() {
+<span class="fc" id="L340">            _sendWithSubmit = true;</span>
+<span class="fc" id="L341">            ((HTMLFormElementImpl) getForm()).doSubmitAction();</span>
+<span class="fc" id="L342">        }</span>
+
+        @Override
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+<span class="fc bfc" id="L346" title="All 2 branches covered.">            if (!_sendWithSubmit) {</span>
+<span class="fc" id="L347">                return;</span>
+            }
+<span class="fc" id="L349">            super.addValues(name, processor, characterSet);</span>
+<span class="fc" id="L350">        }</span>
+
+        @Override
+        public void silenceSubmitButton() {
+<span class="fc" id="L354">            _sendWithSubmit = false;</span>
+<span class="fc" id="L355">        }</span>
+
+    }
+
+    class CheckboxBehavior extends DefaultBehavior {
+
+<span class="fc" id="L361">        public CheckboxBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L362">            super(element);</span>
+<span class="fc" id="L363">        }</span>
+
+        @Override
+        public boolean getChecked() {
+<span class="fc bfc" id="L367" title="All 2 branches covered.">            return _checked != null ? _checked.booleanValue() : getDefaultChecked();</span>
+        }
+
+        @Override
+        public void setChecked(boolean checked) {
+<span class="fc" id="L372">            setState(checked);</span>
+<span class="fc" id="L373">        }</span>
+
+        @Override
+        public void reset() {
+<span class="fc" id="L377">            _checked = null;</span>
+<span class="fc" id="L378">        }</span>
+
+        @Override
+        public void click() {
+<span class="fc bfc" id="L382" title="All 2 branches covered.">            setChecked(!getChecked());</span>
+<span class="fc" id="L383">        }</span>
+
+        @Override
+        public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
+<span class="pc bpc" id="L387" title="1 of 4 branches missed.">            if (!getDisabled() &amp;&amp; getChecked()) {</span>
+<span class="fc" id="L388">                processor.addParameter(name, getFormValue(), characterSet);</span>
+            }
+<span class="fc" id="L390">        }</span>
+
+        private String getFormValue() {
+<span class="fc bfc" id="L393" title="All 2 branches covered.">            return _value == null ? &quot;on&quot; : _value;</span>
+        }
+    }
+
+    class RadioButtonBehavior extends CheckboxBehavior {
+
+<span class="fc" id="L399">        public RadioButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L400">            super(element);</span>
+<span class="fc" id="L401">        }</span>
+
+        @Override
+        public void setChecked(boolean checked) {
+<span class="fc bfc" id="L405" title="All 2 branches covered.">            if (checked) {</span>
+<span class="fc" id="L406">                HTMLCollection elements = getForm().getElements();</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">                for (int i = 0; i &lt; elements.getLength(); i++) {</span>
+<span class="fc" id="L408">                    Node node = elements.item(i);</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">                    if (!(node instanceof HTMLInputElementImpl)) {</span>
+<span class="fc" id="L410">                        continue;</span>
+                    }
+<span class="fc" id="L412">                    HTMLInputElementImpl input = (HTMLInputElementImpl) node;</span>
+<span class="pc bpc" id="L413" title="1 of 4 branches missed.">                    if (getName().equals(input.getName()) &amp;&amp; input.getType().equalsIgnoreCase(&quot;radio&quot;)) {</span>
+<span class="fc" id="L414">                        input.setState(false);</span>
+                    }
+                }
+            }
+<span class="fc" id="L418">            setState(checked);</span>
+<span class="fc" id="L419">        }</span>
+
+        @Override
+        public void click() {
+<span class="fc" id="L423">            setChecked(true);</span>
+<span class="fc" id="L424">        }</span>
+    }
+
+    class ResetButtonBehavior extends DefaultBehavior {
+
+<span class="fc" id="L429">        public ResetButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L430">            super(element);</span>
+<span class="fc" id="L431">        }</span>
+
+        @Override
+        public void click() {
+<span class="fc" id="L435">            getForm().reset();</span>
+<span class="fc" id="L436">        }</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

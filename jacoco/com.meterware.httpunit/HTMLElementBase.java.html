@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElementBase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HTMLElementBase.java</span></div><h1>HTMLElementBase.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.w3c.dom.Node;
+
+/**
+ * @since 1.5.2
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+abstract class HTMLElementBase implements HTMLElement {
+
+    private Node _node;
+    private ScriptingHandler _scriptable;
+<span class="fc" id="L39">    private Set _supportedAttributes = new HashSet();</span>
+
+    @Override
+    public String getID() {
+<span class="fc" id="L43">        return getAttribute(&quot;id&quot;);</span>
+    }
+
+    @Override
+    public String getClassName() {
+<span class="fc" id="L48">        return getAttribute(&quot;class&quot;);</span>
+    }
+
+    @Override
+    public String getTitle() {
+<span class="fc" id="L53">        return getAttribute(&quot;title&quot;);</span>
+    }
+
+    @Override
+    public String getName() {
+<span class="fc" id="L58">        return getAttribute(&quot;name&quot;);</span>
+    }
+
+    /**
+     * Returns a scriptable object which can act as a proxy for this control.
+     */
+    @Override
+    public ScriptingHandler getScriptingHandler() {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (_scriptable == null) {</span>
+<span class="fc" id="L67">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+        }
+<span class="fc" id="L69">        return _scriptable;</span>
+    }
+
+    /**
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     *
+     * @deprecated since 1.7 - use doEventScript instead
+     */
+    @Deprecated
+    @Override
+    public boolean doEvent(String eventScript) {
+<span class="nc" id="L83">        return doEventScript(eventScript);</span>
+    }
+
+    /**
+     * optional do the event if it's defined
+     */
+    @Override
+    public boolean doEventScript(String eventScript) {
+<span class="nc" id="L91">        return this.getScriptingHandler().doEventScript(eventScript);</span>
+    }
+
+    @Override
+    public boolean handleEvent(String eventName) {
+<span class="fc" id="L96">        return this.getScriptingHandler().handleEvent(eventName);</span>
+    }
+
+    /**
+     * Returns the text value of this block.
+     */
+    @Override
+    public String getText() {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (_node == null) {</span>
+<span class="nc" id="L105">            return &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="nc" id="L108">            return _node.getNodeValue().trim();</span>
+        }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
+<span class="nc" id="L111">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L113">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
+    }
+
+    @Override
+    public String getTagName() {
+<span class="fc" id="L118">        return _node.getNodeName();</span>
+    }
+
+    /**
+     * construct me from a node
+     *
+     * @param node
+     *            - the node to get me from
+     */
+<span class="fc" id="L127">    protected HTMLElementBase(Node node) {</span>
+<span class="fc" id="L128">        _node = node;</span>
+        // default attributes every html element can have
+<span class="fc" id="L130">        supportAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L131">        supportAttribute(&quot;class&quot;);</span>
+<span class="fc" id="L132">        supportAttribute(&quot;title&quot;);</span>
+<span class="fc" id="L133">        supportAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * get the Attribute with the given name - by delegating to NodeUtils
+     *
+     * @param name
+     *            - the name of the attribute to get
+     *
+     * @return the attribute
+     */
+    @Override
+    public String getAttribute(final String name) {
+<span class="fc" id="L146">        return NodeUtils.getNodeAttribute(getNode(), name);</span>
+    }
+
+    /**
+     * set the Attribute with the given name - by delegating to NodeUtils
+     *
+     * @param name
+     *            - the name of the attribute to set
+     * @param value
+     *            - the value to set
+     */
+    @Override
+    public void setAttribute(final String name, final Object value) {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * remove the Attribute with the given name - by delegating to NodeUtils
+     *
+     * @param name
+     *            - the name of the attribute to remove
+     */
+    @Override
+    public void removeAttribute(final String name) {
+<span class="nc" id="L170">        NodeUtils.removeNodeAttribute(getNode(), name);</span>
+<span class="nc" id="L171">    }</span>
+
+    @Override
+    public boolean isSupportedAttribute(String name) {
+<span class="fc" id="L175">        return _supportedAttributes.contains(name);</span>
+    }
+
+    protected String getAttribute(final String name, String defaultValue) {
+<span class="nc" id="L179">        return NodeUtils.getNodeAttribute(getNode(), name, defaultValue);</span>
+    }
+
+    @Override
+    public Node getNode() {
+<span class="fc" id="L184">        return _node;</span>
+    }
+
+    protected void supportAttribute(String name) {
+<span class="fc" id="L188">        _supportedAttributes.add(name);</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Creates and returns a scriptable object for this control. Subclasses should override this if they use a different
+     * implementation of Scriptable.
+     */
+    @Override
+    public ScriptableDelegate newScriptable() {
+<span class="fc" id="L197">        return new HTMLElementScriptable(this);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

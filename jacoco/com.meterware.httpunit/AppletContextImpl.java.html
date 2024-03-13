@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppletContextImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">AppletContextImpl.java</span></div><h1>AppletContextImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.applet.Applet;
+import java.applet.AppletContext;
+import java.applet.AudioClip;
+import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+class AppletContextImpl implements AppletContext {
+
+    private WebApplet _webApplet;
+
+<span class="fc" id="L40">    AppletContextImpl(WebApplet webApplet) {</span>
+<span class="fc" id="L41">        _webApplet = webApplet;</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Creates an audio clip.
+     *
+     * @param url
+     *            an absolute URL giving the location of the audio clip.
+     *
+     * @return the audio clip at the specified URL.
+     */
+    @Override
+    public AudioClip getAudioClip(URL url) {
+<span class="nc" id="L54">        return null;</span>
+    }
+
+    /**
+     * Returns an &lt;code&gt;Image&lt;/code&gt; object that can then be painted on the screen. The &lt;code&gt;url&lt;/code&gt;
+     * argument&lt;code&gt; &lt;/code&gt;that is passed as an argument must specify an absolute URL.
+     * &lt;p&gt;
+     * This method always returns immediately, whether or not the image exists. When the applet attempts to draw the
+     * image on the screen, the data will be loaded. The graphics primitives that draw the image will incrementally
+     * paint on the screen.
+     *
+     * @param url
+     *            an absolute URL giving the location of the image.
+     *
+     * @return the image at the specified URL.
+     *
+     * @see Image
+     */
+    @Override
+    public Image getImage(URL url) {
+<span class="nc" id="L74">        return null;</span>
+    }
+
+    /**
+     * Finds and returns the applet in the document represented by this applet context with the given name. The name can
+     * be set in the HTML tag by setting the &lt;code&gt;name&lt;/code&gt; attribute.
+     *
+     * @param name
+     *            an applet name.
+     *
+     * @return the applet with the given name, or &lt;code&gt;null&lt;/code&gt; if not found.
+     */
+    @Override
+    public Applet getApplet(String name) {
+        try {
+<span class="fc" id="L89">            WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">            for (WebApplet webApplet : webApplets) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (webApplet.getName().equals(name)) {</span>
+<span class="fc" id="L92">                    return webApplet.getApplet();</span>
+                }
+            }
+<span class="nc" id="L95">        } catch (Exception e) {</span>
+<span class="nc" id="L96">        }</span>
+<span class="nc" id="L97">        return null;</span>
+    }
+
+    /**
+     * Finds all the applets in the document represented by this applet context.
+     *
+     * @return an enumeration of all applets in the document represented by this applet context.
+     */
+    @Override
+    public Enumeration getApplets() {
+<span class="fc" id="L107">        WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
+<span class="fc" id="L108">        Vector v = new Vector();</span>
+        try {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            for (WebApplet webApplet : webApplets) {</span>
+<span class="fc" id="L111">                v.add(webApplet.getApplet());</span>
+            }
+<span class="nc" id="L113">        } catch (Exception e) {</span>
+<span class="nc" id="L114">            e.printStackTrace();</span>
+<span class="nc" id="L115">            throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L116">        }</span>
+<span class="fc" id="L117">        return v.elements();</span>
+    }
+
+    /**
+     * Replaces the Web page currently being viewed with the given URL. This method may be ignored by applet contexts
+     * that are not browsers.
+     *
+     * @param url
+     *            an absolute URL giving the location of the document.
+     */
+    @Override
+    public void showDocument(URL url) {
+<span class="fc" id="L129">        showDocument(url, _webApplet.getBaseTarget());</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Requests that the browser or applet viewer show the Web page indicated by the &lt;code&gt;url&lt;/code&gt; argument. The
+     * &lt;code&gt;target&lt;/code&gt; argument indicates in which HTML frame the document is to be displayed. The target argument
+     * is interpreted as follows:
+     * &lt;p&gt;
+     * &lt;center&gt;
+     * &lt;table border=&quot;3&quot;&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;&lt;code&gt;&quot;_self&quot;&lt;/code&gt;
+     * &lt;td&gt;Show in the window and frame that contain the applet.
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;&lt;code&gt;&quot;_parent&quot;&lt;/code&gt;
+     * &lt;td&gt;Show in the applet's parent frame. If the applet's frame has no parent frame, acts the same as &quot;_self&quot;.
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;&lt;code&gt;&quot;_top&quot;&lt;/code&gt;
+     * &lt;td&gt;Show in the top-level frame of the applet's window. If the applet's frame is the top-level frame, acts the
+     * same as &quot;_self&quot;.
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;&lt;code&gt;&quot;_blank&quot;&lt;/code&gt;
+     * &lt;td&gt;Show in a new, unnamed top-level window.
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;&lt;i&gt;name&lt;/i&gt;
+     * &lt;td&gt;Show in the frame or window named &lt;i&gt;name&lt;/i&gt;. If a target named &lt;i&gt;name&lt;/i&gt; does not already exist, a new
+     * top-level window with the specified name is created, and the document is shown there.
+     * &lt;/tr&gt;
+     * &lt;/table&gt;
+     * &lt;/center&gt;
+     * &lt;p&gt;
+     * An applet viewer or browser is free to ignore &lt;code&gt;showDocument&lt;/code&gt;.
+     *
+     * @param url
+     *            an absolute URL giving the location of the document.
+     * @param target
+     *            a &lt;code&gt;String&lt;/code&gt; indicating where to display the page.
+     */
+    @Override
+    public void showDocument(URL url, String target) {
+<span class="fc" id="L173">        _webApplet.sendRequest(url, target);</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Requests that the argument string be displayed in the &quot;status window&quot;. Many browsers and applet viewers provide
+     * such a window, where the application can inform users of its current state.
+     *
+     * @param status
+     *            a string to display in the status window.
+     */
+    @Override
+    public void showStatus(String status) {
+<span class="nc" id="L185">    }</span>
+
+    /**
+     * Returns the stream to which specified key is associated within this applet context. Returns &lt;tt&gt;null&lt;/tt&gt; if the
+     * applet context contains no stream for this key.
+     * &lt;p&gt;
+     * For security reasons, mapping of streams and keys exists for each codebase. In other words, applet from one
+     * codebase cannot access the streams created by an applet from a different codebase
+     * &lt;p&gt;
+     *
+     * @return the stream to which this applet context maps the key
+     *
+     * @param key
+     *            key whose associated stream is to be returned.
+     *
+     * @since JDK1.4
+     */
+    @Override
+    public InputStream getStream(String key) {
+<span class="nc" id="L204">        return null;</span>
+    }
+
+    /**
+     * Finds all the keys of the streams in this applet context.
+     * &lt;p&gt;
+     * For security reasons, mapping of streams and keys exists for each codebase. In other words, applet from one
+     * codebase cannot access the streams created by an applet from a different codebase
+     * &lt;p&gt;
+     *
+     * @return an Iterator of all the names of the streams in this applet context.
+     *
+     * @since JDK1.4
+     */
+    @Override
+    public Iterator getStreamKeys() {
+<span class="nc" id="L220">        return null;</span>
+    }
+
+    /**
+     * Associates the specified stream with the specified key in this applet context. If the applet context previously
+     * contained a mapping for this key, the old value is replaced.
+     * &lt;p&gt;
+     * For security reasons, mapping of streams and keys exists for each codebase. In other words, applet from one
+     * codebase cannot access the streams created by an applet from a different codebase
+     * &lt;p&gt;
+     *
+     * @param key
+     *            key with which the specified value is to be associated.
+     * @param stream
+     *            stream to be associated with the specified key. If this parameter is
+     *            &lt;code&gt;null&lt;code&gt;, the specified key is removed
+     *               in this applet context.
+     * @throws &lt;code&gt;IOException&lt;/code&gt;
+     *            if the stream size exceeds a certain size limit. Size limit is decided by the implementor of this
+     *            interface.
+     *
+     * @since JDK1.4
+     */
+    @Override
+    public void setStream(String key, InputStream stream) throws IOException {
+<span class="nc" id="L245">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

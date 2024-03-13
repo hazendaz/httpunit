@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>TextBlockTest xref</title>
+<link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../testapidocs/com/meterware/httpunit/TextBlockTest.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> * to permit persons to whom the Software is furnished to do so, subject to the following conditions:</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * The above copyright notice and this permission notice shall be included in all copies or substantial portions</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_comment"> * of the Software.</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_comment"> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_comment"> * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_comment"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_comment"> * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_comment"> * DEALINGS IN THE SOFTWARE.</em>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">package</strong> com.meterware.httpunit;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertNotNull;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertNull;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.io.BufferedReader;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.io.StringReader;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Disabled;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.extension.ExtendWith;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:russgold@httpunit.org" target="alexandria_uri">mailto:russgold@httpunit.org</a>"&gt;Russell Gold&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  @ExtendWith(ExternalResourceSupport.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">class</strong> <a name="TextBlockTest" href="../../../com/meterware/httpunit/TextBlockTest.html#TextBlockTest">TextBlockTest</a> <strong class="jxr_keyword">extends</strong> <a name="HttpUnitTest" href="../../../com/meterware/httpunit/HttpUnitTest.html#HttpUnitTest">HttpUnitTest</a> {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      @Test
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">void</strong> testParagraphDetection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>,
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>                  <span class="jxr_string">"&lt;p&gt;This has no forms or links since we don't care "</span> + <span class="jxr_string">"about them&lt;/p&gt;"</span>
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>                          + <span class="jxr_string">"&lt;p class='comment'&gt;But it does have three paragraphs&lt;/p&gt;\n"</span>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>                          + <span class="jxr_string">"&lt;p&gt;Which is what we want to find&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          assertEquals(3, response.getTextBlocks().length, <span class="jxr_string">"Number of paragraphs"</span>);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          assertEquals(<span class="jxr_string">"This has no forms or links since we don't care about them"</span>, response.getTextBlocks()[0].getText(),
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>                  <span class="jxr_string">"First paragraph"</span>);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          BlockElement comment = response.getFirstMatchingTextBlock(TextBlock.MATCH_CLASS, <span class="jxr_string">"comment"</span>);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          assertNotNull(comment, <span class="jxr_string">"Did not find a comment paragraph"</span>);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          assertEquals(<span class="jxr_string">"But it does have three paragraphs"</span>, comment.getText(), <span class="jxr_string">"Comment paragraph"</span>);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      }
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      @Test
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">void</strong> testTextConversion() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>, <span class="jxr_string">"&lt;p&gt;Here is a line&lt;br&gt;followed by another&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          BufferedReader br = <strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> StringReader(response.getTextBlocks()[0].getText()));
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          assertEquals(<span class="jxr_string">"Here is a line"</span>, br.readLine(), <span class="jxr_string">"First line"</span>);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          assertEquals(<span class="jxr_string">"followed by another"</span>, br.readLine(), <span class="jxr_string">"Second line"</span>);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          br.readLine();
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      }
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      @Test
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">void</strong> testHeaderDetection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>,
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span> + <span class="jxr_string">"with some text"</span> + <span class="jxr_string">"&lt;h2&gt;A subsection&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;p&gt;Some more text&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          TextBlock header1 = response.getFirstMatchingTextBlock(TextBlock.MATCH_TAG, <span class="jxr_string">"H1"</span>);
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          assertNotNull(header1, <span class="jxr_string">"Did not find the H1 header"</span>);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          assertEquals(<span class="jxr_string">"Here is a section"</span>, header1.getText(), <span class="jxr_string">"H1 header"</span>);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          TextBlock header2 = response.getFirstMatchingTextBlock(TextBlock.MATCH_TAG, <span class="jxr_string">"h2"</span>);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          assertNotNull(header2, <span class="jxr_string">"Did not find the h2 header"</span>);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          assertEquals(<span class="jxr_string">"A subsection"</span>, header2.getText(), <span class="jxr_string">"H2 header"</span>);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          assertEquals(<span class="jxr_string">"with some text"</span>, response.getNextTextBlock(header1).getText(), <span class="jxr_string">"Text under header 1"</span>);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      }
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>  
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>      @Test
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">void</strong> testEmbeddedLinks() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>, <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span>
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  + <span class="jxr_string">"&lt;p&gt;with a &lt;a id='httpunit' href='http://httpunit.org'&gt;link to the home page&lt;/a&gt;&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          BlockElement paragraph = response.getTextBlocks()[1];
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          assertNotNull(paragraph.getLinks(), <span class="jxr_string">"Did not retrieve any links"</span>);
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          assertNotNull(paragraph.getLinkWithID(<span class="jxr_string">"httpunit"</span>), <span class="jxr_string">"Did not find the httpunit link"</span>);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          assertNull(response.getTextBlocks()[0].getLinkWithID(<span class="jxr_string">"httpunit"</span>),
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>                  <span class="jxr_string">"Should not have found the httpunit link in the header"</span>);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          assertNotNull(paragraph.getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, <span class="jxr_string">"home page"</span>),
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  <span class="jxr_string">"Did not find the home page link"</span>);
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          assertEquals(<span class="jxr_string">"http://httpunit.org"</span>, paragraph.getLinkWithID(<span class="jxr_string">"httpunit"</span>).getRequest().getURL().toExternalForm(),
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>                  <span class="jxr_string">"embedded link url"</span>);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      }
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>  
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      <em class="jxr_comment">// TODO JWL 7/6/2021 Breaks with nekohtml &gt; 1.9.6.2</em>
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     @Disabled
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     @Test
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">void</strong> testEmbeddedLists() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         defineWebPage(<span class="jxr_string">"SimplePage"</span>,
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>                 <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span> + <span class="jxr_string">"&lt;p id='ordered'&gt;&lt;ol&gt;&lt;li&gt;One&lt;li&gt;Two&lt;li&gt;Three&lt;/ol&gt;&lt;/p&gt;"</span>
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>                         + <span class="jxr_string">"&lt;p id='unordered'&gt;&lt;ul&gt;&lt;li&gt;Red&lt;li&gt;Green&lt;li&gt;Blue&lt;/ul&gt;&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         TextBlock paragraph1 = (TextBlock) response.getElementWithID(<span class="jxr_string">"ordered"</span>);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         WebList[] lists = paragraph1.getLists();
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         assertEquals(1, lists.length, <span class="jxr_string">"Number of lists found"</span>);
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         WebList orderedList = lists[0];
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         assertEquals(WebList.ORDERED_LIST, orderedList.getListType(), <span class="jxr_string">"ordered list type"</span>);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         assertEquals(3, orderedList.getItems().length, <span class="jxr_string">"ordered list size"</span>);
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         assertEquals(<span class="jxr_string">"Two"</span>, orderedList.getItems()[1].getText(), <span class="jxr_string">"Second ordered list item"</span>);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> 
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         TextBlock paragraph2 = (TextBlock) response.getElementWithID(<span class="jxr_string">"unordered"</span>);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>         lists = paragraph2.getLists();
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         assertEquals(1, lists.length, <span class="jxr_string">"Number of lists found"</span>);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         WebList unorderedList = lists[0];
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         assertEquals(WebList.BULLET_LIST, unorderedList.getListType(), <span class="jxr_string">"bullet list type"</span>);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         assertEquals(3, unorderedList.getItems().length, <span class="jxr_string">"bullet list size"</span>);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         assertEquals(<span class="jxr_string">"Red"</span>, unorderedList.getItems()[0].getText(), <span class="jxr_string">"First bullet list item"</span>);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> 
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_comment">// TODO JWL 2/19/2023 Test was not annotated and does not work, annotated this and add ignores for now.</em>
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     @Disabled
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>     @Test
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     <strong class="jxr_keyword">void</strong> ntestFormattingDetection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         String expectedText = <span class="jxr_string">"Here is some bold text and some bold italic text"</span>;
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         defineWebPage(<span class="jxr_string">"FormattedPage"</span>, <span class="jxr_string">"&lt;p&gt;Here is some &lt;b&gt;bold&lt;/b&gt; text and some &lt;b&gt;&lt;i&gt;bold italic&lt;/i&gt;&lt;/b&gt; text&lt;/p&gt;"</span>);
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/FormattedPage.html"</span>);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         TextBlock paragraph = response.getTextBlocks()[0];
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         assertMatchingSet(<span class="jxr_string">"Attributes for word 'bold'"</span>, <strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">"b"</span> },
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 paragraph.getFormats(expectedText.indexOf(<span class="jxr_string">"bold"</span>)));
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
+<a class="jxr_linenumber" name="L137" href="#L137">137</a> 
+<a class="jxr_linenumber" name="L138" href="#L138">138</a> }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+</body>
+</html>

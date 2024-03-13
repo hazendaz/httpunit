@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitServletContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitServletContext.java</span></div><h1>ServletUnitServletContext.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRegistration.Dynamic;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
+import javax.servlet.descriptor.JspConfigDescriptor;
+
+/**
+ * This class is a private implementation of the ServletContext class.
+ **/
+public class ServletUnitServletContext implements ServletContext {
+
+<span class="fc" id="L55">    private PrintStream _logStream = System.out;</span>
+
+<span class="fc" id="L57">    ServletUnitServletContext(WebApplication application) {</span>
+<span class="fc" id="L58">        _application = application;</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Returns a ServletContext object that corresponds to a specified URL on the server.
+     * &lt;p&gt;
+     * This method allows servlets to gain access to the context for various parts of the server, and as needed obtain
+     * RequestDispatcher objects from the context. The given path must be absolute (beginning with &quot;/&quot;) and is
+     * interpreted based on the server's document root.
+     * &lt;p&gt;
+     * In a security conscious environment, the servlet container may return null for a given URL.
+     **/
+    @Override
+    public javax.servlet.ServletContext getContext(java.lang.String A) {
+<span class="nc" id="L72">        return null;</span>
+    }
+
+    /**
+     * Returns the major version of the Java Servlet API that this servlet container supports. All implementations that
+     * comply with Version 2.4 must have this method return the integer 2.
+     **/
+    @Override
+    public int getMajorVersion() {
+<span class="nc" id="L81">        return 4;</span>
+    }
+
+    /**
+     * Returns the minor version of the Servlet API that this servlet container supports. All implementations that
+     * comply with Version 2.4 must have this method return the integer 4.
+     **/
+    @Override
+    public int getMinorVersion() {
+<span class="nc" id="L90">        return 0;</span>
+    }
+
+    /**
+     * Returns the MIME type of the specified file, or null if the MIME type is not known. The MIME type is determined
+     * by the configuration of the servlet container, and may be specified in a web application deployment descriptor.
+     * Common MIME types are &quot;text/html&quot; and &quot;image/gif&quot;.
+     **/
+    @Override
+    public java.lang.String getMimeType(String filePath) {
+<span class="fc" id="L100">        return URLConnection.getFileNameMap().getContentTypeFor(filePath);</span>
+    }
+
+    /**
+     * Returns a URL to the resource that is mapped to a specified path. The path must begin with a &quot;/&quot; and is
+     * interpreted as relative to the current context root.
+     * &lt;p&gt;
+     * This method allows the servlet container to make a resource available to servlets from any source. Resources can
+     * be located on a local or remote file system, in a database, or in a .war file.
+     * &lt;p&gt;
+     * The servlet container must implement the URL handlers and URLConnection objects that are necessary to access the
+     * resource.
+     * &lt;p&gt;
+     * This method returns null if no resource is mapped to the pathname. Some containers may allow writing to the URL
+     * returned by this method using the methods of the URL class. The resource content is returned directly, so be
+     * aware that requesting a .jsp page returns the JSP source code. Use a RequestDispatcher instead to include results
+     * of an execution. This method has a different purpose than java.lang.Class.getResource, which looks up resources
+     * based on a class loader. This method does not use class loaders.
+     **/
+    @Override
+    public java.net.URL getResource(String path) {
+        try {
+<span class="fc" id="L122">            File resourceFile = _application.getResourceFile(path);</span>
+            // PATCH proposal [ 1592532 ] Invalid
+            // ServletUnitServletContext#getResource(String path)
+            // by Timo Westkemper
+            // return !resourceFile.exists() ? null : resourceFile.toURL();
+            //
+            // state of code until 2014-02 - before proposal of Aki Yoshida
+            // return resourceFile == null ? null : resourceFile.toURL();
+
+<span class="pc bpc" id="L131" title="1 of 4 branches missed.">            return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();</span>
+<span class="nc" id="L132">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L133">            return null;</span>
+        }
+    }
+
+    /**
+     * Returns the resource located at the named path as an InputStream object. The data in the InputStream can be of
+     * any type or length. The path must be specified according to the rules given in getResource. This method returns
+     * null if no resource exists at the specified path. Meta-information such as content length and content type that
+     * is available via getResource method is lost when using this method. The servlet container must implement the URL
+     * handlers and URLConnection objects necessary to access the resource. This method is different from
+     * java.lang.Class.getResourceAsStream, which uses a class loader. This method allows servlet containers to make a
+     * resource available to a servlet from any location, without using a class loader.
+     **/
+    @Override
+    public java.io.InputStream getResourceAsStream(String path) {
+        try {
+<span class="fc" id="L149">            File resourceFile = _application.getResourceFile(path);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">            return resourceFile == null ? null : new FileInputStream(resourceFile);</span>
+<span class="fc" id="L151">        } catch (FileNotFoundException e) {</span>
+<span class="fc" id="L152">            return null;</span>
+        }
+    }
+
+    /**
+     * Returns a RequestDispatcher object that acts as a wrapper for the resource located at the given path. A
+     * RequestDispatcher object can be used to forward a request to the resource or to include the resource in a
+     * response. The resource can be dynamic or static. The pathname must begin with a &quot;/&quot; and is interpreted as
+     * relative to the current context root. Use getContext to obtain a RequestDispatcher for resources in foreign
+     * contexts. This method returns null if the ServletContext cannot return a RequestDispatcher.
+     **/
+    @Override
+    public javax.servlet.RequestDispatcher getRequestDispatcher(String path) {
+        try {
+<span class="fc" id="L166">            URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, _application.getContextPath() + path);</span>
+<span class="fc" id="L167">            return new RequestDispatcherImpl(_application, url);</span>
+<span class="nc" id="L168">        } catch (ServletException | MalformedURLException e) {</span>
+<span class="nc" id="L169">            return null;</span>
+        }
+    }
+
+    /**
+     * Returns a RequestDispatcher object that acts as a wrapper for the named servlet. Servlets (and JSP pages also)
+     * may be given names via server administration or via a web application deployment descriptor. A servlet instance
+     * can determine its name using ServletConfig.getServletName(). This method returns null if the ServletContext
+     * cannot return a RequestDispatcher for any reason. patch by Izzy Alanis
+     *
+     * @param servletName
+     *            - the name of the dispatcher to get
+     **/
+    @Override
+    public javax.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
+<span class="fc" id="L184">        final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        if (servletConfig == null) {</span>
+<span class="fc" id="L186">            return null;</span>
+        }
+
+        Servlet tempServlet;
+        Exception tempException;
+
+        try {
+<span class="nc" id="L193">            tempServlet = servletConfig.getServlet();</span>
+<span class="nc" id="L194">            tempException = null;</span>
+<span class="nc" id="L195">        } catch (Exception e) {</span>
+<span class="nc" id="L196">            tempServlet = null;</span>
+<span class="nc" id="L197">            tempException = e;</span>
+<span class="nc" id="L198">        }</span>
+
+<span class="nc" id="L200">        final Servlet servlet = tempServlet;</span>
+
+<span class="nc" id="L202">        final Exception instantiationException = tempException;</span>
+
+<span class="nc" id="L204">        return new javax.servlet.RequestDispatcher() {</span>
+
+            @Override
+            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                if (instantiationException != null) {</span>
+
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
+<span class="nc" id="L212">                        throw (ServletException) instantiationException;</span>
+
+                    }
+<span class="nc" id="L215">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
+
+<span class="nc" id="L217">                    e.initCause(instantiationException);</span>
+
+<span class="nc" id="L219">                    throw e;</span>
+
+                }
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
+<span class="nc" id="L224">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
+                }
+<span class="nc" id="L226">                response.reset();</span>
+<span class="nc" id="L227">                servlet.service(request, response);</span>
+<span class="nc" id="L228">            }</span>
+
+            @Override
+            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                if (instantiationException != null) {</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
+<span class="nc" id="L234">                        throw (ServletException) instantiationException;</span>
+                    }
+<span class="nc" id="L236">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
+<span class="nc" id="L237">                    e.initCause(instantiationException);</span>
+<span class="nc" id="L238">                    throw e;</span>
+                }
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
+<span class="nc" id="L241">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
+                }
+<span class="nc" id="L243">                servlet.service(request, response);</span>
+<span class="nc" id="L244">            }</span>
+        };
+    }
+
+    /**
+     * @deprecated as of Servlet API 2.1
+     **/
+    @Deprecated
+    @Override
+    public javax.servlet.Servlet getServlet(java.lang.String A) {
+<span class="nc" id="L254">        return null;</span>
+    }
+
+    /**
+     * @deprecated as of Servlet API 2.0
+     **/
+    @Deprecated
+    @Override
+    public Enumeration&lt;Servlet&gt; getServlets() {
+<span class="nc" id="L263">        return Collections.emptyEnumeration();</span>
+    }
+
+    /**
+     * @deprecated as of Servlet API 2.1
+     **/
+    @Deprecated
+    @Override
+    public Enumeration&lt;String&gt; getServletNames() {
+<span class="nc" id="L272">        return Collections.emptyEnumeration();</span>
+    }
+
+    /**
+     * Writes the specified message to a servlet log file, usually an event log. The name and type of the servlet log
+     * file is specific to the servlet container.
+     **/
+    @Override
+    public void log(String message) {
+<span class="nc" id="L281">        _logStream.println(message);</span>
+<span class="nc" id="L282">    }</span>
+
+    /**
+     * @deprecated use log( String, Throwable )
+     **/
+    @Deprecated
+    @Override
+    public void log(Exception e, String message) {
+<span class="nc" id="L290">        log(message, e);</span>
+<span class="nc" id="L291">    }</span>
+
+    /**
+     * Writes an explanatory message and a stack trace for a given Throwable exception to the servlet log file. The name
+     * and type of the servlet log file is specific to the servlet container, usually an event log.
+     **/
+    @Override
+    public void log(String message, Throwable t) {
+<span class="nc" id="L299">        _logStream.print(message);</span>
+<span class="nc" id="L300">        _logStream.print(&quot;:&quot;);</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (t != null) {</span>
+<span class="nc" id="L302">            t.printStackTrace(_logStream);</span>
+        }
+<span class="nc" id="L304">    }</span>
+
+    /**
+     * Returns a String containing the real path for a given virtual path. For example, the virtual path &quot;/index.html&quot;
+     * has a real path of whatever file on the server's filesystem would be served by a request for &quot;/index.html&quot;. The
+     * real path returned will be in a form appropriate to the computer and operating system on which the servlet
+     * container is running, including the proper path separators. This method returns null if the servlet container
+     * cannot translate the virtual path to a real path for any reason (such as when the content is being made available
+     * from a .war archive).
+     **/
+    @Override
+    public String getRealPath(String path) {
+<span class="fc" id="L316">        return _application.getResourceFile(path).getAbsolutePath();</span>
+    }
+
+    public static final String DEFAULT_SERVER_INFO = &quot;ServletUnit test framework&quot;;
+
+    /**
+     * Returns the name and version of the servlet container on which the servlet is running. The form of the returned
+     * string is servername/versionnumber. For example, the JavaServer Web Development Kit may return the string
+     * JavaServer Web Dev Kit/1.0. The servlet container may return other optional information after the primary string
+     * in parentheses, for example, JavaServer Web Dev Kit/1.0 (JDK 1.1.6; Windows NT 4.0 x86).
+     **/
+    @Override
+    public String getServerInfo() {
+<span class="nc" id="L329">        return DEFAULT_SERVER_INFO;</span>
+    }
+
+    /**
+     * Returns a String containing the value of the named context-wide initialization parameter, or null if the
+     * parameter does not exist. This method can make available configuration information useful to an entire &quot;web
+     * application&quot;. For example, it can provide a webmaster's email address or the name of a system that holds critical
+     * data.
+     **/
+    @Override
+    public String getInitParameter(String name) {
+<span class="fc" id="L340">        return (String) getContextParams().get(name);</span>
+    }
+
+    /**
+     * Returns the names of the context's initialization parameters as an Enumeration of String objects, or an empty
+     * Enumeration if the context has no initialization parameters.
+     **/
+    @Override
+    public Enumeration&lt;String&gt; getInitParameterNames() {
+<span class="nc" id="L349">        return getContextParams().keys();</span>
+    }
+
+    /**
+     * Returns the servlet container attribute with the given name, or null if there is no attribute by that name. An
+     * attribute allows a servlet container to give the servlet additional information not already provided by this
+     * interface. See your server documentation for information about its attributes. A list of supported attributes can
+     * be retrieved using getAttributeNames.
+     **/
+    @Override
+    public Object getAttribute(String name) {
+<span class="fc" id="L360">        return _attributes.get(name);</span>
+    }
+
+    @Override
+    public Enumeration&lt;String&gt; getAttributeNames() {
+<span class="nc" id="L365">        return _attributes.keys();</span>
+    }
+
+    @Override
+    public void setAttribute(String name, Object attribute) {
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (!_attributes.containsKey(name)) {</span>
+<span class="fc" id="L371">            _attributes.put(name, attribute);</span>
+<span class="fc" id="L372">            _application.sendAttributeAdded(name, attribute);</span>
+        } else {
+<span class="fc" id="L374">            Object oldValue = _attributes.get(name);</span>
+<span class="fc" id="L375">            _attributes.put(name, attribute);</span>
+<span class="fc" id="L376">            _application.sendAttributeReplaced(name, oldValue);</span>
+        }
+<span class="fc" id="L378">    }</span>
+
+    @Override
+    public void removeAttribute(String name) {
+<span class="fc" id="L382">        Object oldValue = _attributes.get(name);</span>
+<span class="fc" id="L383">        _attributes.remove(name);</span>
+<span class="fc" id="L384">        _application.sendAttributeRemoved(name, oldValue);</span>
+<span class="fc" id="L385">    }</span>
+
+    // ----------------------------- methods added to ServletContext in JSDK 2.3
+    // --------------------------------------
+
+    /**
+     * Returns a directory-like listing of all the paths to resources within the web application whose longest sub-path
+     * matches the supplied path argument. Paths indicating subdirectory paths end with a '/'. The returned paths are
+     * all relative to the root of the web application and have a leading '/'. For example, for a web application
+     * containing &amp;lt;p&amp;gt; /welcome.html&amp;lt;br /&amp;gt; /catalog/index.html&amp;lt;br /&amp;gt; &amp;lt;br /&amp;gt;
+     * /catalog/products.html&amp;lt;br /&amp;gt; /catalog/offers/books.html&amp;lt;br /&amp;gt; /catalog/offers/music.html&amp;lt;br /&amp;gt;
+     * /customer/login.jsp&amp;lt;br /&amp;gt; /WEB-INF/web.xml&amp;lt;br /&amp;gt; /WEB-INF/classes/com.acme.OrderServlet.class,&amp;lt;br
+     * /&amp;gt; &amp;lt;br /&amp;gt; getResourcePaths(&quot;/&quot;) returns {&quot;/welcome.html&quot;, &quot;/catalog/&quot;, &quot;/customer/&quot;, &quot;/WEB-INF/&quot;}&amp;lt;br
+     * /&amp;gt; getResourcePaths(&quot;/catalog/&quot;) returns {&quot;/catalog/index.html&quot;, &quot;/catalog/products.html&quot;,
+     * &quot;/catalog/offers/&quot;}.
+     *
+     * @param path
+     *            partial path used to match the resources, which must start with a /
+     *
+     * @return a Set containing the directory listing, or null if there are no resources in the web application whose
+     *         path begins with the supplied path.
+     *
+     * @since HttpUnit 1.3
+     */
+    @Override
+    public Set&lt;String&gt; getResourcePaths(String path) {
+<span class="nc" id="L411">        return null;</span>
+    }
+
+    /**
+     * Returns the name of this web application correponding to this ServletContext as specified in the deployment
+     * descriptor for this web application by the display-name element.
+     *
+     * @return The name of the web application or null if no name has been declared in the deployment descriptor
+     *
+     * @since HttpUnit 1.3
+     */
+    @Override
+    public String getServletContextName() {
+<span class="fc" id="L424">        return _application.getDisplayName();</span>
+    }
+
+    // -------------------------------------- servlet-api 2.5 additions
+    // -----------------------------------------------
+
+    @Override
+    public String getContextPath() {
+<span class="nc" id="L432">        return null;</span>
+    }
+
+    // ------------------------------------------- package members
+    // ----------------------------------------------------
+
+    void setInitParameter(String name, Object initParameter) {
+<span class="nc" id="L439">        getContextParams().put(name, initParameter);</span>
+<span class="nc" id="L440">    }</span>
+
+    void removeInitParameter(String name) {
+<span class="nc" id="L443">        getContextParams().remove(name);</span>
+<span class="nc" id="L444">    }</span>
+
+    // ------------------------------------------- private members
+    // ----------------------------------------------------
+
+<span class="fc" id="L449">    private Hashtable _attributes = new Hashtable();</span>
+
+    private WebApplication _application;
+
+    private Hashtable getContextParams() {
+<span class="fc" id="L454">        return _application.getContextParameters();</span>
+    }
+
+    /**
+     * Allows the test to determine where the log messages should be written. Defaults to {@link System#out}
+     *
+     * @param logStream
+     *            where to write the log messages
+     *
+     * @see #log(String)
+     */
+    public void setLogStream(PrintStream logStream) {
+<span class="nc" id="L466">        this._logStream = logStream;</span>
+<span class="nc" id="L467">    }</span>
+
+    @Override
+    public int getEffectiveMajorVersion() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L472">        return 0;</span>
+    }
+
+    @Override
+    public int getEffectiveMinorVersion() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L478">        return 0;</span>
+    }
+
+    @Override
+    public boolean setInitParameter(String name, String value) {
+<span class="nc" id="L483">        getContextParams().put(name, value);</span>
+<span class="nc" id="L484">        return true;</span>
+    }
+
+    @Override
+    public Dynamic addServlet(String servletName, String className) {
+<span class="nc" id="L489">        return null;</span>
+    }
+
+    @Override
+    public Dynamic addServlet(String servletName, Servlet servlet) {
+<span class="nc" id="L494">        return null;</span>
+    }
+
+    @Override
+    public Dynamic addServlet(String servletName, Class&lt;? extends Servlet&gt; servletClass) {
+<span class="nc" id="L499">        return null;</span>
+    }
+
+    @Override
+    public &lt;T extends Servlet&gt; T createServlet(Class&lt;T&gt; clazz) throws ServletException {
+<span class="nc" id="L504">        return null;</span>
+    }
+
+    @Override
+    public ServletRegistration getServletRegistration(String servletName) {
+<span class="nc" id="L509">        return null;</span>
+    }
+
+    @Override
+    public Map&lt;String, ? extends ServletRegistration&gt; getServletRegistrations() {
+<span class="nc" id="L514">        return null;</span>
+    }
+
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className) {
+<span class="nc" id="L519">        return null;</span>
+    }
+
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
+<span class="nc" id="L524">        return null;</span>
+    }
+
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class&lt;? extends Filter&gt; filterClass) {
+<span class="nc" id="L529">        return null;</span>
+    }
+
+    @Override
+    public &lt;T extends Filter&gt; T createFilter(Class&lt;T&gt; clazz) throws ServletException {
+<span class="nc" id="L534">        return null;</span>
+    }
+
+    @Override
+    public FilterRegistration getFilterRegistration(String filterName) {
+<span class="nc" id="L539">        return null;</span>
+    }
+
+    @Override
+    public Map&lt;String, ? extends FilterRegistration&gt; getFilterRegistrations() {
+<span class="nc" id="L544">        return null;</span>
+    }
+
+    @Override
+    public SessionCookieConfig getSessionCookieConfig() {
+<span class="nc" id="L549">        return null;</span>
+    }
+
+    @Override
+    public void setSessionTrackingModes(Set&lt;SessionTrackingMode&gt; sessionTrackingModes) {
+
+<span class="nc" id="L555">    }</span>
+
+    @Override
+    public Set&lt;SessionTrackingMode&gt; getDefaultSessionTrackingModes() {
+<span class="nc" id="L559">        return null;</span>
+    }
+
+    @Override
+    public Set&lt;SessionTrackingMode&gt; getEffectiveSessionTrackingModes() {
+<span class="nc" id="L564">        return null;</span>
+    }
+
+    @Override
+    public void addListener(String className) {
+
+<span class="nc" id="L570">    }</span>
+
+    @Override
+    public &lt;T extends EventListener&gt; void addListener(T t) {
+
+<span class="nc" id="L575">    }</span>
+
+    @Override
+    public void addListener(Class&lt;? extends EventListener&gt; listenerClass) {
+
+<span class="nc" id="L580">    }</span>
+
+    @Override
+    public &lt;T extends EventListener&gt; T createListener(Class&lt;T&gt; clazz) throws ServletException {
+<span class="nc" id="L584">        return null;</span>
+    }
+
+    @Override
+    public JspConfigDescriptor getJspConfigDescriptor() {
+<span class="nc" id="L589">        return null;</span>
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
+<span class="nc" id="L594">        return ServletUnitServletContext.class.getClassLoader();</span>
+    }
+
+    @Override
+    public void declareRoles(String... roleNames) {
+
+<span class="nc" id="L600">    }</span>
+
+    @Override
+    public String getVirtualServerName() {
+<span class="nc" id="L604">        return null;</span>
+    }
+
+    @Override
+    public Dynamic addJspFile(String servletName, String jspFile) {
+<span class="nc" id="L609">        return null;</span>
+    }
+
+    @Override
+    public int getSessionTimeout() {
+<span class="nc" id="L614">        return 0;</span>
+    }
+
+    @Override
+    public void setSessionTimeout(int sessionTimeout) {
+
+<span class="nc" id="L620">    }</span>
+
+    @Override
+    public String getRequestCharacterEncoding() {
+<span class="nc" id="L624">        return null;</span>
+    }
+
+    @Override
+    public void setRequestCharacterEncoding(String encoding) {
+
+<span class="nc" id="L630">    }</span>
+
+    @Override
+    public String getResponseCharacterEncoding() {
+<span class="nc" id="L634">        return null;</span>
+    }
+
+    @Override
+    public void setResponseCharacterEncoding(String encoding) {
+
+<span class="nc" id="L640">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OptionsMethodWebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">OptionsMethodWebRequest.java</span></div><h1>OptionsMethodWebRequest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.net.URL;
+
+/**
+ * A {@link WebRequest} using the OPTIONS method.
+ * &lt;p&gt;
+ * RFC 2616 section 9.2 defines:
+ * &lt;p&gt;
+ * The OPTIONS method represents a request for information about the communication options available on the
+ * request/response chain identified by the Request-URI. This method allows the client to determine the options and/or
+ * requirements associated with a resource, or the capabilities of a server, without implying a resource action or
+ * initiating a resource retrieval.
+ * &lt;p&gt;
+ * Responses to this method are not cacheable.
+ * &lt;p&gt;
+ * If the OPTIONS request includes an entity-body (as indicated by the presence of Content-Length or Transfer-Encoding),
+ * then the media type MUST be indicated by a Content-Type field. Although this specification does not define any use
+ * for such a body, future extensions to HTTP might use the OPTIONS body to make more detailed queries on the server. A
+ * server that does not support such an extension MAY discard the request body.
+ * &lt;p&gt;
+ * If the Request-URI is an asterisk (&quot;*&quot;), the OPTIONS request is intended to apply to the server in general rather
+ * than to a specific resource. Since a server's communication options typically depend on the resource, the &quot;*&quot; request
+ * is only useful as a &quot;ping&quot; or &quot;no-op&quot; type of method; it does nothing beyond allowing the client to test the
+ * capabilities of the server. For example, this can be used to test a proxy for HTTP/1.1 compliance (or lack thereof).
+ * &lt;p&gt;
+ * If the Request-URI is not an asterisk, the OPTIONS request applies only to the options that are available when
+ * communicating with that resource.
+ * &lt;p&gt;
+ * A 200 response SHOULD include any header fields that indicate optional features implemented by the server and
+ * applicable to that resource (e.g., Allow), possibly including extensions not defined by this specification. The
+ * response body, if any, SHOULD also include information about the communication options. The format for such a
+ * &lt;p&gt;
+ * body is not defined by this specification, but might be defined by future extensions to HTTP. Content negotiation MAY
+ * be used to select the appropriate response format. If no response body is included, the response MUST include a
+ * Content-Length field with a field-value of &quot;0&quot;.
+ * &lt;p&gt;
+ * The Max-Forwards request-header field MAY be used to target a specific proxy in the request chain. When a proxy
+ * receives an OPTIONS request on an absoluteURI for which request forwarding is permitted, the proxy MUST check for a
+ * Max-Forwards field. If the Max-Forwards field-value is zero (&quot;0&quot;), the proxy MUST NOT forward the message; instead,
+ * the proxy SHOULD respond with its own communication options. If the Max-Forwards field-value is an integer greater
+ * than zero, the proxy MUST decrement the field-value when it forwards the request. If no Max-Forwards field is present
+ * in the request, then the forwarded request MUST NOT include a Max-Forwards field.
+ *
+ * @see &lt;a href=&quot;https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html&quot;&gt;RFC-2616 Section 9&lt;/a&gt;
+ */
+public class OptionsMethodWebRequest extends HeaderOnlyWebRequest {
+
+    /**
+     * initialize me - set method to OPTIONS
+     */
+    private void init() {
+<span class="nc" id="L72">        setMethod(&quot;OPTIONS&quot;);</span>
+<span class="nc" id="L73">    }</span>
+
+    /**
+     * Creates a new options request from a complete URL string.
+     *
+     * @param urlString
+     *            the URL desired, including the protocol.
+     */
+    public OptionsMethodWebRequest(String urlString) {
+<span class="nc" id="L82">        super(urlString);</span>
+<span class="nc" id="L83">        init();</span>
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Creates a new options request using a relative URL and base.
+     *
+     * @param urlBase
+     *            the base URL.
+     * @param urlString
+     *            the relative URL
+     */
+    public OptionsMethodWebRequest(URL urlBase, String urlString) {
+<span class="nc" id="L95">        super(urlBase, urlString);</span>
+<span class="nc" id="L96">        init();</span>
+<span class="nc" id="L97">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UploadFileSpec.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.protocol</a> &gt; <span class="el_source">UploadFileSpec.java</span></div><h1>UploadFileSpec.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.protocol;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * A description of a file to be uploaded as part of a form submission.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+public class UploadFileSpec {
+
+    /**
+     * Creates a specification based on a File object. The content type will be guessed from the file extension.
+     */
+<span class="fc" id="L37">    public UploadFileSpec(File file) {</span>
+<span class="fc" id="L38">        _file = file;</span>
+<span class="fc" id="L39">        guessContentType();</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Creates a specification based on a File object and with a specified content type.
+     */
+<span class="fc" id="L45">    public UploadFileSpec(File file, String contentType) {</span>
+<span class="fc" id="L46">        _file = file;</span>
+<span class="fc" id="L47">        _contentType = contentType;</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Creates a specification for an upload from an input stream. The file name and content type must be specified.
+     */
+<span class="fc" id="L53">    public UploadFileSpec(String fileName, InputStream inputStream, String contentType) {</span>
+<span class="fc" id="L54">        _fileName = fileName;</span>
+<span class="fc" id="L55">        _inputStream = inputStream;</span>
+<span class="fc" id="L56">        _contentType = contentType;</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * get the Inputstream - even if it has been closed previously
+     *
+     * @return the inputstream for the current file
+     *
+     * @throws IOException
+     */
+    public InputStream getInputStream() throws IOException {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (_inputStream == null) {</span>
+<span class="fc" id="L68">            _inputStream = new FileInputStream(_file);</span>
+        }
+        try {
+<span class="fc" id="L71">            _inputStream.available();</span>
+<span class="nc" id="L72">        } catch (IOException ex) {</span>
+<span class="nc" id="L73">            _inputStream = new FileInputStream(_file);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        return _inputStream;</span>
+    }
+
+    public String getFileName() {
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (_fileName == null) {</span>
+<span class="fc" id="L80">            _fileName = _file.getAbsolutePath();</span>
+        }
+<span class="fc" id="L82">        return _fileName;</span>
+    }
+
+    /**
+     * Returns the content type associated with this file upload specification.
+     */
+    public String getContentType() {
+<span class="fc" id="L89">        return _contentType;</span>
+    }
+
+    private File _file;
+
+    private InputStream _inputStream;
+
+    private String _fileName;
+
+<span class="fc" id="L98">    private String _contentType = &quot;text/plain&quot;;</span>
+
+    /**
+     * the default content extensions
+     */
+<span class="fc" id="L103">    private static String[][] CONTENT_EXTENSIONS = { { &quot;text/plain&quot;, &quot;txt&quot;, &quot;text&quot; }, { &quot;text/html&quot;, &quot;htm&quot;, &quot;html&quot; },</span>
+            { &quot;image/gif&quot;, &quot;gif&quot; }, { &quot;image/jpeg&quot;, &quot;jpg&quot;, &quot;jpeg&quot; }, { &quot;image/png&quot;, &quot;png&quot; },
+            { &quot;image/tiff&quot;, &quot;tif&quot;, &quot;tiff&quot; }, { &quot;application/pdf&quot;, &quot;pdf&quot; }, { &quot;application/octet-stream&quot;, &quot;zip&quot; } };
+
+    private void guessContentType() {
+<span class="fc" id="L108">        String extension = getExtension(_file.getName());</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        for (String[] element : CONTENT_EXTENSIONS) {</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            for (int j = 1; j &lt; element.length; j++) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                if (extension.equalsIgnoreCase(element[j])) {</span>
+<span class="fc" id="L112">                    _contentType = element[0];</span>
+<span class="fc" id="L113">                    return;</span>
+                }
+            }
+        }
+<span class="nc" id="L117">    }</span>
+
+    private String getExtension(String fileName) {
+<span class="fc" id="L120">        return fileName.substring(fileName.lastIndexOf('.') + 1);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

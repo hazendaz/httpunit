@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">ElementImpl.java</span></div><h1>ElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.TypeInfo;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L36">public class ElementImpl extends NamespaceAwareNodeImpl implements Element {</span>
+
+    private static final long serialVersionUID = 1L;
+<span class="fc" id="L39">    private Hashtable _attributes = new Hashtable();</span>
+<span class="fc" id="L40">    private ArrayList _listeners = new ArrayList();</span>
+
+    static ElementImpl createElement(DocumentImpl owner, String tagName) {
+<span class="fc" id="L43">        ElementImpl element = new ElementImpl();</span>
+<span class="fc" id="L44">        element.initialize(owner, tagName);</span>
+<span class="fc" id="L45">        return element;</span>
+    }
+
+    public static Element createElement(DocumentImpl owner, String namespaceURI, String qualifiedName) {
+<span class="fc" id="L49">        ElementImpl element = new ElementImpl();</span>
+<span class="fc" id="L50">        element.initialize(owner, namespaceURI, qualifiedName);</span>
+<span class="fc" id="L51">        return element;</span>
+    }
+
+    public void addDomListener(DomListener listener) {
+<span class="fc" id="L55">        synchronized (_listeners) {</span>
+<span class="fc" id="L56">            _listeners.add(listener);</span>
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">    }</span>
+
+    protected void reportPropertyChanged(String propertyName) {
+        ArrayList listeners;
+<span class="fc" id="L62">        synchronized (_listeners) {</span>
+<span class="fc" id="L63">            listeners = (ArrayList) _listeners.clone();</span>
+<span class="fc" id="L64">        }</span>
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (Iterator each = listeners.iterator(); each.hasNext();) {</span>
+<span class="fc" id="L67">            ((DomListener) each.next()).propertyChanged(this, propertyName);</span>
+        }
+<span class="fc" id="L69">    }</span>
+
+    // ---------------------------------------- Element methods
+    // -------------------------------------------------------------
+
+    @Override
+    public short getNodeType() {
+<span class="fc" id="L76">        return ELEMENT_NODE;</span>
+    }
+
+    @Override
+    public String getNodeValue() throws DOMException {
+<span class="fc" id="L81">        return null;</span>
+    }
+
+    @Override
+    public void setNodeValue(String nodeValue) throws DOMException {
+<span class="fc" id="L86">    }</span>
+
+    @Override
+    public boolean hasAttributes() {
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        return !_attributes.isEmpty();</span>
+    }
+
+    @Override
+    public NamedNodeMap getAttributes() {
+<span class="fc" id="L95">        return new NamedNodeMapImpl(_attributes);</span>
+    }
+
+    /**
+     * get the attribute with the given name
+     *
+     * @param name
+     *            - the name of the attribute to get
+     */
+    @Override
+    public String getAttribute(String name) {
+<span class="fc" id="L106">        Attr attr = getAttributeNode(name);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        return attr == null ? &quot;&quot; : attr.getValue();</span>
+    }
+
+    @Override
+    public void setAttribute(String name, String value) throws DOMException {
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (value.equals(getAttribute(name))) {</span>
+<span class="nc" id="L113">            return;</span>
+        }
+
+<span class="fc" id="L116">        Attr attribute = getOwnerDocument().createAttribute(name);</span>
+<span class="fc" id="L117">        attribute.setValue(value);</span>
+<span class="fc" id="L118">        setAttributeNode(attribute);</span>
+<span class="fc" id="L119">        reportPropertyChanged(name);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * get the event Handler script for the event e.g. onchange, onmousedown, onclick, onmouseup execute the script if
+     * it's assigned by calling doEvent for the script
+     *
+     * @param eventName
+     *
+     * @return
+     */
+    @Override
+    public boolean handleEvent(String eventName) {
+        // check whether onclick is activated
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (eventName.toLowerCase().equals(&quot;onclick&quot;)) {</span>
+<span class="nc" id="L134">            handleEvent(&quot;onmousedown&quot;);</span>
+        }
+<span class="nc" id="L136">        String eventScript = getAttribute(eventName);</span>
+<span class="nc" id="L137">        boolean result = doEventScript(eventScript);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (eventName.toLowerCase().equals(&quot;onclick&quot;)) {</span>
+<span class="nc" id="L139">            handleEvent(&quot;onmouseup&quot;);</span>
+        }
+<span class="nc" id="L141">        return result;</span>
+    }
+
+    @Override
+    public void setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
+<span class="fc" id="L146">        Attr attribute = getOwnerDocument().createAttributeNS(namespaceURI, qualifiedName);</span>
+<span class="fc" id="L147">        attribute.setValue(value);</span>
+<span class="fc" id="L148">        setAttributeNodeNS(attribute);</span>
+<span class="fc" id="L149">    }</span>
+
+    @Override
+    public void removeAttribute(String name) throws DOMException {
+<span class="fc" id="L153">        _attributes.remove(name);</span>
+<span class="fc" id="L154">    }</span>
+
+    @Override
+    public Attr getAttributeNode(String name) {
+<span class="fc" id="L158">        return (Attr) _attributes.get(name);</span>
+    }
+
+    @Override
+    public Attr setAttributeNode(Attr newAttr) throws DOMException {
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (newAttr.getOwnerDocument() != getOwnerDocument()) {</span>
+<span class="nc" id="L164">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,</span>
+                    &quot;attribute must be from the same document as the element&quot;);
+        }
+
+<span class="fc" id="L168">        ((AttrImpl) newAttr).setOwnerElement(this);</span>
+<span class="fc" id="L169">        AttrImpl oldAttr = (AttrImpl) _attributes.put(newAttr.getName(), newAttr);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (oldAttr != null) {</span>
+<span class="fc" id="L171">            oldAttr.setOwnerElement(null);</span>
+        }
+<span class="fc" id="L173">        return oldAttr;</span>
+    }
+
+    @Override
+    public Attr setAttributeNodeNS(Attr newAttr) throws DOMException {
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (newAttr.getOwnerDocument() != getOwnerDocument()) {</span>
+<span class="nc" id="L179">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,</span>
+                    &quot;attribute must be from the same document as the element&quot;);
+        }
+
+<span class="fc" id="L183">        ((AttrImpl) newAttr).setOwnerElement(this);</span>
+<span class="fc" id="L184">        AttrImpl oldAttr = (AttrImpl) _attributes.put(newAttr.getName(), newAttr);</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (oldAttr != null) {</span>
+<span class="fc" id="L186">            oldAttr.setOwnerElement(null);</span>
+        }
+<span class="fc" id="L188">        return oldAttr;</span>
+    }
+
+    @Override
+    public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (!_attributes.containsValue(oldAttr)) {</span>
+<span class="fc" id="L194">            throw new DOMException(DOMException.NOT_FOUND_ERR, &quot;Specified attribute is not defined for this element&quot;);</span>
+        }
+
+<span class="fc" id="L197">        AttrImpl removedAttr = (AttrImpl) _attributes.remove(oldAttr.getName());</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (removedAttr != null) {</span>
+<span class="fc" id="L199">            removedAttr.setOwnerElement(null);</span>
+        }
+<span class="fc" id="L201">        return removedAttr;</span>
+    }
+
+    @Override
+    public boolean hasAttribute(String name) {
+<span class="fc" id="L206">        return _attributes.containsKey(name);</span>
+    }
+
+    // ----------------------- namespaces are not supported at present --------------------------------
+
+    @Override
+    public String getAttributeNS(String namespaceURI, String localName) {
+<span class="nc" id="L213">        return null;</span>
+    }
+
+    @Override
+    public void removeAttributeNS(String namespaceURI, String localName) throws DOMException {
+<span class="nc" id="L218">    }</span>
+
+    @Override
+    public Attr getAttributeNodeNS(String namespaceURI, String localName) {
+<span class="nc" id="L222">        return null;</span>
+    }
+
+    @Override
+    public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
+<span class="nc" id="L227">        return null;</span>
+    }
+
+    @Override
+    public boolean hasAttributeNS(String namespaceURI, String localName) {
+<span class="nc" id="L232">        return false;</span>
+    }
+
+    public static Element importNode(DocumentImpl document, Element original, boolean deep) {
+<span class="fc" id="L236">        Element copy = document.createElementNS(original.getNamespaceURI(), original.getTagName());</span>
+<span class="fc" id="L237">        NamedNodeMap attributes = original.getAttributes();</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        for (int i = 0; i &lt; attributes.getLength(); i++) {</span>
+<span class="fc" id="L239">            copy.setAttributeNode((Attr) document.importNode(attributes.item(i), false));</span>
+        }
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (deep) {</span>
+<span class="fc" id="L242">            document.importChildren(original, copy);</span>
+        }
+<span class="fc" id="L244">        return copy;</span>
+    }
+
+    // ------------------------------------- DOM level 3 methods
+    // ------------------------------------------------------------
+
+    @Override
+    public TypeInfo getSchemaTypeInfo() {
+<span class="nc" id="L252">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public void setIdAttribute(String name, boolean isId) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L258">    }</span>
+
+    @Override
+    public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L263">    }</span>
+
+    @Override
+    public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L268">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

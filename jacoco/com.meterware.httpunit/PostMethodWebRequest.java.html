@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostMethodWebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">PostMethodWebRequest.java</span></div><h1>PostMethodWebRequest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.protocol.MessageBody;
+import com.meterware.httpunit.protocol.URLEncodedString;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+/**
+ * An HTTP request using the POST method.
+ **/
+public class PostMethodWebRequest extends MessageBodyWebRequest {
+
+    /**
+     * Constructs a web request using a specific absolute url string.
+     **/
+    public PostMethodWebRequest(String urlString) {
+<span class="fc" id="L38">        this(urlString, false);</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Constructs a web request using a specific absolute url string, with optional mime encoding.
+     **/
+    public PostMethodWebRequest(String urlString, boolean mimeEncoded) {
+<span class="fc" id="L45">        super(urlString, mimeEncoded);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Constructs a web request with a specific target.
+     **/
+    public PostMethodWebRequest(URL urlBase, String urlString, String target) {
+<span class="nc" id="L52">        this(urlBase, urlString, target, false);</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Constructs a web request with a specific target, with optional mime encoding.
+     **/
+    public PostMethodWebRequest(URL urlBase, String urlString, String target, boolean mimeEncoded) {
+<span class="nc" id="L59">        super(urlBase, urlString, target, mimeEncoded);</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Constructs a web request using a specific absolute url string and input stream.
+     *
+     * @param urlString
+     *            the URL to which the request should be issued
+     * @param source
+     *            an input stream which will provide the body of this request
+     * @param contentType
+     *            the MIME content type of the body, including any character set
+     **/
+    public PostMethodWebRequest(String urlString, InputStream source, String contentType) {
+<span class="fc" id="L73">        super(urlString, false);</span>
+<span class="fc" id="L74">        _body = new InputStreamMessageBody(source, contentType);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Returns the HTTP method defined for this request.
+     **/
+    @Override
+    public String getMethod() {
+<span class="fc" id="L82">        return &quot;POST&quot;;</span>
+    }
+
+    /**
+     * Returns the query string defined for this request.
+     **/
+    @Override
+    public String getQueryString() {
+        try {
+<span class="fc" id="L91">            URLEncodedString encoder = new URLEncodedString();</span>
+<span class="fc" id="L92">            getParameterHolder().recordPredefinedParameters(encoder);</span>
+<span class="fc" id="L93">            return encoder.getString();</span>
+<span class="nc" id="L94">        } catch (IOException e) {</span>
+<span class="nc" id="L95">            throw new RuntimeException(&quot;Programming error: &quot; + e); // should never happen</span>
+        }
+    }
+
+    /**
+     * Returns true if selectFile may be called with this parameter.
+     */
+    @Override
+    protected boolean maySelectFile(String parameterName) {
+<span class="fc bfc" id="L104" title="All 4 branches covered.">        return isMimeEncoded() &amp;&amp; isFileParameter(parameterName);</span>
+    }
+
+    // ----------------------------- MessageBodyWebRequest methods ---------------------------
+
+    @Override
+    protected MessageBody getMessageBody() {
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (_body == null) {</span>
+<span class="fc" id="L112">            _body = MessageBody.createPostMethodMessageBody(isMimeEncoded(), getCharacterSet());</span>
+        }
+<span class="fc" id="L114">        return _body;</span>
+    }
+
+    // ----------------------------------- package members -----------------------------------
+
+    /**
+     * Constructs a web request for a form submitted by clicking a button.
+     **/
+    PostMethodWebRequest(WebForm sourceForm, SubmitButton button, int x, int y) {
+<span class="fc" id="L123">        this(sourceForm, sourceForm, button, x, y);</span>
+<span class="fc" id="L124">    }</span>
+
+    PostMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
+<span class="fc" id="L127">        super(sourceForm, parameterHolder, button, x, y);</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Constructs a web request for a form submitted via a script.
+     **/
+    PostMethodWebRequest(WebForm sourceForm) {
+<span class="fc" id="L134">        super(sourceForm);</span>
+<span class="fc" id="L135">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLDocumentImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLDocumentImpl.java</span></div><h1>HTMLDocumentImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+
+import org.mozilla.javascript.Scriptable;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLBaseElement;
+import org.w3c.dom.html.HTMLBodyElement;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLDocument;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLHeadElement;
+import org.w3c.dom.html.HTMLHtmlElement;
+import org.w3c.dom.html.HTMLTitleElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L45">public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTMLContainerElement {</span>
+
+    private static final long serialVersionUID = 1L;
+<span class="fc" id="L48">    private static Hashtable&lt;String, HTMLElementImpl&gt; _exemplars = new Hashtable&lt;&gt;();</span>
+    private DomWindow _window;
+    private StringBuilder _writeBuffer;
+<span class="fc" id="L51">    private HTMLContainerDelegate _containerDelegate = new HTMLContainerDelegate(SKIP_IFRAMES);</span>
+
+    public void setIFramesEnabled(boolean enabled) {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        _containerDelegate = new HTMLContainerDelegate(enabled ? SKIP_IFRAMES : null);</span>
+<span class="fc" id="L55">    }</span>
+
+    @Override
+    public Object get(String propertyName, Scriptable scriptable) {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (propertyName.equals(&quot;document&quot;)) {</span>
+<span class="nc" id="L60">            return this;</span>
+        }
+
+<span class="fc" id="L63">        Object result = super.get(propertyName, scriptable);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (result != NOT_FOUND) {</span>
+<span class="fc" id="L65">            return result;</span>
+        }
+
+<span class="fc" id="L68">        Element element = getElementById(propertyName);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (element != null) {</span>
+<span class="nc" id="L70">            return element;</span>
+        }
+
+<span class="fc" id="L73">        NodeList elements = getElementsByName(propertyName);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (elements.getLength() &gt;= 1) {</span>
+<span class="nc" id="L75">            return elements.item(0);</span>
+        }
+
+<span class="fc" id="L78">        return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);</span>
+    }
+
+    @Override
+    public void put(String propertyName, Scriptable initialObject, Object value) {
+<span class="fc" id="L83">        ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);</span>
+<span class="fc" id="L84">    }</span>
+
+    // ------------------------------------------ HTMLContainerElement methods
+    // ----------------------------------------------
+
+    @Override
+    public HTMLCollection getLinks() {
+<span class="fc" id="L91">        return _containerDelegate.getLinks(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getImages() {
+<span class="fc" id="L96">        return _containerDelegate.getImages(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getApplets() {
+<span class="fc" id="L101">        return _containerDelegate.getApplets(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getForms() {
+<span class="fc" id="L106">        return _containerDelegate.getForms(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getAnchors() {
+<span class="fc" id="L111">        return _containerDelegate.getAnchors(this);</span>
+    }
+
+    // -------------------------------------------- HTMLDocument methods
+    // ----------------------------------------------------
+
+    @Override
+    public String getTitle() {
+<span class="fc" id="L119">        HTMLTitleElement result = getTitleElement();</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        return result == null ? &quot;&quot; : result.getText();</span>
+    }
+
+    private HTMLTitleElement getTitleElement() {
+<span class="fc" id="L124">        HTMLTitleElement result = null;</span>
+<span class="fc" id="L125">        NodeList titleNodes = getElementsByTagName(&quot;title&quot;);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        for (int i = 0; i &lt; titleNodes.getLength(); i++) {</span>
+<span class="fc" id="L127">            Node node = titleNodes.item(i);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if (node instanceof HTMLTitleElement) {</span>
+<span class="fc" id="L129">                result = (HTMLTitleElement) node;</span>
+            }
+        }
+<span class="fc" id="L132">        return result;</span>
+    }
+
+    private HTMLHeadElement getHeadElement() {
+<span class="fc" id="L136">        NodeList headNodes = getElementsByTagName(&quot;head&quot;);</span>
+<span class="pc bfc" id="L137" title="All 2 branches covered.">        for (int i = 0; i &lt; headNodes.getLength(); i++) {</span>
+<span class="fc" id="L138">            Node node = headNodes.item(i);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            if (node instanceof HTMLHeadElement) {</span>
+<span class="fc" id="L140">                return (HTMLHeadElement) node;</span>
+            }
+        }
+
+<span class="fc" id="L144">        HTMLHeadElement head = (HTMLHeadElement) createElement(&quot;head&quot;);</span>
+<span class="fc" id="L145">        getHtmlElement().appendChild(head);</span>
+<span class="fc" id="L146">        return head;</span>
+    }
+
+    private HTMLHtmlElement getHtmlElement() {
+<span class="fc" id="L150">        NodeList htmlNodes = getElementsByTagName(&quot;html&quot;);</span>
+<span class="pc bfc" id="L151" title="All 2 branches covered.">        for (int i = 0; i &lt; htmlNodes.getLength(); i++) {</span>
+<span class="fc" id="L152">            Node node = htmlNodes.item(i);</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">            if (node instanceof HTMLHtmlElement) {</span>
+<span class="fc" id="L154">                return (HTMLHtmlElement) node;</span>
+            }
+        }
+
+<span class="fc" id="L158">        HTMLHtmlElement html = (HTMLHtmlElement) createElement(&quot;html&quot;);</span>
+<span class="fc" id="L159">        appendChild(html);</span>
+<span class="fc" id="L160">        return html;</span>
+    }
+
+    @Override
+    public void setTitle(String title) {
+<span class="fc" id="L165">        HTMLTitleElement titleElement = getTitleElement();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (titleElement != null) {</span>
+<span class="fc" id="L167">            titleElement.setText(title);</span>
+        } else {
+<span class="fc" id="L169">            titleElement = (HTMLTitleElement) createElement(&quot;title&quot;);</span>
+<span class="fc" id="L170">            titleElement.setText(title);</span>
+<span class="fc" id="L171">            getHeadElement().appendChild(titleElement);</span>
+        }
+<span class="fc" id="L173">    }</span>
+
+    @Override
+    public String getReferrer() {
+<span class="nc" id="L177">        return null;</span>
+    }
+
+    @Override
+    public String getDomain() {
+<span class="nc" id="L182">        return null;</span>
+    }
+
+    @Override
+    public String getURL() {
+<span class="nc" id="L187">        return null;</span>
+    }
+
+    @Override
+    public HTMLElement getBody() {
+<span class="fc" id="L192">        NodeList bodyNodes = getElementsByTagName(&quot;body&quot;);</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        for (int i = 0; i &lt; bodyNodes.getLength(); i++) {</span>
+<span class="fc" id="L194">            Node node = bodyNodes.item(i);</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">            if (node instanceof HTMLBodyElement) {</span>
+<span class="fc" id="L196">                return (HTMLBodyElement) node;</span>
+            }
+        }
+<span class="nc" id="L199">        return null;</span>
+    }
+
+    @Override
+    public void setBody(HTMLElement body) {
+<span class="fc" id="L204">        getHtmlElement().appendChild(body);</span>
+<span class="fc" id="L205">    }</span>
+
+    @Override
+    public String getCookie() {
+<span class="nc" id="L209">        return null;</span>
+    }
+
+    @Override
+    public void setCookie(String cookie) {
+<span class="nc" id="L214">    }</span>
+
+    @Override
+    public void open() {
+<span class="nc" id="L218">    }</span>
+
+    @Override
+    public void close() {
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (getWindow().replaceText(getWriteBuffer().toString(), getMimeType())) {</span>
+<span class="fc" id="L223">            clearWriteBuffer();</span>
+        }
+<span class="fc" id="L225">    }</span>
+
+    private String getMimeType() {
+<span class="fc" id="L228">        return &quot;text/html&quot;;</span>
+    }
+
+    @Override
+    public void write(String text) {
+<span class="fc" id="L233">        getWriteBuffer().append(text);</span>
+<span class="fc" id="L234">    }</span>
+
+    @Override
+    public void writeln(String text) {
+<span class="fc" id="L238">        getWriteBuffer().append(text).append((char) 0x0d).append((char) 0x0a);</span>
+<span class="fc" id="L239">    }</span>
+
+    @Override
+    public NodeList getElementsByName(String elementName) {
+<span class="fc" id="L243">        ArrayList&lt;HTMLElementImpl&gt; elements = new ArrayList&lt;HTMLElementImpl&gt;();</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        for (Iterator&lt;?&gt; each = preOrderIterator(); each.hasNext();) {</span>
+<span class="fc" id="L245">            Node node = (Node) each.next();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            if (!(node instanceof HTMLElementImpl)) {</span>
+<span class="fc" id="L247">                continue;</span>
+            }
+<span class="fc" id="L249">            HTMLElementImpl element = (HTMLElementImpl) node;</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            if (elementName.equals(element.getAttributeWithNoDefault(&quot;name&quot;))) {</span>
+<span class="fc" id="L251">                elements.add(element);</span>
+            }
+<span class="fc" id="L253">        }</span>
+<span class="fc" id="L254">        return new NodeListImpl(elements);</span>
+    }
+
+    @Override
+    public Element createElement(String tagName) throws DOMException {
+<span class="fc" id="L259">        ElementImpl element = getExemplar(tagName).create();</span>
+<span class="fc" id="L260">        element.initialize(this, toNodeCase(tagName));</span>
+<span class="fc" id="L261">        return element;</span>
+    }
+
+    @Override
+    public Element createElementNS(String namespaceURI, String qualifiedName) throws DOMException {
+<span class="fc" id="L266">        ElementImpl element = getExemplar(qualifiedName).create();</span>
+<span class="fc" id="L267">        element.initialize(this, namespaceURI, toNodeCase(qualifiedName));</span>
+<span class="fc" id="L268">        return element;</span>
+    }
+
+    @Override
+    public NodeList getElementsByTagName(String name) {
+<span class="fc" id="L273">        return super.getElementsByTagName(toNodeCase(name));</span>
+    }
+
+    @Override
+    public Node cloneNode(boolean deep) {
+<span class="fc" id="L278">        HTMLDocumentImpl copy = new HTMLDocumentImpl();</span>
+
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">        if (deep) {</span>
+<span class="fc" id="L281">            copy.importChildren(this, copy);</span>
+<span class="fc" id="L282">            copy._documentElement = copy.getHtmlElement();</span>
+        }
+<span class="fc" id="L284">        return copy;</span>
+    }
+
+    private static HTMLElementImpl getExemplar(String tagName) {
+<span class="fc" id="L288">        HTMLElementImpl impl = (HTMLElementImpl) _exemplars.get(tagName.toLowerCase());</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        if (impl == null) {</span>
+<span class="fc" id="L290">            impl = new HTMLElementImpl();</span>
+        }
+<span class="fc" id="L292">        return impl;</span>
+    }
+
+    String toNodeCase(String nodeName) {
+<span class="fc" id="L296">        return nodeName.toUpperCase();</span>
+    }
+
+    HTMLContainerDelegate getContainerDelegate() {
+<span class="fc" id="L300">        return _containerDelegate;</span>
+    }
+
+    static {
+<span class="fc" id="L304">        _exemplars.put(&quot;html&quot;, new HTMLHtmlElementImpl());</span>
+<span class="fc" id="L305">        _exemplars.put(&quot;head&quot;, new HTMLHeadElementImpl());</span>
+<span class="fc" id="L306">        _exemplars.put(&quot;link&quot;, new HTMLLinkElementImpl());</span>
+<span class="fc" id="L307">        _exemplars.put(&quot;title&quot;, new HTMLTitleElementImpl());</span>
+<span class="fc" id="L308">        _exemplars.put(&quot;meta&quot;, new HTMLMetaElementImpl());</span>
+<span class="fc" id="L309">        _exemplars.put(&quot;base&quot;, new HTMLBaseElementImpl());</span>
+<span class="fc" id="L310">        _exemplars.put(&quot;style&quot;, new HTMLStyleElementImpl());</span>
+<span class="fc" id="L311">        _exemplars.put(&quot;body&quot;, new HTMLBodyElementImpl());</span>
+<span class="fc" id="L312">        _exemplars.put(&quot;form&quot;, new HTMLFormElementImpl());</span>
+<span class="fc" id="L313">        _exemplars.put(&quot;select&quot;, new HTMLSelectElementImpl());</span>
+<span class="fc" id="L314">        _exemplars.put(&quot;option&quot;, new HTMLOptionElementImpl());</span>
+<span class="fc" id="L315">        _exemplars.put(&quot;input&quot;, new HTMLInputElementImpl());</span>
+<span class="fc" id="L316">        _exemplars.put(&quot;button&quot;, new HTMLButtonElementImpl());</span>
+<span class="fc" id="L317">        _exemplars.put(&quot;textarea&quot;, new HTMLTextAreaElementImpl());</span>
+<span class="fc" id="L318">        _exemplars.put(&quot;a&quot;, new HTMLAnchorElementImpl());</span>
+<span class="fc" id="L319">        _exemplars.put(&quot;area&quot;, new HTMLAreaElementImpl());</span>
+<span class="fc" id="L320">        _exemplars.put(&quot;img&quot;, new HTMLImageElementImpl());</span>
+<span class="fc" id="L321">        _exemplars.put(&quot;td&quot;, new HTMLTableCellElementImpl());</span>
+<span class="fc" id="L322">        _exemplars.put(&quot;th&quot;, new HTMLTableCellElementImpl());</span>
+<span class="fc" id="L323">        _exemplars.put(&quot;tr&quot;, new HTMLTableRowElementImpl());</span>
+<span class="fc" id="L324">        _exemplars.put(&quot;table&quot;, new HTMLTableElementImpl());</span>
+<span class="fc" id="L325">        _exemplars.put(&quot;p&quot;, new HTMLParagraphElementImpl());</span>
+<span class="fc" id="L326">        _exemplars.put(&quot;iframe&quot;, new HTMLIFrameElementImpl());</span>
+<span class="fc" id="L327">        _exemplars.put(&quot;applet&quot;, new HTMLAppletElementImpl());</span>
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * get the Window
+     *
+     * @return the window
+     */
+    public DomWindow getWindow() {
+        // if there is now window yet
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        if (_window == null) {</span>
+            // create a window for this document
+<span class="fc" id="L339">            _window = new DomWindow(this);</span>
+<span class="fc" id="L340">            setParentScope(_window);</span>
+        }
+<span class="fc" id="L342">        return _window;</span>
+    }
+
+    StringBuilder getWriteBuffer() {
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        if (_writeBuffer == null) {</span>
+<span class="fc" id="L347">            _writeBuffer = new StringBuilder();</span>
+        }
+<span class="fc" id="L349">        return _writeBuffer;</span>
+    }
+
+    public void clearWriteBuffer() {
+<span class="fc" id="L353">        _writeBuffer = null;</span>
+<span class="fc" id="L354">    }</span>
+
+    URL getBaseUrl() {
+<span class="fc" id="L357">        NodeList list = getElementsByTagName(&quot;base&quot;);</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">        if (list.getLength() == 0) {</span>
+<span class="fc" id="L359">            return getWindow().getUrl();</span>
+        }
+
+<span class="fc" id="L362">        HTMLBaseElement base = (HTMLBaseElement) list.item(0);</span>
+        try {
+<span class="fc" id="L364">            return new URL(getWindow().getUrl(), base.getHref());</span>
+<span class="nc" id="L365">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L366">            return getWindow().getUrl();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

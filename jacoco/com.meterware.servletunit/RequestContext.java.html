@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">RequestContext.java</span></div><h1>RequestContext.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.HttpUnitUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * @author &lt;a href=&quot;russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+class RequestContext {
+
+<span class="fc" id="L39">    private Hashtable _parameters = new Hashtable();</span>
+    private Hashtable _visibleParameters;
+    private HttpServletRequest _parentRequest;
+    private URL _url;
+    private byte[] _messageBody;
+    private String _messageEncoding;
+
+<span class="fc" id="L46">    RequestContext(URL url) {</span>
+<span class="fc" id="L47">        _url = url;</span>
+<span class="fc" id="L48">        String file = _url.getFile();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (file.indexOf('?') &gt;= 0) {</span>
+<span class="fc" id="L50">            loadParameters(file.substring(file.indexOf('?') + 1) /* urlEncoded */ );</span>
+        }
+<span class="fc" id="L52">    }</span>
+
+    void setParentRequest(HttpServletRequest parentRequest) {
+<span class="fc" id="L55">        _parentRequest = parentRequest;</span>
+<span class="fc" id="L56">        _visibleParameters = null;</span>
+<span class="fc" id="L57">    }</span>
+
+    String getRequestURI() {
+<span class="fc" id="L60">        return _url.getPath();</span>
+    }
+
+    String getParameter(String name) {
+<span class="fc" id="L64">        String[] parameters = (String[]) getParameters().get(name);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        return parameters == null ? null : parameters[0];</span>
+    }
+
+    Enumeration getParameterNames() {
+<span class="fc" id="L69">        return getParameters().keys();</span>
+    }
+
+    Map getParameterMap() {
+<span class="fc" id="L73">        return (Map) getParameters().clone();</span>
+    }
+
+    String[] getParameterValues(String name) {
+<span class="fc" id="L77">        return (String[]) getParameters().get(name);</span>
+    }
+
+    final static private int STATE_INITIAL = 0;
+    final static private int STATE_HAVE_NAME = 1;
+    final static private int STATE_HAVE_EQUALS = 2;
+    final static private int STATE_HAVE_VALUE = 3;
+
+    /**
+     * This method employs a state machine to parse a parameter query string. The transition rules are as follows: State
+     * \ text '=' '&amp;' initial: have_name - initial have_name: - have_equals initial have_equals: have_value - initial
+     * have_value: - initial initial actions occur on the following transitions: initial -&gt; have_name: save token as
+     * name have_equals -&gt; initial: record parameter with null value have_value -&gt; initial: record parameter with value
+     **/
+    void loadParameters(String queryString) {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (queryString.length() == 0) {</span>
+<span class="fc" id="L93">            return;</span>
+        }
+<span class="fc" id="L95">        StringTokenizer st = new StringTokenizer(queryString, &quot;&amp;=&quot;, /* return tokens */ true);</span>
+<span class="fc" id="L96">        int state = STATE_INITIAL;</span>
+<span class="fc" id="L97">        String name = null;</span>
+<span class="fc" id="L98">        String value = null;</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L101">            String token = st.nextToken();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            if (token.equals(&quot;&amp;&quot;)) {</span>
+<span class="fc" id="L103">                state = STATE_INITIAL;</span>
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">                if (name != null &amp;&amp; value != null) {</span>
+<span class="fc" id="L105">                    addParameter(name, value);</span>
+                }
+<span class="fc" id="L107">                name = value = null;</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            } else if (token.equals(&quot;=&quot;)) {</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                if (state == STATE_HAVE_NAME) {</span>
+<span class="fc" id="L110">                    state = STATE_HAVE_EQUALS;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                } else if (state == STATE_HAVE_VALUE) {</span>
+<span class="nc" id="L112">                    state = STATE_INITIAL;</span>
+                }
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            } else if (state == STATE_INITIAL) {</span>
+<span class="fc" id="L115">                name = HttpUnitUtils.decode(token, getMessageEncoding());</span>
+<span class="fc" id="L116">                value = &quot;&quot;;</span>
+<span class="fc" id="L117">                state = STATE_HAVE_NAME;</span>
+            } else {
+<span class="fc" id="L119">                value = HttpUnitUtils.decode(token, getMessageEncoding());</span>
+<span class="fc" id="L120">                state = STATE_HAVE_VALUE;</span>
+            }
+<span class="fc" id="L122">        }</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">        if (name != null &amp;&amp; value != null) {</span>
+<span class="fc" id="L124">            addParameter(name, value);</span>
+        }
+<span class="fc" id="L126">    }</span>
+
+    private void addParameter(String name, String encodedValue) {
+<span class="fc" id="L129">        String[] values = (String[]) _parameters.get(name);</span>
+<span class="fc" id="L130">        _visibleParameters = null;</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (values == null) {</span>
+<span class="fc" id="L132">            _parameters.put(name, new String[] { encodedValue });</span>
+        } else {
+<span class="fc" id="L134">            _parameters.put(name, extendedArray(values, encodedValue));</span>
+        }
+<span class="fc" id="L136">    }</span>
+
+    private static String[] extendedArray(String[] baseArray, String newValue) {
+<span class="fc" id="L139">        String[] result = new String[baseArray.length + 1];</span>
+<span class="fc" id="L140">        System.arraycopy(baseArray, 0, result, 0, baseArray.length);</span>
+<span class="fc" id="L141">        result[baseArray.length] = newValue;</span>
+<span class="fc" id="L142">        return result;</span>
+    }
+
+    private Hashtable getParameters() {
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (_messageBody != null) {</span>
+<span class="fc" id="L147">            loadParameters(getMessageBodyAsString());</span>
+<span class="fc" id="L148">            _messageBody = null;</span>
+        }
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (_visibleParameters == null) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (_parentRequest == null) {</span>
+<span class="fc" id="L152">                _visibleParameters = _parameters;</span>
+            } else {
+<span class="fc" id="L154">                _visibleParameters = new Hashtable();</span>
+<span class="fc" id="L155">                final Map parameterMap = _parentRequest.getParameterMap();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">                for (Object key : parameterMap.keySet()) {</span>
+<span class="fc" id="L157">                    _visibleParameters.put(key, parameterMap.get(key));</span>
+<span class="fc" id="L158">                }</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                for (Enumeration e = _parameters.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L160">                    Object key = e.nextElement();</span>
+<span class="fc" id="L161">                    _visibleParameters.put(key, _parameters.get(key));</span>
+<span class="fc" id="L162">                }</span>
+            }
+        }
+<span class="fc" id="L165">        return _visibleParameters;</span>
+    }
+
+    private String getMessageBodyAsString() {
+        try {
+<span class="fc" id="L170">            return new String(_messageBody, &quot;iso-8859-1&quot;);</span>
+<span class="nc" id="L171">        } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L172">            return &quot;&quot;;</span>
+        }
+    }
+
+    void setMessageBody(byte[] bytes) {
+<span class="fc" id="L177">        _messageBody = bytes;</span>
+<span class="fc" id="L178">    }</span>
+
+    public void setMessageEncoding(String messageEncoding) {
+<span class="fc" id="L181">        _messageEncoding = messageEncoding;</span>
+<span class="fc" id="L182">    }</span>
+
+    private String getMessageEncoding() {
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        return _messageEncoding == null ?</span>
+                /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
+<span class="fc" id="L187">                HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

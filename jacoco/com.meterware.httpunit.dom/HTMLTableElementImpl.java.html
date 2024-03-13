@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTableElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTableElementImpl.java</span></div><h1>HTMLTableElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import org.w3c.dom.DOMException;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLElement;
+import org.w3c.dom.html.HTMLTableCaptionElement;
+import org.w3c.dom.html.HTMLTableElement;
+import org.w3c.dom.html.HTMLTableSectionElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+<span class="fc" id="L32">public class HTMLTableElementImpl extends HTMLElementImpl implements HTMLTableElement {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    ElementImpl create() {
+<span class="fc" id="L38">        return new HTMLTableElementImpl();</span>
+    }
+
+    @Override
+    public String getAlign() {
+<span class="fc" id="L43">        return getAttributeWithDefault(&quot;align&quot;, &quot;center&quot;);</span>
+    }
+
+    @Override
+    public void setAlign(String align) {
+<span class="fc" id="L48">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public String getBgColor() {
+<span class="fc" id="L53">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+    }
+
+    @Override
+    public void setBgColor(String bgColor) {
+<span class="fc" id="L58">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L59">    }</span>
+
+    @Override
+    public String getBorder() {
+<span class="fc" id="L63">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
+    }
+
+    @Override
+    public void setBorder(String border) {
+<span class="fc" id="L68">        setAttribute(&quot;border&quot;, border);</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override
+    public String getCellPadding() {
+<span class="fc" id="L73">        return getAttributeWithNoDefault(&quot;cellpadding&quot;);</span>
+    }
+
+    @Override
+    public void setCellPadding(String cellPadding) {
+<span class="fc" id="L78">        setAttribute(&quot;cellpadding&quot;, cellPadding);</span>
+<span class="fc" id="L79">    }</span>
+
+    @Override
+    public String getCellSpacing() {
+<span class="fc" id="L83">        return getAttributeWithNoDefault(&quot;cellspacing&quot;);</span>
+    }
+
+    @Override
+    public void setCellSpacing(String cellSpacing) {
+<span class="fc" id="L88">        setAttribute(&quot;cellspacing&quot;, cellSpacing);</span>
+<span class="fc" id="L89">    }</span>
+
+    @Override
+    public String getFrame() {
+<span class="fc" id="L93">        return getAttributeWithDefault(&quot;frame&quot;, &quot;void&quot;);</span>
+    }
+
+    @Override
+    public void setFrame(String frame) {
+<span class="fc" id="L98">        setAttribute(&quot;frame&quot;, frame);</span>
+<span class="fc" id="L99">    }</span>
+
+    @Override
+    public String getRules() {
+<span class="fc" id="L103">        return getAttributeWithDefault(&quot;rules&quot;, &quot;none&quot;);</span>
+    }
+
+    @Override
+    public void setRules(String rules) {
+<span class="fc" id="L108">        setAttribute(&quot;rules&quot;, rules);</span>
+<span class="fc" id="L109">    }</span>
+
+    @Override
+    public String getSummary() {
+<span class="fc" id="L113">        return getAttributeWithNoDefault(&quot;summary&quot;);</span>
+    }
+
+    @Override
+    public void setSummary(String summary) {
+<span class="fc" id="L118">        setAttribute(&quot;summary&quot;, summary);</span>
+<span class="fc" id="L119">    }</span>
+
+    @Override
+    public String getWidth() {
+<span class="fc" id="L123">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+    }
+
+    @Override
+    public void setWidth(String width) {
+<span class="fc" id="L128">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L129">    }</span>
+
+    @Override
+    public HTMLElement createCaption() {
+<span class="nc" id="L133">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLElement createTFoot() {
+<span class="nc" id="L138">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLElement createTHead() {
+<span class="nc" id="L143">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public void deleteCaption() {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L149">    }</span>
+
+    @Override
+    public void deleteRow(int index) throws DOMException {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L154">    }</span>
+
+    @Override
+    public void deleteTFoot() {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L159">    }</span>
+
+    @Override
+    public void deleteTHead() {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L164">    }</span>
+
+    @Override
+    public HTMLTableCaptionElement getCaption() {
+<span class="nc" id="L168">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLCollection getRows() {
+<span class="fc" id="L173">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagName(&quot;tr&quot;));</span>
+    }
+
+    @Override
+    public HTMLCollection getTBodies() {
+<span class="nc" id="L178">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLTableSectionElement getTFoot() {
+<span class="nc" id="L183">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLTableSectionElement getTHead() {
+<span class="nc" id="L188">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public HTMLElement insertRow(int index) throws DOMException {
+<span class="nc" id="L193">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public void setCaption(HTMLTableCaptionElement caption) {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L199">    }</span>
+
+    @Override
+    public void setTFoot(HTMLTableSectionElement tFoot) {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L204">    }</span>
+
+    @Override
+    public void setTHead(HTMLTableSectionElement tHead) {
+        // To change body of implemented methods use File | Settings | File Templates.
+<span class="nc" id="L209">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

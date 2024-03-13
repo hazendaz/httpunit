@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UncheckedParameterHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">UncheckedParameterHolder.java</span></div><h1>UncheckedParameterHolder.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.protocol.ParameterProcessor;
+import com.meterware.httpunit.protocol.UploadFileSpec;
+
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
+
+<span class="fc" id="L34">    private static final String[] NO_VALUES = {};</span>
+    private final String _characterSet;
+
+<span class="fc" id="L37">    private Hashtable _parameters = new Hashtable();</span>
+    private boolean _submitAsMime;
+
+<span class="fc" id="L40">    UncheckedParameterHolder() {</span>
+<span class="fc" id="L41">        _characterSet = HttpUnitOptions.getDefaultCharacterSet();</span>
+<span class="fc" id="L42">    }</span>
+
+<span class="fc" id="L44">    UncheckedParameterHolder(WebRequestSource source) {</span>
+<span class="fc" id="L45">        _characterSet = source.getCharacterSet();</span>
+<span class="fc" id="L46">        _submitAsMime = source.isSubmitAsMime();</span>
+
+        try {
+<span class="fc" id="L49">            source.recordPredefinedParameters(this);</span>
+<span class="fc" id="L50">            source.recordParameters(this);</span>
+<span class="nc" id="L51">        } catch (IOException e) {</span>
+<span class="nc" id="L52">            throw new RuntimeException(&quot;This should never happen&quot;);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
+
+    // ----------------------------------- ParameterProcessor methods
+    // -------------------------------------------------------
+
+    @Override
+    public void addParameter(String name, String value, String characterSet) throws IOException {
+<span class="fc" id="L61">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc" id="L62">        _parameters.put(name, HttpUnitUtils.withNewValue(values, value));</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override
+    public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
+<span class="fc" id="L67">        Object[] values = (Object[]) _parameters.get(parameterName);</span>
+<span class="fc" id="L68">        _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));</span>
+<span class="fc" id="L69">    }</span>
+
+    // ----------------------------------- ParameterHolder methods
+    // ----------------------------------------------------------
+
+    /**
+     * Specifies the position at which an image button (if any) was clicked.
+     **/
+    @Override
+    void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (imageButton.isValidImageButton()) {</span>
+<span class="fc" id="L80">            setParameter(imageButton.positionParameterName(&quot;x&quot;), Integer.toString(x));</span>
+<span class="fc" id="L81">            setParameter(imageButton.positionParameterName(&quot;y&quot;), Integer.toString(y));</span>
+        }
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Does nothing, since unchecked requests treat all parameters the same.
+     **/
+    @Override
+    void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
+     **/
+    @Override
+    public void recordParameters(ParameterProcessor processor) throws IOException {
+<span class="fc" id="L97">        Enumeration e = _parameters.keys();</span>
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        while (e.hasMoreElements()) {</span>
+<span class="fc" id="L100">            String name = (String) e.nextElement();</span>
+<span class="fc" id="L101">            Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            for (Object value : values) {</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">                if (value instanceof String || value == null) {</span>
+<span class="fc" id="L104">                    processor.addParameter(name, (String) value, _characterSet);</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">                } else if (value instanceof UploadFileSpec) {</span>
+<span class="fc" id="L106">                    processor.addFile(name, (UploadFileSpec) value);</span>
+                }
+            }
+<span class="fc" id="L109">        }</span>
+<span class="fc" id="L110">    }</span>
+
+    @Override
+    String[] getParameterNames() {
+<span class="nc" id="L114">        return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);</span>
+    }
+
+    String getParameterValue(String name) {
+<span class="nc" id="L118">        String[] values = getParameterValues(name);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        return values.length == 0 ? null : values[0];</span>
+    }
+
+    @Override
+    String[] getParameterValues(String name) {
+<span class="fc" id="L124">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (values == null) {</span>
+<span class="nc" id="L126">            return NO_VALUES;</span>
+        }
+
+<span class="fc" id="L129">        String[] result = new String[values.length];</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            result[i] = values[i] instanceof UploadFileSpec ? ((UploadFileSpec) values[i]).getFileName()</span>
+<span class="fc" id="L132">                    : values[i].toString();</span>
+        }
+<span class="fc" id="L134">        return result;</span>
+    }
+
+    @Override
+    void removeParameter(String name) {
+<span class="nc" id="L139">        _parameters.remove(name);</span>
+<span class="nc" id="L140">    }</span>
+
+    @Override
+    void setParameter(String name, String value) {
+<span class="fc" id="L144">        _parameters.put(name, new Object[] { value });</span>
+<span class="fc" id="L145">    }</span>
+
+    @Override
+    void setParameter(String name, String[] values) {
+<span class="fc" id="L149">        _parameters.put(name, values);</span>
+<span class="fc" id="L150">    }</span>
+
+    @Override
+    void setParameter(String name, UploadFileSpec[] files) {
+<span class="fc" id="L154">        _parameters.put(name, files);</span>
+<span class="fc" id="L155">    }</span>
+
+    @Override
+    boolean isFileParameter(String name) {
+<span class="fc" id="L159">        return true;</span>
+    }
+
+    @Override
+    String getCharacterSet() {
+<span class="fc" id="L164">        return _characterSet;</span>
+    }
+
+    @Override
+    boolean isSubmitAsMime() {
+<span class="fc" id="L169">        return _submitAsMime;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

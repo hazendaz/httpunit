@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTableCellElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTableCellElementImpl.java</span></div><h1>HTMLTableCellElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLTableCellElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+<span class="fc" id="L28">public class HTMLTableCellElementImpl extends HTMLElementImpl</span>
+implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    ElementImpl create() {
+<span class="fc" id="L35">        return new HTMLTableCellElementImpl();</span>
+    }
+
+    // ------------------------------------------ HTMLContainerElement methods
+    // ----------------------------------------------
+
+    @Override
+    public HTMLCollection getLinks() {
+<span class="fc" id="L43">        return getHtmlDocument().getContainerDelegate().getLinks(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getImages() {
+<span class="nc" id="L48">        return getHtmlDocument().getContainerDelegate().getImages(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getApplets() {
+<span class="nc" id="L53">        return getHtmlDocument().getContainerDelegate().getApplets(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getForms() {
+<span class="nc" id="L58">        return getHtmlDocument().getContainerDelegate().getForms(this);</span>
+    }
+
+    @Override
+    public HTMLCollection getAnchors() {
+<span class="nc" id="L63">        return getHtmlDocument().getContainerDelegate().getAnchors(this);</span>
+    }
+
+    // -------------------------------------------- HTMLTableCellElement methods
+    // --------------------------------------------
+
+    @Override
+    public String getAbbr() {
+<span class="fc" id="L71">        return getAttributeWithNoDefault(&quot;abbr&quot;);</span>
+    }
+
+    @Override
+    public void setAbbr(String abbr) {
+<span class="fc" id="L76">        setAttribute(&quot;abbr&quot;, abbr);</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public String getAlign() {
+<span class="fc" id="L81">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+    }
+
+    @Override
+    public void setAlign(String align) {
+<span class="fc" id="L86">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L87">    }</span>
+
+    @Override
+    public String getAxis() {
+<span class="fc" id="L91">        return getAttributeWithNoDefault(&quot;axis&quot;);</span>
+    }
+
+    @Override
+    public void setAxis(String axis) {
+<span class="fc" id="L96">        setAttribute(&quot;axis&quot;, axis);</span>
+<span class="fc" id="L97">    }</span>
+
+    @Override
+    public String getBgColor() {
+<span class="fc" id="L101">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+    }
+
+    @Override
+    public void setBgColor(String bgColor) {
+<span class="fc" id="L106">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L107">    }</span>
+
+    @Override
+    public int getCellIndex() {
+<span class="nc" id="L111">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    @Override
+    public String getCh() {
+<span class="fc" id="L116">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
+    }
+
+    @Override
+    public void setCh(String ch) {
+<span class="fc" id="L121">        setAttribute(&quot;char&quot;, ch);</span>
+<span class="fc" id="L122">    }</span>
+
+    @Override
+    public String getChOff() {
+<span class="fc" id="L126">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
+    }
+
+    @Override
+    public void setChOff(String chOff) {
+<span class="fc" id="L131">        setAttribute(&quot;charoff&quot;, chOff);</span>
+<span class="fc" id="L132">    }</span>
+
+    @Override
+    public int getColSpan() {
+<span class="fc" id="L136">        return getIntegerAttribute(&quot;colspan&quot;, 1);</span>
+    }
+
+    @Override
+    public void setColSpan(int colSpan) {
+<span class="fc" id="L141">        setAttribute(&quot;colspan&quot;, colSpan);</span>
+<span class="fc" id="L142">    }</span>
+
+    @Override
+    public String getHeaders() {
+<span class="fc" id="L146">        return getAttributeWithNoDefault(&quot;headers&quot;);</span>
+    }
+
+    @Override
+    public void setHeaders(String headers) {
+<span class="fc" id="L151">        setAttribute(&quot;headers&quot;, headers);</span>
+<span class="fc" id="L152">    }</span>
+
+    @Override
+    public String getHeight() {
+<span class="fc" id="L156">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
+    }
+
+    @Override
+    public void setHeight(String height) {
+<span class="fc" id="L161">        setAttribute(&quot;height&quot;, height);</span>
+<span class="fc" id="L162">    }</span>
+
+    @Override
+    public boolean getNoWrap() {
+<span class="fc" id="L166">        return getBooleanAttribute(&quot;nowrap&quot;);</span>
+    }
+
+    @Override
+    public void setNoWrap(boolean noWrap) {
+<span class="fc" id="L171">        setAttribute(&quot;nowrap&quot;, noWrap);</span>
+<span class="fc" id="L172">    }</span>
+
+    @Override
+    public int getRowSpan() {
+<span class="fc" id="L176">        return getIntegerAttribute(&quot;rowspan&quot;, 1);</span>
+    }
+
+    @Override
+    public void setRowSpan(int rowSpan) {
+<span class="fc" id="L181">        setAttribute(&quot;rowspan&quot;, rowSpan);</span>
+<span class="fc" id="L182">    }</span>
+
+    @Override
+    public String getScope() {
+<span class="fc" id="L186">        return getAttributeWithNoDefault(&quot;scope&quot;);</span>
+    }
+
+    @Override
+    public void setScope(String scope) {
+<span class="fc" id="L191">        setAttribute(&quot;scope&quot;, scope);</span>
+<span class="fc" id="L192">    }</span>
+
+    @Override
+    public String getVAlign() {
+<span class="fc" id="L196">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
+    }
+
+    @Override
+    public void setVAlign(String vAlign) {
+<span class="fc" id="L201">        setAttribute(&quot;valign&quot;, vAlign);</span>
+<span class="fc" id="L202">    }</span>
+
+    @Override
+    public String getWidth() {
+<span class="fc" id="L206">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+    }
+
+    @Override
+    public void setWidth(String width) {
+<span class="fc" id="L211">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L212">    }</span>
+
+    @Override
+    public String getJavaAttributeName(String attributeName) {
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
+<span class="fc" id="L217">            return &quot;ch&quot;;</span>
+        }
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
+<span class="fc" id="L220">            return &quot;choff&quot;;</span>
+        }
+<span class="fc" id="L222">        return attributeName;</span>
+    }
+
+    public void setCellIndex(int cellIndex) {
+        // TODO Auto-generated method stub
+
+<span class="nc" id="L228">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

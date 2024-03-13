@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.protocol</a> &gt; <span class="el_source">MessageBody.java</span></div><h1>MessageBody.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.protocol;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+/**
+ * An abstract class representing the body of a web request.
+ **/
+abstract public class MessageBody {
+
+    private String _characterSet;
+
+    /**
+     * Creates a message body for a POST request, selecting an appropriate encoding.
+     *
+     * @param mimeEncoded
+     *            if true, indicates that the request is using mime encoding.
+     * @param characterSet
+     *            the character set of the request.
+     *
+     * @return an appropriate message body.
+     */
+    public static MessageBody createPostMethodMessageBody(boolean mimeEncoded, String characterSet) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        return mimeEncoded ? (MessageBody) new MimeEncodedMessageBody(characterSet)</span>
+<span class="fc" id="L44">                : (MessageBody) new URLEncodedMessageBody(characterSet);</span>
+    }
+
+<span class="fc" id="L47">    public MessageBody(String characterSet) {</span>
+<span class="fc" id="L48">        _characterSet = characterSet;</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Returns the character set associated with this message body.
+     */
+    public String getCharacterSet() {
+<span class="fc" id="L55">        return _characterSet;</span>
+    }
+
+    /**
+     * Returns the content type of this message body. For text messages, this should include the character set.
+     **/
+    abstract public String getContentType();
+
+    /**
+     * Transmits the body of this request as a sequence of bytes.
+     **/
+    abstract public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

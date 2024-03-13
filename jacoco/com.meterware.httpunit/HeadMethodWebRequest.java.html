@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeadMethodWebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HeadMethodWebRequest.java</span></div><h1>HeadMethodWebRequest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.net.URL;
+
+/********************************************************************************************************************
+ * $Id$
+ *
+ * Copyright (c) 2002-2008, Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ *******************************************************************************************************************/
+
+/**
+ * A web request using the HEAD method. This request is used to obtain header information for a resource without
+ * necessarily waiting for the data to be computed or transmitted. RFC 2616
+ * http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html defines: 9.4 HEAD The HEAD method is identical to GET except
+ * that the server MUST NOT return a message-body in the response. The metainformation contained in the HTTP headers in
+ * response to a HEAD request SHOULD be identical to the information sent in response to a GET request. This method can
+ * be used for obtaining metainformation about the entity implied by the request without transferring the entity-body
+ * itself. This method is often used for testing hypertext links for validity, accessibility, and recent modification.
+ * The response to a HEAD request MAY be cacheable in the sense that the information contained in the response MAY be
+ * used to update a previously cached entity from that resource. If the new field values indicate that the cached entity
+ * differs from the current entity (as would be indicated by a change in Content-Length, Content-MD5, ETag or
+ * Last-Modified), then the cache MUST treat the cache entry as stale.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
+
+    /**
+     * initialize me - set method to HEAD
+     */
+    private void init() {
+<span class="fc" id="L66">        super.setMethod(&quot;HEAD&quot;);</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Creates a new head request from a complete URL string.
+     *
+     * @param urlString
+     *            the URL desired, including the protocol.
+     */
+    public HeadMethodWebRequest(String urlString) {
+<span class="fc" id="L76">        super(urlString);</span>
+<span class="fc" id="L77">        init();</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Creates a new head request using a relative URL and base.
+     *
+     * @param urlBase
+     *            the base URL.
+     * @param urlString
+     *            the relative URL
+     */
+    public HeadMethodWebRequest(URL urlBase, String urlString) {
+<span class="nc" id="L89">        super(urlBase, urlString);</span>
+<span class="nc" id="L90">        init();</span>
+<span class="nc" id="L91">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

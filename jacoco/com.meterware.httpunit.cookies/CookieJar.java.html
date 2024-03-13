@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CookieJar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.cookies</a> &gt; <span class="el_source">CookieJar.java</span></div><h1>CookieJar.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.cookies;
+
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
+
+/**
+ * A collection of HTTP cookies, which can interact with cookie and set-cookie header values.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:drew.varner@oracle.com&quot;&gt;Drew Varner&lt;/a&gt;
+ **/
+public class CookieJar {
+
+    private static final int DEFAULT_HEADER_SIZE = 80;
+
+<span class="fc" id="L43">    private ArrayList _cookies = new ArrayList();</span>
+<span class="fc" id="L44">    private ArrayList _globalCookies = new ArrayList();</span>
+    private CookiePress _press;
+
+    /**
+     * Creates an empty cookie jar.
+     */
+<span class="fc" id="L50">    public CookieJar() {</span>
+<span class="fc" id="L51">        _press = new CookiePress(null);</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Creates a cookie jar which is initially populated with cookies parsed from the &lt;code&gt;Set-Cookie&lt;/code&gt; and
+     * &lt;code&gt;Set-Cookie2&lt;/code&gt; header fields.
+     * &lt;p&gt;
+     * Note that the parsing does not strictly follow the specifications, but attempts to imitate the behavior of
+     * popular browsers. Specifically, it allows cookie values to contain commas, which the Netscape standard does not
+     * allow for, but which is required by some servers.
+     * &lt;/p&gt;
+     */
+<span class="fc" id="L63">    public CookieJar(CookieSource source) {</span>
+<span class="fc" id="L64">        _press = new CookiePress(source.getURL());</span>
+<span class="fc" id="L65">        findCookies(source.getHeaderFields(&quot;Set-Cookie&quot;), new RFC2109CookieRecipe());</span>
+<span class="fc" id="L66">        findCookies(source.getHeaderFields(&quot;Set-Cookie2&quot;), new RFC2965CookieRecipe());</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * find the cookies in the given Header String array
+     *
+     * @param cookieHeader
+     *            - the strings to look for cookies
+     * @param recipe
+     *            - the recipe to use
+     */
+    private void findCookies(String cookieHeader[], CookieRecipe recipe) {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (String element : cookieHeader) {</span>
+<span class="fc" id="L79">            recipe.findCookies(element);</span>
+        }
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Empties this cookie jar of all contents.
+     */
+    public void clear() {
+<span class="nc" id="L87">        _cookies.clear();</span>
+<span class="nc" id="L88">        _globalCookies.clear();</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Defines a cookie to be sent to the server on every request. This bypasses the normal mechanism by which only
+     * certain cookies are sent based on their host and path.
+     *
+     * @deprecated as of 1.6, use #putCookie
+     **/
+    @Deprecated
+    public void addCookie(String name, String value) {
+<span class="nc" id="L99">        _globalCookies.add(new Cookie(name, value));</span>
+<span class="nc" id="L100">    }</span>
+
+    /**
+     * Defines a cookie to be sent to the server on every request. This bypasses the normal mechanism by which only
+     * certain cookies are sent based on their host and path. Values of null will result in the cookie being removed.
+     * Any other value will leave the cookie unchanged expect for the value.
+     *
+     * @since 1.6
+     **/
+    public void putCookie(String name, String value) {
+<span class="fc" id="L110">        boolean foundCookie = false;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L112">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (name.equals(cookie.getName())) {</span>
+<span class="fc" id="L114">                foundCookie = true;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">                if (value != null) {</span>
+<span class="fc" id="L116">                    cookie.setValue(value);</span>
+                } else {
+<span class="fc" id="L118">                    iterator.remove();</span>
+                }
+            }
+<span class="fc" id="L121">        }</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (Iterator iterator = _cookies.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L124">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">            if (name.equals(cookie.getName())) {</span>
+<span class="fc" id="L126">                foundCookie = true;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">                if (value != null) {</span>
+<span class="fc" id="L128">                    cookie.setValue(value);</span>
+                } else {
+<span class="nc" id="L130">                    iterator.remove();</span>
+                }
+            }
+<span class="fc" id="L133">        }</span>
+
+        // only add it if it does not already exist
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (!foundCookie) {</span>
+<span class="fc" id="L137">            _globalCookies.add(new Cookie(name, value));</span>
+        }
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Define a non-global cookie. This cookie can be overwritten by subsequent cookie definitions in http headers. This
+     * cookie definition requires a domain and path. If a global cookie is defined with the same name, this cookie is
+     * not added.
+     */
+    public void putSingleUseCookie(String name, String value, String domain, String path) {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {</span>
+<span class="nc" id="L148">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            if (name.equals(cookie.getName())) {</span>
+<span class="nc" id="L150">                return;</span>
+            }
+<span class="nc" id="L152">        }</span>
+
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        for (Iterator iterator = _cookies.iterator(); iterator.hasNext();) {</span>
+<span class="nc" id="L155">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (name.equals(cookie.getName())) {</span>
+<span class="nc" id="L157">                iterator.remove();</span>
+            }
+<span class="nc" id="L159">        }</span>
+
+<span class="fc" id="L161">        _cookies.add(new Cookie(name, value, domain, path));</span>
+<span class="fc" id="L162">    }</span>
+
+    /**
+     * Returns the name of all the active cookies in this cookie jar.
+     **/
+    public String[] getCookieNames() {
+<span class="fc" id="L168">        final int numGlobalCookies = _globalCookies.size();</span>
+<span class="fc" id="L169">        String[] names = new String[_cookies.size() + numGlobalCookies];</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        for (int i = 0; i &lt; numGlobalCookies; i++) {</span>
+<span class="fc" id="L171">            names[i] = ((Cookie) _globalCookies.get(i)).getName();</span>
+        }
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (int i = numGlobalCookies; i &lt; names.length; i++) {</span>
+<span class="fc" id="L174">            names[i] = ((Cookie) _cookies.get(i - numGlobalCookies)).getName();</span>
+        }
+<span class="fc" id="L176">        return names;</span>
+    }
+
+    /**
+     * Returns a collection containing all of the cookies in this jar.
+     */
+    public Collection getCookies() {
+<span class="fc" id="L183">        final Collection collection = (Collection) _cookies.clone();</span>
+<span class="fc" id="L184">        collection.addAll(_globalCookies);</span>
+<span class="fc" id="L185">        return collection;</span>
+    }
+
+    /**
+     * Returns the value of the specified cookie.
+     *
+     * @param name
+     *            - the name of the cookie to get the value for
+     *
+     * @return the value of the cookie
+     **/
+    public String getCookieValue(String name) {
+<span class="fc" id="L197">        Cookie cookie = getCookie(name);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        return cookie == null ? null : cookie.getValue();</span>
+    }
+
+    /**
+     * Returns the value of the specified cookie.
+     **/
+    public Cookie getCookie(String name) {
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L206">            throw new IllegalArgumentException(&quot;getCookieValue: no name specified&quot;);</span>
+        }
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (Iterator iterator = _cookies.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L209">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">            if (name.equals(cookie.getName())) {</span>
+<span class="fc" id="L211">                return cookie;</span>
+            }
+<span class="fc" id="L213">        }</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L215">            Cookie cookie = (Cookie) iterator.next();</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">            if (name.equals(cookie.getName())) {</span>
+<span class="fc" id="L217">                return cookie;</span>
+            }
+<span class="nc" id="L219">        }</span>
+<span class="fc" id="L220">        return null;</span>
+    }
+
+    /**
+     * Returns the value of the cookie header to be sent to the specified URL. Will return null if no compatible cookie
+     * is defined.
+     **/
+    public String getCookieHeaderField(URL targetURL) {
+<span class="fc bfc" id="L228" title="All 4 branches covered.">        if (_cookies.isEmpty() &amp;&amp; _globalCookies.isEmpty()) {</span>
+<span class="fc" id="L229">            return null;</span>
+        }
+<span class="fc" id="L231">        StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);</span>
+<span class="fc" id="L232">        HashSet restrictedCookies = new HashSet();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        for (Iterator i = _cookies.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L234">            Cookie cookie = (Cookie) i.next();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">            if (!cookie.mayBeSentTo(targetURL)) {</span>
+<span class="fc" id="L236">                continue;</span>
+            }
+<span class="fc" id="L238">            restrictedCookies.add(cookie.getName());</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            if (sb.length() != 0) {</span>
+<span class="fc" id="L240">                sb.append(&quot;; &quot;);</span>
+            }
+<span class="fc" id="L242">            sb.append(cookie.getName()).append('=').append(cookie.getValue());</span>
+<span class="fc" id="L243">        }</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        for (Iterator i = _globalCookies.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L245">            Cookie cookie = (Cookie) i.next();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            if (restrictedCookies.contains(cookie.getName())) {</span>
+<span class="fc" id="L247">                continue;</span>
+            }
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            if (sb.length() != 0) {</span>
+<span class="fc" id="L250">                sb.append(&quot;; &quot;);</span>
+            }
+<span class="fc" id="L252">            sb.append(cookie.getName()).append('=').append(cookie.getValue());</span>
+<span class="fc" id="L253">        }</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        return sb.length() == 0 ? null : sb.toString();</span>
+    }
+
+    /**
+     * Updates the cookies maintained in this cookie jar with those in another cookie jar. Any duplicate cookies in the
+     * new jar will replace those in this jar.
+     **/
+    public void updateCookies(CookieJar newJar) {
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        for (Iterator i = newJar._cookies.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L263">            addUniqueCookie((Cookie) i.next());</span>
+        }
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Add the cookie to this jar, replacing any previous matching cookie.
+     */
+    void addUniqueCookie(Cookie cookie) {
+<span class="fc" id="L271">        _cookies.remove(cookie);</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        for (Iterator i = _cookies.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L273">            Cookie c = (Cookie) i.next();</span>
+<span class="pc bpc" id="L274" title="1 of 4 branches missed.">            if (c.getName().equals(cookie.getName()) &amp;&amp; compareDomain(c.getDomain(), cookie.getDomain())) {</span>
+<span class="pc bpc" id="L275" title="3 of 6 branches missed.">                if (c.getPath() != null &amp;&amp; cookie.getPath() != null &amp;&amp; c.getPath().equals(cookie.getPath())) {</span>
+<span class="fc" id="L276">                    i.remove();</span>
+                }
+            }
+<span class="fc" id="L279">        }</span>
+<span class="fc" id="L280">        _cookies.add(cookie);</span>
+<span class="fc" id="L281">    }</span>
+
+    /**
+     * compare the two domains given for &quot;cookie-equality&quot;
+     *
+     * @param domain
+     * @param newDomain
+     *
+     * @return
+     */
+    private boolean compareDomain(String domain, String newDomain) {
+<span class="pc bpc" id="L292" title="3 of 8 branches missed.">        if (domain.charAt(0) == '.' &amp;&amp; newDomain.endsWith(domain) || newDomain.charAt(0) == '.' &amp;&amp; domain.endsWith(newDomain)) {</span>
+<span class="fc" id="L293">            return true;</span>
+        }
+
+<span class="nc" id="L296">        return domain.equals(newDomain);</span>
+    }
+
+    /**
+     * base class for the cookie recipies - there are two different implementations of this
+     */
+<span class="fc" id="L302">    abstract class CookieRecipe {</span>
+
+        /**
+         * Extracts cookies from a cookie header. Works in conjunction with a cookie press class, which actually creates
+         * the cookies and adds them to the jar as appropriate. 1. Parse the header into tokens, separated by ',' and
+         * ';' (respecting single and double quotes) 2. Process tokens from the end: a. if the token contains an '=' we
+         * have a name/value pair. Add them to the cookie press, which will decide if it is a cookie name or an
+         * attribute name. b. if the token is a reserved word, flush the cookie press and continue. c. otherwise, add
+         * the token to the cookie press, passing along the last character of the previous token.
+         */
+        void findCookies(String cookieHeader) {
+<span class="fc" id="L313">            Vector tokens = getCookieTokens(cookieHeader);</span>
+
+<span class="fc bfc" id="L315" title="All 2 branches covered.">            for (int i = tokens.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L316">                String token = (String) tokens.elementAt(i);</span>
+
+<span class="fc" id="L318">                int equalsIndex = getEqualsIndex(token);</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">                if (equalsIndex != -1) {</span>
+<span class="fc" id="L320">                    _press.addTokenWithEqualsSign(this, token, equalsIndex);</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">                } else if (isCookieReservedWord(token)) {</span>
+<span class="nc" id="L322">                    _press.clear();</span>
+                } else {
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">                    _press.addToken(token, lastCharOf(i == 0 ? &quot;&quot; : (String) tokens.elementAt(i - 1)));</span>
+                }
+            }
+<span class="fc" id="L327">        }</span>
+
+        private char lastCharOf(String string) {
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">            return string.length() == 0 ? ' ' : string.charAt(string.length() - 1);</span>
+        }
+
+        /**
+         * Returns the index (if any) of the equals sign separating a cookie name from the its value. Equals signs at
+         * the end of the token are ignored in this calculation, since they may be part of a Base64-encoded value.
+         */
+        private int getEqualsIndex(String token) {
+<span class="fc bfc" id="L338" title="All 2 branches covered.">            if (!token.endsWith(&quot;==&quot;)) {</span>
+<span class="fc" id="L339">                return token.indexOf('=');</span>
+            }
+<span class="fc" id="L341">            return getEqualsIndex(token.substring(0, token.length() - 2));</span>
+        }
+
+        /**
+         * Tokenizes a cookie header and returns the tokens in a &lt;code&gt;Vector&lt;/code&gt;. handles the broken syntax for
+         * expires= fields ...
+         *
+         * @param cookieHeader
+         *            - the header to read
+         *
+         * @return a Vector of cookieTokens as name=value pairs
+         **/
+        private Vector getCookieTokens(String cookieHeader) {
+<span class="fc" id="L354">            StringReader sr = new StringReader(cookieHeader);</span>
+<span class="fc" id="L355">            StreamTokenizer st = new StreamTokenizer(sr);</span>
+<span class="fc" id="L356">            Vector tokens = new Vector();</span>
+
+            // clear syntax tables of the StreamTokenizer
+<span class="fc" id="L359">            st.resetSyntax();</span>
+
+            // set all characters as word characters
+<span class="fc" id="L362">            st.wordChars(0, Character.MAX_VALUE);</span>
+
+            // set up characters for quoting
+<span class="fc" id="L365">            st.quoteChar('&quot;'); // double quotes</span>
+<span class="fc" id="L366">            st.quoteChar('\''); // single quotes</span>
+
+            // set up characters to separate tokens
+<span class="fc" id="L369">            st.whitespaceChars(59, 59); // semicolon</span>
+            // and here we run into trouble ...
+            // see http://www.mnot.net/blog/2006/10/27/cookie_fun
+            // ... Notice something about the above? It uses a comma inside of
+            // the date,
+            // without quoting the value. This makes it difficult for generic
+            // processors to handle the Set-Cookie header.
+<span class="fc" id="L376">            st.whitespaceChars(44, 44); // comma</span>
+
+            try {
+<span class="fc bfc" id="L379" title="All 2 branches covered.">                while (st.nextToken() != StreamTokenizer.TT_EOF) {</span>
+<span class="fc" id="L380">                    String tokenContent = st.sval;</span>
+                    // fix expires comma delimiter token problem
+<span class="pc bpc" id="L382" title="1 of 4 branches missed.">                    if (tokenContent.toLowerCase().startsWith(&quot;expires=&quot;) &amp;&amp; st.nextToken() != StreamTokenizer.TT_EOF) {</span>
+<span class="fc" id="L383">                        tokenContent += &quot;,&quot; + st.sval;</span>
+                    } // if // if
+<span class="fc" id="L385">                    tokenContent = tokenContent.trim();</span>
+<span class="fc" id="L386">                    tokens.addElement(tokenContent);</span>
+<span class="fc" id="L387">                }</span>
+<span class="nc" id="L388">            } catch (IOException ioe) {</span>
+                // this will never happen with a StringReader
+<span class="fc" id="L390">            }</span>
+<span class="fc" id="L391">            sr.close();</span>
+<span class="fc" id="L392">            return tokens;</span>
+        }
+
+        abstract protected boolean isCookieAttribute(String stringLowercase);
+
+        abstract protected boolean isCookieReservedWord(String token);
+
+    }
+
+    /**
+     * cookie Factory - creates cookies for URL s
+     */
+    class CookiePress {
+
+        // the current value
+<span class="fc" id="L407">        private StringBuilder _value = new StringBuilder();</span>
+<span class="fc" id="L408">        private HashMap _attributes = new HashMap();</span>
+        private URL _sourceURL;
+
+        /**
+         * create a cookie press for the given URL
+         *
+         * @param sourceURL
+         */
+<span class="fc" id="L416">        public CookiePress(URL sourceURL) {</span>
+<span class="fc" id="L417">            _sourceURL = sourceURL;</span>
+<span class="fc" id="L418">        }</span>
+
+        /**
+         * clear the attributes and the cookie value
+         */
+        void clear() {
+<span class="nc" id="L424">            _value.setLength(0);</span>
+<span class="nc" id="L425">            _attributes.clear();</span>
+<span class="nc" id="L426">        }</span>
+
+        /**
+         * add the token content
+         *
+         * @param token
+         * @param lastChar
+         */
+        void addToken(String token, char lastChar) {
+<span class="fc" id="L435">            _value.insert(0, token);</span>
+<span class="pc bpc" id="L436" title="1 of 2 branches missed.">            if (lastChar != '=') {</span>
+<span class="fc" id="L437">                _value.insert(0, ',');</span>
+            }
+<span class="fc" id="L439">        }</span>
+
+        /**
+         * add from a token
+         *
+         * @param recipe
+         *            - the recipe to use
+         * @param token
+         *            - the token to use
+         * @param equalsIndex
+         *            - the position of the equal sign
+         */
+        void addTokenWithEqualsSign(CookieRecipe recipe, String token, int equalsIndex) {
+<span class="fc" id="L452">            final String name = token.substring(0, equalsIndex).trim();</span>
+<span class="fc" id="L453">            final String value = token.substring(equalsIndex + 1).trim();</span>
+<span class="fc" id="L454">            _value.insert(0, value);</span>
+<span class="fc" id="L455">            final String fvalue = _value.toString();</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">            if (recipe.isCookieAttribute(name.toLowerCase())) {</span>
+<span class="fc" id="L457">                _attributes.put(name.toLowerCase(), value);</span>
+            } else {
+<span class="fc" id="L459">                addCookieIfValid(new Cookie(name, fvalue, _attributes));</span>
+<span class="fc" id="L460">                _attributes.clear();</span>
+            }
+<span class="fc" id="L462">            _value.setLength(0);</span>
+<span class="fc" id="L463">        }</span>
+
+        /**
+         * add the given cookie if it is valid
+         *
+         * @param cookie
+         */
+        private void addCookieIfValid(Cookie cookie) {
+<span class="fc bfc" id="L471" title="All 2 branches covered.">            if (acceptCookie(cookie)) {</span>
+<span class="fc" id="L472">                addUniqueCookie(cookie);</span>
+            }
+<span class="fc" id="L474">        }</span>
+
+        /**
+         * accept the given cookie
+         *
+         * @param cookie
+         *
+         * @return
+         */
+        private boolean acceptCookie(Cookie cookie) {
+<span class="fc bfc" id="L484" title="All 2 branches covered.">            if (cookie.getPath() == null) {</span>
+<span class="fc" id="L485">                cookie.setPath(getParentPath(_sourceURL.getPath()));</span>
+            } else {
+<span class="fc" id="L487">                int status = getPathAttributeStatus(cookie.getPath(), _sourceURL.getPath());</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">                if (status != CookieListener.ACCEPTED) {</span>
+<span class="fc" id="L489">                    reportCookieRejected(status, cookie.getPath(), cookie.getName());</span>
+<span class="fc" id="L490">                    return false;</span>
+                }
+            }
+
+<span class="fc bfc" id="L494" title="All 4 branches covered.">            if (cookie.getDomain() == null || !CookieProperties.isDomainMatchingStrict()</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">                    &amp;&amp; cookie.getDomain().equalsIgnoreCase(_sourceURL.getHost())) {</span>
+<span class="fc" id="L496">                cookie.setDomain(_sourceURL.getHost());</span>
+            } else {
+<span class="fc" id="L498">                int status = getDomainAttributeStatus(cookie, _sourceURL.getHost());</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">                if (status != CookieListener.ACCEPTED) {</span>
+<span class="fc" id="L500">                    reportCookieRejected(status, cookie.getDomain(), cookie.getName());</span>
+<span class="fc" id="L501">                    return false;</span>
+                }
+            }
+
+<span class="fc" id="L505">            return true;</span>
+        }
+
+        private String getParentPath(String path) {
+<span class="fc" id="L509">            int rightmostSlashIndex = path.lastIndexOf('/');</span>
+<span class="fc bfc" id="L510" title="All 2 branches covered.">            return rightmostSlashIndex &lt; 0 ? &quot;/&quot; : path.substring(0, rightmostSlashIndex);</span>
+        }
+
+        private int getPathAttributeStatus(String pathAttribute, String sourcePath) {
+<span class="fc bfc" id="L514" title="All 4 branches covered.">            if (!CookieProperties.isPathMatchingStrict() || sourcePath.length() == 0</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">                    || sourcePath.startsWith(pathAttribute)) {</span>
+<span class="fc" id="L516">                return CookieListener.ACCEPTED;</span>
+            }
+<span class="fc" id="L518">            return CookieListener.PATH_NOT_PREFIX;</span>
+        }
+
+        /**
+         * get the domainAttribute Status for the given cookie with the given sourceHost
+         *
+         * @see http://wp.netscape.com/newsref/std/cookie_spec.html
+         *
+         * @param cookie
+         *            - the cookie to use
+         * @param sourceHost
+         *
+         * @return
+         */
+        private int getDomainAttributeStatus(Cookie cookie, String sourceHost) {
+<span class="fc" id="L533">            String domainAttribute = cookie.getDomain();</span>
+            // patch according to [ 1476380 ] Cookies incorrectly rejected
+            // despite valid domain
+<span class="fc bfc" id="L536" title="All 2 branches covered.">            if (domainAttribute.equals(sourceHost)) {</span>
+<span class="fc" id="L537">                return CookieListener.ACCEPTED;</span>
+            }
+<span class="fc bfc" id="L539" title="All 2 branches covered.">            if (!domainAttribute.startsWith(&quot;.&quot;)) {</span>
+<span class="fc" id="L540">                domainAttribute = '.' + domainAttribute;</span>
+            }
+
+<span class="fc bfc" id="L543" title="All 2 branches covered.">            if (domainAttribute.lastIndexOf('.') == 0) {</span>
+<span class="fc" id="L544">                return CookieListener.DOMAIN_ONE_DOT;</span>
+            }
+<span class="fc bfc" id="L546" title="All 2 branches covered.">            if (!sourceHost.endsWith(domainAttribute)) {</span>
+<span class="fc" id="L547">                return CookieListener.DOMAIN_NOT_SOURCE_SUFFIX;</span>
+            }
+<span class="fc bfc" id="L549" title="All 2 branches covered.">            if (CookieProperties.isDomainMatchingStrict()</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">                    &amp;&amp; sourceHost.lastIndexOf(domainAttribute) &gt; sourceHost.indexOf('.')) {</span>
+<span class="fc" id="L551">                return CookieListener.DOMAIN_TOO_MANY_LEVELS;</span>
+            }
+            // modified for Bugreport 2825872 Cookie domains not stored correctly - ID: 2825872
+            // http://sourceforge.net/tracker/?func=detail&amp;aid=2825872&amp;group_id=6550&amp;atid=106550
+<span class="fc" id="L555">            cookie.setDomain(domainAttribute);</span>
+<span class="fc" id="L556">            return CookieListener.ACCEPTED;</span>
+        }
+
+        private boolean reportCookieRejected(int reason, String attribute, String source) {
+<span class="fc" id="L560">            CookieProperties.reportCookieRejected(reason, attribute, source);</span>
+<span class="fc" id="L561">            return false;</span>
+        }
+
+    }
+
+    /**
+     * Parses cookies according to &lt;a href=&quot;http://www.ietf.org/rfc/rfc2109.txt&quot;&gt;RFC 2109&lt;/a&gt; &lt;br /&gt;
+     * These cookies come from the &lt;code&gt;Set-Cookie:&lt;/code&gt; header
+     **/
+<span class="fc" id="L570">    class RFC2109CookieRecipe extends CookieRecipe {</span>
+
+        /**
+         * check whether the given lower case String is a cookie attribute
+         *
+         * @param stringLowercase
+         *            - the string to check
+         *
+         * @return true - if the string is the name of a valid cookie attribute
+         */
+        @Override
+        protected boolean isCookieAttribute(String stringLowercase) {
+<span class="fc bfc" id="L582" title="All 4 branches covered.">            return stringLowercase.equals(&quot;path&quot;) || stringLowercase.equals(&quot;domain&quot;)</span>
+<span class="pc bpc" id="L583" title="1 of 4 branches missed.">                    || stringLowercase.equals(&quot;expires&quot;) || stringLowercase.equals(&quot;comment&quot;)</span>
+<span class="pc bpc" id="L584" title="1 of 4 branches missed.">                    || stringLowercase.equals(&quot;max-age&quot;) || stringLowercase.equals(&quot;version&quot;);</span>
+        }
+
+        @Override
+        protected boolean isCookieReservedWord(String token) {
+<span class="fc" id="L589">            return token.equalsIgnoreCase(&quot;secure&quot;);</span>
+        }
+    }
+
+    /**
+     * Parses cookies according to &lt;a href=&quot;http://www.ietf.org/rfc/rfc2965.txt&quot;&gt;RFC 2965&lt;/a&gt; &lt;br /&gt;
+     * These cookies come from the &lt;code&gt;Set-Cookie2:&lt;/code&gt; header
+     **/
+<span class="fc" id="L597">    class RFC2965CookieRecipe extends CookieRecipe {</span>
+
+        @Override
+        protected boolean isCookieAttribute(String stringLowercase) {
+<span class="nc bnc" id="L601" title="All 4 branches missed.">            return stringLowercase.equals(&quot;path&quot;) || stringLowercase.equals(&quot;domain&quot;)</span>
+<span class="nc bnc" id="L602" title="All 4 branches missed.">                    || stringLowercase.equals(&quot;comment&quot;) || stringLowercase.equals(&quot;commenturl&quot;)</span>
+<span class="nc bnc" id="L603" title="All 4 branches missed.">                    || stringLowercase.equals(&quot;max-age&quot;) || stringLowercase.equals(&quot;version&quot;)</span>
+<span class="nc bnc" id="L604" title="All 4 branches missed.">                    || stringLowercase.equals(&quot;$version&quot;) || stringLowercase.equals(&quot;port&quot;);</span>
+        }
+
+        @Override
+        protected boolean isCookieReservedWord(String token) {
+<span class="nc bnc" id="L609" title="All 4 branches missed.">            return token.equalsIgnoreCase(&quot;discard&quot;) || token.equalsIgnoreCase(&quot;secure&quot;);</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

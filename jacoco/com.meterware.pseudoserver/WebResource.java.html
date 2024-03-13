@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">WebResource.java</span></div><h1>WebResource.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.pseudoserver;
+
+import com.meterware.httpunit.HttpUnitUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.util.Vector;
+
+/**
+ * A resource to be returned from the simulated server.
+ **/
+public class WebResource {
+
+    final static String DEFAULT_CONTENT_TYPE = &quot;text/html&quot;;
+
+    final static String DEFAULT_CHARACTER_SET = &quot;iso-8859-1&quot;;
+    private boolean _closesConnection;
+
+    public WebResource(String contents) {
+<span class="fc" id="L42">        this(contents, DEFAULT_CONTENT_TYPE);</span>
+<span class="fc" id="L43">    }</span>
+
+    public WebResource(String contents, String contentType) {
+<span class="fc" id="L46">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
+<span class="fc" id="L47">    }</span>
+
+    public WebResource(byte[] contents, String contentType) {
+<span class="fc" id="L50">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
+<span class="fc" id="L51">    }</span>
+
+    public void addHeader(String header) {
+<span class="fc" id="L54">        _headers.addElement(header);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (header.toLowerCase().startsWith(&quot;content-type&quot;)) {</span>
+<span class="fc" id="L56">            _hasExplicitContentTypeHeader = true;</span>
+        }
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (header.toLowerCase().startsWith(&quot;content-length&quot;)) {</span>
+<span class="fc" id="L59">            _hasExplicitContentLengthHeader = true;</span>
+        }
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">        if (header.trim().toLowerCase().startsWith(&quot;connection&quot;) &amp;&amp; header.trim().toLowerCase().endsWith(&quot;close&quot;)) {</span>
+<span class="fc" id="L62">            _closesConnection = true;</span>
+        }
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (header.trim().toLowerCase().startsWith(&quot;transfer-encoding&quot;)</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">                &amp;&amp; header.trim().toLowerCase().endsWith(&quot;chunked&quot;)) {</span>
+<span class="fc" id="L66">            _isChunked = true;</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    public void setCharacterSet(String characterSet) {
+<span class="fc" id="L71">        _characterSet = characterSet;</span>
+<span class="fc" id="L72">    }</span>
+
+    public void setSendCharacterSet(boolean enabled) {
+<span class="fc" id="L75">        _sendCharacterSet = enabled;</span>
+<span class="fc" id="L76">    }</span>
+
+    public void suppressAutomaticLengthHeader() {
+<span class="fc" id="L79">        _hasExplicitContentLengthHeader = true;</span>
+<span class="fc" id="L80">    }</span>
+
+    public void suppressAutomaticContentTypeHeader() {
+<span class="fc" id="L83">        _hasExplicitContentTypeHeader = true;</span>
+<span class="fc" id="L84">    }</span>
+
+    public WebResource(String contents, int responseCode) {
+<span class="fc" id="L87">        this(contents, DEFAULT_CONTENT_TYPE, responseCode);</span>
+<span class="fc" id="L88">    }</span>
+
+<span class="fc" id="L90">    public WebResource(String contents, String contentType, int responseCode) {</span>
+<span class="fc" id="L91">        _string = contents;</span>
+<span class="fc" id="L92">        _contentType = contentType;</span>
+<span class="fc" id="L93">        _responseCode = responseCode;</span>
+<span class="fc" id="L94">    }</span>
+
+<span class="fc" id="L96">    public WebResource(byte[] contents, String contentType, int responseCode) {</span>
+<span class="fc" id="L97">        _contents = contents;</span>
+<span class="fc" id="L98">        _contentType = contentType;</span>
+<span class="fc" id="L99">        _responseCode = responseCode;</span>
+<span class="fc" id="L100">    }</span>
+
+<span class="fc" id="L102">    public WebResource(InputStream stream, String contentType, int responseCode) {</span>
+<span class="fc" id="L103">        _stream = stream;</span>
+<span class="fc" id="L104">        _contentType = contentType;</span>
+<span class="fc" id="L105">        _responseCode = responseCode;</span>
+<span class="fc" id="L106">        addHeader(&quot;Connection: close&quot;);</span>
+<span class="fc" id="L107">    }</span>
+
+    String[] getHeaders() throws UnsupportedEncodingException {
+<span class="fc" id="L110">        final Vector effectiveHeaders = (Vector) _headers.clone();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (!_hasExplicitContentTypeHeader) {</span>
+<span class="fc" id="L112">            effectiveHeaders.add(getContentTypeHeader());</span>
+        }
+<span class="fc bfc" id="L114" title="All 6 branches covered.">        if (_stream == null &amp;&amp; !_hasExplicitContentLengthHeader &amp;&amp; !isChunked()) {</span>
+<span class="fc" id="L115">            effectiveHeaders.add(getContentLengthHeader());</span>
+        }
+<span class="fc" id="L117">        String[] headers = new String[effectiveHeaders.size()];</span>
+<span class="fc" id="L118">        effectiveHeaders.copyInto(headers);</span>
+<span class="fc" id="L119">        return headers;</span>
+    }
+
+    private boolean isChunked() {
+<span class="fc" id="L123">        return _isChunked;</span>
+    }
+
+    boolean closesConnection() {
+<span class="fc" id="L127">        return _closesConnection;</span>
+    }
+
+    void writeTo(OutputStream outputStream) throws IOException {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (_stream == null) {</span>
+<span class="fc" id="L132">            outputStream.write(getContentsAsBytes());</span>
+        } else {
+<span class="fc" id="L134">            byte[] buffer = new byte[8 * 1024];</span>
+<span class="fc" id="L135">            int count = 0;</span>
+            do {
+<span class="fc" id="L137">                outputStream.write(buffer, 0, count);</span>
+<span class="fc" id="L138">                count = _stream.read(buffer, 0, buffer.length);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            } while (count != -1);</span>
+        }
+<span class="fc" id="L141">    }</span>
+
+    static String toString(byte[] contentsAsBytes) {
+<span class="nc" id="L144">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        for (byte contentsAsByte : contentsAsBytes) {</span>
+<span class="nc" id="L146">            sb.append(Integer.toHexString(contentsAsByte)).append(' ');</span>
+        }
+<span class="nc" id="L148">        return sb.toString();</span>
+    }
+
+    private byte[] getContentsAsBytes() throws UnsupportedEncodingException {
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (_contents != null) {</span>
+<span class="fc" id="L153">            return _contents;</span>
+        }
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (_string != null) {</span>
+<span class="fc" id="L156">            return _string.getBytes(getCharacterSet());</span>
+        }
+<span class="nc" id="L158">        throw new IllegalStateException(&quot;Cannot get bytes from stream&quot;);</span>
+    }
+
+    private String getContentTypeHeader() {
+<span class="fc" id="L162">        return &quot;Content-Type: &quot; + _contentType + getCharacterSetParameter();</span>
+    }
+
+    private String getContentLengthHeader() throws UnsupportedEncodingException {
+<span class="fc" id="L166">        return &quot;Content-Length: &quot; + getContentsAsBytes().length;</span>
+    }
+
+    String getCharacterSet() {
+<span class="fc" id="L170">        return HttpUnitUtils.stripQuotes(_characterSet);</span>
+    }
+
+    String getCharacterSetParameter() {
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (!_sendCharacterSet) {</span>
+<span class="fc" id="L175">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L177">        return &quot;; charset=&quot; + _characterSet;</span>
+    }
+
+    int getResponseCode() {
+<span class="fc" id="L181">        return _responseCode;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L186">        return &quot;WebResource [code=&quot; + _responseCode + &quot;; type = &quot; + _contentType + &quot;; charset = &quot; + _characterSet</span>
+<span class="nc" id="L187">                + &quot;]\n&quot; + getContentsAsString();</span>
+    }
+
+    private String getContentsAsString() {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (_string != null) {</span>
+<span class="nc" id="L192">            return _string;</span>
+        }
+<span class="nc" id="L194">        return &quot;&lt;&lt; hex bytes &gt;&gt;&quot;;</span>
+    }
+
+    private byte[] _contents;
+    private String _string;
+    private InputStream _stream;
+
+    private int _responseCode;
+    private boolean _sendCharacterSet;
+<span class="fc" id="L203">    private String _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L204">    private String _characterSet = DEFAULT_CHARACTER_SET;</span>
+    private boolean _hasExplicitContentTypeHeader;
+    private boolean _hasExplicitContentLengthHeader;
+<span class="fc" id="L207">    private Vector _headers = new Vector();</span>
+    private boolean _isChunked;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

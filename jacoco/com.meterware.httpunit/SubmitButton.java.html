@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SubmitButton.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">SubmitButton.java</span></div><h1>SubmitButton.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.dom.HTMLControl;
+import com.meterware.httpunit.protocol.ParameterProcessor;
+
+import java.io.IOException;
+
+import org.xml.sax.SAXException;
+
+/**
+ * This class represents a submit button in an HTML form.
+ **/
+public class SubmitButton extends Button {
+
+    private boolean _fake;
+
+    @Override
+    public String getType() {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        return isImageButton() ? IMAGE_BUTTON_TYPE : SUBMIT_BUTTON_TYPE;</span>
+    }
+
+    /**
+     * Returns true if this submit button is an image map.
+     **/
+    public boolean isImageButton() {
+<span class="fc" id="L45">        return _isImageButton;</span>
+    }
+
+    /**
+     * Performs the action associated with clicking this button after running any 'onClick' script. For a submit button
+     * this typically submits the form.
+     *
+     * @since 1.6
+     */
+    public void click(int x, int y) throws IOException, SAXException {
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (!isImageButton()) {</span>
+<span class="nc" id="L56">            throw new IllegalStateException(&quot;May only specify positions for an image button&quot;);</span>
+        }
+<span class="fc" id="L58">        doOnClickSequence(x, y);</span>
+<span class="fc" id="L59">    }</span>
+
+    // --------------------------------- Button methods ----------------------------------------------
+
+    /**
+     * do the button Action
+     *
+     * @param x
+     *            - x coordinate
+     * @param y
+     *            - y coordinate
+     */
+    @Override
+    protected void doButtonAction(int x, int y) throws IOException, SAXException {
+<span class="fc" id="L73">        getForm().doFormSubmit(this, x, y);</span>
+<span class="fc" id="L74">    }</span>
+
+    // ------------------------------------ Object methods ----------------------------------------
+
+    @Override
+    public String toString() {
+<span class="nc" id="L80">        return &quot;Submit with &quot; + getName() + &quot;=&quot; + getValue();</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L85">        return getName().hashCode() + getValue().hashCode();</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L90" title="1 of 4 branches missed.">        return getClass().equals(o.getClass()) &amp;&amp; equals((SubmitButton) o);</span>
+    }
+
+    // ------------------------------------------ package members ----------------------------------
+
+    SubmitButton(WebForm form, HTMLControl control) {
+<span class="fc" id="L96">        super(form, control);</span>
+<span class="fc" id="L97">        _isImageButton = control.getType().equalsIgnoreCase(IMAGE_BUTTON_TYPE);</span>
+<span class="fc" id="L98">    }</span>
+
+    SubmitButton(WebForm form) {
+<span class="fc" id="L101">        super(form);</span>
+<span class="fc" id="L102">        _isImageButton = false;</span>
+<span class="fc" id="L103">    }</span>
+
+    static SubmitButton createFakeSubmitButton(WebForm form) {
+<span class="fc" id="L106">        return new SubmitButton(form, /* fake */ true);</span>
+    }
+
+    private SubmitButton(WebForm form, boolean fake) {
+<span class="fc" id="L110">        this(form);</span>
+<span class="fc" id="L111">        _fake = fake;</span>
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * getter for the fake flag Returns true for synthetic submit buttons, created by HttpUnit in forms that contain no
+     * submit buttons, or used during {@link WebForm#submitNoButton()} call.
+     *
+     * @return - whether this button is a faked button inserted by httpunit
+     */
+    public boolean isFake() {
+<span class="fc" id="L121">        return _fake;</span>
+    }
+
+    /**
+     * flag that the button was pressed
+     *
+     * @param pressed
+     */
+    void setPressed(boolean pressed) {
+<span class="fc" id="L130">        _pressed = pressed;</span>
+<span class="fc" id="L131">    }</span>
+
+    void setLocation(int x, int y) {
+<span class="fc" id="L134">        _x = x;</span>
+<span class="fc" id="L135">        _y = y;</span>
+<span class="fc" id="L136">    }</span>
+
+    // --------------------------------- FormControl methods
+    // ----------------------------------------------------------------
+
+    /**
+     * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
+     * control is 'successful'.
+     **/
+    @Override
+    protected String[] getValues() {
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">        return isDisabled() || !_pressed ? NO_VALUE : toArray(getValue());</span>
+    }
+
+    /**
+     * should we allow unnamed Image Buttons?
+     */
+<span class="fc" id="L153">    private static boolean allowUnnamedImageButton = false;</span>
+
+    /**
+     * @return the allowUnnamedImageButton
+     */
+    public static boolean isAllowUnnamedImageButton() {
+<span class="fc" id="L159">        return allowUnnamedImageButton;</span>
+    }
+
+    /**
+     * @param allowUnnamedImageButton
+     *            the allowUnnamedImageButton to set
+     */
+    public static void setAllowUnnamedImageButton(boolean allowUnnamedImageButton) {
+<span class="fc" id="L167">        SubmitButton.allowUnnamedImageButton = allowUnnamedImageButton;</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * return whether this is a validImageButton
+     *
+     * @return true if it is an image Button
+     */
+    public boolean isValidImageButton() {
+<span class="fc" id="L176">        String buttonName = getName();</span>
+<span class="fc" id="L177">        boolean valid = this.isImageButton();</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (!allowUnnamedImageButton) {</span>
+<span class="pc bpc" id="L179" title="1 of 6 branches missed.">            valid = valid &amp;&amp; buttonName != null &amp;&amp; buttonName.length() &gt; 0;</span>
+        }
+<span class="fc" id="L181">        return valid;</span>
+    }
+
+    /**
+     * return the name of the positionParameter for this button (if this is an image Button)
+     *
+     * @param direction
+     *            e.g. &quot;x&quot; or &quot;y&quot;
+     *
+     * @return the name e.g. &quot;image.x&quot; or just &quot;x&quot;
+     */
+    public String positionParameterName(String direction) {
+        // [ 1443333 ] Allow unnamed Image input elments to submit x,y values
+<span class="fc" id="L194">        String buttonName = getName();</span>
+<span class="fc" id="L195">        String buttonPrefix = &quot;&quot;;</span>
+<span class="pc bpc" id="L196" title="1 of 4 branches missed.">        if (buttonName != null &amp;&amp; buttonName.length() &gt; 0) {</span>
+<span class="fc" id="L197">            buttonPrefix = buttonName + &quot;.&quot;;</span>
+        }
+<span class="fc" id="L199">        return buttonPrefix + direction;</span>
+    }
+
+    /**
+     * addValues if not disabled and pressed
+     *
+     * @param processor
+     *            - the ParameterProcessor used
+     * @param characterSet
+     *            - the active character set
+     *
+     * @throws IOException
+     *             if addValues fails
+     */
+    @Override
+    protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
+<span class="fc bfc" id="L215" title="All 4 branches covered.">        if (_pressed &amp;&amp; !isDisabled()) {</span>
+<span class="fc" id="L216">            String buttonName = getName();</span>
+<span class="pc bpc" id="L217" title="1 of 6 branches missed.">            if (buttonName != null &amp;&amp; buttonName.length() &gt; 0 &amp;&amp; getValue().length() &gt; 0) {</span>
+<span class="fc" id="L218">                processor.addParameter(getName(), getValue(), characterSet);</span>
+            }
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if (isValidImageButton()) {</span>
+<span class="fc" id="L221">                processor.addParameter(positionParameterName(&quot;x&quot;), Integer.toString(_x), characterSet);</span>
+<span class="fc" id="L222">                processor.addParameter(positionParameterName(&quot;y&quot;), Integer.toString(_y), characterSet);</span>
+            }
+        } // if
+<span class="fc" id="L225">    }</span>
+
+    // ------------------------------------------ private members ----------------------------------
+
+<span class="fc" id="L229">    private String[] _value = new String[1];</span>
+    private final boolean _isImageButton;
+    private boolean _pressed;
+    private int _x;
+    private int _y;
+
+    private String[] toArray(String value) {
+<span class="fc" id="L236">        _value[0] = value;</span>
+<span class="fc" id="L237">        return _value;</span>
+    }
+
+    private boolean equals(SubmitButton button) {
+<span class="fc bfc" id="L241" title="All 6 branches covered.">        return getName().equals(button.getName()) &amp;&amp; (getName().length() == 0 || getValue().equals(button.getValue()));</span>
+    }
+
+    @Override
+    public void throwDisabledException() {
+<span class="fc" id="L246">        throw new DisabledSubmitButtonException(this);</span>
+    }
+
+    /**
+     * This exception is thrown on an attempt to define a form request with a button not defined on that form.
+     **/
+    class DisabledSubmitButtonException extends DisabledButtonException {
+
+        private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L256">        DisabledSubmitButtonException(SubmitButton button) {</span>
+<span class="fc" id="L257">            super(button);</span>
+<span class="fc" id="L258">        }</span>
+
+        @Override
+        public String getMessage() {
+<span class="fc" id="L262">            return &quot;The specified button (name='&quot; + _name + &quot;' value='&quot; + _value</span>
+                    + &quot;' is disabled and may not be used to submit this form.&quot;;
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

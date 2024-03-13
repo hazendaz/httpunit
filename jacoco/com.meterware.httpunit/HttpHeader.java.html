@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpHeader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpHeader.java</span></div><h1>HttpHeader.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.util.Map;
+import java.util.Properties;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+public class HttpHeader {
+
+    private String _label;
+    private Map _properties;
+    protected String _headerString;
+
+    /**
+     * construct a HttpHeader from the given headerString
+     *
+     * @param headerString
+     */
+    public HttpHeader(String headerString) {
+<span class="fc" id="L40">        this(headerString, null);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * construct a HttpHeader from the given headerString and label
+     *
+     * @param headerString
+     * @param defaultLabel
+     */
+<span class="fc" id="L49">    public HttpHeader(String headerString, String defaultLabel) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (headerString != null) {</span>
+<span class="fc" id="L51">            _headerString = headerString;</span>
+<span class="fc" id="L52">            final int index = headerString.indexOf(' ');</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (index &lt; 0) { // non-conforming header</span>
+<span class="fc" id="L54">                _label = defaultLabel;</span>
+<span class="fc" id="L55">                _properties = loadProperties(headerString);</span>
+            } else {
+<span class="fc" id="L57">                _label = headerString.substring(0, index);</span>
+<span class="fc" id="L58">                _properties = loadProperties(headerString.substring(index + 1));</span>
+            }
+        }
+<span class="fc" id="L61">    }</span>
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (!getClass().equals(obj.getClass())) {</span>
+<span class="nc" id="L66">            return false;</span>
+        }
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        return getLabel().equals(((HttpHeader) obj).getLabel())</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                &amp;&amp; getProperties().equals(((HttpHeader) obj).getProperties());</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L74">        return getLabel() + &quot; &quot; + getProperties();</span>
+    }
+
+    protected String getProperty(String key) {
+<span class="fc" id="L78">        return unQuote((String) getProperties().get(key));</span>
+    }
+
+    private String unQuote(String value) {
+<span class="pc bpc" id="L82" title="3 of 8 branches missed.">        if (value == null || value.length() &lt;= 1 || !value.startsWith(&quot;\&quot;&quot;) || !value.endsWith(&quot;\&quot;&quot;)) {</span>
+<span class="fc" id="L83">            return value;</span>
+        }
+
+<span class="fc" id="L86">        return value.substring(1, value.length() - 1);</span>
+    }
+
+    // Headers have the general format (ignoring unquoted white space):
+    // header ::= property-def | property-def ',' header
+    // property-def ::= name '=' value
+    // name ::= ID
+    // value ::= ID | QUOTED-STRING
+    //
+    static private Map loadProperties(String parameterString) {
+<span class="fc" id="L96">        Properties properties = new Properties();</span>
+<span class="fc" id="L97">        char[] chars = parameterString.toCharArray();</span>
+<span class="fc" id="L98">        int i = 0;</span>
+<span class="fc" id="L99">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        while (i &lt; chars.length) {</span>
+<span class="pc bpc" id="L102" title="1 of 4 branches missed.">            while (i &lt; chars.length &amp;&amp; Character.isWhitespace(chars[i])) {</span>
+<span class="fc" id="L103">                i++;</span>
+            }
+<span class="fc bfc" id="L105" title="All 4 branches covered.">            while (i &lt; chars.length &amp;&amp; Character.isJavaIdentifierPart(chars[i])) {</span>
+<span class="fc" id="L106">                sb.append(chars[i]);</span>
+<span class="fc" id="L107">                i++;</span>
+            }
+<span class="fc" id="L109">            String name = sb.toString();</span>
+<span class="fc" id="L110">            sb.setLength(0);</span>
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">            while (i &lt; chars.length &amp;&amp; chars[i] != '=') {</span>
+<span class="nc" id="L112">                i++;</span>
+            }
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            if (i == chars.length) {</span>
+<span class="fc" id="L115">                break;</span>
+            }
+<span class="fc" id="L117">            i++; // skip '='</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">            while (i &lt; chars.length &amp;&amp; Character.isWhitespace(chars[i])) {</span>
+<span class="nc" id="L119">                i++;</span>
+            }
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            if (i == chars.length) {</span>
+<span class="nc" id="L122">                break;</span>
+            }
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">            if (chars[i] == '&quot;') {</span>
+<span class="fc" id="L125">                sb.append(chars[i]);</span>
+<span class="fc" id="L126">                i++;</span>
+<span class="pc bpc" id="L127" title="1 of 4 branches missed.">                while (i &lt; chars.length &amp;&amp; chars[i] != '&quot;') {</span>
+<span class="fc" id="L128">                    sb.append(chars[i]);</span>
+<span class="fc" id="L129">                    i++;</span>
+                }
+<span class="fc" id="L131">                sb.append('&quot;');</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                if (i &lt; chars.length)</span>
+                {
+<span class="fc" id="L134">                    i++; // skip close quote</span>
+                }
+            } else {
+<span class="nc bnc" id="L137" title="All 4 branches missed.">                while (i &lt; chars.length &amp;&amp; Character.isJavaIdentifierPart(chars[i])) {</span>
+<span class="nc" id="L138">                    sb.append(chars[i]);</span>
+<span class="nc" id="L139">                    i++;</span>
+                }
+            }
+<span class="fc" id="L142">            properties.setProperty(name, sb.toString());</span>
+<span class="fc" id="L143">            sb.setLength(0);</span>
+<span class="fc bfc" id="L144" title="All 4 branches covered.">            while (i &lt; chars.length &amp;&amp; chars[i] != ',') {</span>
+<span class="fc" id="L145">                i++;</span>
+            }
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            if (i == chars.length) {</span>
+<span class="fc" id="L148">                break;</span>
+            }
+<span class="fc" id="L150">            i++; // skip '='</span>
+<span class="fc" id="L151">        }</span>
+<span class="fc" id="L152">        return properties;</span>
+    }
+
+    public String getLabel() {
+<span class="fc" id="L156">        return _label;</span>
+    }
+
+    public Map getProperties() {
+<span class="fc" id="L160">        return _properties;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

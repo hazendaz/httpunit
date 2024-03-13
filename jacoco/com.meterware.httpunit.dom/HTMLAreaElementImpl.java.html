@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLAreaElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLAreaElementImpl.java</span></div><h1>HTMLAreaElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.w3c.dom.html.HTMLAreaElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L30">public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElement {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    ElementImpl create() {
+<span class="fc" id="L36">        return new HTMLAreaElementImpl();</span>
+    }
+
+    @Override
+    public String getHref() {
+        try {
+<span class="nc" id="L42">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl(),</span>
+<span class="nc" id="L43">                    getAttributeWithNoDefault(&quot;href&quot;)).toExternalForm();</span>
+<span class="nc" id="L44">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L45">            return e.toString();</span>
+        }
+    }
+
+    @Override
+    public String getTarget() {
+<span class="fc" id="L51">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+    }
+
+    @Override
+    public void setHref(String href) {
+<span class="fc" id="L56">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L57">    }</span>
+
+    @Override
+    public void setTarget(String target) {
+<span class="fc" id="L61">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L62">    }</span>
+
+    @Override
+    public String getAccessKey() {
+<span class="fc" id="L66">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+    }
+
+    @Override
+    public String getCoords() {
+<span class="fc" id="L71">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
+    }
+
+    @Override
+    public String getShape() {
+<span class="fc" id="L76">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
+    }
+
+    @Override
+    public int getTabIndex() {
+<span class="fc" id="L81">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
+    }
+
+    @Override
+    public void setAccessKey(String accessKey) {
+<span class="fc" id="L86">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L87">    }</span>
+
+    @Override
+    public void setCoords(String coords) {
+<span class="fc" id="L91">        setAttribute(&quot;coords&quot;, coords);</span>
+<span class="fc" id="L92">    }</span>
+
+    @Override
+    public void setShape(String shape) {
+<span class="fc" id="L96">        setAttribute(&quot;shape&quot;, shape);</span>
+<span class="fc" id="L97">    }</span>
+
+    @Override
+    public void setTabIndex(int tabIndex) {
+<span class="fc" id="L101">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
+<span class="fc" id="L102">    }</span>
+
+    @Override
+    public String getAlt() {
+<span class="fc" id="L106">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+    }
+
+    @Override
+    public boolean getNoHref() {
+<span class="fc" id="L111">        return getBooleanAttribute(&quot;nohref&quot;);</span>
+    }
+
+    @Override
+    public void setAlt(String alt) {
+<span class="fc" id="L116">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L117">    }</span>
+
+    @Override
+    public void setNoHref(boolean noHref) {
+<span class="fc" id="L121">        setAttribute(&quot;nohref&quot;, noHref);</span>
+<span class="fc" id="L122">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

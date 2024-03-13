@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitContext.java</span></div><h1>ServletUnitContext.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import java.util.Hashtable;
+import java.util.Set;
+
+import javax.servlet.ServletContext;
+
+class ServletUnitContext {
+
+    private SessionListenerDispatcher _listenerDispatcher;
+    private ServletContext _servletContext;
+
+<span class="fc" id="L32">    ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {</span>
+<span class="fc" id="L33">        _servletContext = servletContext;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        _contextPath = contextPath != null ? contextPath : &quot;&quot;;</span>
+<span class="fc" id="L35">        _listenerDispatcher = dispatcher;</span>
+<span class="fc" id="L36">    }</span>
+
+    Set getSessionIDs() {
+<span class="fc" id="L39">        return _sessions.keySet();</span>
+    }
+
+    /**
+     * Returns an appropriate session for a request. If no cached session is
+     *
+     * @param sessionId
+     * @param session
+     *            the session cached by previous requests. May be null.
+     * @param create
+     *
+     * @return
+     */
+    ServletUnitHttpSession getValidSession(String sessionId, ServletUnitHttpSession session, boolean create) {
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        if (session == null &amp;&amp; sessionId != null) {</span>
+<span class="fc" id="L54">            session = getSession(sessionId);</span>
+        }
+
+<span class="fc bfc" id="L57" title="All 4 branches covered.">        if (session != null &amp;&amp; session.isInvalid()) {</span>
+<span class="fc" id="L58">            session = null;</span>
+        }
+
+<span class="fc bfc" id="L61" title="All 4 branches covered.">        if (session == null &amp;&amp; create) {</span>
+<span class="fc" id="L62">            session = newSession();</span>
+        }
+<span class="fc" id="L64">        return session;</span>
+    }
+
+    /**
+     * Returns the session with the specified ID, if any.
+     **/
+    ServletUnitHttpSession getSession(String id) {
+<span class="fc" id="L71">        return (ServletUnitHttpSession) _sessions.get(id);</span>
+    }
+
+    /**
+     * Creates a new session with a unique ID.
+     **/
+    ServletUnitHttpSession newSession() {
+<span class="fc" id="L78">        ServletUnitHttpSession result = new ServletUnitHttpSession(_servletContext, _listenerDispatcher);</span>
+<span class="fc" id="L79">        _sessions.put(result.getId(), result);</span>
+<span class="fc" id="L80">        _listenerDispatcher.sendSessionCreated(result);</span>
+<span class="fc" id="L81">        return result;</span>
+    }
+
+    /**
+     * Returns the contextPath
+     */
+    String getContextPath() {
+<span class="fc" id="L88">        return _contextPath;</span>
+    }
+
+    // ------------------------------- private members ---------------------------
+
+<span class="fc" id="L93">    private Hashtable _sessions = new Hashtable();</span>
+
+<span class="fc" id="L95">    private String _contextPath = null;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

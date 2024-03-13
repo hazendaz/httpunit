@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUnitUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpUnitUtils.java</span></div><h1>HttpUnitUtils.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.StringTokenizer;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+/**
+ * Utility code shared by httpunit and servletunit.
+ **/
+<span class="nc" id="L41">public class HttpUnitUtils {</span>
+
+    public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
+    public static final String DEFAULT_CHARACTER_SET = &quot;iso-8859-1&quot;;
+    /**
+     * set to true to debug Exception handling
+     */
+<span class="fc" id="L48">    private static boolean EXCEPTION_DEBUG = true;</span>
+
+    /**
+     * handle Exceptions and thowables
+     *
+     * @param th
+     */
+    public static void handleException(Throwable th) {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (EXCEPTION_DEBUG) {</span>
+<span class="nc" id="L57">            th.printStackTrace();</span>
+        }
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * are we running in the Eclipse IDE?
+     *
+     * @return whether we are running in the Eclipse environment
+     */
+    public static boolean isEclipse() {
+<span class="nc" id="L67">        StackTraceElement[] ste = new Throwable().getStackTrace();</span>
+<span class="nc" id="L68">        return ste[ste.length - 1].getClassName().startsWith(&quot;org.eclipse.jdt&quot;);</span>
+    }
+
+    /**
+     * Returns the content type and encoding as a pair of strings. If no character set is specified, the second entry
+     * will be null.
+     *
+     * @param header
+     *            the header to parse
+     *
+     * @return a string array with the content type and the content char set
+     **/
+    public static String[] parseContentTypeHeader(String header) {
+<span class="fc" id="L81">        String[] result = { &quot;text/plain&quot;, null };</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (header.trim().length() &gt; 0) {</span>
+<span class="fc" id="L83">            StringTokenizer st = new StringTokenizer(header, &quot;;= &quot;);</span>
+<span class="fc" id="L84">            result[0] = st.nextToken();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L86">                String parameter = st.nextToken();</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">                if (st.hasMoreTokens()) {</span>
+<span class="fc" id="L88">                    String value = stripQuotes(st.nextToken());</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                    if (parameter.trim().equalsIgnoreCase(&quot;charset&quot;)) {</span>
+<span class="fc" id="L90">                        result[1] = value;</span>
+                    }
+                }
+<span class="fc" id="L93">            }</span>
+        }
+<span class="fc" id="L95">        return result;</span>
+    }
+
+    /**
+     * strip the quotes from a value
+     *
+     * @param value
+     *
+     * @return the stripped value
+     */
+    public static String stripQuotes(String value) {
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">        if (value.startsWith(&quot;'&quot;) || value.startsWith(&quot;\&quot;&quot;)) {</span>
+<span class="fc" id="L107">            value = value.substring(1);</span>
+        }
+<span class="pc bpc" id="L109" title="1 of 4 branches missed.">        if (value.endsWith(&quot;'&quot;) || value.endsWith(&quot;\&quot;&quot;)) {</span>
+<span class="fc" id="L110">            value = value.substring(0, value.length() - 1);</span>
+        }
+<span class="fc" id="L112">        return value;</span>
+    }
+
+    /**
+     * Returns an interpretation of the specified URL-encoded string, using the iso-8859-1 character set.
+     *
+     * @since 1.6
+     **/
+    public static String decode(String byteString) {
+<span class="fc" id="L121">        return decode(byteString, &quot;iso-8859-1&quot;);</span>
+    }
+
+    /**
+     * Returns a string representation of a number, trimming off any trailing decimal zeros.
+     */
+    static String trimmedValue(Number number) {
+<span class="fc" id="L128">        String rawNumber = number.toString();</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (rawNumber.indexOf('.') == -1) {</span>
+<span class="nc" id="L130">            return rawNumber;</span>
+        }
+
+<span class="fc" id="L133">        int index = rawNumber.length();</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        while (rawNumber.charAt(index - 1) == '0') {</span>
+<span class="fc" id="L135">            index--;</span>
+        }
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (rawNumber.charAt(index - 1) == '.') {</span>
+<span class="fc" id="L138">            index--;</span>
+        }
+<span class="fc" id="L140">        return rawNumber.substring(0, index);</span>
+    }
+
+    /**
+     * Decodes a URL safe string into its original form using the specified character set. Escaped characters are
+     * converted back to their original representation. This method is copied from the &lt;b&gt;Jakarta Commons Codec&lt;/b&gt;;
+     * &lt;code&gt;org.apache.commons.codec.net.URLCodec&lt;/code&gt; class.
+     *
+     * @param string
+     *            URL safe string to convert into its original form
+     *
+     * @return original string
+     *
+     * @throws IllegalArgumentException
+     *             thrown if URL decoding is unsuccessful,
+     */
+    public static String decode(String string, String charset) {
+        try {
+<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (string == null) {</span>
+<span class="fc" id="L159">                return null;</span>
+            }
+
+<span class="fc" id="L162">            return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), charset);</span>
+<span class="nc" id="L163">        } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L164">            throw new RuntimeException(e.toString());</span>
+        }
+    }
+
+    /**
+     * Decodes an array of URL safe 7-bit characters into an array of original bytes. Escaped characters are converted
+     * back to their original representation. This method is copied from the &lt;b&gt;Jakarta Commons Codec&lt;/b&gt;;
+     * &lt;code&gt;org.apache.commons.codec.net.URLCodec&lt;/code&gt; class.
+     *
+     * @param pArray
+     *            array of URL safe characters
+     *
+     * @return array of original bytes
+     */
+    private static final byte[] decodeUrl(byte[] pArray) throws IllegalArgumentException {
+<span class="fc" id="L179">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (int i = 0; i &lt; pArray.length; i++) {</span>
+<span class="fc" id="L181">            int b = pArray[i];</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            if (b == '+') {</span>
+<span class="fc" id="L183">                buffer.write(' ');</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">            } else if (b != '%') {</span>
+<span class="fc" id="L185">                buffer.write(b);</span>
+            } else {
+                try {
+<span class="fc" id="L188">                    i++;</span>
+<span class="fc" id="L189">                    int u = Character.digit((char) pArray[i], 16);</span>
+<span class="fc" id="L190">                    i++;</span>
+<span class="fc" id="L191">                    int l = Character.digit((char) pArray[i], 16);</span>
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">                    if (u == -1 || l == -1) {</span>
+<span class="nc" id="L193">                        throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
+                    }
+<span class="fc" id="L195">                    buffer.write((char) ((u &lt;&lt; 4) + l));</span>
+<span class="nc" id="L196">                } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L197">                    throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
+<span class="fc" id="L198">                }</span>
+            }
+        }
+<span class="fc" id="L201">        return buffer.toByteArray();</span>
+    }
+
+    /**
+     * parse an InputStream to a string (for debugging)
+     *
+     * @param is
+     *
+     * @return the string gotten from the inputString
+     */
+    public static String parseISToString(java.io.InputStream is) {
+<span class="nc" id="L212">        java.io.DataInputStream din = new java.io.DataInputStream(is);</span>
+<span class="nc" id="L213">        StringBuilder sb = new StringBuilder();</span>
+        try {
+<span class="nc" id="L215">            String line = null;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">            while ((line = din.readLine()) != null) {</span>
+<span class="nc" id="L217">                sb.append(line + &quot;\n&quot;);</span>
+            }
+<span class="nc" id="L219">        } catch (Exception ex) {</span>
+            // TODO handle exception properly here
+<span class="nc" id="L221">            ex.getMessage();</span>
+        } finally {
+            try {
+<span class="nc" id="L224">                is.close();</span>
+<span class="nc" id="L225">            } catch (Exception ex) {</span>
+<span class="nc" id="L226">            }</span>
+        }
+<span class="nc" id="L228">        return sb.toString();</span>
+    }
+
+    /**
+     * parse the given inputSource with a new Parser
+     *
+     * @param inputSource
+     *
+     * @return the document parsed from the input Source
+     */
+    public static Document parse(InputSource inputSource) throws SAXException, IOException {
+<span class="fc" id="L239">        DocumentBuilder db = newParser();</span>
+        try {
+<span class="fc" id="L241">            return db.parse(inputSource);</span>
+<span class="nc" id="L242">        } catch (java.net.MalformedURLException mue) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
+<span class="nc" id="L244">                String msg = mue.getMessage();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                if (msg != null) {</span>
+<span class="nc" id="L246">                    System.err.println(msg);</span>
+                }
+<span class="nc" id="L248">                InputStream is = inputSource.getByteStream();</span>
+<span class="nc" id="L249">                is.reset();</span>
+<span class="nc" id="L250">                String content = parseISToString(is);</span>
+<span class="nc" id="L251">                System.err.println(content);</span>
+            }
+<span class="nc" id="L253">            throw mue;</span>
+        }
+    }
+
+    /**
+     * parse the given inputStream with a new Parser
+     *
+     * @param inputStream
+     *
+     * @return the document parsed from the input Stream
+     */
+    public static Document parse(InputStream inputStream) throws SAXException, IOException {
+<span class="fc" id="L265">        DocumentBuilder db = newParser();</span>
+        try {
+<span class="fc" id="L267">            return db.parse(inputStream);</span>
+<span class="nc" id="L268">        } catch (java.net.MalformedURLException mue) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
+<span class="nc" id="L270">                String msg = mue.getMessage();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">                if (msg != null) {</span>
+<span class="nc" id="L272">                    System.err.println(msg);</span>
+                }
+<span class="nc" id="L274">                InputStream is = inputStream;</span>
+<span class="nc" id="L275">                is.reset();</span>
+<span class="nc" id="L276">                String content = parseISToString(is);</span>
+<span class="nc" id="L277">                System.err.println(content);</span>
+            }
+<span class="nc" id="L279">            throw mue;</span>
+        }
+    }
+
+    /**
+     * creates a parser using JAXP API.
+     */
+    public static DocumentBuilder newParser() throws SAXException {
+        try {
+<span class="fc" id="L288">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L289">            DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="fc" id="L290">            builder.setEntityResolver(new HttpUnitUtils.ClasspathEntityResolver());</span>
+<span class="fc" id="L291">            return builder;</span>
+<span class="nc" id="L292">        } catch (ParserConfigurationException ex) {</span>
+            // redirect the new exception for code compatibility
+<span class="nc" id="L294">            throw new SAXException(ex);</span>
+        }
+    }
+
+    /**
+     * Returns a string array created by appending a string to an existing array. The existing array may be null.
+     **/
+    static String[] withNewValue(String[] oldValue, String newValue) {
+        String[] result;
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (oldValue == null) {</span>
+<span class="fc" id="L304">            result = new String[] { newValue };</span>
+        } else {
+<span class="fc" id="L306">            result = new String[oldValue.length + 1];</span>
+<span class="fc" id="L307">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
+<span class="fc" id="L308">            result[oldValue.length] = newValue;</span>
+        }
+<span class="fc" id="L310">        return result;</span>
+    }
+
+    /**
+     * Returns a string array created by appending an object to an existing array. The existing array may be null.
+     **/
+    static Object[] withNewValue(Object[] oldValue, Object newValue) {
+        Object[] result;
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        if (oldValue == null) {</span>
+<span class="fc" id="L319">            result = new Object[] { newValue };</span>
+        } else {
+<span class="nc" id="L321">            result = new Object[oldValue.length + 1];</span>
+<span class="nc" id="L322">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
+<span class="nc" id="L323">            result[oldValue.length] = newValue;</span>
+        }
+<span class="fc" id="L325">        return result;</span>
+    }
+
+    /**
+     * Return true if the first string contains the second. Case sensitivity is according to the setting of
+     * HttpUnitOptions.matchesIgnoreCase
+     */
+    static boolean contains(String string, String substring) {
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc bfc" id="L334" title="All 2 branches covered.">            return string.toUpperCase().indexOf(substring.toUpperCase()) &gt;= 0;</span>
+        }
+<span class="nc bnc" id="L336" title="All 2 branches missed.">        return string.indexOf(substring) &gt;= 0;</span>
+    }
+
+    /**
+     * Return true if the first string starts with the second. Case sensitivity is according to the setting of
+     * HttpUnitOptions.matchesIgnoreCase
+     */
+    static boolean hasPrefix(String string, String prefix) {
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc" id="L345">            return string.toUpperCase().startsWith(prefix.toUpperCase());</span>
+        }
+<span class="nc" id="L347">        return string.startsWith(prefix);</span>
+    }
+
+    /**
+     * Return true if the first string equals the second. Case sensitivity is according to the setting of
+     * HttpUnitOptions.matchesIgnoreCase
+     */
+    static boolean matches(String string1, String string2) {
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc" id="L356">            return string1.equalsIgnoreCase(string2);</span>
+        }
+<span class="nc" id="L358">        return string1.equals(string2);</span>
+    }
+
+    /**
+     * check whether the URL is a java script url
+     *
+     * @param urlString
+     *            - the string to analyze
+     *
+     * @return - true if this is a javascript url
+     */
+    static boolean isJavaScriptURL(String urlString) {
+<span class="fc" id="L370">        return urlString.toLowerCase().startsWith(&quot;javascript:&quot;);</span>
+    }
+
+    /**
+     * Trims whitespace from the ends, and encodes from the middle. Spaces within quotes are respected.
+     */
+    static String encodeSpaces(String s) {
+<span class="fc" id="L377">        s = s.trim();</span>
+        // if no spaces we are fine
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (s.indexOf(' ') &lt; 0) {</span>
+<span class="fc" id="L380">            return s;</span>
+        }
+
+<span class="fc" id="L383">        boolean inQuotes = false;</span>
+<span class="fc" id="L384">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L385">        char[] chars = s.toCharArray();</span>
+        // loop over oper the chars of the URL
+<span class="fc bfc" id="L387" title="All 2 branches covered.">        for (char aChar : chars) {</span>
+            // toggle quotation and add quote
+<span class="pc bpc" id="L389" title="2 of 4 branches missed.">            if (aChar == '&quot;' || aChar == '\'') {</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">                inQuotes = !inQuotes;</span>
+<span class="nc" id="L391">                sb.append(aChar);</span>
+                // append everything in quotes and printable chars above space
+<span class="pc bpc" id="L393" title="1 of 4 branches missed.">            } else if (inQuotes || aChar &gt; ' ') {</span>
+<span class="fc" id="L394">                sb.append(aChar);</span>
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">            } else if (aChar == ' ') {</span>
+                // encode spaces
+                // TODO check what to do about breaking testLinkUrlAcrossLineBreaks then ...
+                // sb.append(&quot;%20&quot;);
+            }
+        }
+<span class="fc" id="L401">        return sb.toString();</span>
+    }
+
+    static String replaceEntities(String string) {
+<span class="fc" id="L405">        int i = 0;</span>
+        int ampIndex;
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        while ((ampIndex = string.indexOf('&amp;', i)) &gt;= 0) {</span>
+<span class="fc" id="L408">            int semiColonIndex = string.indexOf(';', ampIndex + 1);</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">            if (semiColonIndex &lt; 0) {</span>
+<span class="fc" id="L410">                break;</span>
+            }
+<span class="fc" id="L412">            i = ampIndex + 1;</span>
+
+<span class="fc" id="L414">            String entityName = string.substring(ampIndex + 1, semiColonIndex);</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            if (entityName.equalsIgnoreCase(&quot;amp&quot;)) {</span>
+<span class="fc" id="L416">                string = string.substring(0, ampIndex) + '&amp;' + string.substring(semiColonIndex + 1);</span>
+            }
+
+<span class="fc" id="L419">        }</span>
+<span class="fc" id="L420">        return string;</span>
+    }
+
+    /**
+     * Strips the fragment identifier (if any) from the Url.
+     */
+    static String trimFragment(String rawUrl) {
+<span class="pc bpc" id="L427" title="1 of 2 branches missed.">        if (isJavaScriptURL(rawUrl)) {</span>
+<span class="nc" id="L428">            return rawUrl;</span>
+        }
+<span class="fc" id="L430">        final int hashIndex = rawUrl.indexOf('#');</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        return hashIndex &lt; 0 ? rawUrl : rawUrl.substring(0, hashIndex);</span>
+    }
+
+<span class="fc" id="L434">    static class ClasspathEntityResolver implements EntityResolver {</span>
+
+        @Override
+        public InputSource resolveEntity(String publicID, String systemID) {
+<span class="nc bnc" id="L438" title="All 2 branches missed.">            if (systemID == null) {</span>
+<span class="nc" id="L439">                return null;</span>
+            }
+
+<span class="nc" id="L442">            String localName = systemID;</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">            if (localName.indexOf(&quot;/&quot;) &gt; 0) {</span>
+<span class="nc" id="L444">                localName = localName.substring(localName.lastIndexOf(&quot;/&quot;) + 1);</span>
+            }
+
+            try {
+<span class="nc" id="L448">                return new InputSource(getClass().getClassLoader().getResourceAsStream(localName));</span>
+<span class="nc" id="L449">            } catch (Exception e) {</span>
+                // proposed patch for bug report
+                // [ 1264706 ] [patch] replace ClasspathEntityResolver
+                // by fabrizio giustina
+                // even to return this in all cases!
+                // return new InputSource( new ByteArrayInputStream( new byte[0] ) );
+<span class="nc" id="L455">                return null;</span>
+            }
+        }
+    }
+
+    /**
+     * @return the eXCEPTION_DEBUG
+     */
+    protected static boolean isEXCEPTION_DEBUG() {
+<span class="nc" id="L464">        return EXCEPTION_DEBUG;</span>
+    }
+
+    /**
+     * @param exception_debug
+     *            the eXCEPTION_DEBUG to set
+     */
+    public static boolean setEXCEPTION_DEBUG(boolean exception_debug) {
+<span class="fc" id="L472">        boolean oldExceptionDebug = exception_debug;</span>
+<span class="fc" id="L473">        EXCEPTION_DEBUG = exception_debug;</span>
+<span class="fc" id="L474">        return oldExceptionDebug;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

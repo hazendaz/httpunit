@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">ScriptFilter.java</span></div><h1>ScriptFilter.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.parsing;
+
+import com.meterware.httpunit.HttpUnitOptions;
+
+import java.io.IOException;
+import java.io.StringReader;
+
+import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
+import net.sourceforge.htmlunit.cyberneko.filters.DefaultFilter;
+
+import org.apache.xerces.xni.Augmentations;
+import org.apache.xerces.xni.QName;
+import org.apache.xerces.xni.XMLAttributes;
+import org.apache.xerces.xni.XMLLocator;
+import org.apache.xerces.xni.XMLString;
+import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.parser.XMLInputSource;
+
+/**
+ * A filter to interpret JavaScript script blocks, based on the sample Scripts program provided by NekoHTML.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+class ScriptFilter extends DefaultFilter {
+
+    /** The NekoHTML configuration. */
+    private HTMLConfiguration _configuration;
+
+    /** A string buffer to collect the script. */
+    private StringBuilder _activeScriptBlock;
+
+    /** The name of the current script language. **/
+    private String _scriptLanguage;
+
+    /** The system identifier of the source document. */
+<span class="fc" id="L55">    private String _systemID = &quot;&quot;;</span>
+
+    /** The number of the current script. */
+    private int _scriptIndex;
+
+    /** The parser in which this filter is running. **/
+    private ScriptHandler _scriptHandler;
+
+    /** Constructs a script object with the specified configuration. */
+<span class="fc" id="L64">    ScriptFilter(HTMLConfiguration config) {</span>
+<span class="fc" id="L65">        _configuration = config;</span>
+<span class="fc" id="L66">    }</span>
+
+    public void setScriptHandler(ScriptHandler scriptHandler) {
+<span class="fc" id="L69">        _scriptHandler = scriptHandler;</span>
+<span class="fc" id="L70">    }</span>
+
+    public void startDocument(XMLLocator locator, String encoding, Augmentations augs) throws XNIException {
+<span class="nc" id="L73">        _activeScriptBlock = null;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        _systemID = locator == null ? &quot;&quot; : locator.getLiteralSystemId() + &quot;_&quot;;</span>
+<span class="nc" id="L75">        _scriptIndex = 0;</span>
+<span class="nc" id="L76">        super.startDocument(locator, encoding, null, augs);</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * Invoked for a start element. If the element is a &lt;script&gt;, overrides the normal behavior to begin collecting the
+     * script text.
+     */
+    @Override
+    public void startElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (!isSupportedScript(element, attrs)) {</span>
+<span class="fc" id="L86">            super.startElement(element, attrs, augs);</span>
+        } else {
+<span class="fc" id="L88">            _activeScriptBlock = new StringBuilder();</span>
+<span class="fc" id="L89">            _scriptLanguage = getScriptLanguage(attrs);</span>
+<span class="fc" id="L90">            String srcAttribute = attrs.getValue(&quot;src&quot;);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (srcAttribute != null) {</span>
+<span class="fc" id="L92">                _activeScriptBlock.append(_scriptHandler.getIncludedScript(srcAttribute));</span>
+            }
+        }
+<span class="fc" id="L95">    }</span>
+
+    private boolean isSupportedScript(QName element, XMLAttributes attrs) {
+<span class="pc bpc" id="L98" title="1 of 4 branches missed.">        if (!element.rawname.equalsIgnoreCase(&quot;script&quot;) || attrs == null) {</span>
+<span class="fc" id="L99">            return false;</span>
+        }
+<span class="fc" id="L101">        String value = getScriptLanguage(attrs);</span>
+<span class="fc bfc" id="L102" title="All 4 branches covered.">        return HttpUnitOptions.isScriptingEnabled() &amp;&amp; _scriptHandler.supportsScriptLanguage(value);</span>
+    }
+
+    private String getScriptLanguage(XMLAttributes attrs) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        return attrs == null ? null : attrs.getValue(&quot;language&quot;);</span>
+    }
+
+    @Override
+    public void emptyElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (!isSupportedScript(element, attrs)) {</span>
+<span class="fc" id="L112">            super.emptyElement(element, attrs, augs);</span>
+        }
+<span class="fc" id="L114">    }</span>
+
+    @Override
+    public void characters(XMLString text, Augmentations augs) throws XNIException {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (_activeScriptBlock != null) {</span>
+<span class="fc" id="L119">            _activeScriptBlock.append(text.ch, text.offset, text.length);</span>
+        } else {
+<span class="fc" id="L121">            super.characters(text, augs);</span>
+        }
+<span class="fc" id="L123">    }</span>
+
+    @Override
+    public void endElement(QName element, Augmentations augs) throws XNIException {
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (_activeScriptBlock == null) {</span>
+<span class="fc" id="L128">            super.endElement(element, augs);</span>
+        } else {
+            try {
+<span class="fc" id="L131">                final String scriptText = _activeScriptBlock.toString();</span>
+<span class="fc" id="L132">                String replacementText = getTranslatedScript(_scriptLanguage, scriptText);</span>
+<span class="fc" id="L133">                _configuration.pushInputSource(newInputSource(replacementText));</span>
+<span class="nc" id="L134">            } catch (IOException e) { // ignore</span>
+            } finally {
+<span class="fc" id="L136">                _activeScriptBlock = null;</span>
+            }
+        }
+<span class="fc" id="L139">    }</span>
+
+    private XMLInputSource newInputSource(String replacementText) {
+<span class="fc" id="L142">        StringBuilder systemID = new StringBuilder(_systemID);</span>
+<span class="fc" id="L143">        systemID.append(&quot;script&quot;).append(++_scriptIndex);</span>
+
+<span class="fc" id="L145">        return new XMLInputSource(null, systemID.toString(), null, new StringReader(replacementText), &quot;UTF-8&quot;);</span>
+    }
+
+    protected String getTranslatedScript(final String language, final String scriptText) throws IOException {
+<span class="fc" id="L149">        return _scriptHandler.runScript(language, scriptText);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebApplet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebApplet.java</span></div><h1>WebApplet.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+
+import java.applet.Applet;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLAppletElement;
+import org.xml.sax.SAXException;
+
+/**
+ * This class represents the embedding of an applet in a web page.
+ *
+ * @author &lt;a href=&quot;mailto:Oliver.Imbusch.extern@HVBInfo.com&quot;&gt;Oliver Imbusch&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+public class WebApplet extends HTMLElementBase {
+
+    private WebResponse _response;
+    private String _baseTarget;
+
+    private Applet _applet;
+    private HashMap _parameters;
+    private String[] _parameterNames;
+
+<span class="fc" id="L57">    final private String CLASS_EXTENSION = &quot;.class&quot;;</span>
+    private HTMLAppletElement _element;
+
+    public WebApplet(WebResponse response, HTMLAppletElement element, String baseTarget) {
+<span class="fc" id="L61">        super(element);</span>
+<span class="fc" id="L62">        _element = element;</span>
+<span class="fc" id="L63">        _response = response;</span>
+<span class="fc" id="L64">        _baseTarget = baseTarget;</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Returns the URL of the codebase used to find the applet classes
+     */
+    public URL getCodeBaseURL() throws MalformedURLException {
+<span class="fc" id="L71">        return new URL(_response.getURL(), getCodeBase());</span>
+    }
+
+    private String getCodeBase() {
+<span class="fc" id="L75">        final String codeBaseAttribute = _element.getCodeBase();</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        return codeBaseAttribute.endsWith(&quot;/&quot;) ? codeBaseAttribute : codeBaseAttribute + &quot;/&quot;;</span>
+    }
+
+    /**
+     * Returns the name of the applet main class.
+     */
+    public String getMainClassName() {
+<span class="fc" id="L83">        String className = _element.getCode();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (className.endsWith(CLASS_EXTENSION)) {</span>
+<span class="fc" id="L85">            className = className.substring(0, className.lastIndexOf(CLASS_EXTENSION));</span>
+        }
+<span class="fc" id="L87">        return className.replace('/', '.').replace('\\', '.');</span>
+    }
+
+    /**
+     * Returns the width of the panel in which the applet will be drawn.
+     */
+    public int getWidth() {
+<span class="fc" id="L94">        return Integer.parseInt(getAttribute(&quot;width&quot;));</span>
+    }
+
+    /**
+     * Returns the height of the panel in which the applet will be drawn.
+     */
+    public int getHeight() {
+<span class="fc" id="L101">        return Integer.parseInt(getAttribute(&quot;height&quot;));</span>
+    }
+
+    /**
+     * Returns the archive specification.
+     */
+    public String getArchiveSpecification() {
+<span class="fc" id="L108">        String specification = getParameter(&quot;archive&quot;);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (specification == null) {</span>
+<span class="fc" id="L110">            specification = getAttribute(&quot;archive&quot;);</span>
+        }
+<span class="fc" id="L112">        return specification;</span>
+    }
+
+    List getArchiveList() throws MalformedURLException {
+<span class="fc" id="L116">        ArrayList al = new ArrayList();</span>
+<span class="fc" id="L117">        StringTokenizer st = new StringTokenizer(getArchiveSpecification(), &quot;,&quot;);</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L119">            al.add(new URL(getCodeBaseURL(), st.nextToken()));</span>
+        }
+<span class="fc" id="L121">        return al;</span>
+    }
+
+    /**
+     * Returns an array containing the names of the parameters defined for the applet.
+     */
+    public String[] getParameterNames() {
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (_parameterNames == null) {</span>
+<span class="fc" id="L129">            ArrayList al = new ArrayList(getParameterMap().keySet());</span>
+<span class="fc" id="L130">            _parameterNames = (String[]) al.toArray(new String[al.size()]);</span>
+        }
+<span class="fc" id="L132">        return _parameterNames;</span>
+    }
+
+    /**
+     * Returns the value of the specified applet parameter, or null if not defined.
+     */
+    public String getParameter(String name) {
+<span class="fc" id="L139">        return (String) getParameterMap().get(name);</span>
+    }
+
+    private Map getParameterMap() {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        if (_parameters == null) {</span>
+<span class="fc" id="L144">            _parameters = new HashMap();</span>
+<span class="fc" id="L145">            NodeList nl = ((Element) getNode()).getElementsByTagName(&quot;param&quot;);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L147">                Node n = nl.item(i);</span>
+<span class="fc" id="L148">                _parameters.put(NodeUtils.getNodeAttribute(n, &quot;name&quot;, &quot;&quot;), NodeUtils.getNodeAttribute(n, &quot;value&quot;, &quot;&quot;));</span>
+            }
+        }
+<span class="fc" id="L151">        return _parameters;</span>
+    }
+
+    public Applet getApplet()
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (_applet == null) {</span>
+<span class="fc" id="L157">            ClassLoader cl = new URLClassLoader(getClassPath(), null);</span>
+<span class="fc" id="L158">            Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if (!(o instanceof Applet)) {</span>
+<span class="nc" id="L160">                throw new RuntimeException(getMainClassName() + &quot; is not an Applet&quot;);</span>
+            }
+<span class="fc" id="L162">            _applet = (Applet) o;</span>
+<span class="fc" id="L163">            _applet.setStub(new AppletStubImpl(this));</span>
+        }
+<span class="fc" id="L165">        return _applet;</span>
+    }
+
+    private URL[] getClassPath() throws MalformedURLException {
+<span class="fc" id="L169">        List classPath = getArchiveList();</span>
+<span class="fc" id="L170">        classPath.add(getCodeBaseURL());</span>
+<span class="fc" id="L171">        return (URL[]) classPath.toArray(new URL[classPath.size()]);</span>
+    }
+
+    String getBaseTarget() {
+<span class="fc" id="L175">        return _baseTarget;</span>
+    }
+
+    WebApplet[] getAppletsInPage() {
+        try {
+<span class="fc" id="L180">            return _response.getApplets();</span>
+<span class="nc" id="L181">        } catch (SAXException e) {</span>
+<span class="nc" id="L182">            HttpUnitUtils.handleException(e); // should never happen.</span>
+<span class="nc" id="L183">            return null;</span>
+        }
+    }
+
+    void sendRequest(URL url, String target) {
+<span class="fc" id="L188">        WebRequest wr = new GetMethodWebRequest(null, url.toExternalForm(), target);</span>
+        try {
+<span class="fc" id="L190">            _response.getWindow().getResponse(wr);</span>
+<span class="nc" id="L191">        } catch (IOException e) {</span>
+<span class="nc" id="L192">            e.printStackTrace(); // To change body of catch statement use Options | File Templates.</span>
+<span class="nc" id="L193">            throw new RuntimeException(e.toString());</span>
+<span class="nc" id="L194">        } catch (SAXException e) {</span>
+<span class="fc" id="L195">        }</span>
+<span class="fc" id="L196">    }</span>
+
+    @Override
+    public ScriptableDelegate newScriptable() {
+<span class="nc" id="L200">        return new HTMLElementScriptable(this);</span>
+    }
+
+    @Override
+    public ScriptableDelegate getParentDelegate() {
+<span class="nc" id="L205">        return _response.getDocumentScriptable();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppletStubImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">AppletStubImpl.java</span></div><h1>AppletStubImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.applet.AppletContext;
+import java.applet.AppletStub;
+import java.net.URL;
+
+class AppletStubImpl implements AppletStub {
+
+    private WebApplet _webApplet;
+
+<span class="fc" id="L30">    AppletStubImpl(WebApplet webApplet) {</span>
+<span class="fc" id="L31">        _webApplet = webApplet;</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Determines if the applet is active. An applet is active just before its &lt;code&gt;start&lt;/code&gt; method is called. It
+     * becomes inactive just before its &lt;code&gt;stop&lt;/code&gt; method is called.
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the applet is active; &lt;code&gt;false&lt;/code&gt; otherwise.
+     */
+    @Override
+    public boolean isActive() {
+<span class="nc" id="L42">        return false;</span>
+    }
+
+    /**
+     * Returns an absolute URL naming the directory of the document in which the applet is embedded. For example,
+     * suppose an applet is contained within the document: &lt;blockquote&gt;
+     *
+     * &lt;pre&gt;
+     *    http://java.sun.com/products/jdk/1.2/index.html
+     * &lt;/pre&gt;
+     *
+     * &lt;/blockquote&gt; The document base is: &lt;blockquote&gt;
+     *
+     * &lt;pre&gt;
+     *    http://java.sun.com/products/jdk/1.2/
+     * &lt;/pre&gt;
+     *
+     * &lt;/blockquote&gt;
+     *
+     * @return the {@link URL} of the document that contains this applet.
+     *
+     * @see AppletStub#getCodeBase()
+     */
+    @Override
+    public URL getDocumentBase() {
+<span class="nc" id="L67">        return null;</span>
+    }
+
+    /**
+     * Gets the base URL.
+     *
+     * @return the &lt;code&gt;URL&lt;/code&gt; of the applet.
+     */
+    @Override
+    public URL getCodeBase() {
+<span class="nc" id="L77">        return null;</span>
+    }
+
+    /**
+     * Returns the value of the named parameter in the HTML tag. For example, if an applet is specified as &lt;blockquote&gt;
+     *
+     * &lt;pre&gt;
+     * &amp;lt;applet code=&quot;Clock&quot; width=50 height=50&amp;gt;
+     * &amp;lt;param name=Color value=&quot;blue&quot;&amp;gt;
+     * &amp;lt;/applet&amp;gt;
+     * &lt;/pre&gt;
+     *
+     * &lt;/blockquote&gt;
+     * &lt;p&gt;
+     * then a call to &lt;code&gt;getParameter(&quot;Color&quot;)&lt;/code&gt; returns the value &lt;code&gt;&quot;blue&quot;&lt;/code&gt;.
+     *
+     * @param name
+     *            a parameter name.
+     *
+     * @return the value of the named parameter, or &lt;tt&gt;null&lt;/tt&gt; if not set.
+     */
+    @Override
+    public String getParameter(String name) {
+<span class="fc" id="L100">        return _webApplet.getParameter(name);</span>
+    }
+
+    /**
+     * Gets a handler to the applet's context.
+     *
+     * @return the applet's context.
+     */
+    @Override
+    public AppletContext getAppletContext() {
+<span class="fc" id="L110">        return new AppletContextImpl(_webApplet);</span>
+    }
+
+    /**
+     * Called when the applet wants to be resized.
+     *
+     * @param width
+     *            the new requested width for the applet.
+     * @param height
+     *            the new requested height for the applet.
+     */
+    @Override
+    public void appletResize(int width, int height) {
+<span class="nc" id="L123">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

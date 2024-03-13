@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JUnitServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">JUnitServlet.java</span></div><h1>JUnitServlet.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestFailure;
+import junit.framework.TestResult;
+import junit.runner.BaseTestRunner;
+
+/**
+ * A servlet which can run unit tests inside a servlet context. It may be extended to provide InvocationContext-access
+ * to such tests if a container-specific implementation of InvocationContextFactory is provided. Combined with
+ * ServletTestCase, this would permit in-container tests of servlets in a fashion similar to that supported by
+ * ServletUnit.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+public class JUnitServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L49">    public JUnitServlet() {</span>
+<span class="nc" id="L50">    }</span>
+
+<span class="fc" id="L52">    protected JUnitServlet(InvocationContextFactory factory) {</span>
+<span class="fc" id="L53">        _factory = factory;</span>
+<span class="fc" id="L54">    }</span>
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+<span class="fc" id="L59">        ResultsFormatter formatter = getResultsFormatter(request.getParameter(&quot;format&quot;));</span>
+<span class="fc" id="L60">        response.setContentType(formatter.getContentType());</span>
+<span class="fc" id="L61">        final String testName = request.getParameter(&quot;test&quot;);</span>
+<span class="pc bpc" id="L62" title="1 of 4 branches missed.">        if (testName == null || testName.length() == 0) {</span>
+<span class="fc" id="L63">            reportCannotRunTest(response.getWriter(), &quot;No test class specified&quot;);</span>
+        } else {
+<span class="fc" id="L65">            ServletTestRunner runner = new ServletTestRunner(response.getWriter(), formatter);</span>
+<span class="fc" id="L66">            runner.runTestSuite(testName);</span>
+        }
+<span class="fc" id="L68">        response.getWriter().close();</span>
+<span class="fc" id="L69">    }</span>
+
+    private ResultsFormatter getResultsFormatter(String formatterName) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (&quot;text&quot;.equalsIgnoreCase(formatterName)) {</span>
+<span class="fc" id="L73">            return new TextResultsFormatter();</span>
+        }
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (&quot;xml&quot;.equalsIgnoreCase(formatterName)) {</span>
+<span class="fc" id="L76">            return new XMLResultsFormatter();</span>
+        }
+<span class="fc" id="L78">        return new HTMLResultsFormatter();</span>
+    }
+
+    private InvocationContextFactory _factory;
+
+    private void reportCannotRunTest(PrintWriter writer, final String errorMessage) {
+<span class="fc" id="L84">        writer.print(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Cannot run test&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot; + errorMessage + &quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L85">    }</span>
+
+    class ServletTestRunner extends BaseTestRunner {
+        private PrintWriter _writer;
+        private ResultsFormatter _formatter;
+
+<span class="fc" id="L91">        public ServletTestRunner(PrintWriter writer, ResultsFormatter formatter) {</span>
+<span class="fc" id="L92">            ServletTestCase.setInvocationContextFactory(_factory);</span>
+<span class="fc" id="L93">            _writer = writer;</span>
+<span class="fc" id="L94">            _formatter = formatter;</span>
+<span class="fc" id="L95">        }</span>
+
+        void runTestSuite(String testClassName) {
+<span class="fc" id="L98">            Test suite = getTest(testClassName);</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if (suite != null) {</span>
+<span class="fc" id="L101">                TestResult testResult = new TestResult();</span>
+<span class="fc" id="L102">                testResult.addListener(this);</span>
+<span class="fc" id="L103">                long startTime = System.currentTimeMillis();</span>
+<span class="fc" id="L104">                suite.run(testResult);</span>
+<span class="fc" id="L105">                long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L106">                _formatter.displayResults(_writer, testClassName, elapsedTimeAsString(endTime - startTime), testResult);</span>
+            }
+<span class="fc" id="L108">        }</span>
+
+        @Override
+        public void addError(Test test, Throwable throwable) {
+<span class="fc" id="L112">        }</span>
+
+        @Override
+        public void addFailure(Test test, AssertionFailedError error) {
+<span class="fc" id="L116">        }</span>
+
+        @Override
+        public void endTest(Test test) {
+<span class="fc" id="L120">        }</span>
+
+        @Override
+        protected void runFailed(String s) {
+<span class="fc" id="L124">            reportCannotRunTest(_writer, s);</span>
+<span class="fc" id="L125">        }</span>
+
+        @Override
+        public void startTest(Test test) {
+<span class="fc" id="L129">        }</span>
+
+        @Override
+        public void testStarted(String s) {
+<span class="nc" id="L133">        }</span>
+
+        @Override
+        public void testEnded(String s) {
+<span class="nc" id="L137">        }</span>
+
+        @Override
+        public void testFailed(int i, Test test, Throwable throwable) {
+<span class="nc" id="L141">        }</span>
+
+    }
+
+<span class="fc" id="L145">    static abstract class ResultsFormatter {</span>
+
+        private static final char LF = 10;
+        private static final char CR = 13;
+
+        abstract String getContentType();
+
+        void displayResults(PrintWriter writer, String testClassName, String elapsedTimeString, TestResult testResult) {
+<span class="fc" id="L153">            displayHeader(writer, testClassName, testResult, elapsedTimeString);</span>
+<span class="fc" id="L154">            displayResults(writer, testResult);</span>
+<span class="fc" id="L155">            displayFooter(writer);</span>
+<span class="fc" id="L156">        }</span>
+
+        protected abstract void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+                String elapsedTimeString);
+
+        protected abstract void displayResults(PrintWriter writer, TestResult testResult);
+
+        protected abstract void displayFooter(PrintWriter writer);
+
+        protected String sgmlEscape(String s) {
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (s == null) {</span>
+<span class="nc" id="L167">                return &quot;NULL&quot;;</span>
+            }
+<span class="fc" id="L169">            StringBuilder result = new StringBuilder(s.length());</span>
+<span class="fc" id="L170">            char[] chars = s.toCharArray();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            for (int i = 0; i &lt; chars.length; i++) {</span>
+<span class="pc bpc" id="L172" title="1 of 6 branches missed.">                switch (chars[i]) {</span>
+                case '&amp;':
+<span class="nc" id="L174">                    result.append(&quot;&amp;amp;&quot;);</span>
+<span class="nc" id="L175">                    break;</span>
+                case '&lt;':
+<span class="fc" id="L177">                    result.append(&quot;&amp;lt;&quot;);</span>
+<span class="fc" id="L178">                    break;</span>
+                case '&gt;':
+<span class="fc" id="L180">                    result.append(&quot;&amp;gt;&quot;);</span>
+<span class="fc" id="L181">                    break;</span>
+                case LF:
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">                    if (i &gt; 0 &amp;&amp; chars[i - 1] == CR) {</span>
+<span class="fc" id="L184">                        result.append(chars[i]);</span>
+<span class="fc" id="L185">                        break;</span>
+                    }
+                case CR:
+<span class="fc" id="L188">                    result.append(getLineBreak());</span>
+                default:
+<span class="fc" id="L190">                    result.append(chars[i]);</span>
+                }
+            }
+<span class="fc" id="L193">            return result.toString();</span>
+        }
+
+        protected String getLineBreak() {
+<span class="fc" id="L197">            return &quot;&lt;br&gt;&quot;;</span>
+        }
+    }
+
+<span class="fc" id="L201">    abstract static class DisplayedResultsFormatter extends ResultsFormatter {</span>
+
+        @Override
+        protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+                String elapsedTimeString) {
+<span class="fc" id="L206">            displayHeader(writer, testClassName, getFormatted(testResult.runCount(), &quot;test&quot;), elapsedTimeString,</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">                    testResult.wasSuccessful() ? &quot;OK&quot; : &quot;Problems Occurred&quot;);</span>
+<span class="fc" id="L208">        }</span>
+
+        @Override
+        protected void displayResults(PrintWriter writer, TestResult testResult) {
+<span class="fc bfc" id="L212" title="All 2 branches covered.">            if (!testResult.wasSuccessful()) {</span>
+<span class="fc" id="L213">                displayProblems(writer, &quot;failure&quot;, testResult.failureCount(), testResult.failures());</span>
+<span class="fc" id="L214">                displayProblems(writer, &quot;error&quot;, testResult.errorCount(), testResult.errors());</span>
+            }
+<span class="fc" id="L216">        }</span>
+
+        protected abstract void displayHeader(PrintWriter writer, String testClassName, String testCountText,
+                String elapsedTimeString, String resultString);
+
+        protected abstract void displayProblemTitle(PrintWriter writer, String title);
+
+        protected abstract void displayProblemDetailHeader(PrintWriter writer, int i, String testName);
+
+        protected abstract void displayProblemDetailFooter(PrintWriter writer);
+
+        protected abstract void displayProblemDetail(PrintWriter writer, String message);
+
+        private void displayProblems(PrintWriter writer, String kind, int count, Enumeration enumeration) {
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            if (count != 0) {</span>
+<span class="fc" id="L231">                displayProblemTitle(writer, getFormatted(count, kind));</span>
+<span class="fc" id="L232">                Enumeration e = enumeration;</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">                for (int i = 1; e.hasMoreElements(); i++) {</span>
+<span class="fc" id="L234">                    TestFailure failure = (TestFailure) e.nextElement();</span>
+<span class="fc" id="L235">                    displayProblemDetailHeader(writer, i, failure.failedTest().toString());</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">                    if (failure.thrownException() instanceof AssertionFailedError) {</span>
+<span class="fc" id="L237">                        displayProblemDetail(writer, failure.thrownException().getMessage());</span>
+                    } else {
+<span class="fc" id="L239">                        displayProblemDetail(writer, BaseTestRunner.getFilteredTrace(failure.thrownException()));</span>
+                    }
+<span class="fc" id="L241">                    displayProblemDetailFooter(writer);</span>
+                }
+            }
+<span class="fc" id="L244">        }</span>
+
+        private String getFormatted(int count, String name) {
+<span class="fc bfc" id="L247" title="All 2 branches covered.">            return count + &quot; &quot; + name + (count == 1 ? &quot;&quot; : &quot;s&quot;);</span>
+        }
+
+    }
+
+<span class="fc" id="L252">    static class TextResultsFormatter extends DisplayedResultsFormatter {</span>
+
+        @Override
+        String getContentType() {
+<span class="fc" id="L256">            return &quot;text/plain&quot;;</span>
+        }
+
+        @Override
+        protected void displayHeader(PrintWriter writer, String testClassName, String testCountText,
+                String elapsedTimeString, String resultString) {
+<span class="fc" id="L262">            writer.println(testClassName + &quot; (&quot; + testCountText + &quot;): &quot; + resultString);</span>
+<span class="fc" id="L263">        }</span>
+
+        @Override
+        protected void displayFooter(PrintWriter writer) {
+<span class="fc" id="L267">        }</span>
+
+        @Override
+        protected void displayProblemTitle(PrintWriter writer, String title) {
+<span class="fc" id="L271">            writer.println();</span>
+<span class="fc" id="L272">            writer.println(title + ':');</span>
+<span class="fc" id="L273">        }</span>
+
+        @Override
+        protected void displayProblemDetailHeader(PrintWriter writer, int i, String testName) {
+<span class="fc" id="L277">            writer.println(i + &quot;. &quot; + testName + &quot;:&quot;);</span>
+<span class="fc" id="L278">        }</span>
+
+        @Override
+        protected void displayProblemDetailFooter(PrintWriter writer) {
+<span class="fc" id="L282">            writer.println();</span>
+<span class="fc" id="L283">        }</span>
+
+        @Override
+        protected void displayProblemDetail(PrintWriter writer, String message) {
+<span class="fc" id="L287">            writer.println(message);</span>
+<span class="fc" id="L288">        }</span>
+    }
+
+<span class="fc" id="L291">    static class HTMLResultsFormatter extends DisplayedResultsFormatter {</span>
+
+        @Override
+        String getContentType() {
+<span class="fc" id="L295">            return &quot;text/html&quot;;</span>
+        }
+
+        @Override
+        protected void displayHeader(PrintWriter writer, String testClassName, String testCountText,
+                String elapsedTimeString, String resultString) {
+<span class="fc" id="L301">            writer.println(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;Test Suite: &quot; + testClassName + &quot;&lt;/title&gt;&quot;);</span>
+<span class="fc" id="L302">            writer.println(&quot;&lt;style type='text/css'&gt;&quot;);</span>
+<span class="fc" id="L303">            writer.println(&quot;&lt;!--&quot;);</span>
+<span class="fc" id="L304">            writer.println(&quot;  td.detail { font-size:smaller; vertical-align: top }&quot;);</span>
+<span class="fc" id="L305">            writer.println(&quot;  --&gt;&quot;);</span>
+<span class="fc" id="L306">            writer.println(&quot;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&quot;);</span>
+<span class="fc" id="L307">            writer.println(&quot;&lt;table id='results' border='1'&gt;&lt;tr&gt;&quot;);</span>
+<span class="fc" id="L308">            writer.println(&quot;&lt;td&gt;&quot; + testCountText + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L309">            writer.println(&quot;&lt;td&gt;Time: &quot; + elapsedTimeString + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L310">            writer.println(&quot;&lt;td&gt;&quot; + resultString + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L311">        }</span>
+
+        @Override
+        protected void displayFooter(PrintWriter writer) {
+<span class="fc" id="L315">            writer.println(&quot;&lt;/table&gt;&quot;);</span>
+<span class="fc" id="L316">            writer.println(&quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L317">        }</span>
+
+        @Override
+        protected void displayProblemTitle(PrintWriter writer, String title) {
+<span class="fc" id="L321">            writer.println(&quot;&lt;tr&gt;&lt;td colspan=3&gt;&quot; + title + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L322">        }</span>
+
+        @Override
+        protected void displayProblemDetailHeader(PrintWriter writer, int i, String testName) {
+<span class="fc" id="L326">            writer.println(&quot;&lt;tr&gt;&lt;td class='detail' align='right'&gt;&quot; + i + &quot;&lt;/td&gt;&quot;);</span>
+<span class="fc" id="L327">            writer.println(&quot;&lt;td class='detail'&gt;&quot; + testName + &quot;&lt;/td&gt;&lt;td class='detail'&gt;&quot;);</span>
+<span class="fc" id="L328">        }</span>
+
+        @Override
+        protected void displayProblemDetailFooter(PrintWriter writer) {
+<span class="fc" id="L332">            writer.println(&quot;&lt;/td&gt;&lt;/tr&gt;&quot;);</span>
+<span class="fc" id="L333">        }</span>
+
+        @Override
+        protected void displayProblemDetail(PrintWriter writer, String message) {
+<span class="fc" id="L337">            writer.println(sgmlEscape(message));</span>
+<span class="fc" id="L338">        }</span>
+
+    }
+
+<span class="fc" id="L342">    static class XMLResultsFormatter extends ResultsFormatter {</span>
+
+        @Override
+        String getContentType() {
+<span class="fc" id="L346">            return &quot;text/xml;charset=UTF-8&quot;;</span>
+        }
+
+        @Override
+        protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+                String elapsedTimeString) {
+<span class="fc" id="L352">            writer.println(&quot;&lt;?xml version='1.0' encoding='UTF-8' ?&gt;\n&quot; + &quot;&lt;testsuite name=&quot; + asAttribute(testClassName)</span>
+<span class="fc" id="L353">            + &quot; tests=&quot; + asAttribute(testResult.runCount()) + &quot; failures=&quot;</span>
+<span class="fc" id="L354">            + asAttribute(testResult.failureCount()) + &quot; errors=&quot; + asAttribute(testResult.errorCount())</span>
+<span class="fc" id="L355">            + &quot; time=&quot; + asAttribute(elapsedTimeString) + &quot;&gt;&quot;);</span>
+<span class="fc" id="L356">        }</span>
+
+        private String asAttribute(int value) {
+<span class="fc" id="L359">            return '&quot;' + Integer.toString(value) + '&quot;';</span>
+        }
+
+        private String asAttribute(String value) {
+<span class="fc" id="L363">            return '&quot;' + sgmlEscape(value) + '&quot;';</span>
+        }
+
+        @Override
+        protected void displayFooter(PrintWriter writer) {
+<span class="fc" id="L368">            writer.println(&quot;&lt;/testsuite&gt;&quot;);</span>
+<span class="fc" id="L369">        }</span>
+
+        @Override
+        protected void displayResults(PrintWriter writer, TestResult testResult) {
+<span class="fc" id="L373">            displayResults(writer, &quot;failure&quot;, testResult.failures());</span>
+<span class="fc" id="L374">            displayResults(writer, &quot;error&quot;, testResult.errors());</span>
+<span class="fc" id="L375">        }</span>
+
+        private void displayResults(PrintWriter writer, String failureNodeName, Enumeration resultsEnumeration) {
+<span class="fc bfc" id="L378" title="All 2 branches covered.">            for (Enumeration e = resultsEnumeration; e.hasMoreElements();) {</span>
+<span class="fc" id="L379">                TestFailure failure = (TestFailure) e.nextElement();</span>
+<span class="fc" id="L380">                writer.println(&quot;  &lt;testcase name=&quot; + asAttribute(failure.failedTest().toString()) + &quot;&gt;&quot;);</span>
+<span class="fc" id="L381">                writer.print(&quot;    &lt;&quot; + failureNodeName + &quot; type=&quot;</span>
+<span class="fc" id="L382">                        + asAttribute(failure.thrownException().getClass().getName()) + &quot; message=&quot;</span>
+<span class="fc" id="L383">                        + asAttribute(failure.exceptionMessage()));</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">                if (!displayException()) {</span>
+<span class="nc" id="L385">                    writer.println(&quot;/&gt;&quot;);</span>
+                } else {
+<span class="fc" id="L387">                    writer.println(&quot;&gt;&quot;);</span>
+<span class="fc" id="L388">                    writer.print(sgmlEscape(BaseTestRunner.getFilteredTrace(failure.thrownException())));</span>
+<span class="fc" id="L389">                    writer.println(&quot;    &lt;/&quot; + failureNodeName + &quot;&gt;&quot;);</span>
+                }
+<span class="fc" id="L391">                writer.println(&quot;  &lt;/testcase&gt;&quot;);</span>
+<span class="fc" id="L392">            }</span>
+<span class="fc" id="L393">        }</span>
+
+        private boolean displayException() {
+<span class="fc" id="L396">            return true;</span>
+        }
+
+        @Override
+        protected String getLineBreak() {
+<span class="fc" id="L401">            return &quot;&quot;;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

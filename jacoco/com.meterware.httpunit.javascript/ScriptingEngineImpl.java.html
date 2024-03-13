@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptingEngineImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.javascript</a> &gt; <span class="el_source">ScriptingEngineImpl.java</span></div><h1>ScriptingEngineImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.javascript;
+
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.ScriptException;
+import com.meterware.httpunit.scripting.ScriptingEngine;
+
+import java.util.ArrayList;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.EcmaError;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L39">public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {</span>
+
+    private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L43">    private final static Object[] NO_ARGS = {};</span>
+
+<span class="fc" id="L45">    private static ArrayList _errorMessages = new ArrayList();</span>
+
+    /**
+     * clear the list of error Messages
+     */
+    static public void clearErrorMessages() {
+<span class="fc" id="L51">        _errorMessages.clear();</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * access to the list of error Messages that were collected
+     *
+     * @return the array with error Messages
+     */
+    static public String[] getErrorMessages() {
+<span class="fc" id="L60">        return (String[]) _errorMessages.toArray(new String[_errorMessages.size()]);</span>
+    }
+
+    /**
+     * handle Exceptions
+     *
+     * @param e
+     *            - the exception to handle
+     * @param badScript
+     *            - the script that caused the problem
+     */
+    static public void handleScriptException(Exception e, String badScript) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        String errorMessage = badScript == null ? e.getMessage() : badScript + &quot; failed: &quot; + e;</span>
+<span class="pc bpc" id="L73" title="2 of 8 branches missed.">        if (!(e instanceof EcmaError) &amp;&amp; !(e instanceof EvaluatorException) &amp;&amp; !(e instanceof ScriptException)</span>
+                &amp;&amp; !(e instanceof JavaScriptException)) {
+<span class="fc" id="L75">            HttpUnitUtils.handleException(e);</span>
+<span class="fc" id="L76">            throw new RuntimeException(errorMessage);</span>
+        }
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (JavaScript.isThrowExceptionsOnError()) {</span>
+<span class="fc" id="L79">            HttpUnitUtils.handleException(e);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (e instanceof ScriptException) {</span>
+<span class="fc" id="L81">                throw (ScriptException) e;</span>
+            }
+<span class="fc" id="L83">            throw new ScriptException(errorMessage);</span>
+        }
+<span class="fc" id="L85">        _errorMessages.add(errorMessage);</span>
+<span class="fc" id="L86">    }</span>
+
+    // --------------------------------------- ScriptingEngine methods
+    // ------------------------------------------------------
+
+    @Override
+    public boolean supportsScriptLanguage(String language) {
+<span class="fc bfc" id="L93" title="All 4 branches covered.">        return language == null || language.toLowerCase().startsWith(&quot;javascript&quot;);</span>
+    }
+
+    /**
+     * run the given script
+     *
+     * @param language
+     *            - the language of the script
+     * @param script
+     *            - the script to run
+     */
+    @Override
+    public String runScript(String language, String script) {
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (!supportsScriptLanguage(language)) {</span>
+<span class="fc" id="L107">            return &quot;&quot;;</span>
+        }
+        try {
+<span class="fc" id="L110">            script = script.trim();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (script.startsWith(&quot;&lt;!--&quot;)) {</span>
+<span class="fc" id="L112">                script = withoutFirstLine(script);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                if (script.endsWith(&quot;--&gt;&quot;)) {</span>
+<span class="fc" id="L114">                    script = script.substring(0, script.lastIndexOf(&quot;--&gt;&quot;));</span>
+                }
+            }
+<span class="fc" id="L117">            Context context = Context.enter();</span>
+<span class="fc" id="L118">            context.initStandardObjects(null);</span>
+<span class="fc" id="L119">            context.evaluateString(this, script, &quot;httpunit&quot;, 0, null);</span>
+<span class="fc" id="L120">            return getDocumentWriteBuffer();</span>
+<span class="nc" id="L121">        } catch (Exception e) {</span>
+<span class="nc" id="L122">            handleScriptException(e, &quot;Script '&quot; + script + &quot;'&quot;);</span>
+<span class="nc" id="L123">            return &quot;&quot;;</span>
+        } finally {
+<span class="fc" id="L125">            discardDocumentWriteBuffer();</span>
+<span class="fc" id="L126">            Context.exit();</span>
+        }
+    }
+
+    /**
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     *
+     * @deprecated since 1.7 - use doEventScript instead
+     */
+    @Deprecated
+    @Override
+    public boolean doEvent(String eventScript) {
+<span class="nc" id="L141">        return doEventScript(eventScript);</span>
+    }
+
+    /**
+     * handle the event that has the given script attached by compiling the eventScript as a function and executing it
+     *
+     * @param eventScript
+     *            - the script to use
+     */
+    @Override
+    public boolean doEventScript(String eventScript) {
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (eventScript.length() == 0) {</span>
+<span class="nc" id="L153">            return true;</span>
+        }
+        try {
+<span class="fc" id="L156">            Context context = Context.enter();</span>
+<span class="fc" id="L157">            context.initStandardObjects(null);</span>
+<span class="fc" id="L158">            context.setOptimizationLevel(-1);</span>
+            // wrap the eventScript into a function
+<span class="fc" id="L160">            Function f = context.compileFunction(this, &quot;function x() { &quot; + eventScript + &quot;}&quot;, &quot;httpunit&quot;, 0, null);</span>
+            // call the function with no arguments
+<span class="fc" id="L162">            Object result = f.call(context, this, this, NO_ARGS);</span>
+            // return the result of the function or false if it is not boolean
+<span class="fc bfc" id="L164" title="All 4 branches covered.">            return !(result instanceof Boolean) || ((Boolean) result).booleanValue();</span>
+<span class="fc" id="L165">        } catch (Exception e) {</span>
+<span class="fc" id="L166">            handleScriptException(e, &quot;Event '&quot; + eventScript + &quot;'&quot;);</span>
+<span class="fc" id="L167">            return false;</span>
+        } finally {
+<span class="fc" id="L169">            Context.exit();</span>
+        }
+    }
+
+    /**
+     * get the event Handler script for the event e.g. onchange, onmousedown, onclick, onmouseup execute the script if
+     * it's assigned by calling doEvent for the script
+     *
+     * @param eventName
+     *
+     * @return
+     */
+    @Override
+    public boolean handleEvent(String eventName) {
+<span class="nc" id="L183">        throw new RuntimeException(&quot;pseudo - abstract handleEvent called &quot;);</span>
+    }
+
+    /**
+     * Evaluates the specified string as JavaScript. Will return null if the script has no return value.
+     *
+     * @param expression
+     *            - the expression to evaluate
+     */
+    @Override
+    public Object evaluateExpression(String expression) {
+        try {
+<span class="fc" id="L195">            Context context = Context.enter();</span>
+<span class="fc" id="L196">            context.initStandardObjects(null);</span>
+<span class="fc" id="L197">            Object result = context.evaluateString(this, expression, &quot;httpunit&quot;, 0, null);</span>
+<span class="pc bpc" id="L198" title="1 of 4 branches missed.">            return result == null || result instanceof Undefined ? null : result;</span>
+<span class="fc" id="L199">        } catch (Exception e) {</span>
+<span class="fc" id="L200">            handleScriptException(e, &quot;URL '&quot; + expression + &quot;'&quot;);</span>
+<span class="fc" id="L201">            return null;</span>
+        } finally {
+<span class="fc" id="L203">            Context.exit();</span>
+        }
+    }
+
+    // ------------------------------------------ protected methods
+    // ---------------------------------------------------------
+
+    protected String getDocumentWriteBuffer() {
+<span class="nc" id="L211">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
+    }
+
+    protected void discardDocumentWriteBuffer() {
+<span class="nc" id="L215">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
+    }
+
+    private String withoutFirstLine(String script) {
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        for (int i = 0; i &lt; script.length(); i++) {</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if (isLineTerminator(script.charAt(i))) {</span>
+<span class="fc" id="L221">                return script.substring(i).trim();</span>
+            }
+        }
+<span class="fc" id="L224">        return &quot;&quot;;</span>
+    }
+
+    private boolean isLineTerminator(char c) {
+<span class="pc bpc" id="L228" title="1 of 4 branches missed.">        return c == 0x0A || c == 0x0D;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

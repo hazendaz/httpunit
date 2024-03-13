@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JTidyHTMLParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">JTidyHTMLParser.java</span></div><h1>JTidyHTMLParser.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.parsing;
+
+import com.meterware.httpunit.dom.HTMLDocumentImpl;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLDocument;
+import org.w3c.tidy.Tidy;
+import org.xml.sax.SAXException;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L39">class JTidyHTMLParser implements HTMLParser {</span>
+
+    @Override
+    public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {
+<span class="nc" id="L43">        Document jtidyDocument = getParser(pageURL)</span>
+<span class="nc" id="L44">                .parseDOM(new ByteArrayInputStream(pageText.getBytes(StandardCharsets.UTF_8)), null);</span>
+<span class="nc" id="L45">        HTMLDocument htmlDocument = new HTMLDocumentImpl();</span>
+<span class="nc" id="L46">        NodeList nl = jtidyDocument.getChildNodes();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="nc" id="L48">            Node importedNode = nl.item(i);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            if (importedNode.getNodeType() != Node.DOCUMENT_TYPE_NODE) {</span>
+<span class="nc" id="L50">                htmlDocument.appendChild(htmlDocument.importNode(importedNode, true));</span>
+            }
+        }
+<span class="nc" id="L53">        adapter.setDocument(htmlDocument);</span>
+<span class="nc" id="L54">    }</span>
+
+    @Override
+    public String getCleanedText(String string) {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        return string == null ? &quot;&quot; : string.replace(NBSP, ' ');</span>
+    }
+
+    @Override
+    public boolean supportsPreserveTagCase() {
+<span class="nc" id="L63">        return false;</span>
+    }
+
+    @Override
+    public boolean supportsForceTagCase() {
+<span class="nc" id="L68">        return false;</span>
+    }
+
+    @Override
+    public boolean supportsReturnHTMLDocument() {
+<span class="nc" id="L73">        return true;</span>
+    }
+
+    @Override
+    public boolean supportsParserWarnings() {
+<span class="nc" id="L78">        return true;</span>
+    }
+
+    final private static char NBSP = (char) 160; // non-breaking space, defined by JTidy
+
+    /**
+     * get the parser of the given url
+     *
+     * @param url
+     *
+     * @return the parser
+     */
+    private static Tidy getParser(URL url) {
+<span class="nc" id="L91">        Tidy tidy = new Tidy();</span>
+        // BR 2880636 httpunit 1.7 does not work with latest Tidy release r918
+        // tidy.setCharEncoding( org.w3c.tidy.Configuration.UTF8 );
+<span class="nc" id="L94">        tidy.setInputEncoding(&quot;UTF8&quot;);</span>
+<span class="nc" id="L95">        tidy.setQuiet(true);</span>
+<span class="nc" id="L96">        tidy.setShowWarnings(HTMLParserFactory.isParserWarningsEnabled());</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (!HTMLParserFactory.getHTMLParserListeners().isEmpty()) {</span>
+<span class="nc" id="L98">            tidy.setErrout(new JTidyPrintWriter(url));</span>
+        }
+<span class="nc" id="L100">        return tidy;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

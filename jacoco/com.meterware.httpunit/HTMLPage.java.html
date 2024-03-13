@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HTMLPage.java</span></div><h1>HTMLPage.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.parsing.DocumentAdapter;
+import com.meterware.httpunit.parsing.HTMLParserFactory;
+import com.meterware.httpunit.scripting.NamedDelegate;
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Vector;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLDocument;
+import org.xml.sax.SAXException;
+
+/**
+ * This class represents an HTML page returned from a request.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bx@bigfoot.com&quot;&gt;Benoit Xhenseval&lt;/a&gt;
+ **/
+public class HTMLPage extends ParsedHTML {
+
+    private Scriptable _scriptable;
+
+    HTMLPage(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, String characterSet) {
+<span class="fc" id="L49">        super(response, frame, baseURL, baseTarget, null, characterSet);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Returns the title of the page.
+     **/
+    public String getTitle() throws SAXException {
+<span class="fc" id="L56">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;title&quot;);</span>
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        if (nl.getLength() == 0 || !nl.item(0).hasChildNodes()) {</span>
+<span class="nc" id="L58">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L60">        return nl.item(0).getFirstChild().getNodeValue();</span>
+    }
+
+    /**
+     * Returns the onLoad event script.
+     */
+    public String getOnLoadEvent() throws SAXException {
+<span class="fc" id="L67">        Element mainElement = getMainElement((Document) getOriginalDOM());</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        return mainElement == null ? &quot;&quot; : mainElement.getAttribute(&quot;onload&quot;);</span>
+    }
+
+    private Element getMainElement(Document document) {
+<span class="fc" id="L72">        NodeList nl = document.getElementsByTagName(&quot;frameset&quot;);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (nl.getLength() == 0) {</span>
+<span class="fc" id="L74">            nl = document.getElementsByTagName(&quot;body&quot;);</span>
+        }
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        return nl.getLength() == 0 ? null : (Element) nl.item(0);</span>
+    }
+
+    /**
+     * Returns the location of the linked stylesheet in the head &amp;lt;code&amp;gt; &amp;lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot;
+     * href=&quot;/mystyle.css&quot; /&amp;gt; &amp;lt;/code&amp;gt;
+     **/
+    public String getExternalStyleSheet() throws SAXException {
+<span class="fc" id="L84">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;link&quot;);</span>
+<span class="fc" id="L85">        int length = nl.getLength();</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (length == 0) {</span>
+<span class="nc" id="L87">            return &quot;&quot;;</span>
+        }
+
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (&quot;stylesheet&quot;.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), &quot;rel&quot;))) {</span>
+<span class="fc" id="L92">                return NodeUtils.getNodeAttribute(nl.item(i), &quot;href&quot;);</span>
+            }
+        }
+<span class="nc" id="L95">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Retrieves the &quot;content&quot; of the meta tags for a key pair attribute-attributeValue. &amp;lt;code&amp;gt; &amp;lt;meta
+     * name=&quot;robots&quot; content=&quot;index&quot; /&amp;gt; &amp;lt;meta name=&quot;robots&quot; content=&quot;follow&quot; /&amp;gt; &amp;lt;meta http-equiv=&quot;Expires&quot;
+     * content=&quot;now&quot; /&amp;gt; &amp;lt;/code&amp;gt; this can be used like this &amp;lt;code&amp;gt; getMetaTagContent(&quot;name&quot;,&quot;robots&quot;) will
+     * return { &quot;index&quot;,&quot;follow&quot; } getMetaTagContent(&quot;http-equiv&quot;,&quot;Expires&quot;) will return { &quot;now&quot; } &amp;lt;/code&amp;gt;
+     **/
+    public String[] getMetaTagContent(String attribute, String attributeValue) {
+<span class="fc" id="L105">        Vector matches = new Vector();</span>
+<span class="fc" id="L106">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;meta&quot;);</span>
+<span class="fc" id="L107">        int length = nl.getLength();</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (attributeValue.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), attribute))) {</span>
+<span class="fc" id="L111">                matches.addElement(NodeUtils.getNodeAttribute(nl.item(i), &quot;content&quot;));</span>
+            }
+        }
+<span class="fc" id="L114">        String[] result = new String[matches.size()];</span>
+<span class="fc" id="L115">        matches.copyInto(result);</span>
+<span class="fc" id="L116">        return result;</span>
+    }
+
+    /**
+     * scriptable for HTML Page
+     */
+
+    public class Scriptable extends ScriptableDelegate {
+
+        /**
+         * get the Object with the given propertyName
+         *
+         * @param propertyName
+         *            - the name of the property
+         */
+        @Override
+        public Object get(String propertyName) {
+<span class="fc" id="L133">            NamedDelegate delegate = getNamedItem(getForms(), propertyName);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (delegate != null) {</span>
+<span class="fc" id="L135">                return delegate;</span>
+            }
+
+<span class="fc" id="L138">            delegate = getNamedItem(getLinks(), propertyName);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if (delegate != null) {</span>
+<span class="fc" id="L140">                return delegate;</span>
+            }
+
+<span class="fc" id="L143">            return getNamedItem(getImages(), propertyName);</span>
+        }
+
+        private NamedDelegate getNamedItem(ScriptingHandler[] items, String name) {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (name == null) {</span>
+<span class="nc" id="L148">                return null;</span>
+            }
+<span class="fc bfc" id="L150" title="All 2 branches covered.">            for (ScriptingHandler item : items) {</span>
+<span class="pc bpc" id="L151" title="1 of 4 branches missed.">                if (item instanceof NamedDelegate &amp;&amp; name.equals(((NamedDelegate) item).getName())) {</span>
+<span class="fc" id="L152">                    return (NamedDelegate) item;</span>
+                }
+            }
+<span class="fc" id="L155">            return null;</span>
+        }
+
+        /**
+         * Sets the value of the named property. Will throw a runtime exception if the property does not exist or cannot
+         * accept the specified value.
+         **/
+        @Override
+        public void set(String propertyName, Object value) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (propertyName.equalsIgnoreCase(&quot;location&quot;)) {</span>
+<span class="nc" id="L165">                getResponse().getScriptableObject().set(&quot;location&quot;, value);</span>
+            } else {
+<span class="nc" id="L167">                super.set(propertyName, value);</span>
+            }
+<span class="nc" id="L169">        }</span>
+
+        public WebResponse.Scriptable getParent() {
+<span class="nc" id="L172">            return getResponse().getScriptableObject();</span>
+        }
+
+        public String getTitle() throws SAXException {
+<span class="fc" id="L176">            return HTMLPage.this.getTitle();</span>
+        }
+
+        public ScriptingHandler[] getLinks() {
+<span class="fc" id="L180">            WebLink[] links = HTMLPage.this.getLinks();</span>
+<span class="fc" id="L181">            ScriptingHandler[] result = new WebLink.Scriptable[links.length];</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            for (int i = 0; i &lt; links.length; i++) {</span>
+<span class="fc" id="L183">                result[i] = links[i].getScriptingHandler();</span>
+            }
+<span class="fc" id="L185">            return result;</span>
+        }
+
+        public ScriptingHandler[] getForms() {
+<span class="fc" id="L189">            WebForm[] forms = HTMLPage.this.getForms();</span>
+<span class="fc" id="L190">            ScriptingHandler[] result = new ScriptingHandler[forms.length];</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            for (int i = 0; i &lt; forms.length; i++) {</span>
+<span class="fc" id="L192">                result[i] = forms[i].getScriptingHandler();</span>
+            }
+<span class="fc" id="L194">            return result;</span>
+        }
+
+        public ScriptingHandler[] getImages() {
+<span class="fc" id="L198">            WebImage[] images = HTMLPage.this.getImages();</span>
+<span class="fc" id="L199">            ScriptingHandler[] result = new WebImage.Scriptable[images.length];</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            for (int i = 0; i &lt; images.length; i++) {</span>
+<span class="fc" id="L201">                result[i] = images[i].getScriptingHandler();</span>
+            }
+<span class="fc" id="L203">            return result;</span>
+        }
+
+<span class="fc" id="L206">        Scriptable() {</span>
+<span class="fc" id="L207">        }</span>
+
+        public boolean replaceText(String text, String contentType) {
+<span class="fc" id="L210">            return getResponse().replaceText(text, contentType);</span>
+        }
+
+        public void setCookie(String name, String value) {
+<span class="fc" id="L214">            getResponse().setCookie(name, value);</span>
+<span class="fc" id="L215">        }</span>
+
+        public String getCookie() {
+<span class="fc" id="L218">            return emptyIfNull(getResponse().getCookieHeader());</span>
+        }
+
+        private String emptyIfNull(String string) {
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            return string == null ? &quot;&quot; : string;</span>
+        }
+
+        public ScriptableDelegate getElementWithID(String id) {
+<span class="fc" id="L226">            final HTMLElement elementWithID = HTMLPage.this.getElementWithID(id);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">            return elementWithID == null ? null : (ScriptableDelegate) elementWithID.getScriptingHandler();</span>
+        }
+
+        public ScriptableDelegate[] getElementsByName(String name) {
+<span class="fc" id="L231">            return getDelegates(HTMLPage.this.getElementsWithName(name));</span>
+        }
+
+        public ScriptableDelegate[] getElementsByTagName(String name) {
+<span class="fc" id="L235">            return getDelegates(HTMLPage.this.getElementsByTagName(HTMLPage.this.getRootNode(), name));</span>
+        }
+    }
+
+    Scriptable getScriptableObject() {
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (_scriptable == null) {</span>
+<span class="fc" id="L241">            _scriptable = new Scriptable();</span>
+<span class="fc" id="L242">            _scriptable.setScriptEngine(getResponse().getScriptableObject().getScriptEngine(_scriptable));</span>
+        }
+<span class="fc" id="L244">        return _scriptable;</span>
+    }
+
+    /**
+     * parse the given test with the given URL
+     *
+     * @param text
+     * @param pageURL
+     *
+     * @throws SAXException
+     * @throws IOException
+     */
+    public void parse(String text, URL pageURL) throws SAXException, IOException {
+<span class="fc" id="L257">        HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {</span>
+            @Override
+            public void setDocument(HTMLDocument document) {
+<span class="fc" id="L260">                HTMLPage.this.setRootNode(document);</span>
+<span class="fc" id="L261">            }</span>
+
+            @Override
+            public String getIncludedScript(String srcAttribute) throws IOException {
+<span class="fc" id="L265">                return HTMLPage.this.getIncludedScript(srcAttribute);</span>
+            }
+
+            @Override
+            public ScriptingHandler getScriptingHandler() {
+<span class="fc" id="L270">                return getResponse().getScriptingHandler();</span>
+            }
+        });
+<span class="fc" id="L273">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

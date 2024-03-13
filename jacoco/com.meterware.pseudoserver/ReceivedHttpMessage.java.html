@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReceivedHttpMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">ReceivedHttpMessage.java</span></div><h1>ReceivedHttpMessage.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.pseudoserver;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+abstract class ReceivedHttpMessage {
+
+    private static final int CR = 13;
+    private static final int LF = 10;
+    private Reader _reader;
+<span class="fc" id="L39">    private Hashtable _headers = new Hashtable();</span>
+    private byte[] _requestBody;
+
+<span class="fc" id="L42">    ReceivedHttpMessage(InputStream inputStream) throws IOException {</span>
+<span class="fc" id="L43">        interpretMessageHeader(readHeaderLine(inputStream));</span>
+<span class="fc" id="L44">        readHeaders(inputStream);</span>
+<span class="fc" id="L45">        readMessageBody(inputStream);</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L50">        StringBuilder sb = new StringBuilder(getClassName()).append(&quot;[ &quot;);</span>
+<span class="fc" id="L51">        appendMessageHeader(sb);</span>
+<span class="fc" id="L52">        sb.append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L54">            Object key = e.nextElement();</span>
+<span class="fc" id="L55">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)]&quot;);</span>
+<span class="fc" id="L58">        return sb.toString();</span>
+    }
+
+    private String readHeaderLine(InputStream inputStream) throws IOException {
+<span class="fc" id="L62">        return new String(readDelimitedChunk(inputStream));</span>
+    }
+
+    private byte[] readDelimitedChunk(InputStream inputStream) throws IOException {
+<span class="fc" id="L66">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L67">        int b = inputStream.read();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        while (b != CR) {</span>
+<span class="fc" id="L69">            baos.write(b);</span>
+<span class="fc" id="L70">            b = inputStream.read();</span>
+        }
+
+<span class="fc" id="L73">        b = inputStream.read();</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (b != LF) {</span>
+<span class="nc" id="L75">            throw new IOException(&quot;Bad header line termination: &quot; + b);</span>
+        }
+<span class="fc" id="L77">        return baos.toByteArray();</span>
+    }
+
+    void appendContents(StringBuilder sb) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L82">            Object key = e.nextElement();</span>
+<span class="nc" id="L83">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L84">        }</span>
+<span class="nc" id="L85">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)&quot;);</span>
+<span class="nc" id="L86">    }</span>
+
+    Reader getReader() {
+<span class="nc" id="L89">        return _reader;</span>
+    }
+
+    String getHeader(String name) {
+<span class="fc" id="L93">        return (String) _headers.get(name.toUpperCase());</span>
+    }
+
+    byte[] getBody() {
+<span class="fc" id="L97">        return _requestBody;</span>
+    }
+
+    private void readMessageBody(InputStream inputStream) throws IOException {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (&quot;chunked&quot;.equalsIgnoreCase(getHeader(&quot;Transfer-Encoding&quot;))) {</span>
+<span class="fc" id="L102">            ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            while (getNextChunkLength(inputStream) &gt; 0) {</span>
+<span class="fc" id="L104">                baos.write(readDelimitedChunk(inputStream));</span>
+            }
+<span class="fc" id="L106">            flushChunkTrailer(inputStream);</span>
+<span class="fc" id="L107">            _requestBody = baos.toByteArray();</span>
+<span class="fc" id="L108">        } else {</span>
+<span class="fc" id="L109">            int totalExpected = getContentLength();</span>
+<span class="fc" id="L110">            ByteArrayOutputStream baos = new ByteArrayOutputStream(totalExpected);</span>
+<span class="fc" id="L111">            byte[] buffer = new byte[1024];</span>
+<span class="fc" id="L112">            int total = 0;</span>
+<span class="fc" id="L113">            int count = -1;</span>
+<span class="pc bpc" id="L114" title="1 of 4 branches missed.">            while (total &lt; totalExpected &amp;&amp; (count = inputStream.read(buffer)) != -1) {</span>
+<span class="fc" id="L115">                baos.write(buffer, 0, count);</span>
+<span class="fc" id="L116">                total += count;</span>
+            }
+<span class="fc" id="L118">            baos.flush();</span>
+<span class="fc" id="L119">            _requestBody = baos.toByteArray();</span>
+        }
+<span class="fc" id="L121">        _reader = new InputStreamReader(new ByteArrayInputStream(_requestBody));</span>
+<span class="fc" id="L122">    }</span>
+
+    private void flushChunkTrailer(InputStream inputStream) throws IOException {
+        byte[] line;
+        do {
+<span class="fc" id="L127">            line = readDelimitedChunk(inputStream);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        } while (line.length &gt; 0);</span>
+<span class="fc" id="L129">    }</span>
+
+    private int getNextChunkLength(InputStream inputStream) throws IOException {
+        try {
+<span class="fc" id="L133">            return Integer.parseInt(readHeaderLine(inputStream), 16);</span>
+<span class="nc" id="L134">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L135">            throw new IOException(&quot;Unabled to read chunk length: &quot; + e);</span>
+        }
+    }
+
+    private int getContentLength() {
+        try {
+<span class="fc" id="L141">            return Integer.parseInt(getHeader(&quot;Content-Length&quot;));</span>
+<span class="fc" id="L142">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L143">            return 0;</span>
+        }
+    }
+
+    private void readHeaders(InputStream inputStream) throws IOException {
+<span class="fc" id="L148">        String lastHeader = null;</span>
+
+<span class="fc" id="L150">        String header = readHeaderLine(inputStream);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        while (header.length() &gt; 0) {</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">            if (header.charAt(0) &lt;= ' ') {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (lastHeader == null) {</span>
+<span class="nc" id="L154">                    continue;</span>
+                }
+<span class="nc" id="L156">                _headers.put(lastHeader, _headers.get(lastHeader) + header.trim());</span>
+            } else {
+<span class="fc" id="L158">                lastHeader = header.substring(0, header.indexOf(':')).toUpperCase();</span>
+<span class="fc" id="L159">                _headers.put(lastHeader, header.substring(header.indexOf(':') + 1).trim());</span>
+            }
+<span class="fc" id="L161">            header = readHeaderLine(inputStream);</span>
+        }
+<span class="fc" id="L163">    }</span>
+
+    private String getClassName() {
+<span class="fc" id="L166">        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1);</span>
+    }
+
+    abstract void appendMessageHeader(StringBuilder sb);
+
+    abstract void interpretMessageHeader(String messageHeader);
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

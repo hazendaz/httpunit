@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">DocumentImpl.java</span></div><h1>DocumentImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import java.util.Iterator;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
+import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.EntityReference;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
+import org.w3c.dom.html.HTMLElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L44">public class DocumentImpl extends NodeImpl implements Document {</span>
+
+    private static final long serialVersionUID = 1L;
+    protected Element _documentElement;
+
+    static DocumentImpl createDocument() {
+<span class="fc" id="L50">        DocumentImpl document = new DocumentImpl();</span>
+<span class="fc" id="L51">        document.initialize();</span>
+<span class="fc" id="L52">        return document;</span>
+    }
+
+    protected void initialize() {
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    public String getNodeName() {
+<span class="fc" id="L60">        return &quot;#document&quot;;</span>
+    }
+
+    @Override
+    public String getNodeValue() throws DOMException {
+<span class="fc" id="L65">        return null;</span>
+    }
+
+    @Override
+    public void setNodeValue(String nodeValue) throws DOMException {
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public short getNodeType() {
+<span class="fc" id="L74">        return DOCUMENT_NODE;</span>
+    }
+
+    @Override
+    public Document getOwnerDocument() {
+<span class="fc" id="L79">        return this;</span>
+    }
+
+    @Override
+    public DocumentType getDoctype() {
+<span class="nc" id="L84">        return null;</span>
+    }
+
+    @Override
+    public DOMImplementation getImplementation() {
+<span class="nc" id="L89">        return null;</span>
+    }
+
+    @Override
+    public Element getDocumentElement() {
+<span class="fc" id="L94">        return _documentElement;</span>
+    }
+
+    void setDocumentElement(Element documentElement) {
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (_documentElement != null) {</span>
+<span class="fc" id="L99">            throw new IllegalStateException(&quot;A document may have only one root&quot;);</span>
+        }
+<span class="fc" id="L101">        _documentElement = documentElement;</span>
+<span class="fc" id="L102">        appendChild(documentElement);</span>
+<span class="fc" id="L103">    }</span>
+
+    @Override
+    public Element createElement(String tagName) throws DOMException {
+<span class="fc" id="L107">        return ElementImpl.createElement(this, tagName);</span>
+    }
+
+    @Override
+    public DocumentFragment createDocumentFragment() {
+<span class="nc" id="L112">        throw new UnsupportedOperationException(&quot;DocumentFragment creation not supported &quot;);</span>
+    }
+
+    @Override
+    public Text createTextNode(String data) {
+<span class="fc" id="L117">        return TextImpl.createText(this, data);</span>
+    }
+
+    @Override
+    public Comment createComment(String data) {
+<span class="fc" id="L122">        return CommentImpl.createComment(this, data);</span>
+    }
+
+    @Override
+    public CDATASection createCDATASection(String data) throws DOMException {
+<span class="fc" id="L127">        return CDATASectionImpl.createCDATASection(this, data);</span>
+    }
+
+    @Override
+    public ProcessingInstruction createProcessingInstruction(String target, String data) throws DOMException {
+<span class="fc" id="L132">        return ProcessingInstructionImpl.createProcessingImpl(this, target, data);</span>
+    }
+
+    @Override
+    public Attr createAttribute(String name) throws DOMException {
+<span class="fc" id="L137">        return AttrImpl.createAttribute(this, name);</span>
+    }
+
+    @Override
+    public EntityReference createEntityReference(String name) throws DOMException {
+<span class="nc" id="L142">        throw new UnsupportedOperationException(&quot;EntityReference creation not supported &quot;);</span>
+    }
+
+    @Override
+    public Node importNode(Node importedNode, boolean deep) throws DOMException {
+<span class="pc bpc" id="L147" title="1 of 7 branches missed.">        switch (importedNode.getNodeType()) {</span>
+        case Node.ATTRIBUTE_NODE:
+<span class="fc" id="L149">            return AttrImpl.importNode(this, (Attr) importedNode);</span>
+        case Node.CDATA_SECTION_NODE:
+<span class="fc" id="L151">            return CDATASectionImpl.importNode(this, (CDATASection) importedNode);</span>
+        case Node.COMMENT_NODE:
+<span class="fc" id="L153">            return CommentImpl.importNode(this, (Comment) importedNode);</span>
+        case Node.ELEMENT_NODE:
+<span class="fc" id="L155">            return ElementImpl.importNode(this, (Element) importedNode, deep);</span>
+        case Node.PROCESSING_INSTRUCTION_NODE:
+<span class="fc" id="L157">            return ProcessingInstructionImpl.importNode(this, (ProcessingInstruction) importedNode);</span>
+        case Node.TEXT_NODE:
+<span class="fc" id="L159">            return TextImpl.importNode(this, (Text) importedNode);</span>
+        default:
+<span class="nc" id="L161">            throw new DOMException(DOMException.NOT_SUPPORTED_ERR,</span>
+<span class="nc" id="L162">                    &quot;Cannot import node type &quot; + importedNode.getNodeType());</span>
+        }
+    }
+
+    @Override
+    public Element getElementById(String elementId) {
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (Iterator each = preOrderIterator(); each.hasNext();) {</span>
+<span class="fc" id="L169">            Node node = (Node) each.next();</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            if (!(node instanceof HTMLElement)) {</span>
+<span class="fc" id="L171">                continue;</span>
+            }
+<span class="fc" id="L173">            HTMLElement element = (HTMLElement) node;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            if (elementId.equals(element.getId())) {</span>
+<span class="fc" id="L175">                return element;</span>
+            }
+<span class="fc" id="L177">        }</span>
+<span class="fc" id="L178">        return null;</span>
+    }
+
+    @Override
+    public Element createElementNS(String namespaceURI, String qualifiedName) throws DOMException {
+<span class="fc" id="L183">        return ElementImpl.createElement(this, namespaceURI, qualifiedName);</span>
+    }
+
+    @Override
+    public Attr createAttributeNS(String namespaceURI, String qualifiedName) throws DOMException {
+<span class="fc" id="L188">        return AttrImpl.createAttribute(this, namespaceURI, qualifiedName);</span>
+    }
+
+    @Override
+    public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (namespaceURI != null) {</span>
+<span class="nc" id="L194">            throw new UnsupportedOperationException(&quot;Namespaces are not supported&quot;);</span>
+        }
+<span class="nc" id="L196">        return getElementsByTagName(localName);</span>
+    }
+
+    /**
+     * import the children
+     *
+     * @param original
+     * @param copy
+     */
+    void importChildren(Node original, Node copy) {
+<span class="fc" id="L206">        NodeList children = original.getChildNodes();</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for (int i = 0; i &lt; children.getLength(); i++) {</span>
+<span class="fc" id="L208">            Node childCopy = importNode(children.item(i), /* deep */ true);</span>
+<span class="fc" id="L209">            copy.appendChild(childCopy);</span>
+        }
+<span class="fc" id="L211">    }</span>
+
+    // ------------------------------------- DOM level 3 methods
+    // ------------------------------------------------------------
+
+    @Override
+    public String getInputEncoding() {
+<span class="nc" id="L218">        return null;</span>
+    }
+
+    @Override
+    public String getXmlEncoding() {
+<span class="nc" id="L223">        return null;</span>
+    }
+
+    @Override
+    public Node renameNode(Node n, String namespaceURI, String qualifiedName) throws DOMException {
+<span class="nc" id="L228">        return null;</span>
+    }
+
+    @Override
+    public boolean getXmlStandalone() {
+<span class="nc" id="L233">        return false;</span>
+    }
+
+    @Override
+    public void setXmlStandalone(boolean xmlStandalone) throws DOMException {
+<span class="nc" id="L238">    }</span>
+
+    @Override
+    public String getXmlVersion() {
+<span class="nc" id="L242">        return null;</span>
+    }
+
+    @Override
+    public void setXmlVersion(String xmlVersion) throws DOMException {
+<span class="nc" id="L247">    }</span>
+
+    @Override
+    public boolean getStrictErrorChecking() {
+<span class="nc" id="L251">        return false;</span>
+    }
+
+    @Override
+    public void setStrictErrorChecking(boolean strictErrorChecking) {
+<span class="nc" id="L256">    }</span>
+
+    @Override
+    public String getDocumentURI() {
+<span class="nc" id="L260">        return null;</span>
+    }
+
+    @Override
+    public void setDocumentURI(String documentURI) {
+<span class="nc" id="L265">    }</span>
+
+    @Override
+    public Node adoptNode(Node source) throws DOMException {
+<span class="nc" id="L269">        return null;</span>
+    }
+
+    @Override
+    public DOMConfiguration getDomConfig() {
+<span class="nc" id="L274">        return null;</span>
+    }
+
+    @Override
+    public void normalizeDocument() {
+<span class="nc" id="L279">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JTidyPrintWriter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">JTidyPrintWriter.java</span></div><h1>JTidyPrintWriter.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.parsing;
+
+import java.io.PrintWriter;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
+import java.util.StringTokenizer;
+
+/**
+ * Basic &quot;parser&quot; for the JTidy error output. Will get the line and column number as well as the message. It assumes
+ * that an error or warning is to be logged once println() has been called or if a string starts with &quot;line&quot;
+ *
+ * @author &lt;a href=&quot;mailto:bx@bigfoot.com&quot;&gt;Benoit Xhenseval&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:proyal@managingpartners.com&quot;&gt;Peter Royal&lt;/a&gt;
+ **/
+class JTidyPrintWriter extends PrintWriter {
+    /**
+     * DecimalFormat.getNumberInstance() should provide us with a proper formatter for the default locale. The integers
+     * returned from JTidy contain the appropriate decimal separator for the current locale.
+     */
+<span class="fc" id="L42">    private static final NumberFormat INTEGER_FORMAT = DecimalFormat.getNumberInstance();</span>
+
+    JTidyPrintWriter(URL pageURL) {
+<span class="fc" id="L45">        super(System.out);</span>
+<span class="fc" id="L46">        _url = pageURL;</span>
+<span class="fc" id="L47">    }</span>
+
+    @Override
+    public void print(boolean b) {
+<span class="nc" id="L51">        print(String.valueOf(b));</span>
+<span class="nc" id="L52">    }</span>
+
+    @Override
+    public void print(char c) {
+<span class="nc" id="L56">        print(String.valueOf(c));</span>
+<span class="nc" id="L57">    }</span>
+
+    @Override
+    public void print(char[] s) {
+<span class="nc" id="L61">        print(String.valueOf(s));</span>
+<span class="nc" id="L62">    }</span>
+
+    @Override
+    public void print(double d) {
+<span class="nc" id="L66">        print(String.valueOf(d));</span>
+<span class="nc" id="L67">    }</span>
+
+    @Override
+    public void print(float f) {
+<span class="nc" id="L71">        print(String.valueOf(f));</span>
+<span class="nc" id="L72">    }</span>
+
+    @Override
+    public void print(int i) {
+<span class="nc" id="L76">        print(String.valueOf(i));</span>
+<span class="nc" id="L77">    }</span>
+
+    @Override
+    public void print(long l) {
+<span class="nc" id="L81">        print(String.valueOf(l));</span>
+<span class="nc" id="L82">    }</span>
+
+    @Override
+    public void print(Object obj) {
+<span class="nc" id="L86">        print(obj.toString());</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * Detects a new log if starting with &quot;line&quot;, a warning if message starts with &quot;Warning&quot; and an error if it starts
+     * with &quot;Error&quot;
+     **/
+    @Override
+    public void print(String s) {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (s.startsWith(&quot;line&quot;)) {</span>
+<span class="pc bpc" id="L96" title="3 of 8 branches missed.">            if (!_logged &amp;&amp; _line &gt; 0 &amp;&amp; _msg != null &amp;&amp; _msg.length() &gt; 0) {</span>
+<span class="nc" id="L97">                log(); // log previous!!!</span>
+            }
+<span class="fc" id="L99">            _logged = false; // new error....</span>
+<span class="fc" id="L100">            StringTokenizer tok = new StringTokenizer(s);</span>
+            // skip first &quot;line&quot;
+<span class="fc" id="L102">            tok.nextToken();</span>
+            // get line
+<span class="fc" id="L104">            _line = parseInteger(tok.nextToken());</span>
+            // skip second &quot;column&quot;
+<span class="fc" id="L106">            tok.nextToken();</span>
+            // get column
+<span class="fc" id="L108">            _column = parseInteger(tok.nextToken());</span>
+<span class="pc bnc" id="L109" title="All 2 branches missed.">        } else if (s.startsWith(&quot;Warning&quot;)) {</span>
+<span class="nc" id="L110">            _error = false;</span>
+<span class="nc" id="L111">            _msg = s;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        } else if (s.startsWith(&quot;Error&quot;)) {</span>
+<span class="nc" id="L113">            _error = true;</span>
+<span class="nc" id="L114">            _msg = s;</span>
+        } else {
+            // non structured msg
+<span class="nc" id="L117">            _msg += s;</span>
+        }
+<span class="fc" id="L119">    }</span>
+
+    private int parseInteger(String integer) {
+        try {
+<span class="fc" id="L123">            return INTEGER_FORMAT.parse(integer).intValue();</span>
+<span class="nc" id="L124">        } catch (ParseException e) {</span>
+<span class="nc" id="L125">            throw new NumberFormatException(&quot;Unable to parse integer [int: &quot; + integer + &quot;, error: &quot; + e.getMessage());</span>
+        }
+    }
+
+    @Override
+    public void println() {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!_logged) {</span>
+<span class="nc" id="L132">            log();</span>
+        }
+<span class="nc" id="L134">    }</span>
+
+    @Override
+    public void println(boolean x) {
+<span class="nc" id="L138">        print(String.valueOf(x));</span>
+<span class="nc" id="L139">        println();</span>
+<span class="nc" id="L140">    }</span>
+
+    @Override
+    public void println(char c) {
+<span class="nc" id="L144">        print(String.valueOf(c));</span>
+<span class="nc" id="L145">        println();</span>
+<span class="nc" id="L146">    }</span>
+
+    @Override
+    public void println(char[] c) {
+<span class="nc" id="L150">        print(String.valueOf(c));</span>
+<span class="nc" id="L151">        println();</span>
+<span class="nc" id="L152">    }</span>
+
+    @Override
+    public void println(double d) {
+<span class="nc" id="L156">        print(String.valueOf(d));</span>
+<span class="nc" id="L157">        println();</span>
+<span class="nc" id="L158">    }</span>
+
+    @Override
+    public void println(float f) {
+<span class="nc" id="L162">        print(String.valueOf(f));</span>
+<span class="nc" id="L163">        println();</span>
+<span class="nc" id="L164">    }</span>
+
+    @Override
+    public void println(int i) {
+<span class="nc" id="L168">        print(String.valueOf(i));</span>
+<span class="nc" id="L169">        println();</span>
+<span class="nc" id="L170">    }</span>
+
+    @Override
+    public void println(long l) {
+<span class="nc" id="L174">        print(String.valueOf(l));</span>
+<span class="nc" id="L175">        println();</span>
+<span class="nc" id="L176">    }</span>
+
+    @Override
+    public void println(Object o) {
+<span class="nc" id="L180">        print(o.toString());</span>
+<span class="nc" id="L181">        println();</span>
+<span class="nc" id="L182">    }</span>
+
+    @Override
+    public void println(String s) {
+<span class="nc" id="L186">        print(s);</span>
+<span class="nc" id="L187">        println();</span>
+<span class="nc" id="L188">    }</span>
+
+    // ----------------------------------------------- private members
+    // ------------------------------------------------------
+
+<span class="fc" id="L193">    private int _line = -1;</span>
+<span class="fc" id="L194">    private int _column = -1;</span>
+<span class="fc" id="L195">    private String _msg = &quot;&quot;;</span>
+<span class="fc" id="L196">    private boolean _error = false;</span>
+<span class="fc" id="L197">    private boolean _logged = false;</span>
+    private URL _url;
+
+    /**
+     * reports the warning or error and then resets the current error/warning.
+     **/
+    private void log() {
+        // System.out.println(&quot;Logging.........................&quot;);
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (_error) {</span>
+<span class="nc" id="L206">            reportError(_msg, _line, _column);</span>
+        } else {
+<span class="nc" id="L208">            reportWarning(_msg, _line, _column);</span>
+        }
+<span class="nc" id="L210">        _logged = true;</span>
+<span class="nc" id="L211">        _line = -1;</span>
+<span class="nc" id="L212">        _column = -1;</span>
+<span class="nc" id="L213">        _msg = &quot;&quot;;</span>
+<span class="nc" id="L214">    }</span>
+
+    private void reportError(String msg, int line, int column) {
+<span class="nc" id="L217">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        for (HTMLParserListener listener : listeners) {</span>
+<span class="nc" id="L219">            listener.error(_url, msg, line, column);</span>
+<span class="nc" id="L220">        }</span>
+<span class="nc" id="L221">    }</span>
+
+    private void reportWarning(String msg, int line, int column) {
+<span class="nc" id="L224">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        for (HTMLParserListener listener : listeners) {</span>
+<span class="nc" id="L226">            listener.warning(_url, msg, line, column);</span>
+<span class="nc" id="L227">        }</span>
+<span class="nc" id="L228">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

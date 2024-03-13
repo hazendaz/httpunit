@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUserAgentTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">HttpUserAgentTest.java</span></div><h1>HttpUserAgentTest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.pseudoserver;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import org.junit.Rule;
+
+/**
+ * A base class for test cases that use the pseudo server.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L37">public class HttpUserAgentTest {</span>
+
+<span class="fc" id="L39">    @Rule</span>
+    public PseudoServerTestSupport testSupport = new PseudoServerTestSupport();
+
+    protected void defineResource(String resourceName, PseudoServlet servlet) {
+<span class="fc" id="L43">        testSupport.defineResource(resourceName, servlet);</span>
+<span class="fc" id="L44">    }</span>
+
+    protected void defineResource(String resourceName, String value) {
+<span class="fc" id="L47">        testSupport.defineResource(resourceName, value);</span>
+<span class="fc" id="L48">    }</span>
+
+    protected void defineResource(String resourceName, byte[] value, String contentType) {
+<span class="fc" id="L51">        testSupport.defineResource(resourceName, value, contentType);</span>
+<span class="fc" id="L52">    }</span>
+
+    protected void defineResource(String resourceName, String value, int statusCode) {
+<span class="fc" id="L55">        testSupport.defineResource(resourceName, value, statusCode);</span>
+<span class="fc" id="L56">    }</span>
+
+    protected void defineResource(String resourceName, String value, String contentType) {
+<span class="fc" id="L59">        testSupport.defineResource(resourceName, value, contentType);</span>
+<span class="fc" id="L60">    }</span>
+
+    protected void addResourceHeader(String resourceName, String header) {
+<span class="fc" id="L63">        testSupport.addResourceHeader(resourceName, header);</span>
+<span class="fc" id="L64">    }</span>
+
+    protected void setResourceCharSet(String resourceName, String setName, boolean reportCharSet) {
+<span class="fc" id="L67">        testSupport.setResourceCharSet(resourceName, setName, reportCharSet);</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page use the given xml names space if it is not null
+     *
+     * @param xmlns
+     * @param pageName
+     * @param body
+     */
+    protected void defineWebPage(String xmlns, String pageName, String body) {
+<span class="fc" id="L79">        testSupport.defineWebPage(xmlns, pageName, body);</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
+     * the page
+     *
+     * @param pageName
+     * @param body
+     */
+    protected void defineWebPage(String pageName, String body) {
+<span class="fc" id="L90">        testSupport.defineWebPage(pageName, body);</span>
+<span class="fc" id="L91">    }</span>
+
+    protected void mapToClasspath(String directory) {
+<span class="fc" id="L94">        testSupport.mapToClasspath(directory);</span>
+<span class="fc" id="L95">    }</span>
+
+    protected PseudoServer getServer() {
+<span class="nc" id="L98">        return testSupport.getServer();</span>
+    }
+
+    protected void setServerDebug(boolean enabled) {
+<span class="nc" id="L102">        testSupport.setServerDebug(enabled);</span>
+<span class="nc" id="L103">    }</span>
+
+    protected String getHostPath() {
+<span class="fc" id="L106">        return testSupport.getHostPath();</span>
+    }
+
+    protected int getHostPort() throws IOException {
+<span class="fc" id="L110">        return testSupport.getHostPort();</span>
+    }
+
+    protected void assertEqualQueries(String query1, String query2) {
+<span class="fc" id="L114">        assertEquals(new QuerySpec(query1), new QuerySpec(query2));</span>
+<span class="fc" id="L115">    }</span>
+
+    protected void assertImplement(String comment, Object[] objects, Class expectedClass) {
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (objects.length == 0) {</span>
+<span class="nc" id="L119">            fail(&quot;No &quot; + comment + &quot; found.&quot;);</span>
+        }
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (Object object : objects) {</span>
+<span class="fc" id="L122">            assertImplements(comment, object, expectedClass);</span>
+        }
+<span class="fc" id="L124">    }</span>
+
+    protected void assertImplements(String comment, Object object, Class expectedClass) {
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (object == null) {</span>
+<span class="nc" id="L128">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is null&quot;);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        } else if (!expectedClass.isInstance(object)) {</span>
+<span class="nc" id="L130">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is &quot; + object.getClass().getName());</span>
+        }
+<span class="fc" id="L132">    }</span>
+
+    protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
+<span class="fc" id="L135">        Vector foundItems = new Vector();</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        while (found.hasMoreElements()) {</span>
+<span class="fc" id="L137">            foundItems.addElement(found.nextElement());</span>
+        }
+
+<span class="fc" id="L140">        assertMatchingSet(comment, expected, foundItems);</span>
+<span class="fc" id="L141">    }</span>
+
+    private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
+<span class="fc" id="L144">        Vector expectedItems = new Vector();</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="fc" id="L146">            expectedItems.addElement(element);</span>
+        }
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
+<span class="nc" id="L150">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but missing &quot; + element);</span>
+            } else {
+<span class="fc" id="L152">                foundItems.removeElement(element);</span>
+            }
+        }
+
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
+<span class="nc" id="L157">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found superfluous&quot; + foundItems.firstElement());</span>
+        }
+<span class="fc" id="L159">    }</span>
+
+    public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
+<span class="fc" id="L162">        Vector foundItems = new Vector();</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        for (Object element : found) {</span>
+<span class="fc" id="L164">            foundItems.addElement(element);</span>
+        }
+
+<span class="fc" id="L167">        Vector expectedItems = new Vector();</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="fc" id="L170">            expectedItems.addElement(element);</span>
+        }
+
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
+<span class="nc" id="L175">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+            } else {
+<span class="fc" id="L177">                foundItems.removeElement(element);</span>
+            }
+        }
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        for (Object element : found) {</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (!expectedItems.contains(element)) {</span>
+<span class="nc" id="L183">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+            } else {
+<span class="fc" id="L185">                expectedItems.removeElement(element);</span>
+            }
+        }
+
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
+<span class="nc" id="L190">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+        }
+<span class="fc" id="L192">    }</span>
+
+    public static String asText(Object[] args) {
+<span class="nc" id="L195">        StringBuilder sb = new StringBuilder(&quot;{&quot;);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        for (int i = 0; i &lt; args.length; i++) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L198">                sb.append(&quot;,&quot;);</span>
+            }
+<span class="nc" id="L200">            sb.append('&quot;').append(args[i]).append('&quot;');</span>
+        }
+<span class="nc" id="L202">        sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L203">        return sb.toString();</span>
+    }
+
+    protected String asBytes(String s) {
+<span class="nc" id="L207">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L208">        char[] chars = s.toCharArray();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        for (char element : chars) {</span>
+<span class="nc" id="L210">            sb.append(Integer.toHexString(element)).append(&quot; &quot;);</span>
+        }
+<span class="nc" id="L212">        return sb.toString();</span>
+    }
+
+    static class QuerySpec {
+<span class="fc" id="L216">        QuerySpec(String urlString) {</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if (urlString.indexOf('?') &lt; 0) {</span>
+<span class="nc" id="L218">                _path = urlString;</span>
+            } else {
+<span class="fc" id="L220">                _path = urlString.substring(0, urlString.indexOf('?'));</span>
+            }
+<span class="fc" id="L222">            _fullString = urlString;</span>
+
+<span class="fc" id="L224">            StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), &quot;&amp;&quot;);</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L226">                _parameters.addElement(st.nextToken());</span>
+            }
+<span class="fc" id="L228">        }</span>
+
+        @Override
+        public String toString() {
+<span class="nc" id="L232">            return _fullString;</span>
+        }
+
+        @Override
+        public boolean equals(Object o) {
+<span class="pc bpc" id="L237" title="2 of 4 branches missed.">            return getClass().equals(o.getClass()) &amp;&amp; equals((QuerySpec) o);</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="nc" id="L242">            return _path.hashCode() ^ _parameters.size();</span>
+        }
+
+        private String _path;
+        private String _fullString;
+<span class="fc" id="L247">        private Vector _parameters = new Vector();</span>
+
+        private boolean equals(QuerySpec o) {
+<span class="pc bpc" id="L250" title="2 of 4 branches missed.">            if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {</span>
+<span class="nc" id="L251">                return false;</span>
+            }
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">                if (!_parameters.contains(e.nextElement())) {</span>
+<span class="nc" id="L255">                    return false;</span>
+                }
+            }
+<span class="fc" id="L258">            return true;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebRequest.java</span></div><h1>WebRequest.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.protocol.ParameterProcessor;
+import com.meterware.httpunit.protocol.UploadFileSpec;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
+import java.util.Dictionary;
+import java.util.HashSet;
+import java.util.Hashtable;
+
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+/**
+ * A request sent to a web server.
+ **/
+abstract public class WebRequest {
+
+    static final String REFERER_HEADER_NAME = &quot;Referer&quot;;
+
+<span class="fc" id="L49">    private static URLStreamHandler JAVASCRIPT_STREAM_HANDLER = new JavascriptURLStreamHandler();</span>
+<span class="fc" id="L50">    private static URLStreamHandler HTTPS_STREAM_HANDLER = new HttpsURLStreamHandler();</span>
+
+    private final ParameterHolder _parameterHolder;
+
+    private URL _urlBase;
+    private FrameSelector _sourceFrame;
+    private String _requestTarget;
+    private String _urlString;
+    private Hashtable _headers;
+    private WebRequestSource _webRequestSource;
+    private WebResponse _referringPage;
+
+    private SubmitButton _button;
+    private Element _sourceElement;
+    private String _characterSet;
+
+    /**
+     * Sets the value of a header to be sent with this request. A header set here will override any matching header set
+     * in the WebClient when the request is actually sent.
+     *
+     * @param headerName
+     *            - the name of the header
+     * @param headerValue
+     *            - the value to be set
+     */
+    public void setHeaderField(String headerName, String headerValue) {
+<span class="fc" id="L76">        getHeaderDictionary().put(headerName, headerValue);</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Returns a copy of the headers to be sent with this request.
+     *
+     * @return the dictionary of headers
+     **/
+    public Dictionary getHeaders() {
+<span class="fc" id="L85">        return (Dictionary) getHeaderDictionary().clone();</span>
+    }
+
+    /**
+     * Returns the final URL associated with this web request.
+     *
+     * @return the Uniform Resource Locator for this Web request
+     *
+     * @throws MalformedURLException
+     *             if the URL is not o.k.
+     **/
+    public URL getURL() throws MalformedURLException {
+<span class="fc bfc" id="L97" title="All 4 branches covered.">        if (getURLBase() == null || getURLBase().toString().indexOf(&quot;?&quot;) &lt; 0) {</span>
+<span class="fc" id="L98">            return newURL(getURLBase(), getURLString());</span>
+        }
+<span class="fc" id="L100">        final String urlBaseString = getURLBase().toString();</span>
+<span class="fc" id="L101">        URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf(&quot;?&quot;)));</span>
+<span class="fc" id="L102">        return newURL(newurlbase, getURLString());</span>
+    }
+
+    /**
+     * Creates a new URL, handling the case where the relative URL begins with a '?'
+     *
+     * @param base
+     *            - the URL to start from
+     * @param spec
+     *            - additional specification string
+     *
+     * @return the URL
+     */
+    private URL newURL(final URL base, final String spec) throws MalformedURLException {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (spec.toLowerCase().startsWith(&quot;javascript:&quot;)) {</span>
+<span class="fc" id="L117">            return new URL(&quot;javascript&quot;, null, -1, spec.substring(&quot;javascript:&quot;.length()), JAVASCRIPT_STREAM_HANDLER);</span>
+        }
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">        if (spec.toLowerCase().startsWith(&quot;https:&quot;) &amp;&amp; !HttpsProtocolSupport.hasHttpsSupport()) {</span>
+<span class="nc" id="L120">            return new URL(&quot;https&quot;, null, -1, spec.substring(&quot;https:&quot;.length()), HTTPS_STREAM_HANDLER);</span>
+        }
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        if (getURLBase() == null || getURLString().indexOf(':') &gt; 0) {</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (getURLString().indexOf(':') &lt;= 0) {</span>
+<span class="nc" id="L124">                throw new RuntimeException(&quot;No protocol specified in URL '&quot; + getURLString() + &quot;'&quot;);</span>
+            }
+<span class="fc" id="L126">            HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));</span>
+        }
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        return spec.startsWith(&quot;?&quot;) ? new URL(base + spec) : newCombinedURL(base, spec);</span>
+    }
+
+    private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (base == null) {</span>
+<span class="fc" id="L133">            return new URL(getNormalizedURL(spec));</span>
+        }
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (spec.startsWith(&quot;..&quot;)) {</span>
+<span class="fc" id="L136">            return new URL(getNormalizedURL(getURLDirectory(base) + spec));</span>
+        }
+<span class="fc" id="L138">        return new URL(base, getNormalizedURL(spec));</span>
+    }
+
+    private String getURLDirectory(final URL base) {
+<span class="fc" id="L142">        String url = base.toExternalForm();</span>
+<span class="fc" id="L143">        int i = url.lastIndexOf('/');</span>
+<span class="fc" id="L144">        return url.substring(0, i + 1);</span>
+    }
+
+    private String getNormalizedURL(String url) {
+<span class="fc" id="L148">        int questionIndex = url.indexOf('?');</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (questionIndex &lt; 0) {</span>
+<span class="fc" id="L150">            return getNormalizedPath(url);</span>
+        }
+<span class="fc" id="L152">        return getNormalizedPath(url.substring(0, questionIndex)) + url.substring(questionIndex);</span>
+    }
+
+    private String getNormalizedPath(String path) {
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (path.lastIndexOf(&quot;//&quot;) &gt; path.lastIndexOf(&quot;://&quot;) + 1) {</span>
+<span class="fc" id="L157">            return getNormalizedPath(stripDoubleSlashes(path));</span>
+        }
+<span class="pc bpc" id="L159" title="1 of 4 branches missed.">        if (path.indexOf(&quot;/../&quot;) &gt; 0 || path.endsWith(&quot;/..&quot;)) {</span>
+<span class="fc" id="L160">            return getNormalizedPath(stripUpNavigation(path));</span>
+        }
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (path.indexOf(&quot;/./&quot;) &gt; 0) {</span>
+<span class="fc" id="L163">            return getNormalizedPath(stripInPlaceNavigation(path));</span>
+        }
+<span class="fc" id="L165">        return path;</span>
+    }
+
+    private String stripInPlaceNavigation(String url) {
+<span class="fc" id="L169">        int i = url.lastIndexOf(&quot;/./&quot;);</span>
+<span class="fc" id="L170">        return url.substring(0, i + 1) + url.substring(i + 2);</span>
+    }
+
+    private String stripUpNavigation(String url) {
+<span class="fc" id="L174">        int i = url.indexOf(&quot;/..&quot;);</span>
+<span class="fc" id="L175">        int j = url.lastIndexOf(&quot;/&quot;, i - 1);</span>
+<span class="fc" id="L176">        return url.substring(0, j + 1) + url.substring(i + 3);</span>
+    }
+
+    private String stripDoubleSlashes(String url) {
+<span class="fc" id="L180">        int i = url.lastIndexOf(&quot;//&quot;);</span>
+<span class="fc" id="L181">        return url.substring(0, i) + url.substring(i + 1);</span>
+    }
+
+    /**
+     * Returns the target for this web request.
+     */
+    public String getTarget() {
+<span class="fc" id="L188">        return _requestTarget;</span>
+    }
+
+    /**
+     * Returns the frame from which this request originates.
+     */
+    FrameSelector getSourceFrame() {
+<span class="fc" id="L195">        return _sourceFrame;</span>
+    }
+
+    /**
+     * the HTTP method defined for this request e.g. DELETE,OPTIONS,HEAD
+     */
+    protected String method;
+
+    /**
+     * @return the method
+     */
+    public String getMethod() {
+<span class="fc" id="L207">        return method;</span>
+    }
+
+    /**
+     * Returns the query string defined for this request. The query string is sent to the HTTP server as part of the
+     * request header. This default implementation returns an empty string.
+     **/
+    public String getQueryString() {
+<span class="fc" id="L215">        return &quot;&quot;;</span>
+    }
+
+    // ------------------------------------- ParameterCollection methods ------------------------------------
+
+    /**
+     * Sets the value of a parameter in a web request.
+     **/
+    public void setParameter(String name, String value) {
+<span class="fc" id="L224">        _parameterHolder.setParameter(name, value);</span>
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Sets the multiple values of a parameter in a web request.
+     **/
+    public void setParameter(String name, String[] values) {
+<span class="fc" id="L231">        _parameterHolder.setParameter(name, values);</span>
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Sets the multiple values of a file upload parameter in a web request.
+     **/
+    public void setParameter(String parameterName, UploadFileSpec[] files) {
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (!maySelectFile(parameterName)) {</span>
+<span class="fc" id="L239">            throw new IllegalNonFileParameterException(parameterName);</span>
+        }
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        if (!isMimeEncoded()) {</span>
+<span class="nc" id="L242">            throw new MultipartFormRequiredException();</span>
+        }
+<span class="fc" id="L244">        _parameterHolder.setParameter(parameterName, files);</span>
+<span class="fc" id="L245">    }</span>
+
+    /**
+     * Specifies the click position for the submit button. When a user clioks on an image button, not only the name and
+     * value of the button, but also the position of the mouse at the time of the click is submitted with the form. This
+     * method allows the caller to override the position selected when this request was created.
+     *
+     * @exception IllegalRequestParameterException
+     *                thrown if the request was not created from a form with an image button.
+     **/
+    public void setImageButtonClickPosition(int x, int y) throws IllegalRequestParameterException {
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (_button == null) {</span>
+<span class="fc" id="L257">            throw new IllegalButtonPositionException();</span>
+        }
+<span class="fc" id="L259">        _parameterHolder.selectImageButtonPosition(_button, x, y);</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Returns true if the specified parameter is a file field.
+     **/
+    public boolean isFileParameter(String name) {
+<span class="fc" id="L266">        return _parameterHolder.isFileParameter(name);</span>
+    }
+
+    /**
+     * Sets the file for a parameter upload in a web request.
+     **/
+    public void selectFile(String parameterName, File file) {
+<span class="fc" id="L273">        setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(file) });</span>
+<span class="fc" id="L274">    }</span>
+
+    /**
+     * Sets the file for a parameter upload in a web request.
+     **/
+    public void selectFile(String parameterName, File file, String contentType) {
+<span class="fc" id="L280">        setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(file, contentType) });</span>
+<span class="fc" id="L281">    }</span>
+
+    /**
+     * Sets the file for a parameter upload in a web request.
+     **/
+    public void selectFile(String parameterName, String fileName, InputStream inputStream, String contentType) {
+<span class="fc" id="L287">        setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(fileName, inputStream, contentType) });</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Returns an array of all parameter names defined as part of this web request.
+     *
+     * @since 1.3.1
+     **/
+    public String[] getRequestParameterNames() {
+<span class="fc" id="L296">        final HashSet names = new HashSet();</span>
+<span class="fc" id="L297">        ParameterProcessor pp = new ParameterProcessor() {</span>
+            @Override
+            public void addParameter(String name, String value, String characterSet) throws IOException {
+<span class="fc" id="L300">                names.add(name);</span>
+<span class="fc" id="L301">            }</span>
+
+            @Override
+            public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
+<span class="nc" id="L305">                names.add(parameterName);</span>
+<span class="nc" id="L306">            }</span>
+        };
+
+        try {
+<span class="fc" id="L310">            _parameterHolder.recordPredefinedParameters(pp);</span>
+<span class="fc" id="L311">            _parameterHolder.recordParameters(pp);</span>
+<span class="nc" id="L312">        } catch (IOException e) {</span>
+<span class="fc" id="L313">        }</span>
+
+<span class="fc" id="L315">        return (String[]) names.toArray(new String[names.size()]);</span>
+    }
+
+    /**
+     * Returns the value of a parameter in this web request.
+     *
+     * @return the value of the named parameter, or empty string if it is not set.
+     **/
+    public String getParameter(String name) {
+<span class="fc" id="L324">        String[] values = getParameterValues(name);</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">        return values.length == 0 ? &quot;&quot; : values[0];</span>
+    }
+
+    /**
+     * Returns the multiple default values of the named parameter.
+     **/
+    public String[] getParameterValues(String name) {
+<span class="fc" id="L332">        return _parameterHolder.getParameterValues(name);</span>
+    }
+
+    /**
+     * Removes a parameter from this web request.
+     **/
+    public void removeParameter(String name) {
+<span class="fc" id="L339">        _parameterHolder.removeParameter(name);</span>
+<span class="fc" id="L340">    }</span>
+
+    // ------------------------------------- Object methods ------------------------------------
+
+    @Override
+    public String toString() {
+<span class="nc" id="L346">        return getMethod() + &quot; request for (&quot; + getURLBase() + &quot;) &quot; + getURLString();</span>
+    }
+
+    // ------------------------------------- protected members ------------------------------------
+
+    /**
+     * Constructs a web request using an absolute URL string.
+     **/
+    protected WebRequest(String urlString) {
+<span class="fc" id="L355">        this(null, urlString);</span>
+<span class="fc" id="L356">    }</span>
+
+    /**
+     * Constructs a web request using a base URL and a relative URL string.
+     **/
+    protected WebRequest(URL urlBase, String urlString) {
+<span class="fc" id="L362">        this(urlBase, urlString, TOP_FRAME);</span>
+<span class="fc" id="L363">    }</span>
+
+    /**
+     * Constructs a web request using a base request and a relative URL string.
+     **/
+    protected WebRequest(WebRequest baseRequest, String urlString, String target) throws MalformedURLException {
+<span class="nc" id="L369">        this(baseRequest.getURL(), urlString, target);</span>
+<span class="nc" id="L370">    }</span>
+
+    /**
+     * Constructs a web request using a base URL, a relative URL string, and a target.
+     **/
+    protected WebRequest(URL urlBase, String urlString, String target) {
+<span class="fc" id="L376">        this(urlBase, urlString, FrameSelector.TOP_FRAME, target);</span>
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Constructs a web request using a base URL, a relative URL string, and a target.
+     **/
+    protected WebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target) {
+<span class="fc bfc" id="L383" title="All 2 branches covered.">        this(urlBase, urlString, referer.getFrame(), target != null ? target : referer.getBaseTarget());</span>
+<span class="fc" id="L384">        _sourceElement = sourceElement;</span>
+<span class="fc" id="L385">        _referringPage = referer;</span>
+<span class="fc" id="L386">        setHeaderField(REFERER_HEADER_NAME, referer.getURL().toExternalForm());</span>
+<span class="fc" id="L387">    }</span>
+
+    /**
+     * Constructs a web request using a base URL, a relative URL string, and a target.
+     **/
+    protected WebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
+<span class="fc" id="L393">        this(urlBase, urlString, frame, target, new UncheckedParameterHolder());</span>
+<span class="fc" id="L394">    }</span>
+
+    /**
+     * Constructs a web request from a form.
+     *
+     * @param sourceForm
+     *            - the WebForm to startFrom
+     * @param parameterHolder
+     *            - the parameter holder
+     * @param button
+     *            - the submit button
+     * @param x
+     *            - x position
+     * @param y
+     *            - y position
+     **/
+    protected WebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
+<span class="fc" id="L411">        this(sourceForm, parameterHolder);</span>
+        // [ 1443333 ] Allow unnamed Image input elements to submit x,y values
+<span class="pc bpc" id="L413" title="1 of 4 branches missed.">        if (button != null &amp;&amp; button.isValidImageButton()) {</span>
+<span class="fc" id="L414">            _button = button;</span>
+<span class="fc" id="L415">            _parameterHolder.selectImageButtonPosition(_button, x, y);</span>
+        }
+<span class="fc" id="L417">    }</span>
+
+    protected WebRequest(WebRequestSource requestSource, ParameterHolder parameterHolder) {
+<span class="fc" id="L420">        this(requestSource.getBaseURL(), requestSource.getRelativePage(), requestSource.getFrame(),</span>
+<span class="fc" id="L421">                requestSource.getTarget(), parameterHolder);</span>
+<span class="fc" id="L422">        _webRequestSource = requestSource;</span>
+<span class="fc" id="L423">        _sourceElement = requestSource.getElement();</span>
+<span class="fc" id="L424">    }</span>
+
+    static ParameterHolder newParameterHolder(WebRequestSource requestSource) {
+<span class="fc bfc" id="L427" title="All 2 branches covered.">        if (HttpUnitOptions.getParameterValuesValidated()) {</span>
+<span class="fc" id="L428">            return requestSource;</span>
+        }
+<span class="fc" id="L430">        return new UncheckedParameterHolder(requestSource);</span>
+    }
+
+    /**
+     * Constructs a web request using a base URL, a relative URL string, and a target.
+     **/
+    private WebRequest(URL urlBase, String urlString, FrameSelector sourceFrame, String requestTarget,
+<span class="fc" id="L437">            ParameterHolder parameterHolder) {</span>
+<span class="fc" id="L438">        _urlBase = urlBase;</span>
+<span class="fc" id="L439">        _sourceFrame = sourceFrame;</span>
+<span class="fc" id="L440">        _requestTarget = requestTarget;</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">        _urlString = urlString.toLowerCase().startsWith(&quot;http&quot;) ? escape(urlString) : urlString;</span>
+<span class="fc" id="L442">        _parameterHolder = parameterHolder;</span>
+<span class="fc" id="L443">        _characterSet = parameterHolder.getCharacterSet();</span>
+<span class="fc" id="L444">    }</span>
+
+    private static String escape(String urlString) {
+<span class="fc bfc" id="L447" title="All 2 branches covered.">        if (urlString.indexOf(' ') &lt; 0) {</span>
+<span class="fc" id="L448">            return urlString;</span>
+        }
+<span class="fc" id="L450">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc" id="L452">        int start = 0;</span>
+        do {
+<span class="fc" id="L454">            int index = urlString.indexOf(' ', start);</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">            if (index &lt; 0) {</span>
+<span class="fc" id="L456">                sb.append(urlString.substring(start));</span>
+<span class="fc" id="L457">                break;</span>
+            }
+<span class="fc" id="L459">            sb.append(urlString.substring(start, index)).append(&quot;%20&quot;);</span>
+<span class="fc" id="L460">            start = index + 1;</span>
+<span class="fc" id="L461">        } while (true);</span>
+<span class="fc" id="L462">        return sb.toString();</span>
+    }
+
+    /**
+     * Returns true if selectFile may be called with this parameter.
+     */
+    protected boolean maySelectFile(String parameterName) {
+<span class="nc" id="L469">        return isFileParameter(parameterName);</span>
+    }
+
+    /**
+     * Returns true if this request is to be MIME-encoded.
+     **/
+    protected boolean isMimeEncoded() {
+<span class="nc" id="L476">        return false;</span>
+    }
+
+    /**
+     * Returns the content type of this request. If null, no content is specified.
+     */
+    protected String getContentType() {
+<span class="fc" id="L483">        return null;</span>
+    }
+
+    /**
+     * Returns the character set required for this request.
+     **/
+    final protected String getCharacterSet() {
+<span class="fc" id="L490">        return _characterSet;</span>
+    }
+
+    /**
+     * Performs any additional processing necessary to complete the request.
+     **/
+    protected void completeRequest(URLConnection connection) throws IOException {
+<span class="fc bfc" id="L497" title="All 2 branches covered.">        if (connection instanceof HttpURLConnection) {</span>
+<span class="fc" id="L498">            ((HttpURLConnection) connection).setRequestMethod(getMethod());</span>
+        }
+<span class="fc" id="L500">    }</span>
+
+    /**
+     * Writes the contents of the message body to the specified stream.
+     */
+    protected void writeMessageBody(OutputStream stream) throws IOException {
+<span class="fc" id="L506">    }</span>
+
+    final protected URL getURLBase() {
+<span class="fc" id="L509">        return _urlBase;</span>
+    }
+
+    // ------------------------------------- protected members ---------------------------------------------
+
+    protected String getURLString() {
+<span class="fc" id="L515">        final String queryString = getQueryString();</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        if (queryString.length() == 0) {</span>
+<span class="fc" id="L517">            return _urlString;</span>
+        }
+<span class="fc" id="L519">        return _urlString + &quot;?&quot; + queryString;</span>
+    }
+
+    final protected ParameterHolder getParameterHolder() {
+<span class="fc" id="L523">        return _parameterHolder;</span>
+    }
+
+    // ---------------------------------- package members --------------------------------
+
+    /** The target indicating the topmost frame of a window. **/
+    static final String TOP_FRAME = &quot;_top&quot;;
+
+    /** The target indicating the parent of a frame. **/
+    static final String PARENT_FRAME = &quot;_parent&quot;;
+
+    /** The target indicating a new, empty window. **/
+    static final String NEW_WINDOW = &quot;_blank&quot;;
+
+    /** The target indicating the same frame. **/
+    static final String SAME_FRAME = &quot;_self&quot;;
+
+    Hashtable getHeaderDictionary() {
+<span class="fc bfc" id="L541" title="All 2 branches covered.">        if (_headers == null) {</span>
+<span class="fc" id="L542">            _headers = new Hashtable();</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">            if (getContentType() != null) {</span>
+<span class="fc" id="L544">                _headers.put(&quot;Content-Type&quot;, getContentType());</span>
+            }
+        }
+<span class="fc" id="L547">        return _headers;</span>
+    }
+
+    String getReferer() {
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">        return _headers == null ? null : (String) _headers.get(REFERER_HEADER_NAME);</span>
+    }
+
+    ScriptingHandler getSourceScriptingHandler() {
+<span class="fc" id="L555">        WebRequestSource wrs = _webRequestSource;</span>
+<span class="pc bpc" id="L556" title="1 of 2 branches missed.">        if (wrs != null) {</span>
+<span class="nc" id="L557">            return wrs.getScriptingHandler();</span>
+        }
+<span class="pc bpc" id="L559" title="1 of 4 branches missed.">        if (_referringPage != null &amp;&amp; _sourceElement != null) {</span>
+            try {
+<span class="fc" id="L561">                _referringPage.getReceivedPage().getElement(_sourceElement).getScriptingHandler();</span>
+<span class="nc" id="L562">            } catch (SAXException e) {</span>
+<span class="fc" id="L563">            }</span>
+        }
+<span class="fc" id="L565">        return null;</span>
+    }
+
+}
+
+// ======================================== class JavaScriptURLStreamHandler
+// ============================================
+
+<span class="fc" id="L573">class JavascriptURLStreamHandler extends URLStreamHandler {</span>
+
+    @Override
+    protected URLConnection openConnection(URL u) throws IOException {
+<span class="nc" id="L577">        return null;</span>
+    }
+}
+
+// ======================================== class HttpsURLStreamHandler ============================================
+
+<span class="fc" id="L583">class HttpsURLStreamHandler extends URLStreamHandler {</span>
+
+    @Override
+    protected URLConnection openConnection(URL u) throws IOException {
+<span class="nc" id="L587">        throw new RuntimeException(</span>
+                &quot;https support requires the Java Secure Sockets Extension. See http://java.sun.com/products/jsse&quot;);
+    }
+}
+
+// ============================= exception class IllegalNonFileParameterException ======================================
+
+/**
+ * This exception is thrown on an attempt to set a non-file parameter to a file value.
+ **/
+class IllegalNonFileParameterException extends IllegalRequestParameterException {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L601">    IllegalNonFileParameterException(String parameterName) {</span>
+<span class="fc" id="L602">        _parameterName = parameterName;</span>
+<span class="fc" id="L603">    }</span>
+
+    @Override
+    public String getMessage() {
+<span class="nc" id="L607">        return &quot;Parameter '&quot; + _parameterName + &quot;' is not a file parameter and may not be set to a file value.&quot;;</span>
+    }
+
+    private String _parameterName;
+
+}
+
+// ============================= exception class MultipartFormRequiredException ======================================
+
+/**
+ * This exception is thrown on an attempt to set a file parameter in a form that does not specify MIME encoding.
+ **/
+class MultipartFormRequiredException extends IllegalRequestParameterException {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L623">    MultipartFormRequiredException() {</span>
+<span class="nc" id="L624">    }</span>
+
+    @Override
+    public String getMessage() {
+<span class="nc" id="L628">        return &quot;The request does not use multipart/form-data encoding, and cannot be used to upload files &quot;;</span>
+    }
+
+}
+
+// ============================= exception class IllegalButtonPositionException ======================================
+
+/**
+ * This exception is thrown on an attempt to set a file parameter in a form that does not specify MIME encoding.
+ **/
+class IllegalButtonPositionException extends IllegalRequestParameterException {
+
+    private static final long serialVersionUID = 1L;
+
+<span class="fc" id="L642">    IllegalButtonPositionException() {</span>
+<span class="fc" id="L643">    }</span>
+
+    @Override
+    public String getMessage() {
+<span class="nc" id="L647">        return &quot;The request was not created with an image button, and cannot accept an image button click position&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

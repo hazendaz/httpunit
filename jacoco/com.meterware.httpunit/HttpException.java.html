@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpException.java</span></div><h1>HttpException.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.net.URL;
+
+/**
+ * This exception is thrown when an Http error (response code 4xx or 5xx) is detected.
+ *
+ * @author Seth Ladd
+ * @author Russell Gold
+ **/
+public class HttpException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * throw a http Exception with the given responseCode
+     *
+     * @param responseCode
+     */
+<span class="nc" id="L39">    protected HttpException(int responseCode) {</span>
+<span class="nc" id="L40">        _responseCode = responseCode;</span>
+<span class="nc" id="L41">        System.err.println(responseCode);</span>
+<span class="nc" id="L42">    }</span>
+
+    /**
+     * throw a http Exception with the given responseCode and cause
+     *
+     * @param responseCode
+     * @param cause
+     */
+<span class="nc" id="L50">    protected HttpException(int responseCode, Throwable cause) {</span>
+<span class="nc" id="L51">        _responseCode = responseCode;</span>
+<span class="nc" id="L52">        _cause = cause;</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * throw a http Exception with the given responseCode and Message and base url
+     *
+     * @param responseCode
+     * @param responseMessage
+     * @param baseURL
+     */
+<span class="fc" id="L62">    protected HttpException(int responseCode, String responseMessage, URL baseURL) {</span>
+<span class="fc" id="L63">        _responseMessage = responseMessage;</span>
+<span class="fc" id="L64">        _responseCode = responseCode;</span>
+<span class="fc" id="L65">        _url = baseURL;</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * throw a http Exception with the given responseCode and Message, base url and cause
+     *
+     * @param responseCode
+     * @param responseMessage
+     * @param baseURL
+     * @param cause
+     */
+<span class="nc" id="L76">    protected HttpException(int responseCode, String responseMessage, URL baseURL, Throwable cause) {</span>
+<span class="nc" id="L77">        _responseMessage = responseMessage;</span>
+<span class="nc" id="L78">        _responseCode = responseCode;</span>
+<span class="nc" id="L79">        _url = baseURL;</span>
+<span class="nc" id="L80">        _cause = cause;</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * get the Message for the http Exception
+     *
+     * @return - the message of the Exception
+     */
+    @Override
+    public String getMessage() {
+<span class="fc" id="L90">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append(&quot;Error on HTTP request: &quot;);</span>
+<span class="fc" id="L91">        sb.append(_responseCode);</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (_responseMessage != null) {</span>
+<span class="fc" id="L93">            sb.append(&quot; &quot;);</span>
+<span class="fc" id="L94">            sb.append(_responseMessage);</span>
+<span class="fc" id="L95">            sb.append(&quot;&quot;);</span>
+        }
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (_url != null) {</span>
+<span class="fc" id="L98">            sb.append(&quot; [&quot;);</span>
+<span class="fc" id="L99">            sb.append(_url.toExternalForm());</span>
+<span class="fc" id="L100">            sb.append(&quot;]&quot;);</span>
+        }
+<span class="fc" id="L102">        return sb.toString();</span>
+    }
+
+    /**
+     * get the response Code of this http Exception
+     *
+     * @return - the response Code code 4xx or 5xx
+     */
+    public int getResponseCode() {
+<span class="fc" id="L111">        return _responseCode;</span>
+    }
+
+    /**
+     * get the response Message of this http Exception
+     *
+     * @return the response message
+     */
+    public String getResponseMessage() {
+<span class="fc" id="L120">        return _responseMessage;</span>
+    }
+
+    // private local copies of variables
+    private int _responseCode;
+    private URL _url;
+    private String _responseMessage;
+
+    /**
+     * get the cause (if any)
+     */
+    @Override
+    public Throwable getCause() {
+<span class="nc" id="L133">        return _cause;</span>
+    }
+
+    private Throwable _cause;
+
+    // see feature request [ 914314 ] Add HttpException.getResponse for better reporting
+    private WebResponse response;
+
+    /**
+     * return the WebResponse associated with this Exception (if any)
+     *
+     * @return
+     */
+    public WebResponse getResponse() {
+<span class="fc" id="L147">        return response;</span>
+    }
+
+    /**
+     * add the given response to this exception
+     *
+     * @param response
+     */
+    public void setResponse(WebResponse response) {
+<span class="fc" id="L156">        this.response = response;</span>
+<span class="fc" id="L157">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

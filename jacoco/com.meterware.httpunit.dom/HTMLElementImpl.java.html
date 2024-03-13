@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLElementImpl.java</span></div><h1>HTMLElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+<span class="fc" id="L29">public class HTMLElementImpl extends ElementImpl implements HTMLElement {</span>
+
+    private static final long serialVersionUID = 1L;
+<span class="fc" id="L32">    public final static String UNSPECIFIED_ATTRIBUTE = null;</span>
+
+    ElementImpl create() {
+<span class="fc" id="L35">        return new HTMLElementImpl();</span>
+    }
+
+    public void click() {
+<span class="fc" id="L39">        doClickAction();</span>
+<span class="fc" id="L40">    }</span>
+
+    public void doClickAction() {
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public String getId() {
+<span class="fc" id="L47">        return getAttributeWithNoDefault(&quot;id&quot;);</span>
+    }
+
+    @Override
+    public void setId(String id) {
+<span class="fc" id="L52">        setAttribute(&quot;id&quot;, id);</span>
+<span class="fc" id="L53">    }</span>
+
+    @Override
+    public String getTitle() {
+<span class="fc" id="L57">        return getAttributeWithNoDefault(&quot;title&quot;);</span>
+    }
+
+    @Override
+    public void setTitle(String title) {
+<span class="fc" id="L62">        setAttribute(&quot;title&quot;, title);</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override
+    public String getLang() {
+<span class="fc" id="L67">        return getAttributeWithNoDefault(&quot;lang&quot;);</span>
+    }
+
+    @Override
+    public void setLang(String lang) {
+<span class="fc" id="L72">        setAttribute(&quot;lang&quot;, lang);</span>
+<span class="fc" id="L73">    }</span>
+
+    @Override
+    public String getDir() {
+<span class="fc" id="L77">        return getAttributeWithNoDefault(&quot;dir&quot;);</span>
+    }
+
+    @Override
+    public void setDir(String dir) {
+<span class="fc" id="L82">        setAttribute(&quot;dir&quot;, dir);</span>
+<span class="fc" id="L83">    }</span>
+
+    @Override
+    public String getClassName() {
+<span class="fc" id="L87">        return getAttributeWithNoDefault(&quot;class&quot;);</span>
+    }
+
+    @Override
+    public void setClassName(String className) {
+<span class="fc" id="L92">        setAttribute(&quot;class&quot;, className);</span>
+<span class="fc" id="L93">    }</span>
+
+    @Override
+    public NodeList getElementsByTagName(String name) {
+<span class="fc" id="L97">        return super.getElementsByTagName(((HTMLDocumentImpl) getOwnerDocument()).toNodeCase(name));</span>
+    }
+
+    // ---------------------------------------------- protected methods
+    // -----------------------------------------------------
+
+    final protected String getAttributeWithDefault(String attributeName, String defaultValue) {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
+<span class="fc" id="L105">            return getAttribute(attributeName);</span>
+        }
+<span class="fc" id="L107">        return defaultValue;</span>
+    }
+
+    final protected String getAttributeWithNoDefault(String attributeName) {
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
+<span class="fc" id="L112">            return getAttribute(attributeName);</span>
+        }
+<span class="fc" id="L114">        return UNSPECIFIED_ATTRIBUTE;</span>
+    }
+
+    protected boolean getBooleanAttribute(String name) {
+<span class="fc" id="L118">        Attr attr = getAttributeNode(name);</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">        return attr != null &amp;&amp; !attr.getValue().equalsIgnoreCase(&quot;false&quot;);</span>
+    }
+
+    protected int getIntegerAttribute(String name) {
+<span class="fc" id="L123">        String value = getAttribute(name);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return value.length() == 0 ? 0 : Integer.parseInt(value);</span>
+    }
+
+    protected int getIntegerAttribute(String name, int defaultValue) {
+<span class="fc" id="L128">        String value = getAttribute(name);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        return value.length() == 0 ? defaultValue : Integer.parseInt(value);</span>
+    }
+
+    protected void setAttribute(String name, boolean disabled) {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        setAttribute(name, disabled ? &quot;true&quot; : &quot;false&quot;);</span>
+<span class="fc" id="L134">    }</span>
+
+    protected void setAttribute(String name, int value) {
+<span class="fc" id="L137">        setAttribute(name, Integer.toString(value));</span>
+<span class="fc" id="L138">    }</span>
+
+    HTMLDocumentImpl getHtmlDocument() {
+<span class="fc" id="L141">        return (HTMLDocumentImpl) getOwnerDocument();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

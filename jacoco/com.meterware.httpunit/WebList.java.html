@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebList.java</span></div><h1>WebList.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+
+import java.net.URL;
+import java.util.ArrayList;
+
+import org.w3c.dom.Element;
+
+/**
+ * Represents an HTML list. Experimental.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ *
+ * @since 1.6
+ **/
+public class WebList extends HTMLElementBase {
+
+    /** Indicator of an ordered list (HTML tag &amp;lt;ol&amp;gt;) */
+    public static final int ORDERED_LIST = 1;
+
+    /** Indicator of a bullet list (HTML tag &amp;lt;ul&amp;gt;) */
+    public static final int BULLET_LIST = 2;
+
+    private WebResponse _response;
+    private FrameSelector _frame;
+    private URL _baseURL;
+    private String _baseTarget;
+    private String _characterSet;
+
+<span class="nc" id="L50">    private ArrayList _items = new ArrayList();</span>
+    private int _listType;
+
+    public WebList(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Element element,
+            String characterSet) {
+<span class="nc" id="L55">        super(element);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (element.getNodeName().equalsIgnoreCase(&quot;ol&quot;)) {</span>
+<span class="nc" id="L57">            _listType = ORDERED_LIST;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        } else if (element.getNodeName().equalsIgnoreCase(&quot;ul&quot;)) {</span>
+<span class="nc" id="L59">            _listType = BULLET_LIST;</span>
+        }
+<span class="nc" id="L61">        _response = response;</span>
+<span class="nc" id="L62">        _frame = frame;</span>
+<span class="nc" id="L63">        _baseURL = baseURL;</span>
+<span class="nc" id="L64">        _baseTarget = baseTarget;</span>
+<span class="nc" id="L65">        _characterSet = characterSet;</span>
+<span class="nc" id="L66">    }</span>
+
+    public int getListType() {
+<span class="nc" id="L69">        return _listType;</span>
+    }
+
+    public TextBlock[] getItems() {
+<span class="nc" id="L73">        return (TextBlock[]) _items.toArray(new TextBlock[_items.size()]);</span>
+    }
+
+    @Override
+    public ScriptableDelegate newScriptable() {
+<span class="nc" id="L78">        return new HTMLElementScriptable(this);</span>
+    }
+
+    @Override
+    public ScriptableDelegate getParentDelegate() {
+<span class="nc" id="L83">        return _response.getDocumentScriptable();</span>
+    }
+
+    TextBlock addNewItem(Element element) {
+<span class="nc" id="L87">        TextBlock listItem = new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);</span>
+<span class="nc" id="L88">        _items.add(listItem);</span>
+<span class="nc" id="L89">        return listItem;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

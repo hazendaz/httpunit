@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FormParameter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">FormParameter.java</span></div><h1>FormParameter.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.protocol.UploadFileSpec;
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Represents the aggregate of all form controls with a particular name. This permits us to abstract setting values so
+ * that changing a control type does not break a test.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L34">public class FormParameter {</span>
+
+<span class="fc" id="L36">    private static final FormParameter UNKNOWN_PARAMETER = new FormParameter();</span>
+
+    private FormControl[] _controls;
+<span class="fc" id="L39">    private ArrayList _controlList = new ArrayList();</span>
+    private RadioGroupFormControl _group;
+    private String _name;
+
+    /**
+     * @return the uNKNOWN_PARAMETER
+     */
+    public static FormParameter getUNKNOWN_PARAMETER() {
+<span class="fc" id="L47">        return UNKNOWN_PARAMETER;</span>
+    }
+
+    /**
+     * return whether I am the unknown parameter
+     *
+     * @return
+     */
+    public boolean isUnknown() {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        return this == UNKNOWN_PARAMETER;</span>
+    }
+
+    /**
+     * add the given form control
+     *
+     * @param control
+     */
+    void addControl(FormControl control) {
+<span class="fc" id="L65">        _controls = null;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (_name == null) {</span>
+<span class="fc" id="L67">            _name = control.getName();</span>
+        }
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (!_name.equalsIgnoreCase(control.getName())) {</span>
+<span class="nc" id="L70">            throw new RuntimeException(&quot;all controls should have the same name&quot;);</span>
+        }
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (control.isExclusive()) {</span>
+<span class="fc" id="L73">            getRadioGroup(control.getForm()).addRadioButton((RadioButtonFormControl) control);</span>
+        } else {
+<span class="fc" id="L75">            _controlList.add(control);</span>
+        }
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * get the controls for this form Parameter
+     *
+     * @return the controls
+     */
+    public FormControl[] getControls() {
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (_controls == null) {</span>
+<span class="fc" id="L86">            _controls = (FormControl[]) _controlList.toArray(new FormControl[_controlList.size()]);</span>
+        }
+<span class="fc" id="L88">        return _controls;</span>
+    }
+
+    /**
+     * get the control for this form Parameter (assuming it has only one as for a text control
+     *
+     * @return the controls
+     */
+    public FormControl getControl() {
+<span class="nc" id="L97">        FormControl[] controls = getControls();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (controls.length != 1) {</span>
+<span class="nc" id="L99">            throw new RuntimeException(&quot;getControl can only be called if the number of controls is 1 but it is &quot;</span>
+                    + controls.length + &quot; you might want to use getControls instead&quot;);
+        }
+<span class="nc" id="L102">        return controls[0];</span>
+    }
+
+    Object getScriptableObject() {
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (getControls().length == 1) {</span>
+<span class="fc" id="L107">            return getControls()[0].getDelegate();</span>
+        }
+<span class="fc" id="L109">        ArrayList list = new ArrayList();</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        for (FormControl control : _controls) {</span>
+<span class="fc" id="L111">            list.add(control.getScriptingHandler());</span>
+        }
+<span class="fc" id="L113">        return list.toArray(new ScriptableDelegate[list.size()]);</span>
+    }
+
+    String[] getValues() {
+<span class="fc" id="L117">        ArrayList valueList = new ArrayList();</span>
+<span class="fc" id="L118">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L120">            valueList.addAll(Arrays.asList(control.getValues()));</span>
+        }
+<span class="fc" id="L122">        return (String[]) valueList.toArray(new String[valueList.size()]);</span>
+    }
+
+    /**
+     * set values to the given values
+     *
+     * @param values
+     */
+    void setValues(String[] values) {
+<span class="fc" id="L131">        ArrayList list = new ArrayList(values.length);</span>
+<span class="fc" id="L132">        list.addAll(Arrays.asList(values));</span>
+<span class="fc" id="L133">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L135">            control.claimRequiredValues(list);</span>
+        }
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L138">            control.claimUniqueValue(list);</span>
+        }
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L141">            control.claimValue(list);</span>
+        }
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        if (!list.isEmpty()) {</span>
+<span class="fc" id="L144">            throw new UnusedParameterValueException(_name, (String) list.get(0));</span>
+        }
+<span class="fc" id="L146">    }</span>
+
+    public void toggleCheckbox() {
+<span class="fc" id="L149">        FormControl[] controls = getControls();</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (controls.length != 1) {</span>
+<span class="nc" id="L151">            throw new IllegalCheckboxParameterException(_name, &quot;toggleCheckbox&quot;);</span>
+        }
+<span class="fc" id="L153">        controls[0].toggle();</span>
+<span class="fc" id="L154">    }</span>
+
+    public void toggleCheckbox(String value) {
+<span class="fc" id="L157">        FormControl[] controls = getControls();</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        for (FormControl control : controls) {</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if (value.equals(control.getValueAttribute())) {</span>
+<span class="fc" id="L160">                control.toggle();</span>
+<span class="fc" id="L161">                return;</span>
+            }
+        }
+<span class="nc" id="L164">        throw new IllegalCheckboxParameterException(_name + &quot;/&quot; + value, &quot;toggleCheckbox&quot;);</span>
+    }
+
+    public void setValue(boolean state) {
+<span class="fc" id="L168">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (controls.length != 1) {</span>
+<span class="fc" id="L170">            throw new IllegalCheckboxParameterException(_name, &quot;setCheckbox&quot;);</span>
+        }
+<span class="fc" id="L172">        controls[0].setState(state);</span>
+<span class="fc" id="L173">    }</span>
+
+    public void setValue(String value, boolean state) {
+<span class="fc" id="L176">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">            if (value.equals(control.getValueAttribute())) {</span>
+<span class="fc" id="L179">                control.setState(state);</span>
+<span class="fc" id="L180">                return;</span>
+            }
+        }
+<span class="fc" id="L183">        throw new IllegalCheckboxParameterException(_name + &quot;/&quot; + value, &quot;setCheckbox&quot;);</span>
+    }
+
+    void setFiles(UploadFileSpec[] fileArray) {
+<span class="fc" id="L187">        ArrayList list = new ArrayList(fileArray.length);</span>
+<span class="fc" id="L188">        list.addAll(Arrays.asList(fileArray));</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (int i = 0; i &lt; getControls().length; i++) {</span>
+<span class="fc" id="L190">            getControls()[i].claimUploadSpecification(list);</span>
+        }
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (!list.isEmpty()) {</span>
+<span class="fc" id="L193">            throw new UnusedUploadFileException(_name, fileArray.length - list.size(), fileArray.length);</span>
+        }
+<span class="fc" id="L195">    }</span>
+
+    String[] getOptions() {
+<span class="fc" id="L198">        ArrayList optionList = new ArrayList();</span>
+<span class="fc" id="L199">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L201">            optionList.addAll(Arrays.asList(control.getDisplayedOptions()));</span>
+        }
+<span class="fc" id="L203">        return (String[]) optionList.toArray(new String[optionList.size()]);</span>
+    }
+
+    String[] getOptionValues() {
+<span class="fc" id="L207">        ArrayList valueList = new ArrayList();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (int i = 0; i &lt; getControls().length; i++) {</span>
+<span class="fc" id="L209">            valueList.addAll(Arrays.asList(getControls()[i].getOptionValues()));</span>
+        }
+<span class="fc" id="L211">        return (String[]) valueList.toArray(new String[valueList.size()]);</span>
+    }
+
+    boolean isMultiValuedParameter() {
+<span class="nc" id="L215">        FormControl[] controls = getControls();</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        for (FormControl control : controls) {</span>
+<span class="nc bnc" id="L217" title="All 6 branches missed.">            if (control.isMultiValued() || !control.isExclusive() &amp;&amp; controls.length &gt; 1) {</span>
+<span class="nc" id="L218">                return true;</span>
+            }
+        }
+<span class="nc" id="L221">        return false;</span>
+    }
+
+    int getNumTextParameters() {
+<span class="fc" id="L225">        int result = 0;</span>
+<span class="fc" id="L226">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">            if (control.isTextControl()) {</span>
+<span class="fc" id="L229">                result++;</span>
+            }
+        }
+<span class="fc" id="L232">        return result;</span>
+    }
+
+    boolean isTextParameter() {
+<span class="nc" id="L236">        FormControl[] controls = getControls();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        for (FormControl control : controls) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            if (control.isTextControl()) {</span>
+<span class="nc" id="L239">                return true;</span>
+            }
+        }
+<span class="nc" id="L242">        return false;</span>
+    }
+
+    boolean isFileParameter() {
+<span class="fc" id="L246">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">            if (control.isFileParameter()) {</span>
+<span class="fc" id="L249">                return true;</span>
+            }
+        }
+<span class="fc" id="L252">        return false;</span>
+    }
+
+    /**
+     * is this a disabled parameter
+     *
+     * @return false if one of the controls is not disabled or this is the unknown parameter
+     */
+    boolean isDisabledParameter() {
+<span class="fc" id="L261">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            if (!control.isDisabled()) {</span>
+<span class="fc" id="L264">                return false;</span>
+            }
+        }
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        return !this.isUnknown();</span>
+    }
+
+    /**
+     * is this a read only parameter
+     *
+     * @return false if one of the controls is not read only or this is the unknown parameter
+     */
+    boolean isReadOnlyParameter() {
+<span class="fc" id="L276">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if (!control.isReadOnly()) {</span>
+<span class="fc" id="L279">                return false;</span>
+            }
+        }
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        return !this.isUnknown();</span>
+    }
+
+    /**
+     * is this a hidden parameter?
+     *
+     * @return false if one of the controls is not hidden or this is the unknown parameter
+     */
+    public boolean isHiddenParameter() {
+<span class="fc" id="L291">        FormControl[] controls = getControls();</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">            if (!control.isHidden()) {</span>
+<span class="fc" id="L294">                return false;</span>
+            }
+        }
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        return !this.isUnknown();</span>
+    }
+
+    private RadioGroupFormControl getRadioGroup(WebForm form) {
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        if (_group == null) {</span>
+<span class="fc" id="L302">            _group = new RadioGroupFormControl(form);</span>
+<span class="fc" id="L303">            _controlList.add(_group);</span>
+        }
+<span class="fc" id="L305">        return _group;</span>
+    }
+
+    // ============================= exception class UnusedParameterValueException
+    // ======================================
+
+    /**
+     * This exception is thrown on an attempt to set a parameter to a value not permitted to it by the form.
+     **/
+    public class UnusedParameterValueException extends IllegalRequestParameterException {
+
+        private static final long serialVersionUID = 1L;
+        /**
+         * construct an exception for an unused parameter with the given name and the value that is bad
+         *
+         * @param parameterName
+         * @param badValue
+         */
+<span class="fc" id="L323">        UnusedParameterValueException(String parameterName, String badValue) {</span>
+<span class="fc" id="L324">            _parameterName = parameterName;</span>
+<span class="fc" id="L325">            _badValue = badValue;</span>
+<span class="fc" id="L326">        }</span>
+
+        /**
+         * get the message for this exception
+         *
+         * @return the message
+         */
+        @Override
+        public String getMessage() {
+<span class="fc" id="L335">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L336">            sb.append(&quot;Attempted to assign to parameter '&quot;).append(_parameterName);</span>
+<span class="fc" id="L337">            sb.append(&quot;' the extraneous value '&quot;).append(_badValue).append(&quot;'.&quot;);</span>
+<span class="fc" id="L338">            return sb.toString();</span>
+        }
+
+        private String _parameterName;
+        private String _badValue;
+    }
+
+    // ============================= exception class UnusedUploadFileException ======================================
+
+    /**
+     * This exception is thrown on an attempt to upload more files than permitted by the form.
+     **/
+    class UnusedUploadFileException extends IllegalRequestParameterException {
+
+        private static final long serialVersionUID = 1L;
+        /**
+         * construct a new UnusedUploadFileException exception base on the parameter Name the number of files expected
+         * and supplied
+         *
+         * @param parameterName
+         * @param numFilesExpected
+         * @param numFilesSupplied
+         */
+<span class="fc" id="L361">        UnusedUploadFileException(String parameterName, int numFilesExpected, int numFilesSupplied) {</span>
+<span class="fc" id="L362">            _parameterName = parameterName;</span>
+<span class="fc" id="L363">            _numExpected = numFilesExpected;</span>
+<span class="fc" id="L364">            _numSupplied = numFilesSupplied;</span>
+<span class="fc" id="L365">        }</span>
+
+        /**
+         * get the message for this exception
+         */
+        @Override
+        public String getMessage() {
+<span class="nc" id="L372">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L373">            sb.append(&quot;Attempted to upload &quot;).append(_numSupplied).append(&quot; files using parameter '&quot;)</span>
+<span class="nc" id="L374">            .append(_parameterName);</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">            if (_numExpected == 0) {</span>
+<span class="nc" id="L376">                sb.append(&quot;' which is not a file parameter.&quot;);</span>
+            } else {
+<span class="nc" id="L378">                sb.append(&quot;' which only has room for &quot;).append(_numExpected).append('.');</span>
+            }
+<span class="nc" id="L380">            return sb.toString();</span>
+        }
+
+        private String _parameterName;
+        private int _numExpected;
+        private int _numSupplied;
+    }
+
+    // ============================= exception class IllegalCheckboxParameterException
+    // ======================================
+
+    /**
+     * This exception is thrown on an attempt to set a parameter to a value not permitted to it by the form.
+     **/
+    static class IllegalCheckboxParameterException extends IllegalRequestParameterException {
+
+        private static final long serialVersionUID = 1L;
+<span class="fc" id="L397">        IllegalCheckboxParameterException(String parameterName, String methodName) {</span>
+<span class="fc" id="L398">            _parameterName = parameterName;</span>
+<span class="fc" id="L399">            _methodName = methodName;</span>
+<span class="fc" id="L400">        }</span>
+
+        @Override
+        public String getMessage() {
+<span class="nc" id="L404">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L405">            sb.append(&quot;Attempted to invoke method '&quot;).append(_methodName);</span>
+<span class="nc" id="L406">            sb.append(&quot;' for parameter '&quot;).append(_parameterName).append(&quot;', which is not a unique checkbox control.&quot;);</span>
+<span class="nc" id="L407">            return sb.toString();</span>
+        }
+
+        private String _parameterName;
+        private String _methodName;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

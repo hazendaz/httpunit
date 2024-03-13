@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUnitOptions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpUnitOptions.java</span></div><h1>HttpUnitOptions.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.parsing.HTMLParserFactory;
+import com.meterware.httpunit.parsing.HTMLParserListener;
+import com.meterware.httpunit.scripting.ScriptableDelegate;
+import com.meterware.httpunit.scripting.ScriptingEngineFactory;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
+
+/**
+ * A collection of global options to control HttpUnit's behavior.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dglo@ssec.wisc.edu&quot;&gt;Dave Glowacki&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bx@bigfoot.com&quot;&gt;Benoit Xhenseval&lt;/a&gt;
+ **/
+<span class="nc" id="L40">public abstract class HttpUnitOptions {</span>
+    public static final String ORIGINAL_SCRIPTING_ENGINE_FACTORY = &quot;com.meterware.httpunit.javascript.JavaScriptEngineFactory&quot;;
+    // comment out the scripting engine not to be used by allowing the appropriate number of asterisks in the comment on
+    // the next line (1 or 2)
+    /**/
+    final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
+    /*
+     * / final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
+     */
+
+    /**
+     * Resets all options to their default values.
+     */
+    public static void reset() {
+<span class="fc" id="L54">        _exceptionsOnErrorStatus = true;</span>
+<span class="fc" id="L55">        _parameterValuesValidated = true;</span>
+<span class="fc" id="L56">        _imagesTreatedAsAltText = false;</span>
+<span class="fc" id="L57">        _loggingHttpHeaders = false;</span>
+<span class="fc" id="L58">        _matchesIgnoreCase = true;</span>
+<span class="fc" id="L59">        _checkContentLength = false;</span>
+<span class="fc" id="L60">        _redirectDelay = 0; // TODO move this to ClientProperties</span>
+<span class="fc" id="L61">        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+<span class="fc" id="L62">        _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L63">        _postIncludesCharset = false;</span>
+<span class="fc" id="L64">        _exceptionsThrownOnScriptError = true;</span>
+<span class="fc" id="L65">        _customAttributes = null;</span>
+<span class="fc" id="L66">        _javaScriptOptimizationLevel = -1;</span>
+<span class="fc" id="L67">        _checkHtmlContentType = false;</span>
+<span class="fc" id="L68">        setScriptEngineClassName(DEFAULT_SCRIPT_ENGINE_FACTORY);</span>
+<span class="fc" id="L69">        setScriptingEnabled(true);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Returns true if HttpUnit is accepting and saving cookies. The default is to accept them.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#isAcceptCookies();
+     */
+    @Deprecated
+    public static boolean isAcceptCookies() {
+<span class="nc" id="L79">        return ClientProperties.getDefaultProperties().isAcceptCookies();</span>
+    }
+
+    /**
+     * Specifies whether HttpUnit should accept and send cookies.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#setAcceptCookies();
+     */
+    @Deprecated
+    public static void setAcceptCookies(boolean acceptCookies) {
+<span class="nc" id="L89">        ClientProperties.getDefaultProperties().setAcceptCookies(acceptCookies);</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Returns true if any WebClient created will accept GZIP encoding of responses. The default is to accept GZIP
+     * encoding.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#isAcceptGzip();
+     **/
+    @Deprecated
+    public static boolean isAcceptGzip() {
+<span class="nc" id="L100">        return ClientProperties.getDefaultProperties().isAcceptGzip();</span>
+    }
+
+    /**
+     * Specifies whether a WebClient will be initialized to accept GZIP encoded responses. The default is true.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#setAcceptGzip();
+     */
+    @Deprecated
+    public static void setAcceptGzip(boolean acceptGzip) {
+<span class="nc" id="L110">        ClientProperties.getDefaultProperties().setAcceptGzip(acceptGzip);</span>
+<span class="nc" id="L111">    }</span>
+
+    /**
+     * Resets the default character set to the HTTP default encoding.
+     **/
+    public static void resetDefaultCharacterSet() {
+<span class="nc" id="L117">        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+<span class="nc" id="L118">    }</span>
+
+    /**
+     * Resets the default content type to plain text.
+     **/
+    public static void resetDefaultContentType() {
+<span class="nc" id="L124">        _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Sets the default character set for pages which do not specify one and for requests created without HTML sources.
+     * By default, HttpUnit uses the HTTP default encoding, iso-8859-1.
+     **/
+    public static void setDefaultCharacterSet(String characterSet) {
+<span class="fc" id="L132">        _characterSet = characterSet;</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Returns the character set to be used for pages which do not specify one.
+     **/
+    public static String getDefaultCharacterSet() {
+<span class="fc" id="L139">        return _characterSet;</span>
+    }
+
+    /**
+     * Returns true if HttpUnit will throw an exception when a message is only partially received. The default is to
+     * avoid such checks.
+     */
+    public static boolean isCheckContentLength() {
+<span class="fc" id="L147">        return _checkContentLength;</span>
+    }
+
+    /**
+     * Specifies whether HttpUnit should throw an exception when the content length of a message does not match its
+     * actual received length. Defaults to false.
+     */
+    public static void setCheckContentLength(boolean checkContentLength) {
+<span class="fc" id="L155">        _checkContentLength = checkContentLength;</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Determines whether a normal POST request will include the character set in the content-type header. The default
+     * is to include it; however, some older servlet engines (most notably Tomcat 3.1) get confused when they see it.
+     **/
+    public static void setPostIncludesCharset(boolean postIncludesCharset) {
+<span class="nc" id="L163">        _postIncludesCharset = postIncludesCharset;</span>
+<span class="nc" id="L164">    }</span>
+
+    /**
+     * Returns true if POST requests should include the character set in the content-type header.
+     **/
+    public static boolean isPostIncludesCharset() {
+<span class="fc" id="L170">        return _postIncludesCharset;</span>
+    }
+
+    /**
+     * Sets the default content type for pages which do not specify one.
+     **/
+    public static void setDefaultContentType(String contentType) {
+<span class="nc" id="L177">        _contentType = contentType;</span>
+<span class="nc" id="L178">    }</span>
+
+    /**
+     * Returns the content type to be used for pages which do not specify one.
+     **/
+    public static String getDefaultContentType() {
+<span class="nc" id="L184">        return _contentType;</span>
+    }
+
+    /**
+     * Returns true if parser warnings are enabled.
+     *
+     * @deprecated as of 1.5.2, use HTMLParserFactory#isParserWarningsEnabled
+     **/
+    @Deprecated
+    public static boolean getParserWarningsEnabled() {
+<span class="nc" id="L194">        return HTMLParserFactory.isParserWarningsEnabled();</span>
+    }
+
+    /**
+     * If true, tells the parser to display warning messages. The default is false (warnings are not shown).
+     *
+     * @deprecated as of 1.5.2, use HTMLParserFactory#setParserWarningsEnabled
+     **/
+    @Deprecated
+    public static void setParserWarningsEnabled(boolean enabled) {
+<span class="nc" id="L204">        HTMLParserFactory.setParserWarningsEnabled(enabled);</span>
+<span class="nc" id="L205">    }</span>
+
+    /**
+     * If true, WebClient.getResponse throws an exception when it receives an error status. Defaults to true.
+     **/
+    public static void setExceptionsThrownOnErrorStatus(boolean enabled) {
+<span class="fc" id="L211">        _exceptionsOnErrorStatus = enabled;</span>
+<span class="fc" id="L212">    }</span>
+
+    /**
+     * Returns true if WebClient.getResponse throws exceptions when detected an error status.
+     **/
+    public static boolean getExceptionsThrownOnErrorStatus() {
+<span class="fc" id="L218">        return _exceptionsOnErrorStatus;</span>
+    }
+
+    /**
+     * Returns true if form parameter settings are checked.
+     *
+     * @deprecated as of 1.6, use WebForm#newUnvalidatedRequest() to obtain a request without parameter validation.
+     **/
+    @Deprecated
+    public static boolean getParameterValuesValidated() {
+<span class="fc" id="L228">        return _parameterValuesValidated;</span>
+    }
+
+    /**
+     * If true, tells HttpUnit to throw an exception on any attempt to set a form parameter to a value which could not
+     * be set via the browser. The default is true (parameters are validated).&lt;br&gt;
+     * &lt;b&gt;Note:&lt;/b&gt; this only applies to a WebRequest created after this setting is changed. A request created with this
+     * option disabled will not only not be checked for correctness, its parameter submission order will not be
+     * guaranteed, and changing parameters will not trigger Javascript onChange / onClick events.
+     *
+     * @deprecated as of 1.6, use WebForm#newUnvalidatedRequest() to obtain a request without parameter validation.
+     **/
+    @Deprecated
+    public static void setParameterValuesValidated(boolean validated) {
+<span class="fc" id="L242">        _parameterValuesValidated = validated;</span>
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * Returns true if images are treated as text, using their alt attributes.
+     **/
+    public static boolean getImagesTreatedAsAltText() {
+<span class="fc" id="L249">        return _imagesTreatedAsAltText;</span>
+    }
+
+    /**
+     * If true, tells HttpUnit to treat images with alt attributes as though they were the text value of that attribute
+     * in all searches and displays. The default is false (image text is generally ignored).
+     **/
+    public static void setImagesTreatedAsAltText(boolean asText) {
+<span class="fc" id="L257">        _imagesTreatedAsAltText = asText;</span>
+<span class="fc" id="L258">    }</span>
+
+    /**
+     * If true, text matches in methods such as {@link HTMLSegment#getLinkWith} are case insensitive. The default is
+     * true (matches ignore case).
+     **/
+    public static boolean getMatchesIgnoreCase() {
+<span class="fc" id="L265">        return _matchesIgnoreCase;</span>
+    }
+
+    /**
+     * If true, text matches in methods such as {@link HTMLSegment#getLinkWith} are case insensitive. The default is
+     * true (matches ignore case).
+     **/
+    public static void setMatchesIgnoreCase(boolean ignoreCase) {
+<span class="nc" id="L273">        _matchesIgnoreCase = ignoreCase;</span>
+<span class="nc" id="L274">    }</span>
+
+    /**
+     * Returns true if HTTP headers are to be dumped to system output.
+     **/
+    public static boolean isLoggingHttpHeaders() {
+<span class="fc" id="L280">        return _loggingHttpHeaders;</span>
+    }
+
+    /**
+     * If true, tells HttpUnit to log HTTP headers to system output. The default is false.
+     **/
+    public static void setLoggingHttpHeaders(boolean enabled) {
+<span class="fc" id="L287">        _loggingHttpHeaders = enabled;</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Returns true if HttpUnit throws an exception when attempting to parse as HTML a response whose content type is
+     * not HTML. The default is false (content type is ignored).
+     **/
+    public static boolean isCheckHtmlContentType() {
+<span class="fc" id="L295">        return _checkHtmlContentType;</span>
+    }
+
+    /**
+     * If true, HttpUnit throws an exception when attempting to parse as HTML a response whose content type is not HTML.
+     * The default is false (content type is ignored).
+     **/
+    public static void setCheckHtmlContentType(boolean checkHtmlContentType) {
+<span class="fc" id="L303">        _checkHtmlContentType = checkHtmlContentType;</span>
+<span class="fc" id="L304">    }</span>
+
+    /**
+     * Returns true if HttpUnit should automatically follow page redirect requests (status 3xx). By default, this is
+     * true.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#isAutoRedirect();
+     **/
+    @Deprecated
+    public static boolean getAutoRedirect() {
+<span class="nc" id="L314">        return ClientProperties.getDefaultProperties().isAutoRedirect();</span>
+    }
+
+    /**
+     * Determines whether HttpUnit should automatically follow page redirect requests (status 3xx). By default, this is
+     * true in order to simulate normal browser operation.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#setAutoRedirect();
+     **/
+    @Deprecated
+    public static void setAutoRedirect(boolean autoRedirect) {
+<span class="nc" id="L325">        ClientProperties.getDefaultProperties().setAutoRedirect(autoRedirect);</span>
+<span class="nc" id="L326">    }</span>
+
+    /**
+     * Returns the delay, in milliseconds, before a redirect request is issues.
+     **/
+    public static int getRedirectDelay() {
+<span class="fc" id="L332">        return _redirectDelay;</span>
+    }
+
+    /**
+     * Sets the delay, in milliseconds, before a redirect request is issued. This may be necessary if the server under
+     * some cases where the server performs asynchronous processing which must be completed before the new request can
+     * be handled properly, and is taking advantage of slower processing by most user agents. It almost always indicates
+     * an error in the server design, and therefore the default delay is zero.
+     **/
+    public static void setRedirectDelay(int delayInMilliseconds) {
+<span class="nc" id="L342">        _redirectDelay = delayInMilliseconds;</span>
+<span class="nc" id="L343">    }</span>
+
+    /**
+     * Returns true if HttpUnit should automatically follow page refresh requests. By default, this is false, so that
+     * programs can verify the redirect page presented to users before the browser switches to the new page.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#isAutoRefresh();
+     **/
+    @Deprecated
+    public static boolean getAutoRefresh() {
+<span class="nc" id="L353">        return ClientProperties.getDefaultProperties().isAutoRefresh();</span>
+    }
+
+    /**
+     * Specifies whether HttpUnit should automatically follow page refresh requests. By default, this is false, so that
+     * programs can verify the redirect page presented to users before the browser switches to the new page. Setting
+     * this to true can cause an infinite loop on pages that refresh themselves.
+     *
+     * @deprecated as of 1.5.3, use ClientProperties#setAutoRefresh();
+     **/
+    @Deprecated
+    public static void setAutoRefresh(boolean autoRefresh) {
+<span class="nc" id="L365">        ClientProperties.getDefaultProperties().setAutoRefresh(autoRefresh);</span>
+<span class="nc" id="L366">    }</span>
+
+    /**
+     * Remove an Html error listener.
+     *
+     * @deprecated as of 1.5.2, use HTMLParserfactory#removeHTMLParserListener
+     **/
+    @Deprecated
+    public static void removeHtmlErrorListener(HTMLParserListener el) {
+<span class="nc" id="L375">        HTMLParserFactory.removeHTMLParserListener(el);</span>
+<span class="nc" id="L376">    }</span>
+
+    /**
+     * Add an Html error listener.
+     *
+     * @deprecated as of 1.5.2, use HTMLParserfactory#addHTMLParserListener
+     **/
+    @Deprecated
+    public static void addHtmlErrorListener(HTMLParserListener el) {
+<span class="nc" id="L385">        HTMLParserFactory.addHTMLParserListener(el);</span>
+<span class="nc" id="L386">    }</span>
+
+    /**
+     * Get the list of Html Error Listeners
+     *
+     * @deprecated as of 1.5.2, removed with no replacement
+     **/
+    @Deprecated
+    public static Vector getHtmlErrorListeners() {
+<span class="nc" id="L395">        return null;</span>
+    }
+
+    public static String getScriptEngineClassName() {
+<span class="nc" id="L399">        return _scriptEngineClassName;</span>
+    }
+
+    public static void setScriptEngineClassName(String scriptEngineClassName) {
+<span class="pc bpc" id="L403" title="1 of 4 branches missed.">        if (_scriptEngineClassName == null || !_scriptEngineClassName.equals(scriptEngineClassName)) {</span>
+<span class="fc" id="L404">            _scriptingEngine = null;</span>
+        }
+<span class="fc" id="L406">        _scriptEngineClassName = scriptEngineClassName;</span>
+<span class="fc" id="L407">    }</span>
+
+    public static ScriptingEngineFactory getScriptingEngine() {
+<span class="fc bfc" id="L410" title="All 2 branches covered.">        if (_scriptingEngine == null) {</span>
+            try {
+<span class="fc" id="L412">                Class factoryClass = Class.forName(_scriptEngineClassName);</span>
+<span class="fc" id="L413">                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor().newInstance();</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">                _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="fc" id="L415">                _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);</span>
+<span class="nc" id="L416">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L417">                disableScripting(e, &quot;Unable to find scripting engine factory class &quot;);</span>
+<span class="nc" id="L418">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L419">                disableScripting(e, &quot;Unable to instantiate scripting engine factory class &quot;);</span>
+<span class="nc" id="L420">            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {</span>
+<span class="nc" id="L421">                disableScripting(e, &quot;Unable to create scripting engine factory class &quot;);</span>
+<span class="pc" id="L422">            }</span>
+        }
+<span class="fc" id="L424">        return _scriptingEngine;</span>
+    }
+
+    /**
+     * change the scriptingEnabled flag
+     *
+     * @param scriptingEnabled
+     */
+    public static void setScriptingEnabled(boolean scriptingEnabled) {
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        if (scriptingEnabled != _scriptingEnabled) {</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">            _scriptingEngine = scriptingEnabled ? null : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+        }
+<span class="fc" id="L436">        _scriptingEnabled = scriptingEnabled;</span>
+<span class="fc" id="L437">    }</span>
+
+    public static boolean isScriptingEnabled() {
+<span class="fc" id="L440">        return _scriptingEnabled;</span>
+    }
+
+    /**
+     * Determines whether script errors result in exceptions or warning messages.
+     *
+     * @return the current state
+     */
+    public static boolean setExceptionsThrownOnScriptError(boolean throwExceptions) {
+<span class="fc" id="L449">        boolean current = _exceptionsThrownOnScriptError;</span>
+<span class="fc" id="L450">        _exceptionsThrownOnScriptError = throwExceptions;</span>
+<span class="fc" id="L451">        getScriptingEngine().setThrowExceptionsOnError(throwExceptions);</span>
+<span class="fc" id="L452">        return current;</span>
+    }
+
+    /**
+     * Returns true if script errors cause exceptions to be thrown.
+     */
+    public static boolean getExceptionsThrownOnScriptError() {
+<span class="fc" id="L459">        return _exceptionsThrownOnScriptError;</span>
+    }
+
+    /**
+     * Returns the accumulated script error messages encountered. Error messages are accumulated only if
+     * 'throwExceptionsOnError' is disabled.
+     */
+    public static String[] getScriptErrorMessages() {
+<span class="fc" id="L467">        return getScriptingEngine().getErrorMessages();</span>
+    }
+
+    /**
+     * Clears the accumulated script error messages.
+     */
+    public static void clearScriptErrorMessages() {
+<span class="fc" id="L474">        getScriptingEngine().clearErrorMessages();</span>
+<span class="fc" id="L475">    }</span>
+
+    private static void disableScripting(Exception e, String errorMessage) {
+<span class="nc" id="L478">        System.err.println(errorMessage + _scriptEngineClassName);</span>
+<span class="nc" id="L479">        System.err.println(&quot;&quot; + e);</span>
+<span class="nc" id="L480">        System.err.println(&quot;JavaScript execution disabled&quot;);</span>
+<span class="nc" id="L481">        _scriptingEngine = NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="nc" id="L482">    }</span>
+
+    // --------------------------------- private members --------------------------------------
+
+    private static final String DEFAULT_CONTENT_TYPE = &quot;text/html&quot;;
+
+<span class="fc" id="L488">    private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {</span>
+        @Override
+        public boolean isEnabled() {
+<span class="nc" id="L491">            return false;</span>
+        }
+
+        @Override
+        public void associate(WebResponse response) {
+<span class="fc" id="L496">        }</span>
+
+        @Override
+        public void load(WebResponse response) {
+<span class="fc" id="L500">        }</span>
+
+        @Override
+        public void setThrowExceptionsOnError(boolean throwExceptions) {
+<span class="nc" id="L504">        }</span>
+
+        @Override
+        public boolean isThrowExceptionsOnError() {
+<span class="nc" id="L508">            return false;</span>
+        }
+
+        @Override
+        public String[] getErrorMessages() {
+<span class="nc" id="L513">            return new String[0];</span>
+        }
+
+        @Override
+        public void clearErrorMessages() {
+<span class="nc" id="L518">        }</span>
+
+        @Override
+        public ScriptingHandler createHandler(HTMLElement element) {
+<span class="fc" id="L522">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+        }
+
+        @Override
+        public ScriptingHandler createHandler(WebResponse response) {
+<span class="nc" id="L527">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+        }
+
+        @Override
+        public void handleScriptException(Exception e, String badScript) {
+            // happily ignore and exception
+<span class="nc" id="L533">        }</span>
+    };
+
+    /**
+     * Add the name of a custom attribute that should be supported for form controls.
+     *
+     * @deprecated for new Scripting engine
+     */
+    @Deprecated
+    public static void addCustomAttribute(String attributeName) {
+<span class="pc bpc" id="L543" title="1 of 2 branches missed.">        if (_customAttributes == null) {</span>
+<span class="fc" id="L544">            _customAttributes = new HashSet();</span>
+        }
+<span class="fc" id="L546">        _customAttributes.add(attributeName);</span>
+<span class="fc" id="L547">    }</span>
+
+    /**
+     * Get the Set of custom attribute names to be supported by form controls.
+     *
+     * @deprecated for new scripting engine
+     */
+    @Deprecated
+    static Set getCustomAttributes() {
+<span class="fc" id="L556">        return _customAttributes;</span>
+    }
+
+<span class="fc" id="L559">    private static Set _customAttributes = null;</span>
+
+<span class="fc" id="L561">    private static boolean _exceptionsOnErrorStatus = true;</span>
+
+<span class="fc" id="L563">    private static boolean _parameterValuesValidated = true;</span>
+
+    private static boolean _imagesTreatedAsAltText;
+
+    private static boolean _loggingHttpHeaders;
+
+<span class="fc" id="L569">    private static boolean _matchesIgnoreCase = true;</span>
+
+<span class="fc" id="L571">    private static boolean _postIncludesCharset = false;</span>
+
+<span class="fc" id="L573">    private static boolean _checkContentLength = false;</span>
+
+    private static int _redirectDelay;
+
+<span class="fc" id="L577">    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+
+<span class="fc" id="L579">    private static String _contentType = DEFAULT_CONTENT_TYPE;</span>
+
+    private static String _scriptEngineClassName;
+
+    private static ScriptingEngineFactory _scriptingEngine;
+
+<span class="fc" id="L585">    private static boolean _scriptingEnabled = true;</span>
+
+<span class="fc" id="L587">    private static boolean _exceptionsThrownOnScriptError = true;</span>
+
+<span class="fc" id="L589">    private static int _javaScriptOptimizationLevel = -1;</span>
+
+<span class="fc" id="L591">    private static boolean _checkHtmlContentType = false;</span>
+
+    static {
+<span class="fc" id="L594">        reset();</span>
+
+<span class="fc" id="L596">    }</span>
+
+    /**
+     * getter for Java Script optimization level
+     *
+     * @return the javaScriptOptimizationLevel to be use for running scripts
+     */
+    public static int getJavaScriptOptimizationLevel() {
+<span class="fc" id="L604">        return _javaScriptOptimizationLevel;</span>
+    }
+
+    /**
+     * setter for Java Script optimization level
+     *
+     * @param scriptOptimizationLevel
+     *            the _javaScriptOptimizationLevel to set see rhino documentation for valid values: -2: with
+     *            continuation -1: interpret 0: compile to Java bytecode, don't optimize 1..9: compile to Java bytecode,
+     *            optimize *
+     */
+    public static void setJavaScriptOptimizationLevel(int scriptOptimizationLevel) {
+<span class="nc" id="L616">        _javaScriptOptimizationLevel = scriptOptimizationLevel;</span>
+<span class="nc" id="L617">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

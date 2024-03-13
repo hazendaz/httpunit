@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NodeUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">NodeUtils.java</span></div><h1>NodeUtils.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.parsing.HTMLParserFactory;
+
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Stack;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+/**
+ * Some common utilities for manipulating DOM nodes.
+ **/
+<span class="nc" id="L36">public class NodeUtils {</span>
+
+    /**
+     * get the attribute with the given name from the given node as an int value
+     *
+     * @param node
+     *            - the node to look in
+     * @param attributeName
+     *            - the attribute's name to look for
+     * @param defaultValue
+     *
+     * @return - the value - defaultValue as default
+     */
+    public static int getAttributeValue(Node node, String attributeName, int defaultValue) {
+<span class="fc" id="L50">        NamedNodeMap nnm = node.getAttributes();</span>
+<span class="fc" id="L51">        Node attribute = nnm.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (attribute == null) {</span>
+<span class="fc" id="L53">            return defaultValue;</span>
+        }
+        try {
+<span class="fc" id="L56">            return Integer.parseInt(attribute.getNodeValue());</span>
+<span class="nc" id="L57">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L58">            return defaultValue;</span>
+        }
+    }
+
+    /**
+     * get the attribute with the given name from the given node
+     *
+     * @param node
+     *            - the node to look in
+     * @param attributeName
+     *            - the attribute's name to look for
+     *
+     * @return - the value - &quot;&quot; as default
+     */
+    public static String getNodeAttribute(Node node, String attributeName) {
+<span class="fc" id="L73">        return getNodeAttribute(node, attributeName, &quot;&quot;);</span>
+    }
+
+    /**
+     * get the attribute with the given name from the given node
+     *
+     * @param node
+     *            - the node to look in
+     * @param attributeName
+     *            - the attribute's name to look for
+     * @param defaultValue
+     *
+     * @return - the value - defaultValue as default
+     */
+    public static String getNodeAttribute(Node node, String attributeName, String defaultValue) {
+<span class="fc" id="L88">        NamedNodeMap attributes = node.getAttributes();</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (attributes == null) {</span>
+<span class="fc" id="L90">            return defaultValue;</span>
+        }
+
+<span class="fc" id="L93">        Node attribute = attributes.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        return attribute == null ? defaultValue : attribute.getNodeValue();</span>
+    }
+
+    /**
+     * set the attribute with the given attribute to the given value in the given node
+     *
+     * @param node
+     * @param attributeName
+     *            - the attribute's name to look for
+     * @param value
+     *            - the value to set
+     */
+    static void setNodeAttribute(Node node, String attributeName, String value) {
+<span class="fc" id="L107">        ((Element) node).setAttributeNS(null, attributeName, value);</span>
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * remove the given attribute from the given node based on the attribute's name
+     *
+     * @param node
+     * @param attributeName
+     */
+    static void removeNodeAttribute(Node node, String attributeName) {
+<span class="nc" id="L117">        ((Element) node).removeAttribute(attributeName);</span>
+<span class="nc" id="L118">    }</span>
+
+    /**
+     * check whether the given Attribute in the Node is Present
+     *
+     * @param node
+     *            - the node to check
+     * @param attributeName
+     *            - the attribute name to check
+     *
+     * @return true if the attribute is present
+     */
+    public static boolean isNodeAttributePresent(Node node, final String attributeName) {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        return node.getAttributes().getNamedItem(attributeName) != null;</span>
+    }
+
+    /**
+     * common Node action methods
+     */
+    interface NodeAction {
+        /**
+         * Does appropriate processing on specified element. Will return false if the subtree below the element should
+         * be skipped.
+         */
+        boolean processElement(PreOrderTraversal traversal, Element element);
+
+        /**
+         * Processes a text node.
+         */
+        void processTextNode(PreOrderTraversal traversal, Node textNode);
+    }
+
+    /**
+     * Converts the DOM trees rooted at the specified nodes to text, ignoring any HTML tags.
+     **/
+    public static String asText(NodeList rootNodes) {
+<span class="fc" id="L154">        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L155">        NodeAction action = new NodeAction() {</span>
+            @Override
+            public boolean processElement(PreOrderTraversal traversal, Element node) {
+<span class="fc" id="L158">                String nodeName = node.getNodeName().toLowerCase();</span>
+<span class="pc bpc" id="L159" title="1 of 6 branches missed.">                if (nodeName.equals(&quot;p&quot;) || nodeName.equals(&quot;br&quot;) || nodeName.equalsIgnoreCase(&quot;tr&quot;)) {</span>
+<span class="fc" id="L160">                    sb.append(&quot;\n&quot;);</span>
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">                } else if (nodeName.equals(&quot;td&quot;) || nodeName.equalsIgnoreCase(&quot;th&quot;)) {</span>
+<span class="fc" id="L162">                    sb.append(&quot; | &quot;);</span>
+<span class="fc bfc" id="L163" title="All 4 branches covered.">                } else if (nodeName.equals(&quot;img&quot;) &amp;&amp; HttpUnitOptions.getImagesTreatedAsAltText()) {</span>
+<span class="fc" id="L164">                    sb.append(getNodeAttribute(node, &quot;alt&quot;));</span>
+                }
+<span class="fc" id="L166">                return true;</span>
+            }
+
+            @Override
+            public void processTextNode(PreOrderTraversal traversal, Node textNode) {
+<span class="fc" id="L171">                sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));</span>
+<span class="fc" id="L172">            }</span>
+        };
+<span class="fc" id="L174">        new PreOrderTraversal(rootNodes).perform(action);</span>
+<span class="fc" id="L175">        return sb.toString();</span>
+    }
+
+    static class PreOrderTraversal {
+
+<span class="fc" id="L180">        private Stack _pendingNodes = new Stack();</span>
+<span class="fc" id="L181">        private Stack _traversalContext = new Stack();</span>
+<span class="fc" id="L182">        private static final Object POP_CONTEXT = new Object();</span>
+
+<span class="fc" id="L184">        public PreOrderTraversal(NodeList rootNodes) {</span>
+<span class="fc" id="L185">            pushNodeList(rootNodes);</span>
+<span class="fc" id="L186">        }</span>
+
+<span class="fc" id="L188">        public PreOrderTraversal(Node rootNode) {</span>
+<span class="fc" id="L189">            pushNodeList(rootNode.getLastChild());</span>
+<span class="fc" id="L190">        }</span>
+
+        public void pushBaseContext(Object context) {
+<span class="fc" id="L193">            _traversalContext.push(context);</span>
+<span class="fc" id="L194">        }</span>
+
+        public void pushContext(Object context) {
+<span class="fc" id="L197">            _traversalContext.push(context);</span>
+<span class="fc" id="L198">            _pendingNodes.push(POP_CONTEXT);</span>
+<span class="fc" id="L199">        }</span>
+
+        public Iterator getContexts() {
+<span class="fc" id="L202">            Stack stack = _traversalContext;</span>
+<span class="fc" id="L203">            return getTopDownIterator(stack);</span>
+        }
+
+        public Object getRootContext() {
+<span class="nc" id="L207">            return _traversalContext.firstElement();</span>
+        }
+
+        private Iterator getTopDownIterator(final Stack stack) {
+<span class="fc" id="L211">            return new Iterator() {</span>
+<span class="fc" id="L212">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
+
+                @Override
+                public boolean hasNext() {
+<span class="fc" id="L216">                    return _forwardIterator.hasPrevious();</span>
+                }
+
+                @Override
+                public Object next() {
+<span class="fc" id="L221">                    return _forwardIterator.previous();</span>
+                }
+
+                @Override
+                public void remove() {
+<span class="nc" id="L226">                    _forwardIterator.remove();</span>
+<span class="nc" id="L227">                }</span>
+            };
+        }
+
+        /**
+         * Returns the most recently pushed context which implements the specified class. Will return null if no
+         * matching context is found.
+         */
+        public Object getClosestContext(Class matchingClass) {
+<span class="fc bfc" id="L236" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L237">                Object o = _traversalContext.elementAt(i);</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
+<span class="fc" id="L239">                    return o;</span>
+                }
+            }
+<span class="fc" id="L242">            return null;</span>
+        }
+
+        public void perform(NodeAction action) {
+<span class="fc bfc" id="L246" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
+<span class="fc" id="L247">                final Object object = _pendingNodes.pop();</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
+<span class="fc" id="L249">                    _traversalContext.pop();</span>
+                } else {
+<span class="fc" id="L251">                    Node node = (Node) object;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L253">                        action.processTextNode(this, node);</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L255">                        continue;</span>
+                    } else {
+<span class="fc" id="L257">                        action.processElement(this, (Element) node);</span>
+                    }
+<span class="fc" id="L259">                    pushNodeList(node.getLastChild());</span>
+                }
+<span class="fc" id="L261">            }</span>
+<span class="fc" id="L262">        }</span>
+
+        private void pushNodeList(NodeList nl) {
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">            if (nl != null) {</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L267">                    _pendingNodes.push(nl.item(i));</span>
+                }
+            }
+<span class="fc" id="L270">        }</span>
+
+        private void pushNodeList(Node lastChild) {
+<span class="fc bfc" id="L273" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
+<span class="fc" id="L274">                _pendingNodes.push(node);</span>
+            }
+<span class="fc" id="L276">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

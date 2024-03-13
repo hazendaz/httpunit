@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLEventHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLEventHandler.java</span></div><h1>HTMLEventHandler.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+
+/**
+ * the handler for HTML events
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ */
+class HTMLEventHandler {
+
+    private HTMLElementImpl _baseElement;
+    private String _handlerName;
+
+    private Function _handler;
+
+    /**
+     * create a handler for the given HTML Event
+     *
+     * @param baseElement
+     * @param handlerName
+     */
+<span class="fc" id="L43">    public HTMLEventHandler(HTMLElementImpl baseElement, String handlerName) {</span>
+<span class="fc" id="L44">        _baseElement = baseElement;</span>
+<span class="fc" id="L45">        _handlerName = handlerName;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * set the handler Function for this event Handler
+     *
+     * @param handler
+     */
+    void setHandler(Function handler) {
+<span class="nc" id="L54">        _handler = handler;</span>
+<span class="nc" id="L55">    }</span>
+
+    /**
+     * get the (cached) handler Function for this event Handler on first access compile the function
+     *
+     * @return
+     */
+    Function getHandler() {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (_handler == null) {</span>
+<span class="fc" id="L64">            String attribute = _baseElement.getAttributeWithNoDefault(_handlerName);</span>
+<span class="pc bpc" id="L65" title="1 of 4 branches missed.">            if (attribute != null &amp;&amp; Context.getCurrentContext() != null) {</span>
+<span class="fc" id="L66">                _handler = Context.getCurrentContext().compileFunction(_baseElement,</span>
+<span class="fc" id="L67">                        &quot;function &quot; + AbstractDomComponent.createAnonymousFunctionName() + &quot;() { &quot; + attribute + &quot;}&quot;,</span>
+                        &quot;httpunit&quot;, 0, null);
+            }
+        }
+<span class="fc" id="L71">        return _handler;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

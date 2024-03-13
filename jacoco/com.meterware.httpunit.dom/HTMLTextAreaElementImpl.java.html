@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTextAreaElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTextAreaElementImpl.java</span></div><h1>HTMLTextAreaElementImpl.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+import org.w3c.dom.html.HTMLTextAreaElement;
+
+/**
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L29">public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextAreaElement {</span>
+
+    private static final long serialVersionUID = 1L;
+    private String _value;
+
+    @Override
+    ElementImpl create() {
+<span class="fc" id="L36">        return new HTMLTextAreaElementImpl();</span>
+    }
+
+    /**
+     * simulate blur
+     */
+    @Override
+    public void blur() {
+<span class="nc" id="L44">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L45">    }</span>
+
+    /**
+     * simulate focus;
+     */
+    @Override
+    public void focus() {
+<span class="nc" id="L52">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L53">    }</span>
+
+    @Override
+    public String getAccessKey() {
+<span class="fc" id="L57">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+    }
+
+    @Override
+    public int getCols() {
+<span class="fc" id="L62">        return getIntegerAttribute(&quot;cols&quot;);</span>
+    }
+
+    @Override
+    public String getDefaultValue() {
+<span class="fc" id="L67">        Node node = getFirstChild();</span>
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (node == null) {</span>
+<span class="fc" id="L70">            return &quot;&quot;;</span>
+        }
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (node.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="nc" id="L74">            return null;</span>
+        }
+
+<span class="fc" id="L77">        return node.getNodeValue();</span>
+    }
+
+    @Override
+    public int getRows() {
+<span class="fc" id="L82">        return getIntegerAttribute(&quot;rows&quot;);</span>
+    }
+
+    @Override
+    public void select() {
+<span class="nc" id="L87">    }</span>
+
+    @Override
+    public void setAccessKey(String accessKey) {
+<span class="fc" id="L91">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L92">    }</span>
+
+    @Override
+    public void setCols(int cols) {
+<span class="fc" id="L96">        setAttribute(&quot;cols&quot;, cols);</span>
+<span class="fc" id="L97">    }</span>
+
+    @Override
+    public void setDefaultValue(String defaultValue) {
+<span class="fc" id="L101">        Text textNode = getOwnerDocument().createTextNode(defaultValue);</span>
+<span class="fc" id="L102">        Node child = getFirstChild();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (child == null) {</span>
+<span class="fc" id="L104">            appendChild(textNode);</span>
+        } else {
+<span class="nc" id="L106">            replaceChild(textNode, child);</span>
+        }
+<span class="fc" id="L108">    }</span>
+
+    @Override
+    public void setRows(int rows) {
+<span class="fc" id="L112">        setAttribute(&quot;rows&quot;, rows);</span>
+<span class="fc" id="L113">    }</span>
+
+    @Override
+    public String getValue() {
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        return _value != null ? _value : getDefaultValue();</span>
+    }
+
+    @Override
+    public void setValue(String value) {
+<span class="fc" id="L122">        _value = value;</span>
+<span class="fc" id="L123">    }</span>
+
+    @Override
+    public void reset() {
+<span class="fc" id="L127">        _value = null;</span>
+<span class="fc" id="L128">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

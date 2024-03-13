@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DomBasedScriptingEngineFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">DomBasedScriptingEngineFactory.java</span></div><h1>DomBasedScriptingEngineFactory.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit.dom;
+
+import com.meterware.httpunit.HTMLElement;
+import com.meterware.httpunit.HttpUnitUtils;
+import com.meterware.httpunit.WebResponse;
+import com.meterware.httpunit.javascript.JavaScript;
+import com.meterware.httpunit.javascript.ScriptingEngineImpl;
+import com.meterware.httpunit.scripting.ScriptingEngineFactory;
+import com.meterware.httpunit.scripting.ScriptingHandler;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.EcmaError;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.JavaScriptException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.html.HTMLDocument;
+
+/**
+ * The scripting engine factory which relies directly on the DOM.
+ */
+<span class="nc" id="L41">public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {</span>
+
+<span class="nc" id="L43">    private final static Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);</span>
+
+    /**
+     * check whether this ScriptingEngineFactory is enabled
+     */
+    @Override
+    public boolean isEnabled() {
+        try {
+<span class="nc" id="L51">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
+<span class="nc" id="L52">            return true;</span>
+<span class="nc" id="L53">        } catch (Exception e) {</span>
+<span class="nc" id="L54">            logger.warn(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
+<span class="nc" id="L55">            return false;</span>
+        }
+    }
+
+    /**
+     * associate me with a webresponse
+     *
+     * @param response
+     *            - the WebResponse to use
+     */
+    @Override
+    public void associate(WebResponse response) {
+        try {
+            // JavaScript.run( response ); // can't do this (yet?)
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            HttpUnitUtils.handleException(e);
+            throw new RuntimeException(e.toString());
+        }
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * load
+     *
+     * @param response
+     */
+    @Override
+    public void load(WebResponse response) {
+<span class="nc" id="L84">        Function onLoadEvent = null;</span>
+        try {
+<span class="nc" id="L86">            Context context = Context.enter();</span>
+<span class="nc" id="L87">            context.initStandardObjects(null);</span>
+
+<span class="nc" id="L89">            HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (!(htmlDocument instanceof HTMLDocumentImpl)) {</span>
+<span class="nc" id="L91">                return;</span>
+            }
+
+<span class="nc" id="L94">            HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (body == null) {</span>
+<span class="nc" id="L96">                return;</span>
+            }
+<span class="nc" id="L98">            onLoadEvent = body.getOnloadEvent();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (onLoadEvent == null) {</span>
+<span class="nc" id="L100">                return;</span>
+            }
+<span class="nc" id="L102">            onLoadEvent.call(context, body, body, new Object[0]);</span>
+<span class="nc" id="L103">        } catch (JavaScriptException | EcmaError ee) {</span>
+            // throw ee;
+<span class="nc" id="L105">            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());</span>
+        } finally {
+<span class="nc" id="L107">            Context.exit();</span>
+        }
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * setter for the throwExceptions flag
+     *
+     * @param throwExceptions
+     *            - true if Exceptions should be thrown
+     */
+    @Override
+    public void setThrowExceptionsOnError(boolean throwExceptions) {
+<span class="nc" id="L119">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * getter for the throwExceptions flag
+     *
+     * @return - true if Exceptions should be thrown
+     */
+    @Override
+    public boolean isThrowExceptionsOnError() {
+<span class="nc" id="L129">        return JavaScript.isThrowExceptionsOnError();</span>
+    }
+
+    @Override
+    public String[] getErrorMessages() {
+<span class="nc" id="L134">        return ScriptingEngineImpl.getErrorMessages();</span>
+    }
+
+    @Override
+    public void clearErrorMessages() {
+<span class="nc" id="L139">        ScriptingEngineImpl.clearErrorMessages();</span>
+<span class="nc" id="L140">    }</span>
+
+    @Override
+    public ScriptingHandler createHandler(HTMLElement elementBase) {
+<span class="nc" id="L144">        return (ScriptingHandler) elementBase.getNode();</span>
+    }
+
+    @Override
+    public ScriptingHandler createHandler(WebResponse response) {
+<span class="nc" id="L149">        return response.createDomScriptingHandler();</span>
+    }
+
+    /**
+     * handle Exceptions
+     *
+     * @param e
+     *            - the exception to handle
+     * @param badScript
+     *            - the script that caused the problem
+     */
+    @Override
+    public void handleScriptException(Exception e, String badScript) {
+<span class="nc" id="L162">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
+<span class="nc" id="L163">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

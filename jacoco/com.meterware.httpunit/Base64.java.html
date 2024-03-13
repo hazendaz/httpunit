@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Base64.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">Base64.java</span></div><h1>Base64.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+/**
+ * A utility class to convert to and from base 64 encoding.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="nc" id="L27">public class Base64 {</span>
+
+    private final static String encodingChar = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
+
+    /**
+     * Returns the base 64 encoded equivalent of a supplied string.
+     *
+     * @param source
+     *            the string to encode
+     *
+     * @return the encoded string
+     */
+    public static String encode(String source) {
+<span class="fc" id="L40">        char[] sourceBytes = getPaddedBytes(source);</span>
+<span class="fc" id="L41">        int numGroups = (sourceBytes.length + 2) / 3;</span>
+<span class="fc" id="L42">        char[] targetBytes = new char[4];</span>
+<span class="fc" id="L43">        char[] target = new char[4 * numGroups];</span>
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (int group = 0; group &lt; numGroups; group++) {</span>
+<span class="fc" id="L46">            convert3To4(sourceBytes, group * 3, targetBytes);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            for (int i = 0; i &lt; targetBytes.length; i++) {</span>
+<span class="fc" id="L48">                target[i + 4 * group] = encodingChar.charAt(targetBytes[i]);</span>
+            }
+        }
+
+<span class="fc" id="L52">        int numPadBytes = sourceBytes.length - source.length();</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (int i = target.length - numPadBytes; i &lt; target.length; i++) {</span>
+<span class="fc" id="L55">            target[i] = '=';</span>
+        }
+<span class="fc" id="L57">        return new String(target);</span>
+    }
+
+    private static char[] getPaddedBytes(String source) {
+<span class="fc" id="L61">        char[] converted = source.toCharArray();</span>
+<span class="fc" id="L62">        int requiredLength = 3 * ((converted.length + 2) / 3);</span>
+<span class="fc" id="L63">        char[] result = new char[requiredLength];</span>
+<span class="fc" id="L64">        System.arraycopy(converted, 0, result, 0, converted.length);</span>
+<span class="fc" id="L65">        return result;</span>
+    }
+
+    private static void convert3To4(char[] source, int sourceIndex, char[] target) {
+<span class="fc" id="L69">        target[0] = (char) (source[sourceIndex] &gt;&gt;&gt; 2);</span>
+<span class="fc" id="L70">        target[1] = (char) ((source[sourceIndex] &amp; 0x03) &lt;&lt; 4 | source[sourceIndex + 1] &gt;&gt;&gt; 4);</span>
+<span class="fc" id="L71">        target[2] = (char) ((source[sourceIndex + 1] &amp; 0x0f) &lt;&lt; 2 | source[sourceIndex + 2] &gt;&gt;&gt; 6);</span>
+<span class="fc" id="L72">        target[3] = (char) (source[sourceIndex + 2] &amp; 0x3f);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Returns the plaintext equivalent of a base 64-encoded string.
+     *
+     * @param source
+     *            a base 64 string (which must have a multiple of 4 characters)
+     *
+     * @return the decoded strong
+     */
+    public static String decode(String source) {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (source.length() % 4 != 0) {</span>
+<span class="fc" id="L85">            throw new RuntimeException(&quot;valid Base64 codes have a multiple of 4 characters&quot;);</span>
+        }
+<span class="fc" id="L87">        int numGroups = source.length() / 4;</span>
+<span class="fc bfc" id="L88" title="All 4 branches covered.">        int numExtraBytes = source.endsWith(&quot;==&quot;) ? 2 : source.endsWith(&quot;=&quot;) ? 1 : 0;</span>
+<span class="fc" id="L89">        byte[] targetBytes = new byte[3 * numGroups];</span>
+<span class="fc" id="L90">        byte[] sourceBytes = new byte[4];</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int group = 0; group &lt; numGroups; group++) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            for (int i = 0; i &lt; sourceBytes.length; i++) {</span>
+<span class="fc" id="L93">                sourceBytes[i] = (byte) Math.max(0, encodingChar.indexOf(source.charAt(4 * group + i)));</span>
+            }
+<span class="fc" id="L95">            convert4To3(sourceBytes, targetBytes, group * 3);</span>
+        }
+<span class="fc" id="L97">        return new String(targetBytes, 0, targetBytes.length - numExtraBytes);</span>
+    }
+
+    private static void convert4To3(byte[] source, byte[] target, int targetIndex) {
+<span class="fc" id="L101">        target[targetIndex] = (byte) (source[0] &lt;&lt; 2 | source[1] &gt;&gt;&gt; 4);</span>
+<span class="fc" id="L102">        target[targetIndex + 1] = (byte) ((source[1] &amp; 0x0f) &lt;&lt; 4 | source[2] &gt;&gt;&gt; 2);</span>
+<span class="fc" id="L103">        target[targetIndex + 2] = (byte) ((source[2] &amp; 0x03) &lt;&lt; 6 | source[3]);</span>
+<span class="fc" id="L104">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

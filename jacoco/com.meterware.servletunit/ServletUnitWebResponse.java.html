@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitWebResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitWebResponse.java</span></div><h1>ServletUnitWebResponse.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.servletunit;
+
+import com.meterware.httpunit.FrameSelector;
+import com.meterware.httpunit.WebResponse;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * A response from to a request from the simulated servlet environment.
+ **/
+class ServletUnitWebResponse extends WebResponse {
+
+    /**
+     * Constructs a response object from a servlet response.
+     *
+     * @param frame
+     *            the target frame on which the response will be displayed
+     * @param url
+     *            the url from which the response was received
+     * @param response
+     *            the response populated by the servlet
+     **/
+    ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response,
+            boolean throwExceptionOnError) throws IOException {
+<span class="fc" id="L49">        super(client, frame, url);</span>
+<span class="fc" id="L50">        _response = (ServletUnitHttpResponse) response;</span>
+        /** make sure that any IO exception for HTML received page happens here, not later. **/
+<span class="pc bpc" id="L52" title="3 of 4 branches missed.">        if (getResponseCode() &lt; HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {</span>
+<span class="fc" id="L53">            defineRawInputStream(new ByteArrayInputStream(_response.getContents()));</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">            if (getContentType().startsWith(&quot;text&quot;)) {</span>
+<span class="fc" id="L55">                loadResponseText();</span>
+            }
+        }
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Constructs a response object from a servlet response.
+     *
+     * @param frame
+     *            the target frame on which the response will be displayed
+     * @param url
+     *            the url from which the response was received
+     * @param response
+     *            the response populated by the servlet
+     **/
+    ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response)
+            throws IOException {
+<span class="fc" id="L72">        this(client, frame, url, response, true);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Returns the response code associated with this response.
+     **/
+    @Override
+    public int getResponseCode() {
+<span class="fc" id="L80">        return _response.getStatus();</span>
+    }
+
+    /**
+     * Returns the response message associated with this response.
+     **/
+    @Override
+    public String getResponseMessage() {
+<span class="nc" id="L88">        return _response.getMessage();</span>
+    }
+
+    @Override
+    public String[] getHeaderFieldNames() {
+<span class="nc" id="L93">        return _response.getHeaderFieldNames();</span>
+    }
+
+    /**
+     * Returns the value for the specified header field. If no such field is defined, will return null.
+     **/
+    @Override
+    public String getHeaderField(String fieldName) {
+<span class="fc" id="L101">        return _response.getHeaderField(fieldName);</span>
+    }
+
+    @Override
+    public String[] getHeaderFields(String fieldName) {
+<span class="fc" id="L106">        return _response.getHeaderFields(fieldName);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L111">        return &quot;[ _response = &quot; + _response + &quot;]&quot;;</span>
+    }
+
+    // -------------------------------------------- private members ------------------------------------------------
+
+    private ServletUnitHttpResponse _response;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

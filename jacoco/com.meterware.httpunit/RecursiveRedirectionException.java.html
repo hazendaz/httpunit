@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecursiveRedirectionException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">RecursiveRedirectionException.java</span></div><h1>RecursiveRedirectionException.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import java.net.URL;
+
+/**
+ * Class used to indicate when a request to a resource resulted in an HTTP redirect response that lead to a recursive
+ * loop of redirections
+ *
+ * @author &lt;a href=&quot;mailto:james.abley@gmail.com&quot;&gt;James Abley &lt;/a&gt;
+ */
+public class RecursiveRedirectionException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+    private URL url;
+
+    /**
+     * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL and cause.
+     *
+     * @param url
+     *            the {@link URL}that caused the recursive loop to be detected
+     * @param cause
+     *            the cause (which is saved for later retrieval by the {@link #getCause()}method). (A null value is
+     *            permitted, and indicates that the cause is nonexistent or unknown.)
+     */
+    public RecursiveRedirectionException(URL url, Throwable cause) {
+<span class="nc" id="L45">        super(cause);</span>
+<span class="nc" id="L46">        this.url = url;</span>
+<span class="nc" id="L47">    }</span>
+
+    /**
+     * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL and detail message.
+     *
+     * @param url
+     *            the &lt;code&gt;URL&lt;/code&gt; that caused the recursive loop to be detected. The URL is saved for later
+     *            retrieval by {@link #getURL()}
+     * @param message
+     *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
+     */
+    public RecursiveRedirectionException(URL url, String message) {
+<span class="fc" id="L59">        super(message);</span>
+<span class="fc" id="L60">        this.url = url;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL, detail message and cause.
+     *
+     * @param url
+     *            the &lt;code&gt;URL&lt;/code&gt; that caused the recursive loop to be detected. The URL is saved for later
+     *            retrieval by {@link #getURL()}
+     * @param message
+     *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
+     * @param cause
+     *            the cause (which is saved for later retrieval by the {@link #getCause()}method). (A null value is
+     *            permitted, and indicates that the cause is nonexistent or unknown.)
+     */
+    public RecursiveRedirectionException(URL url, String message, Throwable cause) {
+<span class="nc" id="L76">        super(message, cause);</span>
+<span class="nc" id="L77">        this.url = url;</span>
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * Returns the URL that caused this exception to be thrown.
+     *
+     * @return the &lt;code&gt;URL&lt;/code&gt; that gave rise to this Exception
+     */
+    public URL getURL() {
+<span class="nc" id="L86">        return url;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

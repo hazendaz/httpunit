@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParameterHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">ParameterHolder.java</span></div><h1>ParameterHolder.java</h1><pre class="source lang-java linenums">/*
+ * MIT License
+ *
+ * Copyright 2011-2023 Russell Gold
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions
+ * of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+package com.meterware.httpunit;
+
+import com.meterware.httpunit.protocol.ParameterCollection;
+import com.meterware.httpunit.protocol.ParameterProcessor;
+import com.meterware.httpunit.protocol.UploadFileSpec;
+
+import java.io.IOException;
+
+/**
+ * This abstract class is extended by classes which hold parameters for web requests. Note that it is an abstract class
+ * rather than an interface in order to keep its methods package-local.
+ *
+ * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ **/
+<span class="fc" id="L34">abstract class ParameterHolder implements ParameterCollection {</span>
+
+    /**
+     * Specifies the position at which an image button (if any) was clicked. This default implementation does nothing.
+     **/
+    void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter
+     * processor.\ These parameters always go on the URL, no matter what encoding method is used.
+     **/
+    abstract void recordPredefinedParameters(ParameterProcessor processor) throws IOException;
+
+    /**
+     * Returns an array of all parameter names in this collection.
+     **/
+    abstract String[] getParameterNames();
+
+    /**
+     * Returns the multiple default values of the named parameter.
+     **/
+    abstract String[] getParameterValues(String name);
+
+    /**
+     * Removes a parameter name from this collection.
+     **/
+    abstract void removeParameter(String name);
+
+    /**
+     * Sets the value of a parameter in a web request.
+     **/
+    abstract void setParameter(String name, String value);
+
+    /**
+     * Sets the multiple values of a parameter in a web request.
+     **/
+    abstract void setParameter(String name, String[] values);
+
+    /**
+     * Sets the multiple values of a file upload parameter in a web request.
+     **/
+    abstract void setParameter(String name, UploadFileSpec[] files);
+
+    /**
+     * Returns true if the specified name is that of a file parameter. The default implementation returns false.
+     */
+    boolean isFileParameter(String name) {
+<span class="nc" id="L82">        return false;</span>
+    }
+
+    /**
+     * Returns the character set encoding for the request.
+     **/
+    String getCharacterSet() {
+<span class="nc" id="L89">        return HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+    }
+
+    abstract boolean isSubmitAsMime();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

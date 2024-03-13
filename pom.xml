@@ -54,9 +54,9 @@
   </scm>
     <distributionManagement>
         <site>
-            <id>gh-pages</id>
+            <id>gh-pages-scm</id>
             <name>HttpUnit GitHub Pages</name>
-            <url>github:https://hazendaz.github.io/httpunit/</url>
+            <url>scm:git:https://github.com/hazendaz/httpunit.git</url>
         </site>
     </distributionManagement>
 

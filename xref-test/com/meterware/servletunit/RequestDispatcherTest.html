@@ -33,11 +33,11 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> javax.servlet.RequestDispatcher;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletException;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServlet;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletResponse;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.RequestDispatcher;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletException;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServlet;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletResponse;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.BeforeEach;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
@@ -52,11 +52,11 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">final</strong> String decodeExampleName = <span class="jxr_string">"repository/Default%20repository"</span>;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">final</strong> String errorPageServletName = <span class="jxr_string">"errorPage"</span>;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String REQUEST_URI = <span class="jxr_string">"javax.servlet.include.request_uri"</span>;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String CONTEXT_PATH = <span class="jxr_string">"javax.servlet.include.context_path"</span>;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String SERVLET_PATH = <span class="jxr_string">"javax.servlet.include.servlet_path"</span>;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String PATH_INFO = <span class="jxr_string">"javax.servlet.include.path_info"</span>;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String QUERY_STRING = <span class="jxr_string">"javax.servlet.include.query_string"</span>;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String REQUEST_URI = <span class="jxr_string">"jakarta.servlet.include.request_uri"</span>;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String CONTEXT_PATH = <span class="jxr_string">"jakarta.servlet.include.context_path"</span>;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String SERVLET_PATH = <span class="jxr_string">"jakarta.servlet.include.servlet_path"</span>;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String PATH_INFO = <span class="jxr_string">"jakarta.servlet.include.path_info"</span>;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String QUERY_STRING = <span class="jxr_string">"jakarta.servlet.include.query_string"</span>;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> ServletRunner _runner;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <a name="WebXMLString" href="../../../com/meterware/servletunit/WebXMLString.html#WebXMLString">WebXMLString</a> _wxs;

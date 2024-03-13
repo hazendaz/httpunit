@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DispatchedRequestWrapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">DispatchedRequestWrapper.java</span></div><h1>DispatchedRequestWrapper.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -23,9 +23,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * This class represents a request dispatched via a RequestDispatcherImpl.
@@ -81,11 +81,11 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
-    final static String REQUEST_URI = &quot;javax.servlet.include.request_uri&quot;;
-    final static String CONTEXT_PATH = &quot;javax.servlet.include.context_path&quot;;
-    final static String SERVLET_PATH = &quot;javax.servlet.include.servlet_path&quot;;
-    final static String PATH_INFO = &quot;javax.servlet.include.path_info&quot;;
-    final static String QUERY_STRING = &quot;javax.servlet.include.query_string&quot;;
+    final static String REQUEST_URI = &quot;jakarta.servlet.include.request_uri&quot;;
+    final static String CONTEXT_PATH = &quot;jakarta.servlet.include.context_path&quot;;
+    final static String SERVLET_PATH = &quot;jakarta.servlet.include.servlet_path&quot;;
+    final static String PATH_INFO = &quot;jakarta.servlet.include.path_info&quot;;
+    final static String QUERY_STRING = &quot;jakarta.servlet.include.query_string&quot;;
 
 <span class="fc" id="L90">    private Hashtable _attributes = new Hashtable();</span>
 

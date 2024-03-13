@@ -55,12 +55,12 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> java.util.List;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletConfig;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletContext;
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletException;
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServlet;
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletResponse;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletConfig;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletContext;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletException;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServlet;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletResponse;
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Disabled;
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
@@ -256,7 +256,7 @@
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         assertEquals(<span class="jxr_string">"vanilla"</span>, sr.getContextParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"Context parameter 'icecream'"</span>);
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>         InvocationContext ic = client.newInvocation(<span class="jxr_string">"http://localhost/SimpleServlet"</span>);
 <a class="jxr_linenumber" name="L250" href="#L250">250</a> 
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>         jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>         assertNotNull(sc, <span class="jxr_string">"ServletContext should not be null"</span>);
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         assertEquals(<span class="jxr_string">"vanilla"</span>, sc.getInitParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"ServletContext.getInitParameter()"</span>);
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>         assertEquals(<span class="jxr_string">"waffle"</span>, sc.getInitParameter(<span class="jxr_string">"cone"</span>), <span class="jxr_string">"init parameter: cone"</span>);
@@ -281,7 +281,7 @@
 <a class="jxr_linenumber" name="L273" href="#L273">273</a> 
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         InvocationContext ic = client.newInvocation(<span class="jxr_string">"http://localhost/SimpleServlet"</span>);
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> 
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
 <a class="jxr_linenumber" name="L277" href="#L277">277</a>         assertNotNull(sc, <span class="jxr_string">"ServletContext should not be null"</span>);
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>         assertEquals(<span class="jxr_string">"strawberry"</span>, sc.getInitParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"ServletContext.getInitParameter()"</span>);
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>         assertNull(sc.getInitParameter(<span class="jxr_string">"shoesize"</span>), <span class="jxr_string">"ServletContext.getInitParameter() should be null"</span>);

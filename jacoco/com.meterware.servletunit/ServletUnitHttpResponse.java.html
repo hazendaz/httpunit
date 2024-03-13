@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpResponse.java</span></div><h1>ServletUnitHttpResponse.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -39,10 +39,10 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 <span class="fc" id="L47">class ServletUnitHttpResponse implements HttpServletResponse {</span>
 
@@ -54,37 +54,19 @@ import javax.servlet.http.HttpServletResponse;
 <span class="fc" id="L54">    private static final Hashtable ENCODING_MAP = new Hashtable();</span>
 
     /**
-     * @deprecated Use encodeURL(String url)
-     */
-    @Deprecated
-    @Override
-    public String encodeUrl(String url) {
-<span class="nc" id="L62">        return encodeURL(url);</span>
-    }
-
-    /**
      * Adds the specified cookie to the response. It can be called multiple times to set more than one cookie.
      */
     @Override
     public void addCookie(Cookie cookie) {
-<span class="fc" id="L70">        _cookies.addElement(cookie);</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L61">        _cookies.addElement(cookie);</span>
+<span class="fc" id="L62">    }</span>
 
     /**
      * Checks whether the response message header has a field with the specified name.
      */
     @Override
     public boolean containsHeader(String name) {
-<span class="fc" id="L78">        return _headers.containsKey(name.toUpperCase());</span>
-    }
-
-    /**
-     * @deprecated Use encodeRedirectURL(String url)
-     **/
-    @Deprecated
-    @Override
-    public String encodeRedirectUrl(String url) {
-<span class="nc" id="L87">        return encodeRedirectURL(url);</span>
+<span class="fc" id="L69">        return _headers.containsKey(name.toUpperCase());</span>
     }
 
     /**
@@ -95,7 +77,7 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public String encodeURL(String url) {
-<span class="nc" id="L98">        return url;</span>
+<span class="nc" id="L80">        return url;</span>
     }
 
     /**
@@ -106,7 +88,7 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public String encodeRedirectURL(String url) {
-<span class="nc" id="L109">        return url;</span>
+<span class="nc" id="L91">        return url;</span>
     }
 
     /**
@@ -116,9 +98,9 @@ import javax.servlet.http.HttpServletResponse;
      */
     @Override
     public void sendRedirect(String location) throws IOException {
-<span class="fc" id="L119">        setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);</span>
-<span class="fc" id="L120">        setHeader(&quot;Location&quot;, location);</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L101">        setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);</span>
+<span class="fc" id="L102">        setHeader(&quot;Location&quot;, location);</span>
+<span class="fc" id="L103">    }</span>
 
     /**
      * Sends an error response to the client using the specified status code and descriptive message. If setStatus has
@@ -128,8 +110,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void sendError(int sc) throws IOException {
-<span class="nc" id="L131">        sendError(sc, &quot;&quot;);</span>
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L113">        sendError(sc, &quot;&quot;);</span>
+<span class="nc" id="L114">    }</span>
 
     /**
      * Sends an error response to the client using the specified status code and descriptive message. If setStatus has
@@ -139,15 +121,15 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void sendError(int sc, String msg) throws IOException {
-<span class="nc" id="L142">        setStatus(sc);</span>
-<span class="nc" id="L143">        _statusMessage = msg;</span>
+<span class="nc" id="L124">        setStatus(sc);</span>
+<span class="nc" id="L125">        _statusMessage = msg;</span>
 
-<span class="nc" id="L145">        _writer = null;</span>
-<span class="nc" id="L146">        _servletStream = null;</span>
+<span class="nc" id="L127">        _writer = null;</span>
+<span class="nc" id="L128">        _servletStream = null;</span>
 
-<span class="nc" id="L148">        setContentType(&quot;text/html&quot;);</span>
-<span class="nc" id="L149">        getWriter().println(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;&quot; + msg + &quot;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot; + msg + &quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L150">    }</span>
+<span class="nc" id="L130">        setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L131">        getWriter().println(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;&quot; + msg + &quot;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot; + msg + &quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L132">    }</span>
 
     /**
      * Sets the status code for this response. This method is used to set the return status code when there is no error
@@ -156,19 +138,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setStatus(int sc) {
-<span class="fc" id="L159">        _status = sc;</span>
-<span class="fc" id="L160">    }</span>
-
-    /**
-     * @deprecated As of version 2.1, due to ambiguous meaning of the message parameter. To set a status code use
-     *             setStatus(int), to send an error with a description use sendError(int, String). Sets the status code
-     *             and message for this response.
-     **/
-    @Deprecated
-    @Override
-    public void setStatus(int sc, String msg) {
-<span class="nc" id="L170">        setStatus(sc);</span>
-<span class="nc" id="L171">    }</span>
+<span class="fc" id="L141">        _status = sc;</span>
+<span class="fc" id="L142">    }</span>
 
     /**
      * Adds a field to the response header with the given name and value. If the field had already been set, the new
@@ -177,12 +148,12 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setHeader(String name, String value) {
-<span class="fc" id="L180">        ArrayList values = new ArrayList();</span>
-<span class="fc" id="L181">        values.add(value);</span>
-<span class="fc" id="L182">        synchronized (_headers) {</span>
-<span class="fc" id="L183">            _headers.put(name.toUpperCase(), values);</span>
-<span class="fc" id="L184">        }</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L151">        ArrayList values = new ArrayList();</span>
+<span class="fc" id="L152">        values.add(value);</span>
+<span class="fc" id="L153">        synchronized (_headers) {</span>
+<span class="fc" id="L154">            _headers.put(name.toUpperCase(), values);</span>
+<span class="fc" id="L155">        }</span>
+<span class="fc" id="L156">    }</span>
 
     /**
      * Adds a field to the response header with the given name and integer value. If the field had already been set, the
@@ -191,8 +162,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setIntHeader(String name, int value) {
-<span class="fc" id="L194">        setHeader(name, asHeaderValue(value));</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L165">        setHeader(name, asHeaderValue(value));</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Adds a field to the response header with the given name and integer value. If the field had already been set, the
@@ -200,15 +171,15 @@ import javax.servlet.http.HttpServletResponse;
      * presence of a header before setting its value.
      **/
     public void setLongHeader(String name, long value) {
-<span class="nc" id="L203">        setHeader(name, asHeaderLongValue(value));</span>
-<span class="nc" id="L204">    }</span>
+<span class="nc" id="L174">        setHeader(name, asHeaderLongValue(value));</span>
+<span class="nc" id="L175">    }</span>
 
     private String asHeaderValue(int value) {
-<span class="fc" id="L207">        return Integer.toString(value);</span>
+<span class="fc" id="L178">        return Integer.toString(value);</span>
     }
 
     private String asHeaderLongValue(long value) {
-<span class="nc" id="L211">        return Long.toString(value);</span>
+<span class="nc" id="L182">        return Long.toString(value);</span>
     }
 
     /**
@@ -218,14 +189,14 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setDateHeader(String name, long date) {
-<span class="fc" id="L221">        setHeader(name, asDateHeaderValue(date));</span>
-<span class="fc" id="L222">    }</span>
+<span class="fc" id="L192">        setHeader(name, asDateHeaderValue(date));</span>
+<span class="fc" id="L193">    }</span>
 
     private String asDateHeaderValue(long date) {
-<span class="fc" id="L225">        Date value = new Date(date);</span>
-<span class="fc" id="L226">        SimpleDateFormat formatter = new SimpleDateFormat(RFC1123_DATE_SPEC, Locale.US);</span>
-<span class="fc" id="L227">        formatter.setTimeZone(TimeZone.getTimeZone(&quot;Greenwich Mean Time&quot;));</span>
-<span class="fc" id="L228">        return formatter.format(value);</span>
+<span class="fc" id="L196">        Date value = new Date(date);</span>
+<span class="fc" id="L197">        SimpleDateFormat formatter = new SimpleDateFormat(RFC1123_DATE_SPEC, Locale.US);</span>
+<span class="fc" id="L198">        formatter.setTimeZone(TimeZone.getTimeZone(&quot;Greenwich Mean Time&quot;));</span>
+<span class="fc" id="L199">        return formatter.format(value);</span>
     }
 
     /**
@@ -233,7 +204,7 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public String getCharacterEncoding() {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">        return _encoding == null ? HttpUnitUtils.DEFAULT_CHARACTER_SET : _encoding;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        return _encoding == null ? HttpUnitUtils.DEFAULT_CHARACTER_SET : _encoding;</span>
     }
 
     /**
@@ -245,13 +216,13 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setContentType(String type) {
-<span class="fc" id="L248">        String[] typeAndEncoding = HttpUnitUtils.parseContentTypeHeader(type);</span>
+<span class="fc" id="L219">        String[] typeAndEncoding = HttpUnitUtils.parseContentTypeHeader(type);</span>
 
-<span class="fc" id="L250">        _contentType = typeAndEncoding[0];</span>
-<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (typeAndEncoding[1] != null) {</span>
-<span class="fc" id="L252">            _encoding = typeAndEncoding[1];</span>
+<span class="fc" id="L221">        _contentType = typeAndEncoding[0];</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (typeAndEncoding[1] != null) {</span>
+<span class="fc" id="L223">            _encoding = typeAndEncoding[1];</span>
         }
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Returns a {@link ServletOutputStream} suitable for writing binary data in the response. The servlet engine does
@@ -262,14 +233,14 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (_writer != null) {</span>
-<span class="fc" id="L266">            throw new IllegalStateException(&quot;Tried to create output stream; writer already exists&quot;);</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (_writer != null) {</span>
+<span class="fc" id="L237">            throw new IllegalStateException(&quot;Tried to create output stream; writer already exists&quot;);</span>
         }
-<span class="fc bfc" id="L268" title="All 2 branches covered.">        if (_servletStream == null) {</span>
-<span class="fc" id="L269">            _outputStream = new ByteArrayOutputStream();</span>
-<span class="fc" id="L270">            _servletStream = new ServletUnitOutputStream(_outputStream);</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (_servletStream == null) {</span>
+<span class="fc" id="L240">            _outputStream = new ByteArrayOutputStream();</span>
+<span class="fc" id="L241">            _servletStream = new ServletUnitOutputStream(_outputStream);</span>
         }
-<span class="fc" id="L272">        return _servletStream;</span>
+<span class="fc" id="L243">        return _servletStream;</span>
     }
 
     /**
@@ -290,14 +261,14 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public PrintWriter getWriter() throws UnsupportedEncodingException {
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        if (_servletStream != null) {</span>
-<span class="fc" id="L294">            throw new IllegalStateException(&quot;Tried to create writer; output stream already exists&quot;);</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (_servletStream != null) {</span>
+<span class="fc" id="L265">            throw new IllegalStateException(&quot;Tried to create writer; output stream already exists&quot;);</span>
         }
-<span class="fc bfc" id="L296" title="All 2 branches covered.">        if (_writer == null) {</span>
-<span class="fc" id="L297">            _outputStream = new ByteArrayOutputStream();</span>
-<span class="fc" id="L298">            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, getCharacterEncoding()));</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        if (_writer == null) {</span>
+<span class="fc" id="L268">            _outputStream = new ByteArrayOutputStream();</span>
+<span class="fc" id="L269">            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, getCharacterEncoding()));</span>
         }
-<span class="fc" id="L300">        return _writer;</span>
+<span class="fc" id="L271">        return _writer;</span>
     }
 
     /**
@@ -306,8 +277,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setContentLength(int len) {
-<span class="fc" id="L309">        setIntHeader(&quot;Content-Length&quot;, len);</span>
-<span class="fc" id="L310">    }</span>
+<span class="fc" id="L280">        setIntHeader(&quot;Content-Length&quot;, len);</span>
+<span class="fc" id="L281">    }</span>
 
     // ------------------------------- the following methods are new in JSDK 2.2 ----------------------
 
@@ -317,16 +288,16 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void addHeader(String name, String value) {
-<span class="fc" id="L320">        synchronized (_headers) {</span>
-<span class="fc" id="L321">            String key = name.toUpperCase();</span>
-<span class="fc" id="L322">            ArrayList values = (ArrayList) _headers.get(key);</span>
-<span class="fc bfc" id="L323" title="All 2 branches covered.">            if (values == null) {</span>
-<span class="fc" id="L324">                values = new ArrayList();</span>
-<span class="fc" id="L325">                _headers.put(key, values);</span>
+<span class="fc" id="L291">        synchronized (_headers) {</span>
+<span class="fc" id="L292">            String key = name.toUpperCase();</span>
+<span class="fc" id="L293">            ArrayList values = (ArrayList) _headers.get(key);</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">            if (values == null) {</span>
+<span class="fc" id="L295">                values = new ArrayList();</span>
+<span class="fc" id="L296">                _headers.put(key, values);</span>
             }
-<span class="fc" id="L327">            values.add(value);</span>
-<span class="fc" id="L328">        }</span>
-<span class="fc" id="L329">    }</span>
+<span class="fc" id="L298">            values.add(value);</span>
+<span class="fc" id="L299">        }</span>
+<span class="fc" id="L300">    }</span>
 
     /**
      * Adds a response header with the given name and value. This method allows response headers to have multiple
@@ -334,8 +305,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void addIntHeader(String name, int value) {
-<span class="fc" id="L337">        addHeader(name, asHeaderValue(value));</span>
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L308">        addHeader(name, asHeaderValue(value));</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Adds a response header with the given name and value. This method allows response headers to have multiple
@@ -343,8 +314,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void addDateHeader(String name, long value) {
-<span class="fc" id="L346">        addHeader(name, asDateHeaderValue(value));</span>
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L317">        addHeader(name, asDateHeaderValue(value));</span>
+<span class="fc" id="L318">    }</span>
 
     /**
      * Sets the preferred buffer size for the body of the response. The servlet container will use a buffer at least as
@@ -352,17 +323,17 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setBufferSize(int size) {
-<span class="fc bfc" id="L355" title="All 2 branches covered.">        if (getContents().length != 0) {</span>
-<span class="fc" id="L356">            throw new IllegalStateException(&quot;May not set buffer size after data is written&quot;);</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        if (getContents().length != 0) {</span>
+<span class="fc" id="L327">            throw new IllegalStateException(&quot;May not set buffer size after data is written&quot;);</span>
         }
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L329">    }</span>
 
     /**
      * Returns the actual buffer size used for the response. If no buffering is used, this method returns 0.
      **/
     @Override
     public int getBufferSize() {
-<span class="nc" id="L365">        return 0;</span>
+<span class="nc" id="L336">        return 0;</span>
     }
 
     /**
@@ -371,7 +342,7 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public boolean isCommitted() {
-<span class="fc" id="L374">        return _committed;</span>
+<span class="fc" id="L345">        return _committed;</span>
     }
 
     /**
@@ -380,8 +351,8 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void flushBuffer() throws IOException {
-<span class="fc" id="L383">        _committed = true;</span>
-<span class="fc" id="L384">    }</span>
+<span class="fc" id="L354">        _committed = true;</span>
+<span class="fc" id="L355">    }</span>
 
     /**
      * Clears any data that exists in the buffer as well as the status code and headers. If the response has been
@@ -389,11 +360,11 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void reset() {
-<span class="fc" id="L392">        resetBuffer();</span>
-<span class="fc" id="L393">        _headers.clear();</span>
-<span class="fc" id="L394">        _headersComplete = false;</span>
-<span class="fc" id="L395">        _status = SC_OK;</span>
-<span class="fc" id="L396">    }</span>
+<span class="fc" id="L363">        resetBuffer();</span>
+<span class="fc" id="L364">        _headers.clear();</span>
+<span class="fc" id="L365">        _headersComplete = false;</span>
+<span class="fc" id="L366">        _status = SC_OK;</span>
+<span class="fc" id="L367">    }</span>
 
     /**
      * Sets the locale of the response, setting the headers (including the Content-Type's charset) as appropriate. This
@@ -402,25 +373,25 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public void setLocale(Locale locale) {
-<span class="fc" id="L405">        _locale = locale;</span>
-<span class="pc bpc" id="L406" title="1 of 2 branches missed.">        if (_encoding == null) {</span>
-<span class="pc bpc" id="L407" title="1 of 2 branches missed.">            for (Iterator it = ENCODING_MAP.entrySet().iterator(); it.hasNext();) {</span>
-<span class="fc" id="L408">                Map.Entry entry = (Map.Entry) it.next();</span>
-<span class="fc" id="L409">                String locales = (String) entry.getValue();</span>
-<span class="pc bpc" id="L410" title="1 of 4 branches missed.">                if (locales.indexOf(locale.getLanguage()) &gt;= 0 || locales.indexOf(locale.toString()) &gt;= 0) {</span>
-<span class="fc" id="L411">                    _encoding = (String) entry.getKey();</span>
-<span class="fc" id="L412">                    return;</span>
+<span class="fc" id="L376">        _locale = locale;</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">        if (_encoding == null) {</span>
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">            for (Iterator it = ENCODING_MAP.entrySet().iterator(); it.hasNext();) {</span>
+<span class="fc" id="L379">                Map.Entry entry = (Map.Entry) it.next();</span>
+<span class="fc" id="L380">                String locales = (String) entry.getValue();</span>
+<span class="pc bpc" id="L381" title="1 of 4 branches missed.">                if (locales.indexOf(locale.getLanguage()) &gt;= 0 || locales.indexOf(locale.toString()) &gt;= 0) {</span>
+<span class="fc" id="L382">                    _encoding = (String) entry.getKey();</span>
+<span class="fc" id="L383">                    return;</span>
                 }
-<span class="fc" id="L414">            }</span>
+<span class="fc" id="L385">            }</span>
         }
-<span class="nc" id="L416">    }</span>
+<span class="nc" id="L387">    }</span>
 
     /**
      * Returns the locale assigned to the response.
      **/
     @Override
     public Locale getLocale() {
-<span class="fc" id="L423">        return _locale;</span>
+<span class="fc" id="L394">        return _locale;</span>
     }
 
     // ----------------------------- methods added to ServletResponse in JSDK 2.3 --------------------------------------
@@ -433,13 +404,13 @@ import javax.servlet.http.HttpServletResponse;
      */
     @Override
     public void resetBuffer() {
-<span class="fc bfc" id="L436" title="All 2 branches covered.">        if (_committed) {</span>
-<span class="fc" id="L437">            throw new IllegalStateException(&quot;May not resetBuffer after response is committed&quot;);</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        if (_committed) {</span>
+<span class="fc" id="L408">            throw new IllegalStateException(&quot;May not resetBuffer after response is committed&quot;);</span>
         }
-<span class="fc" id="L439">        _outputStream = null;</span>
-<span class="fc" id="L440">        _servletStream = null;</span>
-<span class="fc" id="L441">        _writer = null;</span>
-<span class="fc" id="L442">    }</span>
+<span class="fc" id="L410">        _outputStream = null;</span>
+<span class="fc" id="L411">        _servletStream = null;</span>
+<span class="fc" id="L412">        _writer = null;</span>
+<span class="fc" id="L413">    }</span>
 
     // ---------------------------------------------- package methods --------------------------------------------------
 
@@ -447,13 +418,13 @@ import javax.servlet.http.HttpServletResponse;
      * Returns the contents of this response.
      **/
     byte[] getContents() {
-<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (_outputStream == null) {</span>
-<span class="fc" id="L451">            return new byte[0];</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">        if (_outputStream == null) {</span>
+<span class="fc" id="L422">            return new byte[0];</span>
         }
-<span class="fc bfc" id="L453" title="All 2 branches covered.">        if (_writer != null) {</span>
-<span class="fc" id="L454">            _writer.flush();</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">        if (_writer != null) {</span>
+<span class="fc" id="L425">            _writer.flush();</span>
         }
-<span class="fc" id="L456">        return _outputStream.toByteArray();</span>
+<span class="fc" id="L427">        return _outputStream.toByteArray();</span>
     }
 
     /**
@@ -461,27 +432,27 @@ import javax.servlet.http.HttpServletResponse;
      **/
     @Override
     public int getStatus() {
-<span class="fc" id="L464">        return _status;</span>
+<span class="fc" id="L435">        return _status;</span>
     }
 
     /**
      * Returns the message associated with this response's status.
      **/
     String getMessage() {
-<span class="nc" id="L471">        return _statusMessage;</span>
+<span class="nc" id="L442">        return _statusMessage;</span>
     }
 
     public String[] getHeaderFieldNames() {
-<span class="nc bnc" id="L475" title="All 2 branches missed.">        if (!_headersComplete) {</span>
-<span class="nc" id="L476">            completeHeaders();</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">        if (!_headersComplete) {</span>
+<span class="nc" id="L447">            completeHeaders();</span>
         }
-<span class="nc" id="L478">        Vector names = new Vector();</span>
-<span class="nc bnc" id="L479" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="nc" id="L480">            names.addElement(e.nextElement());</span>
+<span class="nc" id="L449">        Vector names = new Vector();</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L451">            names.addElement(e.nextElement());</span>
         }
-<span class="nc" id="L482">        String[] result = new String[names.size()];</span>
-<span class="nc" id="L483">        names.copyInto(result);</span>
-<span class="nc" id="L484">        return result;</span>
+<span class="nc" id="L453">        String[] result = new String[names.size()];</span>
+<span class="nc" id="L454">        names.copyInto(result);</span>
+<span class="nc" id="L455">        return result;</span>
     }
 
     /**
@@ -492,11 +463,11 @@ import javax.servlet.http.HttpServletResponse;
      **/
     String getHeaderFieldDirect(String name) {
         ArrayList values;
-<span class="fc" id="L495">        synchronized (_headers) {</span>
-<span class="fc" id="L496">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
-<span class="fc" id="L497">        }</span>
+<span class="fc" id="L466">        synchronized (_headers) {</span>
+<span class="fc" id="L467">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
+<span class="fc" id="L468">        }</span>
 
-<span class="fc bfc" id="L499" title="All 2 branches covered.">        return values == null ? null : (String) values.get(0);</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        return values == null ? null : (String) values.get(0);</span>
     }
 
     /**
@@ -505,10 +476,10 @@ import javax.servlet.http.HttpServletResponse;
      * @param name
      **/
     String getHeaderField(String name) {
-<span class="fc bfc" id="L508" title="All 2 branches covered.">        if (!_headersComplete) {</span>
-<span class="fc" id="L509">            completeHeaders();</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">        if (!_headersComplete) {</span>
+<span class="fc" id="L480">            completeHeaders();</span>
         }
-<span class="fc" id="L511">        return getHeaderFieldDirect(name);</span>
+<span class="fc" id="L482">        return getHeaderFieldDirect(name);</span>
     }
 
     /**
@@ -519,18 +490,18 @@ import javax.servlet.http.HttpServletResponse;
      *            Header name to look up
      */
     public String[] getHeaderFields(String name) {
-<span class="fc bfc" id="L522" title="All 2 branches covered.">        if (!_headersComplete) {</span>
-<span class="fc" id="L523">            completeHeaders();</span>
+<span class="fc bfc" id="L493" title="All 2 branches covered.">        if (!_headersComplete) {</span>
+<span class="fc" id="L494">            completeHeaders();</span>
         }
         ArrayList values;
-<span class="fc" id="L526">        synchronized (_headers) {</span>
-<span class="fc" id="L527">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
-<span class="fc" id="L528">        }</span>
-<span class="fc bfc" id="L529" title="All 2 branches covered.">        if (values == null) {</span>
-<span class="fc" id="L530">            return new String[0];</span>
+<span class="fc" id="L497">        synchronized (_headers) {</span>
+<span class="fc" id="L498">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
+<span class="fc" id="L499">        }</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">        if (values == null) {</span>
+<span class="fc" id="L501">            return new String[0];</span>
         }
-<span class="fc" id="L532">        String results[] = new String[values.size()];</span>
-<span class="fc" id="L533">        return (String[]) values.toArray(results);</span>
+<span class="fc" id="L503">        String results[] = new String[values.size()];</span>
+<span class="fc" id="L504">        return (String[]) values.toArray(results);</span>
 
     }
 
@@ -539,20 +510,20 @@ import javax.servlet.http.HttpServletResponse;
 
     @Override
     public void setCharacterEncoding(String string) {
-<span class="nc" id="L542">        _encoding = string;</span>
-<span class="nc" id="L543">    }</span>
+<span class="nc" id="L513">        _encoding = string;</span>
+<span class="nc" id="L514">    }</span>
 
     /**
      * Returns the content type defined for this response.
      **/
     @Override
     public String getContentType() {
-<span class="nc" id="L550">        return _contentType;</span>
+<span class="nc" id="L521">        return _contentType;</span>
     }
 
     // ------------------------------------------- private members ------------------------------------
 
-<span class="fc" id="L555">    private String _contentType = &quot;text/plain&quot;;</span>
+<span class="fc" id="L526">    private String _contentType = &quot;text/plain&quot;;</span>
 
     private String _encoding;
 
@@ -562,125 +533,125 @@ import javax.servlet.http.HttpServletResponse;
 
     private ByteArrayOutputStream _outputStream;
 
-<span class="fc" id="L565">    private int _status = SC_OK;</span>
+<span class="fc" id="L536">    private int _status = SC_OK;</span>
 
-<span class="fc" id="L567">    private String _statusMessage = &quot;OK&quot;;</span>
+<span class="fc" id="L538">    private String _statusMessage = &quot;OK&quot;;</span>
 
-<span class="fc" id="L569">    private final Hashtable _headers = new Hashtable();</span>
+<span class="fc" id="L540">    private final Hashtable _headers = new Hashtable();</span>
 
     private boolean _headersComplete;
 
-<span class="fc" id="L573">    private Vector _cookies = new Vector();</span>
+<span class="fc" id="L544">    private Vector _cookies = new Vector();</span>
 
     private void completeHeaders() {
-<span class="pc bpc" id="L576" title="1 of 2 branches missed.">        if (_headersComplete) {</span>
-<span class="nc" id="L577">            return;</span>
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">        if (_headersComplete) {</span>
+<span class="nc" id="L548">            return;</span>
         }
-<span class="fc" id="L579">        addCookieHeader();</span>
+<span class="fc" id="L550">        addCookieHeader();</span>
         // BR 3301056 ServletUnit handling Content-Type incorrectly
-<span class="fc bfc" id="L581" title="All 2 branches covered.">        if (getHeaderFieldDirect(&quot;Content-Type&quot;) == null) {</span>
-<span class="fc" id="L582">            setHeader(&quot;Content-Type&quot;, _contentType + &quot;; charset=&quot; + getCharacterEncoding());</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">        if (getHeaderFieldDirect(&quot;Content-Type&quot;) == null) {</span>
+<span class="fc" id="L553">            setHeader(&quot;Content-Type&quot;, _contentType + &quot;; charset=&quot; + getCharacterEncoding());</span>
         }
-<span class="fc" id="L584">        _headersComplete = true;</span>
-<span class="fc" id="L585">    }</span>
+<span class="fc" id="L555">        _headersComplete = true;</span>
+<span class="fc" id="L556">    }</span>
 
     private void addCookieHeader() {
-<span class="fc bfc" id="L588" title="All 2 branches covered.">        if (_cookies.isEmpty()) {</span>
-<span class="fc" id="L589">            return;</span>
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        if (_cookies.isEmpty()) {</span>
+<span class="fc" id="L560">            return;</span>
         }
 
-<span class="fc" id="L592">        StringBuilder sb = new StringBuilder();</span>
-<span class="fc bfc" id="L593" title="All 2 branches covered.">        for (Enumeration e = _cookies.elements(); e.hasMoreElements();) {</span>
-<span class="fc" id="L594">            Cookie cookie = (Cookie) e.nextElement();</span>
-<span class="fc" id="L595">            sb.append(cookie.getName()).append('=').append(cookie.getValue());</span>
-<span class="pc bpc" id="L596" title="1 of 2 branches missed.">            if (cookie.getPath() != null) {</span>
-<span class="fc" id="L597">                sb.append(&quot;;path=&quot;).append(cookie.getPath());</span>
+<span class="fc" id="L563">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L564" title="All 2 branches covered.">        for (Enumeration e = _cookies.elements(); e.hasMoreElements();) {</span>
+<span class="fc" id="L565">            Cookie cookie = (Cookie) e.nextElement();</span>
+<span class="fc" id="L566">            sb.append(cookie.getName()).append('=').append(cookie.getValue());</span>
+<span class="pc bpc" id="L567" title="1 of 2 branches missed.">            if (cookie.getPath() != null) {</span>
+<span class="fc" id="L568">                sb.append(&quot;;path=&quot;).append(cookie.getPath());</span>
             }
-<span class="pc bpc" id="L599" title="1 of 2 branches missed.">            if (cookie.getDomain() != null) {</span>
-<span class="nc" id="L600">                sb.append(&quot;;domain=&quot;).append(cookie.getDomain());</span>
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">            if (cookie.getDomain() != null) {</span>
+<span class="nc" id="L571">                sb.append(&quot;;domain=&quot;).append(cookie.getDomain());</span>
             }
-<span class="pc bpc" id="L602" title="1 of 2 branches missed.">            if (e.hasMoreElements()) {</span>
-<span class="nc" id="L603">                sb.append(',');</span>
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">            if (e.hasMoreElements()) {</span>
+<span class="nc" id="L574">                sb.append(',');</span>
             }
-<span class="fc" id="L605">        }</span>
-<span class="fc" id="L606">        setHeader(&quot;Set-Cookie&quot;, sb.toString());</span>
-<span class="fc" id="L607">    }</span>
+<span class="fc" id="L576">        }</span>
+<span class="fc" id="L577">        setHeader(&quot;Set-Cookie&quot;, sb.toString());</span>
+<span class="fc" id="L578">    }</span>
 
     static {
-<span class="fc" id="L610">        ENCODING_MAP.put(&quot;iso-8859-1&quot;, &quot;ca da de en es fi fr is it nl no pt sv &quot;);</span>
-<span class="fc" id="L611">        ENCODING_MAP.put(&quot;iso-8859-2&quot;, &quot;cs hr hu pl ro sh sk sl sq &quot;);</span>
-<span class="fc" id="L612">        ENCODING_MAP.put(&quot;iso-8859-4&quot;, &quot;et lt lv &quot;);</span>
-<span class="fc" id="L613">        ENCODING_MAP.put(&quot;iso-8859-5&quot;, &quot;be bg mk ru sr uk &quot;);</span>
-<span class="fc" id="L614">        ENCODING_MAP.put(&quot;iso-8859-6&quot;, &quot;ar &quot;);</span>
-<span class="fc" id="L615">        ENCODING_MAP.put(&quot;iso-8859-7&quot;, &quot;el &quot;);</span>
-<span class="fc" id="L616">        ENCODING_MAP.put(&quot;iso-8859-8&quot;, &quot;iw he &quot;);</span>
-<span class="fc" id="L617">        ENCODING_MAP.put(&quot;iso-8859-9&quot;, &quot;tr &quot;);</span>
+<span class="fc" id="L581">        ENCODING_MAP.put(&quot;iso-8859-1&quot;, &quot;ca da de en es fi fr is it nl no pt sv &quot;);</span>
+<span class="fc" id="L582">        ENCODING_MAP.put(&quot;iso-8859-2&quot;, &quot;cs hr hu pl ro sh sk sl sq &quot;);</span>
+<span class="fc" id="L583">        ENCODING_MAP.put(&quot;iso-8859-4&quot;, &quot;et lt lv &quot;);</span>
+<span class="fc" id="L584">        ENCODING_MAP.put(&quot;iso-8859-5&quot;, &quot;be bg mk ru sr uk &quot;);</span>
+<span class="fc" id="L585">        ENCODING_MAP.put(&quot;iso-8859-6&quot;, &quot;ar &quot;);</span>
+<span class="fc" id="L586">        ENCODING_MAP.put(&quot;iso-8859-7&quot;, &quot;el &quot;);</span>
+<span class="fc" id="L587">        ENCODING_MAP.put(&quot;iso-8859-8&quot;, &quot;iw he &quot;);</span>
+<span class="fc" id="L588">        ENCODING_MAP.put(&quot;iso-8859-9&quot;, &quot;tr &quot;);</span>
 
-<span class="fc" id="L619">        ENCODING_MAP.put(&quot;Shift_JIS&quot;, &quot;ja &quot;);</span>
-<span class="fc" id="L620">        ENCODING_MAP.put(&quot;EUC-KR&quot;, &quot;ko &quot;);</span>
-<span class="fc" id="L621">        ENCODING_MAP.put(&quot;TIS-620&quot;, &quot;th &quot;);</span>
-<span class="fc" id="L622">        ENCODING_MAP.put(&quot;GB2312&quot;, &quot;zh &quot;);</span>
-<span class="fc" id="L623">        ENCODING_MAP.put(&quot;Big5&quot;, &quot;zh_TW zh_HK &quot;);</span>
-<span class="fc" id="L624">    }</span>
+<span class="fc" id="L590">        ENCODING_MAP.put(&quot;Shift_JIS&quot;, &quot;ja &quot;);</span>
+<span class="fc" id="L591">        ENCODING_MAP.put(&quot;EUC-KR&quot;, &quot;ko &quot;);</span>
+<span class="fc" id="L592">        ENCODING_MAP.put(&quot;TIS-620&quot;, &quot;th &quot;);</span>
+<span class="fc" id="L593">        ENCODING_MAP.put(&quot;GB2312&quot;, &quot;zh &quot;);</span>
+<span class="fc" id="L594">        ENCODING_MAP.put(&quot;Big5&quot;, &quot;zh_TW zh_HK &quot;);</span>
+<span class="fc" id="L595">    }</span>
 
     @Override
     public String getHeader(String name) {
-<span class="nc" id="L628">        return (String) _headers.get(name.toUpperCase());</span>
+<span class="nc" id="L599">        return (String) _headers.get(name.toUpperCase());</span>
     }
 
     @Override
     public Collection&lt;String&gt; getHeaders(String name) {
         ArrayList values;
-<span class="nc" id="L634">        synchronized (_headers) {</span>
-<span class="nc" id="L635">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
-<span class="nc" id="L636">        }</span>
-<span class="nc bnc" id="L637" title="All 2 branches missed.">        if (values == null) {</span>
-<span class="nc" id="L638">            return Collections.EMPTY_LIST;</span>
+<span class="nc" id="L605">        synchronized (_headers) {</span>
+<span class="nc" id="L606">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
+<span class="nc" id="L607">        }</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">        if (values == null) {</span>
+<span class="nc" id="L609">            return Collections.EMPTY_LIST;</span>
         }
-<span class="nc" id="L640">        return values;</span>
+<span class="nc" id="L611">        return values;</span>
     }
 
     @Override
     public Collection&lt;String&gt; getHeaderNames() {
-<span class="nc bnc" id="L645" title="All 2 branches missed.">        if (!_headersComplete) {</span>
-<span class="nc" id="L646">            completeHeaders();</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">        if (!_headersComplete) {</span>
+<span class="nc" id="L617">            completeHeaders();</span>
         }
-<span class="nc" id="L648">        Vector names = new Vector();</span>
-<span class="nc bnc" id="L649" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="nc" id="L650">            names.addElement(e.nextElement());</span>
+<span class="nc" id="L619">        Vector names = new Vector();</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L621">            names.addElement(e.nextElement());</span>
         }
-<span class="nc" id="L652">        return names;</span>
+<span class="nc" id="L623">        return names;</span>
     }
 
     @Override
     public void setContentLengthLong(long len) {
-<span class="nc" id="L657">        setLongHeader(&quot;Content-Length&quot;, len);</span>
-<span class="nc" id="L658">    }</span>
+<span class="nc" id="L628">        setLongHeader(&quot;Content-Length&quot;, len);</span>
+<span class="nc" id="L629">    }</span>
 
 }
 
 class ServletUnitOutputStream extends ServletOutputStream {
 
-<span class="fc" id="L664">    ServletUnitOutputStream(ByteArrayOutputStream stream) {</span>
-<span class="fc" id="L665">        _stream = stream;</span>
-<span class="fc" id="L666">    }</span>
+<span class="fc" id="L635">    ServletUnitOutputStream(ByteArrayOutputStream stream) {</span>
+<span class="fc" id="L636">        _stream = stream;</span>
+<span class="fc" id="L637">    }</span>
 
     @Override
     public void write(int aByte) throws IOException {
-<span class="fc" id="L670">        _stream.write(aByte);</span>
-<span class="fc" id="L671">    }</span>
+<span class="fc" id="L641">        _stream.write(aByte);</span>
+<span class="fc" id="L642">    }</span>
 
     private ByteArrayOutputStream _stream;
 
     @Override
     public boolean isReady() {
         // TODO Auto-generated method stub
-<span class="nc" id="L678">        return false;</span>
+<span class="nc" id="L649">        return false;</span>
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
         // TODO Auto-generated method stub
-<span class="nc" id="L684">    }</span>
+<span class="nc" id="L655">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

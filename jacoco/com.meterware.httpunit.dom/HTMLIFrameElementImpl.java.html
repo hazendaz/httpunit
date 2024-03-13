@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLIFrameElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLIFrameElementImpl.java</span></div><h1>HTMLIFrameElementImpl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -19,119 +19,125 @@
  */
 package com.meterware.httpunit.dom;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**
  * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  */
-<span class="fc" id="L27">public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {</span>
+<span class="fc" id="L28">public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {</span>
 
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLIFrameElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLIFrameElementImpl();</span>
     }
 
     @Override
     public String getAlign() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L39">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L43">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L44">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L45">    }</span>
 
     @Override
     public String getFrameBorder() {
-<span class="nc" id="L48">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L49">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setFrameBorder(String frameBorder) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L55">    }</span>
 
     @Override
     public String getHeight() {
-<span class="nc" id="L58">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L59">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setHeight(String height) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L65">    }</span>
 
     @Override
     public String getLongDesc() {
-<span class="nc" id="L68">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L69">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setLongDesc(String longDesc) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L75">    }</span>
 
     @Override
     public String getMarginHeight() {
-<span class="nc" id="L78">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L79">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setMarginHeight(String marginHeight) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L85">    }</span>
 
     @Override
     public String getMarginWidth() {
-<span class="nc" id="L88">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L89">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setMarginWidth(String marginWidth) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L95">    }</span>
 
     @Override
     public String getName() {
-<span class="nc" id="L98">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L99">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setName(String name) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L105">    }</span>
 
     @Override
     public String getScrolling() {
-<span class="nc" id="L108">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L109">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setScrolling(String scrolling) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L115">    }</span>
 
     @Override
     public String getSrc() {
-<span class="fc" id="L118">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+<span class="fc" id="L119">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
     }
 
     @Override
     public void setSrc(String src) {
-<span class="fc" id="L123">        setAttribute(&quot;src&quot;, src);</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L124">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L125">    }</span>
 
     @Override
     public String getWidth() {
-<span class="nc" id="L128">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L129">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setWidth(String width) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L134">    }</span>
+<span class="nc" id="L135">    }</span>
 
+    @Override
+    public Document getContentDocument() {
+<span class="nc" id="L139">        return null;</span>
+    }
+    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -46,20 +46,6 @@
         </license>
     </licenses>
 
-    <scm>
-        <url>https://github.com/hazendaz/httpunit</url>
-        <developerConnection>scm:git:https://github.com/hazendaz/httpunit.git</developerConnection>
-        <connection>scm:git:https://github.com/hazendaz/httpunit.git</connection>
-      <tag>HEAD</tag>
-  </scm>
-    <distributionManagement>
-        <site>
-            <id>gh-pages-scm</id>
-            <name>HttpUnit GitHub Pages</name>
-            <url>scm:git:https://github.com/hazendaz/httpunit.git</url>
-        </site>
-    </distributionManagement>
-
     <developers>
         <developer>
             <id>russgold</id>
@@ -81,10 +67,24 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:https://github.com/hazendaz/httpunit.git</connection>
+        <developerConnection>scm:git:https://github.com/hazendaz/httpunit.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/hazendaz/httpunit</url>
+    </scm>
+
     <issueManagement>
         <system>Sourceforge</system>
         <url>http://sourceforge.net/tracker/?group_id=6550&amp;atid=106550</url>
     </issueManagement>
+    <distributionManagement>
+        <site>
+            <id>gh-pages-scm</id>
+            <name>HttpUnit GitHub Pages</name>
+            <url>scm:git:https://github.com/hazendaz/httpunit.git</url>
+        </site>
+    </distributionManagement>
 
     <properties>
         <java.version>11</java.version>

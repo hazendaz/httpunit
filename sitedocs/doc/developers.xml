@@ -3,7 +3,7 @@
 
     MIT License
 
-    Copyright 2011-2023 Russell Gold
+    Copyright 2011-2024 Russell Gold
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -32,7 +32,7 @@
         <developer username="wolfgang_fahl" name="Wolfgang Fahl" email="wf@bitplan.com">
         Wolfgang has been using httpunit for testing his UML2PHP project result since 2004. He started
         being a committer in 2007. Wolfgang has worked with computers since 1979 when he was 16 years old.
-        He studied computer science at RWTH Aachen, germany. He is a specialist in software engineering since 1991  
+        He studied computer science at RWTH Aachen, germany. He is a specialist in software engineering since 1991
         and trainer for software architects since 2003. He learned Java the same year as Russell: 1996.
         Test first software development is a key concept of Wolfgang's work since the same year.
         He is currently founder and CEO of BITPlan GmbH, Düsseldorf.

@@ -27,14 +27,14 @@ import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -132,12 +132,12 @@ public class PostTest {
                 throws IOException, ServletException {
             response.setContentType("text/html");
             response.getWriter()
-            .println("<html>" + "<body>" + "<form action='" + location + resourceName
-                    + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
-                    + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
-                    + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
-                    + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
-                    + "</form>" + "</body>" + "</html>");
+                    .println("<html>" + "<body>" + "<form action='" + location + resourceName
+                            + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
+                            + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
+                            + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
+                            + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
+                            + "</form>" + "</body>" + "</html>");
             /*
              * if (request instanceof Request) ((Request) request).setHandled(true);
              */

@@ -469,8 +469,8 @@ public class SelectionFormControl extends FormControl {
                         msg.append(",");
                     }
                 } // for
-                // now throw a RunTimeException that would
-                // have happened anyways with a less friendly message
+                  // now throw a RunTimeException that would
+                  // have happened anyways with a less friendly message
                 throw new RuntimeException(msg.toString());
             } // if
             return _options[index];

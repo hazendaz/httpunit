@@ -28,6 +28,7 @@ import java.util.Properties;
 public class AuthorizationRequiredException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+
     public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
         Properties props = new Properties();
         props.put("realm", realm);

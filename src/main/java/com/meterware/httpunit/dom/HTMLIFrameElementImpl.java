@@ -138,5 +138,5 @@ public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrame
     public Document getContentDocument() {
         return null;
     }
-    
+
 }

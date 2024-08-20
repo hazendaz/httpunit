@@ -269,8 +269,7 @@ public class Cookie {
      * @return true if there is a fit
      */
     private static boolean acceptHost(String hostPattern, String hostName) {
-        return hostPattern.equalsIgnoreCase(hostName)
-                || hostPattern.startsWith(".") && hostName.endsWith(hostPattern);
+        return hostPattern.equalsIgnoreCase(hostName) || hostPattern.startsWith(".") && hostName.endsWith(hostPattern);
     }
 
 }

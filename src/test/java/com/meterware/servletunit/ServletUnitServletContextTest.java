@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,10 +22,10 @@ package com.meterware.servletunit;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import jakarta.servlet.ServletContext;
+
 import java.io.InputStream;
 import java.net.URL;
-
-import jakarta.servlet.ServletContext;
 
 import org.junit.jupiter.api.Test;
 

@@ -109,7 +109,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
             throw new RuntimeException(e.toString());
-        } 
+        }
 
     }
 
@@ -185,8 +185,8 @@ class ErrorHandler implements XMLErrorHandler {
 
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
-            listener.warning(_url, warningException.getMessage(),
-                    warningException.getLineNumber(), warningException.getColumnNumber());
+            listener.warning(_url, warningException.getMessage(), warningException.getLineNumber(),
+                    warningException.getColumnNumber());
         }
     }
 
@@ -194,8 +194,8 @@ class ErrorHandler implements XMLErrorHandler {
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
-            listener.error(_url, errorException.getMessage(),
-                    errorException.getLineNumber(), errorException.getColumnNumber());
+            listener.error(_url, errorException.getMessage(), errorException.getLineNumber(),
+                    errorException.getColumnNumber());
         }
     }
 

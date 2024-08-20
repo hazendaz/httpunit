@@ -129,8 +129,7 @@ public class HttpHeader {
                     i++;
                 }
                 sb.append('"');
-                if (i < chars.length)
-                {
+                if (i < chars.length) {
                     i++; // skip close quote
                 }
             } else {

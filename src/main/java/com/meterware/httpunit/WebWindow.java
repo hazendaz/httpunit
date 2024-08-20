@@ -378,29 +378,29 @@ public class WebWindow {
         }
 
         switch (response.getResponseCode()) {
-        case HttpURLConnection.HTTP_MOVED_PERM:
-        case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
-            int count = 0;
-            if (null != url) {
-                Integer value = (Integer) _redirects.get(url);
-                if (null != value) {
-                    // We have already been instructed to redirect to that
-                    // location in the course of this attempt to resolve the
-                    // resource
+            case HttpURLConnection.HTTP_MOVED_PERM:
+            case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
+                int count = 0;
+                if (null != url) {
+                    Integer value = (Integer) _redirects.get(url);
+                    if (null != value) {
+                        // We have already been instructed to redirect to that
+                        // location in the course of this attempt to resolve the
+                        // resource
 
-                    count = value.intValue();
+                        count = value.intValue();
 
-                    int maxRedirects = getClient().getClientProperties().getMaxRedirects();
+                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();
 
-                    if (count == maxRedirects) {
-                        throw new RecursiveRedirectionException(url, "Maximum number of redirects exceeded");
+                        if (count == maxRedirects) {
+                            throw new RecursiveRedirectionException(url, "Maximum number of redirects exceeded");
+                        }
                     }
-                }
 
-                count++;
-                _redirects.put(url, Integer.valueOf(count));
-            }
-            break;
+                    count++;
+                    _redirects.put(url, Integer.valueOf(count));
+                }
+                break;
         }
         return redirectLocation != null;
     }

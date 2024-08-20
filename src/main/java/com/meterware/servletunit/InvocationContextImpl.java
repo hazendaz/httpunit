@@ -25,17 +25,17 @@ import com.meterware.httpunit.HttpException;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Dictionary;
-import java.util.Stack;
-
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Dictionary;
+import java.util.Stack;
 
 /**
  * This class represents the context in which a specific servlet request is being made. It contains the objects needed
@@ -217,7 +217,7 @@ class InvocationContextImpl implements InvocationContext {
         }
         if (_application.usesBasicAuthentication()) {
             throw AuthorizationRequiredException
-            .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
+                    .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());
         }
         if (!_application.usesFormAuthentication()) {
             throw new IllegalStateException("Authorization required but no authentication method defined");

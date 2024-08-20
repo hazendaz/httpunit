@@ -152,7 +152,8 @@ public class WebApplet extends HTMLElementBase {
     }
 
     public Applet getApplet()
-            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         if (_applet == null) {
             ClassLoader cl = new URLClassLoader(getClassPath(), null);
             Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();

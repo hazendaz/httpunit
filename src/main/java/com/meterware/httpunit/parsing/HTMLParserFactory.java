@@ -256,9 +256,8 @@ public abstract class HTMLParserFactory {
         try {
             Class.forName(testClassName);
             return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException
-                | ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

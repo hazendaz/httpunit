@@ -19,11 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * An implementation of the standard servlet input stream

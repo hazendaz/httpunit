@@ -26,7 +26,7 @@ import org.w3c.dom.html.HTMLTableCellElement;
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
 public class HTMLTableCellElementImpl extends HTMLElementImpl
-implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
+        implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 
     private static final long serialVersionUID = 1L;
 

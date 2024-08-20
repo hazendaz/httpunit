@@ -22,14 +22,14 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.HttpUnitUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author <a href="russgold@httpunit.org">Russell Gold</a>
@@ -183,7 +183,7 @@ class RequestContext {
 
     private String getMessageEncoding() {
         return _messageEncoding == null ?
-                /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
+        /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
                 HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;
     }
 

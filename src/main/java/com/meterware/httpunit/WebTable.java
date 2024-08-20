@@ -140,22 +140,23 @@ public class WebTable extends HTMLElementBase {
                     }
                     rowHasText[row] = columnHasText[col] = true;
                 } else // gstamp: altered the original code to deal with two issues:
-                    // Firstly only the coordinates of the first spanning cell
-                    // are added to the Map. The old code was using the last
-                    // set of coordinates.
-                    // Secondly I mark the starting coordinates as containing
-                    // text which keeps the next section of code from removing
-                    // the starting row/column.
-                    if (!spanningCells.containsKey(getTableCell(row, col)) && spanningCells.get(getTableCell(row, col)) == null) {
-                        if (!rowHasText[row]) {
-                            numRowsWithText++;
-                        }
-                        if (!columnHasText[col]) {
-                            numColumnsWithText++;
-                        }
-                        rowHasText[row] = columnHasText[col] = true;
-                        spanningCells.put(getTableCell(row, col), new int[] { row, col });
+                       // Firstly only the coordinates of the first spanning cell
+                       // are added to the Map. The old code was using the last
+                       // set of coordinates.
+                       // Secondly I mark the starting coordinates as containing
+                       // text which keeps the next section of code from removing
+                       // the starting row/column.
+                if (!spanningCells.containsKey(getTableCell(row, col))
+                        && spanningCells.get(getTableCell(row, col)) == null) {
+                    if (!rowHasText[row]) {
+                        numRowsWithText++;
                     }
+                    if (!columnHasText[col]) {
+                        numColumnsWithText++;
+                    }
+                    rowHasText[row] = columnHasText[col] = true;
+                    spanningCells.put(getTableCell(row, col), new int[] { row, col });
+                }
             }
         }
 
@@ -166,12 +167,10 @@ public class WebTable extends HTMLElementBase {
             int coords[] = (int[]) spanningCells.get(cell);
             boolean neededInRow = true;
             boolean neededInCol = true;
-            for (int i = coords[0]; neededInRow && i < rowHasText.length
-                    && i < coords[0] + cell.getRowSpan(); i++) {
+            for (int i = coords[0]; neededInRow && i < rowHasText.length && i < coords[0] + cell.getRowSpan(); i++) {
                 neededInRow = !rowHasText[i];
             }
-            for (int j = coords[1]; neededInCol && j < columnHasText.length
-                    && j < coords[1] + cell.getColSpan(); j++) {
+            for (int j = coords[1]; neededInCol && j < columnHasText.length && j < coords[1] + cell.getColSpan(); j++) {
                 neededInCol = !columnHasText[j];
             }
             if (neededInRow) {
@@ -365,9 +364,11 @@ public class WebTable extends HTMLElementBase {
             return false;
         };
 
-        MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getID(), (String) criteria);
+        MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getID(),
+                (String) criteria);
 
-        MATCH_SUMMARY = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(), (String) criteria);
+        MATCH_SUMMARY = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(),
+                (String) criteria);
 
     }
 

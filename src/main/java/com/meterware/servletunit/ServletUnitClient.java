@@ -26,12 +26,12 @@ import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpSession;
 
 import org.xml.sax.SAXException;
 

@@ -19,11 +19,11 @@
  */
 package com.meterware.servletunit;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
+
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * This class acts as a test environment for servlets.

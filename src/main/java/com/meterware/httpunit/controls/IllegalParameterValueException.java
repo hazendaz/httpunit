@@ -32,6 +32,7 @@ import java.util.List;
 public class IllegalParameterValueException extends IllegalRequestParameterException {
 
     private static final long serialVersionUID = 1L;
+
     /**
      * construct an IllegalParameterValueException
      *

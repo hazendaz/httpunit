@@ -1013,6 +1013,7 @@ class FileSubmitFormControl extends FormControl {
 class MissingParameterValueException extends IllegalRequestParameterException {
 
     private static final long serialVersionUID = 1L;
+
     MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {
         _parameterName = parameterName;
         _missingValue = missingValue;

@@ -22,11 +22,11 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
 
-import java.io.IOException;
-
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * An interface which represents the invocation of a servlet.

@@ -52,6 +52,7 @@ public interface ScriptingEngine extends ScriptingHandler {
     /**
      * Clears any cached values, permitting them to be recomputed as needed.
      */
-    @Override void clearCaches();
+    @Override
+    void clearCaches();
 
 }

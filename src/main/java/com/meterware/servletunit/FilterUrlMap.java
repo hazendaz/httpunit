@@ -49,8 +49,7 @@ class FilterUrlMap {
 
 abstract class UrlPatternMatcher {
 
-    static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(),
-            new PathMappingUrlPatternMatcher() };
+    static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(), new PathMappingUrlPatternMatcher() };
 
     static UrlPatternMatcher newPatternMatcher(String pattern) {
         for (UrlPatternMatcher _template : _templates) {

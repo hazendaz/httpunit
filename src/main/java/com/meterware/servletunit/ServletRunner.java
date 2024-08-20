@@ -24,6 +24,8 @@ import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +33,6 @@ import java.net.MalformedURLException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import jakarta.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;

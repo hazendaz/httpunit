@@ -19,6 +19,10 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.*;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,16 +31,11 @@ import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.servlet.*;
-import jakarta.servlet.ServletRegistration.Dynamic;
-import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 /**
  * This class is a private implementation of the ServletContext class.

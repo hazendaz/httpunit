@@ -160,15 +160,19 @@ public class WebLink extends FixedURLWebRequestSource {
     }
 
     static {
-        MATCH_URL_STRING = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(), (String) criteria);
+        MATCH_URL_STRING = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),
+                (String) criteria);
 
-        MATCH_TEXT = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getText(), (String) criteria);
+        MATCH_TEXT = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getText(),
+                (String) criteria);
 
-        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getText(), (String) criteria);
+        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getText(),
+                (String) criteria);
 
         MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);
 
-        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getName(), (String) criteria);
+        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getName(),
+                (String) criteria);
 
     }
 

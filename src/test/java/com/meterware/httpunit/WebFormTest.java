@@ -324,8 +324,8 @@ class WebFormTest extends HttpUnitTest {
 
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">" + "<textarea name='" + fieldName
-                + "' row='10' cols='20'>" + defaultValue + "</textarea>"
-                + "<br><Input type=submit value = \"Submit\">" + "</form>");
+                        + "' row='10' cols='20'>" + defaultValue + "</textarea>"
+                        + "<br><Input type=submit value = \"Submit\">" + "</form>");
 
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
         WebForm form = page.getForms()[0];
@@ -543,8 +543,7 @@ class WebFormTest extends HttpUnitTest {
         defineResource("SayHello?speed=fast&name=me", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
-                return new WebResource(
-                        "<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
+                return new WebResource("<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
             }
         });
 
@@ -568,8 +567,7 @@ class WebFormTest extends HttpUnitTest {
         defineResource("SayHello?speed=fast", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() {
-                return new WebResource(
-                        "<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
+                return new WebResource("<html><body><table><tr><td>Hello, there" + "</td></tr></table></body></html>");
             }
         });
 

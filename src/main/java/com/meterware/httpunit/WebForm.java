@@ -993,7 +993,8 @@ public class WebForm extends WebRequestSource {
     }
 
     static {
-        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebForm) htmlElement).getName(), (String) criteria);
+        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebForm) htmlElement).getName(),
+                (String) criteria);
 
     }
 
@@ -1006,6 +1007,7 @@ public class WebForm extends WebRequestSource {
     class InvalidFileParameterException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct a new InvalidFileParameterException for the given parameter name and value list
          *
@@ -1028,7 +1030,8 @@ public class WebForm extends WebRequestSource {
                 valueList.append(delim).append("'").append(_value).append("'");
                 delim = ", ";
             }
-            return "The file parameter with the name '" + _parameterName + "' must have type File but the string values " + valueList.append(" where supplied").toString();
+            return "The file parameter with the name '" + _parameterName
+                    + "' must have type File but the string values " + valueList.append(" where supplied").toString();
         }
 
         private String _parameterName;
@@ -1085,6 +1088,7 @@ public class WebForm extends WebRequestSource {
     class IllegalSubmitButtonException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         IllegalSubmitButtonException(SubmitButton button) {
             _name = button.getName();
             _value = button.getValue();

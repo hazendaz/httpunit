@@ -19,14 +19,14 @@
  */
 package com.meterware.servletunit;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -170,24 +170,24 @@ public class JUnitServlet extends HttpServlet {
             char[] chars = s.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 switch (chars[i]) {
-                case '&':
-                    result.append("&amp;");
-                    break;
-                case '<':
-                    result.append("&lt;");
-                    break;
-                case '>':
-                    result.append("&gt;");
-                    break;
-                case LF:
-                    if (i > 0 && chars[i - 1] == CR) {
-                        result.append(chars[i]);
+                    case '&':
+                        result.append("&amp;");
                         break;
-                    }
-                case CR:
-                    result.append(getLineBreak());
-                default:
-                    result.append(chars[i]);
+                    case '<':
+                        result.append("&lt;");
+                        break;
+                    case '>':
+                        result.append("&gt;");
+                        break;
+                    case LF:
+                        if (i > 0 && chars[i - 1] == CR) {
+                            result.append(chars[i]);
+                            break;
+                        }
+                    case CR:
+                        result.append(getLineBreak());
+                    default:
+                        result.append(chars[i]);
                 }
             }
             return result.toString();
@@ -350,9 +350,9 @@ public class JUnitServlet extends HttpServlet {
         protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString) {
             writer.println("<?xml version='1.0' encoding='UTF-8' ?>\n" + "<testsuite name=" + asAttribute(testClassName)
-            + " tests=" + asAttribute(testResult.runCount()) + " failures="
-            + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
-            + " time=" + asAttribute(elapsedTimeString) + ">");
+                    + " tests=" + asAttribute(testResult.runCount()) + " failures="
+                    + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
+                    + " time=" + asAttribute(elapsedTimeString) + ">");
         }
 
         private String asAttribute(int value) {

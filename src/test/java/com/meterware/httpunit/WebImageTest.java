@@ -71,7 +71,8 @@ public class WebImageTest extends HttpUnitTest {
         for (int testIndex = 0; testIndex < testCounts.length; testIndex++) {
             int MANY_IMAGES_COUNT = testCounts[testIndex];
             // System.out.println(""+(testIndex+1)+". test many images with "+MANY_IMAGES_COUNT+" image links");
-            StringBuilder html = new StringBuilder("<html><head><title>A page with many images</title></head>\n").append("<body>\n");
+            StringBuilder html = new StringBuilder("<html><head><title>A page with many images</title></head>\n")
+                    .append("<body>\n");
             for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
                 html.append("<img src='image").append(i).append(".gif' alt='image#").append(i).append("'>\n");
             }

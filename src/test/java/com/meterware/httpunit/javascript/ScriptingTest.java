@@ -420,8 +420,8 @@ class ScriptingTest extends AbstractJavaScriptTest {
         defineResource("scripts/saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html",
                 "<html><head><base href='" + getHostPath()
-                + "/scripts/OnCommand.html'><script language='JavaScript' src='saycheese.js'>"
-                + "</script></head>" + "<body onLoad='sayCheese()'></body>");
+                        + "/scripts/OnCommand.html'><script language='JavaScript' src='saycheese.js'>"
+                        + "</script></head>" + "<body onLoad='sayCheese()'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
         assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
@@ -1041,11 +1041,11 @@ class ScriptingTest extends AbstractJavaScriptTest {
                          * "				form.action = 'Target.html';\n"+ "				form.submit(); \n"+
                          * "			} // if\n"+ "		} // if\n"+ "	} // for\n"+
                          */
-                         "} // verify_onBorrar\n" + "</script></head>\n" + "<body>\n"
-                         + "	<form id='someform' name='someform'>"
-                         + "		<input type='button' id='button1' class='button' value='say hi' onclick=\"alert('hi')\"/>"
-                         + "		<input type='button' id='delete' class='button' value='delete' onclick='verify_onBorrar(this.form)'/></form>\n"
-                         + "	</form>\n" + "</body></html>");
+                        "} // verify_onBorrar\n" + "</script></head>\n" + "<body>\n"
+                        + "	<form id='someform' name='someform'>"
+                        + "		<input type='button' id='button1' class='button' value='say hi' onclick=\"alert('hi')\"/>"
+                        + "		<input type='button' id='delete' class='button' value='delete' onclick='verify_onBorrar(this.form)'/></form>\n"
+                        + "	</form>\n" + "</body></html>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/Popup.html");
         Button button1 = (Button) response.getElementWithID("button1");

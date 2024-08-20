@@ -22,11 +22,11 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebRequest;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Dictionary;
-
-import jakarta.servlet.http.HttpSession;
 
 /**
  * An interface for an object which acts as a factory of InvocationContexts

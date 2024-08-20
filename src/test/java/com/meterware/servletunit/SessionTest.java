@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,7 +113,8 @@ class SessionTest extends ServletUnitTest {
 
         session.removeAttribute("third");
         session.setAttribute("first", null);
-        assertMatchingSet("Attribute names", new String[] { "second" }, Collections.list(session.getAttributeNames()).toArray());
+        assertMatchingSet("Attribute names", new String[] { "second" },
+                Collections.list(session.getAttributeNames()).toArray());
     }
 
     @Test

@@ -22,12 +22,12 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * A response from to a request from the simulated servlet environment.

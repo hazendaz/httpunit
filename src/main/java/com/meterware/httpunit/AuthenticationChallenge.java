@@ -64,7 +64,6 @@ class AuthenticationChallenge extends HttpHeader {
             return false;
         }
 
-
         throw createAuthorizationRequiredException();
     }
 

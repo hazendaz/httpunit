@@ -133,6 +133,7 @@ public class Button extends FormControl {
     class DisabledButtonException extends IllegalStateException {
 
         private static final long serialVersionUID = 1L;
+
         DisabledButtonException(Button button) {
             _name = button.getName();
             _value = button.getValue();

@@ -289,7 +289,8 @@ public class CookieJar {
      * @return
      */
     private boolean compareDomain(String domain, String newDomain) {
-        if (domain.charAt(0) == '.' && newDomain.endsWith(domain) || newDomain.charAt(0) == '.' && domain.endsWith(newDomain)) {
+        if (domain.charAt(0) == '.' && newDomain.endsWith(domain)
+                || newDomain.charAt(0) == '.' && domain.endsWith(newDomain)) {
             return true;
         }
 

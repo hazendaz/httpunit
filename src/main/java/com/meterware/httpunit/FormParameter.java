@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -314,6 +314,7 @@ public class FormParameter {
     public class UnusedParameterValueException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct an exception for an unused parameter with the given name and the value that is bad
          *
@@ -350,6 +351,7 @@ public class FormParameter {
     class UnusedUploadFileException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct a new UnusedUploadFileException exception base on the parameter Name the number of files expected
          * and supplied
@@ -371,7 +373,7 @@ public class FormParameter {
         public String getMessage() {
             StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
             sb.append("Attempted to upload ").append(_numSupplied).append(" files using parameter '")
-            .append(_parameterName);
+                    .append(_parameterName);
             if (_numExpected == 0) {
                 sb.append("' which is not a file parameter.");
             } else {
@@ -394,6 +396,7 @@ public class FormParameter {
     static class IllegalCheckboxParameterException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         IllegalCheckboxParameterException(String parameterName, String methodName) {
             _parameterName = parameterName;
             _methodName = methodName;

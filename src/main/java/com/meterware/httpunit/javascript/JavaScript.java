@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -77,7 +77,7 @@ public class JavaScript {
      * Initiates JavaScript execution for the specified web response.
      */
     public static void run(WebResponse response) throws IllegalAccessException, InstantiationException,
-    InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
+            InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
         Context context = Context.enter();
         // suggest bug fix for large java scripts see
         // bug report [ 1216567 ] Exception for large javascripts
@@ -96,7 +96,7 @@ public class JavaScript {
      * Runs the onload event for the specified web response.
      */
     public static void load(WebResponse response) throws EvaluatorException, InstantiationException,
-    IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
+            IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
         if (!(response.getScriptableObject().getScriptEngine() instanceof JavaScriptEngine)) {
             run(response);
         }
@@ -173,8 +173,7 @@ public class JavaScript {
 
         @Override
         public boolean has(String propertyName, Scriptable scriptable) {
-            return super.has(propertyName, scriptable)
-                    || _scriptable != null && _scriptable.get(propertyName) != null;
+            return super.has(propertyName, scriptable) || _scriptable != null && _scriptable.get(propertyName) != null;
         }
 
         @Override

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -856,7 +856,8 @@ public class ParsedHTML {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
                 HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());
-                if (factory == null || !factory.isRecognized(getClientProperties()) || pot.getClosestContext(ContentConcealer.class) != null) {
+                if (factory == null || !factory.isRecognized(getClientProperties())
+                        || pot.getClosestContext(ContentConcealer.class) != null) {
                     return true;
                 }
 
@@ -877,7 +878,8 @@ public class ParsedHTML {
                 }
 
                 Node parent = textNode.getParentNode();
-                if (!parent.getNodeName().equalsIgnoreCase("body") || pot.getClosestContext(ContentConcealer.class) != null) {
+                if (!parent.getNodeName().equalsIgnoreCase("body")
+                        || pot.getClosestContext(ContentConcealer.class) != null) {
                     return;
                 }
                 new HtmlElementRecorder().recordHtmlElement(pot, textNode, newTextBlock(textNode));

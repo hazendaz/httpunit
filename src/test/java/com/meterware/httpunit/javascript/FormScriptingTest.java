@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -117,7 +117,7 @@ public class FormScriptingTest extends HttpUnitTest {
 
         defineWebPage("OnCommand",
                 "<html><head><title>test</title>\n" + "<script type='text/javascript'>\n" + "function show (attr) {\n" +
-                        // TODO make this work
+                // TODO make this work
                         "  var body=document.body;\n" + "  //var body=document.getElementById('thebody');\n"
                         + "  alert(body.getAttribute(attr));\n" + "}\n" + "</script></head>\n"
                         + "<body id='thebody' bgcolor='#FFFFCC' text='#E00000' link='#0000E0' alink='#000080' vlink='#000000'>\n"
@@ -1359,9 +1359,8 @@ public class FormScriptingTest extends HttpUnitTest {
                 + "  <button name=\"html4-default\">html4-default</button>" + "</form>"
                 + "<script language=JavaScript>\n" + "  CheckForm();\n" + "</script>\n");
 
-        String[] expectedTypes = { "text", "textarea", "password", "submit", "reset", "button", "checkbox",
-                "radio", "select-one", "select-multiple", "file", "image", "hidden", "button", "submit", "reset",
-        "submit" };
+        String[] expectedTypes = { "text", "textarea", "password", "submit", "reset", "button", "checkbox", "radio",
+                "select-one", "select-multiple", "file", "image", "hidden", "button", "submit", "reset", "submit" };
 
         final PromptCollector collector = new PromptCollector();
         WebConversation wc = new WebConversation();

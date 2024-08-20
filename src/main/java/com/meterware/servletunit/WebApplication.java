@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -600,7 +600,8 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         synchronized Servlet getServlet()
-                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+                throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException,
+                IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
             if (_servlet == null) {
                 Class servletClass = Class.forName(getClassName());
                 _servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();
@@ -663,7 +664,8 @@ class WebApplication implements SessionListenerDispatcher {
                 throw new ServletException("Did not find filter class: " + getClassName());
             } catch (IllegalAccessException e) {
                 throw new ServletException("Filter class " + getClassName() + " lacks a public no-arg constructor");
-            } catch (InstantiationException | IllegalArgumentException|InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            } catch (InstantiationException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
                 throw new ServletException("Filter class " + getClassName() + " could not be instantiated.");
             } catch (ClassCastException e) {
                 throw new ServletException(
@@ -808,7 +810,8 @@ class WebApplication implements SessionListenerDispatcher {
                 return getConfiguration().getServlet();
             } catch (ClassNotFoundException e) {
                 throw new HttpNotFoundException(_url, e);
-            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException
+                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new HttpInternalErrorException(_url, e);
             }
         }
@@ -844,7 +847,7 @@ class WebApplication implements SessionListenerDispatcher {
             return filters.toArray(new FilterMetaData[filters.size()]);
         }
 
-        private void addFiltersForPath(List<FilterMetaData>filters, String fullServletPath) {
+        private void addFiltersForPath(List<FilterMetaData> filters, String fullServletPath) {
             FilterMetaData[] matches = _filtersPerUrl.getMatchingFilters(fullServletPath);
             Collections.addAll(filters, matches);
         }
@@ -976,8 +979,7 @@ class WebApplication implements SessionListenerDispatcher {
                 return new ServletRequestImpl(url, servletPath, SECURITY_CHECK_MAPPING, _filterMapping,
                         _filterUrlMapping);
             }
-            return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping,
-                    _filterUrlMapping);
+            return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping, _filterUrlMapping);
         }
 
         private String getServletPath(String urlFile) {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -527,7 +527,8 @@ public class WebClientTest extends HttpUnitTest {
                     return new WebResource(getHeader("Authorization"), "text/plain");
                 }
                 WebResource resource = new WebResource("not authorized", HttpURLConnection.HTTP_UNAUTHORIZED);
-                StringBuilder headerStr = new StringBuilder("WWW-Authenticate: Digest realm=\"testrealm@host.com\",").append(" nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";");
+                StringBuilder headerStr = new StringBuilder("WWW-Authenticate: Digest realm=\"testrealm@host.com\",")
+                        .append(" nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\";");
                 if (withOpaque) {
                     headerStr.append(", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
                 }
@@ -538,7 +539,11 @@ public class WebClientTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         wc.setAuthentication("testrealm@host.com", "Mufasa", "CircleOfLife");
         WebResponse wr = wc.getResponse(getHostPath() + "/dir/index.html");
-        StringBuilder expectedHeaderStr = new StringBuilder("Digest username=\"Mufasa\",").append("       realm=\"testrealm@host.com\",").append("       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",").append("       uri=\"/dir/index.html\",").append("       response=\"1949323746fe6a43ef61f9606e7febea\"");
+        StringBuilder expectedHeaderStr = new StringBuilder("Digest username=\"Mufasa\",")
+                .append("       realm=\"testrealm@host.com\",")
+                .append("       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",")
+                .append("       uri=\"/dir/index.html\",")
+                .append("       response=\"1949323746fe6a43ef61f9606e7febea\"");
         if (withOpaque) {
             expectedHeaderStr.append(", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
         }

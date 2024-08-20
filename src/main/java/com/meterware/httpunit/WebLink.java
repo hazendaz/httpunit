@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -160,15 +160,19 @@ public class WebLink extends FixedURLWebRequestSource {
     }
 
     static {
-        MATCH_URL_STRING = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(), (String) criteria);
+        MATCH_URL_STRING = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),
+                (String) criteria);
 
-        MATCH_TEXT = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getText(), (String) criteria);
+        MATCH_TEXT = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getText(),
+                (String) criteria);
 
-        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getText(), (String) criteria);
+        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -> HttpUnitUtils.contains(((WebLink) htmlElement).getText(),
+                (String) criteria);
 
         MATCH_ID = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);
 
-        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getName(), (String) criteria);
+        MATCH_NAME = (htmlElement, criteria) -> HttpUnitUtils.matches(((WebLink) htmlElement).getName(),
+                (String) criteria);
 
     }
 

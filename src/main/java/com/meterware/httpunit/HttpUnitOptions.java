@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -410,14 +410,16 @@ public abstract class HttpUnitOptions {
         if (_scriptingEngine == null) {
             try {
                 Class factoryClass = Class.forName(_scriptEngineClassName);
-                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor().newInstance();
+                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor()
+                        .newInstance();
                 _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;
                 _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);
             } catch (ClassNotFoundException e) {
                 disableScripting(e, "Unable to find scripting engine factory class ");
             } catch (InstantiationException e) {
                 disableScripting(e, "Unable to instantiate scripting engine factory class ");
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
                 disableScripting(e, "Unable to create scripting engine factory class ");
             }
         }

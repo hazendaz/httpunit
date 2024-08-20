@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -269,8 +269,7 @@ public class Cookie {
      * @return true if there is a fit
      */
     private static boolean acceptHost(String hostPattern, String hostName) {
-        return hostPattern.equalsIgnoreCase(hostName)
-                || hostPattern.startsWith(".") && hostName.endsWith(hostPattern);
+        return hostPattern.equalsIgnoreCase(hostName) || hostPattern.startsWith(".") && hostName.endsWith(hostPattern);
     }
 
 }

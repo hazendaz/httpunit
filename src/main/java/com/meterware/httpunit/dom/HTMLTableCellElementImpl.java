@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,7 +26,7 @@ import org.w3c.dom.html.HTMLTableCellElement;
  * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
  */
 public class HTMLTableCellElementImpl extends HTMLElementImpl
-implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
+        implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 
     private static final long serialVersionUID = 1L;
 

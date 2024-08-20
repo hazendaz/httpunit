@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -109,7 +109,7 @@ class WebXMLString {
             Map.Entry entry = (Map.Entry) i.next();
             result.append("  <context-param>\n    <param-name>").append(entry.getKey());
             result.append("</param-name>\n    <param-value>").append(entry.getValue())
-            .append("</param-value>\n  </context-param>\n");
+                    .append("</param-value>\n  </context-param>\n");
         }
         for (int i = 0; i < _filters.size(); i++) {
             Object name = _filterNames.get(i);
@@ -120,7 +120,7 @@ class WebXMLString {
         }
         for (int i = 0; i < _filters.size(); i++) {
             result.append("  <filter-mapping>\n    <filter-name>").append(_filterNames.get(i))
-            .append("</filter-name>\n");
+                    .append("</filter-name>\n");
             result.append("    ").append(_filterMappings.get(_filterNames.get(i))).append("\n  </filter-mapping>\n");
         }
         for (Object _listener : _listeners) {
@@ -132,16 +132,16 @@ class WebXMLString {
             Object name = _servletNames.get(i);
             result.append("  <servlet>\n    <servlet-name>").append(name).append("</servlet-name>\n");
             result.append("    <servlet-class>").append(((Class) _servlets.get(i)).getName())
-            .append("</servlet-class>\n");
+                    .append("</servlet-class>\n");
             appendParams(result, "init-param", (Hashtable) _initParams.get(name));
             appendLoadOnStartup(result, _loadOnStartup.get(name));
             result.append("  </servlet>\n");
         }
         for (int i = _mappings.size() - 1; i >= 0; i--) {
             result.append("  <servlet-mapping>\n    <servlet-name>").append(_servletNames.get(i))
-            .append("</servlet-name>\n");
+                    .append("</servlet-name>\n");
             result.append("    <url-pattern>").append(_mappings.get(i))
-            .append("</url-pattern>\n  </servlet-mapping>\n");
+                    .append("</url-pattern>\n  </servlet-mapping>\n");
         }
         for (Enumeration e = _resources.elements(); e.hasMoreElements();) {
             result.append(((WebResourceSpec) e.nextElement()).asText());
@@ -171,7 +171,7 @@ class WebXMLString {
             Map.Entry entry = (Map.Entry) it.next();
             result.append("    <").append(tagName).append(">\n      <param-name>").append(entry.getKey());
             result.append("</param-name>\n      <param-value>").append(entry.getValue())
-            .append("</param-value>\n    </");
+                    .append("</param-value>\n    </");
             result.append(tagName).append(">\n");
         }
     }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -930,8 +930,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
                 return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;
             }
             if (propertyName.equalsIgnoreCase("closed")) {
-                return getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed() ? Boolean.TRUE
-                        : Boolean.FALSE;
+                return getFrameName().equals(WebRequest.TOP_FRAME) && _window.isClosed() ? Boolean.TRUE : Boolean.FALSE;
             }
             try {
                 return getSubframeContents(propertyName).getScriptableObject();
@@ -1217,7 +1216,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             try {
                 Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);
             } catch (InterruptedException e) {
-            /* do nothing */ }
+                /* do nothing */ }
             available = inputStream.available();
         } while (available == 0 && timeLeft > 0);
         return available;

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -71,7 +71,8 @@ public class WebImageTest extends HttpUnitTest {
         for (int testIndex = 0; testIndex < testCounts.length; testIndex++) {
             int MANY_IMAGES_COUNT = testCounts[testIndex];
             // System.out.println(""+(testIndex+1)+". test many images with "+MANY_IMAGES_COUNT+" image links");
-            StringBuilder html = new StringBuilder("<html><head><title>A page with many images</title></head>\n").append("<body>\n");
+            StringBuilder html = new StringBuilder("<html><head><title>A page with many images</title></head>\n")
+                    .append("<body>\n");
             for (int i = 0; i < MANY_IMAGES_COUNT; i++) {
                 html.append("<img src='image").append(i).append(".gif' alt='image#").append(i).append("'>\n");
             }

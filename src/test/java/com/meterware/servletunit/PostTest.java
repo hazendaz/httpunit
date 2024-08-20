@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -132,12 +132,12 @@ public class PostTest {
                 throws IOException, ServletException {
             response.setContentType("text/html");
             response.getWriter()
-            .println("<html>" + "<body>" + "<form action='" + location + resourceName
-                    + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
-                    + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
-                    + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
-                    + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
-                    + "</form>" + "</body>" + "</html>");
+                    .println("<html>" + "<body>" + "<form action='" + location + resourceName
+                            + "' method='post' id='bug'>" + "<input name='handle'/>" + "<input name='brainz'/>"
+                            + "</form>" + "<form id='multipart-bug' method='post' action='" + location + resourceName
+                            + "' enctype='multipart/form-data'>" + "<input name='empty' value=''>"
+                            + "<input name='notempty' value='1'>" + "<textarea name='empty_textarea'></textarea>"
+                            + "</form>" + "</body>" + "</html>");
             /*
              * if (request instanceof Request) ((Request) request).setHandled(true);
              */

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -63,7 +63,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
     protected HTMLOptionElement createOption(String value, String text, boolean selected) {
         HTMLOptionElement optionElement = (HTMLOptionElement) createElement("option",
                 selected ? new String[][] { { "value", value }, { "selected", "true" } }
-        : new String[][] { { "value", value } });
+                        : new String[][] { { "value", value } });
         optionElement.appendChild(_htmlDocument.createTextNode(text));
         return optionElement;
     }
@@ -160,7 +160,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
         int index;
         while ((index = propertyName.indexOf('-')) >= 0) {
             propertyName = propertyName.substring(0, index) + Character.toUpperCase(propertyName.charAt(index + 1))
-            + propertyName.substring(index + 2);
+                    + propertyName.substring(index + 2);
         }
         if (element instanceof AttributeNameAdjusted) {
             propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName(propertyName);

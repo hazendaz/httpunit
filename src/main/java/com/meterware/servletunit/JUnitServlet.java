@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -170,24 +170,24 @@ public class JUnitServlet extends HttpServlet {
             char[] chars = s.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 switch (chars[i]) {
-                case '&':
-                    result.append("&amp;");
-                    break;
-                case '<':
-                    result.append("&lt;");
-                    break;
-                case '>':
-                    result.append("&gt;");
-                    break;
-                case LF:
-                    if (i > 0 && chars[i - 1] == CR) {
-                        result.append(chars[i]);
+                    case '&':
+                        result.append("&amp;");
                         break;
-                    }
-                case CR:
-                    result.append(getLineBreak());
-                default:
-                    result.append(chars[i]);
+                    case '<':
+                        result.append("&lt;");
+                        break;
+                    case '>':
+                        result.append("&gt;");
+                        break;
+                    case LF:
+                        if (i > 0 && chars[i - 1] == CR) {
+                            result.append(chars[i]);
+                            break;
+                        }
+                    case CR:
+                        result.append(getLineBreak());
+                    default:
+                        result.append(chars[i]);
                 }
             }
             return result.toString();
@@ -350,9 +350,9 @@ public class JUnitServlet extends HttpServlet {
         protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString) {
             writer.println("<?xml version='1.0' encoding='UTF-8' ?>\n" + "<testsuite name=" + asAttribute(testClassName)
-            + " tests=" + asAttribute(testResult.runCount()) + " failures="
-            + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
-            + " time=" + asAttribute(elapsedTimeString) + ">");
+                    + " tests=" + asAttribute(testResult.runCount()) + " failures="
+                    + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
+                    + " time=" + asAttribute(elapsedTimeString) + ">");
         }
 
         private String asAttribute(int value) {

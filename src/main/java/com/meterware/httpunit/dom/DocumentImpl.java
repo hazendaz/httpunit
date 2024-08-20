@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -145,21 +145,21 @@ public class DocumentImpl extends NodeImpl implements Document {
     @Override
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
         switch (importedNode.getNodeType()) {
-        case Node.ATTRIBUTE_NODE:
-            return AttrImpl.importNode(this, (Attr) importedNode);
-        case Node.CDATA_SECTION_NODE:
-            return CDATASectionImpl.importNode(this, (CDATASection) importedNode);
-        case Node.COMMENT_NODE:
-            return CommentImpl.importNode(this, (Comment) importedNode);
-        case Node.ELEMENT_NODE:
-            return ElementImpl.importNode(this, (Element) importedNode, deep);
-        case Node.PROCESSING_INSTRUCTION_NODE:
-            return ProcessingInstructionImpl.importNode(this, (ProcessingInstruction) importedNode);
-        case Node.TEXT_NODE:
-            return TextImpl.importNode(this, (Text) importedNode);
-        default:
-            throw new DOMException(DOMException.NOT_SUPPORTED_ERR,
-                    "Cannot import node type " + importedNode.getNodeType());
+            case Node.ATTRIBUTE_NODE:
+                return AttrImpl.importNode(this, (Attr) importedNode);
+            case Node.CDATA_SECTION_NODE:
+                return CDATASectionImpl.importNode(this, (CDATASection) importedNode);
+            case Node.COMMENT_NODE:
+                return CommentImpl.importNode(this, (Comment) importedNode);
+            case Node.ELEMENT_NODE:
+                return ElementImpl.importNode(this, (Element) importedNode, deep);
+            case Node.PROCESSING_INSTRUCTION_NODE:
+                return ProcessingInstructionImpl.importNode(this, (ProcessingInstruction) importedNode);
+            case Node.TEXT_NODE:
+                return TextImpl.importNode(this, (Text) importedNode);
+            default:
+                throw new DOMException(DOMException.NOT_SUPPORTED_ERR,
+                        "Cannot import node type " + importedNode.getNodeType());
         }
     }
 

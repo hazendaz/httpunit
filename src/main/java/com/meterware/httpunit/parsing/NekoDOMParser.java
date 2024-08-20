@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -109,7 +109,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
             throw new RuntimeException(e.toString());
-        } 
+        }
 
     }
 
@@ -185,8 +185,8 @@ class ErrorHandler implements XMLErrorHandler {
 
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
-            listener.warning(_url, warningException.getMessage(),
-                    warningException.getLineNumber(), warningException.getColumnNumber());
+            listener.warning(_url, warningException.getMessage(), warningException.getLineNumber(),
+                    warningException.getColumnNumber());
         }
     }
 
@@ -194,8 +194,8 @@ class ErrorHandler implements XMLErrorHandler {
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
-            listener.error(_url, errorException.getMessage(),
-                    errorException.getLineNumber(), errorException.getColumnNumber());
+            listener.error(_url, errorException.getMessage(), errorException.getLineNumber(),
+                    errorException.getColumnNumber());
         }
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -152,7 +152,8 @@ public class WebApplet extends HTMLElementBase {
     }
 
     public Applet getApplet()
-            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         if (_applet == null) {
             ClassLoader cl = new URLClassLoader(getClassPath(), null);
             Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();

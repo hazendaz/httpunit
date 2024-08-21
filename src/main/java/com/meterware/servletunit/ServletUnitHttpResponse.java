@@ -628,6 +628,14 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         setLongHeader("Content-Length", len);
     }
 
+    public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
+        setStatus(sc);
+        setHeader("Location", location);
+        if (clearBuffer) {
+            resetBuffer();
+        }
+    }
+
 }
 
 class ServletUnitOutputStream extends ServletOutputStream {
@@ -645,12 +653,11 @@ class ServletUnitOutputStream extends ServletOutputStream {
 
     @Override
     public boolean isReady() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
-        // TODO Auto-generated method stub
+        // Do nothing
     }
 }

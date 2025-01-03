@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -136,7 +136,7 @@ public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrame
 
     @Override
     public Document getContentDocument() {
-        return null;
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

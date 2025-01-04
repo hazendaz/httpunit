@@ -27,13 +27,13 @@ import java.net.URL;
 import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
+import net.sourceforge.htmlunit.cyberneko.parsers.DOMParser;
+import net.sourceforge.htmlunit.xerces.impl.Constants;
+import net.sourceforge.htmlunit.xerces.xni.XNIException;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLDocumentFilter;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLErrorHandler;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLParseException;
 
-import org.apache.xerces.parsers.AbstractDOMParser;
-import org.apache.xerces.parsers.DOMParser;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLDocumentFilter;
-import org.apache.xerces.xni.parser.XMLErrorHandler;
-import org.apache.xerces.xni.parser.XMLParseException;
 import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;
@@ -58,6 +58,23 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     /** Attribute case settings. possible values: "upper", "lower", "no-change" */
     private static final String ATTRIBUTE_NAME_CASE = "http://cyberneko.org/html/properties/names/attrs";
+
+    /** Current element node property ("dom/current-element-node"). */
+    public static final String CURRENT_ELEMENT_NODE_PROPERTY = "dom/current-element-node";
+
+    /** Defer node expansion feature ("dom/defer-node-expansion"). */
+    public static final String DEFER_NODE_EXPANSION_FEATURE = "dom/defer-node-expansion";
+
+    /** Document class name property ("dom/document-class-name"). */
+    public static final String DOCUMENT_CLASS_NAME_PROPERTY = "dom/document-class-name";
+
+    /** Feature id: defer node expansion. */
+    protected static final String DEFER_NODE_EXPANSION = Constants.XERCES_FEATURE_PREFIX + DEFER_NODE_EXPANSION_FEATURE;
+
+    /** Property id: document class name. */
+    protected static final String DOCUMENT_CLASS_NAME = Constants.XERCES_PROPERTY_PREFIX + DOCUMENT_CLASS_NAME_PROPERTY;
+
+    protected static final String  CURRENT_ELEMENT_NODE = Constants.XERCES_PROPERTY_PREFIX + CURRENT_ELEMENT_NODE_PROPERTY;
 
     /** The document adapter. */
     private DocumentAdapter _documentAdapter;
@@ -105,9 +122,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
         try {
             final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);
+            domParser.setFeature(DEFER_NODE_EXPANSION, false);
             if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
+                domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -123,12 +140,12 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      */
     private Element getCurrentElement() {
         try {
-            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
+            return (Element) getProperty(CURRENT_ELEMENT_NODE);
         } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not recognized");
+            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not recognized");
         } catch (SAXNotSupportedException e) {
             e.printStackTrace();
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not supported");
+            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not supported");
         }
     }
 
@@ -141,7 +158,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *            the adapter
      */
     NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
-        super(configuration);
+        super(null);
         _documentAdapter = adapter;
     }
 

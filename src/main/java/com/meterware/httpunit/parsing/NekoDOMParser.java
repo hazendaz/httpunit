@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 
+import org.apache.xerces.parsers.AbstractDOMParser;
 import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
@@ -102,9 +103,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
         try {
             final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(DEFER_NODE_EXPANSION, false);
+            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);
             if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
+                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -115,12 +116,12 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     private Element getCurrentElement() {
         try {
-            return (Element) getProperty(CURRENT_ELEMENT_NODE);
+            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
         } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not recognized");
+            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not recognized");
         } catch (SAXNotSupportedException e) {
             e.printStackTrace();
-            throw new RuntimeException(CURRENT_ELEMENT_NODE + " property not supported");
+            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not supported");
         }
     }
 

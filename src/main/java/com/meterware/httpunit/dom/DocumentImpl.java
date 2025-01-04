@@ -42,7 +42,7 @@ public class DocumentImpl extends NodeImpl implements Document {
      *
      * @return the document impl
      */
-    static DocumentImpl createDocument() {
+    public static DocumentImpl createDocument() {
         DocumentImpl document = new DocumentImpl();
         document.initialize();
         return document;

@@ -46,7 +46,7 @@ public class DocumentImpl extends NodeImpl implements Document {
     private static final long serialVersionUID = 1L;
     protected Element _documentElement;
 
-    static DocumentImpl createDocument() {
+    public static DocumentImpl createDocument() {
         DocumentImpl document = new DocumentImpl();
         document.initialize();
         return document;

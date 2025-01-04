@@ -100,9 +100,9 @@
             <version>1.8.1</version>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.htmlunit</groupId>
+            <groupId>org.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
-            <version>2.70.0</version>
+            <version>3.11.0</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>

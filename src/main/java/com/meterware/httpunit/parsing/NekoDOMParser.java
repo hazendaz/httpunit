@@ -26,15 +26,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
-import net.sourceforge.htmlunit.cyberneko.parsers.DOMParser;
-import net.sourceforge.htmlunit.xerces.impl.Constants;
-import net.sourceforge.htmlunit.xerces.xni.XNIException;
-import net.sourceforge.htmlunit.xerces.xni.parser.XMLDocumentFilter;
-import net.sourceforge.htmlunit.xerces.xni.parser.XMLErrorHandler;
-import net.sourceforge.htmlunit.xerces.xni.parser.XMLParseException;
-
+import org.htmlunit.cyberneko.HTMLConfiguration;
+import org.htmlunit.cyberneko.parsers.DOMParser;
+import org.htmlunit.cyberneko.xerces.parsers.Constants;
+import org.htmlunit.cyberneko.xerces.xni.XNIException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLConfigurationException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLDocumentFilter;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLErrorHandler;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLParseException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLParserConfiguration;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -74,10 +76,14 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     /** Property id: document class name. */
     protected static final String DOCUMENT_CLASS_NAME = Constants.XERCES_PROPERTY_PREFIX + DOCUMENT_CLASS_NAME_PROPERTY;
 
-    protected static final String  CURRENT_ELEMENT_NODE = Constants.XERCES_PROPERTY_PREFIX + CURRENT_ELEMENT_NODE_PROPERTY;
+    protected static final String CURRENT_ELEMENT_NODE = Constants.XERCES_PROPERTY_PREFIX
+            + CURRENT_ELEMENT_NODE_PROPERTY;
 
     /** The document adapter. */
     private DocumentAdapter _documentAdapter;
+
+    /** The parser configuration. */
+    private XMLParserConfiguration fParserConfiguration;
 
     /**
      * construct a new NekoDomParser with the given adapter and url.
@@ -150,6 +156,37 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     }
 
     /**
+     * Query the value of a property. Return the current value of a property in a SAX2 parser. The parser might not
+     * recognize the property.
+     *
+     * @param propertyId
+     *            The unique identifier (URI) of the property being set.
+     *
+     * @return The current value of the property.
+     *
+     * @exception org.xml.sax.SAXNotRecognizedException
+     *                If the requested property is not known.
+     * @exception SAXNotSupportedException
+     *                If the requested property is known but not supported.
+     */
+    public Object getProperty(String propertyId) throws SAXNotRecognizedException, SAXNotSupportedException {
+
+        if (propertyId.equals(CURRENT_ELEMENT_NODE)) {
+            return (fCurrentNode != null && fCurrentNode.getNodeType() == Node.ELEMENT_NODE) ? fCurrentNode : null;
+        }
+
+        try {
+            return fParserConfiguration.getProperty(propertyId);
+        } catch (final XMLConfigurationException e) {
+            final String message = e.getMessage();
+            if (e.getType() == XMLConfigurationException.NOT_RECOGNIZED) {
+                throw new SAXNotRecognizedException(message);
+            }
+            throw new SAXNotSupportedException(message);
+        }
+    }
+
+    /**
      * Instantiates a new neko DOM parser.
      *
      * @param configuration
@@ -160,6 +197,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
         super(null);
         _documentAdapter = adapter;
+        if (HTMLParserFactory.isReturnHTMLDocument()) {
+            fParserConfiguration = configuration;
+        }
     }
 
     @Override

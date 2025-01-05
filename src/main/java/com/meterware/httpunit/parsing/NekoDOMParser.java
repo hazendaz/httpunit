@@ -19,7 +19,6 @@
  */
 package com.meterware.httpunit.parsing;
 
-import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
@@ -62,22 +61,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     private static final String ATTRIBUTE_NAME_CASE = "http://cyberneko.org/html/properties/names/attrs";
 
     /** Current element node property ("dom/current-element-node"). */
-    public static final String CURRENT_ELEMENT_NODE_PROPERTY = "dom/current-element-node";
+    private static final String CURRENT_ELEMENT_NODE_PROPERTY = "dom/current-element-node";
 
-    /** Defer node expansion feature ("dom/defer-node-expansion"). */
-    public static final String DEFER_NODE_EXPANSION_FEATURE = "dom/defer-node-expansion";
-
-    /** Document class name property ("dom/document-class-name"). */
-    public static final String DOCUMENT_CLASS_NAME_PROPERTY = "dom/document-class-name";
-
-    /** Feature id: defer node expansion. */
-    protected static final String DEFER_NODE_EXPANSION = Constants.XERCES_FEATURE_PREFIX + DEFER_NODE_EXPANSION_FEATURE;
-
-    /** Property id: document class name. */
-    protected static final String DOCUMENT_CLASS_NAME = Constants.XERCES_PROPERTY_PREFIX + DOCUMENT_CLASS_NAME_PROPERTY;
-
-    protected static final String CURRENT_ELEMENT_NODE = Constants.XERCES_PROPERTY_PREFIX
-            + CURRENT_ELEMENT_NODE_PROPERTY;
+    private static final String CURRENT_ELEMENT_NODE = Constants.XERCES_PROPERTY_PREFIX + CURRENT_ELEMENT_NODE_PROPERTY;
 
     /** The document adapter. */
     private DocumentAdapter _documentAdapter;
@@ -126,16 +112,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
             }
         }
 
-        try {
-            final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(DEFER_NODE_EXPANSION, false);
-            if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
-            javaScriptFilter.setScriptHandler(domParser);
-            return domParser;
-        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
-            throw new RuntimeException(e.toString());
-        }
+        final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
+        javaScriptFilter.setScriptHandler(domParser);
+        return domParser;
 
     }
 

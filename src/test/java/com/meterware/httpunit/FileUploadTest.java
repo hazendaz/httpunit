@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -56,7 +56,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class FileUploadTest extends HttpUnitTest {
 
     @Test
-    void testParametersMultipartEncoding() throws Exception {
+    void parametersMultipartEncoding() throws Exception {
         defineResource("ListParams", new MimeEcho());
         defineWebPage("Default",
                 "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
@@ -72,7 +72,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testFileParameterValidation() throws Exception {
+    void fileParameterValidation() throws Exception {
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
                 + "<Input type=file name=message>" + "<Input type=submit name=update value=age>" + "</form>");
         WebConversation wc = new WebConversation();
@@ -88,7 +88,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testNonFileParameterValidation() throws Exception {
+    void nonFileParameterValidation() throws Exception {
         File file = new File("temp.html");
 
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
@@ -106,7 +106,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testURLEncodingFileParameterValidation() throws Exception {
+    void urlEncodingFileParameterValidation() throws Exception {
         File file = new File("temp.html");
 
         defineWebPage("Default", "<form method=POST action = \"ListParams\"> " + "<Input type=file name=message>"
@@ -124,7 +124,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testFileMultipartEncoding() throws Exception {
+    void fileMultipartEncoding() throws Exception {
         File file = new File("temp.txt");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -152,7 +152,7 @@ class FileUploadTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testRemoveFileParameter() throws Exception {
+    void removeFileParameter() throws Exception {
         File file = new File("temp.txt");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -173,7 +173,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testMultiFileSubmit() throws Exception {
+    void multiFileSubmit() throws Exception {
         File file = new File("temp.txt");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -208,7 +208,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testIllegalMultiFileSubmit() throws Exception {
+    void illegalMultiFileSubmit() throws Exception {
         File file = new File("temp.txt");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -241,7 +241,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testInputStreamAsFile() throws Exception {
+    void inputStreamAsFile() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
                 "Not much text\nBut two lines\n".getBytes(StandardCharsets.UTF_8));
 
@@ -258,7 +258,7 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     @Test
-    void testFileUploadWithoutForm() throws Exception {
+    void fileUploadWithoutForm() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
                 "Not much text\nBut two lines\n".getBytes(StandardCharsets.UTF_8));
 
@@ -322,7 +322,7 @@ class FileUploadTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testFileContentType() throws Exception {
+    void fileContentType() throws Exception {
         File file = createFile("temp.gif", new byte[] { 1, 2, 3, 4, 0x7f, 0x23 });
         doTestFileContentType(file, null, "image/gif:message.name=temp.gif&message.lines=1");
         file = createFile("1x1.tif", new byte[] { (byte) 0x03, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x00,
@@ -351,7 +351,7 @@ class FileUploadTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSpecifiedFileContentType() throws Exception {
+    void specifiedFileContentType() throws Exception {
         File file = createFile("temp.new", new byte[] { 1, 2, 3, 4, 0x7f, 0x23 });
         doTestFileContentType(file, "x-application/new", "x-application/new:message.name=temp.new&message.lines=1");
     }
@@ -362,7 +362,7 @@ class FileUploadTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSubmitFile() throws Exception {
+    void submitFile() throws Exception {
         defineResource("ListParams", new MimeEcho());
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
                 + "<Input type=file name=message>" + "</form>");

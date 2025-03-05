@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -69,7 +69,7 @@ public class FormScriptingTest extends HttpUnitTest {
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
-    void testFormNameProperty() throws Exception {
+    void formNameProperty() throws Exception {
         defineWebPage("OnCommand",
                 "<form name='the_form_with_name'/>" + "<script type='JavaScript'>"
                         + "  alert( document.forms[0].name );" + "</script>" + "<form id='the_form_with_id'/>"
@@ -89,7 +89,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testModifyingFormNameProperty() throws Exception {
+    void modifyingFormNameProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Default",
                 "<form id = 'the_form' name = 'form_name'/>"
@@ -109,7 +109,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGetAttributeForBody() throws Exception {
+    void getAttributeForBody() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;
@@ -148,7 +148,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGetAttributeForDiv() throws Exception {
+    void getAttributeForDiv() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;
@@ -176,7 +176,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testElementsProperty() throws Exception {
+    void elementsProperty() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function listElements( form ) {\n"
                         + "  elements = form.elements;\n" + "  alert( 'form has ' + elements.length + ' elements' );\n"
@@ -204,7 +204,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * test clicking on a span inspired by Mail from Christoph to developer mailinglist of 2008-04-01
      */
     @Test
-    void testClickSpan() throws Exception {
+    void clickSpan() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function crtCtrla(obj,otherArg) {" + "		alert(otherArg);" + "}" + "</script></head>" + "<body>"
                 + "<table><tr><td class='cl'><span onClick='crtCtrla(this, \"rim_ModuleSearchResult=Drilldown=key_\", null, null);' class='feact'><span>489</span></span></td></tr></table>"
@@ -235,7 +235,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testResetViaScript() throws Exception {
+    void resetViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "  <input type=text name=color value=green>" + "  <input type=text name=change value=color>"
                 + "</form>" + "<a href='#' onClick='document.spectrum.reset(); return false;'>" + "</body></html>");
@@ -249,7 +249,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testOnResetEvent() throws Exception {
+    void onResetEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>"
                         + "<form name=spectrum action='DoIt' onreset='alert( \"Ran the event\" );'>"
@@ -272,7 +272,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitViaScript() throws Exception {
+    void submitViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -290,7 +290,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #959918
      */
     @Test
-    void testNumericParameterSetting1() throws Exception {
+    void numericParameterSetting1() throws Exception {
         defineResource("DoIt?id=1234", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head>" + "<script>" + "  function myFunction(value) {" + "    document.mainForm.id = value;"
@@ -309,7 +309,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #1087180
      */
     @Test
-    void testNumericParameterSetting2() throws Exception {
+    void numericParameterSetting2() throws Exception {
         defineResource("DoIt.html?id=1234", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head>" + "<script>" + "  function myFunction(value) {"
@@ -328,7 +328,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Verifies bug #1073810 (Null pointer exception if javascript sets control value to null)
      */
     @Test
-    void testNullParameterSetting() throws Exception {
+    void nullParameterSetting() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head>" + "<script>" + "  function myFunction(value) {"
                         + "    document.mainForm.id.value = null;" + "  }</script>" + "</head>" + "<body>"
@@ -346,7 +346,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testFormActionFromJavaScript() throws Exception {
+    void formActionFromJavaScript() throws Exception {
         // pending Patch 1155792 wf 2007-12-30
         // TODO activate in due course
         dotestFormActionFromJavaScript("param");
@@ -406,7 +406,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testIndirectEventInvocation() throws Exception {
+    void indirectEventInvocation() throws Exception {
         defineResource("OnCommand.html", "<html><head></head><body>" + "<form name=\"testForm\">"
                 + "<input type=\"text\" name=\"one\" value=\"default value\" onchange=\"this.form.two.value = this.form.one.value;\">"
                 + "<input type=\"text\" name=\"two\" value=\"not the same value\">" + "</form>"
@@ -424,7 +424,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testEnablingDisabledSubmitButtonViaScript() throws Exception {
+    void enablingDisabledSubmitButtonViaScript() throws Exception {
         defineResource("DoIt?color=green&change=success", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "  <input type=text name=color value=green>"
@@ -445,7 +445,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDisablingEnabledSubmitButtonViaScript() throws Exception {
+    void disablingEnabledSubmitButtonViaScript() throws Exception {
         defineResource("DoIt?color=green&change=success", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "  <input type=text name=color value=green>"
@@ -465,7 +465,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testEnablingDisabledNormalButtonViaScript() throws Exception {
+    void enablingDisabledNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "  <input type=text name=color value=green>"
@@ -487,7 +487,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDisablingEnableddNormalButtonViaScript() throws Exception {
+    void disablingEnableddNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "  <input type=text name=color value=green>"
@@ -583,7 +583,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testEnablingDisabledRadioButtonViaScript() throws Exception {
+    void enablingDisabledRadioButtonViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
                 + "<input type='radio' name='color' value='red' checked>"
                 + "<input type='radio' name='color' value='green' disabled>"
@@ -607,7 +607,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitViaScriptWithPostParams() throws Exception {
+    void submitViaScriptWithPostParams() throws Exception {
         defineResource("/servlet/TestServlet?param3=value3&param4=value4", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() {
@@ -631,7 +631,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitButtonlessFormViaScript() throws Exception {
+    void submitButtonlessFormViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -645,7 +645,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitViaScriptButton() throws Exception {
+    void submitViaScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt' onsubmit='return false;'>"
@@ -660,7 +660,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDisabledScriptButton() throws Exception {
+    void disabledScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt' onsubmit='return false;'>"
@@ -679,7 +679,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testUpdateBeforeSubmit() throws Exception {
+    void updateBeforeSubmit() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -693,7 +693,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitButtonScript() throws Exception {
+    void submitButtonScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -707,7 +707,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSetFormTextValue() throws Exception {
+    void setFormTextValue() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body onLoad=\"document.realform.color.value='green'\">"
                         + "<form name='realform'><input name='color' value='blue'></form>" + "</body></html>");
@@ -723,7 +723,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testCheckboxOnMouseDownEvent() throws Exception {
+    void checkboxOnMouseDownEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name='the_form'>"
                         + "  <input type='checkbox' name='color' value='blue' "
@@ -755,7 +755,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSetFormTextOnChangeEvent() throws Exception {
+    void setFormTextOnChangeEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name='the_form'>" + "  <input name='color' value='blue' "
                         + "         onChange='alert( \"color is now \" + document.the_form.color.value );'>" + "</form>"
@@ -777,7 +777,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testCheckboxProperties() throws Exception {
+    void checkboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function viewCheckbox( checkbox ) { \n"
                 + "  alert( 'checkbox ' + checkbox.name + ' default = ' + checkbox.defaultChecked )\n;"
@@ -809,7 +809,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testIndexedCheckboxProperties() throws Exception {
+    void indexedCheckboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function viewCheckbox( checkbox ) { \n"
                 + "  alert( 'checkbox ' + checkbox.name + ' default = ' + checkbox.defaultChecked )\n;"
@@ -833,7 +833,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testCheckboxOnClickEvent() throws Exception {
+    void checkboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
                 + "  <input type='checkbox' name='color' value='blue' "
                 + "         onClick='alert( \"color-blue is now \" + document.the_form.color.checked );'>" + "</form>"
@@ -858,7 +858,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSetCheckboxOnClickEvent() throws Exception {
+    void setCheckboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name='the_form'>"
                         + "  <input type='checkbox' name='color' value='blue' "
@@ -879,7 +879,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testIndexedRadioProperties() throws Exception {
+    void indexedRadioProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function viewRadio( radio ) { \n"
                 + "  alert( 'radio ' + radio.name + ' default = ' + radio.defaultChecked )\n;"
@@ -901,7 +901,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testRadioOnMouseDownEvent() throws Exception {
+    void radioOnMouseDownEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
                 + "  <input type='radio' name='color' value='blue' "
                 + "         onMouseDown='alert( \"color is now blue\" );'>"
@@ -936,7 +936,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testRadioOnClickEvent() throws Exception {
+    void radioOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
                 + "  <input type='radio' name='color' value='blue' "
                 + "         onClick='alert( \"color is now blue\" );'>"
@@ -964,7 +964,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormActionProperty() throws Exception {
+    void formActionProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Default",
                 "<form method=GET name='the_form' action = 'ask'>" + "<Input type=text name=age>"
@@ -982,7 +982,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormTargetProperty() throws Exception {
+    void formTargetProperty() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Default",
                 "<form method=GET name='the_form' action = 'ask'>" + "<Input type=text name=age>"
@@ -1001,7 +1001,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormValidationOnSubmit() throws Exception {
+    void formValidationOnSubmit() throws Exception {
         defineResource("doIt?color=pink", "You got it!", "text/plain");
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function verifyForm() { "
@@ -1021,7 +1021,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectReadableProperties() throws Exception {
+    void formSelectReadableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function viewSelect( choices ) { \n"
                 + "  alert( 'select has ' + choices.options.length + ' options' )\n;"
@@ -1058,7 +1058,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * 2005-02-16 17:25
      */
     @Test
-    void testSelectIndexOutOfBoundsCatching() throws Exception {
+    void selectIndexOutOfBoundsCatching() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function viewSelect( choices ) { \n" + " // try accessing out of bounds\n"
                 + "  alert( choices.options[5].value )\n;" + "}\n" + "</script></head>"
@@ -1082,7 +1082,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectDefaults() throws Exception {
+    void formSelectDefaults() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function viewSelect( form ) { \n"
                         + "  alert( 'first default index= '  + form.first.selectedIndex )\n;"
@@ -1105,7 +1105,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFileSubmitProperties() throws Exception {
+    void fileSubmitProperties() throws Exception {
         File file = new File("temp.html");
         defineResource("OnCommand.html", "<html><head></head>" + "<body'>" + "<form name='the_form'>"
                 + "  <input type='file' name='file'>" + "</form>"
@@ -1123,7 +1123,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectOnChangeEvent() throws Exception {
+    void formSelectOnChangeEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
                 + "function selectOptionNum( the_select, index ) { \n"
                 + "  for (var i = 0; i < the_select.length; i++) {\n"
@@ -1150,7 +1150,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectWriteableProperties() throws Exception {
+    void formSelectWriteableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
                 + "  <select name='choices'>" + "    <option value='1'>red" + "    <option value='3'>blue"
                 + "    <option value='5'>green" + "    <option value='7'>azure" + "  </select>" + "</form>"
@@ -1166,7 +1166,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectDefaultProperties() throws Exception {
+    void formSelectDefaultProperties() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function selectOptionNum( the_select, index ) { \n"
                         + "  for (var i = 0; i < the_select.length; i++) {\n"
@@ -1202,7 +1202,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormSelectOverwriteOptions() throws Exception {
+    void formSelectOverwriteOptions() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function rewriteSelect( the_select ) { \n"
                         + "  the_select.options[0] = new Option( 'apache', 'a' );\n"
@@ -1239,7 +1239,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testAccessAcrossFrames() throws Exception {
+    void accessAcrossFrames() throws Exception {
         defineResource("First.html",
                 "<html><head><script language='JavaScript'>" + "function accessOtherFrame() {"
                         + "  top.frame2.document.testform.param1.value = 'new1';"
@@ -1258,7 +1258,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSetFromEmbeddedScript() throws Exception {
+    void setFromEmbeddedScript() throws Exception {
         defineWebPage("OnCommand",
                 "<form name=\"testform\">" + "<input type=text name=\"testfield\" value=\"old\">" + "</form>"
                         + "<script language=\"JavaScript\">" + "  document.testform.testfield.value=\"new\""
@@ -1269,7 +1269,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitFromJavaScriptLink() throws Exception {
+    void submitFromJavaScriptLink() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
         defineWebPage("OnCommand",
                 "<form name='myform' action='test2.txt'>"
@@ -1281,7 +1281,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitOnLoad() throws Exception {
+    void submitOnLoad() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
         defineResource("OnCommand.html",
                 "<html><body onload='document.myform.btn.click();'>" + "<form name='myform' action='test2.txt'>"
@@ -1296,7 +1296,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSelectValueProperty() throws Exception {
+    void selectValueProperty() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function testProperty( form ) {\n"
                         + "   elements = form.choices;\n" + "   alert( 'selected item is ' + elements.value );\n" + "}"
@@ -1313,7 +1313,7 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testElementsByIDProperty() throws Exception {
+    void elementsByIDProperty() throws Exception {
         defineResource("index.html",
                 "<html>\n" + "<head>\n" + "<title>JavaScript Form Elements by ID String Test</title>\n"
                         + "<script language='JavaScript' type='text/javascript'><!--\n" + "function foo() {\n"
@@ -1336,7 +1336,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testElementTypeAccess() throws Exception {
+    void elementTypeAccess() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" + "function CheckForm() {\n"
                 + "  var len = document.myForm.elements.length;\n" + "  for (var index = 0; index < len; index++) {\n"
                 + "    var control = document.myForm.elements[index];\n" + "    confirm(control.type);\n" + "  }\n"
@@ -1392,7 +1392,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testFormLength() throws Exception {
+    void formLength() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" + "function CheckForm()\n" + "{\n"
                 + "confirm (document.myForm.length);\n" + "return true;\n" + "}\n" + "</script>"
                 + "<form name=myForm method=POST>" + "  <input type=\"text\" name=\"first_name\" value=\"Fred\">"
@@ -1415,7 +1415,7 @@ public class FormScriptingTest extends HttpUnitTest {
      *             on any unexpected error
      */
     @Test
-    void testIncreaseSelectLength() throws Exception {
+    void increaseSelectLength() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" + "function extend()\n" + "{\n"
                 + "document.myForm.jobRoleID.options.length=2;\n" + "document.myForm.jobRoleID.options[1].text='here';"
                 + "return true;\n" + "}\n" + "function viewSelect( choice ) {\n"
@@ -1445,7 +1445,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testElementDefaultValue() throws Exception {
+    void elementDefaultValue() throws Exception {
         defineWebPage("Default", "<script language=JavaScript>\n" + "function CheckForm()\n" + "{\n" + "var i;\n"
                 + "var form_length=document.myForm.elements.length;\n" + "for ( i=0 ; i< form_length; i++ )\n" + "{\n"
                 + "  confirm (document.myForm.elements[i].value);\n " + "}\n"

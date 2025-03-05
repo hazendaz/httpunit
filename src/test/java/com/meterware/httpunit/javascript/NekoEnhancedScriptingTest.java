@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.javascript;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -42,7 +43,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class NekoEnhancedScriptingTest extends HttpUnitTest {
 
     @Test
-    void testEmbeddedDocumentWrite() throws Exception {
+    void embeddedDocumentWrite() throws Exception {
         defineResource("OnCommandWrite.html",
                 "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
                         + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
@@ -55,7 +56,7 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testEmbeddedDocumentWriteWithClose() throws Exception {
+    void embeddedDocumentWriteWithClose() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
                         + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
@@ -68,7 +69,7 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnknownScript() throws Exception {
+    void unknownScript() throws Exception {
         defineWebPage("FunkyScript", "<SCRIPT>" + "var stuff='<A href=\"#\">Default JavaScript Working</A><BR>';"
                 + "document.writeln(stuff);" + "</SCRIPT>" + "<SCRIPT Language='JavaScript'>"
                 + "var stuff='<A href=\"#\">JavaScript Working</A><BR>';" + "document.writeln(stuff);" + "</SCRIPT>"
@@ -89,7 +90,7 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testNoScriptSections() throws Exception {
+    void noScriptSections() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><title>something</title></head>" + "<body>" + "<script language='JavaScript'>"
                         + "document.write( '<a id=here href=about:blank>' );" + "document.writeln( document.title );"
@@ -116,7 +117,7 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      * only to a specific position in the document. It may be possible to fix this with some logic changes...
      */
     @Test
-    void testFormsCaching() throws Exception {
+    void formsCaching() throws Exception {
         defineWebPage("OnCommand",
                 "<form>" + "  <input type='text' name='color' value='blue' >" + "</form>" + "<script type='JavaScript'>"
                         + "  alert( document.forms[0].color.value );" + "</script>" + "<form>"
@@ -132,14 +133,16 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      * Verifies that a script can write part of the frameset.
      */
     @Test
-    void testScriptedFrames() throws Exception {
-        defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
-        defineResource("Frames.html", "<html><script>" + "  document.write( '<frameset>' )" + "</script>"
-                + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>" + "</frameset></htmlL>");
+    void scriptedFrames() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
+            defineResource("Frames.html", "<html><script>" + "  document.write( '<frameset>' )" + "</script>"
+                    + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>" + "</frameset></htmlL>");
 
-        WebConversation wc = new WebConversation();
-        wc.getResponse(getHostPath() + "/Frames.html");
-        assertMatchingSet("Loaded frames", new String[] { "_top", "green", "blue" }, wc.getFrameNames());
+            WebConversation wc = new WebConversation();
+            wc.getResponse(getHostPath() + "/Frames.html");
+            assertMatchingSet("Loaded frames", new String[] { "_top", "green", "blue" }, wc.getFrameNames());
+        });
     }
 
 }

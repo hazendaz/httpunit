@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.servletunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -67,7 +68,7 @@ class RequestDispatcherTest {
     }
 
     @Test
-    void testRequestDispatcherParameters() throws Exception {
+    void requestDispatcherParameters() throws Exception {
         InvocationContext ic = _runner.newClient()
                 .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 
@@ -100,7 +101,7 @@ class RequestDispatcherTest {
     }
 
     @Test
-    void testRequestDispatcherIncludePaths() throws Exception {
+    void requestDispatcherIncludePaths() throws Exception {
         InvocationContext ic = _runner.newClient()
                 .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 
@@ -148,7 +149,7 @@ class RequestDispatcherTest {
      * test for fix of bug [ 1323031 ] getPathInfo does not decode request URL by Hugh Winkler -
      */
     @Test
-    void testDecodeRequestURL() throws Exception {
+    void decodeRequestURL() throws Exception {
         InvocationContext ic = _runner.newClient().newInvocation("http://localhost/sample/" + decodeExampleName);
 
         final HttpServletRequest request = ic.getRequest();
@@ -166,16 +167,18 @@ class RequestDispatcherTest {
      * @throws Exception
      */
     @Test
-    void testGetNamedDispatcher() throws Exception {
-        InvocationContext ic = _runner.newClient()
-                .newInvocation("http://localhost/sample/" + this.errorPageServletName);
-        ic.getRequest();
-        ErrorPageServlet servlet = (ErrorPageServlet) ic.getServlet();
-        servlet.getServletContext().getNamedDispatcher("errorPage");
+    void getNamedDispatcher() throws Exception {
+        assertDoesNotThrow(() -> {
+            InvocationContext ic = _runner.newClient()
+                    .newInvocation("http://localhost/sample/" + this.errorPageServletName);
+            ic.getRequest();
+            ErrorPageServlet servlet = (ErrorPageServlet) ic.getServlet();
+            servlet.getServletContext().getNamedDispatcher("errorPage");
+        });
     }
 
     @Test
-    void testRequestDispatcherForwardPaths() throws Exception {
+    void requestDispatcherForwardPaths() throws Exception {
         InvocationContext ic = _runner.newClient()
                 .newInvocation("http://localhost/sample/" + outerServletName + "?param=original&param1=first");
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -73,7 +73,7 @@ class NodeTest {
      * Verifies that we can create a document and verify its type.
      */
     @Test
-    void testDocumentCreation() throws Exception {
+    void documentCreation() throws Exception {
         assertEquals("#document", _document.getNodeName(), "Node name");
         assertEquals(Node.DOCUMENT_NODE, _document.getNodeType(), "Node type");
         assertNull(_document.getAttributes(), "Documents should not have attributes");
@@ -87,7 +87,7 @@ class NodeTest {
      * Verifies that we can create an element with a given name and verify its type.
      */
     @Test
-    void testElementCreation() throws Exception {
+    void elementCreation() throws Exception {
         assertNotNull(_element, "Failed to create an element");
         assertSame(_document, _element.getOwnerDocument(), "Owner document");
         assertEquals("zork", _element.getTagName(), "Tag name");
@@ -102,7 +102,7 @@ class NodeTest {
      * Verifies that we can create a text node and verify its type.
      */
     @Test
-    void testTextCreation() throws Exception {
+    void textCreation() throws Exception {
         assertNotNull(_text, "Failed to create a text node");
         assertSame(_document, _text.getOwnerDocument(), "Owner document");
         assertEquals("#text", _text.getNodeName(), "Node name");
@@ -119,7 +119,7 @@ class NodeTest {
      */
     @Test
     @Disabled
-    void testDocumentTypeCreation() throws Exception {
+    void documentTypeCreation() throws Exception {
         // DocumentType documentType = com.meterware.httpunit.dom.DocumentTypeImpl.createDocumentType( _document );
         assertNotNull(_text, "Failed to create a text node");
         assertSame(_document, _text.getOwnerDocument(), "Owner document");
@@ -136,7 +136,7 @@ class NodeTest {
      * Verifies that node accessors work for empty documents.
      */
     @Test
-    void testEmptyDocument() throws Exception {
+    void emptyDocument() throws Exception {
         Document document = DocumentImpl.createDocument();
         assertNull(document.getFirstChild(), "Found a bogus first child");
         assertNull(document.getLastChild(), "Found a bogus last child");
@@ -151,7 +151,7 @@ class NodeTest {
      * Verifies that we can add children to an element (or document) and find them.
      */
     @Test
-    void testAddNodeChildren() throws Exception {
+    void addNodeChildren() throws Exception {
         assertSame(_foo1, _element.getFirstChild(), "First child of element");
         assertSame(_bar2, _element.getLastChild(), "Last child of element");
         assertSame(_bar2, _foo1.getNextSibling(), "Next sibling of foo1");
@@ -167,7 +167,7 @@ class NodeTest {
      * Verifies that we can add children to an element or document and find them.
      */
     @Test
-    void testElementChildrenByTagName() throws Exception {
+    void elementChildrenByTagName() throws Exception {
         verifyNodeList("baz", _element.getElementsByTagName("baz"), new Node[0]);
         verifyNodeList("foo", _element.getElementsByTagName("foo"), new Element[] { _foo1, _foo2 });
         verifyNodeList("bar", _element.getElementsByTagName("bar"), new Element[] { _bar1, _bar2 });
@@ -184,7 +184,7 @@ class NodeTest {
      * Verifies that only children of a particular document may be added to its children.
      */
     @Test
-    void testNodeCreatedByOtherDocument() throws Exception {
+    void nodeCreatedByOtherDocument() throws Exception {
         Document foreignDocument = DocumentImpl.createDocument();
         Element foreignElement = foreignDocument.createElement("stranger");
         try {
@@ -200,7 +200,7 @@ class NodeTest {
      * Verifies that a document can have only one 'document element'
      */
     @Test
-    void testUniqueDocumentElement() throws Exception {
+    void uniqueDocumentElement() throws Exception {
         Element bogusRoot = _document.createElement("root");
         try {
             _document.setDocumentElement(bogusRoot);
@@ -213,7 +213,7 @@ class NodeTest {
      * Verifies that text nodes cannot have children
      */
     @Test
-    void testNoChildrenForTextNodes() throws Exception {
+    void noChildrenForTextNodes() throws Exception {
         Element orphan = _document.createElement("baz");
         try {
             _text.appendChild(orphan);
@@ -227,7 +227,7 @@ class NodeTest {
      * Verifies that a node or one of its ancestors may not be added as its child
      */
     @Test
-    void testRejectAddSelfOrAncestorAsChild() throws Exception {
+    void rejectAddSelfOrAncestorAsChild() throws Exception {
         try {
             _element.appendChild(_element);
             fail("Permitted addition of element as its own child");
@@ -246,7 +246,7 @@ class NodeTest {
      * Verifies that we can insert a child node at a specific position.
      */
     @Test
-    void testInsertChild() throws Exception {
+    void insertChild() throws Exception {
         Text newText = _document.createTextNode("Something new");
         _element.insertBefore(newText, _bar2);
         verifyNodeList("element child", _element.getChildNodes(), new Node[] { _foo1, newText, _bar2 });
@@ -259,7 +259,7 @@ class NodeTest {
      * target.
      */
     @Test
-    void testInsertChildWithBadPredecessor() throws Exception {
+    void insertChildWithBadPredecessor() throws Exception {
         Text newText = _document.createTextNode("Something new");
         _element.insertBefore(newText, _bar2);
         try {
@@ -276,19 +276,19 @@ class NodeTest {
      * Verifies that we can remove a child node from the document.
      */
     @Test
-    void testRemoveChildFromEnd() throws Exception {
+    void removeChildFromEnd() throws Exception {
         _foo1.removeChild(_foo2);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[] { _bar1, _text });
     }
 
     @Test
-    void testRemoveChildFromBeginning() throws Exception {
+    void removeChildFromBeginning() throws Exception {
         _foo1.removeChild(_bar1);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[] { _text, _foo2 });
     }
 
     @Test
-    void testRemoveChildFromMiddle() throws Exception {
+    void removeChildFromMiddle() throws Exception {
         _foo1.removeChild(_text);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[] { _bar1, _foo2 });
     }
@@ -297,7 +297,7 @@ class NodeTest {
      * Verifies that an exception is thrown if we try to remove a node which is not a child.
      */
     @Test
-    void testRemoveChildFromWrongParent() throws Exception {
+    void removeChildFromWrongParent() throws Exception {
         try {
             _foo1.removeChild(_bar2);
             fail("Permitted node removal from wrong child");
@@ -310,7 +310,7 @@ class NodeTest {
      * Verifies that we can replace children (including those already elsewhere in the tree)
      */
     @Test
-    void testReplaceChild() throws Exception {
+    void replaceChild() throws Exception {
         Element baz = _document.createElement("baz");
         Node old = _foo1.replaceChild(baz, _text);
         assertSame(_text, old, "Removed node");
@@ -321,7 +321,7 @@ class NodeTest {
      * Verifies that we can clone nodes
      */
     @Test
-    void testCloneNode() throws Exception {
+    void cloneNode() throws Exception {
         _element.setAttribute("msg", "hi there");
         Element shallowClone = (Element) _element.cloneNode( /* deep */ false);
         assertEquals("hi there", shallowClone.getAttribute("msg"), "Cloned attribute");
@@ -340,7 +340,7 @@ class NodeTest {
      * Verifies that we can iterate through nodes in order
      */
     @Test
-    void testPreOrderIterator() throws Exception {
+    void preOrderIterator() throws Exception {
         Iterator each = ((NodeImpl) _element).preOrderIterator();
         Node[] expectedNodes = { _element, _foo1, _bar1, _text, _foo2, _bar2 };
         for (int i = 0; i < expectedNodes.length; i++) {
@@ -354,7 +354,7 @@ class NodeTest {
      * Verifies that we can iterate through nodes in order, starting from a specific node.
      */
     @Test
-    void testPreOrderIteratorFromANode() throws Exception {
+    void preOrderIteratorFromANode() throws Exception {
         Iterator each = ((NodeImpl) _text).preOrderIterator();
         Node[] expectedNodes = { _text, _foo2, _bar2 };
         for (int i = 0; i < expectedNodes.length; i++) {
@@ -368,7 +368,7 @@ class NodeTest {
      * Verifies that we can iterate through nodes in order, starting after a specific node.
      */
     @Test
-    void testPreOrderIteratorAfterANode() throws Exception {
+    void preOrderIteratorAfterANode() throws Exception {
         Iterator each = ((NodeImpl) _foo1).preOrderIteratorAfterNode();
         Node[] expectedNodes = { _bar1, _text, _foo2, _bar2 };
         for (int i = 0; i < expectedNodes.length; i++) {
@@ -382,7 +382,7 @@ class NodeTest {
      * Verifies that we can iterate through nodes in order, starting after a specific node.
      */
     @Test
-    void testPreOrderIteratorWithinNode() throws Exception {
+    void preOrderIteratorWithinNode() throws Exception {
         Iterator each = ((NodeImpl) _foo1).preOrderIteratorWithinNode();
         Node[] expectedNodes = { _bar1, _text, _foo2 };
         for (int i = 0; i < expectedNodes.length; i++) {
@@ -397,7 +397,7 @@ class NodeTest {
      * Verifies that we can iterate through nodes in order skipping a specified subtree.
      */
     @Test
-    void testPreOrderIteratorWithMask() throws Exception {
+    void preOrderIteratorWithMask() throws Exception {
         Iterator each = ((NodeImpl) _element).preOrderIterator(subtreeRoot -> subtreeRoot == _foo1);
         Node[] expectedNodes = { _element, _bar2 };
         for (int i = 0; i < expectedNodes.length; i++) {

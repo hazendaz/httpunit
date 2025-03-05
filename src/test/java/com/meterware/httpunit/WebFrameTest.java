@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,14 +55,16 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testDefaultFrameNames() throws Exception {
-        defineWebPage("Initial", "This is a trivial page");
-        _wc.getResponse(getHostPath() + "/Initial.html");
-        assertMatchingSet("Frames defined for the conversation", new String[] { "_top" }, _wc.getFrameNames());
+    void defaultFrameNames() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("Initial", "This is a trivial page");
+            _wc.getResponse(getHostPath() + "/Initial.html");
+            assertMatchingSet("Frames defined for the conversation", new String[] { "_top" }, _wc.getFrameNames());
+        });
     }
 
     @Test
-    void testDefaultFrameContents() throws Exception {
+    void defaultFrameContents() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Linker.html");
         assertTrue(response == _wc.getFrameContents("_top"), "Default response not the same as default frame contents");
         response = _wc.getResponse(response.getLinks()[0].getRequest());
@@ -69,30 +72,36 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testFrameNames() throws Exception {
-        WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
-        assertMatchingSet("frame set names", new String[] { "red", "blue" }, response.getFrameNames());
+    void frameNames() throws Exception {
+        assertDoesNotThrow(() -> {
+            WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
+            assertMatchingSet("frame set names", new String[] { "red", "blue" }, response.getFrameNames());
+        });
     }
 
     @Test
-    void testParentTarget() throws Exception {
-        defineWebPage("Target", "This is another page with <a href=Form.html target='_parent'>one link</a>");
-        _wc.getResponse(getHostPath() + "/Frames.html");
-        WebResponse resp = _wc.getResponse(_wc.getFrameContents("red").getLinks()[0].getRequest());
-        resp = _wc.getResponse(resp.getLinks()[0].getRequest());
-        assertMatchingSet("Frames after third response", new String[] { "_top" }, _wc.getFrameNames());
+    void parentTarget() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("Target", "This is another page with <a href=Form.html target='_parent'>one link</a>");
+            _wc.getResponse(getHostPath() + "/Frames.html");
+            WebResponse resp = _wc.getResponse(_wc.getFrameContents("red").getLinks()[0].getRequest());
+            resp = _wc.getResponse(resp.getLinks()[0].getRequest());
+            assertMatchingSet("Frames after third response", new String[] { "_top" }, _wc.getFrameNames());
+        });
     }
 
     @Test
-    void testParentTargetFromTopFrame() throws Exception {
-        defineWebPage("Target", "This is another page with <a href=Form.html target='_parent'>one link</a>");
-        WebResponse resp = _wc.getResponse(getHostPath() + "/Target.html");
-        resp = _wc.getResponse(resp.getLinks()[0].getRequest());
-        assertMatchingSet("Frames after second response", new String[] { "_top" }, _wc.getFrameNames());
+    void parentTargetFromTopFrame() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("Target", "This is another page with <a href=Form.html target='_parent'>one link</a>");
+            WebResponse resp = _wc.getResponse(getHostPath() + "/Target.html");
+            resp = _wc.getResponse(resp.getLinks()[0].getRequest());
+            assertMatchingSet("Frames after second response", new String[] { "_top" }, _wc.getFrameNames());
+        });
     }
 
     @Test
-    void testFrameRequests() throws Exception {
+    void frameRequests() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
         WebRequest[] requests = response.getFrameRequests();
         assertEquals(2, requests.length, "Number of frame requests");
@@ -101,7 +110,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testFrameRequestsWithFragments() throws Exception {
+    void frameRequestsWithFragments() throws Exception {
         defineResource("Frames.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"20%,80%\">"
                         + "    <FRAME src='Linker.html' name=\"red\">" + "    <FRAME src='Form.html#middle' name=blue>"
@@ -112,7 +121,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testFrameLoading() throws Exception {
+    void frameLoading() throws Exception {
         _wc.getResponse(getHostPath() + "/Frames.html");
 
         assertMatchingSet("Frames defined for the conversation", new String[] { "_top", "red", "blue" },
@@ -122,7 +131,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testInFrameLinks() throws Exception {
+    void inFrameLinks() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
 
         response = _wc.getResponse(_wc.getFrameContents("red").getLinks()[0].getRequest());
@@ -133,7 +142,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testFrameURLBase() throws Exception {
+    void frameURLBase() throws Exception {
         defineWebPage("Deeper/Linker", "This is a trivial page with <a href=Target.html>one link</a>");
         defineWebPage("Deeper/Target", "This is another page with <a href=Form.html target=\"_top\">one link</a>");
         defineWebPage("Deeper/Form",
@@ -156,7 +165,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testDuplicateFrameNames() throws Exception {
+    void duplicateFrameNames() throws Exception {
         defineWebPage("Linker", "This is a trivial page with <a href=Target.html>one link</a>");
         defineWebPage("Target", "This is another page with <a href=Form.html target=\"_top\">one link</a>");
         defineWebPage("Form",
@@ -179,7 +188,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnnamedFrames() throws Exception {
+    void unnamedFrames() throws Exception {
         defineWebPage("Linker", "This is a trivial page with <a href=Target.html>one link</a>");
         defineWebPage("Target", "This is another page with <a href=Form.html target=\"_top\">one link</a>");
         defineWebPage("Form",
@@ -218,7 +227,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testCrossFrameLinks() throws Exception {
+    void crossFrameLinks() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
 
         _wc.getResponse(_wc.getFrameContents("red").getLinks()[0].getRequest());
@@ -230,7 +239,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetSubframes() throws Exception {
+    void getSubframes() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
         assertEquals(_wc.getFrameContents("red"), response.getSubframeContents("red"), "red subframe");
     }
@@ -272,7 +281,7 @@ public class WebFrameTest extends HttpUnitTest {
      * test for bug report [ 1535018 ] Sub frame recognition - getSubframeContents by Oliver GL and this is how it works
      */
     @Test
-    void testSubFrameRecognition() throws Exception {
+    void subFrameRecognition() throws Exception {
         String frame1Content = "  <frameset name=\"subset\" cols=\"180,*\">\n"
                 + "     <frame src=\"frame2.html\" name=\"Menu\"   frameborder=\"0\" noresize scrolling=\"yes\">\n"
                 + "     <frame src=\"frame3.html\" name=\"Action\" frameborder=\"0\" noresize scrolling=\"auto\">\n"
@@ -306,7 +315,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testNestedSubFrames() throws Exception {
+    void nestedSubFrames() throws Exception {
         defineResource("SuperFrames.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                         + "    <FRAME src=\"Frames.html\" name=\"crimson\">"
@@ -324,7 +333,7 @@ public class WebFrameTest extends HttpUnitTest {
      *             if any method throws an unexpected exception
      */
     @Test
-    void testNestedCrossFrameLinks() throws Exception {
+    void nestedCrossFrameLinks() throws Exception {
         defineResource("SuperFrames.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                         + "    <FRAME src=\"Frames.html\" name=\"red\">"
@@ -346,7 +355,7 @@ public class WebFrameTest extends HttpUnitTest {
      *             if any method throws an unexpected exception
      */
     @Test
-    void testCrossLevelLinks() throws Exception {
+    void crossLevelLinks() throws Exception {
         defineResource("SuperFrames.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                         + "    <FRAME src=\"Frames.html\" name=\"red\">"
@@ -363,7 +372,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkToTopFrame() throws Exception {
+    void linkToTopFrame() throws Exception {
         WebResponse response = _wc.getResponse(getHostPath() + "/Frames.html");
 
         response = _wc.getResponse(_wc.getFrameContents("red").getLinks()[0].getRequest());
@@ -374,7 +383,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testEmptyFrame() throws Exception {
+    void emptyFrame() throws Exception {
         defineResource("HalfFrames.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"20%,80%\">"
                 + "    <FRAME src=\"Linker.html\" name=\"red\">" + "    <FRAME name=blue>" + "</FRAMESET></HTML>");
         _wc.getResponse(getHostPath() + "/HalfFrames.html");
@@ -385,7 +394,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testSelfTargetLink() throws Exception {
+    void selfTargetLink() throws Exception {
         defineWebPage("Linker", "This is a trivial page with <a href=Target.html target=_self>one link</a>");
 
         _wc.getResponse(getHostPath() + "/Frames.html");
@@ -397,7 +406,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testSelfTargetForm() throws Exception {
+    void selfTargetForm() throws Exception {
         defineWebPage("Linker", "<form action=redirect.html target=_self><input type=text name=sample value=z></form>");
         defineResource("redirect.html?sample=z", "", HttpURLConnection.HTTP_MOVED_PERM);
         addResourceHeader("redirect.html?sample=z", "Location: " + getHostPath() + "/Target.html");
@@ -411,7 +420,7 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubFrameRedirect() throws Exception {
+    void subFrameRedirect() throws Exception {
         defineResource("Linker.html", "", HttpURLConnection.HTTP_MOVED_PERM);
         addResourceHeader("Linker.html", "Location: " + getHostPath() + "/Target.html");
 
@@ -432,14 +441,16 @@ public class WebFrameTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetNestedFrameByName() throws Exception {
-        defineNestedFrames();
-        _wc.getResponse(getHostPath() + "/Topmost.html");
-        _wc.getFrameContents("green");
+    void getNestedFrameByName() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineNestedFrames();
+            _wc.getResponse(getHostPath() + "/Topmost.html");
+            _wc.getFrameContents("green");
+        });
     }
 
     @Test
-    void testLinkWithAncestorTarget() throws Exception {
+    void linkWithAncestorTarget() throws Exception {
         defineNestedFrames();
         _wc.getResponse(getHostPath() + "/Topmost.html");
         WebResponse innerResponse = _wc.getFrameContents("blue").getSubframeContents("green");
@@ -453,7 +464,7 @@ public class WebFrameTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testIFrameDetection() throws Exception {
+    void iFrameDetection() throws Exception {
         defineWebPage("Frame", "This is a trivial page with <a href='mailto:russgold@httpunit.org'>one link</a>"
                 + "and <iframe name=center src='Contents.html'><form name=hidden></form></iframe>");
         defineWebPage("Contents", "This is another page with <a href=Form.html>one link</a>");
@@ -529,7 +540,7 @@ public class WebFrameTest extends HttpUnitTest {
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
-    void testIFrameDisabled() throws Exception {
+    void iFrameDisabled() throws Exception {
         defineWebPage("Frame", "This is a trivial page with <a href='mailto:russgold@httpunit.org'>one link</a>"
                 + "and <iframe name=center src='Contents.html'><form name=hidden></form></iframe>");
         defineWebPage("Contents", "This is another page with <a href=Form.html>one link</a>");
@@ -546,7 +557,7 @@ public class WebFrameTest extends HttpUnitTest {
      * Verifies that an open call from a subframe can specify another frame name.
      */
     @Test
-    void testOpenIntoSubframe() throws Exception {
+    void openIntoSubframe() throws Exception {
         defineResource("Frames.html", "<html><head><frameset>" + "    <frame name='banner'>"
                 + "    <frame src='main.html' name='main'>" + "</frameset></html>");
         defineResource("target.txt", "You made it!");
@@ -563,7 +574,7 @@ public class WebFrameTest extends HttpUnitTest {
      * Verifies that an open call from a subframe can specify another frame name.
      */
     @Test
-    void testSelfOpenFromSubframe() throws Exception {
+    void selfOpenFromSubframe() throws Exception {
         defineResource("Frames.html", "<html><head><frameset>" + "    <frame name='banner' src='banner.html'>"
                 + "    <frame name='main'   src='main.html'>" + "</frameset></html>");
         defineResource("target.txt", "You made it!");
@@ -581,7 +592,7 @@ public class WebFrameTest extends HttpUnitTest {
      * Verifies that an open call from a subframe can specify another frame name.
      */
     @Test
-    void testFrameWithHashSource() throws Exception {
+    void frameWithHashSource() throws Exception {
         defineResource("Frames.html", "<html><head><frameset>" + "    <frame name='banner' src='#'>"
                 + "    <frame name='main'   src='main.html'>" + "</frameset></html>");
         defineResource("target.txt", "You made it!");

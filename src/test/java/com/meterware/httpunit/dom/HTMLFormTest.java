@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,6 +20,7 @@
 package com.meterware.httpunit.dom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -93,7 +94,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testTextValues() throws Exception {
+    void textValues() throws Exception {
         _form.appendChild(_textField);
         _form.appendChild(_passwordField);
         _form.appendChild(_hiddenField);
@@ -106,7 +107,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testTextArea() throws Exception {
+    void textArea() throws Exception {
         _form.appendChild(_textArea);
         _textArea.appendChild(_htmlDocument.createTextNode("something here to see"));
         assertEquals("something here to see", _textArea.getValue(), "Initial value");
@@ -136,15 +137,15 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testDefaults() throws Exception {
+    void defaults() throws Exception {
         _textField.setDefaultValue("green");
         assertEquals("green", _textField.getDefaultValue(), "default text value");
         _checkbox[0].setDefaultChecked(true);
-        assertEquals(true, _checkbox[0].getDefaultChecked(), "default checked value");
+        assertTrue(_checkbox[0].getDefaultChecked(), "default checked value");
     }
 
     @Test
-    void testCheckboxes() throws Exception {
+    void checkboxes() throws Exception {
         String[] values = { "on1", "on2" };
         boolean[] initialChecked = { false, true };
 
@@ -175,14 +176,14 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         }
 
         _checkbox[0].click();
-        assertEquals(true, _checkbox[0].getChecked(), "checkbox 0 after 1st click");
+        assertTrue(_checkbox[0].getChecked(), "checkbox 0 after 1st click");
 
         _checkbox[0].click();
-        assertEquals(false, _checkbox[0].getChecked(), "checkbox 0 after 2nd click");
+        assertFalse(_checkbox[0].getChecked(), "checkbox 0 after 2nd click");
     }
 
     @Test
-    void testRadioButtons() throws Exception {
+    void radioButtons() throws Exception {
         for (HTMLInputElement element : _radio1) {
             _form.appendChild(element);
         }
@@ -212,7 +213,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testFormElements() throws Exception {
+    void formElements() throws Exception {
         HTMLElement[] elements = { _textField, _passwordField, _hiddenField, _textArea, _checkbox[0], _checkbox[1],
                 _resetInput, _submitInput };
         _form.appendChild(_htmlDocument.createElement("i")).appendChild(_htmlDocument.createTextNode("Some controls"));
@@ -234,7 +235,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    void testImproperFormElements() throws Exception {
+    void improperFormElements() throws Exception {
         HTMLElement[] elements = { _textField, _passwordField, _hiddenField, _textArea };
         HTMLElement[] improperElements = { _checkbox[0], _checkbox[1], _resetInput, _submitInput };
         _form.appendChild(_htmlDocument.createElement("i")).appendChild(_htmlDocument.createTextNode("Some controls"));
@@ -268,7 +269,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    void testFormDetection() throws Exception {
+    void formDetection() throws Exception {
         _body.insertBefore(_buttonInput, _form);
         _body.appendChild(_textField);
         _body.appendChild(_htmlDocument.createElement("form"));
@@ -278,7 +279,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testResetInput() throws Exception {
+    void resetInput() throws Exception {
         _form.appendChild(_textArea);
         _textArea.setDefaultValue("Original");
         _form.appendChild(_resetInput);
@@ -290,7 +291,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testGetControlByName() throws Exception {
+    void getControlByName() throws Exception {
         _form.appendChild(_textField);
         _form.appendChild(_passwordField);
         _form.appendChild(_hiddenField);

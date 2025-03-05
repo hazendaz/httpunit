@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -51,7 +52,7 @@ import org.xml.sax.SAXException;
 class WebPageTest extends HttpUnitTest {
 
     @Test
-    void testNoResponse() throws Exception {
+    void noResponse() throws Exception {
         WebConversation wc = new WebConversation();
         try {
             WebRequest request = new GetMethodWebRequest(getHostPath() + "/NonExistentSimplePage.html");
@@ -62,7 +63,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testProxyServerAccess() throws Exception {
+    void proxyServerAccess() throws Exception {
         defineResource("http://someserver.com/sample", "Get this", "text/plain");
         WebConversation wc = new WebConversation();
         try {
@@ -83,7 +84,7 @@ class WebPageTest extends HttpUnitTest {
      */
 
     @Test
-    void testHtmlRequirement() throws Exception {
+    void htmlRequirement() throws Exception {
         defineResource("TextPage.txt", "Just text", "text/plain");
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head><body>Something here</body></html>", "text/html");
@@ -133,7 +134,7 @@ class WebPageTest extends HttpUnitTest {
      *             if an unexpected exception occurs during the test.
      */
     @Test
-    void testForceAsHtml() throws Exception {
+    void forceAsHtml() throws Exception {
         HttpUnitOptions.setCheckHtmlContentType(true);
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head><body>Something here</body></html>", "text");
@@ -150,7 +151,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testHtmlDocument() throws Exception {
+    void htmlDocument() throws Exception {
         defineWebPage("SimplePage", "This has no forms but it does\n"
                 + "have <a href=\"/other.html\">an <b>active</b> link</A>\n" + " and <a name=here>an anchor</a>\n"
                 + "<a href=\"basic.html\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a>\n");
@@ -170,7 +171,7 @@ class WebPageTest extends HttpUnitTest {
      * @author Dan Lipofsky 2009-08-19
      */
     @Test
-    void testHeadMethodWebRequest() throws Exception {
+    void headMethodWebRequest() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" + "<body>Hello</body></html>\n");
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(true);
@@ -186,7 +187,7 @@ class WebPageTest extends HttpUnitTest {
 
     // @Ignore
     @Test
-    void testTitle() throws Exception {
+    void title() throws Exception {
         defineResource("/SimpleTitlePage.html", "<html><head><title>A Sample Page</title></head>\n"
                 + "<body>This has no forms but it does\n" + "have <a href=\"/other.html\">an <b>active</b> link</A>\n"
                 + " and <a name=here>an anchor</a>\n"
@@ -201,7 +202,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testLocalFile() throws Exception {
+    void localFile() throws Exception {
         File file = new File("temp.html");
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
@@ -219,7 +220,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testNoLocalFile() throws Exception {
+    void noLocalFile() throws Exception {
         File file = new File("temp.html");
         file.delete();
 
@@ -234,7 +235,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testRefreshHeader() throws Exception {
+    void refreshHeader() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title></head>\n" + "<body>This has no data\n" + "</body></html>\n";
         defineResource("SimplePage.html", page);
@@ -250,7 +251,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaRefreshRequest() throws Exception {
+    void metaRefreshRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" + "<meta Http_equiv=refresh content='2;\"" + refreshURL
                 + "\"'></head>\n" + "<body>This has no data\n" + "</body></html>\n";
@@ -265,7 +266,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaRefreshURLRequest() throws Exception {
+    void metaRefreshURLRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>"
                 + "<meta Http-equiv=refresh content='2;URL=\"NextPage.html\"'></head>\n" + "<body>This has no data\n"
@@ -281,7 +282,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaRefreshAbsoluteURLRequestWithAmpersandEncoding() throws Exception {
+    void metaRefreshAbsoluteURLRequestWithAmpersandEncoding() throws Exception {
         String refreshURL = "http://localhost:8080/someapp/secure/?username=abc&somevalue=abc";
         String page = "<html><head><title>Sample</title>"
                 + "<meta Http-equiv=refresh content='2;URL=\"http://localhost:8080/someapp/secure/?username=abc&amp;somevalue=abc\"'></head>\n"
@@ -297,7 +298,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaRefreshURLRequestNoDelay() throws Exception {
+    void metaRefreshURLRequestNoDelay() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>"
                 + "<meta Http-equiv=refresh content='URL=\"NextPage.html\"'></head>\n" + "<body>This has no data\n"
@@ -313,7 +314,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaRefreshURLRequestDelayOnly() throws Exception {
+    void metaRefreshURLRequestDelayOnly() throws Exception {
         String refreshURL = getHostPath() + "/SimplePage.html";
         String page = "<html><head><title>Sample</title>" + "<meta Http-equiv=refresh content='5'></head>\n"
                 + "<body>This has no data\n" + "</body></html>\n";
@@ -328,7 +329,7 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testAutoRefresh() throws Exception {
+    void autoRefresh() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
         String page = "<html><head><title>Sample</title>" + "<meta Http_equiv=refresh content='2;" + refreshURL
                 + "'></head>\n" + "<body>This has no data\n" + "</body></html>\n";
@@ -347,30 +348,32 @@ class WebPageTest extends HttpUnitTest {
      * Test the meta tag content retrieval
      */
     @Test
-    void testMetaTag() throws Exception {
-        String page = "<html><head><title>Sample</title>" + "<meta Http-equiv=\"Expires\" content=\"now\"/>\n"
-                + "<meta name=\"robots\" content=\"index,follow\"/>" + "<meta name=\"keywords\" content=\"test\"/>"
-                + "<meta name=\"keywords\" content=\"demo\"/>" + "</head>\n" + "<body>This has no data\n"
-                + "</body></html>\n";
-        defineResource("SimplePage.html", page);
+    void metaTag() throws Exception {
+        assertDoesNotThrow(() -> {
+            String page = "<html><head><title>Sample</title>" + "<meta Http-equiv=\"Expires\" content=\"now\"/>\n"
+                    + "<meta name=\"robots\" content=\"index,follow\"/>" + "<meta name=\"keywords\" content=\"test\"/>"
+                    + "<meta name=\"keywords\" content=\"demo\"/>" + "</head>\n" + "<body>This has no data\n"
+                    + "</body></html>\n";
+            defineResource("SimplePage.html", page);
 
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-        WebResponse simplePage = wc.getResponse(request);
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+            WebResponse simplePage = wc.getResponse(request);
 
-        assertMatchingSet("robots meta tag", new String[] { "index,follow" },
-                simplePage.getMetaTagContent("name", "robots"));
-        assertMatchingSet("keywords meta tag", new String[] { "test", "demo" },
-                simplePage.getMetaTagContent("name", "keywords"));
-        assertMatchingSet("Expires meta tag", new String[] { "now" },
-                simplePage.getMetaTagContent("http-equiv", "Expires"));
+            assertMatchingSet("robots meta tag", new String[] { "index,follow" },
+                    simplePage.getMetaTagContent("name", "robots"));
+            assertMatchingSet("keywords meta tag", new String[] { "test", "demo" },
+                    simplePage.getMetaTagContent("name", "keywords"));
+            assertMatchingSet("Expires meta tag", new String[] { "now" },
+                    simplePage.getMetaTagContent("http-equiv", "Expires"));
+        });
     }
 
     /**
      * test the stylesheet retrieval
      */
     @Test
-    void testGetExternalStylesheet() throws Exception {
+    void getExternalStylesheet() throws Exception {
         String page = "<html><head><title>Sample</title>" + "<link rev=\"made\" href=\"/Me@mycompany.com\"/>"
                 + "<link type=\"text/css\" rel=\"stylesheet\" href=\"/style.css\"/>" + "</head>\n"
                 + "<body>This has no data\n" + "</body></html>\n";
@@ -387,7 +390,7 @@ class WebPageTest extends HttpUnitTest {
      * This test verifies that an IO exception is thrown when only a partial response is received.
      */
     @Test
-    void testTruncatedPage() throws Exception {
+    void truncatedPage() throws Exception {
         HttpUnitOptions.setCheckContentLength(true);
         String page = "abcdefghijklmnop";
         defineResource("alphabet.html", page, "text/plain");
@@ -405,49 +408,55 @@ class WebPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetElementByID() throws Exception {
-        defineResource("SimplePage.html",
-                "<html><head><title>A Sample Page</title></head>\n" + "<body><form id='aForm'><input name=color></form>"
-                        + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
-                        + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n"
-                        + "</body></html>\n");
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-        WebResponse simplePage = wc.getResponse(request);
-        assertImplements("element with id 'aForm'", simplePage.getElementWithID("aForm"), WebForm.class);
-        assertImplements("element with id 'link1'", simplePage.getElementWithID("link1"), WebLink.class);
-        assertImplements("element with id '23'", simplePage.getElementWithID("23"), WebImage.class);
+    void getElementByID() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
+                    + "<body><form id='aForm'><input name=color></form>"
+                    + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
+                    + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+            WebResponse simplePage = wc.getResponse(request);
+            assertImplements("element with id 'aForm'", simplePage.getElementWithID("aForm"), WebForm.class);
+            assertImplements("element with id 'link1'", simplePage.getElementWithID("link1"), WebLink.class);
+            assertImplements("element with id '23'", simplePage.getElementWithID("23"), WebImage.class);
+        });
     }
 
     @Test
-    void testGetElementsByName() throws Exception {
-        defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
-                + "<body><form name='aForm'><input name=color></form>"
-                + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
-                + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-        WebResponse simplePage = wc.getResponse(request);
-        assertImplement("element with name 'aForm'", simplePage.getElementsWithName("aForm"), WebForm.class);
-        assertImplement("element with name 'color'", simplePage.getElementsWithName("color"), FormControl.class);
+    void getElementsByName() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
+                    + "<body><form name='aForm'><input name=color></form>"
+                    + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
+                    + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+            WebResponse simplePage = wc.getResponse(request);
+            assertImplement("element with name 'aForm'", simplePage.getElementsWithName("aForm"), WebForm.class);
+            assertImplement("element with name 'color'", simplePage.getElementsWithName("color"), FormControl.class);
+        });
     }
 
     @Test
-    void testGetElementsByAttribute() throws Exception {
-        defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
-                + "<body><form class='first' name='aForm'><input name=color></form>"
-                + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
-                + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-        WebResponse simplePage = wc.getResponse(request);
-        assertImplement("elements with class 'first'", simplePage.getElementsWithAttribute("class", "first"),
-                WebForm.class);
-        assertImplement("elements with name 'color'", simplePage.getElementsWithAttribute("name", "color"),
-                FormControl.class);
-        assertImplement("elements with id 'link1'", simplePage.getElementsWithAttribute("id", "link1"), WebLink.class);
-        assertImplement("elements with src '/images/arrow.gif'",
-                simplePage.getElementsWithAttribute("src", "/images/arrow.gif"), WebImage.class);
+    void getElementsByAttribute() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
+                    + "<body><form class='first' name='aForm'><input name=color></form>"
+                    + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
+                    + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+            WebResponse simplePage = wc.getResponse(request);
+            assertImplement("elements with class 'first'", simplePage.getElementsWithAttribute("class", "first"),
+                    WebForm.class);
+            assertImplement("elements with name 'color'", simplePage.getElementsWithAttribute("name", "color"),
+                    FormControl.class);
+            assertImplement("elements with id 'link1'", simplePage.getElementsWithAttribute("id", "link1"),
+                    WebLink.class);
+            assertImplement("elements with src '/images/arrow.gif'",
+                    simplePage.getElementsWithAttribute("src", "/images/arrow.gif"), WebImage.class);
+        });
     }
 
     /**
@@ -456,26 +465,28 @@ class WebPageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGetElementsWithClassName() throws Exception {
-        defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
-                + "<body><form class='first colorsample' name='aForm'><input name=color></form>"
-                + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
-                + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-        WebResponse simplePage = wc.getResponse(request);
-        assertImplement("elements with class attribute 'first colorsample'",
-                simplePage.getElementsWithAttribute("class", "first colorsample"), WebForm.class);
-        assertImplement("elements with class 'first'", simplePage.getElementsWithClassName("first"), WebForm.class);
-        assertImplement("elements with class 'colorsample'", simplePage.getElementsWithClassName("colorsample"),
-                WebForm.class);
+    void getElementsWithClassName() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
+                    + "<body><form class='first colorsample' name='aForm'><input name=color></form>"
+                    + "have <a id='link1' href='/other.html'>an <b>active</b> link</A>\n"
+                    + "<img id='23' src='/images/arrow.gif' ALT='Next -->' WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+            WebResponse simplePage = wc.getResponse(request);
+            assertImplement("elements with class attribute 'first colorsample'",
+                    simplePage.getElementsWithAttribute("class", "first colorsample"), WebForm.class);
+            assertImplement("elements with class 'first'", simplePage.getElementsWithClassName("first"), WebForm.class);
+            assertImplement("elements with class 'colorsample'", simplePage.getElementsWithClassName("colorsample"),
+                    WebForm.class);
+        });
     }
 
     /**
      * Test the {@link WebResponse.ByteTagParser} to ensure that embedded JavaScript is skipped.
      */
     @Test
-    void testByteTagParser() throws Exception {
+    void byteTagParser() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -500,7 +511,7 @@ class WebPageTest extends HttpUnitTest {
      * Test whether a base tag embedded within JavaScript in the header of a page confuses the parser.
      */
     @Test
-    void testBaseTagWithinJavaScriptInHeader() throws Exception {
+    void baseTagWithinJavaScriptInHeader() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -524,7 +535,7 @@ class WebPageTest extends HttpUnitTest {
      * Test whether a base tag embedded within JavaScript in the body of a page confuses the parser.
      */
     @Test
-    void testBaseTagWithinJavaScriptInBody() throws Exception {
+    void baseTagWithinJavaScriptInBody() throws Exception {
         final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
         final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
         final String targetWindow = "target";
@@ -548,7 +559,7 @@ class WebPageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGetFirstMatchingForm() throws Exception {
+    void getFirstMatchingForm() throws Exception {
         defineResource("SimplePage.html", "<html><title>Hello</title>"
                 + " <body><form action='blah' method='GET'><button type='Submit' value='Blah'>Blah</button></form>"
                 + " <form action='new' method='GET'>"
@@ -575,12 +586,14 @@ class WebPageTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    void testInvalidNoScriptHandling() throws IOException, SAXException {
-        defineResource("/InvalidNoScriptPage.html", "<html><body></body></html><noscript>t</noscript>");
-        WebConversation wc = new WebConversation();
-        WebResponse resp = wc.getResponse(getHostPath() + "/InvalidNoScriptPage.html");
-        // indirectly invoke readTags
-        resp.replaceText("dummy", "dummy");
+    void invalidNoScriptHandling() throws IOException, SAXException {
+        assertDoesNotThrow(() -> {
+            defineResource("/InvalidNoScriptPage.html", "<html><body></body></html><noscript>t</noscript>");
+            WebConversation wc = new WebConversation();
+            WebResponse resp = wc.getResponse(getHostPath() + "/InvalidNoScriptPage.html");
+            // indirectly invoke readTags
+            resp.replaceText("dummy", "dummy");
+        });
     }
 
     /**

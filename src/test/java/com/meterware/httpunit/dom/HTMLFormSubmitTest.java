@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -58,7 +58,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that submitting a simple form works.
      */
     @Test
-    void testSubmitFromForm() throws Exception {
+    void submitFromForm() throws Exception {
         addInput("text", "name").setValue("master");
         addInput("checkbox", "second").setChecked(true);
         _form.submit();
@@ -70,7 +70,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that submitting a simple form from a button selects that button only.
      */
     @Test
-    void testSubmitFromButton() throws Exception {
+    void submitFromButton() throws Exception {
         addInput("text", "name", "master");
         addInput("checkbox", "second").setChecked(true);
         addInput("submit", "save", "none");
@@ -84,7 +84,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that characters in parameter names will be appropriately encoded.
      */
     @Test
-    void testEmbeddedEquals() throws Exception {
+    void embeddedEquals() throws Exception {
         addInput("text", "age=x", "12");
         _form.submit();
         assertEquals("submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )",
@@ -95,7 +95,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that an empty "select" element does not transmit any parameter values.
      */
     @Test
-    void testEmptyChoiceSubmit() throws Exception {
+    void emptyChoiceSubmit() throws Exception {
         addInput("text", "age", "12");
         addSelect("empty");
         _form.submit();
@@ -107,7 +107,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a select will send a value taken from the "value" attribute.
      */
     @Test
-    void testSubmitUsingSelectOptionAttributes() throws Exception {
+    void submitUsingSelectOptionAttributes() throws Exception {
         addInput("text", "age", "12");
         HTMLSelectElement select = addSelect("color");
         addOption(select, "red", null);
@@ -122,7 +122,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a select will send a value taken from the text nodes following the option tags.
      */
     @Test
-    void testSubmitUsingSelectOptionLabels() throws Exception {
+    void submitUsingSelectOptionLabels() throws Exception {
         addInput("text", "age", "12");
         HTMLSelectElement select = addSelect("color");
         select.setMultiple(true);
@@ -139,7 +139,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that a radio button will send its value on submit.
      */
     @Test
-    void testSubmitRadioButtons() throws Exception {
+    void submitRadioButtons() throws Exception {
         addInput("radio", "color", "red").setChecked(true);
         addInput("radio", "color", "blue").setChecked(true);
         addInput("radio", "color", "green");
@@ -152,7 +152,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
      * Verifies that checkboxes will send their values on submit.
      */
     @Test
-    void testSubmitCheckboxes() throws Exception {
+    void submitCheckboxes() throws Exception {
         addInput("checkbox", "color", "red").setChecked(true);
         addInput("checkbox", "color", "blue").setChecked(true);
         addInput("checkbox", "color", "green");

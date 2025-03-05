@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -43,7 +43,7 @@ class HttpsProtocolSupportTest {
      * test the available HttpsProtocolProviders are available
      */
     @Test
-    void testProvider() throws Exception {
+    void provider() throws Exception {
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.SunJSSE_PROVIDER_CLASS;
         Provider[] sslProviders = Security.getProviders("SSLContext.SSLv3");
@@ -57,7 +57,7 @@ class HttpsProtocolSupportTest {
      * test the available HttpsProtocolProviders
      */
     @Test
-    void testProviderIBM() throws Exception {
+    void providerIBM() throws Exception {
         HttpsProtocolSupport.useIBM();
         Class provider = HttpsProtocolSupport.getHttpsProviderClass();
         String expected = HttpsProtocolSupport.IBMJSSE_PROVIDER_CLASS;
@@ -74,7 +74,7 @@ class HttpsProtocolSupportTest {
      * @throws Exception
      */
     @Test
-    void testSocketFactory() throws Exception {
+    void socketFactory() throws Exception {
         SSLSocketFactory factory = HttpsProtocolSupport.getSocketFactory();
         assertNotNull(factory);
     }

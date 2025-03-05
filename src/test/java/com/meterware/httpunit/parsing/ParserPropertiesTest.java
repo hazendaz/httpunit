@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -132,7 +132,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      */
     @Test
     @Disabled
-    void testKeepCase() throws Exception {
+    void keepCase() throws Exception {
         doTestKeepCase(true, new String[] { "active", "anchor" }, new String[] { "active" });
     }
 
@@ -142,7 +142,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testLowerCase() throws Exception {
+    void lowerCase() throws Exception {
         doTestKeepCase(false, new String[] { "active", "anchor" }, new String[] { "active", "anchor" });
     }
 
@@ -153,7 +153,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      */
     @Test
     @Disabled
-    void testForceUpperCase() throws Exception {
+    void forceUpperCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceUpperCase());
         verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "B");
@@ -167,7 +167,7 @@ public class ParserPropertiesTest extends HttpUnitTest {
      */
     @Test
     @Disabled
-    void testForceLowerCase() throws Exception {
+    void forceLowerCase() throws Exception {
         prepareTestCase();
         assertFalse(HTMLParserFactory.getForceLowerCase());
         verifyMatchingBoldNodes(wc, request, new String[] { "active", "anchor" }, "b");

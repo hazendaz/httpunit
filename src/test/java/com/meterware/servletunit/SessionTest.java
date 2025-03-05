@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.servletunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -70,12 +71,12 @@ class SessionTest extends ServletUnitTest {
     }
 
     @Test
-    void testNoInitialState() throws Exception {
+    void noInitialState() throws Exception {
         assertNull(_context.getSession("12345"), "Session with incorrect ID");
     }
 
     @Test
-    void testCreateSession() throws Exception {
+    void createSession() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
         assertNotNull(session, "Session is null");
         assertTrue(session.isNew(), "Session is not marked as new");
@@ -85,7 +86,7 @@ class SessionTest extends ServletUnitTest {
     }
 
     @Test
-    void testSessionState() throws Exception {
+    void sessionState() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
         long accessedAt = session.getLastAccessedTime();
         assertTrue(session.isNew(), "Session is not marked as new");
@@ -102,23 +103,25 @@ class SessionTest extends ServletUnitTest {
     }
 
     @Test
-    void testSessionAttributes() throws Exception {
-        ServletUnitHttpSession session = _context.newSession();
-        session.setAttribute("first", Integer.valueOf(1));
-        session.setAttribute("second", "two");
-        session.setAttribute("third", "III");
+    void sessionAttributes() throws Exception {
+        assertDoesNotThrow(() -> {
+            ServletUnitHttpSession session = _context.newSession();
+            session.setAttribute("first", Integer.valueOf(1));
+            session.setAttribute("second", "two");
+            session.setAttribute("third", "III");
 
-        assertMatchingSet("Attribute names", new String[] { "first", "second", "third" },
-                Collections.list(session.getAttributeNames()).toArray());
+            assertMatchingSet("Attribute names", new String[] { "first", "second", "third" },
+                    Collections.list(session.getAttributeNames()).toArray());
 
-        session.removeAttribute("third");
-        session.setAttribute("first", null);
-        assertMatchingSet("Attribute names", new String[] { "second" },
-                Collections.list(session.getAttributeNames()).toArray());
+            session.removeAttribute("third");
+            session.setAttribute("first", null);
+            assertMatchingSet("Attribute names", new String[] { "second" },
+                    Collections.list(session.getAttributeNames()).toArray());
+        });
     }
 
     @Test
-    void testSessionContext() throws Exception {
+    void sessionContext() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
         assertNotNull(session.getServletContext(), "No context returned");
         assertSame(_servletContext, session.getServletContext(), "Owning context");

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.parsing;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -45,7 +46,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class HTMLParserListenerTest extends HttpUnitTest {
 
     @Test
-    void testBadHTMLPage() throws Exception {
+    void badHTMLPage() throws Exception {
         defineResource("BadPage.html",
                 "<html>" + "<head><title>A Sample Page</head>\n" + "<body><p><b>Wrong embedded tags</p></b>\n"
                         + "have <a blef=\"other.html?a=1&b=2\">an invalid link</A>\n"
@@ -66,33 +67,37 @@ class HTMLParserListenerTest extends HttpUnitTest {
     }
 
     @Test
-    void testGoodHTMLPage() throws Exception {
-        final ErrorHandler errorHandler = new ErrorHandler(/* expectProblems */false);
-        try {
-            defineResource("SimplePage.html",
-                    "<html>\n" + "<head><title>A Sample Page</title></head>\n"
-                            + "<body><p><b>OK embedded tags</b></p>\n"
-                            + "have <a href=\"other.html?a=1&amp;b=2\">an OK link</A>\n"
-                            + "<IMG SRC=\"/images/arrow.gif\" alt=\"\" WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
+    void goodHTMLPage() throws Exception {
+        assertDoesNotThrow(() -> {
+            final ErrorHandler errorHandler = new ErrorHandler(/* expectProblems */false);
+            try {
+                defineResource("SimplePage.html",
+                        "<html>\n" + "<head><title>A Sample Page</title></head>\n"
+                                + "<body><p><b>OK embedded tags</b></p>\n"
+                                + "have <a href=\"other.html?a=1&amp;b=2\">an OK link</A>\n"
+                                + "<IMG SRC=\"/images/arrow.gif\" alt=\"\" WIDTH=1 HEIGHT=4>\n" + "</body></html>\n");
 
-            WebConversation wc = new WebConversation();
-            HTMLParserFactory.addHTMLParserListener(errorHandler);
-            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
-            wc.getResponse(request);
-        } finally {
-            HTMLParserFactory.removeHTMLParserListener(errorHandler);
-        }
+                WebConversation wc = new WebConversation();
+                HTMLParserFactory.addHTMLParserListener(errorHandler);
+                WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.html");
+                wc.getResponse(request);
+            } finally {
+                HTMLParserFactory.removeHTMLParserListener(errorHandler);
+            }
+        });
     }
 
     @Test
-    void testJTidyPrintWriterParsing() throws Exception {
-        URL url = new URL("http://localhost/blank.html");
-        PrintWriter p = new JTidyPrintWriter(url);
-        p.print("line 1234 column 1234");
-        p.print("line 1,234 column 1,234");
-        p.print("line 1,234,567 column 1,234,567");
-        p.print("line 1,2,34 column 12,34");
-        p.print("line 123,,4 column 12,,34");
+    void jTidyPrintWriterParsing() throws Exception {
+        assertDoesNotThrow(() -> {
+            URL url = new URL("http://localhost/blank.html");
+            PrintWriter p = new JTidyPrintWriter(url);
+            p.print("line 1234 column 1234");
+            p.print("line 1,234 column 1,234");
+            p.print("line 1,234,567 column 1,234,567");
+            p.print("line 1,2,34 column 12,34");
+            p.print("line 123,,4 column 12,,34");
+        });
     }
 
     /**
@@ -101,7 +106,7 @@ class HTMLParserListenerTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testHeadMethodWebRequest2() throws Exception {
+    void headMethodWebRequest2() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" + "<body>Hello</body></html>\n");
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(true);

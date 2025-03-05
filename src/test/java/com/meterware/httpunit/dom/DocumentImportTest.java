@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -54,7 +54,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportAttribute() throws Exception {
+    void importAttribute() throws Exception {
         Element element = _document.createElement("rainbow");
         Attr original = _document.createAttribute("color");
         element.setAttributeNode(original);
@@ -75,7 +75,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportText() throws Exception {
+    void importText() throws Exception {
         String textValue = "something to say";
         Text original = _document.createTextNode(textValue);
 
@@ -92,7 +92,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportComment() throws Exception {
+    void importComment() throws Exception {
         String commentText = "something to say";
         Comment original = _document.createComment(commentText);
 
@@ -109,7 +109,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportCData() throws Exception {
+    void importCData() throws Exception {
         String cDataText = "something <to> say";
         CDATASection original = _document.createCDATASection(cDataText);
 
@@ -127,7 +127,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportProcessingInstruction() throws Exception {
+    void importProcessingInstruction() throws Exception {
         String target = "mememe";
         String data = "you you you";
         ProcessingInstruction original = _document.createProcessingInstruction(target, data);
@@ -148,7 +148,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportElementWithAttributes() throws Exception {
+    void importElementWithAttributes() throws Exception {
         Element original = _document.createElement("zork");
         Attr size = _document.createAttribute("interactive");
         original.setAttribute("version", "2.0");
@@ -168,7 +168,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testImportNSElementWithNSAttributes() throws Exception {
+    void importNSElementWithNSAttributes() throws Exception {
         Element original = _document.createElementNS("http://funnyspace/", "fs:zork");
         original.setAttributeNS("http://funnyspace/", "fs:version", "2.0");
         Attr size = _document.createAttributeNS("http://funnyspace/", "fs:interactive");
@@ -195,7 +195,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testShallowImportElementWithChildren() throws Exception {
+    void shallowImportElementWithChildren() throws Exception {
         Element original = _document.createElement("zork");
         original.appendChild(_document.createElement("foo"));
         original.appendChild(_document.createElement("bar"));
@@ -213,7 +213,7 @@ class DocumentImportTest {
      *             thrown if an error occurs during the test.
      */
     @Test
-    void testDeepImportElementWithChildren() throws Exception {
+    void deepImportElementWithChildren() throws Exception {
         Element original = _document.createElement("zork");
         original.appendChild(_document.createElement("foo"));
         original.appendChild(_document.createTextNode("in the middle"));

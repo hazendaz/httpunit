@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.dom;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -60,7 +61,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that we can detect the lack of a document title.
      */
     @Test
-    void testEmptyDocumentTitle() throws Exception {
+    void emptyDocumentTitle() throws Exception {
         assertEquals("", _htmlDocument.getTitle(), "title seen by document");
     }
 
@@ -68,7 +69,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that we can find the document title.
      */
     @Test
-    void testReadDocumentTitle() throws Exception {
+    void readDocumentTitle() throws Exception {
         Element title = createElement("title");
         Text text = _htmlDocument.createTextNode("something here");
         title.appendChild(text);
@@ -82,7 +83,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that we can modify an existing document title.
      */
     @Test
-    void testModifyDocumentTitle() throws Exception {
+    void modifyDocumentTitle() throws Exception {
         Element title = createElement("title");
         Text text = _htmlDocument.createTextNode("something here");
         title.appendChild(text);
@@ -97,7 +98,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that we can set the document title if none exists.
      */
     @Test
-    void testCreateDocumentTitle() throws Exception {
+    void createDocumentTitle() throws Exception {
         _htmlDocument.setTitle("initial value");
         assertEquals("initial value", _htmlDocument.getTitle(), "title seen by document");
     }
@@ -106,7 +107,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieval of the body element.
      */
     @Test
-    void testGetBody() throws Exception {
+    void getBody() throws Exception {
         Element body = createElement("body");
         _htmlElement.appendChild(body);
 
@@ -117,7 +118,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies setting the body element.
      */
     @Test
-    void testSetBody() throws Exception {
+    void setBody() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -128,7 +129,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieving elements by their ID attribute.
      */
     @Test
-    void testGetElementsById() throws Exception {
+    void getElementsById() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
         body.setId("abc");
@@ -151,21 +152,23 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieving elements by their name attribute.
      */
     @Test
-    void testGetElementsByName() throws Exception {
-        HTMLElement body = (HTMLElement) createElement("body");
-        _htmlDocument.setBody(body);
+    void getElementsByName() throws Exception {
+        assertDoesNotThrow(() -> {
+            HTMLElement body = (HTMLElement) createElement("body");
+            _htmlDocument.setBody(body);
 
-        HTMLAnchorElement anchor1 = (HTMLAnchorElement) createElement("a");
-        anchor1.setHref("first");
-        anchor1.setName("see");
-        body.appendChild(anchor1);
+            HTMLAnchorElement anchor1 = (HTMLAnchorElement) createElement("a");
+            anchor1.setHref("first");
+            anchor1.setName("see");
+            body.appendChild(anchor1);
 
-        HTMLImageElement image1 = (HTMLImageElement) createElement("img");
-        image1.setName("see");
-        body.appendChild(image1);
+            HTMLImageElement image1 = (HTMLImageElement) createElement("img");
+            image1.setName("see");
+            body.appendChild(image1);
 
-        assertElementsByName(_htmlDocument, "see", new HTMLElement[] { anchor1, image1 });
-        assertElementsByName(_htmlDocument, "abc", new HTMLElement[0]);
+            assertElementsByName(_htmlDocument, "see", new HTMLElement[] { anchor1, image1 });
+            assertElementsByName(_htmlDocument, "abc", new HTMLElement[0]);
+        });
     }
 
     private void assertElementsByName(HTMLDocument document, String name, HTMLElement[] expectedElements) {
@@ -186,7 +189,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieval of the collection of links ('img' tags).
      */
     @Test
-    void testGetImages() throws Exception {
+    void getImages() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -215,7 +218,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieval of the collection of links ('area' tags and 'a' tags with 'href' attributes).
      */
     @Test
-    void testGetLinks() throws Exception {
+    void getLinks() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -253,7 +256,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieval of the collection of forms.
      */
     @Test
-    void testGetForms() throws Exception {
+    void getForms() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -288,7 +291,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies retrieval of the collection of anchors.
      */
     @Test
-    void testGetAnchors() throws Exception {
+    void getAnchors() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -316,7 +319,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that the document has an empty write buffer by default.
      */
     @Test
-    void testInitialWriteBuffer() throws Exception {
+    void initialWriteBuffer() throws Exception {
         assertNotNull(_htmlDocument.getWriteBuffer(), "No write buffer was defined for the document");
         assertEquals(0, _htmlDocument.getWriteBuffer().length(), "Default buffer size");
     }
@@ -325,7 +328,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that writing to the document updates the write buffer.
      */
     @Test
-    void testWriteBufferUpdate() throws Exception {
+    void writeBufferUpdate() throws Exception {
         _htmlDocument.write("This is a test");
         assertNotNull(_htmlDocument.getWriteBuffer(), "No write buffer was defined for the document");
         assertEquals("This is a test", _htmlDocument.getWriteBuffer().toString(), "Result of write buffer");
@@ -335,7 +338,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that writing to the document updates the write buffer.
      */
     @Test
-    void testWritelnBufferUpdate() throws Exception {
+    void writelnBufferUpdate() throws Exception {
         _htmlDocument.writeln("This is a test");
         _htmlDocument.writeln("And another.");
         assertNotNull(_htmlDocument.getWriteBuffer(), "No write buffer was defined for the document");
@@ -347,7 +350,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that clearing the write buffer leaves it ready for new writes.
      */
     @Test
-    void testBufferClear() throws Exception {
+    void bufferClear() throws Exception {
         _htmlDocument.write("This is a test");
         _htmlDocument.clearWriteBuffer();
         assertEquals(0, _htmlDocument.getWriteBuffer().length(), "Cleared buffer length");
@@ -360,7 +363,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that the href of a link will be based on the URL of the enclosing window.
      */
     @Test
-    void testLinkHref() throws Exception {
+    void linkHref() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         _htmlDocument.getWindow().setProxy(proxy);
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));
@@ -374,7 +377,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that the href of a link will be based on the base URL of the enclosing window, if there is one.
      */
     @Test
-    void testLinkHrefUsingBase() throws Exception {
+    void linkHrefUsingBase() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         _htmlDocument.getWindow().setProxy(proxy);
         HTMLBaseElement baseElement = (HTMLBaseElement) _htmlDocument.createElement("base");
@@ -391,7 +394,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that the href of a javascript link does not use the enclosing window URL.
      */
     @Test
-    void testJavascriptLinkHref() throws Exception {
+    void javascriptLinkHref() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         _htmlDocument.getWindow().setProxy(proxy);
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));
@@ -405,7 +408,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
      * Verifies that a click on an href link will send a request for the referenced page.
      */
     @Test
-    void testClickOnLink() throws Exception {
+    void clickOnLink() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         _htmlDocument.getWindow().setProxy(proxy);
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));

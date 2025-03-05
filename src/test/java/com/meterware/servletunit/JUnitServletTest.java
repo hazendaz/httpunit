@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -56,7 +56,7 @@ class JUnitServletTest {
     private ServletRunner _runner;
 
     @Test
-    void testNoTestClassSpecified() throws Exception {
+    void noTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit");
@@ -64,7 +64,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testBadTestClassSpecified() throws Exception {
+    void badTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=gobbledygook");
@@ -72,7 +72,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testAllTestsPass() throws Exception {
+    void allTestsPass() throws Exception {
         ServletUnitClient client = newClient();
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + PassingTests.class.getName());
         final WebTable resultsTable = wr.getTableWithID("results");
@@ -85,7 +85,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testAllTestsPassTextFormat() throws Exception {
+    void allTestsPassTextFormat() throws Exception {
         ServletUnitClient client = newClient();
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + PassingTests.class.getName());
         String expectedStart = PassingTests.class.getName() + " (1 test): OK";
@@ -94,7 +94,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testSomeFailures() throws Exception {
+    void someFailures() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + FailingTests.class.getName());
@@ -112,7 +112,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testSomeFailuresTextFormat() throws Exception {
+    void someFailuresTextFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=text&test=" + FailingTests.class.getName());
@@ -124,7 +124,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testSomeErrors() throws Exception {
+    void someErrors() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?test=" + ErrorTests.class.getName());
@@ -141,7 +141,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testSomeFailuresXMLFormat() throws Exception {
+    void someFailuresXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=xml&test=" + FailingTests.class.getName());
@@ -160,7 +160,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testSomeErrorsXMLFormat() throws Exception {
+    void someErrorsXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
 
         WebResponse wr = client.getResponse("http://localhost/JUnit?format=xml&test=" + ErrorTests.class.getName());
@@ -197,7 +197,7 @@ class JUnitServletTest {
     }
 
     @Test
-    void testScriptedServletAccess() throws Exception {
+    void scriptedServletAccess() throws Exception {
         WebXMLString wxs = new WebXMLString();
         Properties params = new Properties();
         params.setProperty("color", "red");

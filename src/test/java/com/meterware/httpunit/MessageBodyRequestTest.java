@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,6 +20,7 @@
 package com.meterware.httpunit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.pseudoserver.PseudoServlet;
@@ -66,7 +67,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGenericPostRequest() throws Exception {
+    void genericPostRequest() throws Exception {
         WebConversation wc = new WebConversation();
         String sourceData = "This is an interesting test\nWith two lines";
         WebRequest wr = makeRequest("ReportData", sourceData, "text/sample");
@@ -81,7 +82,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testEmptyContentType() throws Exception {
+    void emptyContentType() throws Exception {
         WebConversation wc = new WebConversation();
         String emptyContentType = ""; // this is an emptyContentType
         WebRequest wr = makeRequest("something", "some data", emptyContentType);
@@ -90,7 +91,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     @Test
-    void testPutRequest() throws Exception {
+    void putRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
         String sourceData = "This is an interesting test\nWith two lines";
         InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
@@ -105,7 +106,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * test for download problem described by Oliver Wahlen
      */
     @Test
-    void testDownloadRequestUsingGetText() throws Exception {
+    void downloadRequestUsingGetText() throws Exception {
         defineResource("ReportData", new BodyEcho());
         byte[] binaryData = new byte[256];
         for (int i = 0; i <= 255; i++) {
@@ -127,7 +128,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     @Test
-    void testDownloadRequest() throws Exception {
+    void downloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
         byte[] binaryData = { 0x01, 0x05, 0x0d, 0x0a, 0x02 };
 
@@ -150,8 +151,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * test for BR [ 1964665 ] HeaderOnlyRequest cannot be constructed
      */
     @Test
-    void testHeaderOnlyWebRequest() throws Exception {
-        new HeaderOnlyWebRequest("http://www.google.com");
+    void headerOnlyWebRequest() throws Exception {
+        assertDoesNotThrow(() -> {
+            new HeaderOnlyWebRequest("http://www.google.com");
+        });
     }
 
     /**

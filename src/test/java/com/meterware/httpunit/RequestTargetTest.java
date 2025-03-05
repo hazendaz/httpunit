@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,7 +38,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testDefaultLinkTarget() throws Exception {
+    void defaultLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\">simple link</a>.");
 
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/Initial.html");
@@ -51,7 +51,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testExplicitLinkTarget() throws Exception {
+    void explicitLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"subframe\">simple link</a>.");
 
         WebLink link = _wc.getResponse(getHostPath() + "/Initial.html").getLinks()[0];
@@ -60,7 +60,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testInheritedLinkTarget() throws Exception {
+    void inheritedLinkTarget() throws Exception {
         defineResource("Start.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                 + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"blue\">" + "</FRAMESET></HTML>");
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"blue\">simple link</a>.");
@@ -78,7 +78,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testInheritedLinkTargetInTable() throws Exception {
+    void inheritedLinkTargetInTable() throws Exception {
         defineResource("Start.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                         + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"subframe\">"
@@ -100,7 +100,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testDefaultFormTarget() throws Exception {
+    void defaultFormTarget() throws Exception {
         defineWebPage("Initial",
                 "Here is a simple form: " + "<form method=POST action = \"/servlet/Login\"><B>"
                         + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
@@ -113,7 +113,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testExplicitPostFormTarget() throws Exception {
+    void explicitPostFormTarget() throws Exception {
         defineWebPage("Initial",
                 "Here is a simple form: " + "<form method=POST action = \"/servlet/Login\" target=\"subframe\"><B>"
                         + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
@@ -125,7 +125,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testExplicitGetFormTarget() throws Exception {
+    void explicitGetFormTarget() throws Exception {
         defineWebPage("Initial",
                 "Here is a simple form: " + "<form method=GET action = \"/servlet/Login\" target=\"subframe\"><B>"
                         + "<input type=\"checkbox\" name=first>Disabled" + "<br><Input type=submit value = \"Log in\">"
@@ -137,7 +137,7 @@ class RequestTargetTest extends HttpUnitTest {
     }
 
     @Test
-    void testInheritedFormTarget() throws Exception {
+    void inheritedFormTarget() throws Exception {
         defineResource("Start.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
                         + "    <FRAME src=\"Initial.html\" name=\"red\">" + "    <FRAME name=\"subframe\">"

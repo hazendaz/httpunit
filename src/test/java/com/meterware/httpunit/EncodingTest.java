@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,7 +41,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class EncodingTest extends HttpUnitTest {
 
     @Test
-    void testDecodeWithCharacterSetAsArg() throws Exception {
+    void decodeWithCharacterSetAsArg() throws Exception {
         String expected = "newpage\u30b5\u30f3\u30d7\u30eb"; // "\u30b5\u30f3\u30d7\u30eb" means "SAMPLE" in Japanese
         // EUC-JP characterSet
 
@@ -56,7 +56,7 @@ class EncodingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testParseContentHeader() throws Exception {
+    void parseContentHeader() throws Exception {
         String headers[] = { "", "text/plain", "text/html; charset=Cp1252", "text/html; charset=iso-8859-8",
                 "text/html; charset=EUC-JP", "text/html charset=windows-1251", "text/html; charset=utf-8",
                 "text/html; charset = utf-8", "text/html; charset=\"iso-8859-8\"" };
@@ -72,7 +72,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSpecifiedEncoding() throws Exception {
+    void specifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
                 + "</body></html>\n";
@@ -88,7 +88,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testQuotedEncoding() throws Exception {
+    void quotedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
                 + "</body></html>\n";
@@ -104,7 +104,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnspecifiedEncoding() throws Exception {
+    void unspecifiedEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
                 + "</body></html>\n";
@@ -121,7 +121,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testMetaEncoding() throws Exception {
+    void metaEncoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title>"
                 + "<meta Http_equiv=content-type content=\"text/html; charset=iso-8859-8\"></head>\n"
@@ -138,7 +138,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testHebrewForm() throws Exception {
+    void hebrewForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
         defineResource("HebrewForm.html", "<html><head></head>" + "<form method=POST action=\"SayHello\">"
                 + "<input type=text name=name><input type=submit></form></body></html>");
@@ -174,7 +174,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testEncodedRequestWithoutForm() throws Exception {
+    void encodedRequestWithoutForm() throws Exception {
         String hebrewName = "\u05d0\u05d1\u05d2\u05d3";
         defineResource("SayHello", new PseudoServlet() {
             @Override
@@ -206,7 +206,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnsupportedEncoding() throws Exception {
+    void unsupportedEncoding() throws Exception {
         defineResource("SimplePage.html", "not much here");
         addResourceHeader("SimplePage.html", "Content-type: text/plain; charset=BOGUS");
 
@@ -219,7 +219,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testJapaneseLinkParamNameWithValue() throws Exception {
+    void japaneseLinkParamNameWithValue() throws Exception {
         String japaneseUrl = "request?%A5%D8%A5%EB%A5%D7=2";
         defineWebPage("Linker", "<a id='link' href='" + japaneseUrl + "'>goThere</a>");
         setResourceCharSet("Linker.html", "EUC-JP", true);
@@ -232,7 +232,7 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testJapaneseLinkParamNameWithoutValue() throws Exception {
+    void japaneseLinkParamNameWithoutValue() throws Exception {
         String japaneseUrl = "request?%A5%D8%A5%EB%A5%D7";
         defineWebPage("Linker", "<a id='link' href='" + japaneseUrl + "'>goThere</a>");
         setResourceCharSet("Linker.html", "EUC-JP", true);
@@ -245,19 +245,19 @@ class EncodingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSimpleEntityReplacement() throws Exception {
+    void simpleEntityReplacement() throws Exception {
         String rawString = "Cox&amp;&amp;Forkum";
         assertEquals("Cox&&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
     @Test
-    void testSkipEntityReplacementOnBadString() throws Exception {
+    void skipEntityReplacementOnBadString() throws Exception {
         String rawString = "Cox&Forkum";
         assertEquals("Cox&Forkum", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }
 
     @Test
-    void testSkipEntityReplacementOnUnhandledEntity() throws Exception {
+    void skipEntityReplacementOnUnhandledEntity() throws Exception {
         String rawString = "&lt;something&gt;";
         assertEquals("&lt;something&gt;", HttpUnitUtils.replaceEntities(rawString), "After substitution");
     }

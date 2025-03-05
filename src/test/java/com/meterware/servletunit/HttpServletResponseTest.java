@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -43,14 +43,14 @@ import org.junit.jupiter.api.Test;
 class HttpServletResponseTest extends ServletUnitTest {
 
     @Test
-    void testDefaultResponse() throws Exception {
+    void defaultResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
         assertEquals("", response.getText(), "Contents");
     }
 
     @Test
-    void testSimpleResponse() throws Exception {
+    void simpleResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         servletResponse.setContentLength(65);
@@ -67,7 +67,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testEncoding() throws Exception {
+    void encoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
                 + "</body></html>\n";
@@ -83,7 +83,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testLocale() throws Exception {
+    void locale() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         assertEquals(Locale.getDefault(), servletResponse.getLocale(), "Default locale");
 
@@ -95,7 +95,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testStreamResponse() throws Exception {
+    void streamResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         ServletOutputStream sos = servletResponse.getOutputStream();
@@ -108,7 +108,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testStreamWriterAfterOutputStream() throws Exception {
+    void streamWriterAfterOutputStream() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
         servletResponse.getOutputStream();
@@ -120,7 +120,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testStreamOutputStreamAfterWriter() throws Exception {
+    void streamOutputStreamAfterWriter() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getWriter();
         try {
@@ -131,7 +131,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testSetBufferSizeAfterWrite() throws Exception {
+    void setBufferSizeAfterWrite() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setBufferSize(120);
         servletResponse.getWriter();
@@ -145,7 +145,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testSetBufferSizeAfterStreamOutput() throws Exception {
+    void setBufferSizeAfterStreamOutput() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setBufferSize(120);
         servletResponse.getOutputStream();
@@ -159,7 +159,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testResetBuffer() throws Exception {
+    void resetBuffer() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getOutputStream().print("something");
         assertEquals(9, servletResponse.getContents().length, "buffer size");
@@ -180,7 +180,7 @@ class HttpServletResponseTest extends ServletUnitTest {
      * @throws Exception
      */
     @Test
-    void testUpdateAfterFlushBuffer() throws Exception {
+    void updateAfterFlushBuffer() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.getWriter();
         assertFalse(servletResponse.isCommitted(), "Should not be committed yet");
@@ -189,7 +189,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testSingleHeaders() throws Exception {
+    void singleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
 
@@ -216,7 +216,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testMultipleHeaders() throws Exception {
+    void multipleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         servletResponse.setContentType("text/html");
 
@@ -240,7 +240,7 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     @Test
-    void testSendRedirect() throws Exception {
+    void sendRedirect() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
         final String location = "http://localhost/newLocation";
         servletResponse.sendRedirect(location);

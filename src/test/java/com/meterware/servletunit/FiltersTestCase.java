@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -72,7 +72,7 @@ class FiltersTestCase {
      * Verifies that the no-filter case is handled by servlet metadata.
      */
     @Test
-    void testNoFilterAssociation() throws Exception {
+    void noFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         WebApplication application = new WebApplication(
@@ -87,7 +87,7 @@ class FiltersTestCase {
      * Verifies that a simple filter is associated with a servlet by its name.
      */
     @Test
-    void testNameFilterAssociation() throws Exception {
+    void nameFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -104,7 +104,7 @@ class FiltersTestCase {
      * Verifies that a simple filter will be called before a servlet with the same URL.
      */
     @Test
-    void testFilterByNameInvocation() throws Exception {
+    void filterByNameInvocation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -128,7 +128,7 @@ class FiltersTestCase {
      * Verifies that a simple filter will be called before a servlet with the same URL.
      */
     @Test
-    void testNamedFilterOrder() throws Exception {
+    void namedFilterOrder() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -158,7 +158,7 @@ class FiltersTestCase {
      * Verifies that request / response wrappering for filters is supported.
      */
     @Test
-    void testFilterRequestWrapping() throws Exception {
+    void filterRequestWrapping() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -186,7 +186,7 @@ class FiltersTestCase {
      * Verifies that the filter chain invokes the servlet.
      */
     @Test
-    void testFilterChain() throws Exception {
+    void filterChain() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Trivial", TrivialFilter.class, "Simple");
@@ -206,7 +206,7 @@ class FiltersTestCase {
      * Verifies that filters are automatically called.
      */
     @Test
-    void testFilterInvocation() throws Exception {
+    void filterInvocation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForServlet("Attribute", AttributeFilter.class, "Simple");
@@ -220,7 +220,7 @@ class FiltersTestCase {
      * Verifies that a simple filter is associated with a url pattern.
      */
     @Test
-    void testUrlFilterAssociation() throws Exception {
+    void urlFilterAssociation() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/helpMe/SimpleServlet", SimpleGetServlet.class);
         wxs.addFilterForUrl("Trivial", TrivialFilter.class, "/helpMe/*");
@@ -235,7 +235,7 @@ class FiltersTestCase {
     }
 
     @Test
-    void testFilterMapping() throws Exception {
+    void filterMapping() throws Exception {
         FilterUrlMap map = new FilterUrlMap();
         map.put("/foo/bar/*", FILTER1);
         map.put("/baz/*", FILTER2);
@@ -261,7 +261,7 @@ class FiltersTestCase {
     }
 
     @Test
-    void testFilterInitialization() throws Exception {
+    void filterInitialization() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("Simple", "/SimpleServlet", SimpleGetServlet.class);
         Properties params = new Properties();

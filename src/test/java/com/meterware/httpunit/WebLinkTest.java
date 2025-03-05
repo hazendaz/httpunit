@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -55,7 +55,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testFindNoLinks() throws Exception {
+    void findNoLinks() throws Exception {
         defineResource("NoLinks.html", "<html><head><title>NoLinks</title></head><body>No links at all</body></html>");
         WebConversation wc = new WebConversation();
 
@@ -74,7 +74,7 @@ class WebLinkTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testLinkToURLWithBlanks() throws Exception {
+    void linkToURLWithBlanks() throws Exception {
         defineWebPage("urlwithblank", "<a href='http://bla.fasel.com/a/b/lorem ipsum.pdf'>link with blank</a>"
                 + "<a href='http://bla.fasel.com/a/b/lorem%20ipsum.pdf'>link with blank</a>");
         WebConversation wc = new WebConversation();
@@ -99,14 +99,14 @@ class WebLinkTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testLinks() throws Exception {
+    void links() throws Exception {
         WebLink[] links = _simplePage.getLinks();
         assertNotNull(links, "Found no links");
         assertEquals(4, links.length, "number of links in page");
     }
 
     @Test
-    void testEmbeddedFontTags() throws Exception {
+    void embeddedFontTags() throws Exception {
         defineResource("FontPage.html", "<html><head><title>A Sample Page</title></head>\n"
                 + "<table><tr><td><a href='/other.html' id='activeID'><font face='Arial'>an <b>active</b> link</font></A></td>\n"
                 + "<td><a href='basic.html' name=\"nextLink\"><IMG SRC=\"/images/arrow.gif\" ALT=\"Next -->\" WIDTH=1 HEIGHT=4></a></td>\n"
@@ -117,7 +117,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkRequest() throws Exception {
+    void linkRequest() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         WebRequest request = link.getRequest();
         assertTrue(request instanceof GetMethodWebRequest, "Should be a get request");
@@ -125,7 +125,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkReference() throws Exception {
+    void linkReference() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         assertEquals("/other.html", link.getURLString(), "URLString");
     }
@@ -136,7 +136,7 @@ class WebLinkTest extends HttpUnitTest {
      * @throws SAXException
      */
     @Test
-    void testGetLinksForCell() throws SAXException {
+    void getLinksForCell() throws SAXException {
         HTMLElement[] elements = _simplePage.getElementsWithName("acell");
         assertEquals(1, elements.length);
         assertTrue(elements[0] instanceof TableCell);
@@ -151,7 +151,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetLinkByText() throws Exception {
+    void getLinkByText() throws Exception {
         WebLink link = _simplePage.getLinkWith("no link");
         assertNull(link, "Non-existent link should not have been found");
         link = _simplePage.getLinkWith("an active link");
@@ -173,7 +173,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testCustomMatching() throws Exception {
+    void customMatching() throws Exception {
         WebLink link = _simplePage.getFirstMatchingLink(WebLink.MATCH_URL_STRING, "nothing");
         assertNull(link, "Non-existent link should not have been found");
 
@@ -191,7 +191,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetLinkByIDAndName() throws Exception {
+    void getLinkByIDAndName() throws Exception {
         WebLink link = _simplePage.getLinkWithID("noSuchID");
         assertNull(link, "Non-existent link should not have been found");
 
@@ -205,7 +205,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testFragmentIdentifier() throws Exception {
+    void fragmentIdentifier() throws Exception {
         WebLink link = (WebLink) _simplePage.getElementWithID("activeID");
         assertNotNull(link, "the active link was not found");
         assertEquals("middle", link.getFragmentIdentifier(), "fragment identifier #1");
@@ -214,13 +214,13 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkText() throws Exception {
+    void linkText() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         assertEquals("an active link", link.getText(), "Link text");
     }
 
     @Test
-    void testLinkImageAsText() throws Exception {
+    void linkImageAsText() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("HasImage", "<a href='somwhere.html' >\r\n<img src='blah.gif' alt='Blah Blah' >\r\n</a>");
 
@@ -236,7 +236,7 @@ class WebLinkTest extends HttpUnitTest {
      * @see [ 1156972 ] isWebLink doesn't recognize all anchor tags for different opinion on weblink count.
      */
     @Test
-    void testLinkFollowing() throws Exception {
+    void linkFollowing() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("Initial", "Go to <a href=\"Next.html\">the next page.</a> <a name=\"bottom\">Bottom</a>");
         defineWebPage("Next", "And go back to <a href=\"Initial.html#Bottom\">the first page.</a>");
@@ -258,7 +258,7 @@ class WebLinkTest extends HttpUnitTest {
      * test for bug report [ 1232591 ] getTarget() gives "_top" even if target is not present by Rifi
      */
     @Test
-    void testGetTarget_top() throws Exception {
+    void getTargetTop() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("target", "<a href=\"a.html\">");
         WebResponse targetPage = wc.getResponse(getHostPath() + "/target.html");
@@ -273,7 +273,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinksWithFragmentsAndParameters() throws Exception {
+    void linksWithFragmentsAndParameters() throws Exception {
         WebConversation wc = new WebConversation();
         defineResource("Initial.html?age=3", "<html><head><title>Initial</title></head><body>"
                 + "Go to <a href=\"Next.html\">the next page.</a> <a name=\"bottom\">Bottom</a>" + "</body></html>");
@@ -293,7 +293,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinksWithSlashesInQuery() throws Exception {
+    void linksWithSlashesInQuery() throws Exception {
         WebConversation wc = new WebConversation();
         defineResource("sample/Initial.html?age=3/5", "<html><head><title>Initial</title></head><body>"
                 + "Go to <a href=\"Next.html\">the next page.</a>" + "</body></html>");
@@ -309,7 +309,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testDocumentBase() throws Exception {
+    void documentBase() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("alternate/Target", "Found me!");
         defineResource("Initial.html",
@@ -328,7 +328,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testTargetBase() throws Exception {
+    void targetBase() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("alternate/Target", "Found me!");
         defineResource("Initial.html", "<html><head><title>Test for Base</title>"
@@ -342,7 +342,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testParametersOnLinks() throws Exception {
+    void parametersOnLinks() throws Exception {
         defineResource("ParameterLinks.html",
                 "<html><head><title>Param on Link Page</title></head>\n" + "<body>"
                         + "<a href=\"/other.html\">no parameter link</A>\n"
@@ -392,7 +392,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testEncodedLinkParameters() throws Exception {
+    void encodedLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
                 + "<a href=\"/request?%24dollar=%25percent&%23hash=%26ampersand\">request</a>" + "</body></html>");
@@ -406,7 +406,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testValuelessLinkParameters() throws Exception {
+    void valuelessLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
                 + "<a href=\"/request?arg1&valueless=\">request</a>" + "</body></html>");
@@ -419,7 +419,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkParameterOrder() throws Exception {
+    void linkParameterOrder() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
                 + "<a href='/request?arg0=0\n&arg1&arg0=2&valueless='>request</a>" + "</body></html>");
@@ -433,7 +433,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkParameterValidation() throws Exception {
+    void linkParameterValidation() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("encodedLinks", "<html><head><title>Encode Test</title></head>" + "<body>"
                 + "<a href='/request?arg0=0&arg1&arg0=2&valueless='>request</a>" + "</body></html>");
@@ -449,7 +449,7 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageMapLinks() throws Exception {
+    void imageMapLinks() throws Exception {
         WebConversation wc = new WebConversation();
         defineWebPage("pageWithMap", "Here is a page with <a href=\"somewhere\">a link</a>"
                 + " and a map: <IMG src=\"navbar1.gif\" usemap=\"#map1\" alt=\"navigation bar\">"
@@ -471,7 +471,7 @@ class WebLinkTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testLinkBug() throws Exception {
+    void linkBug() throws Exception {
         WebConversation wc = new WebConversation();
         String html = "\"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html40/strict.dtd\">\n"
                 + "<html><body>\n"

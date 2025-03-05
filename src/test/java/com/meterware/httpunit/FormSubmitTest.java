@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -49,7 +50,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testEmbeddedEquals() throws Exception {
+    void embeddedEquals() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=\"age=x\" value=12>"
                 + "<Input type=submit>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -59,7 +60,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testEmptyChoiceSubmit() throws Exception {
+    void emptyChoiceSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<select name=empty></select>" + "<Input type=submit>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -69,7 +70,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormProperties() throws Exception {
+    void formProperties() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<select name=empty></select>" + "<Input type=submit>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -82,7 +83,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitString() throws Exception {
+    void submitString() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age>"
                 + "<Input type=submit value=Go>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -92,7 +93,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitStringWithQueryOnlyRelativeURL() throws Exception {
+    void submitStringWithQueryOnlyRelativeURL() throws Exception {
         defineWebPage("/blah/blah/blah",
                 "<form method=GET action = '?recall=true'>" + "<Input type=submit value=Go>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/blah/blah/blah.html");
@@ -101,7 +102,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitStringAfterSetAction() throws Exception {
+    void submitStringAfterSetAction() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age>"
                 + "<Input type=submit value=Go>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -112,7 +113,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNoNameSubmitString() throws Exception {
+    void noNameSubmitString() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text value=dontSend>"
                 + "<Input type=text name=age>" + "<Input type=submit></form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -127,7 +128,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSubmitButtonDetection() throws Exception {
+    void submitButtonDetection() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=update>"
@@ -146,7 +147,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testAnchor() throws Exception {
+    void anchor() throws Exception {
         defineWebPage("page", "<form method=GET action = \"#myanchor\">" + "<Input type=submit id=doit>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/page.html");
         WebForm form = page.getForms()[0];
@@ -163,7 +164,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testFakeSubmitButtonAddition() throws Exception {
+    void fakeSubmitButtonAddition() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -174,7 +175,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNonSubmitButtonDetection() throws Exception {
+    void nonSubmitButtonDetection() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update>" + "<Input type=reset>"
@@ -191,7 +192,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testResetButtonDetection() throws Exception {
+    void resetButtonDetection() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update>" + "<Input type=reset id=clear>"
@@ -212,7 +213,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testDisabledSubmitButtonDetection() throws Exception {
+    void disabledSubmitButtonDetection() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=submit name=update>" + "<Input type=submit name=recalculate disabled>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -238,7 +239,7 @@ class FormSubmitTest extends HttpUnitTest {
      * test for bug report [2264431] double submit problem version 1.7 would have problem with double submits
      */
     @Test
-    void testDoubleSubmitProblem() throws Exception {
+    void doubleSubmitProblem() throws Exception {
         boolean states[] = { false, true };
         String expected[] = { "", "1" };
         for (int i = 0; i < states.length; i++) {
@@ -266,7 +267,7 @@ class FormSubmitTest extends HttpUnitTest {
      * test self disabling submit Buttons test for bug report [ 1289151 ] Order of events in button.click() is wrong
      */
     @Test
-    void testSelfDisablingSubmitButton() throws Exception {
+    void selfDisablingSubmitButton() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"Default.html\">"
                 + "<Input type=submit name='update' onclick='javascript:this.disabled=true;'></form>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -296,7 +297,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testButtonDisabledFlagAccess() throws Exception {
+    void buttonDisabledFlagAccess() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=button id=button1 name=button1 >"
                 + "<Input type=button name=button2 disabled>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -309,7 +310,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testButtonIDDetection() throws Exception {
+    void buttonIDDetection() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=submit id=main name=update>" + "<Input type=submit name=recalculate>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -323,7 +324,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testButtonTagDetection() throws Exception {
+    void buttonTagDetection() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Button type=submit name=update></button>" + "<button name=recalculate></button>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -333,7 +334,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageButtonDetection() throws Exception {
+    void imageButtonDetection() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=image name=update src=\"\">" + "<Input type=image name=recalculate src=\"\">"
@@ -345,7 +346,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageButtonDefaultSubmit() throws Exception {
+    void imageButtonDefaultSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=image name=update value=name src=\"\">" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -356,7 +357,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageButtonNoValue() throws Exception {
+    void imageButtonNoValue() throws Exception {
         defineWebPage("Default",
                 "<form name='login' method='get' action='ask'>" + "<input type='text' name='email' value='bread'>"
                         + "<input type='image' name='login' src='../../se/images/buttons/login.gif'"
@@ -374,7 +375,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testUnnamedImageButtonDefaultSubmit() throws Exception {
+    void unnamedImageButtonDefaultSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=image value=name src=\"\">" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -390,7 +391,7 @@ class FormSubmitTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testImageButtonPositionalSubmit() throws Exception {
+    void imageButtonPositionalSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=image name=update value=name src=\"\">" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -404,7 +405,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageButtonNoValuePositionalSubmit() throws Exception {
+    void imageButtonNoValuePositionalSubmit() throws Exception {
         defineWebPage("Default", "<form method='GET' action='test.jsp'>"
                 + "<input type='image' src='image.gif' name='aButton'>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -414,17 +415,19 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageButtonNoValueUncheckedPositionalSubmit() throws Exception {
-        defineWebPage("Default", "<form method='GET' action='test.jsp'>"
-                + "<input type='image' src='image.gif' name='aButton'>" + "</form>");
-        WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
-        WebForm form = page.getForms()[0];
-        WebRequest request = form.newUnvalidatedRequest(form.getSubmitButton("aButton"), 20, 5);
-        assertEqualQueries(getHostPath() + "/test.jsp?aButton.x=20&aButton.y=5", request.getURL().toExternalForm());
+    void imageButtonNoValueUncheckedPositionalSubmit() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("Default", "<form method='GET' action='test.jsp'>"
+                    + "<input type='image' src='image.gif' name='aButton'>" + "</form>");
+            WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
+            WebForm form = page.getForms()[0];
+            WebRequest request = form.newUnvalidatedRequest(form.getSubmitButton("aButton"), 20, 5);
+            assertEqualQueries(getHostPath() + "/test.jsp?aButton.x=20&aButton.y=5", request.getURL().toExternalForm());
+        });
     }
 
     @Test
-    void testSubmitButtonAttributes() throws Exception {
+    void submitButtonAttributes() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=submit name=update value=age>" + "</form>");
         WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
@@ -436,7 +439,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitButtonSelectionByName() throws Exception {
+    void submitButtonSelectionByName() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=age>" + "<Input type=submit name=recompute value=age>"
@@ -452,7 +455,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitButtonSelectionByNameAndValue() throws Exception {
+    void submitButtonSelectionByNameAndValue() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=age>" + "<Input type=submit name=update value=name>"
@@ -470,7 +473,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNamedButtonSubmitString() throws Exception {
+    void namedButtonSubmitString() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=age>" + "<Button type=submit name=update value=name>"
@@ -494,7 +497,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnnamedButtonSubmit() throws Exception {
+    void unnamedButtonSubmit() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=age>" + "<Input type=submit name=update value=name>"
@@ -509,7 +512,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testForeignSubmitButtonDetection() throws Exception {
+    void foreignSubmitButtonDetection() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                         + "<Input type=submit name=update value=age>" + "<Input type=submit name=update value=name>"
@@ -543,7 +546,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNoActionSupplied() throws Exception {
+    void noActionSupplied() throws Exception {
         defineWebPage("abc/form", "<form name=\"test\">" + "  <input type=\"text\" name=\"aTextField\">"
                 + "  <input type=\"submit\" name=\"apply\" value=\"Apply\">" + "</form>");
 
@@ -555,7 +558,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNoActionSuppliedWhenBaseHasParams() throws Exception {
+    void noActionSuppliedWhenBaseHasParams() throws Exception {
         defineResource("abc/form?param1=value&param2=value",
                 "<form name=\"test\">" + "  <input type=\"text\" name=\"aTextField\">"
                         + "  <input type=\"submit\" name=\"apply\" value=\"Apply\">" + "</form>");
@@ -569,7 +572,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testNoActionSuppliedWhenBaseHasParamsSetByTheForm() throws Exception {
+    void noActionSuppliedWhenBaseHasParamsSetByTheForm() throws Exception {
         defineResource("abc/form?param1=value&param2=value",
                 "<form name=\"test\">" + "  <input type=\"text\" name='param2'>"
                         + "  <input type=\"submit\" name=\"apply\" value=\"Apply\">" + "</form>");
@@ -582,7 +585,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testPostActionParametersAfterSetAction() throws Exception {
+    void postActionParametersAfterSetAction() throws Exception {
         defineWebPage("abc/form",
                 "<form name=\"test\" method='POST' action='stop?ready=yes'>"
                         + "  <input type=\"text\" name=\"aTextField\">"
@@ -597,7 +600,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testPostParameterEncoding() throws Exception {
+    void postParameterEncoding() throws Exception {
         defineWebPage("abc/form",
                 "<form name=\"test\" method='POST' action='/doit'>" + "  <input type='text' name='text_field-name*'>"
                         + "  <input type='submit' name='apply' value='Apply'>" + "</form>");
@@ -618,7 +621,7 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     @Test
-    void testMailtoActionRejected() throws Exception {
+    void mailtoActionRejected() throws Exception {
         defineWebPage("abc/form",
                 "<form name='test' action='mailto:russgold@httpunit.org'>" + "  <input type='text' name='text_field'>"
                         + "  <input type='submit' name='apply' value='Apply'>" + "</form>");
@@ -639,22 +642,24 @@ class FormSubmitTest extends HttpUnitTest {
      * test that the enabled/disabled state of a button is accessible
      */
     @Test
-    void testEnabledDisabled() throws Exception {
-        // a web page with two checkboxes
-        defineWebPage("Default", "<form method=GET action = \"/ask\">"
-                + "<input type=\"checkbox\" id=\"checkDisabled\" name=checkDisabled>Disabled"
-                + "<input type=\"checkbox\" id=\"checkEnabled\"  name=checkEnabled checked>Enabled" + "</form>");
-        WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
-        String[] ids = { "checkDisabled", "checkEnabled" };
-        for (String id : ids) {
-            Object o = page.getElementWithID(id);
-            if (!(o instanceof FormControl)) {
-                throw new Exception("element with id " + id + "has invalid type " + o.getClass().getName()
-                        + " expected was FormControl");
-            }
-            FormControl box = (FormControl) o;
-            box.isDisabled();
-        } // for
+    void enabledDisabled() throws Exception {
+        assertDoesNotThrow(() -> {
+            // a web page with two checkboxes
+            defineWebPage("Default", "<form method=GET action = \"/ask\">"
+                    + "<input type=\"checkbox\" id=\"checkDisabled\" name=checkDisabled>Disabled"
+                    + "<input type=\"checkbox\" id=\"checkEnabled\"  name=checkEnabled checked>Enabled" + "</form>");
+            WebResponse page = _wc.getResponse(getHostPath() + "/Default.html");
+            String[] ids = { "checkDisabled", "checkEnabled" };
+            for (String id : ids) {
+                Object o = page.getElementWithID(id);
+                if (!(o instanceof FormControl)) {
+                    throw new Exception("element with id " + id + "has invalid type " + o.getClass().getName()
+                            + " expected was FormControl");
+                }
+                FormControl box = (FormControl) o;
+                box.isDisabled();
+            } // for
+        }); // for
     }
 
     // ---------------------------------------------- private members ------------------------------------------------

@@ -89,6 +89,8 @@
     <properties>
         <java.version>11</java.version>
         <java.release.version>11</java.release.version>
+        <javadoc.java.release.version>11</javadoc.java.release.version>
+        <legacyMode>true</legacyMode>
     </properties>
 
     <dependencies>

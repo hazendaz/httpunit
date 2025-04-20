@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

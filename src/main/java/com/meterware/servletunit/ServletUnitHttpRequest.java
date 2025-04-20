@@ -24,6 +24,22 @@ import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
 
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,21 +57,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 
 /**
  * This class represents a servlet request created from a WebRequest.
@@ -311,15 +312,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         return false;
     }
 
-    /**
-     * @deprecated use #isRequestedSessionIdFromURL
-     **/
-    @Deprecated
-    @Override
-    public boolean isRequestedSessionIdFromUrl() {
-        return isRequestedSessionIdFromURL();
-    }
-
     // --------------------------------- ServletRequest methods ----------------------------------------------------
 
     /**
@@ -469,17 +461,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     @Override
     public int getServerPort() {
         return _serverPort;
-    }
-
-    /**
-     * @deprecated As of Version 2.1 of the Java Servlet API, use {@link javax.servlet.ServletContext#getRealPath}
-     *             instead.
-     */
-    @Deprecated
-    @Override
-    public String getRealPath(String path) {
-        throwNotImplementedYet();
-        return "";
     }
 
     /**
@@ -963,6 +944,24 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     @Override
     public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) throws IOException, ServletException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getRequestId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
         // TODO Auto-generated method stub
         return null;
     }

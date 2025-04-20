@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,13 +19,13 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * This class represents a request dispatched via a RequestDispatcherImpl.
@@ -81,11 +81,11 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
-    final static String REQUEST_URI = "javax.servlet.include.request_uri";
-    final static String CONTEXT_PATH = "javax.servlet.include.context_path";
-    final static String SERVLET_PATH = "javax.servlet.include.servlet_path";
-    final static String PATH_INFO = "javax.servlet.include.path_info";
-    final static String QUERY_STRING = "javax.servlet.include.query_string";
+    final static String REQUEST_URI = "jakarta.servlet.include.request_uri";
+    final static String CONTEXT_PATH = "jakarta.servlet.include.context_path";
+    final static String SERVLET_PATH = "jakarta.servlet.include.servlet_path";
+    final static String PATH_INFO = "jakarta.servlet.include.path_info";
+    final static String QUERY_STRING = "jakarta.servlet.include.query_string";
 
     private Hashtable _attributes = new Hashtable();
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,12 +22,12 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * A response from to a request from the simulated servlet environment.

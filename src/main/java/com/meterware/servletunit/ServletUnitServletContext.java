@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,10 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.*;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,25 +31,11 @@ import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
-import javax.servlet.descriptor.JspConfigDescriptor;
 
 /**
  * This class is a private implementation of the ServletContext class.
@@ -68,7 +58,7 @@ public class ServletUnitServletContext implements ServletContext {
      * In a security conscious environment, the servlet container may return null for a given URL.
      **/
     @Override
-    public javax.servlet.ServletContext getContext(java.lang.String A) {
+    public jakarta.servlet.ServletContext getContext(java.lang.String A) {
         return null;
     }
 
@@ -161,7 +151,7 @@ public class ServletUnitServletContext implements ServletContext {
      * contexts. This method returns null if the ServletContext cannot return a RequestDispatcher.
      **/
     @Override
-    public javax.servlet.RequestDispatcher getRequestDispatcher(String path) {
+    public jakarta.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
             URL url = new URL("http", "localhost", _application.getContextPath() + path);
             return new RequestDispatcherImpl(_application, url);
@@ -180,7 +170,7 @@ public class ServletUnitServletContext implements ServletContext {
      *            - the name of the dispatcher to get
      **/
     @Override
-    public javax.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
+    public jakarta.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
         final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);
         if (servletConfig == null) {
             return null;
@@ -201,7 +191,7 @@ public class ServletUnitServletContext implements ServletContext {
 
         final Exception instantiationException = tempException;
 
-        return new javax.servlet.RequestDispatcher() {
+        return new jakarta.servlet.RequestDispatcher() {
 
             @Override
             public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
@@ -246,48 +236,12 @@ public class ServletUnitServletContext implements ServletContext {
     }
 
     /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    @Deprecated
-    @Override
-    public javax.servlet.Servlet getServlet(java.lang.String A) {
-        return null;
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.0
-     **/
-    @Deprecated
-    @Override
-    public Enumeration<Servlet> getServlets() {
-        return Collections.emptyEnumeration();
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    @Deprecated
-    @Override
-    public Enumeration<String> getServletNames() {
-        return Collections.emptyEnumeration();
-    }
-
-    /**
      * Writes the specified message to a servlet log file, usually an event log. The name and type of the servlet log
      * file is specific to the servlet container.
      **/
     @Override
     public void log(String message) {
         _logStream.println(message);
-    }
-
-    /**
-     * @deprecated use log( String, Throwable )
-     **/
-    @Deprecated
-    @Override
-    public void log(Exception e, String message) {
-        log(message, e);
     }
 
     /**
@@ -515,17 +469,17 @@ public class ServletUnitServletContext implements ServletContext {
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className) {
+    public FilterRegistration.Dynamic addFilter(String filterName, String className) {
         return null;
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
+    public FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
         return null;
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
+    public FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
         return null;
     }
 

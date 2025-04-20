@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,17 +22,11 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
 
-import java.io.IOException;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * An interface which represents the invocation of a servlet.
@@ -117,11 +111,11 @@ public interface InvocationContext {
 
     /**
      * Pushes the current filter onto the execution stack and switches to the next filter or the selected servlet. This
-     * can be used to simulate the effect of the {@link javax.servlet.FilterChain#doFilter doFilter} call. <br>
+     * can be used to simulate the effect of the {@link jakarta.servlet.FilterChain#doFilter doFilter} call. <br>
      * <b>Note:</b> this method specifies {@link ServletRequest} and {@link ServletResponse} because those are the types
      * passed to {@link Filter#doFilter}; however, HttpUnit requires the objects to implement {@link HttpServletRequest}
      * and {@link HttpServletResponse} because they will eventually be passed to an
-     * {@link javax.servlet.http.HttpServlet}.
+     * {@link jakarta.servlet.http.HttpServlet}.
      *
      * @param request
      *            the request to pass to the next filter. May be a wrapper.

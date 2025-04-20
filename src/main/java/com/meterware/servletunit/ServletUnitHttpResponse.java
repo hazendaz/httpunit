@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,6 +21,11 @@ package com.meterware.servletunit;
 
 import com.meterware.httpunit.HttpUnitUtils;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -39,11 +44,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 class ServletUnitHttpResponse implements HttpServletResponse {
 
     // rfc1123-date is "Sun, 06 Nov 1994 08:49:37 GMT"
@@ -52,15 +52,6 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private Locale _locale = Locale.getDefault();
 
     private static final Hashtable ENCODING_MAP = new Hashtable();
-
-    /**
-     * @deprecated Use encodeURL(String url)
-     */
-    @Deprecated
-    @Override
-    public String encodeUrl(String url) {
-        return encodeURL(url);
-    }
 
     /**
      * Adds the specified cookie to the response. It can be called multiple times to set more than one cookie.
@@ -76,15 +67,6 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     @Override
     public boolean containsHeader(String name) {
         return _headers.containsKey(name.toUpperCase());
-    }
-
-    /**
-     * @deprecated Use encodeRedirectURL(String url)
-     **/
-    @Deprecated
-    @Override
-    public String encodeRedirectUrl(String url) {
-        return encodeRedirectURL(url);
     }
 
     /**
@@ -157,17 +139,6 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     @Override
     public void setStatus(int sc) {
         _status = sc;
-    }
-
-    /**
-     * @deprecated As of version 2.1, due to ambiguous meaning of the message parameter. To set a status code use
-     *             setStatus(int), to send an error with a description use sendError(int, String). Sets the status code
-     *             and message for this response.
-     **/
-    @Deprecated
-    @Override
-    public void setStatus(int sc, String msg) {
-        setStatus(sc);
     }
 
     /**
@@ -657,6 +628,14 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         setLongHeader("Content-Length", len);
     }
 
+    public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
+        setStatus(sc);
+        setHeader("Location", location);
+        if (clearBuffer) {
+            resetBuffer();
+        }
+    }
+
 }
 
 class ServletUnitOutputStream extends ServletOutputStream {
@@ -674,12 +653,11 @@ class ServletUnitOutputStream extends ServletOutputStream {
 
     @Override
     public boolean isReady() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
-        // TODO Auto-generated method stub
+        // Do nothing
     }
 }

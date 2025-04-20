@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,6 +23,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.HttpUnitTest;
 
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,21 +49,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 
 import org.junit.jupiter.api.Test;
 
@@ -238,11 +239,6 @@ class RequestContextTest extends HttpUnitTest {
         }
 
         @Override
-        public boolean isRequestedSessionIdFromUrl() {
-            return false;
-        }
-
-        @Override
         public Object getAttribute(String s) {
             return null;
         }
@@ -360,11 +356,6 @@ class RequestContextTest extends HttpUnitTest {
         }
 
         @Override
-        public String getRealPath(String s) {
-            return null;
-        }
-
-        @Override
         public int getRemotePort() {
             return 0; // To change body of implemented methods use File | Settings | File Templates.
         }
@@ -471,6 +462,24 @@ class RequestContextTest extends HttpUnitTest {
 
         @Override
         public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) throws IOException, ServletException {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public String getRequestId() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public String getProtocolRequestId() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public ServletConnection getServletConnection() {
             // TODO Auto-generated method stub
             return null;
         }

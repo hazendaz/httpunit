@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,11 +22,11 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebRequest;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Dictionary;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * An interface for an object which acts as a factory of InvocationContexts

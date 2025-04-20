@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,14 +19,13 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
+
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
 class ServletUnitHttpSession implements HttpSession {
 
@@ -120,54 +119,6 @@ class ServletUnitHttpSession implements HttpSession {
         _listenerDispatcher.sendSessionDestroyed(this);
         _invalid = true;
         _values.clear();
-    }
-
-    /**
-     * @deprecated no replacement.
-     **/
-    @Deprecated
-    @Override
-    public HttpSessionContext getSessionContext() {
-        return null;
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use getAttribute
-     **/
-    @Deprecated
-    @Override
-    public Object getValue(String name) {
-        return getAttribute(name);
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use setAttribute
-     **/
-    @Deprecated
-    @Override
-    public void putValue(String name, Object value) {
-        setAttribute(name, value);
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use removeAttribute
-     **/
-    @Deprecated
-    @Override
-    public void removeValue(String name) {
-        removeAttribute(name);
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use getAttributeNames.
-     **/
-    @Deprecated
-    @Override
-    public String[] getValueNames() {
-        if (_invalid) {
-            throw new IllegalStateException();
-        }
-        return (String[]) _values.keySet().toArray(new String[_values.size()]);
     }
 
     /**

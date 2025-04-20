@@ -19,8 +19,8 @@
  */
 package com.meterware.servletunit;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletException;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>

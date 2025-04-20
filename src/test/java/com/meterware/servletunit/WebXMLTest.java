@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2024 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,6 +35,13 @@ import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,13 +53,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -248,7 +248,7 @@ public class WebXMLTest {
         assertEquals("vanilla", sr.getContextParameter("icecream"), "Context parameter 'icecream'");
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
-        javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+        jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
         assertNotNull(sc, "ServletContext should not be null");
         assertEquals("vanilla", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
         assertEquals("waffle", sc.getInitParameter("cone"), "init parameter: cone");
@@ -273,7 +273,7 @@ public class WebXMLTest {
 
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
 
-        javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+        jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
         assertNotNull(sc, "ServletContext should not be null");
         assertEquals("strawberry", sc.getInitParameter("icecream"), "ServletContext.getInitParameter()");
         assertNull(sc.getInitParameter("shoesize"), "ServletContext.getInitParameter() should be null");

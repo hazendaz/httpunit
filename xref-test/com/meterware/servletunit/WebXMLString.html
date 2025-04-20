@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             Map.Entry entry = (Map.Entry) i.next();
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             result.append(<span class="jxr_string">"  &lt;context-param&gt;\n    &lt;param-name&gt;"</span>).append(entry.getKey());
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n    &lt;param-value&gt;"</span>).append(entry.getValue())
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>             .append(<span class="jxr_string">"&lt;/param-value&gt;\n  &lt;/context-param&gt;\n"</span>);
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n  &lt;/context-param&gt;\n"</span>);
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             Object name = _filterNames.get(i);
@@ -128,7 +128,7 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         }
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>             result.append(<span class="jxr_string">"  &lt;filter-mapping&gt;\n    &lt;filter-name&gt;"</span>).append(_filterNames.get(i))
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>             .append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>                     .append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>             result.append(<span class="jxr_string">"    "</span>).append(_filterMappings.get(_filterNames.get(i))).append(<span class="jxr_string">"\n  &lt;/filter-mapping&gt;\n"</span>);
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         }
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">for</strong> (Object _listener : _listeners) {
@@ -140,16 +140,16 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>             Object name = _servletNames.get(i);
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>             result.append(<span class="jxr_string">"  &lt;servlet&gt;\n    &lt;servlet-name&gt;"</span>).append(name).append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>             result.append(<span class="jxr_string">"    &lt;servlet-class&gt;"</span>).append(((Class) _servlets.get(i)).getName())
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>             .append(<span class="jxr_string">"&lt;/servlet-class&gt;\n"</span>);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                     .append(<span class="jxr_string">"&lt;/servlet-class&gt;\n"</span>);
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             appendParams(result, <span class="jxr_string">"init-param"</span>, (Hashtable) _initParams.get(name));
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>             appendLoadOnStartup(result, _loadOnStartup.get(name));
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>             result.append(<span class="jxr_string">"  &lt;/servlet&gt;\n"</span>);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         }
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = _mappings.size() - 1; i &gt;= 0; i--) {
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>             result.append(<span class="jxr_string">"  &lt;servlet-mapping&gt;\n    &lt;servlet-name&gt;"</span>).append(_servletNames.get(i))
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>             .append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                     .append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>             result.append(<span class="jxr_string">"    &lt;url-pattern&gt;"</span>).append(_mappings.get(i))
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>             .append(<span class="jxr_string">"&lt;/url-pattern&gt;\n  &lt;/servlet-mapping&gt;\n"</span>);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                     .append(<span class="jxr_string">"&lt;/url-pattern&gt;\n  &lt;/servlet-mapping&gt;\n"</span>);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         }
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">for</strong> (Enumeration e = _resources.elements(); e.hasMoreElements();) {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>             result.append(((<a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>) e.nextElement()).asText());
@@ -179,7 +179,7 @@
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>             Map.Entry entry = (Map.Entry) it.next();
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>             result.append(<span class="jxr_string">"    &lt;"</span>).append(tagName).append(<span class="jxr_string">"&gt;\n      &lt;param-name&gt;"</span>).append(entry.getKey());
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n      &lt;param-value&gt;"</span>).append(entry.getValue())
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>             .append(<span class="jxr_string">"&lt;/param-value&gt;\n    &lt;/"</span>);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n    &lt;/"</span>);
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>             result.append(tagName).append(<span class="jxr_string">"&gt;\n"</span>);
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>         }
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>     }
@@ -311,6 +311,6 @@
 <a class="jxr_linenumber" name="L303" href="#L303">303</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

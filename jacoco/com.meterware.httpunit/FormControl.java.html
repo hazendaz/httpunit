@@ -1013,29 +1013,30 @@ class FileSubmitFormControl extends FormControl {
 class MissingParameterValueException extends IllegalRequestParameterException {
 
     private static final long serialVersionUID = 1L;
-<span class="fc" id="L1016">    MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {</span>
-<span class="fc" id="L1017">        _parameterName = parameterName;</span>
-<span class="fc" id="L1018">        _missingValue = missingValue;</span>
-<span class="fc" id="L1019">        _proposedValues = proposed;</span>
-<span class="fc" id="L1020">    }</span>
+
+<span class="fc" id="L1017">    MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {</span>
+<span class="fc" id="L1018">        _parameterName = parameterName;</span>
+<span class="fc" id="L1019">        _missingValue = missingValue;</span>
+<span class="fc" id="L1020">        _proposedValues = proposed;</span>
+<span class="fc" id="L1021">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L1024">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="nc" id="L1025">        sb.append(&quot;Parameter '&quot;).append(_parameterName).append(&quot;' must have the value '&quot;);</span>
-<span class="nc" id="L1026">        sb.append(_missingValue).append(&quot;'. Attempted to set it to: { &quot;);</span>
-<span class="nc bnc" id="L1027" title="All 2 branches missed.">        for (int i = 0; i &lt; _proposedValues.length; i++) {</span>
-<span class="nc bnc" id="L1028" title="All 2 branches missed.">            if (i != 0) {</span>
-<span class="nc" id="L1029">                sb.append(&quot;, &quot;);</span>
+<span class="nc" id="L1025">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L1026">        sb.append(&quot;Parameter '&quot;).append(_parameterName).append(&quot;' must have the value '&quot;);</span>
+<span class="nc" id="L1027">        sb.append(_missingValue).append(&quot;'. Attempted to set it to: { &quot;);</span>
+<span class="nc bnc" id="L1028" title="All 2 branches missed.">        for (int i = 0; i &lt; _proposedValues.length; i++) {</span>
+<span class="nc bnc" id="L1029" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L1030">                sb.append(&quot;, &quot;);</span>
             }
-<span class="nc" id="L1031">            sb.append(_proposedValues[i]);</span>
+<span class="nc" id="L1032">            sb.append(_proposedValues[i]);</span>
         }
-<span class="nc" id="L1033">        sb.append(&quot; }&quot;);</span>
-<span class="nc" id="L1034">        return sb.toString();</span>
+<span class="nc" id="L1034">        sb.append(&quot; }&quot;);</span>
+<span class="nc" id="L1035">        return sb.toString();</span>
     }
 
     private String _parameterName;
     private String _missingValue;
     private String[] _proposedValues;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

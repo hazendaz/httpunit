@@ -160,17 +160,21 @@ public class WebLink extends FixedURLWebRequestSource {
 <span class="fc" id="L160">    }</span>
 
     static {
-<span class="fc" id="L163">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(), (String) criteria);</span>
+<span class="fc" id="L163">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),</span>
+                (String) criteria);
 
-<span class="pc" id="L165">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(), (String) criteria);</span>
+<span class="pc" id="L166">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(),</span>
+                (String) criteria);
 
-<span class="fc" id="L167">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(), (String) criteria);</span>
+<span class="fc" id="L169">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(),</span>
+                (String) criteria);
 
-<span class="pc" id="L169">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
+<span class="pc" id="L172">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
 
-<span class="fc" id="L171">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(), (String) criteria);</span>
+<span class="fc" id="L174">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(),</span>
+                (String) criteria);
 
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L177">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

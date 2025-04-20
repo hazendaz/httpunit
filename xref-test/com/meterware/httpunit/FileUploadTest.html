@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -35,23 +35,23 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.meterware.pseudoserver.PseudoServlet;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.meterware.pseudoserver.WebResource;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.io.BufferedReader;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.io.File;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.io.FileOutputStream;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.io.FileWriter;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.io.StringReader;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.net.URLEncoder;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.util.StringTokenizer;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> jakarta.activation.DataSource;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.MessagingException;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.internet.MimeBodyPart;
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.internet.MimeMultipart;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> jakarta.activation.DataSource;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.MessagingException;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.internet.MimeBodyPart;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> jakarta.mail.internet.MimeMultipart;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.io.BufferedReader;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.io.FileOutputStream;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.io.FileWriter;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.io.StringReader;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> java.net.URLEncoder;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> java.util.StringTokenizer;
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.extension.ExtendWith;
@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <strong class="jxr_keyword">class</strong> <a name="FileUploadTest" href="../../../com/meterware/httpunit/FileUploadTest.html#FileUploadTest">FileUploadTest</a> <strong class="jxr_keyword">extends</strong> <a name="HttpUnitTest" href="../../../com/meterware/httpunit/HttpUnitTest.html#HttpUnitTest">HttpUnitTest</a> {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Test
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">void</strong> testParametersMultipartEncoding() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">void</strong> parametersMultipartEncoding() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          defineResource(<span class="jxr_string">"ListParams"</span>, <strong class="jxr_keyword">new</strong> <a name="MimeEcho" href="../../../com/meterware/httpunit/FileUploadTest.html#MimeEcho">MimeEcho</a>());
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>                  <span class="jxr_string">"&lt;form method=POST action = \&quot;ListParams\&quot; enctype=\&quot;multipart/form-data\&quot;&gt; "</span>
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      @Test
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">void</strong> testFileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">void</strong> fileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=POST action = \&quot;ListParams\&quot; enctype=\&quot;multipart/form-data\&quot;&gt; "</span>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>                  + <span class="jxr_string">"&lt;Input type=file name=message&gt;"</span> + <span class="jxr_string">"&lt;Input type=submit name=update value=age&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
@@ -96,7 +96,7 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>      @Test
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">void</strong> testNonFileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">void</strong> nonFileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.html"</span>);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=POST action = \&quot;ListParams\&quot; enctype=\&quot;multipart/form-data\&quot;&gt; "</span>
@@ -114,7 +114,7 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     }
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> 
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     @Test
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">void</strong> testURLEncodingFileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">void</strong> urlEncodingFileParameterValidation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.html"</span>);
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=POST action = \&quot;ListParams\&quot;&gt; "</span> + <span class="jxr_string">"&lt;Input type=file name=message&gt;"</span>
@@ -132,7 +132,7 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     }
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> 
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     @Test
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">void</strong> testFileMultipartEncoding() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>     <strong class="jxr_keyword">void</strong> fileMultipartEncoding() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.txt"</span>);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         FileWriter fw = <strong class="jxr_keyword">new</strong> FileWriter(file);
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         PrintWriter pw = <strong class="jxr_keyword">new</strong> PrintWriter(fw);
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     @Test
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">void</strong> testRemoveFileParameter() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">void</strong> removeFileParameter() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.txt"</span>);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         FileWriter fw = <strong class="jxr_keyword">new</strong> FileWriter(file);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         PrintWriter pw = <strong class="jxr_keyword">new</strong> PrintWriter(fw);
@@ -181,7 +181,7 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>     }
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> 
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>     @Test
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">void</strong> testMultiFileSubmit() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">void</strong> multiFileSubmit() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.txt"</span>);
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         FileWriter fw = <strong class="jxr_keyword">new</strong> FileWriter(file);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         PrintWriter pw = <strong class="jxr_keyword">new</strong> PrintWriter(fw);
@@ -216,7 +216,7 @@
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>     }
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> 
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>     @Test
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">void</strong> testIllegalMultiFileSubmit() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">void</strong> illegalMultiFileSubmit() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>         File file = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"temp.txt"</span>);
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         FileWriter fw = <strong class="jxr_keyword">new</strong> FileWriter(file);
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         PrintWriter pw = <strong class="jxr_keyword">new</strong> PrintWriter(fw);
@@ -249,7 +249,7 @@
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>     }
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> 
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     @Test
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>     <strong class="jxr_keyword">void</strong> testInputStreamAsFile() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>     <strong class="jxr_keyword">void</strong> inputStreamAsFile() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>                 <span class="jxr_string">"Not much text\nBut two lines\n"</span>.getBytes(StandardCharsets.UTF_8));
 <a class="jxr_linenumber" name="L247" href="#L247">247</a> 
@@ -266,7 +266,7 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>     }
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> 
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>     @Test
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">void</strong> testFileUploadWithoutForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">void</strong> fileUploadWithoutForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>                 <span class="jxr_string">"Not much text\nBut two lines\n"</span>.getBytes(StandardCharsets.UTF_8));
 <a class="jxr_linenumber" name="L264" href="#L264">264</a> 
@@ -330,7 +330,7 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     @Test
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>     <strong class="jxr_keyword">void</strong> testFileContentType() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>     <strong class="jxr_keyword">void</strong> fileContentType() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>         File file = createFile(<span class="jxr_string">"temp.gif"</span>, <strong class="jxr_keyword">new</strong> byte[] { 1, 2, 3, 4, 0x7f, 0x23 });
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         doTestFileContentType(file, <strong class="jxr_keyword">null</strong>, <span class="jxr_string">"image/gif:message.name=temp.gif&amp;message.lines=1"</span>);
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>         file = createFile(<span class="jxr_string">"1x1.tif"</span>, <strong class="jxr_keyword">new</strong> byte[] { (byte) 0x03, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x00,
@@ -359,7 +359,7 @@
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>     @Test
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>     <strong class="jxr_keyword">void</strong> testSpecifiedFileContentType() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>     <strong class="jxr_keyword">void</strong> specifiedFileContentType() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L355" href="#L355">355</a>         File file = createFile(<span class="jxr_string">"temp.new"</span>, <strong class="jxr_keyword">new</strong> byte[] { 1, 2, 3, 4, 0x7f, 0x23 });
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>         doTestFileContentType(file, <span class="jxr_string">"x-application/new"</span>, <span class="jxr_string">"x-application/new:message.name=temp.new&amp;message.lines=1"</span>);
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>     }
@@ -370,7 +370,7 @@
 <a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>     @Test
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>     <strong class="jxr_keyword">void</strong> testSubmitFile() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>     <strong class="jxr_keyword">void</strong> submitFile() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>         defineResource(<span class="jxr_string">"ListParams"</span>, <strong class="jxr_keyword">new</strong> <a name="MimeEcho" href="../../../com/meterware/httpunit/FileUploadTest.html#MimeEcho">MimeEcho</a>());
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=POST action = \&quot;ListParams\&quot; enctype=\&quot;multipart/form-data\&quot;&gt; "</span>
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>                 + <span class="jxr_string">"&lt;Input type=file name=message&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
@@ -513,6 +513,6 @@
 <a class="jxr_linenumber" name="L505" href="#L505">505</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

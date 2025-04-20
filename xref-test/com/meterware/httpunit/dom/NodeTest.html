@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -81,7 +81,7 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">     * Verifies that we can create a document and verify its type.</em>
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      @Test
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">void</strong> testDocumentCreation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">void</strong> documentCreation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          assertEquals(<span class="jxr_string">"#document"</span>, _document.getNodeName(), <span class="jxr_string">"Node name"</span>);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          assertEquals(Node.DOCUMENT_NODE, _document.getNodeType(), <span class="jxr_string">"Node type"</span>);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          assertNull(_document.getAttributes(), <span class="jxr_string">"Documents should not have attributes"</span>);
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     * Verifies that we can create an element with a given name and verify its type.</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      @Test
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">void</strong> testElementCreation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">void</strong> elementCreation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          assertNotNull(_element, <span class="jxr_string">"Failed to create an element"</span>);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          assertSame(_document, _element.getOwnerDocument(), <span class="jxr_string">"Owner document"</span>);
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          assertEquals(<span class="jxr_string">"zork"</span>, _element.getTagName(), <span class="jxr_string">"Tag name"</span>);
@@ -110,7 +110,7 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * Verifies that we can create a text node and verify its type.</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     @Test
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">void</strong> testTextCreation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">void</strong> textCreation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         assertNotNull(_text, <span class="jxr_string">"Failed to create a text node"</span>);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         assertSame(_document, _text.getOwnerDocument(), <span class="jxr_string">"Owner document"</span>);
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         assertEquals(<span class="jxr_string">"#text"</span>, _text.getNodeName(), <span class="jxr_string">"Node name"</span>);
@@ -127,7 +127,7 @@
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     @Test
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     @Disabled
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">void</strong> testDocumentTypeCreation() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">void</strong> documentTypeCreation() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         <em class="jxr_comment">// DocumentType documentType = com.meterware.httpunit.dom.DocumentTypeImpl.createDocumentType( _document );</em>
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         assertNotNull(_text, <span class="jxr_string">"Failed to create a text node"</span>);
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         assertSame(_document, _text.getOwnerDocument(), <span class="jxr_string">"Owner document"</span>);
@@ -144,7 +144,7 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * Verifies that node accessors work for empty documents.</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     @Test
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>     <strong class="jxr_keyword">void</strong> testEmptyDocument() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     <strong class="jxr_keyword">void</strong> emptyDocument() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         Document document = DocumentImpl.createDocument();
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         assertNull(document.getFirstChild(), <span class="jxr_string">"Found a bogus first child"</span>);
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         assertNull(document.getLastChild(), <span class="jxr_string">"Found a bogus last child"</span>);
@@ -159,7 +159,7 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">     * Verifies that we can add children to an element (or document) and find them.</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     @Test
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">void</strong> testAddNodeChildren() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">void</strong> addNodeChildren() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         assertSame(_foo1, _element.getFirstChild(), <span class="jxr_string">"First child of element"</span>);
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         assertSame(_bar2, _element.getLastChild(), <span class="jxr_string">"Last child of element"</span>);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         assertSame(_bar2, _foo1.getNextSibling(), <span class="jxr_string">"Next sibling of foo1"</span>);
@@ -175,7 +175,7 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     * Verifies that we can add children to an element or document and find them.</em>
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>     @Test
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">void</strong> testElementChildrenByTagName() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">void</strong> elementChildrenByTagName() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         verifyNodeList(<span class="jxr_string">"baz"</span>, _element.getElementsByTagName(<span class="jxr_string">"baz"</span>), <strong class="jxr_keyword">new</strong> Node[0]);
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         verifyNodeList(<span class="jxr_string">"foo"</span>, _element.getElementsByTagName(<span class="jxr_string">"foo"</span>), <strong class="jxr_keyword">new</strong> Element[] { _foo1, _foo2 });
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         verifyNodeList(<span class="jxr_string">"bar"</span>, _element.getElementsByTagName(<span class="jxr_string">"bar"</span>), <strong class="jxr_keyword">new</strong> Element[] { _bar1, _bar2 });
@@ -192,7 +192,7 @@
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> <em class="jxr_javadoccomment">     * Verifies that only children of a particular document may be added to its children.</em>
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     @Test
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> testNodeCreatedByOtherDocument() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> nodeCreatedByOtherDocument() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         Document foreignDocument = DocumentImpl.createDocument();
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         Element foreignElement = foreignDocument.createElement(<span class="jxr_string">"stranger"</span>);
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">try</strong> {
@@ -208,7 +208,7 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">     * Verifies that a document can have only one 'document element'</em>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     @Test
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>     <strong class="jxr_keyword">void</strong> testUniqueDocumentElement() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     <strong class="jxr_keyword">void</strong> uniqueDocumentElement() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         Element bogusRoot = _document.createElement(<span class="jxr_string">"root"</span>);
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>             _document.setDocumentElement(bogusRoot);
@@ -221,7 +221,7 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">     * Verifies that text nodes cannot have children</em>
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     @Test
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> testNoChildrenForTextNodes() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> noChildrenForTextNodes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         Element orphan = _document.createElement(<span class="jxr_string">"baz"</span>);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>             _text.appendChild(orphan);
@@ -235,7 +235,7 @@
 <a class="jxr_linenumber" name="L227" href="#L227">227</a> <em class="jxr_javadoccomment">     * Verifies that a node or one of its ancestors may not be added as its child</em>
 <a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>     @Test
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     <strong class="jxr_keyword">void</strong> testRejectAddSelfOrAncestorAsChild() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>     <strong class="jxr_keyword">void</strong> rejectAddSelfOrAncestorAsChild() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L232" href="#L232">232</a>             _element.appendChild(_element);
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>             fail(<span class="jxr_string">"Permitted addition of element as its own child"</span>);
@@ -254,7 +254,7 @@
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> <em class="jxr_javadoccomment">     * Verifies that we can insert a child node at a specific position.</em>
 <a class="jxr_linenumber" name="L247" href="#L247">247</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>     @Test
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <strong class="jxr_keyword">void</strong> testInsertChild() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <strong class="jxr_keyword">void</strong> insertChild() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>         Text newText = _document.createTextNode(<span class="jxr_string">"Something new"</span>);
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>         _element.insertBefore(newText, _bar2);
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>         verifyNodeList(<span class="jxr_string">"element child"</span>, _element.getChildNodes(), <strong class="jxr_keyword">new</strong> Node[] { _foo1, newText, _bar2 });
@@ -267,7 +267,7 @@
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">     * target.</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>     @Test
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">void</strong> testInsertChildWithBadPredecessor() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">void</strong> insertChildWithBadPredecessor() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         Text newText = _document.createTextNode(<span class="jxr_string">"Something new"</span>);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         _element.insertBefore(newText, _bar2);
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         <strong class="jxr_keyword">try</strong> {
@@ -284,19 +284,19 @@
 <a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     * Verifies that we can remove a child node from the document.</em>
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>     @Test
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>     <strong class="jxr_keyword">void</strong> testRemoveChildFromEnd() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     <strong class="jxr_keyword">void</strong> removeChildFromEnd() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>         _foo1.removeChild(_foo2);
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         verifyNodeList(<span class="jxr_string">"foo1 child"</span>, _foo1.getChildNodes(), <strong class="jxr_keyword">new</strong> Node[] { _bar1, _text });
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>     }
 <a class="jxr_linenumber" name="L283" href="#L283">283</a> 
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>     @Test
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">void</strong> testRemoveChildFromBeginning() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <strong class="jxr_keyword">void</strong> removeChildFromBeginning() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>         _foo1.removeChild(_bar1);
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>         verifyNodeList(<span class="jxr_string">"foo1 child"</span>, _foo1.getChildNodes(), <strong class="jxr_keyword">new</strong> Node[] { _text, _foo2 });
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
 <a class="jxr_linenumber" name="L289" href="#L289">289</a> 
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     @Test
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">void</strong> testRemoveChildFromMiddle() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">void</strong> removeChildFromMiddle() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>         _foo1.removeChild(_text);
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>         verifyNodeList(<span class="jxr_string">"foo1 child"</span>, _foo1.getChildNodes(), <strong class="jxr_keyword">new</strong> Node[] { _bar1, _foo2 });
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>     }
@@ -305,7 +305,7 @@
 <a class="jxr_linenumber" name="L297" href="#L297">297</a> <em class="jxr_javadoccomment">     * Verifies that an exception is thrown if we try to remove a node which is not a child.</em>
 <a class="jxr_linenumber" name="L298" href="#L298">298</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     @Test
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <strong class="jxr_keyword">void</strong> testRemoveChildFromWrongParent() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <strong class="jxr_keyword">void</strong> removeChildFromWrongParent() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>             _foo1.removeChild(_bar2);
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>             fail(<span class="jxr_string">"Permitted node removal from wrong child"</span>);
@@ -318,7 +318,7 @@
 <a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     * Verifies that we can replace children (including those already elsewhere in the tree)</em>
 <a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L312" href="#L312">312</a>     @Test
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <strong class="jxr_keyword">void</strong> testReplaceChild() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <strong class="jxr_keyword">void</strong> replaceChild() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>         Element baz = _document.createElement(<span class="jxr_string">"baz"</span>);
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>         Node old = _foo1.replaceChild(baz, _text);
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>         assertSame(_text, old, <span class="jxr_string">"Removed node"</span>);
@@ -329,7 +329,7 @@
 <a class="jxr_linenumber" name="L321" href="#L321">321</a> <em class="jxr_javadoccomment">     * Verifies that we can clone nodes</em>
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     @Test
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">void</strong> testCloneNode() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>     <strong class="jxr_keyword">void</strong> cloneNode() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>         _element.setAttribute(<span class="jxr_string">"msg"</span>, <span class="jxr_string">"hi there"</span>);
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>         Element shallowClone = (Element) _element.cloneNode( <em class="jxr_comment">/* deep */</em> false);
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         assertEquals(<span class="jxr_string">"hi there"</span>, shallowClone.getAttribute(<span class="jxr_string">"msg"</span>), <span class="jxr_string">"Cloned attribute"</span>);
@@ -348,7 +348,7 @@
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> <em class="jxr_javadoccomment">     * Verifies that we can iterate through nodes in order</em>
 <a class="jxr_linenumber" name="L341" href="#L341">341</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>     @Test
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <strong class="jxr_keyword">void</strong> testPreOrderIterator() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <strong class="jxr_keyword">void</strong> preOrderIterator() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>         Iterator each = ((NodeImpl) _element).preOrderIterator();
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>         Node[] expectedNodes = { _element, _foo1, _bar1, _text, _foo2, _bar2 };
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; expectedNodes.length; i++) {
@@ -362,7 +362,7 @@
 <a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * Verifies that we can iterate through nodes in order, starting from a specific node.</em>
 <a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>     @Test
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     <strong class="jxr_keyword">void</strong> testPreOrderIteratorFromANode() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>     <strong class="jxr_keyword">void</strong> preOrderIteratorFromANode() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>         Iterator each = ((NodeImpl) _text).preOrderIterator();
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>         Node[] expectedNodes = { _text, _foo2, _bar2 };
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; expectedNodes.length; i++) {
@@ -376,7 +376,7 @@
 <a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * Verifies that we can iterate through nodes in order, starting after a specific node.</em>
 <a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L370" href="#L370">370</a>     @Test
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>     <strong class="jxr_keyword">void</strong> testPreOrderIteratorAfterANode() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>     <strong class="jxr_keyword">void</strong> preOrderIteratorAfterANode() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>         Iterator each = ((NodeImpl) _foo1).preOrderIteratorAfterNode();
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>         Node[] expectedNodes = { _bar1, _text, _foo2, _bar2 };
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; expectedNodes.length; i++) {
@@ -390,7 +390,7 @@
 <a class="jxr_linenumber" name="L382" href="#L382">382</a> <em class="jxr_javadoccomment">     * Verifies that we can iterate through nodes in order, starting after a specific node.</em>
 <a class="jxr_linenumber" name="L383" href="#L383">383</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L384" href="#L384">384</a>     @Test
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>     <strong class="jxr_keyword">void</strong> testPreOrderIteratorWithinNode() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     <strong class="jxr_keyword">void</strong> preOrderIteratorWithinNode() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L386" href="#L386">386</a>         Iterator each = ((NodeImpl) _foo1).preOrderIteratorWithinNode();
 <a class="jxr_linenumber" name="L387" href="#L387">387</a>         Node[] expectedNodes = { _bar1, _text, _foo2 };
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; expectedNodes.length; i++) {
@@ -405,7 +405,7 @@
 <a class="jxr_linenumber" name="L397" href="#L397">397</a> <em class="jxr_javadoccomment">     * Verifies that we can iterate through nodes in order skipping a specified subtree.</em>
 <a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>     @Test
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <strong class="jxr_keyword">void</strong> testPreOrderIteratorWithMask() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <strong class="jxr_keyword">void</strong> preOrderIteratorWithMask() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>         Iterator each = ((NodeImpl) _element).preOrderIterator(subtreeRoot -&gt; subtreeRoot == _foo1);
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>         Node[] expectedNodes = { _element, _bar2 };
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; expectedNodes.length; i++) {
@@ -426,6 +426,6 @@
 <a class="jxr_linenumber" name="L418" href="#L418">418</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

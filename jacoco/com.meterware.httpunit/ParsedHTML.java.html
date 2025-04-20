@@ -856,59 +856,61 @@ public class ParsedHTML {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
 <span class="fc" id="L858">                HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());</span>
-<span class="pc bpc" id="L859" title="2 of 6 branches missed.">                if (factory == null || !factory.isRecognized(getClientProperties()) || pot.getClosestContext(ContentConcealer.class) != null) {</span>
-<span class="fc" id="L860">                    return true;</span>
+<span class="pc bpc" id="L859" title="2 of 4 branches missed.">                if (factory == null || !factory.isRecognized(getClientProperties())</span>
+<span class="fc bfc" id="L860" title="All 2 branches covered.">                        || pot.getClosestContext(ContentConcealer.class) != null) {</span>
+<span class="fc" id="L861">                    return true;</span>
                 }
 
-<span class="fc bfc" id="L863" title="All 2 branches covered.">                if (!_registry.hasNode(element)) {</span>
-<span class="fc" id="L864">                    factory.recordElement(pot, element, ParsedHTML.this);</span>
+<span class="fc bfc" id="L864" title="All 2 branches covered.">                if (!_registry.hasNode(element)) {</span>
+<span class="fc" id="L865">                    factory.recordElement(pot, element, ParsedHTML.this);</span>
                 }
-<span class="fc bfc" id="L866" title="All 2 branches covered.">                if (factory.addToContext()) {</span>
-<span class="fc" id="L867">                    pot.pushContext(_registry.getRegisteredElement(element));</span>
+<span class="fc bfc" id="L867" title="All 2 branches covered.">                if (factory.addToContext()) {</span>
+<span class="fc" id="L868">                    pot.pushContext(_registry.getRegisteredElement(element));</span>
                 }
 
-<span class="fc" id="L870">                return true;</span>
+<span class="fc" id="L871">                return true;</span>
             }
 
             @Override
             public void processTextNode(NodeUtils.PreOrderTraversal pot, Node textNode) {
-<span class="fc bfc" id="L875" title="All 2 branches covered.">                if (textNode.getNodeValue().trim().length() == 0) {</span>
-<span class="fc" id="L876">                    return;</span>
+<span class="fc bfc" id="L876" title="All 2 branches covered.">                if (textNode.getNodeValue().trim().length() == 0) {</span>
+<span class="fc" id="L877">                    return;</span>
                 }
 
-<span class="fc" id="L879">                Node parent = textNode.getParentNode();</span>
-<span class="pc bpc" id="L880" title="1 of 4 branches missed.">                if (!parent.getNodeName().equalsIgnoreCase(&quot;body&quot;) || pot.getClosestContext(ContentConcealer.class) != null) {</span>
-<span class="fc" id="L881">                    return;</span>
+<span class="fc" id="L880">                Node parent = textNode.getParentNode();</span>
+<span class="fc bfc" id="L881" title="All 2 branches covered.">                if (!parent.getNodeName().equalsIgnoreCase(&quot;body&quot;)</span>
+<span class="pc bpc" id="L882" title="1 of 2 branches missed.">                        || pot.getClosestContext(ContentConcealer.class) != null) {</span>
+<span class="fc" id="L883">                    return;</span>
                 }
-<span class="fc" id="L883">                new HtmlElementRecorder().recordHtmlElement(pot, textNode, newTextBlock(textNode));</span>
-<span class="fc" id="L884">            }</span>
+<span class="fc" id="L885">                new HtmlElementRecorder().recordHtmlElement(pot, textNode, newTextBlock(textNode));</span>
+<span class="fc" id="L886">            }</span>
         };
-<span class="fc" id="L886">        NodeUtils.PreOrderTraversal nt = new NodeUtils.PreOrderTraversal(getRootNode());</span>
-<span class="fc" id="L887">        nt.pushBaseContext(this);</span>
-<span class="fc" id="L888">        nt.perform(action);</span>
+<span class="fc" id="L888">        NodeUtils.PreOrderTraversal nt = new NodeUtils.PreOrderTraversal(getRootNode());</span>
+<span class="fc" id="L889">        nt.pushBaseContext(this);</span>
+<span class="fc" id="L890">        nt.perform(action);</span>
 
-<span class="fc" id="L890">        _updateElements = false;</span>
-<span class="fc" id="L891">    }</span>
+<span class="fc" id="L892">        _updateElements = false;</span>
+<span class="fc" id="L893">    }</span>
 
     private ClientProperties getClientProperties() {
-<span class="fc" id="L894">        WebWindow window = _response.getWindow();</span>
-<span class="fc bfc" id="L895" title="All 2 branches covered.">        return window == null ? ClientProperties.getDefaultProperties() : window.getClient().getClientProperties();</span>
+<span class="fc" id="L896">        WebWindow window = _response.getWindow();</span>
+<span class="fc bfc" id="L897" title="All 2 branches covered.">        return window == null ? ClientProperties.getDefaultProperties() : window.getClient().getClientProperties();</span>
     }
 
     private Button toButtonWithoutForm(Element element) {
-<span class="fc" id="L899">        return new Button(_response, (HTMLControl) element);</span>
+<span class="fc" id="L901">        return new Button(_response, (HTMLControl) element);</span>
     }
 
     private WebForm toWebForm(Element element) {
-<span class="fc" id="L903">        return new WebForm(_response, _baseURL, element, _frame, _baseTarget, _characterSet, _registry);</span>
+<span class="fc" id="L905">        return new WebForm(_response, _baseURL, element, _frame, _baseTarget, _characterSet, _registry);</span>
     }
 
     private WebFrame toWebFrame(Element element) {
-<span class="fc" id="L907">        return new WebFrame(_response, _baseURL, element, _frame);</span>
+<span class="fc" id="L909">        return new WebFrame(_response, _baseURL, element, _frame);</span>
     }
 
     private WebFrame toWebIFrame(Element element) {
-<span class="fc" id="L911">        return new WebIFrame(_baseURL, element, _frame);</span>
+<span class="fc" id="L913">        return new WebIFrame(_baseURL, element, _frame);</span>
     }
 
     /**
@@ -919,7 +921,7 @@ public class ParsedHTML {
      * @return
      */
     private WebLink toLinkAnchor(Element child) {
-<span class="fc bfc" id="L922" title="All 2 branches covered.">        return !isWebLink(child) ? null : new WebLink(_response, _baseURL, child, _frame, _baseTarget, _characterSet);</span>
+<span class="fc bfc" id="L924" title="All 2 branches covered.">        return !isWebLink(child) ? null : new WebLink(_response, _baseURL, child, _frame, _baseTarget, _characterSet);</span>
     }
 
     /**
@@ -935,182 +937,182 @@ public class ParsedHTML {
          * Bug report [ 1156972 ] isWebLink doesn't recognize all anchor tags by fregienj claims this be changed to
          * check whether the case-insensitive node name is &quot;A&quot; -&gt; should be isAnchor method and getAnchor
          */
-<span class="fc" id="L938">        boolean result = false;</span>
-<span class="fc" id="L939">        String tagName = ((Element) node).getTagName();</span>
-<span class="fc bfc" id="L940" title="All 4 branches covered.">        if (!tagName.equalsIgnoreCase(&quot;area&quot;) &amp;&amp; !tagName.equalsIgnoreCase(&quot;a&quot;)) {</span>
+<span class="fc" id="L940">        boolean result = false;</span>
+<span class="fc" id="L941">        String tagName = ((Element) node).getTagName();</span>
+<span class="fc bfc" id="L942" title="All 4 branches covered.">        if (!tagName.equalsIgnoreCase(&quot;area&quot;) &amp;&amp; !tagName.equalsIgnoreCase(&quot;a&quot;)) {</span>
         } else {
             // pre 1.7 code - still active
-<span class="fc bfc" id="L943" title="All 2 branches covered.">            result = node.getAttributes().getNamedItem(&quot;href&quot;) != null;</span>
+<span class="fc bfc" id="L945" title="All 2 branches covered.">            result = node.getAttributes().getNamedItem(&quot;href&quot;) != null;</span>
             // proposed patch - not activated
             // result=true;
         }
-<span class="fc" id="L947">        return result;</span>
+<span class="fc" id="L949">        return result;</span>
     }
 
     private WebImage toWebImage(Element child) {
-<span class="fc" id="L951">        return new WebImage(_response, this, _baseURL, (HTMLImageElement) child, _frame, _baseTarget, _characterSet);</span>
+<span class="fc" id="L953">        return new WebImage(_response, this, _baseURL, (HTMLImageElement) child, _frame, _baseTarget, _characterSet);</span>
     }
 
     private WebApplet toWebApplet(Element element) {
-<span class="fc" id="L955">        return new WebApplet(_response, (HTMLAppletElement) element, _baseTarget);</span>
+<span class="fc" id="L957">        return new WebApplet(_response, (HTMLAppletElement) element, _baseTarget);</span>
     }
 
     private WebTable toWebTable(Element element) {
-<span class="fc" id="L959">        return new WebTable(_response, _frame, element, _baseURL, _baseTarget, _characterSet);</span>
+<span class="fc" id="L961">        return new WebTable(_response, _frame, element, _baseURL, _baseTarget, _characterSet);</span>
     }
 
     private TextBlock toTextBlock(Element element) {
-<span class="fc" id="L963">        return new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);</span>
+<span class="fc" id="L965">        return new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);</span>
     }
 
     private TextBlock newTextBlock(Node textNode) {
-<span class="fc" id="L967">        return new TextBlock(_response, _frame, _baseURL, _baseTarget, textNode, _characterSet);</span>
+<span class="fc" id="L969">        return new TextBlock(_response, _frame, _baseURL, _baseTarget, textNode, _characterSet);</span>
     }
 
     private WebList toOrderedList(Element element) {
-<span class="nc" id="L971">        return new WebList(_response, _frame, _baseURL, _baseTarget, element, _characterSet);</span>
+<span class="nc" id="L973">        return new WebList(_response, _frame, _baseURL, _baseTarget, element, _characterSet);</span>
     }
 
     private void addToMaps(Node node, HTMLElement htmlElement) {
-<span class="fc" id="L975">        _registry.registerElement(node, htmlElement);</span>
-<span class="pc bpc" id="L976" title="1 of 2 branches missed.">        if (htmlElement.getID() != null) {</span>
-<span class="fc" id="L977">            _elementsByID.put(htmlElement.getID(), htmlElement);</span>
+<span class="fc" id="L977">        _registry.registerElement(node, htmlElement);</span>
+<span class="pc bpc" id="L978" title="1 of 2 branches missed.">        if (htmlElement.getID() != null) {</span>
+<span class="fc" id="L979">            _elementsByID.put(htmlElement.getID(), htmlElement);</span>
         }
-<span class="fc bfc" id="L979" title="All 2 branches covered.">        if (htmlElement.getName() != null) {</span>
-<span class="fc" id="L980">            addNamedElement(htmlElement.getName(), htmlElement);</span>
+<span class="fc bfc" id="L981" title="All 2 branches covered.">        if (htmlElement.getName() != null) {</span>
+<span class="fc" id="L982">            addNamedElement(htmlElement.getName(), htmlElement);</span>
         }
-<span class="pc bpc" id="L982" title="1 of 2 branches missed.">        if (htmlElement.getClassName() != null) {</span>
-<span class="fc" id="L983">            StringTokenizer tokenizer = new StringTokenizer(htmlElement.getClassName());</span>
+<span class="pc bpc" id="L984" title="1 of 2 branches missed.">        if (htmlElement.getClassName() != null) {</span>
+<span class="fc" id="L985">            StringTokenizer tokenizer = new StringTokenizer(htmlElement.getClassName());</span>
             String token;
 
-<span class="fc bfc" id="L986" title="All 2 branches covered.">            while (tokenizer.hasMoreElements()) {</span>
-<span class="fc" id="L987">                token = tokenizer.nextToken();</span>
+<span class="fc bfc" id="L988" title="All 2 branches covered.">            while (tokenizer.hasMoreElements()) {</span>
+<span class="fc" id="L989">                token = tokenizer.nextToken();</span>
 
-<span class="fc bfc" id="L989" title="All 2 branches covered.">                if (_elementsByClass.containsKey(token)) {</span>
-<span class="fc" id="L990">                    ((ArrayList) _elementsByClass.get(token)).add(htmlElement);</span>
+<span class="fc bfc" id="L991" title="All 2 branches covered.">                if (_elementsByClass.containsKey(token)) {</span>
+<span class="fc" id="L992">                    ((ArrayList) _elementsByClass.get(token)).add(htmlElement);</span>
                 } else {
-<span class="fc" id="L992">                    ArrayList arrayList = new ArrayList();</span>
-<span class="fc" id="L993">                    arrayList.add(htmlElement);</span>
-<span class="fc" id="L994">                    _elementsByClass.put(token, arrayList);</span>
-<span class="fc" id="L995">                }</span>
+<span class="fc" id="L994">                    ArrayList arrayList = new ArrayList();</span>
+<span class="fc" id="L995">                    arrayList.add(htmlElement);</span>
+<span class="fc" id="L996">                    _elementsByClass.put(token, arrayList);</span>
+<span class="fc" id="L997">                }</span>
             }
         }
-<span class="fc" id="L998">    }</span>
+<span class="fc" id="L1000">    }</span>
 
     private void addNamedElement(String name, HTMLElement htmlElement) {
-<span class="fc" id="L1001">        List list = (List) _elementsByName.get(name);</span>
-<span class="fc bfc" id="L1002" title="All 2 branches covered.">        if (list == null) {</span>
-<span class="fc" id="L1003">            _elementsByName.put(name, list = new ArrayList());</span>
+<span class="fc" id="L1003">        List list = (List) _elementsByName.get(name);</span>
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">        if (list == null) {</span>
+<span class="fc" id="L1005">            _elementsByName.put(name, list = new ArrayList());</span>
         }
-<span class="fc" id="L1005">        list.add(htmlElement);</span>
-<span class="fc" id="L1006">    }</span>
+<span class="fc" id="L1007">        list.add(htmlElement);</span>
+<span class="fc" id="L1008">    }</span>
 
     private void addToList(HTMLElement htmlElement) {
-<span class="fc" id="L1009">        ArrayList list = getListForElement(htmlElement);</span>
-<span class="fc bfc" id="L1010" title="All 2 branches covered.">        if (list != null) {</span>
-<span class="fc" id="L1011">            list.add(htmlElement);</span>
+<span class="fc" id="L1011">        ArrayList list = getListForElement(htmlElement);</span>
+<span class="fc bfc" id="L1012" title="All 2 branches covered.">        if (list != null) {</span>
+<span class="fc" id="L1013">            list.add(htmlElement);</span>
         }
-<span class="fc" id="L1013">    }</span>
+<span class="fc" id="L1015">    }</span>
 
     private ArrayList getListForElement(HTMLElement element) {
-<span class="fc bfc" id="L1016" title="All 2 branches covered.">        if (element instanceof WebTable) {</span>
-<span class="fc" id="L1017">            return _tableList;</span>
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">        if (element instanceof WebTable) {</span>
+<span class="fc" id="L1019">            return _tableList;</span>
         }
-<span class="fc bfc" id="L1019" title="All 2 branches covered.">        if (element instanceof WebFrame) {</span>
-<span class="fc" id="L1020">            return _frameList;</span>
+<span class="fc bfc" id="L1021" title="All 2 branches covered.">        if (element instanceof WebFrame) {</span>
+<span class="fc" id="L1022">            return _frameList;</span>
         }
-<span class="fc bfc" id="L1022" title="All 2 branches covered.">        if (element instanceof BlockElement) {</span>
-<span class="fc" id="L1023">            return _blocksList;</span>
+<span class="fc bfc" id="L1024" title="All 2 branches covered.">        if (element instanceof BlockElement) {</span>
+<span class="fc" id="L1025">            return _blocksList;</span>
         }
-<span class="fc" id="L1025">        return null;</span>
+<span class="fc" id="L1027">        return null;</span>
     }
 
     /**
      * Returns the first link which contains the specified text.
      **/
     public WebLink getLinkWith(String text) {
-<span class="fc" id="L1032">        return getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, text);</span>
+<span class="fc" id="L1034">        return getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, text);</span>
     }
 
     /**
      * Returns the link which contains the first image with the specified text as its 'alt' attribute.
      **/
     public WebLink getLinkWithImageText(String text) {
-<span class="fc" id="L1039">        WebImage image = getImageWithAltText(text);</span>
-<span class="pc bpc" id="L1040" title="1 of 2 branches missed.">        return image == null ? null : image.getLink();</span>
+<span class="fc" id="L1041">        WebImage image = getImageWithAltText(text);</span>
+<span class="pc bpc" id="L1042" title="1 of 2 branches missed.">        return image == null ? null : image.getLink();</span>
     }
 
     /**
      * Returns the link found in the page with the specified name.
      **/
     public WebLink getLinkWithName(String name) {
-<span class="fc" id="L1047">        return getFirstMatchingLink(WebLink.MATCH_NAME, name);</span>
+<span class="fc" id="L1049">        return getFirstMatchingLink(WebLink.MATCH_NAME, name);</span>
     }
 
     /**
      * Returns the first link found in the page matching the specified criteria.
      **/
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) {
-<span class="fc" id="L1054">        WebLink[] links = getLinks();</span>
-<span class="fc bfc" id="L1055" title="All 2 branches covered.">        for (WebLink link : links) {</span>
-<span class="fc bfc" id="L1056" title="All 2 branches covered.">            if (predicate.matchesCriteria(link, criteria)) {</span>
-<span class="fc" id="L1057">                return link;</span>
+<span class="fc" id="L1056">        WebLink[] links = getLinks();</span>
+<span class="fc bfc" id="L1057" title="All 2 branches covered.">        for (WebLink link : links) {</span>
+<span class="fc bfc" id="L1058" title="All 2 branches covered.">            if (predicate.matchesCriteria(link, criteria)) {</span>
+<span class="fc" id="L1059">                return link;</span>
             }
         }
-<span class="fc" id="L1060">        return null;</span>
+<span class="fc" id="L1062">        return null;</span>
     }
 
     /**
      * Returns all links found in the page matching the specified criteria.
      **/
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) {
-<span class="fc" id="L1067">        ArrayList matches = new ArrayList();</span>
-<span class="fc" id="L1068">        WebLink[] links = getLinks();</span>
-<span class="fc bfc" id="L1069" title="All 2 branches covered.">        for (WebLink link : links) {</span>
-<span class="fc bfc" id="L1070" title="All 2 branches covered.">            if (predicate.matchesCriteria(link, criteria)) {</span>
-<span class="fc" id="L1071">                matches.add(link);</span>
+<span class="fc" id="L1069">        ArrayList matches = new ArrayList();</span>
+<span class="fc" id="L1070">        WebLink[] links = getLinks();</span>
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">        for (WebLink link : links) {</span>
+<span class="fc bfc" id="L1072" title="All 2 branches covered.">            if (predicate.matchesCriteria(link, criteria)) {</span>
+<span class="fc" id="L1073">                matches.add(link);</span>
             }
         }
-<span class="fc" id="L1074">        return (WebLink[]) matches.toArray(new WebLink[matches.size()]);</span>
+<span class="fc" id="L1076">        return (WebLink[]) matches.toArray(new WebLink[matches.size()]);</span>
     }
 
     /**
      * Returns the image found in the page with the specified name.
      **/
     public WebImage getImageWithName(String name) {
-<span class="fc" id="L1081">        WebImage[] images = getImages();</span>
-<span class="pc bpc" id="L1082" title="1 of 2 branches missed.">        for (WebImage image : images) {</span>
-<span class="pc bpc" id="L1083" title="1 of 2 branches missed.">            if (HttpUnitUtils.matches(name, image.getName())) {</span>
-<span class="fc" id="L1084">                return image;</span>
+<span class="fc" id="L1083">        WebImage[] images = getImages();</span>
+<span class="pc bpc" id="L1084" title="1 of 2 branches missed.">        for (WebImage image : images) {</span>
+<span class="pc bpc" id="L1085" title="1 of 2 branches missed.">            if (HttpUnitUtils.matches(name, image.getName())) {</span>
+<span class="fc" id="L1086">                return image;</span>
             }
         }
-<span class="nc" id="L1087">        return null;</span>
+<span class="nc" id="L1089">        return null;</span>
     }
 
     /**
      * Returns the first image found in the page with the specified src attribute.
      **/
     public WebImage getImageWithSource(String source) {
-<span class="fc" id="L1094">        WebImage[] images = getImages();</span>
-<span class="fc bfc" id="L1095" title="All 2 branches covered.">        for (WebImage image : images) {</span>
-<span class="fc bfc" id="L1096" title="All 2 branches covered.">            if (HttpUnitUtils.matches(source, image.getSource())) {</span>
-<span class="fc" id="L1097">                return image;</span>
+<span class="fc" id="L1096">        WebImage[] images = getImages();</span>
+<span class="fc bfc" id="L1097" title="All 2 branches covered.">        for (WebImage image : images) {</span>
+<span class="fc bfc" id="L1098" title="All 2 branches covered.">            if (HttpUnitUtils.matches(source, image.getSource())) {</span>
+<span class="fc" id="L1099">                return image;</span>
             }
         }
-<span class="fc" id="L1100">        return null;</span>
+<span class="fc" id="L1102">        return null;</span>
     }
 
     /**
      * Returns the first image found in the page with the specified alt attribute.
      **/
     public WebImage getImageWithAltText(String altText) {
-<span class="fc" id="L1107">        WebImage[] images = getImages();</span>
-<span class="pc bpc" id="L1108" title="1 of 2 branches missed.">        for (WebImage image : images) {</span>
-<span class="fc bfc" id="L1109" title="All 2 branches covered.">            if (HttpUnitUtils.matches(altText, image.getAltText())) {</span>
-<span class="fc" id="L1110">                return image;</span>
+<span class="fc" id="L1109">        WebImage[] images = getImages();</span>
+<span class="pc bpc" id="L1110" title="1 of 2 branches missed.">        for (WebImage image : images) {</span>
+<span class="fc bfc" id="L1111" title="All 2 branches covered.">            if (HttpUnitUtils.matches(altText, image.getAltText())) {</span>
+<span class="fc" id="L1112">                return image;</span>
             }
         }
-<span class="nc" id="L1113">        return null;</span>
+<span class="nc" id="L1115">        return null;</span>
     }
 
     /**
@@ -1120,7 +1122,7 @@ public class ParsedHTML {
      * @return the selected table, or null if none is found
      **/
     public WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) {
-<span class="fc" id="L1123">        return getTableSatisfyingPredicate(getTables(), predicate, criteria);</span>
+<span class="fc" id="L1125">        return getTableSatisfyingPredicate(getTables(), predicate, criteria);</span>
     }
 
     /**
@@ -1130,7 +1132,7 @@ public class ParsedHTML {
      * @return the selected tables, or null if none are found
      **/
     public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) {
-<span class="nc" id="L1133">        return getTablesSatisfyingPredicate(getTables(), predicate, criteria);</span>
+<span class="nc" id="L1135">        return getTablesSatisfyingPredicate(getTables(), predicate, criteria);</span>
     }
 
     /**
@@ -1140,7 +1142,7 @@ public class ParsedHTML {
      * @return the selected table, or null if none is found
      **/
     public WebTable getTableStartingWith(String text) {
-<span class="fc" id="L1143">        return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL, text);</span>
+<span class="fc" id="L1145">        return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL, text);</span>
     }
 
     /**
@@ -1150,7 +1152,7 @@ public class ParsedHTML {
      * @return the selected table, or null if none is found
      **/
     public WebTable getTableStartingWithPrefix(String text) {
-<span class="fc" id="L1153">        return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL_PREFIX, text);</span>
+<span class="fc" id="L1155">        return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL_PREFIX, text);</span>
     }
 
     /**
@@ -1160,7 +1162,7 @@ public class ParsedHTML {
      * @return the selected table, or null if none is found
      **/
     public WebTable getTableWithSummary(String summary) {
-<span class="fc" id="L1163">        return getFirstMatchingTable(WebTable.MATCH_SUMMARY, summary);</span>
+<span class="fc" id="L1165">        return getFirstMatchingTable(WebTable.MATCH_SUMMARY, summary);</span>
     }
 
     /**
@@ -1170,21 +1172,21 @@ public class ParsedHTML {
      * @return the selected table, or null if none is found
      **/
     public WebTable getTableWithID(String ID) {
-<span class="fc" id="L1173">        return getFirstMatchingTable(WebTable.MATCH_ID, ID);</span>
+<span class="fc" id="L1175">        return getFirstMatchingTable(WebTable.MATCH_ID, ID);</span>
     }
 
     /**
      * Returns a copy of the domain object model associated with this page.
      **/
     public Node getDOM() {
-<span class="fc" id="L1180">        return getRootNode().cloneNode( /* deep */ true);</span>
+<span class="fc" id="L1182">        return getRootNode().cloneNode( /* deep */ true);</span>
     }
 
     // ---------------------------------- Object methods --------------------------------
 
     @Override
     public String toString() {
-<span class="nc" id="L1187">        return _baseURL.toExternalForm() + System.lineSeparator() + _rootNode;</span>
+<span class="nc" id="L1189">        return _baseURL.toExternalForm() + System.lineSeparator() + _rootNode;</span>
     }
 
     // ---------------------------------- package members --------------------------------
@@ -1194,127 +1196,127 @@ public class ParsedHTML {
      * a page fragment.
      */
     void setRootNode(Node rootNode) {
-<span class="pc bpc" id="L1197" title="1 of 4 branches missed.">        if (_rootNode != null &amp;&amp; rootNode != _rootNode) {</span>
-<span class="nc" id="L1198">            throw new IllegalStateException(&quot;The root node has already been defined as &quot; + _rootNode</span>
+<span class="pc bpc" id="L1199" title="1 of 4 branches missed.">        if (_rootNode != null &amp;&amp; rootNode != _rootNode) {</span>
+<span class="nc" id="L1200">            throw new IllegalStateException(&quot;The root node has already been defined as &quot; + _rootNode</span>
                     + &quot; and cannot be redefined as &quot; + rootNode);
         }
-<span class="fc" id="L1201">        _rootNode = rootNode;</span>
-<span class="pc bpc" id="L1202" title="1 of 2 branches missed.">        if (rootNode instanceof HTMLDocumentImpl) {</span>
-<span class="fc" id="L1203">            ((HTMLDocumentImpl) rootNode).setIFramesEnabled(getClientProperties().isIframeSupported());</span>
+<span class="fc" id="L1203">        _rootNode = rootNode;</span>
+<span class="pc bpc" id="L1204" title="1 of 2 branches missed.">        if (rootNode instanceof HTMLDocumentImpl) {</span>
+<span class="fc" id="L1205">            ((HTMLDocumentImpl) rootNode).setIFramesEnabled(getClientProperties().isIframeSupported());</span>
         }
-<span class="fc" id="L1205">        clearCaches();</span>
-<span class="fc" id="L1206">    }</span>
+<span class="fc" id="L1207">        clearCaches();</span>
+<span class="fc" id="L1208">    }</span>
 
     private void clearCaches() {
-<span class="fc" id="L1209">        _tables = null;</span>
-<span class="fc" id="L1210">        _frames = null;</span>
-<span class="fc" id="L1211">        _blocks = null;</span>
-<span class="fc" id="L1212">        _updateElements = true;</span>
-<span class="fc" id="L1213">    }</span>
+<span class="fc" id="L1211">        _tables = null;</span>
+<span class="fc" id="L1212">        _frames = null;</span>
+<span class="fc" id="L1213">        _blocks = null;</span>
+<span class="fc" id="L1214">        _updateElements = true;</span>
+<span class="fc" id="L1215">    }</span>
 
     /**
      * Returns the base URL for this HTML segment.
      **/
     URL getBaseURL() {
-<span class="fc" id="L1219">        return _baseURL;</span>
+<span class="fc" id="L1221">        return _baseURL;</span>
     }
 
     WebResponse getResponse() {
-<span class="fc" id="L1223">        return _response;</span>
+<span class="fc" id="L1225">        return _response;</span>
     }
 
     /**
      * Returns the domain object model associated with this page, to be used internally.
      **/
     Node getOriginalDOM() {
-<span class="fc" id="L1230">        return getRootNode();</span>
+<span class="fc" id="L1232">        return getRootNode();</span>
     }
 
     HTMLElement getElement(Node node) {
-<span class="fc" id="L1234">        return (HTMLElement) _registry.getRegisteredElement(node);</span>
+<span class="fc" id="L1236">        return (HTMLElement) _registry.getRegisteredElement(node);</span>
     }
 
     /**
      * Returns the frames found in the page in the order in which they appear.
      **/
     public WebFrame[] getFrames() {
-<span class="fc bfc" id="L1241" title="All 2 branches covered.">        if (_frames == null) {</span>
-<span class="fc" id="L1242">            loadElements();</span>
-<span class="fc" id="L1243">            _frames = (WebFrame[]) _frameList.toArray(new WebFrame[_frameList.size()]);</span>
+<span class="fc bfc" id="L1243" title="All 2 branches covered.">        if (_frames == null) {</span>
+<span class="fc" id="L1244">            loadElements();</span>
+<span class="fc" id="L1245">            _frames = (WebFrame[]) _frameList.toArray(new WebFrame[_frameList.size()]);</span>
         }
-<span class="fc" id="L1245">        return _frames;</span>
+<span class="fc" id="L1247">        return _frames;</span>
     }
 
     // ---------------------------------- private members --------------------------------
 
     Node getRootNode() {
-<span class="pc bpc" id="L1251" title="1 of 2 branches missed.">        if (_rootNode == null) {</span>
-<span class="nc" id="L1252">            throw new IllegalStateException(&quot;The root node has not been specified&quot;);</span>
+<span class="pc bpc" id="L1253" title="1 of 2 branches missed.">        if (_rootNode == null) {</span>
+<span class="nc" id="L1254">            throw new IllegalStateException(&quot;The root node has not been specified&quot;);</span>
         }
-<span class="fc" id="L1254">        return _rootNode;</span>
+<span class="fc" id="L1256">        return _rootNode;</span>
     }
 
     /**
      * Returns the table with the specified text in its summary attribute.
      **/
     private WebTable getTableSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
-<span class="fc bfc" id="L1261" title="All 2 branches covered.">        for (WebTable table : tables) {</span>
-<span class="fc bfc" id="L1262" title="All 2 branches covered.">            if (predicate.matchesCriteria(table, value)) {</span>
-<span class="fc" id="L1263">                return table;</span>
+<span class="fc bfc" id="L1263" title="All 2 branches covered.">        for (WebTable table : tables) {</span>
+<span class="fc bfc" id="L1264" title="All 2 branches covered.">            if (predicate.matchesCriteria(table, value)) {</span>
+<span class="fc" id="L1265">                return table;</span>
             }
-<span class="fc bfc" id="L1265" title="All 2 branches covered.">            for (int j = 0; j &lt; table.getRowCount(); j++) {</span>
-<span class="fc bfc" id="L1266" title="All 2 branches covered.">                for (int k = 0; k &lt; table.getColumnCount(); k++) {</span>
-<span class="fc" id="L1267">                    TableCell cell = table.getTableCell(j, k);</span>
-<span class="pc bpc" id="L1268" title="1 of 2 branches missed.">                    if (cell != null) {</span>
-<span class="fc" id="L1269">                        WebTable[] innerTables = cell.getTables();</span>
-<span class="fc bfc" id="L1270" title="All 2 branches covered.">                        if (innerTables.length != 0) {</span>
-<span class="fc" id="L1271">                            WebTable result = getTableSatisfyingPredicate(innerTables, predicate, value);</span>
-<span class="fc bfc" id="L1272" title="All 2 branches covered.">                            if (result != null) {</span>
-<span class="fc" id="L1273">                                return result;</span>
+<span class="fc bfc" id="L1267" title="All 2 branches covered.">            for (int j = 0; j &lt; table.getRowCount(); j++) {</span>
+<span class="fc bfc" id="L1268" title="All 2 branches covered.">                for (int k = 0; k &lt; table.getColumnCount(); k++) {</span>
+<span class="fc" id="L1269">                    TableCell cell = table.getTableCell(j, k);</span>
+<span class="pc bpc" id="L1270" title="1 of 2 branches missed.">                    if (cell != null) {</span>
+<span class="fc" id="L1271">                        WebTable[] innerTables = cell.getTables();</span>
+<span class="fc bfc" id="L1272" title="All 2 branches covered.">                        if (innerTables.length != 0) {</span>
+<span class="fc" id="L1273">                            WebTable result = getTableSatisfyingPredicate(innerTables, predicate, value);</span>
+<span class="fc bfc" id="L1274" title="All 2 branches covered.">                            if (result != null) {</span>
+<span class="fc" id="L1275">                                return result;</span>
                             }
                         }
                     }
                 }
             }
         }
-<span class="fc" id="L1280">        return null;</span>
+<span class="fc" id="L1282">        return null;</span>
     }
 
     /**
      * Returns the tables which match the specified criteria.
      **/
     private WebTable[] getTablesSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
-<span class="nc" id="L1287">        ArrayList matches = new ArrayList();</span>
-<span class="nc bnc" id="L1288" title="All 2 branches missed.">        for (WebTable table : tables) {</span>
-<span class="nc bnc" id="L1289" title="All 2 branches missed.">            if (predicate.matchesCriteria(table, value)) {</span>
-<span class="nc" id="L1290">                matches.add(table);</span>
+<span class="nc" id="L1289">        ArrayList matches = new ArrayList();</span>
+<span class="nc bnc" id="L1290" title="All 2 branches missed.">        for (WebTable table : tables) {</span>
+<span class="nc bnc" id="L1291" title="All 2 branches missed.">            if (predicate.matchesCriteria(table, value)) {</span>
+<span class="nc" id="L1292">                matches.add(table);</span>
             }
-<span class="nc bnc" id="L1292" title="All 2 branches missed.">            for (int j = 0; j &lt; table.getRowCount(); j++) {</span>
-<span class="nc bnc" id="L1293" title="All 2 branches missed.">                for (int k = 0; k &lt; table.getColumnCount(); k++) {</span>
-<span class="nc" id="L1294">                    TableCell cell = table.getTableCell(j, k);</span>
-<span class="nc bnc" id="L1295" title="All 2 branches missed.">                    if (cell != null) {</span>
-<span class="nc" id="L1296">                        WebTable[] innerTables = cell.getTables();</span>
-<span class="nc bnc" id="L1297" title="All 2 branches missed.">                        if (innerTables.length != 0) {</span>
-<span class="nc" id="L1298">                            WebTable[] result = getTablesSatisfyingPredicate(innerTables, predicate, value);</span>
-<span class="nc bnc" id="L1299" title="All 4 branches missed.">                            if (result != null &amp;&amp; result.length &gt; 0) {</span>
-<span class="nc" id="L1300">                                matches.addAll(Arrays.asList(result));</span>
+<span class="nc bnc" id="L1294" title="All 2 branches missed.">            for (int j = 0; j &lt; table.getRowCount(); j++) {</span>
+<span class="nc bnc" id="L1295" title="All 2 branches missed.">                for (int k = 0; k &lt; table.getColumnCount(); k++) {</span>
+<span class="nc" id="L1296">                    TableCell cell = table.getTableCell(j, k);</span>
+<span class="nc bnc" id="L1297" title="All 2 branches missed.">                    if (cell != null) {</span>
+<span class="nc" id="L1298">                        WebTable[] innerTables = cell.getTables();</span>
+<span class="nc bnc" id="L1299" title="All 2 branches missed.">                        if (innerTables.length != 0) {</span>
+<span class="nc" id="L1300">                            WebTable[] result = getTablesSatisfyingPredicate(innerTables, predicate, value);</span>
+<span class="nc bnc" id="L1301" title="All 4 branches missed.">                            if (result != null &amp;&amp; result.length &gt; 0) {</span>
+<span class="nc" id="L1302">                                matches.addAll(Arrays.asList(result));</span>
                             }
                         }
                     }
                 }
             }
         }
-<span class="nc bnc" id="L1307" title="All 2 branches missed.">        if (matches.size() &gt; 0) {</span>
-<span class="nc" id="L1308">            return (WebTable[]) matches.toArray(new WebTable[matches.size()]);</span>
+<span class="nc bnc" id="L1309" title="All 2 branches missed.">        if (matches.size() &gt; 0) {</span>
+<span class="nc" id="L1310">            return (WebTable[]) matches.toArray(new WebTable[matches.size()]);</span>
         }
-<span class="nc" id="L1310">        return null;</span>
+<span class="nc" id="L1312">        return null;</span>
     }
 
     class WebIFrame extends WebFrame implements ContentConcealer {
 
-<span class="fc" id="L1315">        public WebIFrame(URL baseURL, Node frameNode, FrameSelector parentFrame) {</span>
-<span class="fc" id="L1316">            super(_response, baseURL, frameNode, parentFrame);</span>
-<span class="fc" id="L1317">        }</span>
+<span class="fc" id="L1317">        public WebIFrame(URL baseURL, Node frameNode, FrameSelector parentFrame) {</span>
+<span class="fc" id="L1318">            super(_response, baseURL, frameNode, parentFrame);</span>
+<span class="fc" id="L1319">        }</span>
     }
 
     /**
@@ -1322,20 +1324,20 @@ public class ParsedHTML {
      */
     class NoScriptElement extends HTMLElementBase implements ContentConcealer {
 
-<span class="fc" id="L1325">        public NoScriptElement(Node node) {</span>
-<span class="fc" id="L1326">            super(node);</span>
-<span class="fc" id="L1327">        }</span>
+<span class="fc" id="L1327">        public NoScriptElement(Node node) {</span>
+<span class="fc" id="L1328">            super(node);</span>
+<span class="fc" id="L1329">        }</span>
 
         @Override
         public ScriptableDelegate newScriptable() {
-<span class="nc" id="L1331">            return null;</span>
+<span class="nc" id="L1333">            return null;</span>
         }
 
         @Override
         public ScriptableDelegate getParentDelegate() {
-<span class="nc" id="L1336">            return null;</span>
+<span class="nc" id="L1338">            return null;</span>
         }
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

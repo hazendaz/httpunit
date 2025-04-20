@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -67,7 +67,7 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      @Test
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">void</strong> testFindNoTables() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">void</strong> findNoTables() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"This has no tables but it does"</span> + <span class="jxr_string">"have &lt;a href=\&quot;/other.html\&quot;&gt;an active link&lt;/A&gt;"</span>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                  + <span class="jxr_string">" and &lt;a name=here&gt;an anchor&lt;/a&gt;"</span>);
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  
@@ -78,7 +78,7 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      }
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      @Test
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> testFindOneTable() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> findOneTable() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          WebTable[] tables = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneTable.html"</span>).getTables();
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          assertEquals(1, tables.length);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      }
@@ -89,7 +89,7 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      @Test
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">void</strong> testPurgeEmptyCells() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">void</strong> purgeEmptyCells() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          defineWebPage(<span class="jxr_string">"StrangeSpan"</span>, <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span>
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>                  + <span class="jxr_string">"&lt;table class=\&quot;headerTable\&quot; width=\&quot;97%\&quot; cellspacing=\&quot;2\&quot; cellpadding=\&quot;0\&quot; border=\&quot;0\&quot; id=\&quot;personalTable\&quot;&gt;\n"</span>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                  + <span class="jxr_string">"        &lt;tr&gt;\n"</span>
@@ -147,7 +147,7 @@
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     @Test
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">void</strong> testPurgeEmptyCells2() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">void</strong> purgeEmptyCells2() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         defineWebPage(<span class="jxr_string">"BrokenSpan"</span>, <span class="jxr_string">"&lt;h2&gt;Broken Span&lt;/h2&gt;"</span>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>                 + <span class="jxr_string">"&lt;table id=\&quot;testTable\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot;&gt;"</span> + <span class="jxr_string">"   &lt;tr&gt;"</span>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>                 + <span class="jxr_string">"       &lt;td&gt;&lt;img src=\&quot;test.jpg\&quot;/&gt;&lt;/td&gt;"</span> + <span class="jxr_string">"       &lt;td colspan=\&quot;2\&quot;&gt;h3&lt;/td&gt;"</span> + <span class="jxr_string">"   &lt;/tr&gt;"</span>
@@ -168,7 +168,7 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     @Test
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">void</strong> testFindTableSize() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">void</strong> findTableSize() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>         WebTable table = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneTable.html"</span>).getTables()[0];
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>         assertEquals(5, table.getRowCount());
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         assertEquals(3, table.getColumnCount());
@@ -185,14 +185,14 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>     }
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> 
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     @Test
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">void</strong> testFindTableCell() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">void</strong> findTableCell() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         WebTable table = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneTable.html"</span>).getTables()[0];
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>         assertEquals(<span class="jxr_string">"Two"</span>, table.getCellAsText(2, 0));
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         assertEquals(<span class="jxr_string">"3"</span>, table.getCellAsText(4, 2));
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> 
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     @Test
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> testTableAsText() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> tableAsText() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         WebTable table = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneTable.html"</span>).getTables()[0];
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         table.purgeEmptyCells();
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         String[][] text = table.asText();
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     }
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     @Test
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">void</strong> testNestedTable() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">void</strong> nestedTable() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table summary=\&quot;outer one\&quot;&gt;"</span> + <span class="jxr_string">"&lt;tr&gt;&lt;td&gt;"</span> + <span class="jxr_string">"Inner Table&lt;br&gt;"</span>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>                         + <span class="jxr_string">"&lt;table summary=\&quot;inner one\&quot;&gt;"</span> + <span class="jxr_string">"        &lt;tr&gt;&lt;td&gt;Red&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;"</span>
@@ -225,7 +225,7 @@
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>     }
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> 
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>     @Test
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>     <strong class="jxr_keyword">void</strong> testColumnSpan() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>     <strong class="jxr_keyword">void</strong> columnSpan() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         WebResponse page = _wc.getResponse(getHostPath() + <span class="jxr_string">"/SpanTable.html"</span>);
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         WebTable table = page.getTables()[0];
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         assertEquals(<span class="jxr_string">"Colors"</span>, table.getCellAsText(0, 0));
@@ -246,7 +246,7 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a> <em class="jxr_javadoccomment">     * test for bug report [ 1043368 ] WebTable has wrong number of columns by AutoTest</em>
 <a class="jxr_linenumber" name="L239" href="#L239">239</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>     @Test
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">void</strong> testColumnNumberInTable() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">void</strong> columnNumberInTable() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         defineWebPage(<span class="jxr_string">"Default"</span>, htmlForBug1043368);
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>         WebResponse page = _wc.getResponse(getHostPath() + <span class="jxr_string">"/Default.html"</span>);
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         WebTable table = page.getTableStartingWithPrefix(<span class="jxr_string">"Test Form"</span>);
@@ -257,7 +257,7 @@
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>     }
 <a class="jxr_linenumber" name="L250" href="#L250">250</a> 
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     @Test
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">void</strong> testRowSpan() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">void</strong> rowSpan() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         WebResponse page = _wc.getResponse(getHostPath() + <span class="jxr_string">"/SpanTable.html"</span>);
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>         WebTable table = page.getTables()[0];
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         assertEquals(3, table.getRowCount());
@@ -269,7 +269,7 @@
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>     }
 <a class="jxr_linenumber" name="L262" href="#L262">262</a> 
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>     @Test
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <strong class="jxr_keyword">void</strong> testMissingColumns() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <strong class="jxr_keyword">void</strong> missingColumns() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table summary=\&quot;tough luck\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L267" href="#L267">267</a>                         + <span class="jxr_string">"&lt;tr&gt;&lt;th colspan=2&gt;Colors&lt;/th&gt;&lt;th&gt;Names&lt;/th&gt;&lt;/tr&gt;"</span>
@@ -284,7 +284,7 @@
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>     }
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> 
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>     @Test
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>     <strong class="jxr_keyword">void</strong> testInnerTableSeek() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     <strong class="jxr_keyword">void</strong> innerTableSeek() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table id=you summary=\&quot;outer one\&quot;&gt;"</span> + <span class="jxr_string">"&lt;tr&gt;&lt;td&gt;Here we are&lt;/td&gt;&lt;td&gt;"</span>
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>                         + <span class="jxr_string">"Inner Table 1&lt;br&gt;"</span> + <span class="jxr_string">"&lt;table id=you summary='inner zero'&gt;"</span>
@@ -326,7 +326,7 @@
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>     }
 <a class="jxr_linenumber" name="L319" href="#L319">319</a> 
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>     @Test
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>     <strong class="jxr_keyword">void</strong> testSpanOverEmptyColumns() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>     <strong class="jxr_keyword">void</strong> spanOverEmptyColumns() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L322" href="#L322">322</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table summary=little&gt;"</span>
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>                         + <span class="jxr_string">"&lt;tr&gt;&lt;td colspan=2&gt;Title&lt;/td&gt;&lt;td&gt;Data&lt;/td&gt;&lt;/tr&gt;"</span>
@@ -343,7 +343,7 @@
 <a class="jxr_linenumber" name="L335" href="#L335">335</a>     }
 <a class="jxr_linenumber" name="L336" href="#L336">336</a> 
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>     @Test
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>     <strong class="jxr_keyword">void</strong> testSpanOverAllEmptyColumns() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>     <strong class="jxr_keyword">void</strong> spanOverAllEmptyColumns() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L340" href="#L340">340</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table summary=little&gt;"</span>
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>                         + <span class="jxr_string">"&lt;tr&gt;&lt;td colspan=2&gt;Title&lt;/td&gt;&lt;td&gt;Data&lt;/td&gt;&lt;/tr&gt;"</span>
@@ -360,7 +360,7 @@
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>     }
 <a class="jxr_linenumber" name="L353" href="#L353">353</a> 
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>     @Test
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <strong class="jxr_keyword">void</strong> testTableInParagraph() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <strong class="jxr_keyword">void</strong> tableInParagraph() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;p&gt;"</span> + <span class="jxr_string">"&lt;table summary=little&gt;"</span> + <span class="jxr_string">"&lt;tr&gt;&lt;td&gt;a&lt;/td&gt;&lt;td&gt;b&lt;/td&gt;&lt;td&gt;Value&lt;/td&gt;&lt;/tr&gt;"</span>
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>                 + <span class="jxr_string">"&lt;tr&gt;&lt;td&gt;c&lt;/td&gt;&lt;td&gt;d&lt;/td&gt;&lt;td&gt;Value&lt;/td&gt;&lt;/tr&gt;"</span> + <span class="jxr_string">"&lt;/table&gt;&lt;/p&gt;"</span>);
 <a class="jxr_linenumber" name="L358" href="#L358">358</a> 
@@ -373,7 +373,7 @@
 <a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     * Get a specific cell with a given id in a WebTable</em>
 <a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>     @Test
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>     <strong class="jxr_keyword">void</strong> testCellsWithID() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>     <strong class="jxr_keyword">void</strong> cellsWithID() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L370" href="#L370">370</a>                 <span class="jxr_string">"&lt;h2&gt;Interesting data&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;table id=\&quot;table\&quot; summary=little&gt;"</span>
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>                         + <span class="jxr_string">"&lt;tr&gt;&lt;td&gt;Title&lt;/td&gt;&lt;td&gt;Data&lt;/td&gt;&lt;/tr&gt;"</span>
@@ -402,7 +402,7 @@
 <a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     * Test that the tag name can be extracted for a cell.</em>
 <a class="jxr_linenumber" name="L395" href="#L395">395</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>     @Test
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>     <strong class="jxr_keyword">void</strong> testCellTagName() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>     <strong class="jxr_keyword">void</strong> cellTagName() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>         WebTable table = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneTable.html"</span>).getTables()[0];
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>         assertEquals(<span class="jxr_string">"TH"</span>, table.getTableCell(0, 0).getTagName().toUpperCase(), <span class="jxr_string">"Tag name of header cell"</span>);
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>         assertEquals(<span class="jxr_string">"TD"</span>, table.getTableCell(0, 1).getTagName().toUpperCase(), <span class="jxr_string">"Tag name of non-header cell"</span>);
@@ -412,6 +412,6 @@
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

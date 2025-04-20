@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -61,7 +61,7 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      @Test
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> testSingleSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> singleSelect() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          assertSame(_form, _select.getForm(), <span class="jxr_string">"Form for select"</span>);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          assertEquals(HTMLSelectElementImpl.TYPE_SELECT_ONE, _select.getType(), <span class="jxr_string">"type with no size"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          assertEquals(1, _select.getSelectedIndex(), <span class="jxr_string">"select index"</span>);
@@ -87,7 +87,7 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      @Test
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">void</strong> testMultiSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">void</strong> multiSelect() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          _select.setMultiple(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          _select.setSize(3);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  
@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     }
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     @Test
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">void</strong> testSingleLineSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">void</strong> singleLineSelect() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         _select.setMultiple(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         _select.setSize(1);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         assertEquals(HTMLSelectElementImpl.TYPE_SELECT_ONE, _select.getType(), <span class="jxr_string">"type with size 1"</span>);
@@ -126,7 +126,7 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     }
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> 
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     @Test
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>     <strong class="jxr_keyword">void</strong> testElements() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>     <strong class="jxr_keyword">void</strong> elements() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         assertEquals(_options.length, _select.getOptions().getLength(), <span class="jxr_string">"number of options"</span>);
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         assertSame(_options[0], _select.getOptions().item(0), <span class="jxr_string">"first option"</span>);
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         assertProperties(<span class="jxr_string">"default selected"</span>, <span class="jxr_string">"defaultSelected"</span>, _options,
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     }
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     @Test
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> testSingleWithNothingSelected() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> singleWithNothingSelected() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         ((HTMLOptionElementImpl) _options[1]).setSelected(false);
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         assertEquals(0, _select.getSelectedIndex(), <span class="jxr_string">"select index"</span>);
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         assertEquals(<span class="jxr_string">"red"</span>, _select.getValue(), <span class="jxr_string">"initial value"</span>);
@@ -151,7 +151,7 @@
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     }
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> 
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     @Test
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">void</strong> testMultipleWithNothingSelected() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <strong class="jxr_keyword">void</strong> multipleWithNothingSelected() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         _select.setMultiple(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         _select.setSize(3);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         ((HTMLOptionElementImpl) _options[1]).setSelected(false);
@@ -168,6 +168,6 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

@@ -32,6 +32,7 @@ import java.util.List;
 public class IllegalParameterValueException extends IllegalRequestParameterException {
 
     private static final long serialVersionUID = 1L;
+
     /**
      * construct an IllegalParameterValueException
      *
@@ -42,11 +43,11 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
      * @param allowed
      *            - the list of allowed values
      */
-<span class="fc" id="L45">    public IllegalParameterValueException(String parameterName, String badValue, String[] allowed) {</span>
-<span class="fc" id="L46">        _parameterName = parameterName;</span>
-<span class="fc" id="L47">        _badValue = badValue;</span>
-<span class="fc" id="L48">        _allowedValues = allowed;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L46">    public IllegalParameterValueException(String parameterName, String badValue, String[] allowed) {</span>
+<span class="fc" id="L47">        _parameterName = parameterName;</span>
+<span class="fc" id="L48">        _badValue = badValue;</span>
+<span class="fc" id="L49">        _allowedValues = allowed;</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * get the bad value from a list of Values
@@ -56,12 +57,12 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
      * @return
      */
     protected static String getBadValue(List values) {
-<span class="fc" id="L59">        String result = &quot;unknown bad value&quot;;</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (values.size() &gt; 0) {</span>
-<span class="fc" id="L61">            Object badValue = values.get(0);</span>
-<span class="fc" id="L62">            result = badValue.toString();</span>
+<span class="fc" id="L60">        String result = &quot;unknown bad value&quot;;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (values.size() &gt; 0) {</span>
+<span class="fc" id="L62">            Object badValue = values.get(0);</span>
+<span class="fc" id="L63">            result = badValue.toString();</span>
         }
-<span class="fc" id="L64">        return result;</span>
+<span class="fc" id="L65">        return result;</span>
     }
 
     /**
@@ -70,26 +71,26 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
      * @param allowed
      */
     public IllegalParameterValueException(String parameterName, List values, String[] allowed) {
-<span class="fc" id="L73">        this(parameterName, getBadValue(values), allowed);</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L74">        this(parameterName, getBadValue(values), allowed);</span>
+<span class="fc" id="L75">    }</span>
 
     @Override
     public String getMessage() {
-<span class="fc" id="L78">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="fc" id="L79">        sb.append(&quot;May not set parameter '&quot;).append(_parameterName).append(&quot;' to '&quot;);</span>
-<span class="fc" id="L80">        sb.append(_badValue).append(&quot;'. Value must be one of: { &quot;);</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (int i = 0; i &lt; _allowedValues.length; i++) {</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">            if (i != 0) {</span>
-<span class="fc" id="L83">                sb.append(&quot;, &quot;);</span>
+<span class="fc" id="L79">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L80">        sb.append(&quot;May not set parameter '&quot;).append(_parameterName).append(&quot;' to '&quot;);</span>
+<span class="fc" id="L81">        sb.append(_badValue).append(&quot;'. Value must be one of: { &quot;);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; _allowedValues.length; i++) {</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (i != 0) {</span>
+<span class="fc" id="L84">                sb.append(&quot;, &quot;);</span>
             }
-<span class="fc" id="L85">            sb.append(&quot;'&quot; + _allowedValues[i] + &quot;'&quot;);</span>
+<span class="fc" id="L86">            sb.append(&quot;'&quot; + _allowedValues[i] + &quot;'&quot;);</span>
         }
-<span class="fc" id="L87">        sb.append(&quot; }&quot;);</span>
-<span class="fc" id="L88">        return sb.toString();</span>
+<span class="fc" id="L88">        sb.append(&quot; }&quot;);</span>
+<span class="fc" id="L89">        return sb.toString();</span>
     }
 
     private String _parameterName;
     private String _badValue;
     private String[] _allowedValues;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

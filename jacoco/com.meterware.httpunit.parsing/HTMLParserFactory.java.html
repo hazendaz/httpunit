@@ -256,20 +256,19 @@ import java.util.List;
         try {
 <span class="fc" id="L257">            Class.forName(testClassName);</span>
 <span class="fc" id="L258">            return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();</span>
-<span class="nc" id="L259">        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException</span>
-                | InvocationTargetException | NoSuchMethodException | SecurityException
-                | ClassNotFoundException e) {
-<span class="nc" id="L262">            e.printStackTrace();</span>
+<span class="nc" id="L259">        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
+                | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+<span class="nc" id="L261">            e.printStackTrace();</span>
         }
-<span class="nc" id="L264">        return null;</span>
+<span class="nc" id="L263">        return null;</span>
     }
 
     static {
-<span class="fc" id="L268">        _jtidyParser = loadParserIfSupported(&quot;org.w3c.tidy.Parser&quot;, &quot;com.meterware.httpunit.parsing.JTidyHTMLParser&quot;);</span>
-<span class="fc" id="L269">        _nekoParser = loadParserIfSupported(&quot;net.sourceforge.htmlunit.cyberneko.HTMLConfiguration&quot;,</span>
+<span class="fc" id="L267">        _jtidyParser = loadParserIfSupported(&quot;org.w3c.tidy.Parser&quot;, &quot;com.meterware.httpunit.parsing.JTidyHTMLParser&quot;);</span>
+<span class="fc" id="L268">        _nekoParser = loadParserIfSupported(&quot;net.sourceforge.htmlunit.cyberneko.HTMLConfiguration&quot;,</span>
                 &quot;com.meterware.httpunit.parsing.NekoHTMLParser&quot;);
-<span class="fc" id="L271">        reset();</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L270">        reset();</span>
+<span class="fc" id="L271">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

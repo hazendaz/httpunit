@@ -1021,33 +1021,34 @@
 <a class="jxr_linenumber" name="L1013" href="#L1013">1013</a> <strong class="jxr_keyword">class</strong> <a name="MissingParameterValueException" href="../../../com/meterware/httpunit/FormControl.html#MissingParameterValueException">MissingParameterValueException</a> <strong class="jxr_keyword">extends</strong> <a name="IllegalRequestParameterException" href="../../../com/meterware/httpunit/IllegalRequestParameterException.html#IllegalRequestParameterException">IllegalRequestParameterException</a> {
 <a class="jxr_linenumber" name="L1014" href="#L1014">1014</a> 
 <a class="jxr_linenumber" name="L1015" href="#L1015">1015</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
-<a class="jxr_linenumber" name="L1016" href="#L1016">1016</a>     <a name="MissingParameterValueException" href="../../../com/meterware/httpunit/FormControl.html#MissingParameterValueException">MissingParameterValueException</a>(String parameterName, String missingValue, String[] proposed) {
-<a class="jxr_linenumber" name="L1017" href="#L1017">1017</a>         _parameterName = parameterName;
-<a class="jxr_linenumber" name="L1018" href="#L1018">1018</a>         _missingValue = missingValue;
-<a class="jxr_linenumber" name="L1019" href="#L1019">1019</a>         _proposedValues = proposed;
-<a class="jxr_linenumber" name="L1020" href="#L1020">1020</a>     }
-<a class="jxr_linenumber" name="L1021" href="#L1021">1021</a> 
-<a class="jxr_linenumber" name="L1022" href="#L1022">1022</a>     @Override
-<a class="jxr_linenumber" name="L1023" href="#L1023">1023</a>     <strong class="jxr_keyword">public</strong> String getMessage() {
-<a class="jxr_linenumber" name="L1024" href="#L1024">1024</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
-<a class="jxr_linenumber" name="L1025" href="#L1025">1025</a>         sb.append(<span class="jxr_string">"Parameter '"</span>).append(_parameterName).append(<span class="jxr_string">"' must have the value '"</span>);
-<a class="jxr_linenumber" name="L1026" href="#L1026">1026</a>         sb.append(_missingValue).append(<span class="jxr_string">"'. Attempted to set it to: { "</span>);
-<a class="jxr_linenumber" name="L1027" href="#L1027">1027</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _proposedValues.length; i++) {
-<a class="jxr_linenumber" name="L1028" href="#L1028">1028</a>             <strong class="jxr_keyword">if</strong> (i != 0) {
-<a class="jxr_linenumber" name="L1029" href="#L1029">1029</a>                 sb.append(<span class="jxr_string">", "</span>);
-<a class="jxr_linenumber" name="L1030" href="#L1030">1030</a>             }
-<a class="jxr_linenumber" name="L1031" href="#L1031">1031</a>             sb.append(_proposedValues[i]);
-<a class="jxr_linenumber" name="L1032" href="#L1032">1032</a>         }
-<a class="jxr_linenumber" name="L1033" href="#L1033">1033</a>         sb.append(<span class="jxr_string">" }"</span>);
-<a class="jxr_linenumber" name="L1034" href="#L1034">1034</a>         <strong class="jxr_keyword">return</strong> sb.toString();
-<a class="jxr_linenumber" name="L1035" href="#L1035">1035</a>     }
-<a class="jxr_linenumber" name="L1036" href="#L1036">1036</a> 
-<a class="jxr_linenumber" name="L1037" href="#L1037">1037</a>     <strong class="jxr_keyword">private</strong> String _parameterName;
-<a class="jxr_linenumber" name="L1038" href="#L1038">1038</a>     <strong class="jxr_keyword">private</strong> String _missingValue;
-<a class="jxr_linenumber" name="L1039" href="#L1039">1039</a>     <strong class="jxr_keyword">private</strong> String[] _proposedValues;
-<a class="jxr_linenumber" name="L1040" href="#L1040">1040</a> }
+<a class="jxr_linenumber" name="L1016" href="#L1016">1016</a> 
+<a class="jxr_linenumber" name="L1017" href="#L1017">1017</a>     <a name="MissingParameterValueException" href="../../../com/meterware/httpunit/FormControl.html#MissingParameterValueException">MissingParameterValueException</a>(String parameterName, String missingValue, String[] proposed) {
+<a class="jxr_linenumber" name="L1018" href="#L1018">1018</a>         _parameterName = parameterName;
+<a class="jxr_linenumber" name="L1019" href="#L1019">1019</a>         _missingValue = missingValue;
+<a class="jxr_linenumber" name="L1020" href="#L1020">1020</a>         _proposedValues = proposed;
+<a class="jxr_linenumber" name="L1021" href="#L1021">1021</a>     }
+<a class="jxr_linenumber" name="L1022" href="#L1022">1022</a> 
+<a class="jxr_linenumber" name="L1023" href="#L1023">1023</a>     @Override
+<a class="jxr_linenumber" name="L1024" href="#L1024">1024</a>     <strong class="jxr_keyword">public</strong> String getMessage() {
+<a class="jxr_linenumber" name="L1025" href="#L1025">1025</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);
+<a class="jxr_linenumber" name="L1026" href="#L1026">1026</a>         sb.append(<span class="jxr_string">"Parameter '"</span>).append(_parameterName).append(<span class="jxr_string">"' must have the value '"</span>);
+<a class="jxr_linenumber" name="L1027" href="#L1027">1027</a>         sb.append(_missingValue).append(<span class="jxr_string">"'. Attempted to set it to: { "</span>);
+<a class="jxr_linenumber" name="L1028" href="#L1028">1028</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _proposedValues.length; i++) {
+<a class="jxr_linenumber" name="L1029" href="#L1029">1029</a>             <strong class="jxr_keyword">if</strong> (i != 0) {
+<a class="jxr_linenumber" name="L1030" href="#L1030">1030</a>                 sb.append(<span class="jxr_string">", "</span>);
+<a class="jxr_linenumber" name="L1031" href="#L1031">1031</a>             }
+<a class="jxr_linenumber" name="L1032" href="#L1032">1032</a>             sb.append(_proposedValues[i]);
+<a class="jxr_linenumber" name="L1033" href="#L1033">1033</a>         }
+<a class="jxr_linenumber" name="L1034" href="#L1034">1034</a>         sb.append(<span class="jxr_string">" }"</span>);
+<a class="jxr_linenumber" name="L1035" href="#L1035">1035</a>         <strong class="jxr_keyword">return</strong> sb.toString();
+<a class="jxr_linenumber" name="L1036" href="#L1036">1036</a>     }
+<a class="jxr_linenumber" name="L1037" href="#L1037">1037</a> 
+<a class="jxr_linenumber" name="L1038" href="#L1038">1038</a>     <strong class="jxr_keyword">private</strong> String _parameterName;
+<a class="jxr_linenumber" name="L1039" href="#L1039">1039</a>     <strong class="jxr_keyword">private</strong> String _missingValue;
+<a class="jxr_linenumber" name="L1040" href="#L1040">1040</a>     <strong class="jxr_keyword">private</strong> String[] _proposedValues;
+<a class="jxr_linenumber" name="L1041" href="#L1041">1041</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

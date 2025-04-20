@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletTestCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletTestCase.java</span></div><h1>ServletTestCase.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -28,24 +28,26 @@ import junit.framework.TestCase;
  **/
 public abstract class ServletTestCase extends TestCase {
 
+    private static InvocationContextFactory _invocationContextFactory;
+
     /**
      * construct a ServletTestCase with the given name
      *
      * @param name
      */
     protected ServletTestCase(String name) {
-<span class="fc" id="L37">        super(name);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L39">        super(name);</span>
+<span class="fc" id="L40">    }</span>
 
     /**
      * Returns a client object which can access the servlet context in which this test is running.
      */
-    final protected ServletUnitClient newClient() {
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
-<span class="nc" id="L45">            throw new RuntimeException(</span>
+    protected final ServletUnitClient newClient() {
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
+<span class="nc" id="L47">            throw new RuntimeException(</span>
                     &quot;ServletTestCase.newClient called before setInvocationContextFactory was called&quot;);
         }
-<span class="fc" id="L48">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
+<span class="fc" id="L50">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
     }
 
     /**
@@ -54,13 +56,12 @@ public abstract class ServletTestCase extends TestCase {
      * @param invocationContextFactory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
-<span class="nc" id="L58">            throw new RuntimeException(</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
+<span class="nc" id="L60">            throw new RuntimeException(</span>
                     &quot;setInvocationContextFactory called with null invocationContextFactory parameter&quot;);
         }
-<span class="fc" id="L61">        _invocationContextFactory = invocationContextFactory;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L63">        _invocationContextFactory = invocationContextFactory;</span>
+<span class="fc" id="L64">    }</span>
 
-    private static InvocationContextFactory _invocationContextFactory;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

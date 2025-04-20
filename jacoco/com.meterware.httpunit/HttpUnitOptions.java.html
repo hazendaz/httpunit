@@ -410,18 +410,20 @@ import java.util.Vector;
 <span class="fc bfc" id="L410" title="All 2 branches covered.">        if (_scriptingEngine == null) {</span>
             try {
 <span class="fc" id="L412">                Class factoryClass = Class.forName(_scriptEngineClassName);</span>
-<span class="fc" id="L413">                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor().newInstance();</span>
-<span class="pc bpc" id="L414" title="1 of 2 branches missed.">                _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;</span>
-<span class="fc" id="L415">                _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);</span>
-<span class="nc" id="L416">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L417">                disableScripting(e, &quot;Unable to find scripting engine factory class &quot;);</span>
-<span class="nc" id="L418">            } catch (InstantiationException e) {</span>
-<span class="nc" id="L419">                disableScripting(e, &quot;Unable to instantiate scripting engine factory class &quot;);</span>
-<span class="nc" id="L420">            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {</span>
-<span class="nc" id="L421">                disableScripting(e, &quot;Unable to create scripting engine factory class &quot;);</span>
-<span class="pc" id="L422">            }</span>
+<span class="fc" id="L413">                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor()</span>
+<span class="fc" id="L414">                        .newInstance();</span>
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">                _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="fc" id="L416">                _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);</span>
+<span class="nc" id="L417">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L418">                disableScripting(e, &quot;Unable to find scripting engine factory class &quot;);</span>
+<span class="nc" id="L419">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L420">                disableScripting(e, &quot;Unable to instantiate scripting engine factory class &quot;);</span>
+<span class="nc" id="L421">            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
+                    | NoSuchMethodException | SecurityException e) {
+<span class="nc" id="L423">                disableScripting(e, &quot;Unable to create scripting engine factory class &quot;);</span>
+<span class="pc" id="L424">            }</span>
         }
-<span class="fc" id="L424">        return _scriptingEngine;</span>
+<span class="fc" id="L426">        return _scriptingEngine;</span>
     }
 
     /**
@@ -430,14 +432,14 @@ import java.util.Vector;
      * @param scriptingEnabled
      */
     public static void setScriptingEnabled(boolean scriptingEnabled) {
-<span class="fc bfc" id="L433" title="All 2 branches covered.">        if (scriptingEnabled != _scriptingEnabled) {</span>
-<span class="fc bfc" id="L434" title="All 2 branches covered.">            _scriptingEngine = scriptingEnabled ? null : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (scriptingEnabled != _scriptingEnabled) {</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">            _scriptingEngine = scriptingEnabled ? null : NULL_SCRIPTING_ENGINE_FACTORY;</span>
         }
-<span class="fc" id="L436">        _scriptingEnabled = scriptingEnabled;</span>
-<span class="fc" id="L437">    }</span>
+<span class="fc" id="L438">        _scriptingEnabled = scriptingEnabled;</span>
+<span class="fc" id="L439">    }</span>
 
     public static boolean isScriptingEnabled() {
-<span class="fc" id="L440">        return _scriptingEnabled;</span>
+<span class="fc" id="L442">        return _scriptingEnabled;</span>
     }
 
     /**
@@ -446,17 +448,17 @@ import java.util.Vector;
      * @return the current state
      */
     public static boolean setExceptionsThrownOnScriptError(boolean throwExceptions) {
-<span class="fc" id="L449">        boolean current = _exceptionsThrownOnScriptError;</span>
-<span class="fc" id="L450">        _exceptionsThrownOnScriptError = throwExceptions;</span>
-<span class="fc" id="L451">        getScriptingEngine().setThrowExceptionsOnError(throwExceptions);</span>
-<span class="fc" id="L452">        return current;</span>
+<span class="fc" id="L451">        boolean current = _exceptionsThrownOnScriptError;</span>
+<span class="fc" id="L452">        _exceptionsThrownOnScriptError = throwExceptions;</span>
+<span class="fc" id="L453">        getScriptingEngine().setThrowExceptionsOnError(throwExceptions);</span>
+<span class="fc" id="L454">        return current;</span>
     }
 
     /**
      * Returns true if script errors cause exceptions to be thrown.
      */
     public static boolean getExceptionsThrownOnScriptError() {
-<span class="fc" id="L459">        return _exceptionsThrownOnScriptError;</span>
+<span class="fc" id="L461">        return _exceptionsThrownOnScriptError;</span>
     }
 
     /**
@@ -464,73 +466,73 @@ import java.util.Vector;
      * 'throwExceptionsOnError' is disabled.
      */
     public static String[] getScriptErrorMessages() {
-<span class="fc" id="L467">        return getScriptingEngine().getErrorMessages();</span>
+<span class="fc" id="L469">        return getScriptingEngine().getErrorMessages();</span>
     }
 
     /**
      * Clears the accumulated script error messages.
      */
     public static void clearScriptErrorMessages() {
-<span class="fc" id="L474">        getScriptingEngine().clearErrorMessages();</span>
-<span class="fc" id="L475">    }</span>
+<span class="fc" id="L476">        getScriptingEngine().clearErrorMessages();</span>
+<span class="fc" id="L477">    }</span>
 
     private static void disableScripting(Exception e, String errorMessage) {
-<span class="nc" id="L478">        System.err.println(errorMessage + _scriptEngineClassName);</span>
-<span class="nc" id="L479">        System.err.println(&quot;&quot; + e);</span>
-<span class="nc" id="L480">        System.err.println(&quot;JavaScript execution disabled&quot;);</span>
-<span class="nc" id="L481">        _scriptingEngine = NULL_SCRIPTING_ENGINE_FACTORY;</span>
-<span class="nc" id="L482">    }</span>
+<span class="nc" id="L480">        System.err.println(errorMessage + _scriptEngineClassName);</span>
+<span class="nc" id="L481">        System.err.println(&quot;&quot; + e);</span>
+<span class="nc" id="L482">        System.err.println(&quot;JavaScript execution disabled&quot;);</span>
+<span class="nc" id="L483">        _scriptingEngine = NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="nc" id="L484">    }</span>
 
     // --------------------------------- private members --------------------------------------
 
     private static final String DEFAULT_CONTENT_TYPE = &quot;text/html&quot;;
 
-<span class="fc" id="L488">    private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {</span>
+<span class="fc" id="L490">    private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {</span>
         @Override
         public boolean isEnabled() {
-<span class="nc" id="L491">            return false;</span>
+<span class="nc" id="L493">            return false;</span>
         }
 
         @Override
         public void associate(WebResponse response) {
-<span class="fc" id="L496">        }</span>
+<span class="fc" id="L498">        }</span>
 
         @Override
         public void load(WebResponse response) {
-<span class="fc" id="L500">        }</span>
+<span class="fc" id="L502">        }</span>
 
         @Override
         public void setThrowExceptionsOnError(boolean throwExceptions) {
-<span class="nc" id="L504">        }</span>
+<span class="nc" id="L506">        }</span>
 
         @Override
         public boolean isThrowExceptionsOnError() {
-<span class="nc" id="L508">            return false;</span>
+<span class="nc" id="L510">            return false;</span>
         }
 
         @Override
         public String[] getErrorMessages() {
-<span class="nc" id="L513">            return new String[0];</span>
+<span class="nc" id="L515">            return new String[0];</span>
         }
 
         @Override
         public void clearErrorMessages() {
-<span class="nc" id="L518">        }</span>
+<span class="nc" id="L520">        }</span>
 
         @Override
         public ScriptingHandler createHandler(HTMLElement element) {
-<span class="fc" id="L522">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+<span class="fc" id="L524">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
         }
 
         @Override
         public ScriptingHandler createHandler(WebResponse response) {
-<span class="nc" id="L527">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+<span class="nc" id="L529">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
         }
 
         @Override
         public void handleScriptException(Exception e, String badScript) {
             // happily ignore and exception
-<span class="nc" id="L533">        }</span>
+<span class="nc" id="L535">        }</span>
     };
 
     /**
@@ -540,11 +542,11 @@ import java.util.Vector;
      */
     @Deprecated
     public static void addCustomAttribute(String attributeName) {
-<span class="pc bpc" id="L543" title="1 of 2 branches missed.">        if (_customAttributes == null) {</span>
-<span class="fc" id="L544">            _customAttributes = new HashSet();</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">        if (_customAttributes == null) {</span>
+<span class="fc" id="L546">            _customAttributes = new HashSet();</span>
         }
-<span class="fc" id="L546">        _customAttributes.add(attributeName);</span>
-<span class="fc" id="L547">    }</span>
+<span class="fc" id="L548">        _customAttributes.add(attributeName);</span>
+<span class="fc" id="L549">    }</span>
 
     /**
      * Get the Set of custom attribute names to be supported by form controls.
@@ -553,47 +555,47 @@ import java.util.Vector;
      */
     @Deprecated
     static Set getCustomAttributes() {
-<span class="fc" id="L556">        return _customAttributes;</span>
+<span class="fc" id="L558">        return _customAttributes;</span>
     }
 
-<span class="fc" id="L559">    private static Set _customAttributes = null;</span>
+<span class="fc" id="L561">    private static Set _customAttributes = null;</span>
 
-<span class="fc" id="L561">    private static boolean _exceptionsOnErrorStatus = true;</span>
+<span class="fc" id="L563">    private static boolean _exceptionsOnErrorStatus = true;</span>
 
-<span class="fc" id="L563">    private static boolean _parameterValuesValidated = true;</span>
+<span class="fc" id="L565">    private static boolean _parameterValuesValidated = true;</span>
 
     private static boolean _imagesTreatedAsAltText;
 
     private static boolean _loggingHttpHeaders;
 
-<span class="fc" id="L569">    private static boolean _matchesIgnoreCase = true;</span>
+<span class="fc" id="L571">    private static boolean _matchesIgnoreCase = true;</span>
 
-<span class="fc" id="L571">    private static boolean _postIncludesCharset = false;</span>
+<span class="fc" id="L573">    private static boolean _postIncludesCharset = false;</span>
 
-<span class="fc" id="L573">    private static boolean _checkContentLength = false;</span>
+<span class="fc" id="L575">    private static boolean _checkContentLength = false;</span>
 
     private static int _redirectDelay;
 
-<span class="fc" id="L577">    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+<span class="fc" id="L579">    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
 
-<span class="fc" id="L579">    private static String _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L581">    private static String _contentType = DEFAULT_CONTENT_TYPE;</span>
 
     private static String _scriptEngineClassName;
 
     private static ScriptingEngineFactory _scriptingEngine;
 
-<span class="fc" id="L585">    private static boolean _scriptingEnabled = true;</span>
+<span class="fc" id="L587">    private static boolean _scriptingEnabled = true;</span>
 
-<span class="fc" id="L587">    private static boolean _exceptionsThrownOnScriptError = true;</span>
+<span class="fc" id="L589">    private static boolean _exceptionsThrownOnScriptError = true;</span>
 
-<span class="fc" id="L589">    private static int _javaScriptOptimizationLevel = -1;</span>
+<span class="fc" id="L591">    private static int _javaScriptOptimizationLevel = -1;</span>
 
-<span class="fc" id="L591">    private static boolean _checkHtmlContentType = false;</span>
+<span class="fc" id="L593">    private static boolean _checkHtmlContentType = false;</span>
 
     static {
-<span class="fc" id="L594">        reset();</span>
+<span class="fc" id="L596">        reset();</span>
 
-<span class="fc" id="L596">    }</span>
+<span class="fc" id="L598">    }</span>
 
     /**
      * getter for Java Script optimization level
@@ -601,7 +603,7 @@ import java.util.Vector;
      * @return the javaScriptOptimizationLevel to be use for running scripts
      */
     public static int getJavaScriptOptimizationLevel() {
-<span class="fc" id="L604">        return _javaScriptOptimizationLevel;</span>
+<span class="fc" id="L606">        return _javaScriptOptimizationLevel;</span>
     }
 
     /**
@@ -613,7 +615,7 @@ import java.util.Vector;
      *            optimize *
      */
     public static void setJavaScriptOptimizationLevel(int scriptOptimizationLevel) {
-<span class="nc" id="L616">        _javaScriptOptimizationLevel = scriptOptimizationLevel;</span>
-<span class="nc" id="L617">    }</span>
+<span class="nc" id="L618">        _javaScriptOptimizationLevel = scriptOptimizationLevel;</span>
+<span class="nc" id="L619">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

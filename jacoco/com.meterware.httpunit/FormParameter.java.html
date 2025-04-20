@@ -314,16 +314,17 @@ import java.util.Arrays;
     public class UnusedParameterValueException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct an exception for an unused parameter with the given name and the value that is bad
          *
          * @param parameterName
          * @param badValue
          */
-<span class="fc" id="L323">        UnusedParameterValueException(String parameterName, String badValue) {</span>
-<span class="fc" id="L324">            _parameterName = parameterName;</span>
-<span class="fc" id="L325">            _badValue = badValue;</span>
-<span class="fc" id="L326">        }</span>
+<span class="fc" id="L324">        UnusedParameterValueException(String parameterName, String badValue) {</span>
+<span class="fc" id="L325">            _parameterName = parameterName;</span>
+<span class="fc" id="L326">            _badValue = badValue;</span>
+<span class="fc" id="L327">        }</span>
 
         /**
          * get the message for this exception
@@ -332,10 +333,10 @@ import java.util.Arrays;
          */
         @Override
         public String getMessage() {
-<span class="fc" id="L335">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="fc" id="L336">            sb.append(&quot;Attempted to assign to parameter '&quot;).append(_parameterName);</span>
-<span class="fc" id="L337">            sb.append(&quot;' the extraneous value '&quot;).append(_badValue).append(&quot;'.&quot;);</span>
-<span class="fc" id="L338">            return sb.toString();</span>
+<span class="fc" id="L336">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L337">            sb.append(&quot;Attempted to assign to parameter '&quot;).append(_parameterName);</span>
+<span class="fc" id="L338">            sb.append(&quot;' the extraneous value '&quot;).append(_badValue).append(&quot;'.&quot;);</span>
+<span class="fc" id="L339">            return sb.toString();</span>
         }
 
         private String _parameterName;
@@ -350,6 +351,7 @@ import java.util.Arrays;
     class UnusedUploadFileException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct a new UnusedUploadFileException exception base on the parameter Name the number of files expected
          * and supplied
@@ -358,26 +360,26 @@ import java.util.Arrays;
          * @param numFilesExpected
          * @param numFilesSupplied
          */
-<span class="fc" id="L361">        UnusedUploadFileException(String parameterName, int numFilesExpected, int numFilesSupplied) {</span>
-<span class="fc" id="L362">            _parameterName = parameterName;</span>
-<span class="fc" id="L363">            _numExpected = numFilesExpected;</span>
-<span class="fc" id="L364">            _numSupplied = numFilesSupplied;</span>
-<span class="fc" id="L365">        }</span>
+<span class="fc" id="L363">        UnusedUploadFileException(String parameterName, int numFilesExpected, int numFilesSupplied) {</span>
+<span class="fc" id="L364">            _parameterName = parameterName;</span>
+<span class="fc" id="L365">            _numExpected = numFilesExpected;</span>
+<span class="fc" id="L366">            _numSupplied = numFilesSupplied;</span>
+<span class="fc" id="L367">        }</span>
 
         /**
          * get the message for this exception
          */
         @Override
         public String getMessage() {
-<span class="nc" id="L372">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="nc" id="L373">            sb.append(&quot;Attempted to upload &quot;).append(_numSupplied).append(&quot; files using parameter '&quot;)</span>
-<span class="nc" id="L374">            .append(_parameterName);</span>
-<span class="nc bnc" id="L375" title="All 2 branches missed.">            if (_numExpected == 0) {</span>
-<span class="nc" id="L376">                sb.append(&quot;' which is not a file parameter.&quot;);</span>
+<span class="nc" id="L374">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L375">            sb.append(&quot;Attempted to upload &quot;).append(_numSupplied).append(&quot; files using parameter '&quot;)</span>
+<span class="nc" id="L376">                    .append(_parameterName);</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">            if (_numExpected == 0) {</span>
+<span class="nc" id="L378">                sb.append(&quot;' which is not a file parameter.&quot;);</span>
             } else {
-<span class="nc" id="L378">                sb.append(&quot;' which only has room for &quot;).append(_numExpected).append('.');</span>
+<span class="nc" id="L380">                sb.append(&quot;' which only has room for &quot;).append(_numExpected).append('.');</span>
             }
-<span class="nc" id="L380">            return sb.toString();</span>
+<span class="nc" id="L382">            return sb.toString();</span>
         }
 
         private String _parameterName;
@@ -394,17 +396,18 @@ import java.util.Arrays;
     static class IllegalCheckboxParameterException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
-<span class="fc" id="L397">        IllegalCheckboxParameterException(String parameterName, String methodName) {</span>
-<span class="fc" id="L398">            _parameterName = parameterName;</span>
-<span class="fc" id="L399">            _methodName = methodName;</span>
-<span class="fc" id="L400">        }</span>
+
+<span class="fc" id="L400">        IllegalCheckboxParameterException(String parameterName, String methodName) {</span>
+<span class="fc" id="L401">            _parameterName = parameterName;</span>
+<span class="fc" id="L402">            _methodName = methodName;</span>
+<span class="fc" id="L403">        }</span>
 
         @Override
         public String getMessage() {
-<span class="nc" id="L404">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="nc" id="L405">            sb.append(&quot;Attempted to invoke method '&quot;).append(_methodName);</span>
-<span class="nc" id="L406">            sb.append(&quot;' for parameter '&quot;).append(_parameterName).append(&quot;', which is not a unique checkbox control.&quot;);</span>
-<span class="nc" id="L407">            return sb.toString();</span>
+<span class="nc" id="L407">            StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L408">            sb.append(&quot;Attempted to invoke method '&quot;).append(_methodName);</span>
+<span class="nc" id="L409">            sb.append(&quot;' for parameter '&quot;).append(_parameterName).append(&quot;', which is not a unique checkbox control.&quot;);</span>
+<span class="nc" id="L410">            return sb.toString();</span>
         }
 
         private String _parameterName;
@@ -412,4 +415,4 @@ import java.util.Arrays;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

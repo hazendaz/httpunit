@@ -133,14 +133,15 @@ public class Button extends FormControl {
     class DisabledButtonException extends IllegalStateException {
 
         private static final long serialVersionUID = 1L;
-<span class="fc" id="L136">        DisabledButtonException(Button button) {</span>
-<span class="fc" id="L137">            _name = button.getName();</span>
-<span class="fc" id="L138">            _value = button.getValue();</span>
-<span class="fc" id="L139">        }</span>
+
+<span class="fc" id="L137">        DisabledButtonException(Button button) {</span>
+<span class="fc" id="L138">            _name = button.getName();</span>
+<span class="fc" id="L139">            _value = button.getValue();</span>
+<span class="fc" id="L140">        }</span>
 
         @Override
         public String getMessage() {
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().length() == 0 ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().length() == 0 ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
                     + &quot; is disabled and may not be clicked.&quot;;
         }
 
@@ -154,7 +155,7 @@ public class Button extends FormControl {
      **/
     @Override
     public boolean isDisabled() {
-<span class="fc" id="L157">        return super.isDisabled();</span>
+<span class="fc" id="L158">        return super.isDisabled();</span>
     }
 
     /**
@@ -170,7 +171,7 @@ public class Button extends FormControl {
      */
     protected void doButtonAction(int x, int y) throws IOException, SAXException {
         // pseudo - abstract
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L174">    }</span>
 
     /**
      * Perform the normal action of this button. delegate to the x-y version
@@ -179,47 +180,47 @@ public class Button extends FormControl {
      * @throws SAXException
      */
     protected void doButtonAction() throws IOException, SAXException {
-<span class="fc" id="L182">        doButtonAction(0, 0);</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L183">        doButtonAction(0, 0);</span>
+<span class="fc" id="L184">    }</span>
 
     // -------------------------------------------------- FormControl methods
     // -----------------------------------------------
 
     @Override
     protected String[] getValues() {
-<span class="nc" id="L190">        return new String[0];</span>
+<span class="nc" id="L191">        return new String[0];</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L196">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L199">        return new Scriptable();</span>
+<span class="fc" id="L200">        return new Scriptable();</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (getForm() != null) {</span>
-<span class="fc" id="L205">            return super.getParentDelegate();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (getForm() != null) {</span>
+<span class="fc" id="L206">            return super.getParentDelegate();</span>
         }
-<span class="fc" id="L207">        return _baseResponse.getDocumentScriptable();</span>
+<span class="fc" id="L208">        return _baseResponse.getDocumentScriptable();</span>
     }
 
-<span class="fc" id="L210">    class Scriptable extends FormControl.Scriptable {</span>
+<span class="fc" id="L211">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public void click() throws IOException, SAXException {
-<span class="fc" id="L214">            doButtonAction();</span>
-<span class="fc" id="L215">        }</span>
+<span class="fc" id="L215">            doButtonAction();</span>
+<span class="fc" id="L216">        }</span>
     }
 
     static {
-<span class="fc" id="L219">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
+<span class="fc" id="L220">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
 
-<span class="pc" id="L221">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
+<span class="pc" id="L222">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
 
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L224">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

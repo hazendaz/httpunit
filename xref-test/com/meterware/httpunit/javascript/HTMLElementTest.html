@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -44,7 +44,7 @@
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">class</strong> <a name="HTMLElementTest" href="../../../../com/meterware/httpunit/javascript/HTMLElementTest.html#HTMLElementTest">HTMLElementTest</a> <strong class="jxr_keyword">extends</strong> <a name="HttpUnitTest" href="../../../../com/meterware/httpunit/HttpUnitTest.html#HttpUnitTest">HttpUnitTest</a> {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      @Test
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">void</strong> testIDProperty() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">void</strong> iDProperty() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>          defineResource(<span class="jxr_string">"start.html"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;script language='JavaScript'&gt;"</span> + <span class="jxr_string">"function showTitle( id ) {"</span>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>                  + <span class="jxr_string">"   alert( 'element with id ' + id + ' has title ' + document.getElementById( id ).title );"</span> + <span class="jxr_string">"}"</span>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>                  + <span class="jxr_string">"function showAll() {"</span> + <span class="jxr_string">"    showTitle( 'there' ); showTitle( 'perform' ); showTitle( 'doIt' );"</span>
@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      }
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      @Test
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">void</strong> testElementByIdReturnsNull() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">void</strong> elementByIdReturnsNull() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          defineResource(<span class="jxr_string">"start.html"</span>,
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;script language='JavaScript'&gt;"</span> + <span class="jxr_string">"function showNone() {"</span>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>                          + <span class="jxr_string">"    alert( 'It returned ' + document.getElementById( 'zork' ) )"</span> + <span class="jxr_string">"}&lt;/script&gt;"</span>
@@ -82,7 +82,7 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      @Test
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">void</strong> testNameProperty() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">void</strong> nameProperty() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          defineResource(<span class="jxr_string">"start.html"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;script language='JavaScript'&gt;"</span> + <span class="jxr_string">"function showTitle( name ) {"</span>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>                  + <span class="jxr_string">"  var elements = document.getElementsByName( name );"</span> + <span class="jxr_string">"  for( i = 0; i &lt; elements.length; i++) {"</span>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                  + <span class="jxr_string">"   alert( 'element with name ' + name + ' has title ' + elements[i].title );"</span> + <span class="jxr_string">"  }"</span> + <span class="jxr_string">"}"</span>
@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      @Test
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> testNamePropertyWithIdAttribute() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> namePropertyWithIdAttribute() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          defineResource(<span class="jxr_string">"start.html"</span>,
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>                 <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;script language='JavaScript'&gt;"</span> + <span class="jxr_string">"function showAll() {"</span>
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>                         + <span class="jxr_string">"    alert( 'element with name there has title '   + document.there.title );"</span>
@@ -126,7 +126,7 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     }
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> 
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     @Test
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>     <strong class="jxr_keyword">void</strong> testElementProperties() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>     <strong class="jxr_keyword">void</strong> elementProperties() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         defineWebPage(<span class="jxr_string">"start"</span>,
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>                 <span class="jxr_string">"&lt;form name='perform' title=fifth&gt;"</span> + <span class="jxr_string">"  &lt;input name='name' maxlength=20 tabindex='1'&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
@@ -143,6 +143,6 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

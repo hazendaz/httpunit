@@ -145,21 +145,21 @@ import org.w3c.dom.html.HTMLElement;
     @Override
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
 <span class="pc bpc" id="L147" title="1 of 7 branches missed.">        switch (importedNode.getNodeType()) {</span>
-        case Node.ATTRIBUTE_NODE:
-<span class="fc" id="L149">            return AttrImpl.importNode(this, (Attr) importedNode);</span>
-        case Node.CDATA_SECTION_NODE:
-<span class="fc" id="L151">            return CDATASectionImpl.importNode(this, (CDATASection) importedNode);</span>
-        case Node.COMMENT_NODE:
-<span class="fc" id="L153">            return CommentImpl.importNode(this, (Comment) importedNode);</span>
-        case Node.ELEMENT_NODE:
-<span class="fc" id="L155">            return ElementImpl.importNode(this, (Element) importedNode, deep);</span>
-        case Node.PROCESSING_INSTRUCTION_NODE:
-<span class="fc" id="L157">            return ProcessingInstructionImpl.importNode(this, (ProcessingInstruction) importedNode);</span>
-        case Node.TEXT_NODE:
-<span class="fc" id="L159">            return TextImpl.importNode(this, (Text) importedNode);</span>
-        default:
-<span class="nc" id="L161">            throw new DOMException(DOMException.NOT_SUPPORTED_ERR,</span>
-<span class="nc" id="L162">                    &quot;Cannot import node type &quot; + importedNode.getNodeType());</span>
+            case Node.ATTRIBUTE_NODE:
+<span class="fc" id="L149">                return AttrImpl.importNode(this, (Attr) importedNode);</span>
+            case Node.CDATA_SECTION_NODE:
+<span class="fc" id="L151">                return CDATASectionImpl.importNode(this, (CDATASection) importedNode);</span>
+            case Node.COMMENT_NODE:
+<span class="fc" id="L153">                return CommentImpl.importNode(this, (Comment) importedNode);</span>
+            case Node.ELEMENT_NODE:
+<span class="fc" id="L155">                return ElementImpl.importNode(this, (Element) importedNode, deep);</span>
+            case Node.PROCESSING_INSTRUCTION_NODE:
+<span class="fc" id="L157">                return ProcessingInstructionImpl.importNode(this, (ProcessingInstruction) importedNode);</span>
+            case Node.TEXT_NODE:
+<span class="fc" id="L159">                return TextImpl.importNode(this, (Text) importedNode);</span>
+            default:
+<span class="nc" id="L161">                throw new DOMException(DOMException.NOT_SUPPORTED_ERR,</span>
+<span class="nc" id="L162">                        &quot;Cannot import node type &quot; + importedNode.getNodeType());</span>
         }
     }
 
@@ -279,4 +279,4 @@ import org.w3c.dom.html.HTMLElement;
 <span class="nc" id="L279">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

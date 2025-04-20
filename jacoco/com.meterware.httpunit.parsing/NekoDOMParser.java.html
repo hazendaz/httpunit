@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NekoDOMParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">NekoDOMParser.java</span></div><h1>NekoDOMParser.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 
+import org.apache.xerces.parsers.AbstractDOMParser;
 import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
@@ -71,99 +72,99 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *         Allow configuration of neko parser properties by James Abley
      */
     static NekoDOMParser newParser(DocumentAdapter adapter, URL url) {
-<span class="fc" id="L74">        final HTMLConfiguration configuration = new HTMLConfiguration();</span>
+<span class="fc" id="L75">        final HTMLConfiguration configuration = new HTMLConfiguration();</span>
         // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't solve
         // issue with &lt;noscript&gt; needs.
         // configuration.setFeature(HTMLScanner.PARSE_NOSCRIPT_CONTENT, false);
-<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if (!HTMLParserFactory.getHTMLParserListeners().isEmpty() || HTMLParserFactory.isParserWarningsEnabled()) {</span>
-<span class="fc" id="L79">            configuration.setErrorHandler(new ErrorHandler(url));</span>
-<span class="fc" id="L80">            configuration.setFeature(REPORT_ERRORS, true);</span>
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">        if (!HTMLParserFactory.getHTMLParserListeners().isEmpty() || HTMLParserFactory.isParserWarningsEnabled()) {</span>
+<span class="fc" id="L80">            configuration.setErrorHandler(new ErrorHandler(url));</span>
+<span class="fc" id="L81">            configuration.setFeature(REPORT_ERRORS, true);</span>
         }
-<span class="fc" id="L82">        configuration.setFeature(AUGMENTATIONS, true);</span>
-<span class="fc" id="L83">        final ScriptFilter javaScriptFilter = new ScriptFilter(configuration);</span>
-<span class="fc" id="L84">        configuration.setProperty(FILTERS, new XMLDocumentFilter[] { javaScriptFilter });</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (HTMLParserFactory.isPreserveTagCase()) {</span>
-<span class="nc" id="L86">            configuration.setProperty(TAG_NAME_CASE, &quot;match&quot;);</span>
-<span class="nc" id="L87">            configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;no-change&quot;);</span>
+<span class="fc" id="L83">        configuration.setFeature(AUGMENTATIONS, true);</span>
+<span class="fc" id="L84">        final ScriptFilter javaScriptFilter = new ScriptFilter(configuration);</span>
+<span class="fc" id="L85">        configuration.setProperty(FILTERS, new XMLDocumentFilter[] { javaScriptFilter });</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (HTMLParserFactory.isPreserveTagCase()) {</span>
+<span class="nc" id="L87">            configuration.setProperty(TAG_NAME_CASE, &quot;match&quot;);</span>
+<span class="nc" id="L88">            configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;no-change&quot;);</span>
         } else {
-<span class="fc" id="L89">            configuration.setProperty(TAG_NAME_CASE, &quot;lower&quot;);</span>
-<span class="fc" id="L90">            configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;lower&quot;);</span>
+<span class="fc" id="L90">            configuration.setProperty(TAG_NAME_CASE, &quot;lower&quot;);</span>
+<span class="fc" id="L91">            configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;lower&quot;);</span>
 
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">            if (HTMLParserFactory.getForceUpperCase()) {</span>
-<span class="nc" id="L93">                configuration.setProperty(TAG_NAME_CASE, &quot;upper&quot;);</span>
-<span class="nc" id="L94">                configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;upper&quot;);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (HTMLParserFactory.getForceUpperCase()) {</span>
+<span class="nc" id="L94">                configuration.setProperty(TAG_NAME_CASE, &quot;upper&quot;);</span>
+<span class="nc" id="L95">                configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;upper&quot;);</span>
             }
             // this is the default as of patch [ 1211154 ] ... just for people who rely on patch [ 1176688 ]
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (HTMLParserFactory.getForceLowerCase()) {</span>
-<span class="nc" id="L98">                configuration.setProperty(TAG_NAME_CASE, &quot;lower&quot;);</span>
-<span class="nc" id="L99">                configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;lower&quot;);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (HTMLParserFactory.getForceLowerCase()) {</span>
+<span class="nc" id="L99">                configuration.setProperty(TAG_NAME_CASE, &quot;lower&quot;);</span>
+<span class="nc" id="L100">                configuration.setProperty(ATTRIBUTE_NAME_CASE, &quot;lower&quot;);</span>
             }
         }
 
         try {
-<span class="fc" id="L104">            final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);</span>
-<span class="fc" id="L105">            domParser.setFeature(DEFER_NODE_EXPANSION, false);</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">            if (HTMLParserFactory.isReturnHTMLDocument())</span>
-<span class="fc" id="L107">                domParser.setProperty(DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());</span>
-<span class="fc" id="L108">            javaScriptFilter.setScriptHandler(domParser);</span>
-<span class="fc" id="L109">            return domParser;</span>
-<span class="nc" id="L110">        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {</span>
-<span class="nc" id="L111">            throw new RuntimeException(e.toString());</span>
-        } 
+<span class="fc" id="L105">            final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);</span>
+<span class="fc" id="L106">            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (HTMLParserFactory.isReturnHTMLDocument())</span>
+<span class="fc" id="L108">                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());</span>
+<span class="fc" id="L109">            javaScriptFilter.setScriptHandler(domParser);</span>
+<span class="fc" id="L110">            return domParser;</span>
+<span class="nc" id="L111">        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {</span>
+<span class="nc" id="L112">            throw new RuntimeException(e.toString());</span>
+        }
 
     }
 
     private Element getCurrentElement() {
         try {
-<span class="fc" id="L118">            return (Element) getProperty(CURRENT_ELEMENT_NODE);</span>
-<span class="nc" id="L119">        } catch (SAXNotRecognizedException e) {</span>
-<span class="nc" id="L120">            throw new RuntimeException(CURRENT_ELEMENT_NODE + &quot; property not recognized&quot;);</span>
-<span class="nc" id="L121">        } catch (SAXNotSupportedException e) {</span>
-<span class="nc" id="L122">            e.printStackTrace();</span>
-<span class="nc" id="L123">            throw new RuntimeException(CURRENT_ELEMENT_NODE + &quot; property not supported&quot;);</span>
+<span class="fc" id="L119">            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);</span>
+<span class="nc" id="L120">        } catch (SAXNotRecognizedException e) {</span>
+<span class="nc" id="L121">            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + &quot; property not recognized&quot;);</span>
+<span class="nc" id="L122">        } catch (SAXNotSupportedException e) {</span>
+<span class="nc" id="L123">            e.printStackTrace();</span>
+<span class="nc" id="L124">            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + &quot; property not supported&quot;);</span>
         }
     }
 
     NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
-<span class="fc" id="L128">        super(configuration);</span>
-<span class="fc" id="L129">        _documentAdapter = adapter;</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L129">        super(configuration);</span>
+<span class="fc" id="L130">        _documentAdapter = adapter;</span>
+<span class="fc" id="L131">    }</span>
 
     @Override
     public String getIncludedScript(String srcAttribute) {
         try {
-<span class="fc" id="L135">            return _documentAdapter.getIncludedScript(srcAttribute);</span>
-<span class="nc" id="L136">        } catch (IOException e) {</span>
-<span class="nc" id="L137">            throw new ScriptException(e);</span>
+<span class="fc" id="L136">            return _documentAdapter.getIncludedScript(srcAttribute);</span>
+<span class="nc" id="L137">        } catch (IOException e) {</span>
+<span class="nc" id="L138">            throw new ScriptException(e);</span>
         }
     }
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-<span class="fc" id="L143">        return getScriptingHandler().supportsScriptLanguage(language);</span>
+<span class="fc" id="L144">        return getScriptingHandler().supportsScriptLanguage(language);</span>
     }
 
     @Override
     public String runScript(final String language, final String scriptText) {
-<span class="fc" id="L148">        getScriptingHandler().clearCaches();</span>
-<span class="fc" id="L149">        return getScriptingHandler().runScript(language, scriptText);</span>
+<span class="fc" id="L149">        getScriptingHandler().clearCaches();</span>
+<span class="fc" id="L150">        return getScriptingHandler().runScript(language, scriptText);</span>
     }
 
     private ScriptingHandler getScriptingHandler() {
-<span class="fc" id="L153">        _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());</span>
-<span class="fc" id="L154">        return _documentAdapter.getScriptingHandler();</span>
+<span class="fc" id="L154">        _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());</span>
+<span class="fc" id="L155">        return _documentAdapter.getScriptingHandler();</span>
     }
 
     static class ScriptException extends RuntimeException {
         private static final long serialVersionUID = 1L;
         private IOException _cause;
 
-<span class="nc" id="L161">        public ScriptException(IOException cause) {</span>
-<span class="nc" id="L162">            _cause = cause;</span>
-<span class="nc" id="L163">        }</span>
+<span class="nc" id="L162">        public ScriptException(IOException cause) {</span>
+<span class="nc" id="L163">            _cause = cause;</span>
+<span class="nc" id="L164">        }</span>
 
         public IOException getException() {
-<span class="nc" id="L166">            return _cause;</span>
+<span class="nc" id="L167">            return _cause;</span>
         }
     }
 }
@@ -172,37 +173,37 @@ class ErrorHandler implements XMLErrorHandler {
 
     private URL _url;
 
-<span class="fc" id="L175">    ErrorHandler(URL url) {</span>
-<span class="fc" id="L176">        _url = url;</span>
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L176">    ErrorHandler(URL url) {</span>
+<span class="fc" id="L177">        _url = url;</span>
+<span class="fc" id="L178">    }</span>
 
     @Override
     public void warning(String domain, String key, XMLParseException warningException) throws XNIException {
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (HTMLParserFactory.isParserWarningsEnabled()) {</span>
-<span class="nc" id="L182">            System.out.println(&quot;At line &quot; + warningException.getLineNumber() + &quot;, column &quot;</span>
-<span class="nc" id="L183">                    + warningException.getColumnNumber() + &quot;: &quot; + warningException.getMessage());</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (HTMLParserFactory.isParserWarningsEnabled()) {</span>
+<span class="nc" id="L183">            System.out.println(&quot;At line &quot; + warningException.getLineNumber() + &quot;, column &quot;</span>
+<span class="nc" id="L184">                    + warningException.getColumnNumber() + &quot;: &quot; + warningException.getMessage());</span>
         }
 
-<span class="fc" id="L186">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
-<span class="fc bfc" id="L187" title="All 2 branches covered.">        for (HTMLParserListener listener : listeners) {</span>
-<span class="fc" id="L188">            listener.warning(_url, warningException.getMessage(),</span>
-<span class="fc" id="L189">                    warningException.getLineNumber(), warningException.getColumnNumber());</span>
-<span class="fc" id="L190">        }</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L187">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        for (HTMLParserListener listener : listeners) {</span>
+<span class="fc" id="L189">            listener.warning(_url, warningException.getMessage(), warningException.getLineNumber(),</span>
+<span class="fc" id="L190">                    warningException.getColumnNumber());</span>
+<span class="fc" id="L191">        }</span>
+<span class="fc" id="L192">    }</span>
 
     @Override
     public void error(String domain, String key, XMLParseException errorException) throws XNIException {
-<span class="nc" id="L195">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        for (HTMLParserListener listener : listeners) {</span>
-<span class="nc" id="L197">            listener.error(_url, errorException.getMessage(),</span>
-<span class="nc" id="L198">                    errorException.getLineNumber(), errorException.getColumnNumber());</span>
-<span class="nc" id="L199">        }</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L196">        List&lt;HTMLParserListener&gt; listeners = HTMLParserFactory.getHTMLParserListeners();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (HTMLParserListener listener : listeners) {</span>
+<span class="nc" id="L198">            listener.error(_url, errorException.getMessage(), errorException.getLineNumber(),</span>
+<span class="nc" id="L199">                    errorException.getColumnNumber());</span>
+<span class="nc" id="L200">        }</span>
+<span class="nc" id="L201">    }</span>
 
     @Override
     public void fatalError(String domain, String key, XMLParseException fatalError) throws XNIException {
-<span class="nc" id="L204">        error(domain, key, fatalError);</span>
-<span class="nc" id="L205">        throw fatalError;</span>
+<span class="nc" id="L205">        error(domain, key, fatalError);</span>
+<span class="nc" id="L206">        throw fatalError;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

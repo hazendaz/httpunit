@@ -64,36 +64,35 @@ class AuthenticationChallenge extends HttpHeader {
 <span class="nc" id="L64">            return false;</span>
         }
 
-
-<span class="fc" id="L68">        throw createAuthorizationRequiredException();</span>
+<span class="fc" id="L67">        throw createAuthorizationRequiredException();</span>
     }
 
     private String getAuthenticationType() {
-<span class="fc" id="L72">        String result = getLabel();</span>
-<span class="fc bfc" id="L73" title="All 4 branches covered.">        if (_headerString != null &amp;&amp; _headerString.equals(&quot;Negotiate&quot;)) {</span>
-<span class="fc" id="L74">            result = null;</span>
+<span class="fc" id="L71">        String result = getLabel();</span>
+<span class="fc bfc" id="L72" title="All 4 branches covered.">        if (_headerString != null &amp;&amp; _headerString.equals(&quot;Negotiate&quot;)) {</span>
+<span class="fc" id="L73">            result = null;</span>
         }
-<span class="fc" id="L76">        return result;</span>
+<span class="fc" id="L75">        return result;</span>
     }
 
     String createAuthenticationHeader() {
-<span class="fc" id="L80">        PasswordAuthentication credentials = getCredentialsForRealm();</span>
-<span class="fc" id="L81">        return getAuthenticationStrategy().createAuthenticationHeader(this, credentials.getUserName(),</span>
-<span class="fc" id="L82">                new String(credentials.getPassword()));</span>
+<span class="fc" id="L79">        PasswordAuthentication credentials = getCredentialsForRealm();</span>
+<span class="fc" id="L80">        return getAuthenticationStrategy().createAuthenticationHeader(this, credentials.getUserName(),</span>
+<span class="fc" id="L81">                new String(credentials.getPassword()));</span>
     }
 
     private AuthenticationStrategy getAuthenticationStrategy() {
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (getAuthenticationType().equalsIgnoreCase(&quot;basic&quot;)) {</span>
-<span class="fc" id="L87">            return BASIC_AUTHENTICATION;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (getAuthenticationType().equalsIgnoreCase(&quot;basic&quot;)) {</span>
+<span class="fc" id="L86">            return BASIC_AUTHENTICATION;</span>
         }
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (getAuthenticationType().equalsIgnoreCase(&quot;digest&quot;)) {</span>
-<span class="fc" id="L90">            return DIGEST_AUTHENTICATION;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (getAuthenticationType().equalsIgnoreCase(&quot;digest&quot;)) {</span>
+<span class="fc" id="L89">            return DIGEST_AUTHENTICATION;</span>
         }
-<span class="nc" id="L92">        throw new RuntimeException(&quot;Unsupported authentication type '&quot; + getAuthenticationType() + &quot;'&quot;);</span>
+<span class="nc" id="L91">        throw new RuntimeException(&quot;Unsupported authentication type '&quot; + getAuthenticationType() + &quot;'&quot;);</span>
     }
 
     private AuthorizationRequiredException createAuthorizationRequiredException() {
-<span class="fc" id="L96">        return AuthorizationRequiredException.createException(getAuthenticationType(), getProperties());</span>
+<span class="fc" id="L95">        return AuthorizationRequiredException.createException(getAuthenticationType(), getProperties());</span>
     }
 
     /**
@@ -102,23 +101,23 @@ class AuthenticationChallenge extends HttpHeader {
      * @return
      */
     private PasswordAuthentication getCredentialsForRealm() {
-<span class="fc" id="L105">        String realm = getProperty(&quot;realm&quot;);</span>
-<span class="fc" id="L106">        PasswordAuthentication result = null;</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (realm != null) {</span>
-<span class="fc" id="L108">            result = _client.getCredentialsForRealm(realm);</span>
+<span class="fc" id="L104">        String realm = getProperty(&quot;realm&quot;);</span>
+<span class="fc" id="L105">        PasswordAuthentication result = null;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (realm != null) {</span>
+<span class="fc" id="L107">            result = _client.getCredentialsForRealm(realm);</span>
         }
-<span class="fc" id="L110">        return result;</span>
+<span class="fc" id="L109">        return result;</span>
     }
 
     private String getMethod() {
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        return null == _request ? null : _request.getMethod();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        return null == _request ? null : _request.getMethod();</span>
     }
 
     private String getRequestUri() {
         try {
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            return null == _request ? null : _request.getURL().getFile();</span>
-<span class="nc" id="L120">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L121">            return null;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">            return null == _request ? null : _request.getURL().getFile();</span>
+<span class="nc" id="L119">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L120">            return null;</span>
         }
     }
 
@@ -130,7 +129,7 @@ class AuthenticationChallenge extends HttpHeader {
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-<span class="fc" id="L133">            return &quot;Basic &quot; + Base64.encode(userName + ':' + password);</span>
+<span class="fc" id="L132">            return &quot;Basic &quot; + Base64.encode(userName + ':' + password);</span>
         }
 
     }
@@ -141,91 +140,91 @@ class AuthenticationChallenge extends HttpHeader {
 
             public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
                     String password) {
-<span class="fc" id="L144">                appendDigestParams(sb, challenge.getProperty(&quot;realm&quot;), challenge.getProperty(&quot;nonce&quot;),</span>
-<span class="fc" id="L145">                        challenge.getRequestUri(), userName, password, challenge.getMethod(),</span>
-<span class="fc" id="L146">                        challenge.getProperty(&quot;opaque&quot;));</span>
-<span class="fc" id="L147">            }</span>
+<span class="fc" id="L143">                appendDigestParams(sb, challenge.getProperty(&quot;realm&quot;), challenge.getProperty(&quot;nonce&quot;),</span>
+<span class="fc" id="L144">                        challenge.getRequestUri(), userName, password, challenge.getMethod(),</span>
+<span class="fc" id="L145">                        challenge.getProperty(&quot;opaque&quot;));</span>
+<span class="fc" id="L146">            }</span>
 
             protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
                     String password, String method, String opaque) {
-<span class="fc" id="L151">                sb.append(&quot;username=&quot;).append(quote(userName));</span>
-<span class="fc" id="L152">                append(sb, &quot;realm&quot;, realm);</span>
-<span class="fc" id="L153">                append(sb, &quot;nonce&quot;, nonce);</span>
-<span class="fc" id="L154">                append(sb, &quot;uri&quot;, uri);</span>
-<span class="fc" id="L155">                append(sb, &quot;response&quot;, getResponse(userName, realm, password, nonce, uri, method));</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">                if (opaque != null) {</span>
-<span class="fc" id="L157">                    append(sb, &quot;opaque&quot;, opaque);</span>
+<span class="fc" id="L150">                sb.append(&quot;username=&quot;).append(quote(userName));</span>
+<span class="fc" id="L151">                append(sb, &quot;realm&quot;, realm);</span>
+<span class="fc" id="L152">                append(sb, &quot;nonce&quot;, nonce);</span>
+<span class="fc" id="L153">                append(sb, &quot;uri&quot;, uri);</span>
+<span class="fc" id="L154">                append(sb, &quot;response&quot;, getResponse(userName, realm, password, nonce, uri, method));</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                if (opaque != null) {</span>
+<span class="fc" id="L156">                    append(sb, &quot;opaque&quot;, opaque);</span>
                 }
-<span class="fc" id="L159">            }</span>
+<span class="fc" id="L158">            }</span>
 
             protected String getResponse(String userName, String realm, String password, String nonce, String uri,
                     String method) {
                 try {
-<span class="fc" id="L164">                    String a1 = A1(userName, password, realm, nonce);</span>
-<span class="fc" id="L165">                    String a2 = A2(uri, method);</span>
-<span class="fc" id="L166">                    String ha1 = H(a1);</span>
-<span class="fc" id="L167">                    String ha2 = H(a2);</span>
-<span class="fc" id="L168">                    return KD(ha1, nonce + ':' + ha2);</span>
-<span class="nc" id="L169">                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {</span>
-<span class="nc" id="L170">                    return &quot;&quot;;</span>
+<span class="fc" id="L163">                    String a1 = A1(userName, password, realm, nonce);</span>
+<span class="fc" id="L164">                    String a2 = A2(uri, method);</span>
+<span class="fc" id="L165">                    String ha1 = H(a1);</span>
+<span class="fc" id="L166">                    String ha2 = H(a2);</span>
+<span class="fc" id="L167">                    return KD(ha1, nonce + ':' + ha2);</span>
+<span class="nc" id="L168">                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {</span>
+<span class="nc" id="L169">                    return &quot;&quot;;</span>
                 }
             }
 
             protected String A1(String userName, String password, String realm, String nonce)
                     throws NoSuchAlgorithmException, UnsupportedEncodingException {
-<span class="fc" id="L176">                return userName + ':' + realm + ':' + password;</span>
+<span class="fc" id="L175">                return userName + ':' + realm + ':' + password;</span>
             }
 
             protected String A2(String uri, String method) {
-<span class="fc" id="L180">                return method + ':' + uri;</span>
+<span class="fc" id="L179">                return method + ':' + uri;</span>
             }
 
             final protected String KD(String secret, String data)
                     throws NoSuchAlgorithmException, UnsupportedEncodingException {
-<span class="fc" id="L185">                return H(secret + &quot;:&quot; + data);</span>
+<span class="fc" id="L184">                return H(secret + &quot;:&quot; + data);</span>
             }
 
             final protected String H(String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-<span class="fc" id="L189">                MessageDigest digest = MessageDigest.getInstance(&quot;MD5&quot;);</span>
-<span class="fc" id="L190">                digest.update(data.getBytes(StandardCharsets.UTF_8));</span>
-<span class="fc" id="L191">                byte[] bytes = digest.digest();</span>
-<span class="fc" id="L192">                StringBuilder sb = new StringBuilder();</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">                for (byte element : bytes) {</span>
-<span class="fc" id="L194">                    int aByte = element;</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">                    if (aByte &lt; 0) {</span>
-<span class="fc" id="L196">                        aByte += 256;</span>
+<span class="fc" id="L188">                MessageDigest digest = MessageDigest.getInstance(&quot;MD5&quot;);</span>
+<span class="fc" id="L189">                digest.update(data.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L190">                byte[] bytes = digest.digest();</span>
+<span class="fc" id="L191">                StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                for (byte element : bytes) {</span>
+<span class="fc" id="L193">                    int aByte = element;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">                    if (aByte &lt; 0) {</span>
+<span class="fc" id="L195">                        aByte += 256;</span>
                     }
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">                    if (aByte &lt; 16) {</span>
-<span class="nc" id="L199">                        sb.append('0');</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                    if (aByte &lt; 16) {</span>
+<span class="nc" id="L198">                        sb.append('0');</span>
                     }
-<span class="fc" id="L201">                    sb.append(Integer.toHexString(aByte));</span>
+<span class="fc" id="L200">                    sb.append(Integer.toHexString(aByte));</span>
                 }
 
-<span class="fc" id="L204">                return sb.toString();</span>
+<span class="fc" id="L203">                return sb.toString();</span>
             }
 
             private void append(StringBuilder sb, String name, String value) {
-<span class="fc" id="L208">                sb.append(&quot;,&quot;).append(name).append(&quot;=&quot;).append(quote(value));</span>
-<span class="fc" id="L209">            }</span>
+<span class="fc" id="L207">                sb.append(&quot;,&quot;).append(name).append(&quot;=&quot;).append(quote(value));</span>
+<span class="fc" id="L208">            }</span>
 
             private String quote(String value) {
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">                if (value.startsWith(&quot;\&quot;&quot;)) {</span>
-<span class="nc" id="L213">                    return value;</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">                if (value.startsWith(&quot;\&quot;&quot;)) {</span>
+<span class="nc" id="L212">                    return value;</span>
                 }
-<span class="fc" id="L215">                return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
+<span class="fc" id="L214">                return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
             }
 
         }
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-<span class="fc" id="L222">            StringBuilder sb = new StringBuilder(&quot;Digest &quot;);</span>
-<span class="fc" id="L223">            Algorithm algorithm = new Algorithm();</span>
-<span class="fc" id="L224">            algorithm.appendParams(sb, challenge, userName, password);</span>
-<span class="fc" id="L225">            return sb.toString();</span>
+<span class="fc" id="L221">            StringBuilder sb = new StringBuilder(&quot;Digest &quot;);</span>
+<span class="fc" id="L222">            Algorithm algorithm = new Algorithm();</span>
+<span class="fc" id="L223">            algorithm.appendParams(sb, challenge, userName, password);</span>
+<span class="fc" id="L224">            return sb.toString();</span>
         }
 
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

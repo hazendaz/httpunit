@@ -386,29 +386,29 @@
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>         }
 <a class="jxr_linenumber" name="L379" href="#L379">379</a> 
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>         <strong class="jxr_keyword">switch</strong> (response.getResponseCode()) {
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         <strong class="jxr_keyword">case</strong> HttpURLConnection.HTTP_MOVED_PERM:
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>         <strong class="jxr_keyword">case</strong> HttpURLConnection.HTTP_MOVED_TEMP: <em class="jxr_comment">// Fall through</em>
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>             <strong class="jxr_keyword">int</strong> count = 0;
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">null</strong> != url) {
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>                 Integer value = (Integer) _redirects.get(url);
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>                 <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">null</strong> != value) {
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>                     <em class="jxr_comment">// We have already been instructed to redirect to that</em>
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>                     <em class="jxr_comment">// location in the course of this attempt to resolve the</em>
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>                     <em class="jxr_comment">// resource</em>
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>             <strong class="jxr_keyword">case</strong> HttpURLConnection.HTTP_MOVED_PERM:
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>             <strong class="jxr_keyword">case</strong> HttpURLConnection.HTTP_MOVED_TEMP: <em class="jxr_comment">// Fall through</em>
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>                 <strong class="jxr_keyword">int</strong> count = 0;
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>                 <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">null</strong> != url) {
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>                     Integer value = (Integer) _redirects.get(url);
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>                     <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">null</strong> != value) {
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>                         <em class="jxr_comment">// We have already been instructed to redirect to that</em>
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>                         <em class="jxr_comment">// location in the course of this attempt to resolve the</em>
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>                         <em class="jxr_comment">// resource</em>
 <a class="jxr_linenumber" name="L390" href="#L390">390</a> 
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>                     count = value.intValue();
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>                         count = value.intValue();
 <a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>                     <strong class="jxr_keyword">int</strong> maxRedirects = getClient().getClientProperties().getMaxRedirects();
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>                         <strong class="jxr_keyword">int</strong> maxRedirects = getClient().getClientProperties().getMaxRedirects();
 <a class="jxr_linenumber" name="L394" href="#L394">394</a> 
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>                     <strong class="jxr_keyword">if</strong> (count == maxRedirects) {
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>                         <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="RecursiveRedirectionException" href="../../../com/meterware/httpunit/RecursiveRedirectionException.html#RecursiveRedirectionException">RecursiveRedirectionException</a>(url, <span class="jxr_string">"Maximum number of redirects exceeded"</span>);
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>                     }
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>                 }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>                         <strong class="jxr_keyword">if</strong> (count == maxRedirects) {
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>                             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="RecursiveRedirectionException" href="../../../com/meterware/httpunit/RecursiveRedirectionException.html#RecursiveRedirectionException">RecursiveRedirectionException</a>(url, <span class="jxr_string">"Maximum number of redirects exceeded"</span>);
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>                         }
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>                     }
 <a class="jxr_linenumber" name="L399" href="#L399">399</a> 
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>                 count++;
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>                 _redirects.put(url, Integer.valueOf(count));
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>             }
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>             <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>                     count++;
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>                     _redirects.put(url, Integer.valueOf(count));
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>                 }
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>                 <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L404" href="#L404">404</a>         }
 <a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">return</strong> redirectLocation != <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     }
@@ -424,6 +424,6 @@
 <a class="jxr_linenumber" name="L416" href="#L416">416</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

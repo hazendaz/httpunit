@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      @Test
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">void</strong> testImportAttribute() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">void</strong> importAttribute() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          Element element = _document.createElement(<span class="jxr_string">"rainbow"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          Attr original = _document.createAttribute(<span class="jxr_string">"color"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          element.setAttributeNode(original);
@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      @Test
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">void</strong> testImportText() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">void</strong> importText() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          String textValue = <span class="jxr_string">"something to say"</span>;
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          Text original = _document.createTextNode(textValue);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
@@ -100,7 +100,7 @@
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      @Test
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">void</strong> testImportComment() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">void</strong> importComment() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          String commentText = <span class="jxr_string">"something to say"</span>;
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          Comment original = _document.createComment(commentText);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     @Test
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">void</strong> testImportCData() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">void</strong> importCData() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         String cDataText = <span class="jxr_string">"something &lt;to&gt; say"</span>;
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         CDATASection original = _document.createCDATASection(cDataText);
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 
@@ -135,7 +135,7 @@
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>     @Test
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">void</strong> testImportProcessingInstruction() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">void</strong> importProcessingInstruction() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         String target = <span class="jxr_string">"mememe"</span>;
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         String data = <span class="jxr_string">"you you you"</span>;
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>         ProcessingInstruction original = _document.createProcessingInstruction(target, data);
@@ -156,7 +156,7 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>     @Test
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">void</strong> testImportElementWithAttributes() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">void</strong> importElementWithAttributes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         Element original = _document.createElement(<span class="jxr_string">"zork"</span>);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         Attr size = _document.createAttribute(<span class="jxr_string">"interactive"</span>);
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         original.setAttribute(<span class="jxr_string">"version"</span>, <span class="jxr_string">"2.0"</span>);
@@ -176,7 +176,7 @@
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>     @Test
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>     <strong class="jxr_keyword">void</strong> testImportNSElementWithNSAttributes() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>     <strong class="jxr_keyword">void</strong> importNSElementWithNSAttributes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         Element original = _document.createElementNS(<span class="jxr_string">"http://funnyspace/"</span>, <span class="jxr_string">"fs:zork"</span>);
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         original.setAttributeNS(<span class="jxr_string">"http://funnyspace/"</span>, <span class="jxr_string">"fs:version"</span>, <span class="jxr_string">"2.0"</span>);
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         Attr size = _document.createAttributeNS(<span class="jxr_string">"http://funnyspace/"</span>, <span class="jxr_string">"fs:interactive"</span>);
@@ -203,7 +203,7 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     @Test
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">void</strong> testShallowImportElementWithChildren() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">void</strong> shallowImportElementWithChildren() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         Element original = _document.createElement(<span class="jxr_string">"zork"</span>);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         original.appendChild(_document.createElement(<span class="jxr_string">"foo"</span>));
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         original.appendChild(_document.createElement(<span class="jxr_string">"bar"</span>));
@@ -221,7 +221,7 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">     *             thrown if an error occurs during the test.</em>
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     @Test
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> testDeepImportElementWithChildren() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> deepImportElementWithChildren() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         Element original = _document.createElement(<span class="jxr_string">"zork"</span>);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         original.appendChild(_document.createElement(<span class="jxr_string">"foo"</span>));
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         original.appendChild(_document.createTextNode(<span class="jxr_string">"in the middle"</span>));
@@ -252,6 +252,6 @@
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

@@ -129,35 +129,34 @@ public class HttpHeader {
 <span class="fc" id="L129">                    i++;</span>
                 }
 <span class="fc" id="L131">                sb.append('&quot;');</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                if (i &lt; chars.length)</span>
-                {
-<span class="fc" id="L134">                    i++; // skip close quote</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                if (i &lt; chars.length) {</span>
+<span class="fc" id="L133">                    i++; // skip close quote</span>
                 }
             } else {
-<span class="nc bnc" id="L137" title="All 4 branches missed.">                while (i &lt; chars.length &amp;&amp; Character.isJavaIdentifierPart(chars[i])) {</span>
-<span class="nc" id="L138">                    sb.append(chars[i]);</span>
-<span class="nc" id="L139">                    i++;</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">                while (i &lt; chars.length &amp;&amp; Character.isJavaIdentifierPart(chars[i])) {</span>
+<span class="nc" id="L137">                    sb.append(chars[i]);</span>
+<span class="nc" id="L138">                    i++;</span>
                 }
             }
-<span class="fc" id="L142">            properties.setProperty(name, sb.toString());</span>
-<span class="fc" id="L143">            sb.setLength(0);</span>
-<span class="fc bfc" id="L144" title="All 4 branches covered.">            while (i &lt; chars.length &amp;&amp; chars[i] != ',') {</span>
-<span class="fc" id="L145">                i++;</span>
+<span class="fc" id="L141">            properties.setProperty(name, sb.toString());</span>
+<span class="fc" id="L142">            sb.setLength(0);</span>
+<span class="fc bfc" id="L143" title="All 4 branches covered.">            while (i &lt; chars.length &amp;&amp; chars[i] != ',') {</span>
+<span class="fc" id="L144">                i++;</span>
             }
-<span class="fc bfc" id="L147" title="All 2 branches covered.">            if (i == chars.length) {</span>
-<span class="fc" id="L148">                break;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            if (i == chars.length) {</span>
+<span class="fc" id="L147">                break;</span>
             }
-<span class="fc" id="L150">            i++; // skip '='</span>
-<span class="fc" id="L151">        }</span>
-<span class="fc" id="L152">        return properties;</span>
+<span class="fc" id="L149">            i++; // skip '='</span>
+<span class="fc" id="L150">        }</span>
+<span class="fc" id="L151">        return properties;</span>
     }
 
     public String getLabel() {
-<span class="fc" id="L156">        return _label;</span>
+<span class="fc" id="L155">        return _label;</span>
     }
 
     public Map getProperties() {
-<span class="fc" id="L160">        return _properties;</span>
+<span class="fc" id="L159">        return _properties;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

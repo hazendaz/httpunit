@@ -21,6 +21,11 @@ package com.meterware.servletunit;
 
 import com.meterware.httpunit.HttpUnitUtils;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -38,11 +43,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
-
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.WriteListener;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 <span class="fc" id="L47">class ServletUnitHttpResponse implements HttpServletResponse {</span>
 
@@ -628,30 +628,37 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L628">        setLongHeader(&quot;Content-Length&quot;, len);</span>
 <span class="nc" id="L629">    }</span>
 
+    public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
+<span class="nc" id="L632">        setStatus(sc);</span>
+<span class="nc" id="L633">        setHeader(&quot;Location&quot;, location);</span>
+<span class="nc bnc" id="L634" title="All 2 branches missed.">        if (clearBuffer) {</span>
+<span class="nc" id="L635">            resetBuffer();</span>
+        }
+<span class="nc" id="L637">    }</span>
+
 }
 
 class ServletUnitOutputStream extends ServletOutputStream {
 
-<span class="fc" id="L635">    ServletUnitOutputStream(ByteArrayOutputStream stream) {</span>
-<span class="fc" id="L636">        _stream = stream;</span>
-<span class="fc" id="L637">    }</span>
+<span class="fc" id="L643">    ServletUnitOutputStream(ByteArrayOutputStream stream) {</span>
+<span class="fc" id="L644">        _stream = stream;</span>
+<span class="fc" id="L645">    }</span>
 
     @Override
     public void write(int aByte) throws IOException {
-<span class="fc" id="L641">        _stream.write(aByte);</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc" id="L649">        _stream.write(aByte);</span>
+<span class="fc" id="L650">    }</span>
 
     private ByteArrayOutputStream _stream;
 
     @Override
     public boolean isReady() {
-        // TODO Auto-generated method stub
-<span class="nc" id="L649">        return false;</span>
+<span class="nc" id="L656">        return false;</span>
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
-        // TODO Auto-generated method stub
-<span class="nc" id="L655">    }</span>
+        // Do nothing
+<span class="nc" id="L662">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

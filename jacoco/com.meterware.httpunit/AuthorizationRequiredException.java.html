@@ -28,24 +28,25 @@ import java.util.Properties;
 public class AuthorizationRequiredException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+
     public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
-<span class="fc" id="L32">        Properties props = new Properties();</span>
-<span class="fc" id="L33">        props.put(&quot;realm&quot;, realm);</span>
-<span class="fc" id="L34">        return new AuthorizationRequiredException(&quot;Basic&quot;, props);</span>
+<span class="fc" id="L33">        Properties props = new Properties();</span>
+<span class="fc" id="L34">        props.put(&quot;realm&quot;, realm);</span>
+<span class="fc" id="L35">        return new AuthorizationRequiredException(&quot;Basic&quot;, props);</span>
     }
 
     static AuthorizationRequiredException createException(String scheme, Map properties) {
-<span class="fc" id="L38">        return new AuthorizationRequiredException(scheme, properties);</span>
+<span class="fc" id="L39">        return new AuthorizationRequiredException(scheme, properties);</span>
     }
 
-<span class="fc" id="L41">    private AuthorizationRequiredException(String scheme, Map properties) {</span>
-<span class="fc" id="L42">        _scheme = scheme;</span>
-<span class="fc" id="L43">        _properties = properties;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L42">    private AuthorizationRequiredException(String scheme, Map properties) {</span>
+<span class="fc" id="L43">        _scheme = scheme;</span>
+<span class="fc" id="L44">        _properties = properties;</span>
+<span class="fc" id="L45">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L48">        return _scheme + &quot; authentication required: &quot; + _properties;</span>
+<span class="nc" id="L49">        return _scheme + &quot; authentication required: &quot; + _properties;</span>
     }
 
     /**
@@ -54,7 +55,7 @@ public class AuthorizationRequiredException extends RuntimeException {
      * @return the scheme
      **/
     public String getAuthenticationScheme() {
-<span class="fc" id="L57">        return _scheme;</span>
+<span class="fc" id="L58">        return _scheme;</span>
     }
 
     /**
@@ -66,15 +67,15 @@ public class AuthorizationRequiredException extends RuntimeException {
      * @return the parameter, without quotes
      **/
     public String getAuthenticationParameter(String parameterName) {
-<span class="fc" id="L69">        return unQuote((String) _properties.get(parameterName));</span>
+<span class="fc" id="L70">        return unQuote((String) _properties.get(parameterName));</span>
     }
 
     private String unQuote(String value) {
-<span class="pc bpc" id="L73" title="3 of 8 branches missed.">        if (value == null || value.length() &lt;= 1 || !value.startsWith(&quot;\&quot;&quot;) || !value.endsWith(&quot;\&quot;&quot;)) {</span>
-<span class="fc" id="L74">            return value;</span>
+<span class="pc bpc" id="L74" title="3 of 8 branches missed.">        if (value == null || value.length() &lt;= 1 || !value.startsWith(&quot;\&quot;&quot;) || !value.endsWith(&quot;\&quot;&quot;)) {</span>
+<span class="fc" id="L75">            return value;</span>
         }
 
-<span class="fc" id="L77">        return value.substring(1, value.length() - 1);</span>
+<span class="fc" id="L78">        return value.substring(1, value.length() - 1);</span>
     }
 
     // ------------------------------------- private members ------------------------------------------
@@ -82,4 +83,4 @@ public class AuthorizationRequiredException extends RuntimeException {
     private String _scheme;
     private Map _properties;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

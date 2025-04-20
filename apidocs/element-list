@@ -7,5 +7,6 @@ com.meterware.httpunit.javascript.events
 com.meterware.httpunit.parsing
 com.meterware.httpunit.protocol
 com.meterware.httpunit.scripting
+com.meterware.httpunit.ssl
 com.meterware.pseudoserver
 com.meterware.servletunit

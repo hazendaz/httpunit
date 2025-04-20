@@ -33,32 +33,33 @@ public class TableRow extends HTMLElementBase {
 
 <span class="fc" id="L34">    private ArrayList _cells = new ArrayList();</span>
     private WebTable _webTable;
+
     TableRow(WebTable webTable, HTMLTableRowElement element) {
-<span class="fc" id="L37">        super(element);</span>
-<span class="fc" id="L38">        _webTable = webTable;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L38">        super(element);</span>
+<span class="fc" id="L39">        _webTable = webTable;</span>
+<span class="fc" id="L40">    }</span>
 
     TableCell[] getCells() {
 
-<span class="fc" id="L43">        return (TableCell[]) _cells.toArray(new TableCell[_cells.size()]);</span>
+<span class="fc" id="L44">        return (TableCell[]) _cells.toArray(new TableCell[_cells.size()]);</span>
     }
 
     TableCell newTableCell(HTMLTableCellElement element) {
-<span class="fc" id="L47">        return _webTable.newTableCell(element);</span>
+<span class="fc" id="L48">        return _webTable.newTableCell(element);</span>
     }
 
     void addTableCell(TableCell cell) {
-<span class="fc" id="L51">        _cells.add(cell);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L52">        _cells.add(cell);</span>
+<span class="fc" id="L53">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="nc" id="L56">        return new HTMLElementScriptable(this);</span>
+<span class="nc" id="L57">        return new HTMLElementScriptable(this);</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="nc" id="L61">        return _webTable.getParentDelegate();</span>
+<span class="nc" id="L62">        return _webTable.getParentDelegate();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

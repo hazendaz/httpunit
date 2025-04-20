@@ -140,120 +140,119 @@ public class WebTable extends HTMLElementBase {
                     }
 <span class="fc" id="L141">                    rowHasText[row] = columnHasText[col] = true;</span>
                 } else // gstamp: altered the original code to deal with two issues:
-                    // Firstly only the coordinates of the first spanning cell
-                    // are added to the Map. The old code was using the last
-                    // set of coordinates.
-                    // Secondly I mark the starting coordinates as containing
-                    // text which keeps the next section of code from removing
-                    // the starting row/column.
-<span class="pc bpc" id="L149" title="1 of 4 branches missed.">                    if (!spanningCells.containsKey(getTableCell(row, col)) &amp;&amp; spanningCells.get(getTableCell(row, col)) == null) {</span>
-<span class="fc bfc" id="L150" title="All 2 branches covered.">                        if (!rowHasText[row]) {</span>
-<span class="fc" id="L151">                            numRowsWithText++;</span>
-                        }
-<span class="fc bfc" id="L153" title="All 2 branches covered.">                        if (!columnHasText[col]) {</span>
-<span class="fc" id="L154">                            numColumnsWithText++;</span>
-                        }
-<span class="fc" id="L156">                        rowHasText[row] = columnHasText[col] = true;</span>
-<span class="fc" id="L157">                        spanningCells.put(getTableCell(row, col), new int[] { row, col });</span>
+                       // Firstly only the coordinates of the first spanning cell
+                       // are added to the Map. The old code was using the last
+                       // set of coordinates.
+                       // Secondly I mark the starting coordinates as containing
+                       // text which keeps the next section of code from removing
+                       // the starting row/column.
+<span class="fc bfc" id="L149" title="All 2 branches covered.">                if (!spanningCells.containsKey(getTableCell(row, col))</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">                        &amp;&amp; spanningCells.get(getTableCell(row, col)) == null) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">                    if (!rowHasText[row]) {</span>
+<span class="fc" id="L152">                        numRowsWithText++;</span>
                     }
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                    if (!columnHasText[col]) {</span>
+<span class="fc" id="L155">                        numColumnsWithText++;</span>
+                    }
+<span class="fc" id="L157">                    rowHasText[row] = columnHasText[col] = true;</span>
+<span class="fc" id="L158">                    spanningCells.put(getTableCell(row, col), new int[] { row, col });</span>
+                }
             }
         }
 
         // look for requirements to keep spanning cells: special processing is needed if either:
         // none of its rows already have text, or none of its columns already have text.
-<span class="fc bfc" id="L164" title="All 2 branches covered.">        for (Enumeration e = spanningCells.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L165">            TableCell cell = (TableCell) e.nextElement();</span>
-<span class="fc" id="L166">            int coords[] = (int[]) spanningCells.get(cell);</span>
-<span class="fc" id="L167">            boolean neededInRow = true;</span>
-<span class="fc" id="L168">            boolean neededInCol = true;</span>
-<span class="fc" id="L169">            for (int i = coords[0]; neededInRow &amp;&amp; i &lt; rowHasText.length</span>
-<span class="pc bpc" id="L170" title="2 of 6 branches missed.">                    &amp;&amp; i &lt; coords[0] + cell.getRowSpan(); i++) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        for (Enumeration e = spanningCells.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L166">            TableCell cell = (TableCell) e.nextElement();</span>
+<span class="fc" id="L167">            int coords[] = (int[]) spanningCells.get(cell);</span>
+<span class="fc" id="L168">            boolean neededInRow = true;</span>
+<span class="fc" id="L169">            boolean neededInCol = true;</span>
+<span class="pc bpc" id="L170" title="2 of 6 branches missed.">            for (int i = coords[0]; neededInRow &amp;&amp; i &lt; rowHasText.length &amp;&amp; i &lt; coords[0] + cell.getRowSpan(); i++) {</span>
 <span class="pc bpc" id="L171" title="1 of 2 branches missed.">                neededInRow = !rowHasText[i];</span>
             }
-<span class="fc" id="L173">            for (int j = coords[1]; neededInCol &amp;&amp; j &lt; columnHasText.length</span>
-<span class="pc bpc" id="L174" title="2 of 6 branches missed.">                    &amp;&amp; j &lt; coords[1] + cell.getColSpan(); j++) {</span>
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                neededInCol = !columnHasText[j];</span>
+<span class="pc bpc" id="L173" title="2 of 6 branches missed.">            for (int j = coords[1]; neededInCol &amp;&amp; j &lt; columnHasText.length &amp;&amp; j &lt; coords[1] + cell.getColSpan(); j++) {</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                neededInCol = !columnHasText[j];</span>
             }
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if (neededInRow) {</span>
-<span class="nc" id="L178">                rowHasText[coords[0]] = true;</span>
-<span class="nc" id="L179">                numRowsWithText++;</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">            if (neededInRow) {</span>
+<span class="nc" id="L177">                rowHasText[coords[0]] = true;</span>
+<span class="nc" id="L178">                numRowsWithText++;</span>
             }
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            if (neededInCol) {</span>
-<span class="nc" id="L182">                columnHasText[coords[1]] = true;</span>
-<span class="nc" id="L183">                numColumnsWithText++;</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">            if (neededInCol) {</span>
+<span class="nc" id="L181">                columnHasText[coords[1]] = true;</span>
+<span class="nc" id="L182">                numColumnsWithText++;</span>
             }
-<span class="fc" id="L185">        }</span>
+<span class="fc" id="L184">        }</span>
 
-<span class="fc" id="L187">        TableCell[][] remainingCells = new TableCell[numRowsWithText][numColumnsWithText];</span>
+<span class="fc" id="L186">        TableCell[][] remainingCells = new TableCell[numRowsWithText][numColumnsWithText];</span>
 
-<span class="fc" id="L189">        int targetRow = 0;</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">        for (int i = 0; i &lt; rowHasText.length; i++) {</span>
-<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (!rowHasText[i]) {</span>
-<span class="fc" id="L192">                continue;</span>
+<span class="fc" id="L188">        int targetRow = 0;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (int i = 0; i &lt; rowHasText.length; i++) {</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">            if (!rowHasText[i]) {</span>
+<span class="fc" id="L191">                continue;</span>
             }
-<span class="fc" id="L194">            int targetColumn = 0;</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">            for (int j = 0; j &lt; columnHasText.length; j++) {</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">                if (!columnHasText[j]) {</span>
-<span class="fc" id="L197">                    continue;</span>
+<span class="fc" id="L193">            int targetColumn = 0;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            for (int j = 0; j &lt; columnHasText.length; j++) {</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">                if (!columnHasText[j]) {</span>
+<span class="fc" id="L196">                    continue;</span>
                 }
-<span class="fc" id="L199">                remainingCells[targetRow][targetColumn] = _cells[i][j];</span>
-<span class="fc" id="L200">                targetColumn++;</span>
+<span class="fc" id="L198">                remainingCells[targetRow][targetColumn] = _cells[i][j];</span>
+<span class="fc" id="L199">                targetColumn++;</span>
             }
-<span class="fc" id="L202">            targetRow++;</span>
+<span class="fc" id="L201">            targetRow++;</span>
         }
 
-<span class="fc" id="L205">        _cells = remainingCells;</span>
+<span class="fc" id="L204">        _cells = remainingCells;</span>
 
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Returns a rendering of this table with all cells converted to text.
      **/
     public String[][] asText() {
-<span class="fc" id="L213">        String[][] result = new String[getRowCount()][getColumnCount()];</span>
+<span class="fc" id="L212">        String[][] result = new String[getRowCount()][getColumnCount()];</span>
 
-<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc bfc" id="L216" title="All 2 branches covered.">            for (int j = 0; j &lt; result[0].length; j++) {</span>
-<span class="fc" id="L217">                result[i][j] = getCellAsText(i, j);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">            for (int j = 0; j &lt; result[0].length; j++) {</span>
+<span class="fc" id="L216">                result[i][j] = getCellAsText(i, j);</span>
             }
         }
-<span class="fc" id="L220">        return result;</span>
+<span class="fc" id="L219">        return result;</span>
     }
 
     /**
      * Returns the summary attribute associated with this table.
      **/
     public String getSummary() {
-<span class="fc" id="L227">        return NodeUtils.getNodeAttribute(_dom, &quot;summary&quot;);</span>
+<span class="fc" id="L226">        return NodeUtils.getNodeAttribute(_dom, &quot;summary&quot;);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L232">        String eol = System.lineSeparator();</span>
-<span class="fc" id="L233">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append(&quot;WebTable:&quot;).append(eol);</span>
-<span class="fc bfc" id="L234" title="All 2 branches covered.">        for (int i = 0; i &lt; getCells().length; i++) {</span>
-<span class="fc" id="L235">            sb.append(&quot;[&quot;).append(i).append(&quot;]: &quot;);</span>
-<span class="fc bfc" id="L236" title="All 2 branches covered.">            for (int j = 0; j &lt; getCells()[i].length; j++) {</span>
-<span class="fc" id="L237">                sb.append(&quot;  [&quot;).append(j).append(&quot;]=&quot;);</span>
-<span class="pc bpc" id="L238" title="1 of 2 branches missed.">                if (getCells()[i][j] == null) {</span>
-<span class="nc" id="L239">                    sb.append(&quot;null&quot;);</span>
+<span class="fc" id="L231">        String eol = System.lineSeparator();</span>
+<span class="fc" id="L232">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append(&quot;WebTable:&quot;).append(eol);</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        for (int i = 0; i &lt; getCells().length; i++) {</span>
+<span class="fc" id="L234">            sb.append(&quot;[&quot;).append(i).append(&quot;]: &quot;);</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">            for (int j = 0; j &lt; getCells()[i].length; j++) {</span>
+<span class="fc" id="L236">                sb.append(&quot;  [&quot;).append(j).append(&quot;]=&quot;);</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">                if (getCells()[i][j] == null) {</span>
+<span class="nc" id="L238">                    sb.append(&quot;null&quot;);</span>
                 } else {
-<span class="fc" id="L241">                    sb.append(getCells()[i][j].getText());</span>
+<span class="fc" id="L240">                    sb.append(getCells()[i][j].getText());</span>
                 }
             }
-<span class="fc" id="L244">            sb.append(eol);</span>
+<span class="fc" id="L243">            sb.append(eol);</span>
         }
-<span class="fc" id="L246">        return sb.toString();</span>
+<span class="fc" id="L245">        return sb.toString();</span>
     }
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L251">        return new HTMLElementScriptable(this);</span>
+<span class="fc" id="L250">        return new HTMLElementScriptable(this);</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc" id="L256">        return _response.getDocumentScriptable();</span>
+<span class="fc" id="L255">        return _response.getDocumentScriptable();</span>
     }
 
     // ----------------------------------- private members -----------------------------------
@@ -269,107 +268,109 @@ public class WebTable extends HTMLElementBase {
 
     WebTable(WebResponse response, FrameSelector frame, Node domTreeRoot, URL sourceURL, String baseTarget,
             String characterSet) {
-<span class="fc" id="L272">        super(domTreeRoot);</span>
-<span class="fc" id="L273">        _response = response;</span>
-<span class="fc" id="L274">        _frameName = frame;</span>
-<span class="fc" id="L275">        _dom = (Element) domTreeRoot;</span>
-<span class="fc" id="L276">        _url = sourceURL;</span>
-<span class="fc" id="L277">        _baseTarget = baseTarget;</span>
-<span class="fc" id="L278">        _characterSet = characterSet;</span>
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L271">        super(domTreeRoot);</span>
+<span class="fc" id="L272">        _response = response;</span>
+<span class="fc" id="L273">        _frameName = frame;</span>
+<span class="fc" id="L274">        _dom = (Element) domTreeRoot;</span>
+<span class="fc" id="L275">        _url = sourceURL;</span>
+<span class="fc" id="L276">        _baseTarget = baseTarget;</span>
+<span class="fc" id="L277">        _characterSet = characterSet;</span>
+<span class="fc" id="L278">    }</span>
 
     private void readTable() {
-<span class="fc" id="L282">        TableRow[] rows = getRows();</span>
-<span class="fc" id="L283">        int[] columnsRequired = new int[rows.length];</span>
+<span class="fc" id="L281">        TableRow[] rows = getRows();</span>
+<span class="fc" id="L282">        int[] columnsRequired = new int[rows.length];</span>
 
-<span class="fc bfc" id="L285" title="All 2 branches covered.">        for (int i = 0; i &lt; rows.length; i++) {</span>
-<span class="fc" id="L286">            TableCell[] cells = rows[i].getCells();</span>
-<span class="fc bfc" id="L287" title="All 2 branches covered.">            for (TableCell cell : cells) {</span>
-<span class="fc" id="L288">                int spannedRows = Math.min(columnsRequired.length - i, cell.getRowSpan());</span>
-<span class="fc bfc" id="L289" title="All 2 branches covered.">                for (int k = 0; k &lt; spannedRows; k++) {</span>
-<span class="fc" id="L290">                    columnsRequired[i + k] += cell.getColSpan();</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        for (int i = 0; i &lt; rows.length; i++) {</span>
+<span class="fc" id="L285">            TableCell[] cells = rows[i].getCells();</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">            for (TableCell cell : cells) {</span>
+<span class="fc" id="L287">                int spannedRows = Math.min(columnsRequired.length - i, cell.getRowSpan());</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">                for (int k = 0; k &lt; spannedRows; k++) {</span>
+<span class="fc" id="L289">                    columnsRequired[i + k] += cell.getColSpan();</span>
                 }
             }
         }
-<span class="fc" id="L294">        int numColumns = 0;</span>
-<span class="fc bfc" id="L295" title="All 2 branches covered.">        for (int element : columnsRequired) {</span>
-<span class="fc" id="L296">            numColumns = Math.max(numColumns, element);</span>
+<span class="fc" id="L293">        int numColumns = 0;</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        for (int element : columnsRequired) {</span>
+<span class="fc" id="L295">            numColumns = Math.max(numColumns, element);</span>
         }
 
-<span class="fc" id="L299">        _cells = new TableCell[columnsRequired.length][numColumns];</span>
+<span class="fc" id="L298">        _cells = new TableCell[columnsRequired.length][numColumns];</span>
 
-<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (int i = 0; i &lt; rows.length; i++) {</span>
-<span class="fc" id="L302">            TableCell[] cells = rows[i].getCells();</span>
-<span class="fc bfc" id="L303" title="All 2 branches covered.">            for (int j = 0; j &lt; cells.length; j++) {</span>
-<span class="fc" id="L304">                int spannedRows = Math.min(columnsRequired.length - i, cells[j].getRowSpan());</span>
-<span class="fc bfc" id="L305" title="All 2 branches covered.">                for (int k = 0; k &lt; spannedRows; k++) {</span>
-<span class="fc bfc" id="L306" title="All 2 branches covered.">                    for (int l = 0; l &lt; cells[j].getColSpan(); l++) {</span>
-<span class="fc" id="L307">                        placeCell(i + k, j + l, cells[j]);</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (int i = 0; i &lt; rows.length; i++) {</span>
+<span class="fc" id="L301">            TableCell[] cells = rows[i].getCells();</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            for (int j = 0; j &lt; cells.length; j++) {</span>
+<span class="fc" id="L303">                int spannedRows = Math.min(columnsRequired.length - i, cells[j].getRowSpan());</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">                for (int k = 0; k &lt; spannedRows; k++) {</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">                    for (int l = 0; l &lt; cells[j].getColSpan(); l++) {</span>
+<span class="fc" id="L306">                        placeCell(i + k, j + l, cells[j]);</span>
                     }
                 }
             }
         }
-<span class="fc" id="L312">    }</span>
+<span class="fc" id="L311">    }</span>
 
     private void placeCell(int row, int column, TableCell cell) {
-<span class="fc bfc" id="L315" title="All 2 branches covered.">        while (_cells[row][column] != null) {</span>
-<span class="fc" id="L316">            column++;</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        while (_cells[row][column] != null) {</span>
+<span class="fc" id="L315">            column++;</span>
         }
-<span class="fc" id="L318">        _cells[row][column] = cell;</span>
-<span class="fc" id="L319">    }</span>
+<span class="fc" id="L317">        _cells[row][column] = cell;</span>
+<span class="fc" id="L318">    }</span>
 
-<span class="fc" id="L321">    private ArrayList _rows = new ArrayList();</span>
+<span class="fc" id="L320">    private ArrayList _rows = new ArrayList();</span>
 
     void addRow(TableRow tableRow) {
-<span class="fc" id="L324">        _cells = null;</span>
-<span class="fc" id="L325">        _rows.add(tableRow);</span>
-<span class="fc" id="L326">    }</span>
+<span class="fc" id="L323">        _cells = null;</span>
+<span class="fc" id="L324">        _rows.add(tableRow);</span>
+<span class="fc" id="L325">    }</span>
 
     TableRow newTableRow(HTMLTableRowElement element) {
-<span class="fc" id="L329">        return new TableRow(this, element);</span>
+<span class="fc" id="L328">        return new TableRow(this, element);</span>
     }
 
     /**
      * Returns an array of rows for this table.
      */
     public TableRow[] getRows() {
-<span class="fc" id="L336">        return (TableRow[]) _rows.toArray(new TableRow[_rows.size()]);</span>
+<span class="fc" id="L335">        return (TableRow[]) _rows.toArray(new TableRow[_rows.size()]);</span>
     }
 
     TableCell newTableCell(HTMLTableCellElement element) {
-<span class="fc" id="L340">        return new TableCell(_response, _frameName, element, _url, _baseTarget, _characterSet);</span>
+<span class="fc" id="L339">        return new TableCell(_response, _frameName, element, _url, _baseTarget, _characterSet);</span>
     }
 
     static {
-<span class="fc" id="L344">        MATCH_FIRST_NONBLANK_CELL = (htmlElement, criteria) -&gt; {</span>
-<span class="fc" id="L345">            WebTable table = (WebTable) htmlElement;</span>
-<span class="fc bfc" id="L346" title="All 2 branches covered.">            for (int row = 0; row &lt; table.getRowCount(); row++) {</span>
-<span class="fc bfc" id="L347" title="All 2 branches covered.">                for (int col = 0; col &lt; table.getColumnCount(); col++) {</span>
-<span class="fc bfc" id="L348" title="All 2 branches covered.">                    if (HttpUnitUtils.matches(table.getCellAsText(row, col).trim(), (String) criteria)) {</span>
-<span class="fc" id="L349">                        return true;</span>
+<span class="fc" id="L343">        MATCH_FIRST_NONBLANK_CELL = (htmlElement, criteria) -&gt; {</span>
+<span class="fc" id="L344">            WebTable table = (WebTable) htmlElement;</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">            for (int row = 0; row &lt; table.getRowCount(); row++) {</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">                for (int col = 0; col &lt; table.getColumnCount(); col++) {</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">                    if (HttpUnitUtils.matches(table.getCellAsText(row, col).trim(), (String) criteria)) {</span>
+<span class="fc" id="L348">                        return true;</span>
                     }
                 }
             }
-<span class="fc" id="L353">            return false;</span>
+<span class="fc" id="L352">            return false;</span>
         };
 
-<span class="fc" id="L356">        MATCH_FIRST_NONBLANK_CELL_PREFIX = (htmlElement, criteria) -&gt; {</span>
-<span class="fc" id="L357">            WebTable table = (WebTable) htmlElement;</span>
-<span class="fc bfc" id="L358" title="All 2 branches covered.">            for (int row = 0; row &lt; table.getRowCount(); row++) {</span>
-<span class="fc bfc" id="L359" title="All 2 branches covered.">                for (int col = 0; col &lt; table.getColumnCount(); col++) {</span>
-<span class="fc bfc" id="L360" title="All 2 branches covered.">                    if (HttpUnitUtils.hasPrefix(table.getCellAsText(row, col).trim(), (String) criteria)) {</span>
-<span class="fc" id="L361">                        return true;</span>
+<span class="fc" id="L355">        MATCH_FIRST_NONBLANK_CELL_PREFIX = (htmlElement, criteria) -&gt; {</span>
+<span class="fc" id="L356">            WebTable table = (WebTable) htmlElement;</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">            for (int row = 0; row &lt; table.getRowCount(); row++) {</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">                for (int col = 0; col &lt; table.getColumnCount(); col++) {</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">                    if (HttpUnitUtils.hasPrefix(table.getCellAsText(row, col).trim(), (String) criteria)) {</span>
+<span class="fc" id="L360">                        return true;</span>
                     }
                 }
             }
-<span class="fc" id="L365">            return false;</span>
+<span class="fc" id="L364">            return false;</span>
         };
 
-<span class="fc" id="L368">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebTable) htmlElement).getID(), (String) criteria);</span>
+<span class="fc" id="L367">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebTable) htmlElement).getID(),</span>
+                (String) criteria);
 
-<span class="fc" id="L370">        MATCH_SUMMARY = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(), (String) criteria);</span>
+<span class="fc" id="L370">        MATCH_SUMMARY = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebTable) htmlElement).getSummary(),</span>
+                (String) criteria);
 
-<span class="fc" id="L372">    }</span>
+<span class="fc" id="L373">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

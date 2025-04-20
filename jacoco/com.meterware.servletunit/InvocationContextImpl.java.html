@@ -25,17 +25,17 @@ import com.meterware.httpunit.HttpException;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Dictionary;
-import java.util.Stack;
-
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Dictionary;
+import java.util.Stack;
 
 /**
  * This class represents the context in which a specific servlet request is being made. It contains the objects needed
@@ -217,7 +217,7 @@ class InvocationContextImpl implements InvocationContext {
         }
 <span class="fc bfc" id="L218" title="All 2 branches covered.">        if (_application.usesBasicAuthentication()) {</span>
 <span class="fc" id="L219">            throw AuthorizationRequiredException</span>
-<span class="fc" id="L220">            .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());</span>
+<span class="fc" id="L220">                    .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());</span>
         }
 <span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (!_application.usesFormAuthentication()) {</span>
 <span class="nc" id="L223">            throw new IllegalStateException(&quot;Authorization required but no authentication method defined&quot;);</span>
@@ -325,4 +325,4 @@ class InvocationContextImpl implements InvocationContext {
 <span class="fc" id="L325">        return (ExecutionContext) _contextStack.lastElement();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

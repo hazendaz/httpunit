@@ -993,9 +993,10 @@ public class WebForm extends WebRequestSource {
 <span class="fc" id="L993">    }</span>
 
     static {
-<span class="fc" id="L996">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebForm) htmlElement).getName(), (String) criteria);</span>
+<span class="fc" id="L996">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebForm) htmlElement).getName(),</span>
+                (String) criteria);
 
-<span class="fc" id="L998">    }</span>
+<span class="fc" id="L999">    }</span>
 
     // ===========================---===== exception class
     // NoSuchParameterException =========================================
@@ -1006,29 +1007,31 @@ public class WebForm extends WebRequestSource {
     class InvalidFileParameterException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
+
         /**
          * construct a new InvalidFileParameterException for the given parameter name and value list
          *
          * @param parameterName
          * @param values
          */
-<span class="fc" id="L1015">        InvalidFileParameterException(String parameterName, String[] values) {</span>
-<span class="fc" id="L1016">            _parameterName = parameterName;</span>
-<span class="fc" id="L1017">            _values = values;</span>
-<span class="fc" id="L1018">        }</span>
+<span class="fc" id="L1017">        InvalidFileParameterException(String parameterName, String[] values) {</span>
+<span class="fc" id="L1018">            _parameterName = parameterName;</span>
+<span class="fc" id="L1019">            _values = values;</span>
+<span class="fc" id="L1020">        }</span>
 
         /**
          * get the message for this exception
          */
         @Override
         public String getMessage() {
-<span class="fc" id="L1025">            StringBuilder valueList = new StringBuilder();</span>
-<span class="fc" id="L1026">            String delim = &quot;&quot;;</span>
-<span class="fc bfc" id="L1027" title="All 2 branches covered.">            for (String _value : _values) {</span>
-<span class="fc" id="L1028">                valueList.append(delim).append(&quot;'&quot;).append(_value).append(&quot;'&quot;);</span>
-<span class="fc" id="L1029">                delim = &quot;, &quot;;</span>
+<span class="fc" id="L1027">            StringBuilder valueList = new StringBuilder();</span>
+<span class="fc" id="L1028">            String delim = &quot;&quot;;</span>
+<span class="fc bfc" id="L1029" title="All 2 branches covered.">            for (String _value : _values) {</span>
+<span class="fc" id="L1030">                valueList.append(delim).append(&quot;'&quot;).append(_value).append(&quot;'&quot;);</span>
+<span class="fc" id="L1031">                delim = &quot;, &quot;;</span>
             }
-<span class="fc" id="L1031">            return &quot;The file parameter with the name '&quot; + _parameterName + &quot;' must have type File but the string values &quot; + valueList.append(&quot; where supplied&quot;).toString();</span>
+<span class="fc" id="L1033">            return &quot;The file parameter with the name '&quot; + _parameterName</span>
+<span class="fc" id="L1034">                    + &quot;' must have type File but the string values &quot; + valueList.append(&quot; where supplied&quot;).toString();</span>
         }
 
         private String _parameterName;
@@ -1042,13 +1045,13 @@ public class WebForm extends WebRequestSource {
 
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1045">        NoSuchParameterException(String parameterName) {</span>
-<span class="fc" id="L1046">            _parameterName = parameterName;</span>
-<span class="fc" id="L1047">        }</span>
+<span class="fc" id="L1048">        NoSuchParameterException(String parameterName) {</span>
+<span class="fc" id="L1049">            _parameterName = parameterName;</span>
+<span class="fc" id="L1050">        }</span>
 
         @Override
         public String getMessage() {
-<span class="fc" id="L1051">            return &quot;No parameter named '&quot; + _parameterName + &quot;' is defined in the form&quot;;</span>
+<span class="fc" id="L1054">            return &quot;No parameter named '&quot; + _parameterName + &quot;' is defined in the form&quot;;</span>
         }
 
         private String _parameterName;
@@ -1066,12 +1069,12 @@ public class WebForm extends WebRequestSource {
 
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1069">        IllegalUnnamedSubmitButtonException() {</span>
-<span class="fc" id="L1070">        }</span>
+<span class="fc" id="L1072">        IllegalUnnamedSubmitButtonException() {</span>
+<span class="fc" id="L1073">        }</span>
 
         @Override
         public String getMessage() {
-<span class="nc" id="L1074">            return &quot;This form has more than one submit button, none unnamed. You must specify the button to be used.&quot;;</span>
+<span class="nc" id="L1077">            return &quot;This form has more than one submit button, none unnamed. You must specify the button to be used.&quot;;</span>
         }
 
     }
@@ -1085,19 +1088,20 @@ public class WebForm extends WebRequestSource {
     class IllegalSubmitButtonException extends IllegalRequestParameterException {
 
         private static final long serialVersionUID = 1L;
-<span class="fc" id="L1088">        IllegalSubmitButtonException(SubmitButton button) {</span>
-<span class="fc" id="L1089">            _name = button.getName();</span>
-<span class="fc" id="L1090">            _value = button.getValue();</span>
-<span class="fc" id="L1091">        }</span>
 
-<span class="fc" id="L1093">        IllegalSubmitButtonException(String name, String value) {</span>
-<span class="fc" id="L1094">            _name = name;</span>
-<span class="fc" id="L1095">            _value = value;</span>
-<span class="fc" id="L1096">        }</span>
+<span class="fc" id="L1092">        IllegalSubmitButtonException(SubmitButton button) {</span>
+<span class="fc" id="L1093">            _name = button.getName();</span>
+<span class="fc" id="L1094">            _value = button.getValue();</span>
+<span class="fc" id="L1095">        }</span>
+
+<span class="fc" id="L1097">        IllegalSubmitButtonException(String name, String value) {</span>
+<span class="fc" id="L1098">            _name = name;</span>
+<span class="fc" id="L1099">            _value = value;</span>
+<span class="fc" id="L1100">        }</span>
 
         @Override
         public String getMessage() {
-<span class="nc" id="L1100">            return &quot;Specified submit button (name=\&quot;&quot; + _name + &quot;\&quot; value=\&quot;&quot; + _value + &quot;\&quot;) not part of this form.&quot;;</span>
+<span class="nc" id="L1104">            return &quot;Specified submit button (name=\&quot;&quot; + _name + &quot;\&quot; value=\&quot;&quot; + _value + &quot;\&quot;) not part of this form.&quot;;</span>
         }
 
         private String _name;
@@ -1117,17 +1121,17 @@ public class WebForm extends WebRequestSource {
 class PresetFormParameter extends FormControl {
 
     PresetFormParameter(WebForm form, String name, String value) {
-<span class="fc" id="L1120">        super(form);</span>
-<span class="fc" id="L1121">        _name = name;</span>
-<span class="fc" id="L1122">        _value = value;</span>
-<span class="fc" id="L1123">    }</span>
+<span class="fc" id="L1124">        super(form);</span>
+<span class="fc" id="L1125">        _name = name;</span>
+<span class="fc" id="L1126">        _value = value;</span>
+<span class="fc" id="L1127">    }</span>
 
     /**
      * Returns the name of this control..
      **/
     @Override
     public String getName() {
-<span class="fc" id="L1130">        return _name;</span>
+<span class="fc" id="L1134">        return _name;</span>
     }
 
     /**
@@ -1135,7 +1139,7 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public boolean isReadOnly() {
-<span class="nc" id="L1138">        return true;</span>
+<span class="nc" id="L1142">        return true;</span>
     }
 
     /**
@@ -1143,7 +1147,7 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public boolean isTextControl() {
-<span class="nc" id="L1146">        return true;</span>
+<span class="nc" id="L1150">        return true;</span>
     }
 
     /**
@@ -1151,14 +1155,14 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     void claimRequiredValues(List values) {
-<span class="nc bnc" id="L1154" title="All 2 branches missed.">        if (_value != null) {</span>
-<span class="nc" id="L1155">            claimValueIsRequired(values, _value);</span>
+<span class="nc bnc" id="L1158" title="All 2 branches missed.">        if (_value != null) {</span>
+<span class="nc" id="L1159">            claimValueIsRequired(values, _value);</span>
         }
-<span class="nc" id="L1157">    }</span>
+<span class="nc" id="L1161">    }</span>
 
     @Override
     public String getType() {
-<span class="nc" id="L1161">        return UNDEFINED_TYPE;</span>
+<span class="nc" id="L1165">        return UNDEFINED_TYPE;</span>
     }
 
     /**
@@ -1167,19 +1171,19 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public String[] getValues() {
-<span class="nc bnc" id="L1170" title="All 2 branches missed.">        if (_values == null) {</span>
-<span class="nc" id="L1171">            _values = new String[] { _value };</span>
+<span class="nc bnc" id="L1174" title="All 2 branches missed.">        if (_values == null) {</span>
+<span class="nc" id="L1175">            _values = new String[] { _value };</span>
         }
-<span class="nc" id="L1173">        return _values;</span>
+<span class="nc" id="L1177">        return _values;</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L1178">        processor.addParameter(_name, _value, characterSet);</span>
-<span class="fc" id="L1179">    }</span>
+<span class="fc" id="L1182">        processor.addParameter(_name, _value, characterSet);</span>
+<span class="fc" id="L1183">    }</span>
 
     private String _name;
     private String _value;
     private String[] _values;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

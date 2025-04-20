@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">class</strong> <a name="TextBlockTest" href="../../../com/meterware/httpunit/TextBlockTest.html#TextBlockTest">TextBlockTest</a> <strong class="jxr_keyword">extends</strong> <a name="HttpUnitTest" href="../../../com/meterware/httpunit/HttpUnitTest.html#HttpUnitTest">HttpUnitTest</a> {
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      @Test
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">void</strong> testParagraphDetection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">void</strong> paragraphDetection() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>,
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>                  <span class="jxr_string">"&lt;p&gt;This has no forms or links since we don't care "</span> + <span class="jxr_string">"about them&lt;/p&gt;"</span>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>                          + <span class="jxr_string">"&lt;p class='comment'&gt;But it does have three paragraphs&lt;/p&gt;\n"</span>
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      }
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      @Test
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">void</strong> testTextConversion() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">void</strong> textConversion() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>, <span class="jxr_string">"&lt;p&gt;Here is a line&lt;br&gt;followed by another&lt;/p&gt;"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/SimplePage.html"</span>);
@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      @Test
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">void</strong> testHeaderDetection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">void</strong> headerDetection() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>,
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span> + <span class="jxr_string">"with some text"</span> + <span class="jxr_string">"&lt;h2&gt;A subsection&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;p&gt;Some more text&lt;/p&gt;"</span>);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
@@ -88,7 +88,7 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      @Test
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">void</strong> testEmbeddedLinks() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">void</strong> embeddedLinks() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          defineWebPage(<span class="jxr_string">"SimplePage"</span>, <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>                  + <span class="jxr_string">"&lt;p&gt;with a &lt;a id='httpunit' href='http://httpunit.org'&gt;link to the home page&lt;/a&gt;&lt;/p&gt;"</span>);
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
@@ -107,7 +107,7 @@
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <em class="jxr_comment">// TODO JWL 7/6/2021 Breaks with nekohtml &gt; 1.9.6.2</em>
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     @Disabled
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>     @Test
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">void</strong> testEmbeddedLists() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">void</strong> embeddedLists() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         defineWebPage(<span class="jxr_string">"SimplePage"</span>,
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>                 <span class="jxr_string">"&lt;h1&gt;Here is a section&lt;/h1&gt;\n"</span> + <span class="jxr_string">"&lt;p id='ordered'&gt;&lt;ol&gt;&lt;li&gt;One&lt;li&gt;Two&lt;li&gt;Three&lt;/ol&gt;&lt;/p&gt;"</span>
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>                         + <span class="jxr_string">"&lt;p id='unordered'&gt;&lt;ul&gt;&lt;li&gt;Red&lt;li&gt;Green&lt;li&gt;Blue&lt;/ul&gt;&lt;/p&gt;"</span>);
@@ -146,6 +146,6 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

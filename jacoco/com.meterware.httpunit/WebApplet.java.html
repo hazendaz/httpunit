@@ -152,58 +152,59 @@ public class WebApplet extends HTMLElementBase {
     }
 
     public Applet getApplet()
-            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (_applet == null) {</span>
-<span class="fc" id="L157">            ClassLoader cl = new URLClassLoader(getClassPath(), null);</span>
-<span class="fc" id="L158">            Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            if (!(o instanceof Applet)) {</span>
-<span class="nc" id="L160">                throw new RuntimeException(getMainClassName() + &quot; is not an Applet&quot;);</span>
+            throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (_applet == null) {</span>
+<span class="fc" id="L158">            ClassLoader cl = new URLClassLoader(getClassPath(), null);</span>
+<span class="fc" id="L159">            Object o = cl.loadClass(getMainClassName()).getDeclaredConstructor().newInstance();</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            if (!(o instanceof Applet)) {</span>
+<span class="nc" id="L161">                throw new RuntimeException(getMainClassName() + &quot; is not an Applet&quot;);</span>
             }
-<span class="fc" id="L162">            _applet = (Applet) o;</span>
-<span class="fc" id="L163">            _applet.setStub(new AppletStubImpl(this));</span>
+<span class="fc" id="L163">            _applet = (Applet) o;</span>
+<span class="fc" id="L164">            _applet.setStub(new AppletStubImpl(this));</span>
         }
-<span class="fc" id="L165">        return _applet;</span>
+<span class="fc" id="L166">        return _applet;</span>
     }
 
     private URL[] getClassPath() throws MalformedURLException {
-<span class="fc" id="L169">        List classPath = getArchiveList();</span>
-<span class="fc" id="L170">        classPath.add(getCodeBaseURL());</span>
-<span class="fc" id="L171">        return (URL[]) classPath.toArray(new URL[classPath.size()]);</span>
+<span class="fc" id="L170">        List classPath = getArchiveList();</span>
+<span class="fc" id="L171">        classPath.add(getCodeBaseURL());</span>
+<span class="fc" id="L172">        return (URL[]) classPath.toArray(new URL[classPath.size()]);</span>
     }
 
     String getBaseTarget() {
-<span class="fc" id="L175">        return _baseTarget;</span>
+<span class="fc" id="L176">        return _baseTarget;</span>
     }
 
     WebApplet[] getAppletsInPage() {
         try {
-<span class="fc" id="L180">            return _response.getApplets();</span>
-<span class="nc" id="L181">        } catch (SAXException e) {</span>
-<span class="nc" id="L182">            HttpUnitUtils.handleException(e); // should never happen.</span>
-<span class="nc" id="L183">            return null;</span>
+<span class="fc" id="L181">            return _response.getApplets();</span>
+<span class="nc" id="L182">        } catch (SAXException e) {</span>
+<span class="nc" id="L183">            HttpUnitUtils.handleException(e); // should never happen.</span>
+<span class="nc" id="L184">            return null;</span>
         }
     }
 
     void sendRequest(URL url, String target) {
-<span class="fc" id="L188">        WebRequest wr = new GetMethodWebRequest(null, url.toExternalForm(), target);</span>
+<span class="fc" id="L189">        WebRequest wr = new GetMethodWebRequest(null, url.toExternalForm(), target);</span>
         try {
-<span class="fc" id="L190">            _response.getWindow().getResponse(wr);</span>
-<span class="nc" id="L191">        } catch (IOException e) {</span>
-<span class="nc" id="L192">            e.printStackTrace(); // To change body of catch statement use Options | File Templates.</span>
-<span class="nc" id="L193">            throw new RuntimeException(e.toString());</span>
-<span class="nc" id="L194">        } catch (SAXException e) {</span>
-<span class="fc" id="L195">        }</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L191">            _response.getWindow().getResponse(wr);</span>
+<span class="nc" id="L192">        } catch (IOException e) {</span>
+<span class="nc" id="L193">            e.printStackTrace(); // To change body of catch statement use Options | File Templates.</span>
+<span class="nc" id="L194">            throw new RuntimeException(e.toString());</span>
+<span class="nc" id="L195">        } catch (SAXException e) {</span>
+<span class="fc" id="L196">        }</span>
+<span class="fc" id="L197">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="nc" id="L200">        return new HTMLElementScriptable(this);</span>
+<span class="nc" id="L201">        return new HTMLElementScriptable(this);</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="nc" id="L205">        return _response.getDocumentScriptable();</span>
+<span class="nc" id="L206">        return _response.getDocumentScriptable();</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

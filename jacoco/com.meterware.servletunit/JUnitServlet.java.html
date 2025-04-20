@@ -19,14 +19,14 @@
  */
 package com.meterware.servletunit;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -170,24 +170,24 @@ public class JUnitServlet extends HttpServlet {
 <span class="fc" id="L170">            char[] chars = s.toCharArray();</span>
 <span class="fc bfc" id="L171" title="All 2 branches covered.">            for (int i = 0; i &lt; chars.length; i++) {</span>
 <span class="pc bpc" id="L172" title="1 of 6 branches missed.">                switch (chars[i]) {</span>
-                case '&amp;':
-<span class="nc" id="L174">                    result.append(&quot;&amp;amp;&quot;);</span>
-<span class="nc" id="L175">                    break;</span>
-                case '&lt;':
-<span class="fc" id="L177">                    result.append(&quot;&amp;lt;&quot;);</span>
-<span class="fc" id="L178">                    break;</span>
-                case '&gt;':
-<span class="fc" id="L180">                    result.append(&quot;&amp;gt;&quot;);</span>
-<span class="fc" id="L181">                    break;</span>
-                case LF:
-<span class="pc bpc" id="L183" title="2 of 4 branches missed.">                    if (i &gt; 0 &amp;&amp; chars[i - 1] == CR) {</span>
-<span class="fc" id="L184">                        result.append(chars[i]);</span>
-<span class="fc" id="L185">                        break;</span>
-                    }
-                case CR:
-<span class="fc" id="L188">                    result.append(getLineBreak());</span>
-                default:
-<span class="fc" id="L190">                    result.append(chars[i]);</span>
+                    case '&amp;':
+<span class="nc" id="L174">                        result.append(&quot;&amp;amp;&quot;);</span>
+<span class="nc" id="L175">                        break;</span>
+                    case '&lt;':
+<span class="fc" id="L177">                        result.append(&quot;&amp;lt;&quot;);</span>
+<span class="fc" id="L178">                        break;</span>
+                    case '&gt;':
+<span class="fc" id="L180">                        result.append(&quot;&amp;gt;&quot;);</span>
+<span class="fc" id="L181">                        break;</span>
+                    case LF:
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">                        if (i &gt; 0 &amp;&amp; chars[i - 1] == CR) {</span>
+<span class="fc" id="L184">                            result.append(chars[i]);</span>
+<span class="fc" id="L185">                            break;</span>
+                        }
+                    case CR:
+<span class="fc" id="L188">                        result.append(getLineBreak());</span>
+                    default:
+<span class="fc" id="L190">                        result.append(chars[i]);</span>
                 }
             }
 <span class="fc" id="L193">            return result.toString();</span>
@@ -350,9 +350,9 @@ public class JUnitServlet extends HttpServlet {
         protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString) {
 <span class="fc" id="L352">            writer.println(&quot;&lt;?xml version='1.0' encoding='UTF-8' ?&gt;\n&quot; + &quot;&lt;testsuite name=&quot; + asAttribute(testClassName)</span>
-<span class="fc" id="L353">            + &quot; tests=&quot; + asAttribute(testResult.runCount()) + &quot; failures=&quot;</span>
-<span class="fc" id="L354">            + asAttribute(testResult.failureCount()) + &quot; errors=&quot; + asAttribute(testResult.errorCount())</span>
-<span class="fc" id="L355">            + &quot; time=&quot; + asAttribute(elapsedTimeString) + &quot;&gt;&quot;);</span>
+<span class="fc" id="L353">                    + &quot; tests=&quot; + asAttribute(testResult.runCount()) + &quot; failures=&quot;</span>
+<span class="fc" id="L354">                    + asAttribute(testResult.failureCount()) + &quot; errors=&quot; + asAttribute(testResult.errorCount())</span>
+<span class="fc" id="L355">                    + &quot; time=&quot; + asAttribute(elapsedTimeString) + &quot;&gt;&quot;);</span>
 <span class="fc" id="L356">        }</span>
 
         private String asAttribute(int value) {
@@ -403,4 +403,4 @@ public class JUnitServlet extends HttpServlet {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

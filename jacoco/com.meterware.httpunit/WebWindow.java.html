@@ -378,29 +378,29 @@ public class WebWindow {
 <span class="fc" id="L378">        }</span>
 
 <span class="pc bpc" id="L380" title="1 of 2 branches missed.">        switch (response.getResponseCode()) {</span>
-        case HttpURLConnection.HTTP_MOVED_PERM:
-        case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
-<span class="fc" id="L383">            int count = 0;</span>
-<span class="fc bfc" id="L384" title="All 2 branches covered.">            if (null != url) {</span>
-<span class="fc" id="L385">                Integer value = (Integer) _redirects.get(url);</span>
-<span class="fc bfc" id="L386" title="All 2 branches covered.">                if (null != value) {</span>
-                    // We have already been instructed to redirect to that
-                    // location in the course of this attempt to resolve the
-                    // resource
+            case HttpURLConnection.HTTP_MOVED_PERM:
+            case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
+<span class="fc" id="L383">                int count = 0;</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">                if (null != url) {</span>
+<span class="fc" id="L385">                    Integer value = (Integer) _redirects.get(url);</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">                    if (null != value) {</span>
+                        // We have already been instructed to redirect to that
+                        // location in the course of this attempt to resolve the
+                        // resource
 
-<span class="fc" id="L391">                    count = value.intValue();</span>
+<span class="fc" id="L391">                        count = value.intValue();</span>
 
-<span class="fc" id="L393">                    int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
+<span class="fc" id="L393">                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
 
-<span class="fc bfc" id="L395" title="All 2 branches covered.">                    if (count == maxRedirects) {</span>
-<span class="fc" id="L396">                        throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                        if (count == maxRedirects) {</span>
+<span class="fc" id="L396">                            throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
+                        }
                     }
-                }
 
-<span class="fc" id="L400">                count++;</span>
-<span class="fc" id="L401">                _redirects.put(url, Integer.valueOf(count));</span>
-            }
-            break;
+<span class="fc" id="L400">                    count++;</span>
+<span class="fc" id="L401">                    _redirects.put(url, Integer.valueOf(count));</span>
+                }
+                break;
         }
 <span class="pc bpc" id="L405" title="1 of 2 branches missed.">        return redirectLocation != null;</span>
     }
@@ -414,4 +414,4 @@ public class WebWindow {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <em class="jxr_comment">// TODO JWL 7/6/2021 Breaks with nekohtml &gt; 1.9.6.2</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      @Disabled
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Test
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> testGetFormWithID() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> getFormWithID() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          defineWebPage(<span class="jxr_string">"OnCommand"</span>,
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>                  <span class="jxr_string">"&lt;html&gt;\n"</span> + <span class="jxr_string">"  &lt;head&gt;\n"</span> + <span class="jxr_string">"     &lt;script type='JavaScript'&gt;\n"</span> + <span class="jxr_string">"         function function1() {\n"</span>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>                          + <span class="jxr_string">"  		    alert( document.forms[0].name );\n"</span> + <span class="jxr_string">"         }\n"</span> + <span class="jxr_string">"     &lt;/script&gt;\n"</span>
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      @Test
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">void</strong> testSubmitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">void</strong> submitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          defineWebPage(<span class="jxr_string">"Form"</span>, <span class="jxr_string">"&lt;form method=GET id=main action = 'tryMe'&gt;"</span> + <span class="jxr_string">"&lt;Input type=text Name=name&gt;"</span>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                  + <span class="jxr_string">"&lt;input type=\&quot;checkbox\&quot; name=second checked&gt;Enabled"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          defineResource(<span class="jxr_string">"/tryMe?name=master&amp;second=on"</span>, <span class="jxr_string">"You made it!"</span>);
@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      @Test
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> testAmbiguousSubmitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> ambiguousSubmitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          defineWebPage(<span class="jxr_string">"Form"</span>,
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>                 <span class="jxr_string">"&lt;form method=GET id=main action = 'tryMe'&gt;"</span> + <span class="jxr_string">"&lt;Input type=text Name=name&gt;"</span>
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>                         + <span class="jxr_string">"&lt;input type=\&quot;checkbox\&quot; name=second checked&gt;Enabled"</span>
@@ -122,7 +122,7 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> 
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     @Test
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <strong class="jxr_keyword">void</strong> testSubmitFromButton() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <strong class="jxr_keyword">void</strong> submitFromButton() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>         defineWebPage(<span class="jxr_string">"Form"</span>, <span class="jxr_string">"&lt;form method=GET id=main action = 'tryMe'&gt;"</span> + <span class="jxr_string">"&lt;Input type=text Name=name&gt;"</span>
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>                 + <span class="jxr_string">"&lt;input type=\&quot;checkbox\&quot; name=second checked&gt;Enabled"</span> + <span class="jxr_string">"&lt;input type=submit name=save value=none&gt;"</span>
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>                 + <span class="jxr_string">"&lt;input type=submit name=save value=all&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     @Test
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> testSubmitFromPositionalButton() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> submitFromPositionalButton() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         defineResource(<span class="jxr_string">"ask?age=12&amp;update=name&amp;update.x=5&amp;update.y=15"</span>, <span class="jxr_string">"You made it!"</span>, <span class="jxr_string">"text/plain"</span>);
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form id='form' method=GET action = \&quot;/ask\&quot;&gt;"</span> + <span class="jxr_string">"&lt;Input type=text name=age value=12&gt;"</span>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>                 + <span class="jxr_string">"&lt;Input type=image name=update value=name src=\&quot;\&quot;&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
@@ -159,7 +159,7 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     @Test
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">void</strong> testSubmitFromUnnamedImageButton() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">void</strong> submitFromUnnamedImageButton() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">boolean</strong> oldAllowUnnamedImageButton = SubmitButton.isAllowUnnamedImageButton();
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         SubmitButton.setAllowUnnamedImageButton(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         defineResource(<span class="jxr_string">"ask?age=12"</span>, <span class="jxr_string">"Unnamed Image Button ignored!"</span>, <span class="jxr_string">"text/plain"</span>);
@@ -181,7 +181,7 @@
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>     }
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> 
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>     @Test
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">void</strong> testFindNoForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">void</strong> findNoForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         defineWebPage(<span class="jxr_string">"NoForms"</span>, <span class="jxr_string">"This has no forms but it does"</span> + <span class="jxr_string">"have &lt;a href=\&quot;/other.html\&quot;&gt;an active link&lt;/A&gt;"</span>
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>                 + <span class="jxr_string">" and &lt;a name=here&gt;an anchor&lt;/a&gt;"</span>);
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> 
@@ -191,14 +191,14 @@
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>     }
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>     @Test
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">void</strong> testFindOneForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">void</strong> findOneForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>         WebForm[] forms = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneForm.html"</span>).getForms();
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         assertNotNull(forms);
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         assertEquals(1, forms.length);
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>     }
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     @Test
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <strong class="jxr_keyword">void</strong> testFindFormByName() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <strong class="jxr_keyword">void</strong> findFormByName() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>                 <span class="jxr_string">"&lt;form name=oneForm method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>                         + <span class="jxr_string">"&lt;Input name=\&quot;secret\&quot; type=\&quot;hidden\&quot; value=\&quot;surprise\&quot;&gt;"</span>
@@ -212,7 +212,7 @@
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
 <a class="jxr_linenumber" name="L205" href="#L205">205</a> 
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>     @Test
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">void</strong> testFindFormByID() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">void</strong> findFormByID() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>                 <span class="jxr_string">"&lt;form id=oneForm method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>                         + <span class="jxr_string">"&lt;Input name=\&quot;secret\&quot; type=\&quot;hidden\&quot; value=\&quot;surprise\&quot;&gt;"</span>
@@ -226,7 +226,7 @@
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>     }
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> 
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>     @Test
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">void</strong> testFormParameters() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">void</strong> formParameters() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         defineWebPage(<span class="jxr_string">"AForm"</span>,
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>                 <span class="jxr_string">"&lt;h2&gt;Login required&lt;/h2&gt;"</span> + <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;&lt;B&gt;"</span>
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>                         + <span class="jxr_string">"Enter the name 'master': &lt;textarea Name=name&gt;Something&lt;/textarea&gt;&lt;/B&gt;"</span>
@@ -259,7 +259,7 @@
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     }
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>     @Test
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">void</strong> testFormRequest() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">void</strong> formRequest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         WebForm form = _wc.getResponse(getHostPath() + <span class="jxr_string">"/OneForm.html"</span>).getForms()[0];
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>         WebRequest request = form.getRequest();
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>         request.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"master"</span>);
@@ -268,7 +268,7 @@
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>     }
 <a class="jxr_linenumber" name="L261" href="#L261">261</a> 
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>     @Test
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>     <strong class="jxr_keyword">void</strong> testHiddenParameters() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>     <strong class="jxr_keyword">void</strong> hiddenParameters() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>                 <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>                         + <span class="jxr_string">"&lt;Input name=\&quot;secret\&quot; type=\&quot;hidden\&quot; value=\&quot;surprise\&quot;&gt;"</span>
@@ -299,7 +299,7 @@
 <a class="jxr_linenumber" name="L291" href="#L291">291</a> <em class="jxr_javadoccomment">     * test Null textValues</em>
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>     @Test
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">void</strong> testNullTextValues() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <strong class="jxr_keyword">void</strong> nullTextValues() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>                 <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span> + <span class="jxr_string">"&lt;Input name=\&quot;secret\&quot; type=\&quot;hidden\&quot; value=&gt;"</span>
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>                         + <span class="jxr_string">"&lt;br&gt;&lt;Input name=typeless value=&gt;"</span>
@@ -323,7 +323,7 @@
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> <em class="jxr_javadoccomment">     *             on failure</em>
 <a class="jxr_linenumber" name="L316" href="#L316">316</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>     @Test
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>     <strong class="jxr_keyword">void</strong> testTextArea() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>     <strong class="jxr_keyword">void</strong> textArea() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>         String fieldName = <span class="jxr_string">"comments"</span>;
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>         String comment = <span class="jxr_string">"My what a lovely dress that is"</span>;
 <a class="jxr_linenumber" name="L321" href="#L321">321</a>         <em class="jxr_comment">// Setting defaultValue to something other than an empty string makes</em>
@@ -332,8 +332,8 @@
 <a class="jxr_linenumber" name="L324" href="#L324">324</a> 
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>                 <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span> + <span class="jxr_string">"&lt;textarea name='"</span> + fieldName
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>                 + <span class="jxr_string">"' row='10' cols='20'&gt;"</span> + defaultValue + <span class="jxr_string">"&lt;/textarea&gt;"</span>
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>                 + <span class="jxr_string">"&lt;br&gt;&lt;Input type=submit value = \&quot;Submit\&quot;&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>                         + <span class="jxr_string">"' row='10' cols='20'&gt;"</span> + defaultValue + <span class="jxr_string">"&lt;/textarea&gt;"</span>
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>                         + <span class="jxr_string">"&lt;br&gt;&lt;Input type=submit value = \&quot;Submit\&quot;&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
 <a class="jxr_linenumber" name="L329" href="#L329">329</a> 
 <a class="jxr_linenumber" name="L330" href="#L330">330</a>         WebResponse page = _wc.getResponse(getHostPath() + <span class="jxr_string">"/Default.html"</span>);
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>         WebForm form = page.getForms()[0];
@@ -347,7 +347,7 @@
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>     }
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>     @Test
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>     <strong class="jxr_keyword">void</strong> testTableForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>     <strong class="jxr_keyword">void</strong> tableForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L343" href="#L343">343</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>                 <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span> + <span class="jxr_string">"&lt;table summary=\&quot;\&quot;&gt;&lt;tr&gt;&lt;td&gt;"</span>
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>                         + <span class="jxr_string">"&lt;B&gt;Enter the name 'master': &lt;Input type=TEXT Name=name&gt;&lt;/B&gt;"</span>
@@ -385,7 +385,7 @@
 <a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>     @Test
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>     <strong class="jxr_keyword">void</strong> testSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>     <strong class="jxr_keyword">void</strong> select() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=POST action = \&quot;/servlet/Login\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>                 + <span class="jxr_string">"&lt;Select id='select1' name=color&gt;&lt;Option&gt;blue&lt;Option selected&gt;red \n"</span> + <span class="jxr_string">"&lt;Option&gt;green&lt;/select&gt;"</span>
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>                 + <span class="jxr_string">"&lt;TextArea name=\&quot;text\&quot;&gt;Sample text&lt;/TextArea&gt;"</span> + <span class="jxr_string">"&lt;Input type=submit&gt;&lt;/form&gt;"</span>);
@@ -419,7 +419,7 @@
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>     }
 <a class="jxr_linenumber" name="L412" href="#L412">412</a> 
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>     @Test
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>     <strong class="jxr_keyword">void</strong> testSizedSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>     <strong class="jxr_keyword">void</strong> sizedSelect() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L415" href="#L415">415</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>                 <span class="jxr_string">"&lt;form method=POST action = '/servlet/Login'&gt;"</span>
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>                         + <span class="jxr_string">"&lt;Select name=poems&gt;&lt;Option&gt;limerick&lt;Option&gt;haiku&lt;/select&gt;"</span>
@@ -433,7 +433,7 @@
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>     }
 <a class="jxr_linenumber" name="L426" href="#L426">426</a> 
 <a class="jxr_linenumber" name="L427" href="#L427">427</a>     @Test
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <strong class="jxr_keyword">void</strong> testSingleSelectParameterOrdering() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <strong class="jxr_keyword">void</strong> singleSelectParameterOrdering() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder(<span class="jxr_string">"&lt;form action='sendIt' id='theform'&gt;"</span>);
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 4; i++) {
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>             sb.append(
@@ -458,7 +458,7 @@
 <a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L451" href="#L451">451</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L452" href="#L452">452</a>     @Test
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>     <strong class="jxr_keyword">void</strong> testMultiSelect() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>     <strong class="jxr_keyword">void</strong> multiSelect() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L454" href="#L454">454</a>         defineWebPage(<span class="jxr_string">"Default"</span>, <span class="jxr_string">"&lt;form method=GET action = \&quot;/ask\&quot;&gt;"</span> + <span class="jxr_string">"&lt;Select multiple size=4 name=colors&gt;"</span>
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>                 + <span class="jxr_string">"&lt;Option&gt;blue&lt;Option selected&gt;red \n"</span> + <span class="jxr_string">"&lt;Option&gt;green&lt;Option value=\&quot;pink\&quot; selected&gt;salmon&lt;/select&gt;"</span>
 <a class="jxr_linenumber" name="L456" href="#L456">456</a>                 + <span class="jxr_string">"&lt;Input type=submit&gt;&lt;/form&gt;"</span>);
@@ -495,7 +495,7 @@
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
 <a class="jxr_linenumber" name="L488" href="#L488">488</a> 
 <a class="jxr_linenumber" name="L489" href="#L489">489</a>     @Test
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>     <strong class="jxr_keyword">void</strong> testUnspecifiedDefaults() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>     <strong class="jxr_keyword">void</strong> unspecifiedDefaults() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L492" href="#L492">492</a>                 <span class="jxr_string">"&lt;form method=GET action = \&quot;/ask\&quot;&gt;"</span> + <span class="jxr_string">"&lt;Select name=colors&gt;&lt;Option&gt;blue&lt;Option&gt;red&lt;/Select&gt;"</span>
 <a class="jxr_linenumber" name="L493" href="#L493">493</a>                         + <span class="jxr_string">"&lt;Select name=fish&gt;&lt;Option value=red&gt;snapper&lt;Option value=pink&gt;salmon&lt;/select&gt;"</span>
@@ -516,7 +516,7 @@
 <a class="jxr_linenumber" name="L508" href="#L508">508</a>     }
 <a class="jxr_linenumber" name="L509" href="#L509">509</a> 
 <a class="jxr_linenumber" name="L510" href="#L510">510</a>     @Test
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>     <strong class="jxr_keyword">void</strong> testCheckboxControls() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>     <strong class="jxr_keyword">void</strong> checkboxControls() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L512" href="#L512">512</a>         defineWebPage(<span class="jxr_string">"Default"</span>,
 <a class="jxr_linenumber" name="L513" href="#L513">513</a>                 <span class="jxr_string">"&lt;form method=GET action = \&quot;/ask\&quot;&gt;"</span> + <span class="jxr_string">"&lt;Input type=checkbox name=ready value=yes checked&gt;"</span>
 <a class="jxr_linenumber" name="L514" href="#L514">514</a>                         + <span class="jxr_string">"&lt;Input type=checkbox name=color value=red checked&gt;"</span>
@@ -545,85 +545,83 @@
 <a class="jxr_linenumber" name="L537" href="#L537">537</a>     }
 <a class="jxr_linenumber" name="L538" href="#L538">538</a> 
 <a class="jxr_linenumber" name="L539" href="#L539">539</a>     @Test
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>     <strong class="jxr_keyword">void</strong> testGetWithQueryString() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>     <strong class="jxr_keyword">void</strong> getWithQueryString() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>         defineResource(<span class="jxr_string">"QueryForm.html"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;"</span> + <span class="jxr_string">"&lt;form method=GET action=\&quot;SayHello?speed=fast\&quot;&gt;"</span>
 <a class="jxr_linenumber" name="L542" href="#L542">542</a>                 + <span class="jxr_string">"&lt;input type=text name=name&gt;&lt;input type=submit&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
 <a class="jxr_linenumber" name="L543" href="#L543">543</a>         defineResource(<span class="jxr_string">"SayHello?speed=fast&amp;name=me"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
 <a class="jxr_linenumber" name="L544" href="#L544">544</a>             @Override
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>             <strong class="jxr_keyword">public</strong> WebResource getGetResponse() {
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>                         <span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there"</span> + <span class="jxr_string">"&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>             }
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>         });
-<a class="jxr_linenumber" name="L550" href="#L550">550</a> 
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/QueryForm.html"</span>);
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>         WebForm form = formPage.getForms()[0];
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>         form.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"me"</span>);
-<a class="jxr_linenumber" name="L555" href="#L555">555</a>         WebRequest request = form.getRequest();
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>         assertEquals(getHostPath() + <span class="jxr_string">"/SayHello?speed=fast&amp;name=me"</span>, request.getURL().toExternalForm(), <span class="jxr_string">"Request URL"</span>);
-<a class="jxr_linenumber" name="L557" href="#L557">557</a> 
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>         WebResponse answer = wc.getResponse(request);
-<a class="jxr_linenumber" name="L559" href="#L559">559</a>         String[][] cells = answer.getTables()[0].asText();
-<a class="jxr_linenumber" name="L560" href="#L560">560</a> 
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>     }
-<a class="jxr_linenumber" name="L563" href="#L563">563</a> 
-<a class="jxr_linenumber" name="L564" href="#L564">564</a>     @Test
-<a class="jxr_linenumber" name="L565" href="#L565">565</a>     <strong class="jxr_keyword">void</strong> testPostWithQueryString() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>         defineResource(<span class="jxr_string">"QueryForm.html"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;"</span> + <span class="jxr_string">"&lt;form method=POST action=\&quot;SayHello?speed=fast\&quot;&gt;"</span>
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>                 + <span class="jxr_string">"&lt;input type=text name=name&gt;&lt;input type=submit&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>         defineResource(<span class="jxr_string">"SayHello?speed=fast"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>             @Override
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>             <strong class="jxr_keyword">public</strong> WebResource getPostResponse() {
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>                         <span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there"</span> + <span class="jxr_string">"&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>             }
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>         });
-<a class="jxr_linenumber" name="L575" href="#L575">575</a> 
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/QueryForm.html"</span>);
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>         WebForm form = formPage.getForms()[0];
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>         WebRequest request = form.getRequest();
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>         request.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"Charlie"</span>);
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>         assertEquals(getHostPath() + <span class="jxr_string">"/SayHello?speed=fast"</span>, request.getURL().toExternalForm(), <span class="jxr_string">"Request URL"</span>);
-<a class="jxr_linenumber" name="L582" href="#L582">582</a> 
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>         WebResponse answer = wc.getResponse(request);
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>         String[][] cells = answer.getTables()[0].asText();
-<a class="jxr_linenumber" name="L585" href="#L585">585</a> 
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>     }
-<a class="jxr_linenumber" name="L588" href="#L588">588</a> 
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>     @Test
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>     <strong class="jxr_keyword">void</strong> testPostWithEmbeddedSpace() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>         String sessionID = <span class="jxr_string">"/ID=03.019c010101010001.00000001.a202000000000019. 0d09"</span>;
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>         defineResource(<span class="jxr_string">"login"</span>, <span class="jxr_string">"redirectoring"</span>, HttpURLConnection.HTTP_MOVED_PERM);
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>         <strong class="jxr_keyword">super</strong>.addResourceHeader(<span class="jxr_string">"login"</span>, <span class="jxr_string">"Location: "</span> + getHostPath() + sessionID + <span class="jxr_string">"/login"</span>);
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>         defineResource(sessionID + <span class="jxr_string">"/login"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;"</span> + <span class="jxr_string">"&lt;form method=POST action='SayHello'&gt;"</span>
-<a class="jxr_linenumber" name="L595" href="#L595">595</a>                 + <span class="jxr_string">"&lt;input type=text name=name&gt;&lt;input type=submit&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>         defineResource(sessionID + <span class="jxr_string">"/SayHello"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>             @Override
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>             <strong class="jxr_keyword">public</strong> WebResource getPostResponse() {
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(<span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
-<a class="jxr_linenumber" name="L600" href="#L600">600</a>             }
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>         });
-<a class="jxr_linenumber" name="L602" href="#L602">602</a> 
-<a class="jxr_linenumber" name="L603" href="#L603">603</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
-<a class="jxr_linenumber" name="L604" href="#L604">604</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/login"</span>);
-<a class="jxr_linenumber" name="L605" href="#L605">605</a>         WebForm form = formPage.getForms()[0];
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>         WebRequest request = form.getRequest();
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>         request.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"Charlie"</span>);
-<a class="jxr_linenumber" name="L608" href="#L608">608</a> 
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>         WebResponse answer = wc.getResponse(request);
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>         String[][] cells = answer.getTables()[0].asText();
-<a class="jxr_linenumber" name="L611" href="#L611">611</a> 
-<a class="jxr_linenumber" name="L612" href="#L612">612</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>     }
-<a class="jxr_linenumber" name="L614" href="#L614">614</a> 
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>     <strong class="jxr_keyword">private</strong> WebConversation _wc;
-<a class="jxr_linenumber" name="L616" href="#L616">616</a> }
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(<span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there"</span> + <span class="jxr_string">"&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>             }
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>         });
+<a class="jxr_linenumber" name="L549" href="#L549">549</a> 
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/QueryForm.html"</span>);
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>         WebForm form = formPage.getForms()[0];
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>         form.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"me"</span>);
+<a class="jxr_linenumber" name="L554" href="#L554">554</a>         WebRequest request = form.getRequest();
+<a class="jxr_linenumber" name="L555" href="#L555">555</a>         assertEquals(getHostPath() + <span class="jxr_string">"/SayHello?speed=fast&amp;name=me"</span>, request.getURL().toExternalForm(), <span class="jxr_string">"Request URL"</span>);
+<a class="jxr_linenumber" name="L556" href="#L556">556</a> 
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>         WebResponse answer = wc.getResponse(request);
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>         String[][] cells = answer.getTables()[0].asText();
+<a class="jxr_linenumber" name="L559" href="#L559">559</a> 
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>     }
+<a class="jxr_linenumber" name="L562" href="#L562">562</a> 
+<a class="jxr_linenumber" name="L563" href="#L563">563</a>     @Test
+<a class="jxr_linenumber" name="L564" href="#L564">564</a>     <strong class="jxr_keyword">void</strong> postWithQueryString() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L565" href="#L565">565</a>         defineResource(<span class="jxr_string">"QueryForm.html"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;"</span> + <span class="jxr_string">"&lt;form method=POST action=\&quot;SayHello?speed=fast\&quot;&gt;"</span>
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>                 + <span class="jxr_string">"&lt;input type=text name=name&gt;&lt;input type=submit&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>         defineResource(<span class="jxr_string">"SayHello?speed=fast"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>             @Override
+<a class="jxr_linenumber" name="L569" href="#L569">569</a>             <strong class="jxr_keyword">public</strong> WebResource getPostResponse() {
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(<span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there"</span> + <span class="jxr_string">"&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>             }
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>         });
+<a class="jxr_linenumber" name="L573" href="#L573">573</a> 
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/QueryForm.html"</span>);
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>         WebForm form = formPage.getForms()[0];
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>         WebRequest request = form.getRequest();
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>         request.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"Charlie"</span>);
+<a class="jxr_linenumber" name="L579" href="#L579">579</a>         assertEquals(getHostPath() + <span class="jxr_string">"/SayHello?speed=fast"</span>, request.getURL().toExternalForm(), <span class="jxr_string">"Request URL"</span>);
+<a class="jxr_linenumber" name="L580" href="#L580">580</a> 
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>         WebResponse answer = wc.getResponse(request);
+<a class="jxr_linenumber" name="L582" href="#L582">582</a>         String[][] cells = answer.getTables()[0].asText();
+<a class="jxr_linenumber" name="L583" href="#L583">583</a> 
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>     }
+<a class="jxr_linenumber" name="L586" href="#L586">586</a> 
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>     @Test
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>     <strong class="jxr_keyword">void</strong> postWithEmbeddedSpace() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>         String sessionID = <span class="jxr_string">"/ID=03.019c010101010001.00000001.a202000000000019. 0d09"</span>;
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>         defineResource(<span class="jxr_string">"login"</span>, <span class="jxr_string">"redirectoring"</span>, HttpURLConnection.HTTP_MOVED_PERM);
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>         <strong class="jxr_keyword">super</strong>.addResourceHeader(<span class="jxr_string">"login"</span>, <span class="jxr_string">"Location: "</span> + getHostPath() + sessionID + <span class="jxr_string">"/login"</span>);
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>         defineResource(sessionID + <span class="jxr_string">"/login"</span>, <span class="jxr_string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;"</span> + <span class="jxr_string">"&lt;form method=POST action='SayHello'&gt;"</span>
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>                 + <span class="jxr_string">"&lt;input type=text name=name&gt;&lt;input type=submit&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L594" href="#L594">594</a>         defineResource(sessionID + <span class="jxr_string">"/SayHello"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
+<a class="jxr_linenumber" name="L595" href="#L595">595</a>             @Override
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>             <strong class="jxr_keyword">public</strong> WebResource getPostResponse() {
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> WebResource(<span class="jxr_string">"&lt;html&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Hello, there&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;"</span>);
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>             }
+<a class="jxr_linenumber" name="L599" href="#L599">599</a>         });
+<a class="jxr_linenumber" name="L600" href="#L600">600</a> 
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
+<a class="jxr_linenumber" name="L602" href="#L602">602</a>         WebResponse formPage = wc.getResponse(getHostPath() + <span class="jxr_string">"/login"</span>);
+<a class="jxr_linenumber" name="L603" href="#L603">603</a>         WebForm form = formPage.getForms()[0];
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>         WebRequest request = form.getRequest();
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>         request.setParameter(<span class="jxr_string">"name"</span>, <span class="jxr_string">"Charlie"</span>);
+<a class="jxr_linenumber" name="L606" href="#L606">606</a> 
+<a class="jxr_linenumber" name="L607" href="#L607">607</a>         WebResponse answer = wc.getResponse(request);
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>         String[][] cells = answer.getTables()[0].asText();
+<a class="jxr_linenumber" name="L609" href="#L609">609</a> 
+<a class="jxr_linenumber" name="L610" href="#L610">610</a>         assertEquals(<span class="jxr_string">"Hello, there"</span>, cells[0][0], <span class="jxr_string">"Message"</span>);
+<a class="jxr_linenumber" name="L611" href="#L611">611</a>     }
+<a class="jxr_linenumber" name="L612" href="#L612">612</a> 
+<a class="jxr_linenumber" name="L613" href="#L613">613</a>     <strong class="jxr_keyword">private</strong> WebConversation _wc;
+<a class="jxr_linenumber" name="L614" href="#L614">614</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

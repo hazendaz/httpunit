@@ -77,7 +77,7 @@ import org.xml.sax.SAXException;
      * Initiates JavaScript execution for the specified web response.
      */
     public static void run(WebResponse response) throws IllegalAccessException, InstantiationException,
-    InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
+            InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
 <span class="fc" id="L81">        Context context = Context.enter();</span>
         // suggest bug fix for large java scripts see
         // bug report [ 1216567 ] Exception for large javascripts
@@ -96,7 +96,7 @@ import org.xml.sax.SAXException;
      * Runs the onload event for the specified web response.
      */
     public static void load(WebResponse response) throws EvaluatorException, InstantiationException,
-    IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
+            IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
 <span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (!(response.getScriptableObject().getScriptEngine() instanceof JavaScriptEngine)) {</span>
 <span class="nc" id="L101">            run(response);</span>
         }
@@ -173,110 +173,109 @@ import org.xml.sax.SAXException;
 
         @Override
         public boolean has(String propertyName, Scriptable scriptable) {
-<span class="fc bfc" id="L176" title="All 4 branches covered.">            return super.has(propertyName, scriptable)</span>
-<span class="fc bfc" id="L177" title="All 2 branches covered.">                    || _scriptable != null &amp;&amp; _scriptable.get(propertyName) != null;</span>
+<span class="fc bfc" id="L176" title="All 6 branches covered.">            return super.has(propertyName, scriptable) || _scriptable != null &amp;&amp; _scriptable.get(propertyName) != null;</span>
         }
 
         @Override
         public Object get(String propertyName, Scriptable scriptable) {
-<span class="fc" id="L182">            Object result = super.get(propertyName, scriptable);</span>
-<span class="fc bfc" id="L183" title="All 2 branches covered.">            if (result != NOT_FOUND) {</span>
-<span class="fc" id="L184">                return result;</span>
+<span class="fc" id="L181">            Object result = super.get(propertyName, scriptable);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            if (result != NOT_FOUND) {</span>
+<span class="fc" id="L183">                return result;</span>
             }
-<span class="fc bfc" id="L186" title="All 2 branches covered.">            if (_scriptable == null) {</span>
-<span class="fc" id="L187">                return NOT_FOUND;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (_scriptable == null) {</span>
+<span class="fc" id="L186">                return NOT_FOUND;</span>
             }
 
-<span class="fc" id="L190">            return convertIfNeeded(_scriptable.get(propertyName));</span>
+<span class="fc" id="L189">            return convertIfNeeded(_scriptable.get(propertyName));</span>
 
         }
 
         @Override
         public Object get(int i, Scriptable scriptable) {
-<span class="fc" id="L196">            Object result = super.get(i, scriptable);</span>
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">            if (result != NOT_FOUND) {</span>
-<span class="nc" id="L198">                return result;</span>
+<span class="fc" id="L195">            Object result = super.get(i, scriptable);</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">            if (result != NOT_FOUND) {</span>
+<span class="nc" id="L197">                return result;</span>
             }
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">            if (_scriptable == null) {</span>
-<span class="nc" id="L201">                return NOT_FOUND;</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (_scriptable == null) {</span>
+<span class="nc" id="L200">                return NOT_FOUND;</span>
             }
 
-<span class="fc" id="L204">            return convertIfNeeded(_scriptable.get(i));</span>
+<span class="fc" id="L203">            return convertIfNeeded(_scriptable.get(i));</span>
         }
 
         private Object convertIfNeeded(final Object property) {
-<span class="fc bfc" id="L208" title="All 2 branches covered.">            if (property == null) {</span>
-<span class="fc" id="L209">                return NOT_FOUND;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">            if (property == null) {</span>
+<span class="fc" id="L208">                return NOT_FOUND;</span>
             }
 
-<span class="fc bfc" id="L212" title="All 2 branches covered.">            if (property instanceof ScriptableDelegate[]) {</span>
-<span class="fc" id="L213">                return toScriptable((ScriptableDelegate[]) property);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">            if (property instanceof ScriptableDelegate[]) {</span>
+<span class="fc" id="L212">                return toScriptable((ScriptableDelegate[]) property);</span>
             }
-<span class="fc bfc" id="L215" title="All 2 branches covered.">            if (!(property instanceof ScriptableDelegate)) {</span>
-<span class="fc" id="L216">                return property;</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">            if (!(property instanceof ScriptableDelegate)) {</span>
+<span class="fc" id="L215">                return property;</span>
             }
-<span class="fc" id="L218">            return toScriptable((ScriptableDelegate) property);</span>
+<span class="fc" id="L217">            return toScriptable((ScriptableDelegate) property);</span>
         }
 
         private Object toScriptable(ScriptableDelegate[] list) {
-<span class="fc" id="L222">            Object[] delegates = new Object[list.length];</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">            for (int i = 0; i &lt; delegates.length; i++) {</span>
-<span class="fc" id="L224">                delegates[i] = toScriptable(list[i]);</span>
+<span class="fc" id="L221">            Object[] delegates = new Object[list.length];</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            for (int i = 0; i &lt; delegates.length; i++) {</span>
+<span class="fc" id="L223">                delegates[i] = toScriptable(list[i]);</span>
             }
-<span class="fc" id="L226">            return Context.getCurrentContext().newArray(this, delegates);</span>
+<span class="fc" id="L225">            return Context.getCurrentContext().newArray(this, delegates);</span>
         }
 
         @Override
         public void put(String propertyName, Scriptable scriptable, Object value) {
-<span class="fc bfc" id="L231" title="All 4 branches covered.">            if (_scriptable == null || _scriptable.get(propertyName) == null) {</span>
-<span class="fc" id="L232">                super.put(propertyName, scriptable, value);</span>
+<span class="fc bfc" id="L230" title="All 4 branches covered.">            if (_scriptable == null || _scriptable.get(propertyName) == null) {</span>
+<span class="fc" id="L231">                super.put(propertyName, scriptable, value);</span>
             } else {
-<span class="fc" id="L234">                _scriptable.set(propertyName, value);</span>
+<span class="fc" id="L233">                _scriptable.set(propertyName, value);</span>
             }
-<span class="fc" id="L236">        }</span>
+<span class="fc" id="L235">        }</span>
 
         @Override
         public String toString() {
-<span class="nc bnc" id="L240" title="All 2 branches missed.">            return (_scriptable == null ? &quot;prototype &quot; : &quot;&quot;) + getClassName();</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            return (_scriptable == null ? &quot;prototype &quot; : &quot;&quot;) + getClassName();</span>
         }
 
         @Override
         public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
             try {
-<span class="fc" id="L246">                return (ScriptingEngine) toScriptable(child);</span>
-<span class="nc" id="L247">            } catch (Exception e) {</span>
-<span class="nc" id="L248">                HttpUnitUtils.handleException(e);</span>
-<span class="nc" id="L249">                throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L245">                return (ScriptingEngine) toScriptable(child);</span>
+<span class="nc" id="L246">            } catch (Exception e) {</span>
+<span class="nc" id="L247">                HttpUnitUtils.handleException(e);</span>
+<span class="nc" id="L248">                throw new RuntimeException(e.toString());</span>
             }
         }
 
         @Override
         public void clearCaches() {
-<span class="nc" id="L255">        }</span>
+<span class="nc" id="L254">        }</span>
 
         protected static String toStringIfNotUndefined(Object object) {
-<span class="pc bpc" id="L258" title="1 of 4 branches missed.">            return object == null || Undefined.instance.equals(object) ? null : object.toString();</span>
+<span class="pc bpc" id="L257" title="1 of 4 branches missed.">            return object == null || Undefined.instance.equals(object) ? null : object.toString();</span>
         }
 
         /**
          * Converts a scriptable delegate obtained from a subobject into the appropriate Rhino-compatible Scriptable.
          **/
         final Object toScriptable(ScriptableDelegate delegate) {
-<span class="pc bpc" id="L265" title="1 of 2 branches missed.">            if (delegate == null) {</span>
-<span class="nc" id="L266">                return NOT_FOUND;</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">            if (delegate == null) {</span>
+<span class="nc" id="L265">                return NOT_FOUND;</span>
             }
-<span class="fc bfc" id="L268" title="All 2 branches covered.">            if (delegate.getScriptEngine() instanceof Scriptable) {</span>
-<span class="fc" id="L269">                return delegate.getScriptEngine();</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            if (delegate.getScriptEngine() instanceof Scriptable) {</span>
+<span class="fc" id="L268">                return delegate.getScriptEngine();</span>
             }
             try {
-<span class="fc" id="L272">                JavaScriptEngine element = (JavaScriptEngine) Context.getCurrentContext().newObject(this,</span>
-<span class="fc" id="L273">                        getScriptableClassName(delegate));</span>
-<span class="fc" id="L274">                element.initialize(this, delegate);</span>
-<span class="fc" id="L275">                return element;</span>
-<span class="nc" id="L276">            } catch (RuntimeException e) {</span>
-<span class="nc" id="L277">                throw e;</span>
-<span class="nc" id="L278">            } catch (Exception e) {</span>
-<span class="nc" id="L279">                throw new RhinoException(e);</span>
+<span class="fc" id="L271">                JavaScriptEngine element = (JavaScriptEngine) Context.getCurrentContext().newObject(this,</span>
+<span class="fc" id="L272">                        getScriptableClassName(delegate));</span>
+<span class="fc" id="L273">                element.initialize(this, delegate);</span>
+<span class="fc" id="L274">                return element;</span>
+<span class="nc" id="L275">            } catch (RuntimeException e) {</span>
+<span class="nc" id="L276">                throw e;</span>
+<span class="nc" id="L277">            } catch (Exception e) {</span>
+<span class="nc" id="L278">                throw new RhinoException(e);</span>
             }
         }
 
@@ -293,45 +292,45 @@ import org.xml.sax.SAXException;
          *             IllegalArgumentException if the delegate is not known
          */
         private String getScriptableClassName(ScriptableDelegate delegate) {
-<span class="fc bfc" id="L296" title="All 2 branches covered.">            if (delegate instanceof WebResponse.Scriptable) {</span>
-<span class="fc" id="L297">                return &quot;Window&quot;;</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">            if (delegate instanceof WebResponse.Scriptable) {</span>
+<span class="fc" id="L296">                return &quot;Window&quot;;</span>
             }
-<span class="fc bfc" id="L299" title="All 2 branches covered.">            if (delegate instanceof HTMLPage.Scriptable) {</span>
-<span class="fc" id="L300">                return &quot;Document&quot;;</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">            if (delegate instanceof HTMLPage.Scriptable) {</span>
+<span class="fc" id="L299">                return &quot;Document&quot;;</span>
             }
-<span class="fc bfc" id="L302" title="All 2 branches covered.">            if (delegate instanceof FormScriptable) {</span>
-<span class="fc" id="L303">                return &quot;Form&quot;;</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">            if (delegate instanceof FormScriptable) {</span>
+<span class="fc" id="L302">                return &quot;Form&quot;;</span>
             }
-<span class="fc bfc" id="L305" title="All 2 branches covered.">            if (delegate instanceof WebLink.Scriptable) {</span>
-<span class="fc" id="L306">                return &quot;Link&quot;;</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">            if (delegate instanceof WebLink.Scriptable) {</span>
+<span class="fc" id="L305">                return &quot;Link&quot;;</span>
             }
-<span class="fc bfc" id="L308" title="All 2 branches covered.">            if (delegate instanceof WebImage.Scriptable) {</span>
-<span class="fc" id="L309">                return &quot;Image&quot;;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (delegate instanceof WebImage.Scriptable) {</span>
+<span class="fc" id="L308">                return &quot;Image&quot;;</span>
             }
-<span class="fc bfc" id="L311" title="All 2 branches covered.">            if (delegate instanceof SelectionOptions) {</span>
-<span class="fc" id="L312">                return &quot;Options&quot;;</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">            if (delegate instanceof SelectionOptions) {</span>
+<span class="fc" id="L311">                return &quot;Options&quot;;</span>
             }
-<span class="fc bfc" id="L314" title="All 2 branches covered.">            if (delegate instanceof SelectionOption) {</span>
-<span class="fc" id="L315">                return &quot;Option&quot;;</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (delegate instanceof SelectionOption) {</span>
+<span class="fc" id="L314">                return &quot;Option&quot;;</span>
             }
-<span class="fc bfc" id="L317" title="All 2 branches covered.">            if (delegate instanceof Input) {</span>
-<span class="fc" id="L318">                return &quot;Control&quot;;</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">            if (delegate instanceof Input) {</span>
+<span class="fc" id="L317">                return &quot;Control&quot;;</span>
             }
-<span class="pc bpc" id="L320" title="1 of 2 branches missed.">            if (delegate instanceof DocumentElement) {</span>
-<span class="fc" id="L321">                return &quot;HTMLElement&quot;;</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">            if (delegate instanceof DocumentElement) {</span>
+<span class="fc" id="L320">                return &quot;HTMLElement&quot;;</span>
             }
 
-<span class="nc" id="L324">            throw new IllegalArgumentException(&quot;Unknown ScriptableDelegate class: &quot; + delegate.getClass());</span>
+<span class="nc" id="L323">            throw new IllegalArgumentException(&quot;Unknown ScriptableDelegate class: &quot; + delegate.getClass());</span>
         }
 
         protected ElementArray toElementArray(ScriptingHandler[] scriptables) {
-<span class="fc" id="L328">            JavaScriptEngine[] elements = new JavaScriptEngine[scriptables.length];</span>
-<span class="fc bfc" id="L329" title="All 2 branches covered.">            for (int i = 0; i &lt; elements.length; i++) {</span>
-<span class="fc" id="L330">                elements[i] = (JavaScriptEngine) toScriptable((ScriptableDelegate) scriptables[i]);</span>
+<span class="fc" id="L327">            JavaScriptEngine[] elements = new JavaScriptEngine[scriptables.length];</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">            for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="fc" id="L329">                elements[i] = (JavaScriptEngine) toScriptable((ScriptableDelegate) scriptables[i]);</span>
             }
-<span class="fc" id="L332">            ElementArray result = ElementArray.newElementArray(this);</span>
-<span class="fc" id="L333">            result.initialize(elements);</span>
-<span class="fc" id="L334">            return result;</span>
+<span class="fc" id="L331">            ElementArray result = ElementArray.newElementArray(this);</span>
+<span class="fc" id="L332">            result.initialize(elements);</span>
+<span class="fc" id="L333">            return result;</span>
         }
 
         /**
@@ -339,23 +338,23 @@ import org.xml.sax.SAXException;
          */
         @Override
         public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture) {
-<span class="nc bnc" id="L342" title="All 2 branches missed.">            if (useCapture) {</span>
-<span class="nc" id="L343">                Set set = (Set) _eventCaptureListeners.get(type); // Set&lt;Scriptable&gt;</span>
-<span class="nc bnc" id="L344" title="All 2 branches missed.">                if (set == null) {</span>
-<span class="nc" id="L345">                    set = new HashSet();</span>
-<span class="nc" id="L346">                    _eventCaptureListeners.put(type, set);</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">            if (useCapture) {</span>
+<span class="nc" id="L342">                Set set = (Set) _eventCaptureListeners.get(type); // Set&lt;Scriptable&gt;</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                if (set == null) {</span>
+<span class="nc" id="L344">                    set = new HashSet();</span>
+<span class="nc" id="L345">                    _eventCaptureListeners.put(type, set);</span>
                 }
-<span class="nc" id="L348">                set.add(listener);</span>
-<span class="nc" id="L349">            } else {</span>
-<span class="nc" id="L350">                Set set = (Set) _eventListeners.get(type); // Set&lt;Scriptable&gt;</span>
-<span class="nc bnc" id="L351" title="All 2 branches missed.">                if (set == null) {</span>
-<span class="nc" id="L352">                    set = new HashSet();</span>
-<span class="nc" id="L353">                    _eventListeners.put(type, set);</span>
+<span class="nc" id="L347">                set.add(listener);</span>
+<span class="nc" id="L348">            } else {</span>
+<span class="nc" id="L349">                Set set = (Set) _eventListeners.get(type); // Set&lt;Scriptable&gt;</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">                if (set == null) {</span>
+<span class="nc" id="L351">                    set = new HashSet();</span>
+<span class="nc" id="L352">                    _eventListeners.put(type, set);</span>
                 }
-<span class="nc" id="L355">                set.add(listener);</span>
+<span class="nc" id="L354">                set.add(listener);</span>
             }
             // System.out.println(getClassName()+&quot;.addEventListener(&quot;+type+&quot;)&quot;);
-<span class="nc" id="L358">        }</span>
+<span class="nc" id="L357">        }</span>
 
         /**
          * {@inheritDoc}
@@ -364,7 +363,7 @@ import org.xml.sax.SAXException;
         public boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException {
             // TODO implement event dispatching &amp; listener invocation
             // System.out.println(getClassName()+&quot;.dispatchEvent(&quot;+evt.get(&quot;type&quot;,evt)+&quot;)&quot;);
-<span class="nc" id="L367">            return true;</span>
+<span class="nc" id="L366">            return true;</span>
         }
 
         /**
@@ -372,25 +371,25 @@ import org.xml.sax.SAXException;
          */
         @Override
         public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture) {
-<span class="nc bnc" id="L375" title="All 2 branches missed.">            if (useCapture) {</span>
-<span class="nc" id="L376">                Set set = (Set) _eventCaptureListeners.get(type); // Set&lt;EventListener&gt;</span>
-<span class="nc bnc" id="L377" title="All 2 branches missed.">                if (set != null) {</span>
-<span class="nc" id="L378">                    set.remove(listener);</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            if (useCapture) {</span>
+<span class="nc" id="L375">                Set set = (Set) _eventCaptureListeners.get(type); // Set&lt;EventListener&gt;</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">                if (set != null) {</span>
+<span class="nc" id="L377">                    set.remove(listener);</span>
                 }
-<span class="nc" id="L380">            } else {</span>
-<span class="nc" id="L381">                Set set = (Set) _eventListeners.get(type); // Set&lt;EventListener&gt;</span>
-<span class="nc bnc" id="L382" title="All 2 branches missed.">                if (set != null) {</span>
-<span class="nc" id="L383">                    set.remove(listener);</span>
+<span class="nc" id="L379">            } else {</span>
+<span class="nc" id="L380">                Set set = (Set) _eventListeners.get(type); // Set&lt;EventListener&gt;</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">                if (set != null) {</span>
+<span class="nc" id="L382">                    set.remove(listener);</span>
                 }
             }
             // System.out.println(getClassName()+&quot;.removeEventListener(&quot;+type+&quot;)&quot;);
-<span class="nc" id="L387">        }</span>
+<span class="nc" id="L386">        }</span>
     }
 
     /**
      * Window functions
      */
-<span class="fc" id="L393">    static public class Window extends JavaScriptEngine {</span>
+<span class="fc" id="L392">    static public class Window extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private Document _document;
@@ -401,56 +400,56 @@ import org.xml.sax.SAXException;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L404">            return &quot;Window&quot;;</span>
+<span class="fc" id="L403">            return &quot;Window&quot;;</span>
         }
 
         public Window jsGet_window() {
-<span class="fc" id="L408">            return this;</span>
+<span class="fc" id="L407">            return this;</span>
         }
 
         public Window jsGet_self() {
-<span class="nc" id="L412">            return this;</span>
+<span class="nc" id="L411">            return this;</span>
         }
 
         public Document jsGet_document() {
-<span class="fc bfc" id="L416" title="All 2 branches covered.">            if (_document == null) {</span>
-<span class="fc" id="L417">                _document = (Document) toScriptable(getDelegate().getDocument());</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            if (_document == null) {</span>
+<span class="fc" id="L416">                _document = (Document) toScriptable(getDelegate().getDocument());</span>
             }
-<span class="fc" id="L419">            return _document;</span>
+<span class="fc" id="L418">            return _document;</span>
         }
 
         public Scriptable jsGet_frames() throws SAXException, JavaScriptException, EvaluatorException {
-<span class="fc bfc" id="L423" title="All 2 branches covered.">            if (_frames == null) {</span>
-<span class="fc" id="L424">                WebResponse.Scriptable scriptables[] = getDelegate().getFrames();</span>
-<span class="fc" id="L425">                Window[] frames = new Window[scriptables.length];</span>
-<span class="fc bfc" id="L426" title="All 2 branches covered.">                for (int i = 0; i &lt; frames.length; i++) {</span>
-<span class="fc" id="L427">                    frames[i] = (Window) toScriptable(scriptables[i]);</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">            if (_frames == null) {</span>
+<span class="fc" id="L423">                WebResponse.Scriptable scriptables[] = getDelegate().getFrames();</span>
+<span class="fc" id="L424">                Window[] frames = new Window[scriptables.length];</span>
+<span class="fc bfc" id="L425" title="All 2 branches covered.">                for (int i = 0; i &lt; frames.length; i++) {</span>
+<span class="fc" id="L426">                    frames[i] = (Window) toScriptable(scriptables[i]);</span>
                 }
-<span class="fc" id="L429">                _frames = (ElementArray) Context.getCurrentContext().newObject(this, &quot;ElementArray&quot;);</span>
-<span class="fc" id="L430">                _frames.initialize(frames);</span>
+<span class="fc" id="L428">                _frames = (ElementArray) Context.getCurrentContext().newObject(this, &quot;ElementArray&quot;);</span>
+<span class="fc" id="L429">                _frames.initialize(frames);</span>
             }
-<span class="fc" id="L432">            return _frames;</span>
+<span class="fc" id="L431">            return _frames;</span>
         }
 
         public Navigator jsGet_navigator() {
-<span class="fc" id="L436">            return _navigator;</span>
+<span class="fc" id="L435">            return _navigator;</span>
         }
 
         public Screen jsGet_screen() {
-<span class="fc" id="L440">            return _screen;</span>
+<span class="fc" id="L439">            return _screen;</span>
         }
 
         public Location jsGet_location() {
-<span class="fc" id="L444">            return _location;</span>
+<span class="fc" id="L443">            return _location;</span>
         }
 
         public void jsSet_location(String relativeURL) throws IOException, SAXException {
-<span class="fc" id="L448">            setLocation(relativeURL);</span>
-<span class="fc" id="L449">        }</span>
+<span class="fc" id="L447">            setLocation(relativeURL);</span>
+<span class="fc" id="L448">        }</span>
 
         void setLocation(String relativeURL) throws IOException, SAXException {
-<span class="fc" id="L452">            getDelegate().setLocation(relativeURL);</span>
-<span class="fc" id="L453">        }</span>
+<span class="fc" id="L451">            getDelegate().setLocation(relativeURL);</span>
+<span class="fc" id="L452">        }</span>
 
         /**
          * initialize JavaScript for the given ScriptEngine
@@ -462,17 +461,17 @@ import org.xml.sax.SAXException;
         @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
-<span class="fc" id="L465">            super.initialize(parent, scriptable);</span>
+<span class="fc" id="L464">            super.initialize(parent, scriptable);</span>
 
-<span class="fc" id="L467">            _location = (Location) Context.getCurrentContext().newObject(this, &quot;Location&quot;);</span>
-<span class="fc" id="L468">            _location.initialize(this, ((WebResponse.Scriptable) scriptable).getURL());</span>
+<span class="fc" id="L466">            _location = (Location) Context.getCurrentContext().newObject(this, &quot;Location&quot;);</span>
+<span class="fc" id="L467">            _location.initialize(this, ((WebResponse.Scriptable) scriptable).getURL());</span>
 
-<span class="fc" id="L470">            _navigator = (Navigator) Context.getCurrentContext().newObject(this, &quot;Navigator&quot;);</span>
-<span class="fc" id="L471">            _navigator.setClientProperties(getDelegate().getClientProperties());</span>
+<span class="fc" id="L469">            _navigator = (Navigator) Context.getCurrentContext().newObject(this, &quot;Navigator&quot;);</span>
+<span class="fc" id="L470">            _navigator.setClientProperties(getDelegate().getClientProperties());</span>
 
-<span class="fc" id="L473">            _screen = (Screen) Context.getCurrentContext().newObject(this, &quot;Screen&quot;);</span>
-<span class="fc" id="L474">            _screen.setClientProperties(getDelegate().getClientProperties());</span>
-<span class="fc" id="L475">        }</span>
+<span class="fc" id="L472">            _screen = (Screen) Context.getCurrentContext().newObject(this, &quot;Screen&quot;);</span>
+<span class="fc" id="L473">            _screen.setClientProperties(getDelegate().getClientProperties());</span>
+<span class="fc" id="L474">        }</span>
 
         /**
          * javascript alert handling
@@ -481,8 +480,8 @@ import org.xml.sax.SAXException;
          *            - the alert message
          */
         public void jsFunction_alert(String message) {
-<span class="fc" id="L484">            getDelegate().alertUser(message);</span>
-<span class="fc" id="L485">        }</span>
+<span class="fc" id="L483">            getDelegate().alertUser(message);</span>
+<span class="fc" id="L484">        }</span>
 
         /**
          * javascript built in function &quot;toLowerCase&quot;
@@ -490,70 +489,70 @@ import org.xml.sax.SAXException;
          * @param s
          */
         public String jsFunction_toLowerCase(String s) {
-<span class="fc" id="L493">            return s.toLowerCase();</span>
+<span class="fc" id="L492">            return s.toLowerCase();</span>
         }
 
         public boolean jsFunction_confirm(String message) {
-<span class="fc" id="L497">            return getDelegate().getConfirmationResponse(message);</span>
+<span class="fc" id="L496">            return getDelegate().getConfirmationResponse(message);</span>
         }
 
         public String jsFunction_prompt(String message, String defaultResponse) {
-<span class="fc" id="L501">            return getDelegate().getUserResponse(message, defaultResponse);</span>
+<span class="fc" id="L500">            return getDelegate().getUserResponse(message, defaultResponse);</span>
         }
 
         public void jsFunction_moveTo(int x, int y) {
-<span class="nc" id="L505">        }</span>
+<span class="nc" id="L504">        }</span>
 
         public void jsFunction_scrollTo(int x, int y) {
-<span class="nc" id="L508">        }</span>
+<span class="nc" id="L507">        }</span>
 
         public void jsFunction_focus() {
-<span class="nc" id="L511">        }</span>
+<span class="nc" id="L510">        }</span>
 
         public void jsFunction_setTimeout() {
-<span class="nc" id="L514">        }</span>
+<span class="nc" id="L513">        }</span>
 
         public void jsFunction_close() {
-<span class="fc" id="L517">            getDelegate().closeWindow();</span>
-<span class="fc" id="L518">        }</span>
+<span class="fc" id="L516">            getDelegate().closeWindow();</span>
+<span class="fc" id="L517">        }</span>
 
         public Window jsFunction_open(Object url, String name, String features, boolean replace)
                 throws JavaScriptException, EvaluatorException, IOException, SAXException {
-<span class="fc" id="L522">            WebResponse.Scriptable delegate = getDelegate().open(toStringIfNotUndefined(url), name, features, replace);</span>
-<span class="fc bfc" id="L523" title="All 2 branches covered.">            return delegate == null ? null : (Window) toScriptable(delegate);</span>
+<span class="fc" id="L521">            WebResponse.Scriptable delegate = getDelegate().open(toStringIfNotUndefined(url), name, features, replace);</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">            return delegate == null ? null : (Window) toScriptable(delegate);</span>
         }
 
         /** The global &quot;event&quot; object is not supported, so return null (instead of causing '&quot;event&quot; is not defined') */
         public Location jsGet_event() {
-<span class="nc" id="L528">            return null;</span>
+<span class="nc" id="L527">            return null;</span>
         }
 
         @Override
         public void clearCaches() {
-<span class="fc bfc" id="L533" title="All 2 branches covered.">            if (_document != null) {</span>
-<span class="fc" id="L534">                _document.clearCaches();</span>
+<span class="fc bfc" id="L532" title="All 2 branches covered.">            if (_document != null) {</span>
+<span class="fc" id="L533">                _document.clearCaches();</span>
             }
-<span class="fc" id="L536">        }</span>
+<span class="fc" id="L535">        }</span>
 
         @Override
         protected String getDocumentWriteBuffer() {
-<span class="fc" id="L540">            return jsGet_document().getWriteBuffer().toString();</span>
+<span class="fc" id="L539">            return jsGet_document().getWriteBuffer().toString();</span>
         }
 
         @Override
         protected void discardDocumentWriteBuffer() {
-<span class="fc" id="L545">            jsGet_document().clearWriteBuffer();</span>
-<span class="fc" id="L546">        }</span>
+<span class="fc" id="L544">            jsGet_document().clearWriteBuffer();</span>
+<span class="fc" id="L545">        }</span>
 
         private WebResponse.Scriptable getDelegate() {
-<span class="fc" id="L549">            return (WebResponse.Scriptable) _scriptable;</span>
+<span class="fc" id="L548">            return (WebResponse.Scriptable) _scriptable;</span>
         }
     }
 
     /**
      * Document script handling
      */
-<span class="fc" id="L556">    static public class Document extends JavaScriptEngine {</span>
+<span class="fc" id="L555">    static public class Document extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private ElementArray _forms;
@@ -564,139 +563,139 @@ import org.xml.sax.SAXException;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L567">            return &quot;Document&quot;;</span>
+<span class="fc" id="L566">            return &quot;Document&quot;;</span>
         }
 
         @Override
         public void clearCaches() {
-<span class="fc" id="L572">            _forms = _links = _images = null;</span>
-<span class="fc" id="L573">        }</span>
+<span class="fc" id="L571">            _forms = _links = _images = null;</span>
+<span class="fc" id="L572">        }</span>
 
         public String jsGet_title() throws SAXException {
-<span class="fc" id="L576">            return getDelegate().getTitle();</span>
+<span class="fc" id="L575">            return getDelegate().getTitle();</span>
         }
 
         public Scriptable jsGet_images() throws SAXException {
-<span class="fc bfc" id="L580" title="All 2 branches covered.">            if (_images == null) {</span>
-<span class="fc" id="L581">                _images = toElementArray(getDelegate().getImages());</span>
+<span class="fc bfc" id="L579" title="All 2 branches covered.">            if (_images == null) {</span>
+<span class="fc" id="L580">                _images = toElementArray(getDelegate().getImages());</span>
             }
-<span class="fc" id="L583">            return _images;</span>
+<span class="fc" id="L582">            return _images;</span>
         }
 
         public Scriptable jsGet_links() throws SAXException {
-<span class="fc bfc" id="L587" title="All 2 branches covered.">            if (_links == null) {</span>
-<span class="fc" id="L588">                _links = toElementArray(getDelegate().getLinks());</span>
+<span class="fc bfc" id="L586" title="All 2 branches covered.">            if (_links == null) {</span>
+<span class="fc" id="L587">                _links = toElementArray(getDelegate().getLinks());</span>
             }
-<span class="fc" id="L590">            return _links;</span>
+<span class="fc" id="L589">            return _links;</span>
         }
 
         public Scriptable jsGet_forms() throws SAXException {
-<span class="fc bfc" id="L594" title="All 2 branches covered.">            if (_forms == null) {</span>
-<span class="fc" id="L595">                _forms = toElementArray(getDelegate().getForms());</span>
+<span class="fc bfc" id="L593" title="All 2 branches covered.">            if (_forms == null) {</span>
+<span class="fc" id="L594">                _forms = toElementArray(getDelegate().getForms());</span>
             }
-<span class="fc" id="L597">            return _forms;</span>
+<span class="fc" id="L596">            return _forms;</span>
         }
 
         public Object jsFunction_getElementById(String id) {
-<span class="fc" id="L601">            ScriptableDelegate elementWithID = getDelegate().getElementWithID(id);</span>
-<span class="fc bfc" id="L602" title="All 2 branches covered.">            return elementWithID == null ? null : toScriptable(elementWithID);</span>
+<span class="fc" id="L600">            ScriptableDelegate elementWithID = getDelegate().getElementWithID(id);</span>
+<span class="fc bfc" id="L601" title="All 2 branches covered.">            return elementWithID == null ? null : toScriptable(elementWithID);</span>
         }
 
         public Object jsFunction_getElementsByName(String name) {
-<span class="fc" id="L606">            return toElementArray(getDelegate().getElementsByName(name));</span>
+<span class="fc" id="L605">            return toElementArray(getDelegate().getElementsByName(name));</span>
         }
 
         public Object jsFunction_getElementsByTagName(String name) {
-<span class="fc" id="L610">            return toElementArray(getDelegate().getElementsByTagName(name));</span>
+<span class="fc" id="L609">            return toElementArray(getDelegate().getElementsByTagName(name));</span>
         }
 
         public Object jsGet_location() {
-<span class="pc bpc" id="L614" title="1 of 2 branches missed.">            return _parent == null ? NOT_FOUND : getWindow().jsGet_location();</span>
+<span class="pc bpc" id="L613" title="1 of 2 branches missed.">            return _parent == null ? NOT_FOUND : getWindow().jsGet_location();</span>
         }
 
         public void jsSet_location(String urlString) throws IOException, SAXException {
-<span class="pc bpc" id="L618" title="1 of 2 branches missed.">            if (urlString.startsWith(&quot;color&quot;)) {</span>
-<span class="nc" id="L619">                return;</span>
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">            if (urlString.startsWith(&quot;color&quot;)) {</span>
+<span class="nc" id="L618">                return;</span>
             }
-<span class="fc" id="L621">            getWindow().setLocation(urlString);</span>
-<span class="fc" id="L622">        }</span>
+<span class="fc" id="L620">            getWindow().setLocation(urlString);</span>
+<span class="fc" id="L621">        }</span>
 
         public String jsGet_cookie() {
-<span class="fc" id="L625">            return getDelegate().getCookie();</span>
+<span class="fc" id="L624">            return getDelegate().getCookie();</span>
         }
 
         public void jsSet_cookie(String cookieSpec) {
-<span class="fc" id="L629">            final int equalsIndex = cookieSpec.indexOf('=');</span>
-<span class="fc bfc" id="L630" title="All 2 branches covered.">            if (equalsIndex &lt; 0) {</span>
-<span class="fc" id="L631">                return;</span>
+<span class="fc" id="L628">            final int equalsIndex = cookieSpec.indexOf('=');</span>
+<span class="fc bfc" id="L629" title="All 2 branches covered.">            if (equalsIndex &lt; 0) {</span>
+<span class="fc" id="L630">                return;</span>
             }
-<span class="fc" id="L633">            int endIndex = cookieSpec.indexOf(&quot;;&quot;, equalsIndex);</span>
-<span class="pc bpc" id="L634" title="1 of 2 branches missed.">            if (endIndex &lt; 0) {</span>
-<span class="nc" id="L635">                endIndex = cookieSpec.length();</span>
+<span class="fc" id="L632">            int endIndex = cookieSpec.indexOf(&quot;;&quot;, equalsIndex);</span>
+<span class="pc bpc" id="L633" title="1 of 2 branches missed.">            if (endIndex &lt; 0) {</span>
+<span class="nc" id="L634">                endIndex = cookieSpec.length();</span>
             }
-<span class="fc" id="L637">            String name = cookieSpec.substring(0, equalsIndex);</span>
-<span class="fc" id="L638">            String value = cookieSpec.substring(equalsIndex + 1, endIndex);</span>
-<span class="fc" id="L639">            getDelegate().setCookie(name, value);</span>
-<span class="fc" id="L640">        }</span>
+<span class="fc" id="L636">            String name = cookieSpec.substring(0, equalsIndex);</span>
+<span class="fc" id="L637">            String value = cookieSpec.substring(equalsIndex + 1, endIndex);</span>
+<span class="fc" id="L638">            getDelegate().setCookie(name, value);</span>
+<span class="fc" id="L639">        }</span>
 
         private Window getWindow() {
-<span class="fc" id="L643">            return (Window) _parent;</span>
+<span class="fc" id="L642">            return (Window) _parent;</span>
         }
 
         public void jsFunction_open(Object mimeType) {
-<span class="fc" id="L647">            _mimeType = toStringIfNotUndefined(mimeType);</span>
-<span class="fc" id="L648">        }</span>
+<span class="fc" id="L646">            _mimeType = toStringIfNotUndefined(mimeType);</span>
+<span class="fc" id="L647">        }</span>
 
         public void jsFunction_close() {
-<span class="fc bfc" id="L651" title="All 4 branches covered.">            if (getDelegate().replaceText(getWriteBuffer().toString(), _mimeType == null ? &quot;text/html&quot; : _mimeType)) {</span>
-<span class="fc" id="L652">                getWriteBuffer().setLength(0);</span>
+<span class="fc bfc" id="L650" title="All 4 branches covered.">            if (getDelegate().replaceText(getWriteBuffer().toString(), _mimeType == null ? &quot;text/html&quot; : _mimeType)) {</span>
+<span class="fc" id="L651">                getWriteBuffer().setLength(0);</span>
             }
-<span class="fc" id="L654">        }</span>
+<span class="fc" id="L653">        }</span>
 
         public void jsFunction_write(String string) {
-<span class="fc" id="L657">            getWriteBuffer().append(string);</span>
-<span class="fc" id="L658">        }</span>
+<span class="fc" id="L656">            getWriteBuffer().append(string);</span>
+<span class="fc" id="L657">        }</span>
 
         public void jsFunction_writeln(String string) {
-<span class="fc" id="L661">            getWriteBuffer().append(string).append((char) 0x0D).append((char) 0x0A);</span>
-<span class="fc" id="L662">        }</span>
+<span class="fc" id="L660">            getWriteBuffer().append(string).append((char) 0x0D).append((char) 0x0A);</span>
+<span class="fc" id="L661">        }</span>
 
         protected StringBuilder getWriteBuffer() {
-<span class="fc bfc" id="L665" title="All 2 branches covered.">            if (_writeBuffer == null) {</span>
-<span class="fc" id="L666">                _writeBuffer = new StringBuilder();</span>
+<span class="fc bfc" id="L664" title="All 2 branches covered.">            if (_writeBuffer == null) {</span>
+<span class="fc" id="L665">                _writeBuffer = new StringBuilder();</span>
             }
-<span class="fc" id="L668">            return _writeBuffer;</span>
+<span class="fc" id="L667">            return _writeBuffer;</span>
         }
 
         protected void clearWriteBuffer() {
-<span class="fc" id="L672">            _writeBuffer = null;</span>
-<span class="fc" id="L673">        }</span>
+<span class="fc" id="L671">            _writeBuffer = null;</span>
+<span class="fc" id="L672">        }</span>
 
         private HTMLPage.Scriptable getDelegate() {
-<span class="fc" id="L676">            return (HTMLPage.Scriptable) _scriptable;</span>
+<span class="fc" id="L675">            return (HTMLPage.Scriptable) _scriptable;</span>
         }
 
         @Override
         public void jsFunction_addEventListener(String type, Scriptable listener, boolean useCapture) {
             // TODO Auto-generated method stub
 
-<span class="nc" id="L683">        }</span>
+<span class="nc" id="L682">        }</span>
 
         @Override
         public boolean jsFunction_dispatchEvent(Scriptable evt) throws EventException {
             // TODO Auto-generated method stub
-<span class="nc" id="L688">            return false;</span>
+<span class="nc" id="L687">            return false;</span>
         }
 
         @Override
         public void jsFunction_removeEventListener(String type, Scriptable listener, boolean useCapture) {
             // TODO Auto-generated method stub
 
-<span class="nc" id="L695">        }</span>
+<span class="nc" id="L694">        }</span>
 
     }
 
-<span class="fc" id="L699">    static public class Location extends JavaScriptEngine {</span>
+<span class="fc" id="L698">    static public class Location extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private URL _url;
@@ -704,64 +703,64 @@ import org.xml.sax.SAXException;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L707">            return &quot;Location&quot;;</span>
+<span class="fc" id="L706">            return &quot;Location&quot;;</span>
         }
 
         void initialize(Window window, URL url) {
-<span class="fc" id="L711">            _window = window;</span>
-<span class="fc" id="L712">            _url = url;</span>
-<span class="fc" id="L713">        }</span>
+<span class="fc" id="L710">            _window = window;</span>
+<span class="fc" id="L711">            _url = url;</span>
+<span class="fc" id="L712">        }</span>
 
         public void jsFunction_replace(String urlString) throws IOException, SAXException {
-<span class="fc" id="L716">            _window.setLocation(urlString);</span>
-<span class="fc" id="L717">        }</span>
+<span class="fc" id="L715">            _window.setLocation(urlString);</span>
+<span class="fc" id="L716">        }</span>
 
         public String jsGet_href() {
-<span class="fc" id="L720">            return toString();</span>
+<span class="fc" id="L719">            return toString();</span>
         }
 
         public void jsSet_href(String urlString) throws SAXException, IOException {
-<span class="fc" id="L724">            _window.setLocation(urlString);</span>
-<span class="fc" id="L725">        }</span>
+<span class="fc" id="L723">            _window.setLocation(urlString);</span>
+<span class="fc" id="L724">        }</span>
 
         public String jsGet_protocol() {
-<span class="fc" id="L728">            return _url.getProtocol() + ':';</span>
+<span class="fc" id="L727">            return _url.getProtocol() + ':';</span>
         }
 
         public String jsGet_host() {
-<span class="fc" id="L732">            return _url.getHost() + ':' + _url.getPort();</span>
+<span class="fc" id="L731">            return _url.getHost() + ':' + _url.getPort();</span>
         }
 
         public String jsGet_hostname() {
-<span class="fc" id="L736">            return _url.getHost();</span>
+<span class="fc" id="L735">            return _url.getHost();</span>
         }
 
         public String jsGet_port() {
-<span class="fc" id="L740">            return String.valueOf(_url.getPort());</span>
+<span class="fc" id="L739">            return String.valueOf(_url.getPort());</span>
         }
 
         public String jsGet_pathname() {
-<span class="fc" id="L744">            return _url.getPath();</span>
+<span class="fc" id="L743">            return _url.getPath();</span>
         }
 
         public void jsSet_pathname(String newPath) throws SAXException, IOException {
-<span class="pc bpc" id="L748" title="1 of 2 branches missed.">            if (!newPath.startsWith(&quot;/&quot;)) {</span>
-<span class="nc" id="L749">                newPath = '/' + newPath;</span>
+<span class="pc bpc" id="L747" title="1 of 2 branches missed.">            if (!newPath.startsWith(&quot;/&quot;)) {</span>
+<span class="nc" id="L748">                newPath = '/' + newPath;</span>
             }
-<span class="fc" id="L751">            URL newURL = new URL(_url, newPath);</span>
-<span class="fc" id="L752">            _window.setLocation(newURL.toExternalForm());</span>
-<span class="fc" id="L753">        }</span>
+<span class="fc" id="L750">            URL newURL = new URL(_url, newPath);</span>
+<span class="fc" id="L751">            _window.setLocation(newURL.toExternalForm());</span>
+<span class="fc" id="L752">        }</span>
 
         public String jsGet_search() {
-<span class="fc" id="L756">            return '?' + _url.getQuery();</span>
+<span class="fc" id="L755">            return '?' + _url.getQuery();</span>
         }
 
         public void jsSet_search(String newSearch) throws SAXException, IOException {
-<span class="pc bpc" id="L760" title="1 of 2 branches missed.">            if (!newSearch.startsWith(&quot;?&quot;)) {</span>
-<span class="nc" id="L761">                newSearch = '?' + newSearch;</span>
+<span class="pc bpc" id="L759" title="1 of 2 branches missed.">            if (!newSearch.startsWith(&quot;?&quot;)) {</span>
+<span class="nc" id="L760">                newSearch = '?' + newSearch;</span>
             }
-<span class="fc" id="L763">            _window.setLocation(jsGet_protocol() + &quot;//&quot; + jsGet_host() + jsGet_pathname() + newSearch);</span>
-<span class="fc" id="L764">        }</span>
+<span class="fc" id="L762">            _window.setLocation(jsGet_protocol() + &quot;//&quot; + jsGet_host() + jsGet_pathname() + newSearch);</span>
+<span class="fc" id="L763">        }</span>
 
         /**
          * Returns the default value of this scriptable object. In this case, it returns simply the URL as a string.
@@ -770,108 +769,108 @@ import org.xml.sax.SAXException;
          */
         @Override
         public Object getDefaultValue(Class typeHint) {
-<span class="fc" id="L773">            return _url.toExternalForm();</span>
+<span class="fc" id="L772">            return _url.toExternalForm();</span>
         }
 
         @Override
         public String toString() {
-<span class="fc" id="L778">            return _url.toExternalForm();</span>
+<span class="fc" id="L777">            return _url.toExternalForm();</span>
         }
 
     }
 
-<span class="fc" id="L783">    static public class Style extends JavaScriptEngine {</span>
+<span class="fc" id="L782">    static public class Style extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
-<span class="fc" id="L786">        private String _display = &quot;inline&quot;;</span>
-<span class="fc" id="L787">        private String _visibility = &quot;visible&quot;;</span>
+<span class="fc" id="L785">        private String _display = &quot;inline&quot;;</span>
+<span class="fc" id="L786">        private String _visibility = &quot;visible&quot;;</span>
 
         @Override
         public String getClassName() {
-<span class="fc" id="L791">            return &quot;Style&quot;;</span>
+<span class="fc" id="L790">            return &quot;Style&quot;;</span>
         }
 
         public String jsGet_display() {
-<span class="fc" id="L795">            return _display;</span>
+<span class="fc" id="L794">            return _display;</span>
         }
 
         public void jsSet_display(String display) {
-<span class="fc" id="L799">            _display = display;</span>
-<span class="fc" id="L800">        }</span>
+<span class="fc" id="L798">            _display = display;</span>
+<span class="fc" id="L799">        }</span>
 
         public String jsGet_visibility() {
-<span class="fc" id="L803">            return _visibility;</span>
+<span class="fc" id="L802">            return _visibility;</span>
         }
 
         public void jsSet_visibility(String visibility) {
-<span class="fc" id="L807">            _visibility = visibility;</span>
-<span class="fc" id="L808">        }</span>
+<span class="fc" id="L806">            _visibility = visibility;</span>
+<span class="fc" id="L807">        }</span>
     }
 
-<span class="fc" id="L811">    static public class Navigator extends JavaScriptEngine {</span>
+<span class="fc" id="L810">    static public class Navigator extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private ClientProperties _clientProperties;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L818">            return &quot;Navigator&quot;;</span>
+<span class="fc" id="L817">            return &quot;Navigator&quot;;</span>
         }
 
         void setClientProperties(ClientProperties clientProperties) {
-<span class="fc" id="L822">            _clientProperties = clientProperties;</span>
-<span class="fc" id="L823">        }</span>
+<span class="fc" id="L821">            _clientProperties = clientProperties;</span>
+<span class="fc" id="L822">        }</span>
 
         public String jsGet_appName() {
-<span class="fc" id="L826">            return _clientProperties.getApplicationName();</span>
+<span class="fc" id="L825">            return _clientProperties.getApplicationName();</span>
         }
 
         public String jsGet_appCodeName() {
-<span class="fc" id="L830">            return _clientProperties.getApplicationCodeName();</span>
+<span class="fc" id="L829">            return _clientProperties.getApplicationCodeName();</span>
         }
 
         public String jsGet_appVersion() {
-<span class="fc" id="L834">            return _clientProperties.getApplicationVersion();</span>
+<span class="fc" id="L833">            return _clientProperties.getApplicationVersion();</span>
         }
 
         public String jsGet_userAgent() {
-<span class="fc" id="L838">            return _clientProperties.getUserAgent();</span>
+<span class="fc" id="L837">            return _clientProperties.getUserAgent();</span>
         }
 
         public String jsGet_platform() {
-<span class="fc" id="L842">            return _clientProperties.getPlatform();</span>
+<span class="fc" id="L841">            return _clientProperties.getPlatform();</span>
         }
 
         public Object[] jsGet_plugins() {
-<span class="fc" id="L846">            return new Object[0];</span>
+<span class="fc" id="L845">            return new Object[0];</span>
         }
 
         public boolean jsFunction_javaEnabled() {
-<span class="fc" id="L850">            return false; // no support is provided for applets at present</span>
+<span class="fc" id="L849">            return false; // no support is provided for applets at present</span>
         }
 
     }
 
-<span class="fc" id="L855">    static public class Screen extends JavaScriptEngine {</span>
+<span class="fc" id="L854">    static public class Screen extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private ClientProperties _clientProperties;
 
         void setClientProperties(ClientProperties clientProperties) {
-<span class="fc" id="L861">            _clientProperties = clientProperties;</span>
-<span class="fc" id="L862">        }</span>
+<span class="fc" id="L860">            _clientProperties = clientProperties;</span>
+<span class="fc" id="L861">        }</span>
 
         @Override
         public String getClassName() {
-<span class="fc" id="L866">            return &quot;Screen&quot;;</span>
+<span class="fc" id="L865">            return &quot;Screen&quot;;</span>
         }
 
         public int jsGet_availWidth() {
-<span class="fc" id="L870">            return _clientProperties.getAvailableScreenWidth();</span>
+<span class="fc" id="L869">            return _clientProperties.getAvailableScreenWidth();</span>
         }
 
         public int jsGet_availHeight() {
-<span class="fc" id="L874">            return _clientProperties.getAvailHeight();</span>
+<span class="fc" id="L873">            return _clientProperties.getAvailHeight();</span>
         }
 
     }
@@ -879,64 +878,64 @@ import org.xml.sax.SAXException;
     static public class ElementArray extends ScriptableObject {
 
         private static final long serialVersionUID = 1L;
-<span class="fc" id="L882">        private JavaScriptEngine _contents[] = new HTMLElement[0];</span>
+<span class="fc" id="L881">        private JavaScriptEngine _contents[] = new HTMLElement[0];</span>
 
         static ElementArray newElementArray(Scriptable parent) {
             try {
-<span class="fc" id="L886">                return (ElementArray) Context.getCurrentContext().newObject(parent, &quot;ElementArray&quot;);</span>
-<span class="nc" id="L887">            } catch (EvaluatorException | JavaScriptException e) {</span>
-<span class="nc" id="L888">                throw new RhinoException(e);</span>
+<span class="fc" id="L885">                return (ElementArray) Context.getCurrentContext().newObject(parent, &quot;ElementArray&quot;);</span>
+<span class="nc" id="L886">            } catch (EvaluatorException | JavaScriptException e) {</span>
+<span class="nc" id="L887">                throw new RhinoException(e);</span>
             }
         }
 
-<span class="fc" id="L892">        public ElementArray() {</span>
-<span class="fc" id="L893">        }</span>
+<span class="fc" id="L891">        public ElementArray() {</span>
+<span class="fc" id="L892">        }</span>
 
         void initialize(JavaScriptEngine[] contents) {
-<span class="fc" id="L896">            _contents = contents;</span>
-<span class="fc" id="L897">        }</span>
+<span class="fc" id="L895">            _contents = contents;</span>
+<span class="fc" id="L896">        }</span>
 
         public int jsGet_length() {
-<span class="fc" id="L900">            return _contents.length;</span>
+<span class="fc" id="L899">            return _contents.length;</span>
         }
 
         @Override
         public String getClassName() {
-<span class="fc" id="L905">            return &quot;ElementArray&quot;;</span>
+<span class="fc" id="L904">            return &quot;ElementArray&quot;;</span>
         }
 
         @Override
         public Object get(int i, Scriptable scriptable) {
-<span class="pc bpc" id="L910" title="2 of 4 branches missed.">            if (i &gt;= 0 &amp;&amp; i &lt; _contents.length) {</span>
-<span class="fc" id="L911">                return _contents[i];</span>
+<span class="pc bpc" id="L909" title="2 of 4 branches missed.">            if (i &gt;= 0 &amp;&amp; i &lt; _contents.length) {</span>
+<span class="fc" id="L910">                return _contents[i];</span>
             }
-<span class="nc" id="L913">            return super.get(i, scriptable);</span>
+<span class="nc" id="L912">            return super.get(i, scriptable);</span>
         }
 
         @Override
         public Object get(String name, Scriptable scriptable) {
-<span class="fc bfc" id="L918" title="All 2 branches covered.">            for (JavaScriptEngine content : _contents) {</span>
-<span class="fc bfc" id="L919" title="All 2 branches covered.">                if (name.equalsIgnoreCase(content.getID())) {</span>
-<span class="fc" id="L920">                    return content;</span>
+<span class="fc bfc" id="L917" title="All 2 branches covered.">            for (JavaScriptEngine content : _contents) {</span>
+<span class="fc bfc" id="L918" title="All 2 branches covered.">                if (name.equalsIgnoreCase(content.getID())) {</span>
+<span class="fc" id="L919">                    return content;</span>
                 }
             }
-<span class="fc bfc" id="L923" title="All 2 branches covered.">            for (JavaScriptEngine content : _contents) {</span>
-<span class="fc bfc" id="L924" title="All 2 branches covered.">                if (name.equalsIgnoreCase(content.getName())) {</span>
-<span class="fc" id="L925">                    return content;</span>
+<span class="fc bfc" id="L922" title="All 2 branches covered.">            for (JavaScriptEngine content : _contents) {</span>
+<span class="fc bfc" id="L923" title="All 2 branches covered.">                if (name.equalsIgnoreCase(content.getName())) {</span>
+<span class="fc" id="L924">                    return content;</span>
                 }
             }
-<span class="fc" id="L928">            return super.get(name, scriptable);</span>
+<span class="fc" id="L927">            return super.get(name, scriptable);</span>
         }
 
         protected JavaScriptEngine[] getContents() {
-<span class="nc" id="L932">            return _contents;</span>
+<span class="nc" id="L931">            return _contents;</span>
         }
     }
 
     /**
      * HTML Element support for JavaScript
      */
-<span class="fc" id="L939">    static public class HTMLElement extends JavaScriptEngine {</span>
+<span class="fc" id="L938">    static public class HTMLElement extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private Style _style;
@@ -944,15 +943,15 @@ import org.xml.sax.SAXException;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L947">            return &quot;HTMLElement&quot;;</span>
+<span class="fc" id="L946">            return &quot;HTMLElement&quot;;</span>
         }
 
         public Document jsGet_document() {
-<span class="fc" id="L951">            return _document;</span>
+<span class="fc" id="L950">            return _document;</span>
         }
 
         public Style jsGet_style() {
-<span class="fc" id="L955">            return _style;</span>
+<span class="fc" id="L954">            return _style;</span>
         }
 
         /**
@@ -963,59 +962,59 @@ import org.xml.sax.SAXException;
          * @return
          */
         public Object jsFunction_getAttribute(String attributeName) {
-<span class="nc" id="L966">            return _scriptable.get(attributeName);</span>
+<span class="nc" id="L965">            return _scriptable.get(attributeName);</span>
         }
 
         @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
-<span class="fc" id="L972">            super.initialize(parent, scriptable);</span>
-<span class="fc" id="L973">            _document = (Document) parent;</span>
-<span class="fc" id="L974">            _style = (Style) Context.getCurrentContext().newObject(this, &quot;Style&quot;);</span>
-<span class="fc" id="L975">        }</span>
+<span class="fc" id="L971">            super.initialize(parent, scriptable);</span>
+<span class="fc" id="L972">            _document = (Document) parent;</span>
+<span class="fc" id="L973">            _style = (Style) Context.getCurrentContext().newObject(this, &quot;Style&quot;);</span>
+<span class="fc" id="L974">        }</span>
 
     }
 
-<span class="fc" id="L979">    static public class Image extends HTMLElement {</span>
+<span class="fc" id="L978">    static public class Image extends HTMLElement {</span>
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L985">            return &quot;Image&quot;;</span>
+<span class="fc" id="L984">            return &quot;Image&quot;;</span>
         }
     }
 
-<span class="fc" id="L989">    static public class Link extends HTMLElement {</span>
+<span class="fc" id="L988">    static public class Link extends HTMLElement {</span>
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public Document jsGet_document() {
-<span class="fc" id="L995">            return super.jsGet_document();</span>
+<span class="fc" id="L994">            return super.jsGet_document();</span>
         }
 
         @Override
         public String getClassName() {
-<span class="fc" id="L1000">            return &quot;Link&quot;;</span>
+<span class="fc" id="L999">            return &quot;Link&quot;;</span>
         }
     }
 
     /**
      * Form functions
      */
-<span class="fc" id="L1007">    static public class Form extends HTMLElement {</span>
+<span class="fc" id="L1006">    static public class Form extends HTMLElement {</span>
 
         private static final long serialVersionUID = 1L;
         private ElementArray _controls;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L1014">            return &quot;Form&quot;;</span>
+<span class="fc" id="L1013">            return &quot;Form&quot;;</span>
         }
 
         public String jsGet_name() {
-<span class="fc" id="L1018">            return getDelegate().getName();</span>
+<span class="fc" id="L1017">            return getDelegate().getName();</span>
         }
 
         /**
@@ -1024,48 +1023,48 @@ import org.xml.sax.SAXException;
          * @param name
          */
         public void jsSet_name(String name) {
-<span class="fc" id="L1027">            getDelegate().set(&quot;name&quot;, name);</span>
-<span class="fc" id="L1028">        }</span>
+<span class="fc" id="L1026">            getDelegate().set(&quot;name&quot;, name);</span>
+<span class="fc" id="L1027">        }</span>
 
         public String jsGet_action() {
-<span class="nc" id="L1031">            return getDelegate().getAction();</span>
+<span class="nc" id="L1030">            return getDelegate().getAction();</span>
         }
 
         public void jsSet_action(String action) {
-<span class="nc" id="L1035">            getDelegate().setAction(action);</span>
-<span class="nc" id="L1036">        }</span>
+<span class="nc" id="L1034">            getDelegate().setAction(action);</span>
+<span class="nc" id="L1035">        }</span>
 
         public Scriptable jsGet_elements() throws EvaluatorException, JavaScriptException {
-<span class="fc bfc" id="L1039" title="All 2 branches covered.">            if (_controls == null) {</span>
-<span class="fc" id="L1040">                initializeControls();</span>
+<span class="fc bfc" id="L1038" title="All 2 branches covered.">            if (_controls == null) {</span>
+<span class="fc" id="L1039">                initializeControls();</span>
             }
-<span class="fc" id="L1042">            return _controls;</span>
+<span class="fc" id="L1041">            return _controls;</span>
         }
 
         public Object jsFunction_getElementsByTagName(String name) throws SAXException {
-<span class="fc" id="L1046">            return toElementArray(getDelegate().getElementsByTagName(name));</span>
+<span class="fc" id="L1045">            return toElementArray(getDelegate().getElementsByTagName(name));</span>
         }
 
         public void jsFunction_submit() throws IOException, SAXException {
-<span class="fc" id="L1050">            getDelegate().submit();</span>
-<span class="fc" id="L1051">        }</span>
+<span class="fc" id="L1049">            getDelegate().submit();</span>
+<span class="fc" id="L1050">        }</span>
 
         public void jsFunction_reset() throws IOException, SAXException {
-<span class="fc" id="L1054">            getDelegate().reset();</span>
-<span class="fc" id="L1055">        }</span>
+<span class="fc" id="L1053">            getDelegate().reset();</span>
+<span class="fc" id="L1054">        }</span>
 
         private void initializeControls() throws EvaluatorException, JavaScriptException {
-<span class="fc" id="L1058">            ScriptableDelegate scriptables[] = getDelegate().getElementDelegates();</span>
-<span class="fc" id="L1059">            Control[] controls = new Control[scriptables.length];</span>
-<span class="fc bfc" id="L1060" title="All 2 branches covered.">            for (int i = 0; i &lt; controls.length; i++) {</span>
-<span class="fc" id="L1061">                controls[i] = (Control) toScriptable(scriptables[i]);</span>
+<span class="fc" id="L1057">            ScriptableDelegate scriptables[] = getDelegate().getElementDelegates();</span>
+<span class="fc" id="L1058">            Control[] controls = new Control[scriptables.length];</span>
+<span class="fc bfc" id="L1059" title="All 2 branches covered.">            for (int i = 0; i &lt; controls.length; i++) {</span>
+<span class="fc" id="L1060">                controls[i] = (Control) toScriptable(scriptables[i]);</span>
             }
-<span class="fc" id="L1063">            _controls = (ElementArray) Context.getCurrentContext().newObject(this, &quot;ElementArray&quot;);</span>
-<span class="fc" id="L1064">            _controls.initialize(controls);</span>
-<span class="fc" id="L1065">        }</span>
+<span class="fc" id="L1062">            _controls = (ElementArray) Context.getCurrentContext().newObject(this, &quot;ElementArray&quot;);</span>
+<span class="fc" id="L1063">            _controls.initialize(controls);</span>
+<span class="fc" id="L1064">        }</span>
 
         private WebForm.Scriptable getDelegate() {
-<span class="fc" id="L1068">            return (WebForm.Scriptable) _scriptable;</span>
+<span class="fc" id="L1067">            return (WebForm.Scriptable) _scriptable;</span>
         }
 
     }
@@ -1073,25 +1072,25 @@ import org.xml.sax.SAXException;
     /**
      * Javascript support for any control
      */
-<span class="fc" id="L1076">    static public class Control extends JavaScriptEngine {</span>
+<span class="fc" id="L1075">    static public class Control extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
         private Form _form;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L1083">            return &quot;Control&quot;;</span>
+<span class="fc" id="L1082">            return &quot;Control&quot;;</span>
         }
 
         public Form jsGet_form() {
-<span class="fc" id="L1087">            return _form;</span>
+<span class="fc" id="L1086">            return _form;</span>
         }
 
         public void jsFunction_focus() {
-<span class="nc" id="L1091">        }</span>
+<span class="nc" id="L1090">        }</span>
 
         public void jsFunction_select() {
-<span class="nc" id="L1094">        }</span>
+<span class="nc" id="L1093">        }</span>
 
         /**
          * click via javascript
@@ -1100,129 +1099,129 @@ import org.xml.sax.SAXException;
          * @throws SAXException
          */
         public void jsFunction_click() throws IOException, SAXException {
-<span class="fc" id="L1103">            getDelegate().click();</span>
-<span class="fc" id="L1104">        }</span>
+<span class="fc" id="L1102">            getDelegate().click();</span>
+<span class="fc" id="L1103">        }</span>
 
         private Input getDelegate() {
-<span class="fc" id="L1107">            return (Input) _scriptable;</span>
+<span class="fc" id="L1106">            return (Input) _scriptable;</span>
         }
 
         /** Support getting value of arbitrary attribute */
         public Object jsFunction_getAttribute(String attributeName) throws JavaScriptException {
-<span class="fc" id="L1112">            return getDelegate().get(attributeName);</span>
+<span class="fc" id="L1111">            return getDelegate().get(attributeName);</span>
         }
 
         /** Support getting value of arbitrary attribute */
         public void jsFunction_setAttribute(String attributeName, Object value) throws JavaScriptException {
-<span class="fc" id="L1117">            getDelegate().setAttribute(attributeName, value);</span>
-<span class="fc" id="L1118">        }</span>
+<span class="fc" id="L1116">            getDelegate().setAttribute(attributeName, value);</span>
+<span class="fc" id="L1117">        }</span>
 
         /** Support getting value of arbitrary attribute */
         public void jsFunction_removeAttribute(String attributeName) throws JavaScriptException {
-<span class="nc" id="L1122">            getDelegate().removeAttribute(attributeName);</span>
-<span class="nc" id="L1123">        }</span>
+<span class="nc" id="L1121">            getDelegate().removeAttribute(attributeName);</span>
+<span class="nc" id="L1122">        }</span>
 
         /** Allow calling onchange() from within a JavaScript function */
         public void jsFunction_onchange() throws JavaScriptException {
-<span class="fc" id="L1127">            Input myInput = this.getDelegate();</span>
-<span class="fc" id="L1128">            myInput.sendOnChangeEvent();</span>
-<span class="fc" id="L1129">        }</span>
+<span class="fc" id="L1126">            Input myInput = this.getDelegate();</span>
+<span class="fc" id="L1127">            myInput.sendOnChangeEvent();</span>
+<span class="fc" id="L1128">        }</span>
 
         @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws JavaScriptException, EvaluatorException, SAXException {
-<span class="fc" id="L1134">            super.initialize(parent, scriptable);</span>
-<span class="fc bfc" id="L1135" title="All 2 branches covered.">            if (parent instanceof Form) {</span>
-<span class="fc" id="L1136">                _form = (Form) parent;</span>
+<span class="fc" id="L1133">            super.initialize(parent, scriptable);</span>
+<span class="fc bfc" id="L1134" title="All 2 branches covered.">            if (parent instanceof Form) {</span>
+<span class="fc" id="L1135">                _form = (Form) parent;</span>
             }
-<span class="fc" id="L1138">        }</span>
+<span class="fc" id="L1137">        }</span>
 
     }
 
-<span class="fc" id="L1142">    static public class Options extends JavaScriptEngine {</span>
+<span class="fc" id="L1141">    static public class Options extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L1148">            return &quot;Options&quot;;</span>
+<span class="fc" id="L1147">            return &quot;Options&quot;;</span>
         }
 
         public int jsGet_length() {
-<span class="fc" id="L1152">            return getDelegate().getLength();</span>
+<span class="fc" id="L1151">            return getDelegate().getLength();</span>
         }
 
         public void jsSet_length(int length) {
-<span class="fc" id="L1156">            getDelegate().setLength(length);</span>
-<span class="fc" id="L1157">        }</span>
+<span class="fc" id="L1155">            getDelegate().setLength(length);</span>
+<span class="fc" id="L1156">        }</span>
 
         @Override
         public void put(int i, Scriptable scriptable, Object object) {
-<span class="fc bfc" id="L1161" title="All 2 branches covered.">            if (object == null) {</span>
-<span class="fc" id="L1162">                getDelegate().put(i, null);</span>
+<span class="fc bfc" id="L1160" title="All 2 branches covered.">            if (object == null) {</span>
+<span class="fc" id="L1161">                getDelegate().put(i, null);</span>
             } else {
-<span class="pc bpc" id="L1164" title="1 of 2 branches missed.">                if (!(object instanceof Option)) {</span>
-<span class="nc" id="L1165">                    throw new IllegalArgumentException(&quot;May only add an Option to this array&quot;);</span>
+<span class="pc bpc" id="L1163" title="1 of 2 branches missed.">                if (!(object instanceof Option)) {</span>
+<span class="nc" id="L1164">                    throw new IllegalArgumentException(&quot;May only add an Option to this array&quot;);</span>
                 }
-<span class="fc" id="L1167">                Option option = (Option) object;</span>
-<span class="fc" id="L1168">                getDelegate().put(i, option.getDelegate());</span>
+<span class="fc" id="L1166">                Option option = (Option) object;</span>
+<span class="fc" id="L1167">                getDelegate().put(i, option.getDelegate());</span>
             }
-<span class="fc" id="L1170">        }</span>
+<span class="fc" id="L1169">        }</span>
 
         private SelectionOptions getDelegate() {
-<span class="fc" id="L1173">            return (SelectionOptions) _scriptable;</span>
+<span class="fc" id="L1172">            return (SelectionOptions) _scriptable;</span>
         }
 
     }
 
-<span class="fc" id="L1178">    static public class Option extends JavaScriptEngine {</span>
+<span class="fc" id="L1177">    static public class Option extends JavaScriptEngine {</span>
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public String getClassName() {
-<span class="fc" id="L1184">            return &quot;Option&quot;;</span>
+<span class="fc" id="L1183">            return &quot;Option&quot;;</span>
         }
 
         public void jsConstructor(String text, String value, boolean defaultSelected, boolean selected) {
-<span class="fc" id="L1188">            _scriptable = WebResponse.newDelegate(&quot;Option&quot;);</span>
-<span class="fc" id="L1189">            getDelegate().initialize(text, value, defaultSelected, selected);</span>
-<span class="fc" id="L1190">        }</span>
+<span class="fc" id="L1187">            _scriptable = WebResponse.newDelegate(&quot;Option&quot;);</span>
+<span class="fc" id="L1188">            getDelegate().initialize(text, value, defaultSelected, selected);</span>
+<span class="fc" id="L1189">        }</span>
 
         public int jsGet_index() {
-<span class="fc" id="L1193">            return getDelegate().getIndex();</span>
+<span class="fc" id="L1192">            return getDelegate().getIndex();</span>
         }
 
         public String jsGet_text() {
-<span class="fc" id="L1197">            return getDelegate().getText();</span>
+<span class="fc" id="L1196">            return getDelegate().getText();</span>
         }
 
         public void jsSet_text(String text) {
-<span class="fc" id="L1201">            getDelegate().setText(text);</span>
-<span class="fc" id="L1202">        }</span>
+<span class="fc" id="L1200">            getDelegate().setText(text);</span>
+<span class="fc" id="L1201">        }</span>
 
         public String jsGet_value() {
-<span class="fc" id="L1205">            return getDelegate().getValue();</span>
+<span class="fc" id="L1204">            return getDelegate().getValue();</span>
         }
 
         public void jsSet_value(String value) {
-<span class="fc" id="L1209">            getDelegate().setValue(value);</span>
-<span class="fc" id="L1210">        }</span>
+<span class="fc" id="L1208">            getDelegate().setValue(value);</span>
+<span class="fc" id="L1209">        }</span>
 
         public boolean jsGet_selected() {
-<span class="fc" id="L1213">            return getDelegate().isSelected();</span>
+<span class="fc" id="L1212">            return getDelegate().isSelected();</span>
         }
 
         public void jsSet_selected(boolean selected) {
-<span class="fc" id="L1217">            getDelegate().setSelected(selected);</span>
-<span class="fc" id="L1218">        }</span>
+<span class="fc" id="L1216">            getDelegate().setSelected(selected);</span>
+<span class="fc" id="L1217">        }</span>
 
         public boolean jsGet_defaultSelected() {
-<span class="nc" id="L1221">            return getDelegate().isDefaultSelected();</span>
+<span class="nc" id="L1220">            return getDelegate().isDefaultSelected();</span>
         }
 
         SelectionOption getDelegate() {
-<span class="fc" id="L1225">            return (SelectionOption) _scriptable;</span>
+<span class="fc" id="L1224">            return (SelectionOption) _scriptable;</span>
         }
     }
 
@@ -1236,13 +1235,13 @@ class RhinoException extends RuntimeException {
     private static final long serialVersionUID = 1L;
     private Exception _cause;
 
-<span class="nc" id="L1239">    public RhinoException(Exception cause) {</span>
-<span class="nc" id="L1240">        _cause = cause;</span>
-<span class="nc" id="L1241">    }</span>
+<span class="nc" id="L1238">    public RhinoException(Exception cause) {</span>
+<span class="nc" id="L1239">        _cause = cause;</span>
+<span class="nc" id="L1240">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L1245">        return &quot;Rhino exception: &quot; + _cause;</span>
+<span class="nc" id="L1244">        return &quot;Rhino exception: &quot; + _cause;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

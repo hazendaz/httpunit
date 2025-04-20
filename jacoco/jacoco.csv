@@ -6,6 +6,7 @@ httpunit,com.meterware.httpunit.controls,IllegalParameterValueException,0,84,0,6
 httpunit,com.meterware.httpunit.controls,SelectionFormControl.MultiSelectOptions,0,52,0,6,0,14,0,7,0,4
 httpunit,com.meterware.httpunit.controls,SelectionFormControl.SingleSelectOptions,5,92,1,13,2,20,1,10,0,4
 httpunit,com.meterware.httpunit.controls,SelectionFormControl,17,113,4,16,5,24,4,17,1,10
+httpunit,com.meterware.httpunit.ssl,Placeholder,3,0,0,0,1,0,1,0,1,0
 httpunit,com.meterware.httpunit,ParsedHTML.FormControlFactory,3,51,3,9,1,9,3,7,0,4
 httpunit,com.meterware.httpunit,HttpUnitOptions.new ScriptingEngineFactory() {...},12,7,0,0,7,4,7,4,7,4
 httpunit,com.meterware.httpunit,WebFrame,0,57,0,2,0,13,0,8,0,7
@@ -25,7 +26,7 @@ httpunit,com.meterware.httpunit,HttpException,36,73,2,2,15,21,6,6,4,6
 httpunit,com.meterware.httpunit,WebForm.IllegalSubmitButtonException,6,26,0,0,1,8,1,2,1,2
 httpunit,com.meterware.httpunit,IllegalButtonPositionException,2,3,0,0,1,2,1,1,1,1
 httpunit,com.meterware.httpunit,BooleanFormControl.Scriptable,0,67,1,15,0,12,1,10,0,3
-httpunit,com.meterware.httpunit,WebResponse.Scriptable,14,265,6,34,4,47,6,30,0,16
+httpunit,com.meterware.httpunit,WebResponse.Scriptable,14,265,6,34,4,46,6,30,0,16
 httpunit,com.meterware.httpunit,ElementRegistry,0,31,0,0,0,7,0,5,0,5
 httpunit,com.meterware.httpunit,FormParameter.UnusedParameterValueException,0,36,0,0,0,8,0,2,0,2
 httpunit,com.meterware.httpunit,RedirectWebRequest,0,22,0,2,0,5,0,3,0,2
@@ -69,7 +70,7 @@ httpunit,com.meterware.httpunit,ParsedHTML.WebLinkFactory,0,7,0,0,0,2,0,2,0,2
 httpunit,com.meterware.httpunit,WebImage,0,60,0,4,0,14,0,9,0,7
 httpunit,com.meterware.httpunit,WebRequest,52,697,8,62,11,148,12,75,4,48
 httpunit,com.meterware.httpunit,FileSubmitFormControl.Scriptable,0,19,0,2,0,4,0,3,0,2
-httpunit,com.meterware.httpunit,HttpUnitOptions,100,187,3,11,48,86,27,34,24,30
+httpunit,com.meterware.httpunit,HttpUnitOptions,100,187,3,11,48,87,27,34,24,30
 httpunit,com.meterware.httpunit,JavascriptURLStreamHandler,2,3,0,0,1,1,1,1,1,1
 httpunit,com.meterware.httpunit,ParsedHTML.WebFrameFactory,0,7,0,0,0,2,0,2,0,2
 httpunit,com.meterware.httpunit,FrameHolder,12,477,5,67,3,94,5,48,0,17
@@ -109,7 +110,7 @@ httpunit,com.meterware.httpunit,WebResponse.ByteTagParser,0,113,1,17,0,20,1,10,0
 httpunit,com.meterware.httpunit,WebWindow,21,428,11,49,6,105,11,47,1,27
 httpunit,com.meterware.httpunit,ParsedHTML.new HTMLElementBase() {...},0,17,0,0,0,3,0,3,0,3
 httpunit,com.meterware.httpunit,XPathPredicate,42,52,3,5,9,15,3,4,1,2
-httpunit,com.meterware.httpunit,ParsedHTML.new NodeUtils.NodeAction() {...},0,79,3,13,0,16,3,8,0,3
+httpunit,com.meterware.httpunit,ParsedHTML.new NodeUtils.NodeAction() {...},0,79,3,13,0,18,3,8,0,3
 httpunit,com.meterware.httpunit,AuthenticationChallenge.BasicAuthenticationStrategy,0,6,0,0,0,1,0,1,0,1
 httpunit,com.meterware.httpunit,Base64,3,297,0,16,1,37,1,13,1,5
 httpunit,com.meterware.httpunit,PutMethodWebRequest,0,11,0,0,0,3,0,2,0,2
@@ -125,7 +126,7 @@ httpunit,com.meterware.httpunit,HeaderOnlyWebRequest,8,83,0,0,2,24,0,10,0,10
 httpunit,com.meterware.httpunit,HttpInternalErrorException,14,0,0,0,4,0,2,0,2,0
 httpunit,com.meterware.httpunit,HttpHeader,32,249,19,39,8,57,18,20,1,8
 httpunit,com.meterware.httpunit,WebForm.NoSuchParameterException,0,13,0,0,0,4,0,2,0,2
-httpunit,com.meterware.httpunit,WebForm.InvalidFileParameterException,0,55,0,2,0,10,0,3,0,2
+httpunit,com.meterware.httpunit,WebForm.InvalidFileParameterException,0,55,0,2,0,11,0,3,0,2
 httpunit,com.meterware.httpunit,FormParameter.UnusedUploadFileException,37,15,2,0,7,5,2,1,1,1
 httpunit,com.meterware.httpunit,HTMLElementBase,49,92,7,3,12,25,9,15,5,14
 httpunit,com.meterware.httpunit,ParsedHTML.DefaultElementFactory,0,8,0,0,0,3,0,3,0,3
@@ -139,7 +140,7 @@ httpunit,com.meterware.httpunit,NoSuchFrameException,4,6,0,0,1,3,1,1,1,1
 httpunit,com.meterware.httpunit,ParsedHTML.WebTableFactory,0,31,1,5,0,11,1,6,0,4
 httpunit,com.meterware.httpunit,ParsedHTML.HtmlElementRecorder,0,52,0,10,0,17,0,9,0,4
 httpunit,com.meterware.httpunit,TextFormControl.Scriptable,5,51,1,9,1,11,1,7,0,3
-httpunit,com.meterware.httpunit,WebTable,25,764,11,95,6,139,11,66,0,24
+httpunit,com.meterware.httpunit,WebTable,25,764,11,95,6,138,11,66,0,24
 httpunit,com.meterware.httpunit,FrameSelector,17,69,2,4,2,20,3,11,2,9
 httpunit,com.meterware.httpunit,ParsedHTML.WebAppletFactory,0,9,0,0,0,3,0,3,0,3
 httpunit,com.meterware.httpunit,HTMLPage,10,166,6,16,3,32,6,13,0,8
@@ -153,15 +154,15 @@ httpunit,com.meterware.httpunit.protocol,MessageBody,0,21,0,2,0,6,0,4,0,3
 httpunit,com.meterware.httpunit.protocol,UploadFileSpec,9,244,1,9,3,31,1,13,0,9
 httpunit,com.meterware.httpunit.protocol,MimeEncodedMessageBody.MimeEncoding,1,181,6,12,1,33,6,8,0,5
 httpunit,com.meterware.httpunit.protocol,URLEncodedMessageBody,11,28,1,1,2,9,1,4,0,4
-httpunit,com.meterware.httpunit.cookies,Cookie,27,255,8,44,8,54,7,41,1,21
-httpunit,com.meterware.httpunit.cookies,CookieJar,54,466,18,62,17,95,18,37,2,13
+httpunit,com.meterware.httpunit.cookies,Cookie,27,255,8,44,8,53,7,41,1,21
+httpunit,com.meterware.httpunit.cookies,CookieJar,54,466,18,62,17,96,18,37,2,13
 httpunit,com.meterware.httpunit.cookies,CookieJar.CookiePress,8,243,1,37,3,58,2,27,1,9
 httpunit,com.meterware.httpunit.cookies,CookieProperties,3,69,1,5,1,26,2,10,1,8
 httpunit,com.meterware.httpunit.cookies,CookieJar.CookieRecipe,10,154,4,14,2,33,4,10,0,5
 httpunit,com.meterware.httpunit.cookies,CookieJar.RFC2109CookieRecipe,0,39,2,10,0,5,2,7,0,3
 httpunit,com.meterware.httpunit.cookies,CookieJar.RFC2965CookieRecipe,48,7,20,0,5,1,12,1,2,1
 httpunit,com.meterware.pseudoserver,PseudoServer,165,588,19,51,41,144,20,47,6,26
-httpunit,com.meterware.pseudoserver,HttpUserAgentTest,134,289,14,24,23,60,15,27,4,19
+httpunit,com.meterware.pseudoserver,HttpUserAgentTest,142,289,14,24,23,60,15,27,4,19
 httpunit,com.meterware.pseudoserver,HttpResponseStream,23,138,1,7,7,47,2,15,1,12
 httpunit,com.meterware.pseudoserver,WebResource,53,276,7,27,10,75,8,34,3,22
 httpunit,com.meterware.pseudoserver,UnknownMethodException,0,9,0,0,0,4,0,2,0,2
@@ -214,7 +215,7 @@ httpunit,com.meterware.httpunit.dom,HTMLFormElementImpl,55,320,11,31,10,75,9,36,
 httpunit,com.meterware.httpunit.dom,HTMLParagraphElementImpl,24,22,0,0,4,6,4,5,4,5
 httpunit,com.meterware.httpunit.dom,HTMLInputElementImpl,13,257,2,24,5,68,5,46,3,35
 httpunit,com.meterware.httpunit.dom,ElementImpl,55,267,8,20,19,65,16,28,10,20
-httpunit,com.meterware.httpunit.dom,ScriptingSupport,93,388,30,58,23,77,24,31,1,10
+httpunit,com.meterware.httpunit.dom,ScriptingSupport,93,388,30,58,23,79,24,31,1,10
 httpunit,com.meterware.httpunit.dom,HTMLContainerDelegate,0,155,0,16,0,35,0,14,0,6
 httpunit,com.meterware.httpunit.dom,DomBasedScriptingEngineFactory,84,0,6,0,35,0,15,0,12,0
 httpunit,com.meterware.httpunit.dom,HTMLBodyElementImpl,0,84,1,3,0,24,1,16,0,15
@@ -233,7 +234,7 @@ httpunit,com.meterware.httpunit.javascript,JavaScript.ElementArray,14,88,2,10,4,
 httpunit,com.meterware.httpunit.javascript,JavaScript.Location,6,97,2,2,2,25,2,16,0,16
 httpunit,com.meterware.httpunit.javascript,JavaScript.Link,0,8,0,0,0,3,0,3,0,3
 httpunit,com.meterware.httpunit.javascript,JavaScriptEngineFactory,29,44,0,0,12,22,1,10,1,10
-httpunit,com.meterware.httpunit.javascript,JavaScript.JavaScriptEngine,127,288,20,54,37,71,19,39,6,15
+httpunit,com.meterware.httpunit.javascript,JavaScript.JavaScriptEngine,127,288,20,54,37,70,19,39,6,15
 httpunit,com.meterware.httpunit.javascript,JavaScript.Style,0,25,0,0,0,10,0,6,0,6
 httpunit,com.meterware.httpunit.javascript,JavaScript.Option,4,52,0,0,1,16,1,11,1,11
 httpunit,com.meterware.httpunit.javascript,RhinoException,11,0,0,0,4,0,2,0,2,0
@@ -292,7 +293,7 @@ httpunit,com.meterware.servletunit,ServletUnitClient,26,93,3,3,7,24,5,9,2,9
 httpunit,com.meterware.servletunit,ServletInputStreamImpl,5,13,0,0,3,4,3,2,3,2
 httpunit,com.meterware.servletunit,JUnitServlet.ResultsFormatter,7,82,4,10,3,21,4,9,0,4
 httpunit,com.meterware.servletunit,ServletUnitHttpRequest,104,719,9,63,42,169,41,77,33,49
-httpunit,com.meterware.servletunit,ServletUnitHttpResponse,152,562,17,45,46,146,27,52,15,33
+httpunit,com.meterware.servletunit,ServletUnitHttpResponse,164,562,19,45,51,146,29,52,16,33
 httpunit,com.meterware.servletunit,ForwardRequestWrapper,3,23,0,0,1,6,1,4,1,4
 httpunit,com.meterware.servletunit,WebApplication.SecurityCheckServlet,5,35,0,0,2,9,1,4,1,4
 httpunit,com.meterware.servletunit,JUnitServlet.ServletTestRunner,3,59,0,2,3,20,3,8,3,7

@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment">     * Verifies that submitting a simple form works.</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      @Test
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">void</strong> testSubmitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">void</strong> submitFromForm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"name"</span>).setValue(<span class="jxr_string">"master"</span>);
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          addInput(<span class="jxr_string">"checkbox"</span>, <span class="jxr_string">"second"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          _form.submit();
@@ -78,7 +78,7 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment">     * Verifies that submitting a simple form from a button selects that button only.</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      @Test
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> testSubmitFromButton() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> submitFromButton() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"name"</span>, <span class="jxr_string">"master"</span>);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          addInput(<span class="jxr_string">"checkbox"</span>, <span class="jxr_string">"second"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          addInput(<span class="jxr_string">"submit"</span>, <span class="jxr_string">"save"</span>, <span class="jxr_string">"none"</span>);
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     * Verifies that characters in parameter names will be appropriately encoded.</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      @Test
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">void</strong> testEmbeddedEquals() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">void</strong> embeddedEquals() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"age=x"</span>, <span class="jxr_string">"12"</span>);
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          _form.submit();
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          assertEquals(<span class="jxr_string">"submitRequest( GET, http://localhost/tryMe?age%3Dx=12, null, null )"</span>,
@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">     * Verifies that an empty "select" element does not transmit any parameter values.</em>
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      @Test
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> testEmptyChoiceSubmit() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      <strong class="jxr_keyword">void</strong> emptyChoiceSubmit() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"age"</span>, <span class="jxr_string">"12"</span>);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         addSelect(<span class="jxr_string">"empty"</span>);
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         _form.submit();
@@ -115,7 +115,7 @@
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">     * Verifies that a select will send a value taken from the "value" attribute.</em>
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     @Test
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">void</strong> testSubmitUsingSelectOptionAttributes() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">void</strong> submitUsingSelectOptionAttributes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"age"</span>, <span class="jxr_string">"12"</span>);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         HTMLSelectElement select = addSelect(<span class="jxr_string">"color"</span>);
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         addOption(select, <span class="jxr_string">"red"</span>, <strong class="jxr_keyword">null</strong>);
@@ -130,7 +130,7 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">     * Verifies that a select will send a value taken from the text nodes following the option tags.</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     @Test
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>     <strong class="jxr_keyword">void</strong> testSubmitUsingSelectOptionLabels() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>     <strong class="jxr_keyword">void</strong> submitUsingSelectOptionLabels() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         addInput(<span class="jxr_string">"text"</span>, <span class="jxr_string">"age"</span>, <span class="jxr_string">"12"</span>);
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         HTMLSelectElement select = addSelect(<span class="jxr_string">"color"</span>);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         select.setMultiple(<strong class="jxr_keyword">true</strong>);
@@ -147,7 +147,7 @@
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * Verifies that a radio button will send its value on submit.</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     @Test
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">void</strong> testSubmitRadioButtons() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">void</strong> submitRadioButtons() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         addInput(<span class="jxr_string">"radio"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"red"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         addInput(<span class="jxr_string">"radio"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"blue"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         addInput(<span class="jxr_string">"radio"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"green"</span>);
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     * Verifies that checkboxes will send their values on submit.</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     @Test
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">void</strong> testSubmitCheckboxes() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">void</strong> submitCheckboxes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         addInput(<span class="jxr_string">"checkbox"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"red"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         addInput(<span class="jxr_string">"checkbox"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"blue"</span>).setChecked(<strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         addInput(<span class="jxr_string">"checkbox"</span>, <span class="jxr_string">"color"</span>, <span class="jxr_string">"green"</span>);
@@ -220,6 +220,6 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2024 <a href="https://github.com/hazendaz/">hazendaz</a>. All rights reserved.</div>
+<div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>
 </body>
 </html>

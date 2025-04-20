@@ -28,6 +28,8 @@ import junit.framework.TestCase;
  **/
 public abstract class ServletTestCase extends TestCase {
 
+    private static InvocationContextFactory _invocationContextFactory;
+
     /**
      * construct a ServletTestCase with the given name
      *
@@ -40,7 +42,7 @@ public abstract class ServletTestCase extends TestCase {
     /**
      * Returns a client object which can access the servlet context in which this test is running.
      */
-    final protected ServletUnitClient newClient() {
+    protected final ServletUnitClient newClient() {
         if (_invocationContextFactory == null) {
             throw new RuntimeException(
                     "ServletTestCase.newClient called before setInvocationContextFactory was called");
@@ -61,5 +63,4 @@ public abstract class ServletTestCase extends TestCase {
         _invocationContextFactory = invocationContextFactory;
     }
 
-    private static InvocationContextFactory _invocationContextFactory;
 }

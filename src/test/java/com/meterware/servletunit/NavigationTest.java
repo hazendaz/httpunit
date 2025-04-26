@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 class NavigationTest {
 
     @Test
-    void testRedirect() throws Exception {
+    void redirect() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("target", TargetServlet.class.getName());
         sr.registerServlet("origin", OriginServlet.class.getName());
@@ -54,7 +54,7 @@ class NavigationTest {
     }
 
     @Test
-    void testForward() throws Exception {
+    void forward() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", FowarderServlet.class);
@@ -69,7 +69,7 @@ class NavigationTest {
     }
 
     @Test
-    void testInclude() throws Exception {
+    void include() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", IncluderServlet.class);
@@ -84,7 +84,7 @@ class NavigationTest {
     }
 
     @Test
-    void testForwardViaHttpServletRequest() throws Exception {
+    void forwardViaHttpServletRequest() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/target", TargetServlet.class);
         wxs.addServlet("/origin", FowarderServlet2.class);
@@ -99,7 +99,7 @@ class NavigationTest {
     }
 
     @Test
-    void testForwardViaRelativePath() throws Exception {
+    void forwardViaRelativePath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/some/target", TargetServlet.class);
         wxs.addServlet("/some/origin", FowarderServlet3.class);

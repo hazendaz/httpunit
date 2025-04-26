@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,7 +38,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class DocumentScriptingTest extends HttpUnitTest {
 
     @Test
-    void testDocumentTitle() throws Exception {
+    void documentTitle() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>"
                 + "<body onLoad='alert(\"Window title is \" + document.title)'></body>");
         WebConversation wc = new WebConversation();
@@ -47,7 +47,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDocumentFindForms() throws Exception {
+    void documentFindForms() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function getFound( object ) {"
                         + "  return (object == null) ? \"did not find \" : \"found \";" + "  }"
@@ -66,7 +66,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDocumentFindLinks() throws Exception {
+    void documentFindLinks() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function getFound( object ) {"
                         + "  return (object == null) ? \"did not find \" : \"found \";" + "  }"
@@ -86,7 +86,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testJavaScriptObjectIdentity() throws Exception {
+    void javaScriptObjectIdentity() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function compareLinks() { "
                 + "  if (document.reallink == document.links['reallink']) {" + "      alert( 'they are the same' );"
                 + "  } else {" + "      alert( 'they are different' );" + "  }" + "}" + "</script></head>"
@@ -98,7 +98,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testCaseSensitiveNames() throws Exception {
+    void caseSensitiveNames() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='item' action='run'></form>"
                 + "<a name='Item' href='sample.html'></a>"
                 + "<a href='#' name='first' onMouseOver='alert( document.item.action );'>1</a>"
@@ -112,7 +112,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkMouseOverEvent() throws Exception {
+    void linkMouseOverEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name='realform'><input name='color' value='blue'></form>"
                         + "<a href='#' onMouseOver=\"document.realform.color.value='green';return false;\">green</a>"
@@ -127,7 +127,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkClickEvent() throws Exception {
+    void linkClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>"
                 + "<form name='realform'><input name='color' value='blue'></form>"
                 + "<a href='nothing.html' onClick=\"JavaScript:document.realform.color.value='green';return false;\">green</a>"
@@ -147,7 +147,7 @@ class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testLinkMouseDownEvent() throws Exception {
+    void linkMouseDownEvent() throws Exception {
         defineResource("nothing.html", "<html><head></head><body</body></html>");
         defineResource("OnMouseDown.html", "<html><head></head>" + "<body>"
                 + "<form name='realform'><input name='color' value='blue'></form>"
@@ -169,7 +169,7 @@ class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testHashDestinationOnClickEvent() throws Exception {
+    void hashDestinationOnClickEvent() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<form name='realform'><input name='color' value='blue'></form>"
                         + "<a href='#' onClick=\"document.realform.color.value='green';\">green</a>"
@@ -190,7 +190,7 @@ class DocumentScriptingTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testHashDestinationOnMouseDownEvent() throws Exception {
+    void hashDestinationOnMouseDownEvent() throws Exception {
         defineResource("OnMouseDown.html",
                 "<html><head></head>" + "<body>" + "<form name='realform'><input name='color' value='blue'></form>"
                         + "<a href='#' onMouseDown=\"document.realform.color.value='green';\">green</a>"
@@ -206,7 +206,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkProperties() throws Exception {
+    void linkProperties() throws Exception {
         defineResource("somewhere.html?with=values", "you made it!");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<a name=target href='nowhere.html'>"
                 + "<a name=control href='#' onClick=\"document.target.href='somewhere.html?with=values';\">green</a>"
@@ -223,7 +223,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testLinkIndexes() throws Exception {
+    void linkIndexes() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function alertLinks() { "
                 + "  for (var i=0; i < document.links.length; i++) {" + "    alert( document.links[i].href );" + "  }"
                 + "}" + "</script></head>" + "<body onLoad='alertLinks()'>" + "<a href='demo.html'>green</a>"
@@ -240,7 +240,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testDocumentFindImages() throws Exception {
+    void documentFindImages() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function getFound( object ) {\n"
                         + "  return (object == null) ? \"did not find \" : \"found \";\n" + "  }\n"
@@ -263,7 +263,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageSwap() throws Exception {
+    void imageSwap() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<img name='theImage' src='initial.gif'>"
                 + "<a href='#' onMouseOver=\"document.theImage.src='new.jpg';\">green</a>" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -276,7 +276,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testWriteToNewDocument() throws Exception {
+    void writeToNewDocument() throws Exception {
         defineWebPage("OnCommand",
                 "<a href='#' onclick=\"window.open( '', 'empty' );w = window.open( '', 'sample' );w.document.open( 'text/plain' ); w.document.write( 'You made it!' );w.document.close()\" >");
         WebConversation wc = new WebConversation();
@@ -292,7 +292,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testSetDocumentReparse() throws Exception {
+    void setDocumentReparse() throws Exception {
         defineResource("index.html",
                 "<html><head>" + "<script language='JavaScript ' >document.title = 'New title';</script>"
                         + "</head><body><form name=\"aForm\"></form>"
@@ -306,7 +306,7 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     @Test
-    void testTagProperty() throws Exception {
+    void tagProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showFormsCount(oDOM){   "
                 + "   var forms = oDOM.getElementsByTagName('form');" + "   for( i = 0; i < forms.length; i++) {"
                 + "     alert( 'form with number ' + i + ' has ' + forms[i].getElementsByTagName('input').length + ' inputs' );"

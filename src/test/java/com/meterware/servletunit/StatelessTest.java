@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -56,7 +56,7 @@ import org.junit.jupiter.api.Test;
 class StatelessTest {
 
     @Test
-    void testNotFound() throws Exception {
+    void notFound() throws Exception {
         ServletRunner sr = new ServletRunner();
 
         WebRequest request = new GetMethodWebRequest("http://localhost/nothing");
@@ -69,7 +69,7 @@ class StatelessTest {
     }
 
     @Test
-    void testServletCaching() throws Exception {
+    void servletCaching() throws Exception {
         AccessCountServlet._numInstances = 0;
         final String resourceName = "something/interesting";
 
@@ -87,7 +87,7 @@ class StatelessTest {
     }
 
     @Test
-    void testServletAccessByClassName() throws Exception {
+    void servletAccessByClassName() throws Exception {
         ServletRunner sr = new ServletRunner();
 
         WebRequest request = new GetMethodWebRequest("http://localhost/servlet/" + SimpleGetServlet.class.getName());
@@ -98,7 +98,7 @@ class StatelessTest {
     }
 
     @Test
-    void testSimpleGet() throws Exception {
+    void simpleGet() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -112,7 +112,7 @@ class StatelessTest {
     }
 
     @Test
-    void testGetWithSetParams() throws Exception {
+    void getWithSetParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -131,7 +131,7 @@ class StatelessTest {
     }
 
     @Test
-    void testGetWithInlineParams() throws Exception {
+    void getWithInlineParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -145,7 +145,7 @@ class StatelessTest {
     }
 
     @Test
-    void testHeaderRetrieval() throws Exception {
+    void headerRetrieval() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("/Parameters", ParameterServlet.class.getName());
 
@@ -160,7 +160,7 @@ class StatelessTest {
     }
 
     @Test
-    void testParameterHandling() throws Exception {
+    void parameterHandling() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("/testForm", FormSubmissionServlet.class.getName());
 
@@ -174,7 +174,7 @@ class StatelessTest {
     }
 
     @Test
-    void testSimplePost() throws Exception {
+    void simplePost() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -189,7 +189,7 @@ class StatelessTest {
     }
 
     @Test
-    void testStreamBasedPost() throws Exception {
+    void streamBasedPost() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("ReportData", BodyEcho.class.getName());
 
@@ -204,7 +204,7 @@ class StatelessTest {
     }
 
     @Test
-    void testRequestInputStream() throws Exception {
+    void requestInputStream() throws Exception {
         ServletRunner sr = new ServletRunner();
         WebRequest request = new PostMethodWebRequest("http://localhost/servlet/" + ParameterServlet.class.getName());
         request.setParameter("color", "green");
@@ -218,7 +218,7 @@ class StatelessTest {
     }
 
     @Test
-    void testFrameAccess() throws Exception {
+    void frameAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("Frames", FrameTopServlet.class.getName());
         sr.registerServlet("RedFrame", SimpleGetServlet.class.getName());

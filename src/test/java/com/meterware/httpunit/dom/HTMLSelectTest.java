@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -53,7 +53,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testSingleSelect() throws Exception {
+    void singleSelect() throws Exception {
         assertSame(_form, _select.getForm(), "Form for select");
         assertEquals(HTMLSelectElementImpl.TYPE_SELECT_ONE, _select.getType(), "type with no size");
         assertEquals(1, _select.getSelectedIndex(), "select index");
@@ -79,7 +79,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testMultiSelect() throws Exception {
+    void multiSelect() throws Exception {
         _select.setMultiple(true);
         _select.setSize(3);
 
@@ -101,7 +101,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testSingleLineSelect() throws Exception {
+    void singleLineSelect() throws Exception {
         _select.setMultiple(true);
         _select.setSize(1);
         assertEquals(HTMLSelectElementImpl.TYPE_SELECT_ONE, _select.getType(), "type with size 1");
@@ -118,7 +118,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testElements() throws Exception {
+    void elements() throws Exception {
         assertEquals(_options.length, _select.getOptions().getLength(), "number of options");
         assertSame(_options[0], _select.getOptions().item(0), "first option");
         assertProperties("default selected", "defaultSelected", _options,
@@ -133,7 +133,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testSingleWithNothingSelected() throws Exception {
+    void singleWithNothingSelected() throws Exception {
         ((HTMLOptionElementImpl) _options[1]).setSelected(false);
         assertEquals(0, _select.getSelectedIndex(), "select index");
         assertEquals("red", _select.getValue(), "initial value");
@@ -143,7 +143,7 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testMultipleWithNothingSelected() throws Exception {
+    void multipleWithNothingSelected() throws Exception {
         _select.setMultiple(true);
         _select.setSize(3);
         ((HTMLOptionElementImpl) _options[1]).setSelected(false);

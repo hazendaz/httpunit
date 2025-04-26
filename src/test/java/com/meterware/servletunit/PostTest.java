@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,6 +20,7 @@
 package com.meterware.servletunit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -85,7 +86,7 @@ public class PostTest {
      */
 
     @Test
-    void testMultiplePosts() throws Exception {
+    void multiplePosts() throws Exception {
         TestServlet.location = "http://localhost/";
 
         try {
@@ -102,7 +103,7 @@ public class PostTest {
     }
 
     @Test
-    void testMultiPartPost() throws Exception {
+    void multiPartPost() throws Exception {
         TestServlet.location = "http://localhost/";
 
         ServletRunner sr = new ServletRunner();
@@ -114,8 +115,8 @@ public class PostTest {
         WebForm form = response.getFormWithID("multipart-bug");
         response = form.submit();
 
-        assertEquals(true, response.getText().contains("name=\"empty\""));
-        assertEquals(true, response.getText().contains("name=\"empty_textarea\""));
+        assertTrue(response.getText().contains("name=\"empty\""));
+        assertTrue(response.getText().contains("name=\"empty_textarea\""));
         // check(response);
     }
 

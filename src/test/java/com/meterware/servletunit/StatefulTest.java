@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Test;
 class StatefulTest {
 
     @Test
-    void testNoInitialState() throws Exception {
+    void noInitialState() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -64,7 +64,7 @@ class StatefulTest {
     }
 
     @Test
-    void testStateCookies() throws Exception {
+    void stateCookies() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -78,7 +78,7 @@ class StatefulTest {
     }
 
     @Test
-    void testStatePreservation() throws Exception {
+    void statePreservation() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -103,7 +103,7 @@ class StatefulTest {
     }
 
     @Test
-    void testSessionPreloading() throws Exception {
+    void sessionPreloading() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -122,7 +122,7 @@ class StatefulTest {
     }
 
     @Test
-    void testSessionAccess() throws Exception {
+    void sessionAccess() throws Exception {
         final String resourceName1 = "something/interesting/start";
         final String resourceName2 = "something/continue";
 
@@ -139,7 +139,7 @@ class StatefulTest {
     }
 
     @Test
-    void testInvocationContext() throws Exception {
+    void invocationContext() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -162,13 +162,12 @@ class StatefulTest {
         assertEquals("color", e.nextElement(), "First attribute name");
         assertFalse(e.hasMoreElements(), "List did not end after one name");
 
-        String[] names = ic.getRequest().getSession().getValueNames();
-        assertEquals(1, names.length, "number of value names");
-        assertEquals("color", names[0], "first name");
+        Enumeration<String> names = ic.getRequest().getSession().getAttributeNames();
+        assertEquals("color", names.nextElement(), "first name");
     }
 
     @Test
-    void testInvocationCompletion() throws Exception {
+    void invocationCompletion() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -189,7 +188,7 @@ class StatefulTest {
     }
 
     @Test
-    void testInvocationContextUpdate() throws Exception {
+    void invocationContextUpdate() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.javascript;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,7 +56,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class ScriptingTest extends AbstractJavaScriptTest {
 
     @Test
-    void testJavaScriptURLWithValue() throws Exception {
+    void javaScriptURLWithValue() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>" + "<a href='JavaScript:\"You made it!\"'>go</a>" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -66,7 +67,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testJavaScriptURLWithNoValue() throws Exception {
+    void javaScriptURLWithNoValue() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>"
                 + "<a href=\"javascript:alert( 'Hi there!' )\">go</a>" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -79,7 +80,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testInitialJavaScriptURL() throws Exception {
+    void initialJavaScriptURL() throws Exception {
         WebConversation wc = new WebConversation();
         GetMethodWebRequest request = new GetMethodWebRequest("javascript:alert( 'Hi there!' )");
         assertEquals("javascript:alert( 'Hi there!' )", request.getURL().toExternalForm(), "Javascript URL");
@@ -88,7 +89,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testJavaScriptURLWithVariables() throws Exception {
+    void javaScriptURLWithVariables() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>"
                         + "<a href='javascript:\"Our winner is... \" + document.the_form.winner.value'>go</a>"
@@ -101,7 +102,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testJavaScriptURLWithQuestionMark() throws Exception {
+    void javaScriptURLWithQuestionMark() throws Exception {
         defineResource("/appname/HandleAction/report?type=C", "You made it!");
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body>"
@@ -120,7 +121,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testUndefined() throws Exception {
+    void undefined() throws Exception {
         WebConversation wc = doTestJavaScript(
                 "if (typeof(xyzDefinitelyNotDefined) == 'undefined') {\n" + "alert ('blabla');\n" + "return;\n" + "}");
         assertEquals("blabla", wc.popNextAlert(), "Alert message");
@@ -132,8 +133,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testAvoidEndlessLoop() throws Exception {
-        doTestJavaScript("document.location='#node_selected';");
+    void avoidEndlessLoop() throws Exception {
+        assertDoesNotThrow(() -> {
+            doTestJavaScript("document.location='#node_selected';");
+        });
     }
 
     /**
@@ -142,7 +145,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testJavaScriptURLWithIncludedFunction() throws Exception {
+    void javaScriptURLWithIncludedFunction() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html", "<html><head><script language='JavaScript' src='saycheese.js'>"
                 + "</script></head>" + "<body>" + "<a href=\"javascript:sayCheese()\">go</a>" + "</body></html>");
@@ -156,7 +159,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * test javascript call to built-in functions e.g. toLowerCase
      */
     @Test
-    void testJavaScriptWitBuiltInFunctions() throws Exception {
+    void javaScriptWitBuiltInFunctions() throws Exception {
         defineResource("OnCommand.html",
                 "<html>" + "<body>" + "<a href=\"javascript:alert(toLowerCase('Cheese!'))\">go</a>" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -171,7 +174,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testJavaScriptURLWithIncludedFunction2() throws Exception {
+    void javaScriptURLWithIncludedFunction2() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("callcheese.js", "function callCheese() { sayCheese(); }");
         defineResource("OnCommand.html",
@@ -190,7 +193,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testBadJavascriptFile() {
+    void badJavascriptFile() {
         // define xyz.js to create a 404 error
         // we don't do this - it should be a default behaviour of the Pseudo Server!
         // defineResource( "xyz.js", "File does not exist: xyz.js", 404);
@@ -243,7 +246,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testJavaScriptURLInNewWindow() throws Exception {
+    void javaScriptURLInNewWindow() throws Exception {
         defineWebPage("OnCommand", "<input type='button' id='nowindow' onClick='alert(\"hi\")'></input>\n"
                 + "<input type='button' id='withwindow' onClick=\"window.open('javascript:alert(\\'hi\\')','_self')\"></input>");
         WebConversation wc = new WebConversation();
@@ -257,7 +260,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testSingleCommandOnLoad() throws Exception {
+    void singleCommandOnLoad() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body onLoad='alert(\"Ouch!\")'></body>");
         WebConversation wc = new WebConversation();
         wc.getResponse(getHostPath() + "/OnCommand.html");
@@ -272,7 +275,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testWindowOnload() throws Exception {
+    void windowOnload() throws Exception {
         String html = "<html>\n" + "<body>\n" + "<script language='JavaScript'><!--\n" + "function foo(text) {\n"
                 + "alert(text);\n" + "}\n" + "window.onload = foo('windowload');\n" + "// --></script>\n" + "<form>\n"
                 + "<input type='Submit' name='OK' value='OK'/>\n" + "<a href=\"JavaScript:foo('click')\">go</a>"
@@ -292,7 +295,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testOnLoadErrorBypass() throws Exception {
+    void onLoadErrorBypass() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>" + "<body onLoad='noSuchFunction()'>" + "<img src=sample.jpg>" + "</body>");
         WebConversation wc = new WebConversation();
@@ -308,7 +311,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * test for bug[ 1055450 ] Error loading included script aborts entire request by Renaud Waldura
      */
     @Test
-    void testIncludeErrorBypass() throws Exception {
+    void includeErrorBypass() throws Exception {
         defineResource("OnBypassCommand.html", "<html><head><script language='JavaScript' src='missingScript.js'>"
                 + "</script></head>" + "<body>" + "<a href=\"javascript:sayCheese()\">go</a>" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -341,7 +344,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testConfirmationDialog() throws Exception {
+    void confirmationDialog() throws Exception {
         defineWebPage("OnCommand", "<a href='NextPage' id='go' onClick='return confirm( \"go on?\" );'>");
         defineResource("NextPage", "Got the next page!");
 
@@ -362,7 +365,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testPromptDialog() throws Exception {
+    void promptDialog() throws Exception {
         defineWebPage("OnCommand",
                 "<a href='NextPage' id='go' onClick='return \"yes\" == prompt( \"go on?\", \"no\" );'>");
         defineResource("NextPage", "Got the next page!");
@@ -385,7 +388,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testFunctionCallOnLoad() throws Exception {
+    void functionCallOnLoad() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "<!-- hide this\n"
                         + "function sayCheese() { alert( \"Cheese!\" ); }" + "// end hiding -->\n" + "</script></head>"
@@ -397,16 +400,18 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testComment() throws Exception {
-        defineResource("OnCommand.html",
-                "<html><head><script language='JavaScript'><!--" + "//--></script><script language='JavaScript'>" + "\n"
-                        + "var n=0;" + "\n" + "parseInt(n,32);" + "</script></head></html>");
-        WebConversation wc = new WebConversation();
-        wc.getResponse(getHostPath() + "/OnCommand.html");
+    void comment() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("OnCommand.html",
+                    "<html><head><script language='JavaScript'><!--" + "//--></script><script language='JavaScript'>"
+                            + "\n" + "var n=0;" + "\n" + "parseInt(n,32);" + "</script></head></html>");
+            WebConversation wc = new WebConversation();
+            wc.getResponse(getHostPath() + "/OnCommand.html");
+        });
     }
 
     @Test
-    void testIncludedFunction() throws Exception {
+    void includedFunction() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html", "<html><head><script language='JavaScript' src='saycheese.js'>"
                 + "</script></head>" + "<body onLoad='sayCheese()'></body>");
@@ -416,7 +421,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testIncludedFunctionWithBaseTag() throws Exception {
+    void includedFunctionWithBaseTag() throws Exception {
         defineResource("scripts/saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
         defineResource("OnCommand.html",
                 "<html><head><base href='" + getHostPath()
@@ -428,7 +433,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testWindowOpen() throws Exception {
+    void windowOpen() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>"
                 + "<body><script language='JavaScript'>var otherWindow;</script>"
@@ -464,7 +469,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testWindowOpenWithEmptyName() throws Exception {
+    void windowOpenWithEmptyName() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>"
                 + "<body><script language='JavaScript'>var otherWindow;</script>"
@@ -500,7 +505,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testWindowOpenWithSelf() throws Exception {
+    void windowOpenWithSelf() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>"
                 + "<body><script language='JavaScript'>var otherWindow;</script>"
@@ -529,7 +534,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testJavascriptURLWithFragment() throws Exception {
+    void javascriptURLWithFragment() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
         defineResource("OnCommand.html",
                 "<html><head><title>Amazing!</title></head>"
@@ -557,7 +562,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testWindowOpenNoContents() throws Exception {
+    void windowOpenNoContents() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" + "<body>"
                 + "<a href='#' onClick=\"window.open( null, 'sample' );\">go</a>" + "</body></html>");
         final ArrayList windowsOpened = new ArrayList();
@@ -583,7 +588,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testWindowReopen() throws Exception {
+    void windowReopen() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("Revise.html", "You changed it!");
         defineResource("OnCommand.html",
@@ -614,7 +619,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testOpenedWindowProperties() throws Exception {
+    void openedWindowProperties() throws Exception {
         defineResource("Target.html",
                 "<html><head><script language='JavaScript'>" + "function show_properties() {"
                         + "   alert( 'name=' + window.name );" + "   alert( 'opener name=' + window.opener.name );"
@@ -634,7 +639,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testFrameProperties() throws Exception {
+    void frameProperties() throws Exception {
         HttpUnitOptions.setExceptionsThrownOnScriptError(false);
         defineWebPage("Linker", "This is a trivial page with <a href=Target.html>one link</a>");
         defineResource("Target.html",
@@ -670,7 +675,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testLocationProperty() throws Exception {
+    void locationProperty() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("location.js",
                 "function show() {" + "alert('Window location is ' + window.location);"
@@ -710,7 +715,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testLocationPropertyOnLoad() throws Exception {
+    void locationPropertyOnLoad() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title>" + "</head>"
                 + "<body onLoad=\"document.location='" + getHostPath() + "/Target.html';\">" + "</body>");
@@ -723,7 +728,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testLocationReadableSubproperties() throws Exception {
+    void locationReadableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("location.js", "function show() {" + "alert('host is ' + window.location.host);"
                 + "alert('hostname is ' + document.location.hostname);" + "alert('port is ' + window.location.port);"
@@ -744,7 +749,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testLocationWriteableSubproperties() throws Exception {
+    void locationWriteableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
         defineResource("OnCommand.html?where=here", "You found it!");
         defineResource("OnCommand.html",
@@ -765,7 +770,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testScriptDisabled() throws Exception {
+    void scriptDisabled() throws Exception {
         HttpUnitOptions.setScriptingEnabled(false);
         defineResource("nothing.html", "Should get here");
         defineResource("OnCommand.html", "<html><head></head>" + "<body>"
@@ -783,7 +788,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testNavigatorObject() throws Exception {
+    void navigatorObject() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function viewProperties() { \n"
                 + "  alert( 'appName=' + navigator.appName );\n"
                 + "  alert( 'appCodeName=' + navigator.appCodeName )\n;"
@@ -808,7 +813,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testScreenObject() throws Exception {
+    void screenObject() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function viewProperties() { \n"
                         + "  alert( 'dimensions=' + screen.availWidth + 'x' + screen.availHeight );\n" + "}"
@@ -822,7 +827,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testStyleProperty() throws Exception {
+    void styleProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showDisplay( id ) {"
                 + "  var element = document.getElementById( id );\n"
                 + "  alert( 'element with id ' + id + ' has style.display ' + element.style.display );\n" + "}\n"
@@ -851,7 +856,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @author Mattias Jiderhamn (mattias78)
      */
     @Test
-    void testSetAttribute() throws Exception {
+    void setAttribute() throws Exception {
         /*
          * A minimal snippet: <input type="text" id="foo" name="foo" myattr="bar" /> ... var field =
          * document.getElementById("foo"); var attributeValue = field.getAttribute("myattr");
@@ -888,7 +893,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testCallOnChange() throws Exception {
+    void callOnChange() throws Exception {
         defineResource("start.html", "<html><head>\n" + "<script language='JavaScript'>\n"
                 + "function onChangeHandler() {\n" + "alert('onChange has been called');\n" + "}\n"
                 + "function callonChange() {\n" + "alert('calling onChange');\n" + "// fire onChangeHandler directly\n"
@@ -912,22 +917,26 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testWindowEvent() throws Exception {
-        defineWebPage("OnCommand", "<html><head>\n" + "<script language='JavaScript'>\n" + "function buttonclick() {\n"
-                + "alert('hi');\n" + "var event=window.event;\n" + "}\n" + "</script>\n"
-                + "</head><body onload='buttonclick'>\n"
-                + "<form id='someform'><input type='button' id='button1' onClick='buttonclick'></input></form>\n"
-                + "</body></html");
-        WebConversation wc = new WebConversation();
-        WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
-        Button button1 = (Button) response.getElementWithID("button1");
-        button1.click();
+    void windowEvent() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("OnCommand", "<html><head>\n" + "<script language='JavaScript'>\n"
+                    + "function buttonclick() {\n" + "alert('hi');\n" + "var event=window.event;\n" + "}\n"
+                    + "</script>\n" + "</head><body onload='buttonclick'>\n"
+                    + "<form id='someform'><input type='button' id='button1' onClick='buttonclick'></input></form>\n"
+                    + "</body></html");
+            WebConversation wc = new WebConversation();
+            WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
+            Button button1 = (Button) response.getElementWithID("button1");
+            button1.click();
+            // TODO make this work
+            // assertEquals( "Alert message 1", "hi", wc.popNextAlert() );
+        });
         // TODO make this work
         // assertEquals( "Alert message 1", "hi", wc.popNextAlert() );
     }
 
     @Test
-    void testTagNameNodeNameProperties() throws Exception {
+    void tagNameNodeNameProperties() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>\n" + "function showTagName(id) {\n"
                 + "  var element = document.getElementById( id );\n"
                 + "  alert( 'element id=' + id + ', tagName='  + element.tagName + ', nodeName='  + element.nodeName );\n"
@@ -943,7 +952,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testReadNoCookie() throws Exception {
+    void readNoCookie() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function viewCookies() { \n"
                         + "  alert( 'cookies: ' + document.cookie );\n" + "}" + "</script></head>\n"
@@ -955,7 +964,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testSimpleSetCookie() throws Exception {
+    void simpleSetCookie() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head></head>\n" + "<body onLoad='document.cookie=\"color=red;path=/\"'>\n" + "</body></html>");
         WebConversation wc = new WebConversation();
@@ -964,14 +973,16 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testSetCookieToNull() throws Exception {
-        defineResource("OnCommand.html", "<html><script>" + "document.cookie = null;" + "</script></html>");
-        WebConversation wc = new WebConversation();
-        wc.getResponse(getHostPath() + "/OnCommand.html");
+    void setCookieToNull() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("OnCommand.html", "<html><script>" + "document.cookie = null;" + "</script></html>");
+            WebConversation wc = new WebConversation();
+            wc.getResponse(getHostPath() + "/OnCommand.html");
+        });
     }
 
     @Test
-    void testReadCookies() throws Exception {
+    void readCookies() throws Exception {
         defineResource("OnCommand.html",
                 "<html><head><script language='JavaScript'>" + "function viewCookies() { \n"
                         + "  alert( 'cookies: ' + document.cookie );\n" + "}" + "</script></head>\n"
@@ -985,7 +996,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     @Test
-    void testButtonWithoutForm() throws Exception {
+    void buttonWithoutForm() throws Exception {
         defineWebPage("OnCommand", "<button id='mybutton' onclick='alert( \"I heard you!\" )'>"
                 + "<input id='yourbutton' type='button'  onclick='alert( \"Loud and Clear.\" )'>");
         WebConversation wc = new WebConversation();
@@ -1005,7 +1016,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     // TODO JWL 6/26/2021 Nekohtml patch is against 'body' not the 'header' so issue was never fixed.
     @Disabled
     @Test
-    void testJavascriptDetectionTrick() throws Exception {
+    void javascriptDetectionTrick() throws Exception {
         defineResource("NoScript.html", "No javascript here");
         defineResource("HasScript.html", "Javascript is enabled!");
         defineResource("Start.html",
@@ -1025,7 +1036,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * https://sourceforge.net/forum/forum.php?thread_id=1808696&forum_id=20294 by kauffman81
      */
     @Test
-    void testJavaScriptConfirmPopUp() throws Exception {
+    void javaScriptConfirmPopUp() throws Exception {
         String target = "<html><body>After click we want to see this!</body></html>";
         defineResource("Target.html", target);
         defineResource("Popup.html",
@@ -1065,7 +1076,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
-    void testJavaScriptFromSource() throws Exception {
+    void javaScriptFromSource() throws Exception {
         defineResource("someScript.js", "function someFunction() {\n" + "	alert('somefunction called')" + "}\n");
         defineResource("Script.html",
                 "<html><head>\n" + "<script language='JavaScript' src='someScript.js' />\n"
@@ -1089,20 +1100,22 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testFillSelect() throws Exception {
-        defineResource("testSelect.html",
-                "<html><head><script type='text/javascript'>\n" + "<!--\n" + "function fillSelect() {\n"
-                        + "   document.the_form.the_select.options.length = 2;\n"
-                        + "   document.the_form.the_select.options[1].text = 'option2';\n "
-                        + "   document.the_form.the_select.options[1].value = 'option2Value';\n " + "}\n" + "-->\n"
-                        + "</script></head>" + "<body>" + "<form name='the_form'>" + "   <table>" + "    <tr>"
-                        + "      <td>Selection :</td>" + "       <td>" + "          <select name='the_select'>"
-                        + "              <option value='option1Value'>option1</option>" + "          </select>"
-                        + "       </td>" + "     </tr>" + "   </table>" + "</form>"
-                        + "<script type='text/javascript'>fillSelect();</script>" + "</body></html>");
-        WebConversation wc = new WebConversation();
-        WebResponse response = wc.getResponse(getHostPath() + "/testSelect.html");
-        response.getFormWithName("the_form");
+    void fillSelect() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("testSelect.html",
+                    "<html><head><script type='text/javascript'>\n" + "<!--\n" + "function fillSelect() {\n"
+                            + "   document.the_form.the_select.options.length = 2;\n"
+                            + "   document.the_form.the_select.options[1].text = 'option2';\n "
+                            + "   document.the_form.the_select.options[1].value = 'option2Value';\n " + "}\n" + "-->\n"
+                            + "</script></head>" + "<body>" + "<form name='the_form'>" + "   <table>" + "    <tr>"
+                            + "      <td>Selection :</td>" + "       <td>" + "          <select name='the_select'>"
+                            + "              <option value='option1Value'>option1</option>" + "          </select>"
+                            + "       </td>" + "     </tr>" + "   </table>" + "</form>"
+                            + "<script type='text/javascript'>fillSelect();</script>" + "</body></html>");
+            WebConversation wc = new WebConversation();
+            WebResponse response = wc.getResponse(getHostPath() + "/testSelect.html");
+            response.getFormWithName("the_form");
+        });
     }
 
     /**
@@ -1113,19 +1126,22 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * @throws Exception
      */
     @Test
-    void testModifySelectLength() throws Exception {
-        defineResource("testModifySelectLength.html",
-                "<html><head><script type='text/javascript'>\n" + "<!--\n" + "function modifySelectLength() {\n"
-                        + "   document.the_form.the_select.length = 2;\n"
-                        + "   document.the_form.the_select.options[1].text = 'option2';\n "
-                        + "   document.the_form.the_select.options[1].value = 'option2Value';\n " + "}\n" + "-->\n"
-                        + "</script></head>" + "<body>" + "<form name='the_form'>" + "   <table>" + "    <tr>"
-                        + "      <td>Selection :</td>" + "       <td>" + "          <select name='the_select'>"
-                        + "              <option value='option1Value'>option1</option>" + "          </select>"
-                        + "       </td>" + "     </tr>" + "   </table>" + "</form>"
-                        + "<script type='text/javascript'>modifySelectLength();</script>" + "</body></html>");
-        WebConversation wc = new WebConversation();
-        wc.getResponse(getHostPath() + "/testModifySelectLength.html");
+    void modifySelectLength() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("testModifySelectLength.html",
+                    "<html><head><script type='text/javascript'>\n" + "<!--\n" + "function modifySelectLength() {\n"
+                            + "   document.the_form.the_select.length = 2;\n"
+                            + "   document.the_form.the_select.options[1].text = 'option2';\n "
+                            + "   document.the_form.the_select.options[1].value = 'option2Value';\n " + "}\n" + "-->\n"
+                            + "</script></head>" + "<body>" + "<form name='the_form'>" + "   <table>" + "    <tr>"
+                            + "      <td>Selection :</td>" + "       <td>" + "          <select name='the_select'>"
+                            + "              <option value='option1Value'>option1</option>" + "          </select>"
+                            + "       </td>" + "     </tr>" + "   </table>" + "</form>"
+                            + "<script type='text/javascript'>modifySelectLength();</script>" + "</body></html>");
+            WebConversation wc = new WebConversation();
+            wc.getResponse(getHostPath() + "/testModifySelectLength.html");
+
+        });
 
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.dom;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -61,25 +62,27 @@ class HTMLTableTest extends AbstractHTMLElementTest {
      * Verify the construction of table nodes with their attributes.
      */
     @Test
-    void testTableNodeCreation() throws Exception {
-        doElementTest("td", HTMLTableCellElement.class,
-                new Object[][] { { "abbr", "lots" }, { "align", "center" }, { "axis", "age" }, { "bgColor", "red" },
-                        { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ },
-                        { "colspan", Integer.valueOf(3), Integer.valueOf(1) }, { "headers", "time,age" },
-                        { "height", "20" }, { "nowrap", Boolean.TRUE, Boolean.FALSE },
-                        { "rowspan", Integer.valueOf(15), Integer.valueOf(1) }, { "scope", "row" },
-                        { "valign", "top", "middle" }, { "width", "10" } });
-        doElementTest("th", HTMLTableCellElement.class, new Object[][] { { "abbr", "lots" } });
-        doElementTest("tr", HTMLTableRowElement.class, new Object[][] { { "align", "center" }, { "bgColor", "red" },
-                { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ }, { "valign", "top", "middle" } });
-        doElementTest("table", HTMLTableElement.class,
-                new Object[][] { { "align", "right", "center" }, { "bgColor", "red" }, { "border", "2" },
-                        { "cellpadding", "20" }, { "cellspacing", "20" }, { "frame", "above", "void" },
-                        { "rules", "groups", "none" }, { "summary", "blah blah" }, { "width", "5" } });
+    void tableNodeCreation() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("td", HTMLTableCellElement.class,
+                    new Object[][] { { "abbr", "lots" }, { "align", "center" }, { "axis", "age" }, { "bgColor", "red" },
+                            { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ },
+                            { "colspan", Integer.valueOf(3), Integer.valueOf(1) }, { "headers", "time,age" },
+                            { "height", "20" }, { "nowrap", Boolean.TRUE, Boolean.FALSE },
+                            { "rowspan", Integer.valueOf(15), Integer.valueOf(1) }, { "scope", "row" },
+                            { "valign", "top", "middle" }, { "width", "10" } });
+            doElementTest("th", HTMLTableCellElement.class, new Object[][] { { "abbr", "lots" } });
+            doElementTest("tr", HTMLTableRowElement.class, new Object[][] { { "align", "center" }, { "bgColor", "red" },
+                    { "char", ",", "." /* ch */ }, { "charoff", "20" /* charoff */ }, { "valign", "top", "middle" } });
+            doElementTest("table", HTMLTableElement.class,
+                    new Object[][] { { "align", "right", "center" }, { "bgColor", "red" }, { "border", "2" },
+                            { "cellpadding", "20" }, { "cellspacing", "20" }, { "frame", "above", "void" },
+                            { "rules", "groups", "none" }, { "summary", "blah blah" }, { "width", "5" } });
+        });
     }
 
     @Test
-    void testReadTable() throws Exception {
+    void readTable() throws Exception {
         HTMLCollection rows = _mainTable.getRows();
         assertEquals(3, rows.getLength(), "Number of rows in table");
         for (int i = 0; i < 3; i++) {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -61,7 +61,7 @@ class RequestContextTest extends HttpUnitTest {
      * Verify parsing of a query string.
      */
     @Test
-    void testQueryStringParsing() throws Exception {
+    void queryStringParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic?param=red&param1=old&param=blue"));
         assertMatchingSet("parameter names", new String[] { "param", "param1" }, rc.getParameterNames());
         assertMatchingSet("param values", new String[] { "red", "blue" }, rc.getParameterValues("param"));
@@ -72,7 +72,7 @@ class RequestContextTest extends HttpUnitTest {
      * Verify override of parent request parameters.
      */
     @Test
-    void testParameterOverride() throws Exception {
+    void parameterOverride() throws Exception {
         HttpServletRequest request = new DummyHttpServletRequest(
                 new URL("http://localhost/basic?param=red&param1=old&param=blue"));
         RequestContext context = new RequestContext(new URL("http://localhost/second?param=yellow&param2=fast"));
@@ -86,7 +86,7 @@ class RequestContextTest extends HttpUnitTest {
      * Verify parsing of message body parameters.
      */
     @Test
-    void testPostParameterParsing() throws Exception {
+    void postParameterParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
         rc.setMessageBody("param=red&param1=old&param=blue".getBytes(StandardCharsets.UTF_8));
         assertMatchingSet("parameter names", new String[] { "param", "param1" }, rc.getParameterNames());
@@ -98,7 +98,7 @@ class RequestContextTest extends HttpUnitTest {
      * Verify parsing of message body parameters using a specified character encoding.
      */
     @Test
-    void testEncodedParameterParsing() throws Exception {
+    void encodedParameterParsing() throws Exception {
         RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param=red&param1=%E0%E1%E2%E3&param=blue";

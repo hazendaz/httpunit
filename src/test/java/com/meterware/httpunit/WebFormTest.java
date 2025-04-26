@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -62,7 +62,7 @@ class WebFormTest extends HttpUnitTest {
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
-    void testGetFormWithID() throws Exception {
+    void getFormWithID() throws Exception {
         defineWebPage("OnCommand",
                 "<html>\n" + "  <head>\n" + "     <script type='JavaScript'>\n" + "         function function1() {\n"
                         + "  		    alert( document.forms[0].name );\n" + "         }\n" + "     </script>\n"
@@ -83,7 +83,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitFromForm() throws Exception {
+    void submitFromForm() throws Exception {
         defineWebPage("Form", "<form method=GET id=main action = 'tryMe'>" + "<Input type=text Name=name>"
                 + "<input type=\"checkbox\" name=second checked>Enabled" + "</form>");
         defineResource("/tryMe?name=master&second=on", "You made it!");
@@ -95,7 +95,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testAmbiguousSubmitFromForm() throws Exception {
+    void ambiguousSubmitFromForm() throws Exception {
         defineWebPage("Form",
                 "<form method=GET id=main action = 'tryMe'>" + "<Input type=text Name=name>"
                         + "<input type=\"checkbox\" name=second checked>Enabled"
@@ -114,7 +114,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testSubmitFromButton() throws Exception {
+    void submitFromButton() throws Exception {
         defineWebPage("Form", "<form method=GET id=main action = 'tryMe'>" + "<Input type=text Name=name>"
                 + "<input type=\"checkbox\" name=second checked>Enabled" + "<input type=submit name=save value=none>"
                 + "<input type=submit name=save value=all>" + "</form>");
@@ -133,7 +133,7 @@ class WebFormTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSubmitFromPositionalButton() throws Exception {
+    void submitFromPositionalButton() throws Exception {
         defineResource("ask?age=12&update=name&update.x=5&update.y=15", "You made it!", "text/plain");
         defineWebPage("Default", "<form id='form' method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
                 + "<Input type=image name=update value=name src=\"\">" + "</form>");
@@ -151,7 +151,7 @@ class WebFormTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSubmitFromUnnamedImageButton() throws Exception {
+    void submitFromUnnamedImageButton() throws Exception {
         boolean oldAllowUnnamedImageButton = SubmitButton.isAllowUnnamedImageButton();
         SubmitButton.setAllowUnnamedImageButton(true);
         defineResource("ask?age=12", "Unnamed Image Button ignored!", "text/plain");
@@ -173,7 +173,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testFindNoForm() throws Exception {
+    void findNoForm() throws Exception {
         defineWebPage("NoForms", "This has no forms but it does" + "have <a href=\"/other.html\">an active link</A>"
                 + " and <a name=here>an anchor</a>");
 
@@ -183,14 +183,14 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testFindOneForm() throws Exception {
+    void findOneForm() throws Exception {
         WebForm[] forms = _wc.getResponse(getHostPath() + "/OneForm.html").getForms();
         assertNotNull(forms);
         assertEquals(1, forms.length);
     }
 
     @Test
-    void testFindFormByName() throws Exception {
+    void findFormByName() throws Exception {
         defineWebPage("Default",
                 "<form name=oneForm method=POST action = \"/servlet/Login\">"
                         + "<Input name=\"secret\" type=\"hidden\" value=\"surprise\">"
@@ -204,7 +204,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testFindFormByID() throws Exception {
+    void findFormByID() throws Exception {
         defineWebPage("Default",
                 "<form id=oneForm method=POST action = \"/servlet/Login\">"
                         + "<Input name=\"secret\" type=\"hidden\" value=\"surprise\">"
@@ -218,7 +218,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormParameters() throws Exception {
+    void formParameters() throws Exception {
         defineWebPage("AForm",
                 "<h2>Login required</h2>" + "<form method=POST action = \"/servlet/Login\"><B>"
                         + "Enter the name 'master': <textarea Name=name>Something</textarea></B>"
@@ -251,7 +251,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testFormRequest() throws Exception {
+    void formRequest() throws Exception {
         WebForm form = _wc.getResponse(getHostPath() + "/OneForm.html").getForms()[0];
         WebRequest request = form.getRequest();
         request.setParameter("name", "master");
@@ -260,7 +260,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testHiddenParameters() throws Exception {
+    void hiddenParameters() throws Exception {
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">"
                         + "<Input name=\"secret\" type=\"hidden\" value=\"surprise\">"
@@ -291,7 +291,7 @@ class WebFormTest extends HttpUnitTest {
      * test Null textValues
      */
     @Test
-    void testNullTextValues() throws Exception {
+    void nullTextValues() throws Exception {
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">" + "<Input name=\"secret\" type=\"hidden\" value=>"
                         + "<br><Input name=typeless value=>"
@@ -315,7 +315,7 @@ class WebFormTest extends HttpUnitTest {
      *             on failure
      */
     @Test
-    void testTextArea() throws Exception {
+    void textArea() throws Exception {
         String fieldName = "comments";
         String comment = "My what a lovely dress that is";
         // Setting defaultValue to something other than an empty string makes
@@ -339,7 +339,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testTableForm() throws Exception {
+    void tableForm() throws Exception {
         defineWebPage("Default",
                 "<form method=POST action = \"/servlet/Login\">" + "<table summary=\"\"><tr><td>"
                         + "<B>Enter the name 'master': <Input type=TEXT Name=name></B>"
@@ -377,7 +377,7 @@ class WebFormTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testSelect() throws Exception {
+    void select() throws Exception {
         defineWebPage("Default", "<form method=POST action = \"/servlet/Login\">"
                 + "<Select id='select1' name=color><Option>blue<Option selected>red \n" + "<Option>green</select>"
                 + "<TextArea name=\"text\">Sample text</TextArea>" + "<Input type=submit></form>");
@@ -411,7 +411,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testSizedSelect() throws Exception {
+    void sizedSelect() throws Exception {
         defineWebPage("Default",
                 "<form method=POST action = '/servlet/Login'>"
                         + "<Select name=poems><Option>limerick<Option>haiku</select>"
@@ -425,7 +425,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testSingleSelectParameterOrdering() throws Exception {
+    void singleSelectParameterOrdering() throws Exception {
         StringBuilder sb = new StringBuilder("<form action='sendIt' id='theform'>");
         for (int i = 0; i < 4; i++) {
             sb.append(
@@ -450,7 +450,7 @@ class WebFormTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testMultiSelect() throws Exception {
+    void multiSelect() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Select multiple size=4 name=colors>"
                 + "<Option>blue<Option selected>red \n" + "<Option>green<Option value=\"pink\" selected>salmon</select>"
                 + "<Input type=submit></form>");
@@ -487,7 +487,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testUnspecifiedDefaults() throws Exception {
+    void unspecifiedDefaults() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Select name=colors><Option>blue<Option>red</Select>"
                         + "<Select name=fish><Option value=red>snapper<Option value=pink>salmon</select>"
@@ -508,7 +508,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testCheckboxControls() throws Exception {
+    void checkboxControls() throws Exception {
         defineWebPage("Default",
                 "<form method=GET action = \"/ask\">" + "<Input type=checkbox name=ready value=yes checked>"
                         + "<Input type=checkbox name=color value=red checked>"
@@ -537,7 +537,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testGetWithQueryString() throws Exception {
+    void getWithQueryString() throws Exception {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=GET action=\"SayHello?speed=fast\">"
                 + "<input type=text name=name><input type=submit></form></body></html>");
         defineResource("SayHello?speed=fast&name=me", new PseudoServlet() {
@@ -561,7 +561,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testPostWithQueryString() throws Exception {
+    void postWithQueryString() throws Exception {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=POST action=\"SayHello?speed=fast\">"
                 + "<input type=text name=name><input type=submit></form></body></html>");
         defineResource("SayHello?speed=fast", new PseudoServlet() {
@@ -585,7 +585,7 @@ class WebFormTest extends HttpUnitTest {
     }
 
     @Test
-    void testPostWithEmbeddedSpace() throws Exception {
+    void postWithEmbeddedSpace() throws Exception {
         String sessionID = "/ID=03.019c010101010001.00000001.a202000000000019. 0d09";
         defineResource("login", "redirectoring", HttpURLConnection.HTTP_MOVED_PERM);
         super.addResourceHeader("login", "Location: " + getHostPath() + sessionID + "/login");

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,13 +44,16 @@ import org.xml.sax.SAXException;
 public class XMLPageTest extends HttpUnitTest {
 
     @Test
-    void testXML() throws Exception {
-        defineResource("SimplePage.xml", "<?xml version=\"1.0\" ?><main><title>See me now</title></main>", "text/xml");
+    void xml() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineResource("SimplePage.xml", "<?xml version=\"1.0\" ?><main><title>See me now</title></main>",
+                    "text/xml");
 
-        WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.xml");
-        WebResponse simplePage = wc.getResponse(request);
-        simplePage.getDOM();
+            WebConversation wc = new WebConversation();
+            WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimplePage.xml");
+            WebResponse simplePage = wc.getResponse(request);
+            simplePage.getDOM();
+        });
     }
 
     /**
@@ -79,7 +83,7 @@ public class XMLPageTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    void testGetDocumentElement() throws IOException, SAXException {
+    void getDocumentElement() throws IOException, SAXException {
         String html = "<html><body></body></html>";
         defineResource("BR2946821.html", html, "text/html");
         WebConversation wc = new WebConversation();
@@ -92,7 +96,7 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     @Test
-    void testTraversal() throws Exception {
+    void traversal() throws Exception {
         defineResource("SimplePage.xml",
                 "<?xml version='1.0' ?><zero><main><first><second/></first><main><normal/><simple/></main><after/></main><end/></zero>",
                 "text/xml");

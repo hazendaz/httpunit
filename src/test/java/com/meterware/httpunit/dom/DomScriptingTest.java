@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,13 +41,13 @@ import org.w3c.dom.html.HTMLBodyElement;
 class DomScriptingTest extends AbstractHTMLElementTest {
 
     @Test
-    void testGetDocument() throws Exception {
+    void getDocument() throws Exception {
         Element element = createElement("body");
         assertEquals(_htmlDocument, ((Scriptable) element).get("document", null), "Returned document");
     }
 
     @Test
-    void testDocumentGetTitle() throws Exception {
+    void documentGetTitle() throws Exception {
         _htmlDocument.setTitle("something");
         assertEquals("something", _htmlDocument.get("title", null), "title");
 
@@ -56,7 +56,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testDocumentPutTitle() throws Exception {
+    void documentPutTitle() throws Exception {
         _htmlDocument.put("title", _htmlDocument, "right here");
         assertEquals("right here", _htmlDocument.getTitle(), "title after put");
 
@@ -69,7 +69,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     // discardDocumentWriteBuffer(?)
 
     @Test
-    void testElementPutTitle() throws Exception {
+    void elementPutTitle() throws Exception {
         HTMLBodyElement body = (HTMLBodyElement) createElement("body");
         Scriptable scriptableBody = (Scriptable) body;
 
@@ -81,7 +81,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testBodyAttributes() throws Exception {
+    void bodyAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
         body.setBgColor("red");
 
@@ -92,7 +92,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testNumericAttributes() throws Exception {
+    void numericAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
         HTMLAnchorElementImpl anchor = (HTMLAnchorElementImpl) createElement("a");
         body.appendChild(anchor);
@@ -111,14 +111,14 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testCreateElement() throws Exception {
+    void createElement() throws Exception {
         Object node = evaluateExpression(_htmlDocument, "createElement( 'a' )");
         assertNotNull(node, "No node returned");
         assertTrue(node instanceof HTMLAnchorElement, "Node is not an anchor element");
     }
 
     @Test
-    void testDocumentLinksCollection() throws Exception {
+    void documentLinksCollection() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
         proxy.setUrl(new URL("http://localhost"));
         _htmlDocument.getWindow().setProxy(proxy);
@@ -143,7 +143,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testConvertable() throws Exception {
+    void convertable() throws Exception {
         assertConvertable(String.class, String.class);
         assertConvertable(Integer.class, String.class);
         assertConvertable(String.class, Integer.class);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Test;
 class ConfigTest {
 
     @Test
-    void testConfigObject() throws Exception {
+    void configObject() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -65,7 +65,7 @@ class ConfigTest {
      * @throws Exception
      */
     @Test
-    void testInvalidConfig() throws Exception {
+    void invalidConfig() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -84,7 +84,7 @@ class ConfigTest {
     }
 
     @Test
-    void testContextAttributes() throws Exception {
+    void contextAttributes() throws Exception {
         final String servlet1Name = "something/interesting";
         final String servlet2Name = "something/else";
 
@@ -102,7 +102,7 @@ class ConfigTest {
     }
 
     @Test
-    void testFileMimeType() throws Exception {
+    void fileMimeType() throws Exception {
         final String servlet1Name = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -116,7 +116,7 @@ class ConfigTest {
     }
 
     @Test
-    void testServletContextAccess() throws Exception {
+    void servletContextAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
         sr.registerServlet("SimpleServlet", ConfigServlet.class.getName());
         ServletUnitClient client = sr.newClient();

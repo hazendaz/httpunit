@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -52,7 +52,7 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
      * defined.
      */
     @Test
-    void testNoOnloadEvent() throws Exception {
+    void noOnloadEvent() throws Exception {
         HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body");
         assertNull(body.getOnloadEvent(), "Found a default definition for 'onLoad' event");
     }
@@ -61,7 +61,7 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
      * Verifies that the 'onload' event for a body element is initially defined if a corresponding attribute is defined.
      */
     @Test
-    void testInlineOnloadEvent() throws Exception {
+    void inlineOnloadEvent() throws Exception {
         HTMLBodyElementImpl body = (HTMLBodyElementImpl) createElement("body",
                 new Object[][] { { "onload", "title='here'" } });
         assertNotNull(body.getOnloadEvent(), "Found no definition for 'onLoad' event");

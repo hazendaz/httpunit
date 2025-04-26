@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,6 +21,7 @@ package com.meterware.pseudoserver;
 
 import static java.lang.String.valueOf;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,14 +58,14 @@ class PseudoServerTest {
     }
 
     @Test
-    void testNotFoundStatus() throws Exception {
+    void notFoundStatus() throws Exception {
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
         SocketConnection.SocketResponse response = conn.getResponse("GET", "/nothing.htm");
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode(), "Response code");
     }
 
     @Test
-    void testStatusSpecification() throws Exception {
+    void statusSpecification() throws Exception {
         support.defineResource("error.htm", "Not Modified", 304);
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
@@ -76,7 +77,7 @@ class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    void testGetViaSocket() throws Exception {
+    void getViaSocket() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -100,7 +101,7 @@ class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    void testBadlyFormedMessageViaSocket() throws Exception {
+    void badlyFormedMessageViaSocket() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -122,7 +123,7 @@ class PseudoServerTest {
      * This tests simple access to the server without using any client classes.
      */
     @Test
-    void testProxyGetViaSocket() throws Exception {
+    void proxyGetViaSocket() throws Exception {
         support.defineResource("http://someserver.com/sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -152,7 +153,7 @@ class PseudoServerTest {
      * This verifies that the PseudoServer detects and echoes its protocol.
      */
     @Test
-    void testProtocolMatching() throws Exception {
+    void protocolMatching() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();
@@ -177,7 +178,7 @@ class PseudoServerTest {
      * This verifies that the PseudoServer can be restricted to a HTTP/1.0.
      */
     @Test
-    void testProtocolThrottling() throws Exception {
+    void protocolThrottling() throws Exception {
         support.getServer().setMaxProtocolLevel(1, 0);
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
@@ -200,7 +201,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testPseudoServlet() throws Exception {
+    void pseudoServlet() throws Exception {
         String resourceName = "tellMe";
         String name = "Charlie";
         final String prefix = "Hello there, ";
@@ -220,7 +221,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testPseudoServletWithGET() throws Exception {
+    void pseudoServletWithGET() throws Exception {
         String resourceName = "tellMe";
         String name = "Charlie";
         final String prefix = "Hello there, ";
@@ -267,7 +268,7 @@ class PseudoServerTest {
      * @throws Exception
      */
     @Test
-    void testDisableContentTypeHeader() throws Exception {
+    void disableContentTypeHeader() throws Exception {
         support.defineResource("simple", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -285,7 +286,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testChunkedRequest() throws Exception {
+    void chunkedRequest() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() {
@@ -305,7 +306,7 @@ class PseudoServerTest {
     // need test: respond with HTTP_BAD_REQUEST if header line is bad
 
     @Test
-    void testChunkedRequestFollowedByAnother() throws Exception {
+    void chunkedRequestFollowedByAnother() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() {
@@ -333,7 +334,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testChunkedResponse() throws Exception {
+    void chunkedResponse() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -351,7 +352,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testPersistentConnection() throws Exception {
+    void persistentConnection() throws Exception {
         support.defineResource("/testServlet", new TestMethodServlet());
 
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
@@ -390,7 +391,7 @@ class PseudoServerTest {
     }
 
     @Test
-    void testBadMethodUsingPseudoServlet() throws Exception {
+    void badMethodUsingPseudoServlet() throws Exception {
         String resourceName = "tellMe";
 
         support.defineResource(resourceName, new PseudoServlet() {
@@ -402,16 +403,18 @@ class PseudoServerTest {
     }
 
     @Test
-    void testClasspathDirectory() throws Exception {
-        support.mapToClasspath("/some/classes");
+    void classpathDirectory() throws Exception {
+        assertDoesNotThrow(() -> {
+            support.mapToClasspath("/some/classes");
 
-        SocketConnection conn = new SocketConnection("localhost", getHostPort());
-        conn.getResponse("GET",
-                "/some/classes/" + SocketConnection.SocketResponse.class.getName().replace('.', '/') + ".class");
+            SocketConnection conn = new SocketConnection("localhost", getHostPort());
+            conn.getResponse("GET",
+                    "/some/classes/" + SocketConnection.SocketResponse.class.getName().replace('.', '/') + ".class");
+        });
     }
 
     @Test
-    void testPseudoServletRequestAccess() throws Exception {
+    void pseudoServletRequestAccess() throws Exception {
         support.defineResource("/properties", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -425,61 +428,63 @@ class PseudoServerTest {
     }
 
     @Test
-    void testLargeDelayedPseudoServletRequest() throws Exception {
-        support.defineResource("/largeRequest", new PseudoServlet() {
-            @Override
-            public WebResource getPostResponse() {
-                return new WebResource(super.getBody(), super.getHeader("CONTENT-TYPE"));
+    void largeDelayedPseudoServletRequest() throws Exception {
+        assertDoesNotThrow(() -> {
+            support.defineResource("/largeRequest", new PseudoServlet() {
+                @Override
+                public WebResource getPostResponse() {
+                    return new WebResource(super.getBody(), super.getHeader("CONTENT-TYPE"));
+                }
+            });
+
+            Socket sock = new Socket("localhost", getHostPort());
+            sock.setKeepAlive(true);
+            sock.setTcpNoDelay(true);
+            sock.setSoTimeout(5000);
+
+            byte[] requestData = generateLongMIMEPostData().getBytes(StandardCharsets.UTF_8);
+            String requestLine = "POST /largeRequest HTTP/1.1\r\n";
+            String hostHeader = "localhost:" + valueOf(getHostPort()) + "\r\n";
+            String clHeader = "Content-Length: " + valueOf(requestData.length) + "\r\n";
+            String conHeader = "Connection: Keep-Alive, TE\r\n";
+            String teHeader = "TE: trailers, deflate, gzip, compress\r\n";
+            String soapHeader = "SOAPAction: \"\"\r\n";
+            String accHeader = "Accept-Encoding: gzip, x-gzip, compress, x-compress\r\n";
+            String ctHeader = "Content-Type: multipart/related; type=\"text/xml\"; boundary=\"--MIME_Boundary\"\r\n";
+            String eoh = "\r\n";
+
+            BufferedOutputStream out = new BufferedOutputStream(sock.getOutputStream());
+            out.write(requestLine.getBytes(StandardCharsets.UTF_8));
+            out.write(hostHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(conHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(teHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(accHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(soapHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(ctHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(clHeader.getBytes(StandardCharsets.UTF_8));
+            out.write(eoh.getBytes(StandardCharsets.UTF_8));
+
+            // Send some of the request data
+            out.write(requestData, 0, 200);
+
+            // Flush the stream and pause to simulate factors that would delay the request data
+            out.flush();
+            Thread.sleep(500);
+
+            // Write the remaining request data
+            out.write(requestData, 200, requestData.length - 200);
+            out.flush();
+
+            // Read the response
+            BufferedInputStream in = new BufferedInputStream(sock.getInputStream());
+            int count = 0;
+            while (in.read() != -1 && ++count < requestData.length) {
+
             }
+
+            // Close the connection
+            sock.close();
         });
-
-        Socket sock = new Socket("localhost", getHostPort());
-        sock.setKeepAlive(true);
-        sock.setTcpNoDelay(true);
-        sock.setSoTimeout(5000);
-
-        byte[] requestData = generateLongMIMEPostData().getBytes(StandardCharsets.UTF_8);
-        String requestLine = "POST /largeRequest HTTP/1.1\r\n";
-        String hostHeader = "localhost:" + valueOf(getHostPort()) + "\r\n";
-        String clHeader = "Content-Length: " + valueOf(requestData.length) + "\r\n";
-        String conHeader = "Connection: Keep-Alive, TE\r\n";
-        String teHeader = "TE: trailers, deflate, gzip, compress\r\n";
-        String soapHeader = "SOAPAction: \"\"\r\n";
-        String accHeader = "Accept-Encoding: gzip, x-gzip, compress, x-compress\r\n";
-        String ctHeader = "Content-Type: multipart/related; type=\"text/xml\"; boundary=\"--MIME_Boundary\"\r\n";
-        String eoh = "\r\n";
-
-        BufferedOutputStream out = new BufferedOutputStream(sock.getOutputStream());
-        out.write(requestLine.getBytes(StandardCharsets.UTF_8));
-        out.write(hostHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(conHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(teHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(accHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(soapHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(ctHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(clHeader.getBytes(StandardCharsets.UTF_8));
-        out.write(eoh.getBytes(StandardCharsets.UTF_8));
-
-        // Send some of the request data
-        out.write(requestData, 0, 200);
-
-        // Flush the stream and pause to simulate factors that would delay the request data
-        out.flush();
-        Thread.sleep(500);
-
-        // Write the remaining request data
-        out.write(requestData, 200, requestData.length - 200);
-        out.flush();
-
-        // Read the response
-        BufferedInputStream in = new BufferedInputStream(sock.getInputStream());
-        int count = 0;
-        while (in.read() != -1 && ++count < requestData.length) {
-
-        }
-
-        // Close the connection
-        sock.close();
     }
 
     /**

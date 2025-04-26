@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -75,7 +75,7 @@ public class WebXMLTest {
     // thus unnecessary to test in this code base.
     @Disabled
     @Test
-    void testDTDClassPath() throws Exception {
+    void dtdClassPath() throws Exception {
         boolean isDtdOnClasspath = WebXMLString.isDtdOnClasspath();
         String msg = WebXMLString.dtd
                 + " should be on CLASSPATH - you might want to check that META-INF is on the CLASSPATH";
@@ -94,7 +94,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testBasicAccess() throws Exception {
+    void basicAccess() throws Exception {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
@@ -109,7 +109,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testRealPath() throws Exception {
+    void realPath() throws Exception {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
@@ -149,7 +149,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testBasicAuthenticationConfig() throws Exception {
+    void basicAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.requireBasicAuthentication("SampleRealm");
 
@@ -159,7 +159,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testFormAuthenticationConfig() throws Exception {
+    void formAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.requireFormAuthentication("SampleRealm", "/Login", "/Error");
 
@@ -171,7 +171,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testSecurityConstraint() throws Exception {
+    void securityConstraint() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addSecureURL("SecureArea1", "/SimpleServlet");
         wxs.addAuthorizedRole("SecureArea1", "supervisor");
@@ -191,7 +191,7 @@ public class WebXMLTest {
      * Verifies that the default display name is null.
      */
     @Test
-    void testDefaultContextNameConfiguration() throws Exception {
+    void defaultContextNameConfiguration() throws Exception {
         WebXMLString wxs = new WebXMLString();
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
         assertNull(app.getDisplayName(), "Context name should default to null");
@@ -203,7 +203,7 @@ public class WebXMLTest {
      * @throws Exception
      */
     @Test
-    void testContextNameConfiguration() throws Exception {
+    void contextNameConfiguration() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.setDisplayName("samples");
         wxs.addServlet("simple", "/SimpleServlet", SimpleGetServlet.class);
@@ -218,7 +218,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testServletParameters() throws Exception {
+    void servletParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
         Properties params = new Properties();
         params.setProperty("color", "red");
@@ -236,7 +236,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testContextParameters() throws Exception {
+    void contextParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
         wxs.addContextParam("icecream", "vanilla");
@@ -299,7 +299,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testBasicAuthorization() throws Exception {
+    void basicAuthorization() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
         wxs.requireBasicAuthentication("Sample Realm");
@@ -334,7 +334,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testFormAuthentication() throws Exception {
+    void formAuthentication() throws Exception {
         HttpUnitOptions.setLoggingHttpHeaders(true);
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/Logon", SimpleLogonServlet.class);
@@ -366,7 +366,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testGetContextPath() throws Exception {
+    void getContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
 
@@ -382,7 +382,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testMountContextPath() throws Exception {
+    void mountContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
 
@@ -401,7 +401,7 @@ public class WebXMLTest {
     }
 
     @Test
-    void testServletMapping() throws Exception {
+    void servletMapping() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/foo/bar/*", Servlet1.class);
         wxs.addServlet("/baz/*", Servlet2.class);
@@ -435,7 +435,7 @@ public class WebXMLTest {
      * and each of its subclasses adds its classname to the 'initialized' context attribute.
      */
     @Test
-    void testLoadOnStartup() throws Exception {
+    void loadOnStartup() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("servlet1", "one", Servlet1.class);
         wxs.setLoadOnStartup("servlet1");
@@ -455,7 +455,7 @@ public class WebXMLTest {
      * classname to the 'initialized' context attribute.
      */
     @Test
-    void testLoadOrder() throws Exception {
+    void loadOrder() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("servlet1", "one", Servlet1.class);
         wxs.setLoadOnStartup("servlet1", 2);

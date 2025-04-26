@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,19 +33,19 @@ import org.junit.jupiter.api.Test;
 class Base64Test {
 
     @Test
-    void testEncode() {
+    void encode() {
         assertEquals("QWxhZGRpbjpvcGVuIHNlc2FtZQ==", Base64.encode("Aladdin:open sesame"), "Result of encoding");
         assertEquals("QWRtaW46Zm9vYmFy", Base64.encode("Admin:foobar"), "Result of encoding");
     }
 
     @Test
-    void testDecode() {
+    void decode() {
         assertEquals("Aladdin:open sesame", Base64.decode("QWxhZGRpbjpvcGVuIHNlc2FtZQ=="), "Result of decoding");
         assertEquals("Admin:foobar", Base64.decode("QWRtaW46Zm9vYmFy"), "Result of decoding");
     }
 
     @Test
-    void testExceptionDecoding() {
+    void exceptionDecoding() {
         try {
             Base64.decode("123");
             fail("valid Base64 codes have a multiple of 4 characters");

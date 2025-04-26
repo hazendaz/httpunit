@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -34,7 +34,7 @@ class ServletUnitServletContextTest {
     private static final String NONEXISTENT_RESOURCE_PATH = "src/test/resources/nonexistent.xml";
 
     @Test
-    void testGetResource() throws Exception {
+    void getResource() throws Exception {
         WebApplication webapp = new WebApplication();
         ServletContext sc = new ServletUnitServletContext(webapp);
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,7 +35,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 public class WebImageTest extends HttpUnitTest {
 
     @Test
-    void testGetImages() throws Exception {
+    void getImages() throws Exception {
         defineResource("GetImagePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" + "<body><img src='sample.jpg'>\n"
                         + "<IMG SRC='another.png'>" + " and <img src='onemore.gif' alt='one'>\n" + "</body></html>\n");
@@ -56,7 +56,7 @@ public class WebImageTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGetImageManyTimes() throws Exception {
+    void getImageManyTimes() throws Exception {
         // try this for different numbers of images
         int testCounts[] = { 10, 100
                 // ,1000 // approx 2.5 secs
@@ -139,7 +139,7 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     @Test
-    void testFindImageAndLink() throws Exception {
+    void findImageAndLink() throws Exception {
         defineResource("SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" + "<body><img src='sample.jpg'>\n"
                         + "<a href='somewhere.htm'><IMG SRC='another.png'></a>" + " and <img src='onemore.gif'>\n"
@@ -162,7 +162,7 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     @Test
-    void testImageRequest() throws Exception {
+    void imageRequest() throws Exception {
         defineResource("grouped/SimplePage.html",
                 "<html><head><title>A Sample Page</title></head>\n" + "<body><img name='this_one' src='sample.jpg'>\n"
                         + "<IMG SRC='another.png'>" + " and <img src='onemore.gif' alt='one'>\n" + "</body></html>\n");

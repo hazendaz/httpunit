@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -46,7 +46,7 @@ public class CookieTest {
     }
 
     @Test
-    void testSimpleCookies() throws Exception {
+    void simpleCookies() throws Exception {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
                 new String[] { "Reason=; path=/", "age=12, name= george", "type=short", "funky=ab$==",
                         "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
@@ -77,7 +77,7 @@ public class CookieTest {
     }
 
     @Test
-    void testCookieMatching() throws Exception {
+    void cookieMatching() throws Exception {
         assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")),
                 "Universal cookie could not be sent");
 
@@ -111,7 +111,7 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    void testCookieAcceptance() throws Exception {
+    void cookieAcceptance() throws Exception {
         checkAcceptance(1, true, "www.meterware.com/servlets/special", null, null);
         checkAcceptance(2, true, "www.meterware.com/servlets/special", ".meterware.com", "/servlets");
         checkAcceptance(3, false, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
@@ -157,7 +157,7 @@ public class CookieTest {
     }
 
     @Test
-    void testCookieDefaults() throws Exception {
+    void cookieDefaults() throws Exception {
         checkDefaults(1, "www.meterware.com/servlets/special", ".meterware.com", "/servlets", ".meterware.com",
                 "/servlets");
         checkDefaults(2, "www.meterware.com/servlets/special/myServlet", null, null, "www.meterware.com",
@@ -194,7 +194,7 @@ public class CookieTest {
      *             when an unexpected error occurs
      */
     @Test
-    void testCookieAge() throws Exception {
+    void cookieAge() throws Exception {
         String ages[] = { "max-age=5000", "Max-Age=3000", "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
                 "Max-Age=2592000;expires=Tue, 29-Mar-2005 19:30:42 GMT", "expires=Tue, 29-Mar-2005 19:30:42 GMT",
                 "Expires=Wednesday, 01-Jan-1970 00:00:00 GMT" };
@@ -221,7 +221,7 @@ public class CookieTest {
     }
 
     @Test
-    void testHeaderGeneration() throws Exception {
+    void headerGeneration() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putCookie("zero", "nil");
         jar.updateCookies(
@@ -242,7 +242,7 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    void testDrupalCookieInteraction() throws Exception {
+    void drupalCookieInteraction() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putSingleUseCookie("SESS1234", "1234", ".drupalsite.org", "/");
         Cookie cookie = jar.getCookie("SESS1234");
@@ -282,7 +282,7 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    void testSingleUseCookie() throws Exception {
+    void singleUseCookie() throws Exception {
         CookieJar jar = new CookieJar();
         jar.putSingleUseCookie("zero", "nil", "sourceforge.net", "test/me");
         Cookie cookie = jar.getCookie("zero");
@@ -299,7 +299,7 @@ public class CookieTest {
      * @throws Exception
      */
     @Test
-    void testHttpOnlyCookies() throws Exception {
+    void httpOnlyCookies() throws Exception {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
                 new String[] { "myStuff=1234; path=/foo; HttpOnly" }));
         assertEquals("1234", jar.getCookieValue("myStuff"), "cookie 'myStuff' value");
@@ -313,7 +313,7 @@ public class CookieTest {
      * https://sourceforge.net/tracker/?func=detail&aid=2871999&group_id=6550&atid=106550
      */
     @Test
-    void testHttpOnlyCookiePath() throws Exception {
+    void httpOnlyCookiePath() throws Exception {
         CookieJar jar = new CookieJar(
                 new TestSource(new URL("http://www.meterware.com"), new String[] { "myStuff=1234; path=/; HttpOnly" }));
         Cookie cookie = jar.getCookie("myStuff");
@@ -339,7 +339,7 @@ public class CookieTest {
     }
 
     @Test
-    void testCookieReplacement() throws Exception {
+    void cookieReplacement() throws Exception {
         CookieJar jar = new CookieJar();
         jar.updateCookies(newJar("www.meterware.com/servlets/standard", "first=ready"));
         jar.updateCookies(newJar("meterware.com/servlets/standard", "second=more"));
@@ -354,7 +354,7 @@ public class CookieTest {
     }
 
     @Test
-    void testLenientMatching() throws Exception {
+    void lenientMatching() throws Exception {
         CookieProperties.setDomainMatchingStrict(false);
         checkAcceptance(1, true, "www.some.meterware.com/servlets/special", ".meterware.com", null);
         checkAcceptance(2, false, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
@@ -369,7 +369,7 @@ public class CookieTest {
     }
 
     @Test
-    void testRejectionCallbacks() throws Exception {
+    void rejectionCallbacks() throws Exception {
         MockListener listener = new MockListener();
         CookieProperties.addCookieListener(listener);
 

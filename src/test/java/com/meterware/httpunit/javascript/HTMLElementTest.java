@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,7 +36,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class HTMLElementTest extends HttpUnitTest {
 
     @Test
-    void testIDProperty() throws Exception {
+    void iDProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showTitle( id ) {"
                 + "   alert( 'element with id ' + id + ' has title ' + document.getElementById( id ).title );" + "}"
                 + "function showAll() {" + "    showTitle( 'there' ); showTitle( 'perform' ); showTitle( 'doIt' );"
@@ -58,7 +58,7 @@ class HTMLElementTest extends HttpUnitTest {
     }
 
     @Test
-    void testElementByIdReturnsNull() throws Exception {
+    void elementByIdReturnsNull() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" + "function showNone() {"
                         + "    alert( 'It returned ' + document.getElementById( 'zork' ) )" + "}</script>"
@@ -74,7 +74,7 @@ class HTMLElementTest extends HttpUnitTest {
     }
 
     @Test
-    void testNameProperty() throws Exception {
+    void nameProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showTitle( name ) {"
                 + "  var elements = document.getElementsByName( name );" + "  for( i = 0; i < elements.length; i++) {"
                 + "   alert( 'element with name ' + name + ' has title ' + elements[i].title );" + "  }" + "}"
@@ -95,7 +95,7 @@ class HTMLElementTest extends HttpUnitTest {
     }
 
     @Test
-    void testNamePropertyWithIdAttribute() throws Exception {
+    void namePropertyWithIdAttribute() throws Exception {
         defineResource("start.html",
                 "<html><head><script language='JavaScript'>" + "function showAll() {"
                         + "    alert( 'element with name there has title '   + document.there.title );"
@@ -118,7 +118,7 @@ class HTMLElementTest extends HttpUnitTest {
     }
 
     @Test
-    void testElementProperties() throws Exception {
+    void elementProperties() throws Exception {
         defineWebPage("start",
                 "<form name='perform' title=fifth>" + "  <input name='name' maxlength=20 tabindex='1'>" + "</form>");
         WebConversation wc = new WebConversation();

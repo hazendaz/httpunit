@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.dom;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -57,7 +58,7 @@ import org.w3c.dom.html.HTMLTitleElement;
 class HTMLElementTest extends AbstractHTMLElementTest {
 
     @Test
-    void testCaseInsensitiveTagSearch() throws Exception {
+    void caseInsensitiveTagSearch() throws Exception {
         Element element = createElement("body");
         Node form = element.appendChild(createElement("form"));
         NodeList nl = element.getElementsByTagName("form");
@@ -66,7 +67,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testBaseElementDefaults() throws Exception {
+    void baseElementDefaults() throws Exception {
         Element element = createElement("b", new String[0][]);
         assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
         assertEquals("B", element.getNodeName(), "Tag name");
@@ -85,7 +86,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    void testBaseElementAttributes() throws Exception {
+    void baseElementAttributes() throws Exception {
         Element element = createElement("code", new String[][] { { "class", "special" }, { "dir", "rtl" },
                 { "id", "sample" }, { "lang", "hb" }, { "title", "psalm 83" } });
         assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
@@ -100,7 +101,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testWriteableElementAttributes() throws Exception {
+    void writeableElementAttributes() throws Exception {
         Element element = createElement("cite", new String[0][]);
         assertTrue(element instanceof HTMLElement, "node should be an HTMLElement but is " + element.getClass());
         assertEquals("CITE", element.getNodeName(), "Tag name");
@@ -120,7 +121,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testEmptyFormDefaults() throws Exception {
+    void emptyFormDefaults() throws Exception {
         Element element = createElement("form", new String[][] { { "action", "go_here" } });
         assertTrue(element instanceof HTMLFormElement,
                 "node should be an HTMLFormElement but is " + element.getClass());
@@ -138,7 +139,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testFormAttributes() throws Exception {
+    void formAttributes() throws Exception {
         Element element = createElement("form",
                 new String[][] { { "accept-charset", "latin-1" }, { "enctype", "multipart/form-data" },
                         { "method", "post" }, { "name", "aform" }, { "target", "green" } });
@@ -151,7 +152,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testWriteableFormAttributes() throws Exception {
+    void writeableFormAttributes() throws Exception {
         Element element = createElement("form", new String[][] { { "action", "go_here" } });
         HTMLFormElement form = (HTMLFormElement) element;
 
@@ -171,7 +172,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testTitleElement() throws Exception {
+    void titleElement() throws Exception {
         Element element = createElement("title");
         Text text = _htmlDocument.createTextNode("something here");
         element.appendChild(text);
@@ -192,7 +193,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testEmptyTitleElement() throws Exception {
+    void emptyTitleElement() throws Exception {
         Element element = createElement("title");
 
         assertTrue(element instanceof HTMLTitleElement,
@@ -210,122 +211,163 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     @Test
-    void testHtmlElement() throws Exception {
-        doElementTest("html", HTMLHtmlElement.class, new String[][] { { "version", "4.0" } });
+    void htmlElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("html", HTMLHtmlElement.class, new String[][] { { "version", "4.0" } });
+        });
     }
 
     @Test
-    void testHeadElement() throws Exception {
-        doElementTest("head", HTMLHeadElement.class,
-                new String[][] { { "profile", "http://www.acme.com/profiles/core" } });
+    void headElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("head", HTMLHeadElement.class,
+                    new String[][] { { "profile", "http://www.acme.com/profiles/core" } });
+        });
     }
 
     @Test
-    void testLinkElement() throws Exception {
-        doElementTest("link", HTMLLinkElement.class,
-                new Object[][] { { "charset", "utf-8" }, { "href", "site.css" }, { "hreflang", "en" },
-                        { "disabled", Boolean.TRUE, Boolean.FALSE }, { "rel", "ccc.html" }, { "rev", "aaa.html" },
-                        { "target", "green" }, { "type", "text/html" }, { "media", "paper", "screen" } });
+    void linkElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("link", HTMLLinkElement.class,
+                    new Object[][] { { "charset", "utf-8" }, { "href", "site.css" }, { "hreflang", "en" },
+                            { "disabled", Boolean.TRUE, Boolean.FALSE }, { "rel", "ccc.html" }, { "rev", "aaa.html" },
+                            { "target", "green" }, { "type", "text/html" }, { "media", "paper", "screen" } });
+        });
     }
 
     @Test
-    void testMetaElement() throws Exception {
-        doElementTest("meta", HTMLMetaElement.class, new Object[][] { { "content", "Something" },
-                { "http-equiv", "Refresh" }, { "name", "author" }, { "scheme", "ISBN" } });
+    void metaElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("meta", HTMLMetaElement.class, new Object[][] { { "content", "Something" },
+                    { "http-equiv", "Refresh" }, { "name", "author" }, { "scheme", "ISBN" } });
+        });
     }
 
     @Test
-    void testBaseElement() throws Exception {
-        doElementTest("base", HTMLBaseElement.class,
-                new Object[][] { { "href", "somewhere.html" }, { "target", "blue" } });
+    void baseElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("base", HTMLBaseElement.class,
+                    new Object[][] { { "href", "somewhere.html" }, { "target", "blue" } });
+        });
     }
 
     @Test
-    void testStyleElment() throws Exception {
-        doElementTest("style", HTMLStyleElement.class, new Object[][] { { "disabled", Boolean.TRUE, Boolean.FALSE },
-                { "media", "paper", "screen" }, { "type", "text/css" } });
+    void styleElment() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("style", HTMLStyleElement.class, new Object[][] { { "disabled", Boolean.TRUE, Boolean.FALSE },
+                    { "media", "paper", "screen" }, { "type", "text/css" } });
+        });
     }
 
     @Test
-    void testBodyElement() throws Exception {
-        doElementTest("body", HTMLBodyElement.class, new Object[][] { { "aLink", "red" }, { "background", "blue" },
-                { "link", "azure" }, { "bgColor", "white" }, { "text", "maroon" }, { "vLink", "crimson" } });
+    void bodyElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("body", HTMLBodyElement.class, new Object[][] { { "aLink", "red" }, { "background", "blue" },
+                    { "link", "azure" }, { "bgColor", "white" }, { "text", "maroon" }, { "vLink", "crimson" } });
+        });
     }
 
     @Test
-    void testOptionElementAttributes() throws Exception {
-        doElementTest("option", HTMLOptionElement.class, new Object[][] { { "disabled", Boolean.TRUE, Boolean.FALSE },
-                { "label", "Vert" }, { "value", "green" } });
+    void optionElementAttributes() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("option", HTMLOptionElement.class, new Object[][] {
+                    { "disabled", Boolean.TRUE, Boolean.FALSE }, { "label", "Vert" }, { "value", "green" } });
+        });
     }
 
     @Test
-    void testSelectElement() throws Exception {
-        doElementTest("select", HTMLSelectElement.class,
-                new Object[][] { { "multiple", Boolean.TRUE, Boolean.FALSE }, { "name", "here" }, { "tabindex", 1, 0 },
-                        { "size", 12, 0 }, { "disabled", Boolean.TRUE, Boolean.FALSE } });
+    void selectElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("select", HTMLSelectElement.class,
+                    new Object[][] { { "multiple", Boolean.TRUE, Boolean.FALSE }, { "name", "here" },
+                            { "tabindex", 1, 0 }, { "size", 12, 0 }, { "disabled", Boolean.TRUE, Boolean.FALSE } });
+        });
     }
 
     @Test
-    void testInputElement() throws Exception {
-        doElementTest("input", HTMLInputElement.class,
-                new Object[][] { { "accept", "text/html" }, { "accessKey", "C" }, { "align", "middle", "bottom" },
-                        { "alt", "check" }, { "disabled", Boolean.TRUE, Boolean.FALSE }, { "maxlength", 5, 0 },
-                        { "name", "here" }, { "readonly", Boolean.TRUE, Boolean.FALSE }, { "size", "12" },
-                        { "src", "arrow.jpg" }, { "tabindex", 1, 0 }, { "type", "radio", "text", "ro" },
-                        { "useMap", "myMap" }, { "value", "230" } });
+    void inputElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("input", HTMLInputElement.class,
+                    new Object[][] { { "accept", "text/html" }, { "accessKey", "C" }, { "align", "middle", "bottom" },
+                            { "alt", "check" }, { "disabled", Boolean.TRUE, Boolean.FALSE }, { "maxlength", 5, 0 },
+                            { "name", "here" }, { "readonly", Boolean.TRUE, Boolean.FALSE }, { "size", "12" },
+                            { "src", "arrow.jpg" }, { "tabindex", 1, 0 }, { "type", "radio", "text", "ro" },
+                            { "useMap", "myMap" }, { "value", "230" } });
+            // XXX blur, focus, select, click
+        });
         // XXX blur, focus, select, click
     }
 
     @Test
-    void testButtonElement() throws Exception {
-        doElementTest("button", HTMLButtonElement.class,
-                new Object[][] { { "accesskey", "C" }, { "disabled", Boolean.TRUE, Boolean.FALSE }, { "name", "here" },
-                        { "tabindex", 1, 0 }, { "type", "button", "submit", "ro" }, { "value", "230" } });
+    void buttonElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("button", HTMLButtonElement.class,
+                    new Object[][] { { "accesskey", "C" }, { "disabled", Boolean.TRUE, Boolean.FALSE },
+                            { "name", "here" }, { "tabindex", 1, 0 }, { "type", "button", "submit", "ro" },
+                            { "value", "230" } });
+            // XXX blur, focus, select, click
+        });
         // XXX blur, focus, select, click
     }
 
     @Test
-    void testTextAreaElement() throws Exception {
-        doElementTest("textarea", HTMLTextAreaElement.class,
-                new Object[][] { { "accesskey", "C" }, { "cols", 1, 0 }, { "disabled", Boolean.TRUE, Boolean.FALSE },
-                        { "name", "here" }, { "readonly", Boolean.TRUE, Boolean.FALSE }, { "rows", 8, 0 },
-                        { "tabindex", 1, 0 }, { "type", "radio", "text", "ro" } });
+    void textAreaElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("textarea", HTMLTextAreaElement.class,
+                    new Object[][] { { "accesskey", "C" }, { "cols", 1, 0 },
+                            { "disabled", Boolean.TRUE, Boolean.FALSE }, { "name", "here" },
+                            { "readonly", Boolean.TRUE, Boolean.FALSE }, { "rows", 8, 0 }, { "tabindex", 1, 0 },
+                            { "type", "radio", "text", "ro" } });
+            // XXX blur, focus, select
+        });
         // XXX blur, focus, select
     }
 
     @Test
-    void testAnchorElement() throws Exception {
-        doElementTest("a", HTMLAnchorElement.class,
-                new Object[][] { { "accesskey", "U" }, { "charset", "utf-8" }, { "hreflang", "en" }, { "name", "here" },
-                        { "rel", "link" }, { "rev", "index" }, { "target", "green" }, { "type", "text/html" } });
+    void anchorElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("a", HTMLAnchorElement.class,
+                    new Object[][] { { "accesskey", "U" }, { "charset", "utf-8" }, { "hreflang", "en" },
+                            { "name", "here" }, { "rel", "link" }, { "rev", "index" }, { "target", "green" },
+                            { "type", "text/html" } });
+        });
     }
 
     @Test
-    void testAreaElement() throws Exception {
-        doElementTest("area", HTMLAreaElement.class,
-                new Object[][] { { "accesskey", "U" }, { "alt", "[draw]" }, { "coords", "30,40,20" },
-                        { "nohref", Boolean.TRUE, Boolean.FALSE }, { "shape", "circle" }, { "tabindex", 4, 0 },
-                        { "target", "green" } });
+    void areaElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("area", HTMLAreaElement.class,
+                    new Object[][] { { "accesskey", "U" }, { "alt", "[draw]" }, { "coords", "30,40,20" },
+                            { "nohref", Boolean.TRUE, Boolean.FALSE }, { "shape", "circle" }, { "tabindex", 4, 0 },
+                            { "target", "green" } });
+        });
     }
 
     @Test
-    void testImageElement() throws Exception {
-        doElementTest("img", HTMLImageElement.class,
-                new Object[][] { { "name", "here" }, { "align", "top" }, { "alt", "big show" }, { "border", "3" },
-                        { "height", "7" }, { "hspace", "1" }, { "ismap", Boolean.TRUE, Boolean.FALSE },
-                        { "longdesc", "not too very" }, { "src", "circle.jpg" }, { "usemap", "mapname" },
-                        { "vspace", "4" }, { "width", "15" } });
+    void imageElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("img", HTMLImageElement.class,
+                    new Object[][] { { "name", "here" }, { "align", "top" }, { "alt", "big show" }, { "border", "3" },
+                            { "height", "7" }, { "hspace", "1" }, { "ismap", Boolean.TRUE, Boolean.FALSE },
+                            { "longdesc", "not too very" }, { "src", "circle.jpg" }, { "usemap", "mapname" },
+                            { "vspace", "4" }, { "width", "15" } });
+        });
     }
 
     @Test
-    void testParagraphElement() throws Exception {
-        doElementTest("p", HTMLParagraphElement.class,
-                new Object[][] { { "title", "here" }, { "id", "aaa" }, { "align", "top" } });
+    void paragraphElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("p", HTMLParagraphElement.class,
+                    new Object[][] { { "title", "here" }, { "id", "aaa" }, { "align", "top" } });
+        });
     }
 
     @Test
-    void testIFrameElement() throws Exception {
-        doElementTest("iframe", HTMLIFrameElement.class, new Object[][] { { "align", "center" }, { "src", "aaa" } });
+    void iFrameElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("iframe", HTMLIFrameElement.class,
+                    new Object[][] { { "align", "center" }, { "src", "aaa" } });
+        });
     }
 
     /**
@@ -335,17 +377,19 @@ class HTMLElementTest extends AbstractHTMLElementTest {
      * @throws Exception
      */
     @Test
-    void testAppletElement() throws Exception {
-        doElementTest("applet", HTMLAppletElement.class, new Object[][] { { "align", "center" }, /*
-                                                                                                  * { "alt", "an applet"
-                                                                                                  * }, { "archive",
-                                                                                                  * "my.jar" },
-                                                                                                  */
-                { "code", "here.There" },
-                { "codebase", "there", "." }, /*
-                                               * { "height", "17" }, { "hspace", "2" }, { "name", "applet" }, {
-                                               * "object", "a file here" }, { "vspace", "3" }, { "width", "80"}
-                                               */ });
+    void appletElement() throws Exception {
+        assertDoesNotThrow(() -> {
+            doElementTest("applet", HTMLAppletElement.class, new Object[][] { { "align", "center" },
+                    /*
+                     * { "alt", "an applet" }, { "archive", "my.jar" },
+                     */
+                    { "code", "here.There" }, { "codebase", "there", "." },
+                    /*
+                     * { "height", "17" }, { "hspace", "2" }, { "name", "applet" }, { "object", "a file here" }, {
+                     * "vspace", "3" }, { "width", "80"}
+                     */
+            });
+        });
     }
 
     // XXX form.getLength, form.submit

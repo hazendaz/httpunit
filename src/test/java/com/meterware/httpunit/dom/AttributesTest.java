@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -60,7 +60,7 @@ class AttributesTest {
      * Verifies that we can create an attributes node and verify it.
      */
     @Test
-    void testAttributeCreation() throws Exception {
+    void attributeCreation() throws Exception {
         assertSame(_document, _heightAttribute.getOwnerDocument(), "Owner document");
         assertEquals("height", _heightAttribute.getName(), "Name");
         assertEquals("height", _heightAttribute.getNodeName(), "Node name");
@@ -83,7 +83,7 @@ class AttributesTest {
      * Verifies that we can set unique attribute nodes on an element and retrieve and remove them.
      */
     @Test
-    void testSimpleAttrNodeAssignment() throws Exception {
+    void simpleAttrNodeAssignment() throws Exception {
         assertFalse(_element.hasAttributes(), "Element should report no attributes");
         assertNull(_heightAttribute.getOwnerElement(), "Onwer element should not be set before assignment");
         _element.setAttributeNode(_heightAttribute);
@@ -109,7 +109,7 @@ class AttributesTest {
      * Verifies that we cannot remove attribute nodes that are not defined.
      */
     @Test
-    void testIllegalAttributeNodeRemoval() throws Exception {
+    void illegalAttributeNodeRemoval() throws Exception {
         _element.setAttributeNode(_heightAttribute);
         try {
             _element.removeAttributeNode(_weightAttribute);
@@ -123,7 +123,7 @@ class AttributesTest {
      * Verifies that setting an attribute node removes any older matching attribute node.
      */
     @Test
-    void testSetReplacementAttributeNode() throws Exception {
+    void setReplacementAttributeNode() throws Exception {
         _element.setAttributeNode(_heightAttribute);
         Attr newHeight = _document.createAttribute("height");
         _element.setAttributeNode(newHeight);
@@ -138,7 +138,7 @@ class AttributesTest {
      * Verifies that an undefined attribute is returned as an empty string.
      */
     @Test
-    void testEmptyAttribute() throws Exception {
+    void emptyAttribute() throws Exception {
         assertEquals("", _element.getAttribute("abcdef"), "Value for undefined attribute");
     }
 
@@ -146,7 +146,7 @@ class AttributesTest {
      * Verifies that we can set and get attributes by value.
      */
     @Test
-    void testSimpleAttributes() throws Exception {
+    void simpleAttributes() throws Exception {
         _element.setAttribute("height", "3");
         _element.setAttribute("width", "really wide");
         assertAttributesInMap(_element.getAttributes(),

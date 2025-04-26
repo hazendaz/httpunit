@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -39,6 +39,7 @@ public class ServletAccessTestClass extends ServletTestCase {
         super(name);
     }
 
+    // TODO JWL 4/20/2025 Keep 'test' on this method as well as public until such time its not using junit 3.
     @Test
     public void testServletParameters() throws Exception {
         ServletUnitClient client = newClient();

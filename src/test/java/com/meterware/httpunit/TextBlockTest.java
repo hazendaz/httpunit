@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -38,7 +38,7 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 class TextBlockTest extends HttpUnitTest {
 
     @Test
-    void testParagraphDetection() throws Exception {
+    void paragraphDetection() throws Exception {
         defineWebPage("SimplePage",
                 "<p>This has no forms or links since we don't care " + "about them</p>"
                         + "<p class='comment'>But it does have three paragraphs</p>\n"
@@ -54,7 +54,7 @@ class TextBlockTest extends HttpUnitTest {
     }
 
     @Test
-    void testTextConversion() throws Exception {
+    void textConversion() throws Exception {
         defineWebPage("SimplePage", "<p>Here is a line<br>followed by another</p>");
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/SimplePage.html");
@@ -65,7 +65,7 @@ class TextBlockTest extends HttpUnitTest {
     }
 
     @Test
-    void testHeaderDetection() throws Exception {
+    void headerDetection() throws Exception {
         defineWebPage("SimplePage",
                 "<h1>Here is a section</h1>\n" + "with some text" + "<h2>A subsection</h2>" + "<p>Some more text</p>");
         WebConversation wc = new WebConversation();
@@ -80,7 +80,7 @@ class TextBlockTest extends HttpUnitTest {
     }
 
     @Test
-    void testEmbeddedLinks() throws Exception {
+    void embeddedLinks() throws Exception {
         defineWebPage("SimplePage", "<h1>Here is a section</h1>\n"
                 + "<p>with a <a id='httpunit' href='http://httpunit.org'>link to the home page</a></p>");
         WebConversation wc = new WebConversation();
@@ -99,7 +99,7 @@ class TextBlockTest extends HttpUnitTest {
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
-    void testEmbeddedLists() throws Exception {
+    void embeddedLists() throws Exception {
         defineWebPage("SimplePage",
                 "<h1>Here is a section</h1>\n" + "<p id='ordered'><ol><li>One<li>Two<li>Three</ol></p>"
                         + "<p id='unordered'><ul><li>Red<li>Green<li>Blue</ul></p>");

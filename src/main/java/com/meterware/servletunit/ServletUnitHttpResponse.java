@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -674,12 +674,11 @@ class ServletUnitOutputStream extends ServletOutputStream {
 
     @Override
     public boolean isReady() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
-        // TODO Auto-generated method stub
+        // Do nothing
     }
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,12 +45,14 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 public class WebAppletTest extends HttpUnitTest {
 
     @Test
-    void testDeleteMe() {
-        new WebConversation();
+    void deleteMe() {
+        assertDoesNotThrow(() -> {
+            new WebConversation();
+        });
     }
 
     @Test
-    void testFindApplets() throws Exception {
+    void findApplets() throws Exception {
         defineWebPage("start", "<applet code='FirstApplet.class' width=150 height=100></applet>"
                 + "<applet code='SecondApplet.class' width=150 height=100></applet>");
         WebConversation wc = new WebConversation();
@@ -60,7 +63,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testAppletProperties() throws Exception {
+    void appletProperties() throws Exception {
         defineWebPage("start",
                 "<applet code='FirstApplet.class' name=first codebase='/classes' width=150 height=100></applet>"
                         + "<applet code='SecondApplet.class' name=second width=150 height=100></applet>");
@@ -77,7 +80,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testReadAppletParameters() throws Exception {
+    void readAppletParameters() throws Exception {
         defineWebPage("start", "<applet code='DoIt'>" + "  <param name='color' value='ffff00'>"
                 + "  <param name='age' value='12'>" + "</applet>");
 
@@ -90,7 +93,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testAppletClassName() throws Exception {
+    void appletClassName() throws Exception {
         defineWebPage("start",
                 "<applet code='com/something/FirstApplet.class' width=150 height=100></applet>"
                         + "<applet code='org\\nothing\\SecondApplet' width=150 height=100></applet>"
@@ -103,7 +106,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testAppletLoading() throws Exception {
+    void appletLoading() throws Exception {
         defineWebPage("start", "<applet code='" + SimpleApplet.class.getName()
                 + ".class' codebase=/classes width=100 height=100></applet>");
         mapToClasspath("/classes");
@@ -129,7 +132,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testAppletParameterAccess() throws Exception {
+    void appletParameterAccess() throws Exception {
         defineWebPage("start",
                 "<applet code='" + SimpleApplet.class.getName() + ".class' codebase=/classes width=100 height=100>"
                         + "  <param name='color' value='ffff00'>" + "  <param name='age' value='12'>" + "</applet>");
@@ -143,7 +146,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testAppletFindFromApplet() throws Exception {
+    void appletFindFromApplet() throws Exception {
         defineWebPage("start",
                 "<applet name=first code='" + SimpleApplet.class.getName()
                         + ".class' codebase=/classes width=100 height=100></applet>" + "<applet name=second code='"
@@ -166,7 +169,7 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     @Test
-    void testShowDocument() throws Exception {
+    void showDocument() throws Exception {
         defineResource("next.html", "You made it!");
         defineWebPage("start", "<applet code='" + SimpleApplet.class.getName()
                 + ".class' codebase=/classes width=100 height=100></applet>");
@@ -185,7 +188,7 @@ public class WebAppletTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testAppletWithinADirectory() throws Exception {
+    void appletWithinADirectory() throws Exception {
         defineWebPage("directory/start", "<applet code='" + SimpleApplet.class.getName() + "'></applet>");
         mapToClasspath("/directory");
         WebConversation wc = new WebConversation();

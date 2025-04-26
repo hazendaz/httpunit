@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -72,7 +72,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testNotFound() throws Exception {
+    void notFound() throws Exception {
         WebConversation wc = new WebConversation();
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/nothing.htm");
         try {
@@ -91,7 +91,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws IOException
      */
     @Test
-    void testUndefinedResource() throws IOException {
+    void undefinedResource() throws IOException {
         boolean originalState = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         // try two cases for throwException true on i==0, false on i==1
         for (int i = 0; i < 2; i++) {
@@ -127,7 +127,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testNotModifiedResponse() throws Exception {
+    void notModifiedResponse() throws Exception {
         defineResource("error.htm", "Not Modified", 304);
 
         WebConversation wc = new WebConversation();
@@ -139,7 +139,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testInternalErrorException() throws Exception {
+    void internalErrorException() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
 
         WebConversation wc = new WebConversation();
@@ -153,7 +153,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testInternalErrorDisplay() throws Exception {
+    void internalErrorDisplay() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
 
         WebConversation wc = new WebConversation();
@@ -165,7 +165,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testSimpleGet() throws Exception {
+    void simpleGet() throws Exception {
         String resourceName = "something/interesting";
         String resourceValue = "the desired content";
 
@@ -179,7 +179,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testFunkyGet() throws Exception {
+    void funkyGet() throws Exception {
         String resourceName = "ID=03.019c010101010001.00000001.a202000000000019. 0d09/login/";
         String resourceValue = "the desired content";
 
@@ -198,7 +198,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testCookies() throws Exception {
+    void cookies() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -238,7 +238,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testCookiesDisabled() throws Exception {
+    void cookiesDisabled() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -255,7 +255,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testOldCookies() throws Exception {
+    void oldCookies() throws Exception {
         String resourceName = "something/baking";
         String resourceValue = "the desired content";
 
@@ -278,7 +278,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testManualCookies() throws Exception {
+    void manualCookies() throws Exception {
         defineResource("bounce", new CookieEcho());
         WebConversation wc = new WebConversation();
         wc.putCookie("CUSTOMER", "WILE_E_COYOTE");
@@ -317,7 +317,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testEmptyCookie() throws Exception {
+    void emptyCookie() throws Exception {
         defineResource("bounce", new CookieEcho());
         WebConversation wc = new WebConversation();
         wc.putCookie("EMPTYVALUE", "non-empty");
@@ -346,7 +346,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testHeaderFields() throws Exception {
+    void headerFields() throws Exception {
         defineResource("getHeaders", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -364,7 +364,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testBasicAuthentication() throws Exception {
+    void basicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -384,7 +384,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testOnDemandBasicAuthentication() throws Exception {
+    void onDemandBasicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -410,7 +410,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testOnDemandBasicAuthenticationInputStream() throws Exception {
+    void onDemandBasicAuthenticationInputStream() throws Exception {
         defineResource("postRequiringAuthentication", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() {
@@ -445,7 +445,7 @@ public class WebClientTest extends HttpUnitTest {
      *             if an unexpected exception is thrown.
      */
     @Test
-    void testBasicAuthenticationRequestedForUnknownRealm() throws Exception {
+    void basicAuthenticationRequestedForUnknownRealm() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -476,7 +476,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testAuthenticationNegotiateRequest() throws Exception {
+    void authenticationNegotiateRequest() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -498,7 +498,7 @@ public class WebClientTest extends HttpUnitTest {
 
     @Test
     @Disabled
-    void testProxyServerAccessWithAuthentication() throws Exception {
+    void proxyServerAccessWithAuthentication() throws Exception {
         defineResource("http://someserver.com/sample", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -559,7 +559,7 @@ public class WebClientTest extends HttpUnitTest {
      *             if an unexpected exception is thrown during the test.
      */
     @Test
-    void testRfc2069DigestAuthentication() throws Exception {
+    void rfc2069DigestAuthentication() throws Exception {
         testRfc2069DigestAuthentication(true);
     }
 
@@ -567,7 +567,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for BR 2957505 No 'opaque' causes NPE when attempting DigestAuthentication
      */
     @Test
-    void testRfc2069DigestAuthenticationNoOpaque() throws Exception {
+    void rfc2069DigestAuthenticationNoOpaque() throws Exception {
         testRfc2069DigestAuthentication(false);
     }
 
@@ -578,7 +578,7 @@ public class WebClientTest extends HttpUnitTest {
      */
     @Test
     @Disabled
-    void testQopDigestAuthenticationhttp_client() throws Exception {
+    void qopDigestAuthenticationhttpClient() throws Exception {
         defineResource("/dir/index.html", new PseudoServlet() {
             @Override
             public WebResource getGetResponse() {
@@ -731,7 +731,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testRefererHeader() throws Exception {
+    void refererHeader() throws Exception {
         dotestRefererHeader(true);
     }
 
@@ -741,12 +741,12 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testRefererHeaderWithStrippingReferer() throws Exception {
+    void refererHeaderWithStrippingReferer() throws Exception {
         dotestRefererHeader(false);
     }
 
     @Test
-    void testRedirectedRefererHeader() throws Exception {
+    void redirectedRefererHeader() throws Exception {
         String linkSource = "fromLink";
         String linkTarget = "anOldOne";
         String resourceName = "tellMe";
@@ -777,7 +777,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testMaxRedirectsNotExceeded() throws Exception {
+    void maxRedirectsNotExceeded() throws Exception {
         String resourceAName = "something/resourceA";
         String resourceBName = "something/resourceB";
         String resourceCName = "something/resourceC";
@@ -823,7 +823,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    void testSelfReferentialRedirect() throws Exception {
+    void selfReferentialRedirect() throws Exception {
         String resourceName = "something/redirected";
 
         defineResource(resourceName, "ignored content", HttpURLConnection.HTTP_MOVED_PERM);
@@ -845,7 +845,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    void testLoopingMalformedRedirect() throws Exception {
+    void loopingMalformedRedirect() throws Exception {
         String resourceAName = "something/redirected";
         String resourceBName = "something/else/redirected";
         String resourceCName = "another/redirect";
@@ -876,7 +876,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    void testRedirectHistoryIsClearedOut() throws Exception {
+    void redirectHistoryIsClearedOut() throws Exception {
         String resourceName = "something/interesting";
         String resourceValue = "something interesting";
 
@@ -914,7 +914,7 @@ public class WebClientTest extends HttpUnitTest {
      * @author james abley
      */
     @Test
-    void testRedirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {
+    void redirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {
         String resourceAName = "something/redirected";
         String resourceBName = "something/else/redirected";
         String resourceCName = "another/redirect";
@@ -950,7 +950,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testEmptyErrorPage() throws Exception {
+    void emptyErrorPage() throws Exception {
         boolean originalState = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(false);
 
@@ -976,7 +976,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testGZIPDisabled() throws Exception {
+    void gzipDisabled() throws Exception {
         String expectedResponse = "Here is my answer";
         defineResource("Compressed.html", new CompressedPseudoServlet(expectedResponse));
 
@@ -989,7 +989,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testGZIPHandling() throws Exception {
+    void gzipHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
                 + "than the raw message. It should be obvious when you reach that point. "
                 + "Of course it is more than that - it needs to be long enough to cause a problem.";
@@ -1063,7 +1063,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testGZIPUndefinedLengthHandling() throws Exception {
+    void gzipUndefinedLengthHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
                 + "than the raw message. It should be obvious when you reach that point. "
                 + "Of course it is more than that - it needs to be long enough to cause a problem.";
@@ -1077,7 +1077,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testClientListener() throws Exception {
+    void clientListener() throws Exception {
         defineWebPage("Target", "This is another page with <a href=Form.html target='_top'>one link</a>");
         defineWebPage("Form",
                 "This is a page with a simple form: "
@@ -1130,7 +1130,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testRedirect() throws Exception {
+    void redirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1148,7 +1148,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testDuplicateHeaderRedirect() throws Exception {
+    void duplicateHeaderRedirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1166,7 +1166,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
-    void testDisabledRedirect() throws Exception {
+    void disabledRedirect() throws Exception {
         String resourceName = "something/redirected";
         String resourceValue = "the desired content";
 
@@ -1186,7 +1186,7 @@ public class WebClientTest extends HttpUnitTest {
 
     @Test
     @Disabled
-    void testDNSOverride() throws Exception {
+    void dnsOverride() throws Exception {
         WebConversation wc = new WebConversation();
         wc.getClientProperties().setDnsListener(hostName -> "127.0.0.1");
 
@@ -1220,7 +1220,7 @@ public class WebClientTest extends HttpUnitTest {
      * @throws Exception
      */
     @Test
-    void testDelete() throws Exception {
+    void delete() throws Exception {
         String resourceName = "something/to/delete";
         final String responseBody = "deleted";
         final String contentType = "text/plain";

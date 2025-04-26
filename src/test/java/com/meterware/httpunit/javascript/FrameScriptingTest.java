@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,6 +19,7 @@
  */
 package com.meterware.httpunit.javascript;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.meterware.httpunit.HttpUnitTest;
@@ -124,7 +125,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * Test that an image can be used as the source for a frame within a frameset.
      */
     @Test
-    void testImageInFrame() throws Exception {
+    void imageInFrame() throws Exception {
         redefineFrames("/image.gif", "Simple.html");
         _wc.getResponse(getHostPath() + "/Frames.html");
         WebResponse redFrame = _wc.getFrameContents("red");
@@ -135,7 +136,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * Test that a link within a frame that contains a <code>&lt;base ...&gt;</code> element is handled correctly.
      */
     @Test
-    void testFrameContainingBaseElement() throws Exception {
+    void frameContainingBaseElement() throws Exception {
         final String TARGET_TITLE = "Somewhere/Else/Target";
         defineWebPage(TARGET_TITLE, "This is the target page.");
         defineWebPage("Main", "This is a simple page.");
@@ -153,7 +154,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * <code>&lt;base ...&gt;</code> element.
      */
     @Test
-    void testFrameRewrittenToUseBaseElement() throws Exception {
+    void frameRewrittenToUseBaseElement() throws Exception {
         redefineFrames("/Simple.html", "frameRewriter.html");
         _wc.getResponse(getHostPath() + "/Frames.html");
         WebLink link = _wc.getFrameContents("red").getLinks()[0];
@@ -167,7 +168,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * contains a <code>&lt;base ...&gt;</code> element.
      */
     @Test
-    void testImageFrameRewrittenToUseBaseElement() throws Exception {
+    void imageFrameRewrittenToUseBaseElement() throws Exception {
         redefineFrames("/image.gif", "frameRewriter.html");
         _wc.getResponse(getHostPath() + "/Frames.html");
         WebLink link = _wc.getFrameContents("red").getLinks()[0];
@@ -180,7 +181,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * Verifies that a javascript URL which triggers refresh to the parent of a frame resolves with something sensible.
      */
     @Test
-    void testJavaScriptURLToParentFrame() throws Exception {
+    void javaScriptURLToParentFrame() throws Exception {
         defineResource("Frames.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"20%,80%\">"
                 + "    <FRAME src='Linker.html' name='red'>" + "    <FRAME src=Form name=blue>" + "</FRAMESET></HTML>");
         defineWebPage("Linker",
@@ -197,7 +198,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * Verifies that when JavaScript overwrites an empty frame, other empty frames stay empty.
      */
     @Test
-    void testJavaScriptOverwritingBlankFrame() throws Exception {
+    void javaScriptOverwritingBlankFrame() throws Exception {
         defineResource("Frames.html",
                 "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET>" + "    <FRAME src='Writer.html' name='red'>"
                         + "    <FRAME name=green>" + "    <FRAME name=blue>" + "</FRAMESET></HTML>");
@@ -216,7 +217,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * Verifies that the onload event of a frameset can access subframes.
      */
     @Test
-    void testFrameOnLoadEvent() throws Exception {
+    void frameOnLoadEvent() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
         defineResource("Frames.html", "<html><frameset onload='alert( green.document.form.text.value );'>"
                 + "    <frame src='OneForm.html' name='green'>" + "    <frame name=blue>" + "</frameset></htmlL>");
@@ -230,7 +231,7 @@ class FrameScriptingTest extends HttpUnitTest {
      * tag.
      */
     @Test
-    void testFrameOnLoadEventWithNoFrames() throws Exception {
+    void frameOnLoadEventWithNoFrames() throws Exception {
         defineWebPage("OneForm", "<form name='form'><input name=text value='nothing special'></form>");
         defineResource("Frames.html",
                 "<html><frameset onload='alert( green.document.form.text.value );'>"
@@ -245,10 +246,12 @@ class FrameScriptingTest extends HttpUnitTest {
      * Verifies that IFrames can be found using their id.
      */
     @Test
-    void testIFrameAccessById() throws Exception {
-        defineWebPage("Frames", "<iframe id='frame1'></iframe>" + "<script>"
-                + "var frame = document.getElementById('frame1');" + "</script>");
+    void iFrameAccessById() throws Exception {
+        assertDoesNotThrow(() -> {
+            defineWebPage("Frames", "<iframe id='frame1'></iframe>" + "<script>"
+                    + "var frame = document.getElementById('frame1');" + "</script>");
 
-        _wc.getResponse(getHostPath() + "/Frames.html");
+            _wc.getResponse(getHostPath() + "/Frames.html");
+        });
     }
 }

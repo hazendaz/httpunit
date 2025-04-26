@@ -17,49 +17,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-package com.meterware.httpunit;
-
-import java.net.URL;
-
-import org.w3c.dom.html.HTMLTableCellElement;
+package com.meterware.httpunit.ssl;
 
 /**
- * A single cell in an HTML table.
- **/
-public class TableCell extends BlockElement {
-
-    private HTMLTableCellElement _element;
-
-    /**
-     * Returns the number of columns spanned by this cell.
-     **/
-    public int getColSpan() {
-        return _element.getColSpan();
-    }
-
-    /**
-     * Returns the number of rows spanned by this cell.
-     **/
-    public int getRowSpan() {
-        return _element.getRowSpan();
-    }
-
-    /**
-     * Returns the text value of this cell.
-     *
-     * @deprecated as of 1.6, use #getText()
-     */
-    @Deprecated
-    public String asText() {
-        return getText();
-    }
-
-    // ---------------------------------------- package methods -----------------------------------------
-
-    TableCell(WebResponse response, FrameSelector frame, HTMLTableCellElement element, URL url, String parentTarget,
-            String characterSet) {
-        super(response, frame, url, parentTarget, element, characterSet);
-        _element = element;
-    }
-
+ * The Class Placeholder.
+ */
+public class Placeholder {
+    // Placeholder for associated test package
 }

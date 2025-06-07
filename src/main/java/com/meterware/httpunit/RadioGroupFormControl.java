@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class RadioGroupFormControl extends FormControl {
 
-    private List _buttonList = new ArrayList();
+    private List _buttonList = new ArrayList<>();
     private RadioButtonFormControl[] _buttons;
     private String[] _allowedValues;
 
@@ -82,7 +82,7 @@ public class RadioGroupFormControl extends FormControl {
      **/
     @Override
     public String[] getOptionValues() {
-        ArrayList valueList = new ArrayList();
+        ArrayList valueList = new ArrayList<>();
         FormControl[] buttons = getButtons();
         for (FormControl button : buttons) {
             valueList.addAll(Arrays.asList(button.getOptionValues()));
@@ -95,7 +95,7 @@ public class RadioGroupFormControl extends FormControl {
      */
     @Override
     protected String[] getDisplayedOptions() {
-        ArrayList valueList = new ArrayList();
+        ArrayList valueList = new ArrayList<>();
         FormControl[] buttons = getButtons();
         for (FormControl button : buttons) {
             valueList.addAll(Arrays.asList(button.getDisplayedOptions()));

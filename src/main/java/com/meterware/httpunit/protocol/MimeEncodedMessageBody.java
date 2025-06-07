@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -51,8 +51,8 @@ class MimeEncodedMessageBody extends MessageBody {
         encoding.sendClose();
     }
 
-    private final static String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
-    private final static byte[] CRLF = { 0x0d, 0x0A };
+    private static final String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
+    private static final byte[] CRLF = { 0x0d, 0x0A };
 
     private String encode(String string) {
         char[] chars = string.toCharArray();
@@ -109,8 +109,8 @@ class MimeEncodedMessageBody extends MessageBody {
             writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
         }
 
-        private final static char CR = 0x0D;
-        private final static char LF = 0x0A;
+        private static final char CR = 0x0D;
+        private static final char LF = 0x0A;
 
         private String fixLineEndings(String value) {
             StringBuilder sb = new StringBuilder();

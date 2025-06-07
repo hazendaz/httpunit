@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
  **/
 class RequestContext {
 
-    private Hashtable _parameters = new Hashtable();
+    private Hashtable _parameters = new Hashtable<>();
     private Hashtable _visibleParameters;
     private HttpServletRequest _parentRequest;
     private URL _url;
@@ -77,10 +77,10 @@ class RequestContext {
         return (String[]) getParameters().get(name);
     }
 
-    final static private int STATE_INITIAL = 0;
-    final static private int STATE_HAVE_NAME = 1;
-    final static private int STATE_HAVE_EQUALS = 2;
-    final static private int STATE_HAVE_VALUE = 3;
+    static final private int STATE_INITIAL = 0;
+    static final private int STATE_HAVE_NAME = 1;
+    static final private int STATE_HAVE_EQUALS = 2;
+    static final private int STATE_HAVE_VALUE = 3;
 
     /**
      * This method employs a state machine to parse a parameter query string. The transition rules are as follows: State
@@ -151,7 +151,7 @@ class RequestContext {
             if (_parentRequest == null) {
                 _visibleParameters = _parameters;
             } else {
-                _visibleParameters = new Hashtable();
+                _visibleParameters = new Hashtable<>();
                 final Map parameterMap = _parentRequest.getParameterMap();
                 for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));

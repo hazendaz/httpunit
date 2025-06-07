@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
-abstract public class WebRequestSource extends ParameterHolder implements HTMLElement {
+public abstract class WebRequestSource extends ParameterHolder implements HTMLElement {
 
     private FrameSelector _frame;
 
@@ -125,19 +125,19 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Creates and returns a web request from this request source.
      */
-    abstract public WebRequest getRequest();
+    public abstract WebRequest getRequest();
 
     /**
      * Returns an array containing the names of any parameters to be sent on a request based on this request source.
      */
     @Override
-    abstract public String[] getParameterNames();
+    public abstract String[] getParameterNames();
 
     /**
      * Returns the values of the named parameter.
      */
     @Override
-    abstract public String[] getParameterValues(String name);
+    public abstract String[] getParameterValues(String name);
 
     /**
      * Returns the URL relative to the current page which will handle the request.
@@ -230,7 +230,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * Extracts any parameters specified as part of the destination URL, calling addPresetParameter for each one in the
      * order in which they are found.
      */
-    final protected void loadDestinationParameters() {
+    protected final void loadDestinationParameters() {
         StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);
         while (st.hasMoreTokens()) {
             stripOneParameter(st.nextToken());
@@ -302,14 +302,14 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Submits a request to the web client from which this request source was originally obtained.
      */
-    final protected WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
+    protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
         return getDestination().equals("#") ? _baseResponse : _baseResponse.getWindow().sendRequest(request);
     }
 
     /**
      * Returns the web response containing this request source.
      */
-    final protected WebResponse getBaseResponse() {
+    protected final WebResponse getBaseResponse() {
         return _baseResponse;
     }
 

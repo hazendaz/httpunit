@@ -1370,8 +1370,8 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     static class PromptCollector implements DialogResponder {
-        public List confirmPromptsSeen = new ArrayList();
-        public List responsePromptSeen = new ArrayList();
+        public List confirmPromptsSeen = new ArrayList<>();
+        public List responsePromptSeen = new ArrayList<>();
 
         @Override
         public boolean getConfirmation(String confirmationPrompt) {

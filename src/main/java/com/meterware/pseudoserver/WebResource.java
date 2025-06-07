@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -204,6 +204,6 @@ public class WebResource {
     private String _characterSet = DEFAULT_CHARACTER_SET;
     private boolean _hasExplicitContentTypeHeader;
     private boolean _hasExplicitContentLengthHeader;
-    private Vector _headers = new Vector();
+    private Vector _headers = new Vector<>();
     private boolean _isChunked;
 }

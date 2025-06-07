@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -25,7 +25,7 @@ import org.w3c.dom.DOMException;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract public class CharacterDataImpl extends NodeImpl implements CharacterData {
+public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {
 
     private static final long serialVersionUID = 1L;
     private String _data;

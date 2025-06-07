@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -150,7 +150,7 @@ class HttpWebResponse extends WebResponse {
 
     @Override
     public String[] getHeaderFieldNames() {
-        Vector names = new Vector();
+        Vector names = new Vector<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             names.addElement(e.nextElement());
         }
@@ -196,7 +196,7 @@ class HttpWebResponse extends WebResponse {
 
     // ------------------------------------- private members -------------------------------------
 
-    private final static String FILE_ENCODING = Charset.defaultCharset().displayName();
+    private static final String FILE_ENCODING = Charset.defaultCharset().displayName();
 
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseMessage = "OK";
@@ -212,7 +212,7 @@ class HttpWebResponse extends WebResponse {
         _responseMessage = message;
     }
 
-    private Hashtable _headers = new Hashtable();
+    private Hashtable _headers = new Hashtable<>();
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly

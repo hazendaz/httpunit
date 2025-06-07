@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -40,16 +40,16 @@ import org.w3c.dom.html.HTMLTableRowElement;
 public class WebTable extends HTMLElementBase {
 
     /** Predicate to match the complete text of a table's first non-blank cell. **/
-    public final static HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL;
+    public static final HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL;
 
     /** Predicate to match a prefix of a table's first non-blank cell. **/
-    public final static HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL_PREFIX;
+    public static final HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL_PREFIX;
 
     /** Predicate to match a table's summary attribute. **/
-    public final static HTMLElementPredicate MATCH_SUMMARY;
+    public static final HTMLElementPredicate MATCH_SUMMARY;
 
     /** Predicate to match a table's ID. **/
-    public final static HTMLElementPredicate MATCH_ID;
+    public static final HTMLElementPredicate MATCH_ID;
 
     /**
      * Returns the number of rows in the table.
@@ -123,7 +123,7 @@ public class WebTable extends HTMLElementBase {
         int numColumnsWithText = 0;
         boolean rowHasText[] = new boolean[getRowCount()];
         boolean columnHasText[] = new boolean[getColumnCount()];
-        Hashtable spanningCells = new Hashtable();
+        Hashtable spanningCells = new Hashtable<>();
 
         // look for rows and columns with any text in a non-spanning cell
         for (int row = 0; row < rowHasText.length; row++) {
@@ -317,7 +317,7 @@ public class WebTable extends HTMLElementBase {
         _cells[row][column] = cell;
     }
 
-    private ArrayList _rows = new ArrayList();
+    private ArrayList _rows = new ArrayList<>();
 
     void addRow(TableRow tableRow) {
         _cells = null;

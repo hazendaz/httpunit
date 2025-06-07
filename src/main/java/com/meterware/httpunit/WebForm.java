@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebForm extends WebRequestSource {
-    private final static String[] NO_VALUES = {};
+    private static final String[] NO_VALUES = {};
 
     private Button[] _buttons;
 
@@ -67,7 +67,7 @@ public class WebForm extends WebRequestSource {
     private ElementRegistry _registry;
 
     /** Predicate to match a link's name. **/
-    public final static HTMLElementPredicate MATCH_NAME;
+    public static final HTMLElementPredicate MATCH_NAME;
     private HTMLFormElement _domElement;
 
     /**
@@ -172,7 +172,7 @@ public class WebForm extends WebRequestSource {
     public Button[] getButtons() {
         if (_buttons == null) {
             FormControl[] controls = getFormControls();
-            ArrayList buttonList = new ArrayList();
+            ArrayList buttonList = new ArrayList<>();
             for (FormControl control : controls) {
                 if (control instanceof Button) {
                     buttonList.add(control);
@@ -903,7 +903,7 @@ public class WebForm extends WebRequestSource {
      */
     private Vector getSubmitButtonVector() {
         if (_buttonVector == null) {
-            _buttonVector = new Vector();
+            _buttonVector = new Vector<>();
             FormControl[] controls = getFormControls();
             for (FormControl control : controls) {
                 if (control instanceof SubmitButton) {
@@ -925,7 +925,7 @@ public class WebForm extends WebRequestSource {
 
     private FormControl[] getPresetParameters() {
         if (_presetParameters == null) {
-            _presets = new ArrayList();
+            _presets = new ArrayList<>();
             loadDestinationParameters();
             _presetParameters = (FormControl[]) _presets.toArray(new FormControl[_presets.size()]);
         }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,8 +26,8 @@ import java.util.ArrayList;
  **/
 class FilterUrlMap {
 
-    private ArrayList _urlPatterns = new ArrayList();
-    private ArrayList _filters = new ArrayList();
+    private ArrayList _urlPatterns = new ArrayList<>();
+    private ArrayList _filters = new ArrayList<>();
 
     void put(String urlPattern, FilterMetaData metaData) {
         _urlPatterns.add(UrlPatternMatcher.newPatternMatcher(urlPattern));
@@ -35,7 +35,7 @@ class FilterUrlMap {
     }
 
     FilterMetaData[] getMatchingFilters(String resourceName) {
-        ArrayList matches = new ArrayList();
+        ArrayList matches = new ArrayList<>();
         for (int i = 0; i < _urlPatterns.size(); i++) {
             UrlPatternMatcher urlPattern = (UrlPatternMatcher) _urlPatterns.get(i);
             if (urlPattern.matchesResourceName(resourceName)) {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,7 +36,7 @@ public class FormParameter {
     private static final FormParameter UNKNOWN_PARAMETER = new FormParameter();
 
     private FormControl[] _controls;
-    private ArrayList _controlList = new ArrayList();
+    private ArrayList _controlList = new ArrayList<>();
     private RadioGroupFormControl _group;
     private String _name;
 
@@ -106,7 +106,7 @@ public class FormParameter {
         if (getControls().length == 1) {
             return getControls()[0].getDelegate();
         }
-        ArrayList list = new ArrayList();
+        ArrayList list = new ArrayList<>();
         for (FormControl control : _controls) {
             list.add(control.getScriptingHandler());
         }
@@ -114,7 +114,7 @@ public class FormParameter {
     }
 
     String[] getValues() {
-        ArrayList valueList = new ArrayList();
+        ArrayList valueList = new ArrayList<>();
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
             valueList.addAll(Arrays.asList(control.getValues()));
@@ -195,7 +195,7 @@ public class FormParameter {
     }
 
     String[] getOptions() {
-        ArrayList optionList = new ArrayList();
+        ArrayList optionList = new ArrayList<>();
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
             optionList.addAll(Arrays.asList(control.getDisplayedOptions()));
@@ -204,7 +204,7 @@ public class FormParameter {
     }
 
     String[] getOptionValues() {
-        ArrayList valueList = new ArrayList();
+        ArrayList valueList = new ArrayList<>();
         for (int i = 0; i < getControls().length; i++) {
             valueList.addAll(Arrays.asList(getControls()[i].getOptionValues()));
         }

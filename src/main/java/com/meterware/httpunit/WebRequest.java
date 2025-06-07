@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 /**
  * A request sent to a web server.
  **/
-abstract public class WebRequest {
+public abstract class WebRequest {
 
     static final String REFERER_HEADER_NAME = "Referer";
 
@@ -486,7 +486,7 @@ abstract public class WebRequest {
     /**
      * Returns the character set required for this request.
      **/
-    final protected String getCharacterSet() {
+    protected final String getCharacterSet() {
         return _characterSet;
     }
 
@@ -505,7 +505,7 @@ abstract public class WebRequest {
     protected void writeMessageBody(OutputStream stream) throws IOException {
     }
 
-    final protected URL getURLBase() {
+    protected final URL getURLBase() {
         return _urlBase;
     }
 
@@ -519,7 +519,7 @@ abstract public class WebRequest {
         return _urlString + "?" + queryString;
     }
 
-    final protected ParameterHolder getParameterHolder() {
+    protected final ParameterHolder getParameterHolder() {
         return _parameterHolder;
     }
 
@@ -539,7 +539,7 @@ abstract public class WebRequest {
 
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
-            _headers = new Hashtable();
+            _headers = new Hashtable<>();
             if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
             }

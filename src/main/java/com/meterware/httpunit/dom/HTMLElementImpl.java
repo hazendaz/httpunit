@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -29,7 +29,7 @@ import org.w3c.dom.html.HTMLElement;
 public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
     private static final long serialVersionUID = 1L;
-    public final static String UNSPECIFIED_ATTRIBUTE = null;
+    public static final String UNSPECIFIED_ATTRIBUTE = null;
 
     ElementImpl create() {
         return new HTMLElementImpl();
@@ -100,14 +100,14 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
     // ---------------------------------------------- protected methods
     // -----------------------------------------------------
 
-    final protected String getAttributeWithDefault(String attributeName, String defaultValue) {
+    protected final String getAttributeWithDefault(String attributeName, String defaultValue) {
         if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
         }
         return defaultValue;
     }
 
-    final protected String getAttributeWithNoDefault(String attributeName) {
+    protected final String getAttributeWithNoDefault(String attributeName) {
         if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
         }

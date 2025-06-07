@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,18 +36,18 @@ import javax.net.ssl.X509TrustManager;
 public abstract class HttpsProtocolSupport {
 
     /** The name of the system parameter used by java.net to locate protocol handlers. **/
-    private final static String PROTOCOL_HANDLER_PKGS = "java.protocol.handler.pkgs";
+    private static final String PROTOCOL_HANDLER_PKGS = "java.protocol.handler.pkgs";
 
     // Sun Microsystems:
-    public final static String SunJSSE_PROVIDER_CLASS = "com.sun.net.ssl.internal.ssl.Provider";
+    public static final String SunJSSE_PROVIDER_CLASS = "com.sun.net.ssl.internal.ssl.Provider";
     // 741145: "sun.net.www.protocol.https";
-    public final static String SunJSSE_PROVIDER_CLASS2 = "sun.net.www.protocol.https";
-    public final static String SunSSL_PROTOCOL_HANDLER = "com.sun.net.ssl.internal.www.protocol";
+    public static final String SunJSSE_PROVIDER_CLASS2 = "sun.net.www.protocol.https";
+    public static final String SunSSL_PROTOCOL_HANDLER = "com.sun.net.ssl.internal.www.protocol";
 
     // IBM WebSphere
     // both ibm packages are inside ibmjsseprovider.jar that comes with WebSphere
-    public final static String IBMJSSE_PROVIDER_CLASS = "com.ibm.jsse.IBMJSSEProvider";
-    public final static String IBMSSL_PROTOCOL_HANDLER = "com.ibm.net.ssl.www.protocol";
+    public static final String IBMJSSE_PROVIDER_CLASS = "com.ibm.jsse.IBMJSSEProvider";
+    public static final String IBMSSL_PROTOCOL_HANDLER = "com.ibm.net.ssl.www.protocol";
 
     /** The name of the JSSE class which provides support for SSL. **/
     private static String JSSE_PROVIDER_CLASS = SunJSSE_PROVIDER_CLASS;

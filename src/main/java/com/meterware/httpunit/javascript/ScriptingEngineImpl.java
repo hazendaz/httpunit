@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -40,9 +40,9 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     private static final long serialVersionUID = 1L;
 
-    private final static Object[] NO_ARGS = {};
+    private static final Object[] NO_ARGS = {};
 
-    private static ArrayList _errorMessages = new ArrayList();
+    private static ArrayList _errorMessages = new ArrayList<>();
 
     /**
      * clear the list of error Messages

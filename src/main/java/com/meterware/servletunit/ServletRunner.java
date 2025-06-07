@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -264,7 +264,7 @@ public class ServletRunner {
 
         @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-            Hashtable params = new Hashtable();
+            Hashtable params = new Hashtable<>();
             if (classPath != null) {
                 params.put("classpath", classPath);
             }
@@ -275,7 +275,7 @@ public class ServletRunner {
         }
     }
 
-    public final static JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
+    public static final JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
 
     // -------------------------------------------- package methods
     // ---------------------------------------------------------

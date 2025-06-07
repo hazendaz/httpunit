@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,8 +36,8 @@ import org.xml.sax.SAXException;
  **/
 public class Button extends FormControl {
 
-    static final public HTMLElementPredicate WITH_ID;
-    static final public HTMLElementPredicate WITH_LABEL;
+    public static final HTMLElementPredicate WITH_ID;
+    public static final HTMLElementPredicate WITH_LABEL;
 
     private WebResponse _baseResponse;
     // remember the last verifyEnabled result

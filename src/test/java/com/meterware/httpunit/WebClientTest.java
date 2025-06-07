@@ -649,8 +649,8 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     static class Deltas {
-        private ArrayList _missingValues = new ArrayList();
-        private ArrayList _extraValues = new ArrayList();
+        private ArrayList _missingValues = new ArrayList<>();
+        private ArrayList _extraValues = new ArrayList<>();
 
         @Override
         public String toString() {
@@ -1089,7 +1089,7 @@ public class WebClientTest extends HttpUnitTest {
                         + "</FRAMESET></HTML>");
 
         WebConversation wc = new WebConversation();
-        ArrayList messageLog = new ArrayList();
+        ArrayList messageLog = new ArrayList<>();
         wc.addClientListener(new ListenerExample(messageLog));
 
         wc.getResponse(getHostPath() + "/Frames.html");

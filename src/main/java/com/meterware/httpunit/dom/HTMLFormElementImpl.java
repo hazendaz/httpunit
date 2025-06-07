@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -150,7 +150,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 
     @Override
     public HTMLCollection getElements() {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         String[] names = { "INPUT", "TEXTAREA", "BUTTON", "SELECT" };
         for (Iterator each = preOrderIteratorAfterNode(); each.hasNext();) {
             Node node = (Node) each.next();

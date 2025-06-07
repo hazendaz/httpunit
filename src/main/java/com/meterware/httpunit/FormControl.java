@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  **/
 public abstract class FormControl extends HTMLElementBase {
 
-    final static String[] NO_VALUE = {};
+    static final String[] NO_VALUE = {};
 
     private final WebForm _form;
     private HTMLControl _control;
@@ -67,7 +67,7 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Return the type of the control, as seen from JavaScript.
      */
-    abstract public String getType();
+    public abstract String getType();
 
     static ScriptableDelegate newSelectionOption() {
         return new SelectionFormControl.Option();
@@ -116,7 +116,7 @@ public abstract class FormControl extends HTMLElementBase {
         return getScriptingHandler();
     }
 
-    final protected WebForm getForm() {
+    protected final WebForm getForm() {
         return _form;
     }
 
@@ -333,7 +333,7 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Removes the specified required value from the list of values, throwing an exception if it is missing.
      **/
-    final protected void claimValueIsRequired(List values, final String value) {
+    protected final void claimValueIsRequired(List values, final String value) {
         if (!values.contains(value)) {
             throw new MissingParameterValueException(getName(), value,
                     (String[]) values.toArray(new String[values.size()]));

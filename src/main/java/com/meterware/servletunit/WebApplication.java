@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -67,16 +67,16 @@ class WebApplication implements SessionListenerDispatcher {
     private WebResourceMap _servletMapping = new WebResourceMap();
 
     /** A mapping of filter names to FilterConfigurations */
-    private Hashtable _filters = new Hashtable();
+    private Hashtable _filters = new Hashtable<>();
 
     /** A mapping of servlet names to ServletConfigurations */
-    private Hashtable _servlets = new Hashtable();
+    private Hashtable _servlets = new Hashtable<>();
 
     /** A mapping of resource names to filter configurations. **/
     private FilterUrlMap _filterUrlMapping = new FilterUrlMap();
 
     /** A mapping of servlet names to filter configurations. **/
-    private Hashtable _filterMapping = new Hashtable();
+    private Hashtable _filterMapping = new Hashtable<>();
 
     private List<SecurityConstraint> _securityConstraints = new ArrayList<>();
 
@@ -98,7 +98,7 @@ class WebApplication implements SessionListenerDispatcher {
 
     private URL _errorURL;
 
-    private Hashtable _contextParameters = new Hashtable();
+    private Hashtable _contextParameters = new Hashtable<>();
 
     private File _contextDir = null;
 
@@ -409,7 +409,7 @@ class WebApplication implements SessionListenerDispatcher {
     // --------------------------------------------------
 
     private void registerFilters(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable();
+        Hashtable nameToClass = new Hashtable<>();
         NodeList nl = document.getElementsByTagName("filter");
         for (int i = 0; i < nl.getLength(); i++) {
             registerFilterClass(nameToClass, (Element) nl.item(i));
@@ -444,7 +444,7 @@ class WebApplication implements SessionListenerDispatcher {
     private void registerFilterForServlet(String servletName, FilterConfiguration filterConfiguration) {
         List list = (List) _filterMapping.get(servletName);
         if (list == null) {
-            list = new ArrayList();
+            list = new ArrayList<>();
             _filterMapping.put(servletName, list);
         }
         list.add(filterConfiguration);
@@ -475,7 +475,7 @@ class WebApplication implements SessionListenerDispatcher {
     }
 
     private void registerServlets(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable();
+        Hashtable nameToClass = new Hashtable<>();
         NodeList nl = document.getElementsByTagName("servlet");
         for (int i = 0; i < nl.getLength(); i++) {
             registerServletClass(nameToClass, (Element) nl.item(i));
@@ -996,7 +996,7 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         void autoLoadServlets() {
-            ArrayList autoLoadable = new ArrayList();
+            ArrayList autoLoadable = new ArrayList<>();
             if (_defaultMapping != null && _defaultMapping.getConfiguration().isLoadOnStartup()) {
                 autoLoadable.add(_defaultMapping.getConfiguration());
             }

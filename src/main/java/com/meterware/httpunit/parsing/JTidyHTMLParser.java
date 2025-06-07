@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -78,7 +78,7 @@ class JTidyHTMLParser implements HTMLParser {
         return true;
     }
 
-    final private static char NBSP = (char) 160; // non-breaking space, defined by JTidy
+    private static final char NBSP = (char) 160; // non-breaking space, defined by JTidy
 
     /**
      * get the parser of the given url

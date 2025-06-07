@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -37,13 +37,13 @@ class ScriptingSupport {
     private static final Object[] NO_ARGS = {};
 
     /** map of classes to maps of string to function objects. **/
-    private static Hashtable _classFunctionMaps = new Hashtable();
+    private static Hashtable _classFunctionMaps = new Hashtable<>();
 
     /** map of classes to maps of string to getter methods. **/
-    private static Hashtable _classGetterMaps = new Hashtable();
+    private static Hashtable _classGetterMaps = new Hashtable<>();
 
     /** map of classes to maps of string to setter methods. **/
-    private static Hashtable _classSetterMaps = new Hashtable();
+    private static Hashtable _classSetterMaps = new Hashtable<>();
 
     static boolean hasNamedProperty(Object element, String javaPropertyName, Scriptable scriptable) {
         Method getter = getPropertyGetter(element.getClass(), javaPropertyName);
@@ -70,7 +70,7 @@ class ScriptingSupport {
     private static FunctionObject getFunctionObject(Class aClass, String methodName, Scriptable scriptable) {
         Hashtable functionMap = (Hashtable) _classFunctionMaps.get(aClass);
         if (functionMap == null) {
-            _classFunctionMaps.put(aClass, functionMap = new Hashtable());
+            _classFunctionMaps.put(aClass, functionMap = new Hashtable<>());
         }
 
         Object result = functionMap.get(methodName);
@@ -96,7 +96,7 @@ class ScriptingSupport {
     private static Method getPropertyGetter(Class aClass, String propertyName) {
         Hashtable methodMap = (Hashtable) _classGetterMaps.get(aClass);
         if (methodMap == null) {
-            _classGetterMaps.put(aClass, methodMap = new Hashtable());
+            _classGetterMaps.put(aClass, methodMap = new Hashtable<>());
         }
 
         Method result = (Method) methodMap.get(propertyName);
@@ -167,7 +167,7 @@ class ScriptingSupport {
     static Method getPropertySetter(Class aClass, String propertyName, Object value) {
         Hashtable methodMap = (Hashtable) _classSetterMaps.get(aClass);
         if (methodMap == null) {
-            _classSetterMaps.put(aClass, methodMap = new Hashtable());
+            _classSetterMaps.put(aClass, methodMap = new Hashtable<>());
         }
 
         Method result = (Method) methodMap.get(propertyName);

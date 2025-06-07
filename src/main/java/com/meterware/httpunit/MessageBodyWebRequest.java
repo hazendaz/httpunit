@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -32,7 +32,7 @@ import java.net.URLConnection;
  * A web request which contains a non-empty message body. Note that such requests <em>must</em> use the
  * <code>http</code> or <code>https</code> protocols.
  **/
-abstract public class MessageBodyWebRequest extends WebRequest {
+public abstract class MessageBodyWebRequest extends WebRequest {
 
     protected MessageBody _body;
     private boolean _mimeEncoded;

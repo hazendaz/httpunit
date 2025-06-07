@@ -59,12 +59,12 @@ import org.xml.sax.InputSource;
  */
 class FiltersTestCase {
 
-    final static FilterMetaData FILTER1 = new FilterMetaDataImpl(1);
-    final static FilterMetaData FILTER2 = new FilterMetaDataImpl(2);
-    final static FilterMetaData FILTER3 = new FilterMetaDataImpl(3);
-    final static FilterMetaData FILTER4 = new FilterMetaDataImpl(4);
-    final static FilterMetaData FILTER5 = new FilterMetaDataImpl(5);
-    final static FilterMetaData FILTER6 = new FilterMetaDataImpl(6);
+    static final FilterMetaData FILTER1 = new FilterMetaDataImpl(1);
+    static final FilterMetaData FILTER2 = new FilterMetaDataImpl(2);
+    static final FilterMetaData FILTER3 = new FilterMetaDataImpl(3);
+    static final FilterMetaData FILTER4 = new FilterMetaDataImpl(4);
+    static final FilterMetaData FILTER5 = new FilterMetaDataImpl(5);
+    static final FilterMetaData FILTER6 = new FilterMetaDataImpl(6);
 
     private static boolean _servletCalled;
 
@@ -281,7 +281,7 @@ class FiltersTestCase {
         assertNull(filterConfig.getInitParameter("gender"), "init parameter 'gender' should be null");
         assertEquals("red", filterConfig.getInitParameter("color"), "init parameter 'red'");
 
-        ArrayList names = new ArrayList();
+        ArrayList names = new ArrayList<>();
         for (Enumeration e = filterConfig.getInitParameterNames(); e.hasMoreElements();) {
             String name = (String) e.nextElement();
             names.add(name);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,8 +36,8 @@ import org.w3c.dom.TypeInfo;
 public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
 
     private static final long serialVersionUID = 1L;
-    private Hashtable _attributes = new Hashtable();
-    private ArrayList _listeners = new ArrayList();
+    private Hashtable _attributes = new Hashtable<>();
+    private ArrayList _listeners = new ArrayList<>();
 
     static ElementImpl createElement(DocumentImpl owner, String tagName) {
         ElementImpl element = new ElementImpl();

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -25,9 +25,9 @@ import java.io.Reader;
 /**
  * A basic simulated servlet for testing the HttpUnit library.
  **/
-abstract public class PseudoServlet {
+public abstract class PseudoServlet {
 
-    final static public String CONTENTS = "contents";
+    public static final String CONTENTS = "contents";
 
     /**
      * Returns a resource object as a result of a get request.

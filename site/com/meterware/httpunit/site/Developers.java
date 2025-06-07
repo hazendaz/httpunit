@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import java.util.ArrayList;
  **/
 public class Developers extends FragmentTemplate {
 
-    private ArrayList _groups = new ArrayList();
+    private ArrayList _groups = new ArrayList<>();
 
     public FragmentTemplate newFragment() {
         return new Developers();
@@ -80,8 +80,8 @@ public class Developers extends FragmentTemplate {
 
     public class Group {
 
-        private ArrayList _developers = new ArrayList();
-        private ArrayList _summaries = new ArrayList();
+        private ArrayList _developers = new ArrayList<>();
+        private ArrayList _summaries = new ArrayList<>();
         private String _type;
         private static final int MAX_SUMMARY_COLUMNS = 6;
 

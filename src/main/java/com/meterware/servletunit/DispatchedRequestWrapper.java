@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -81,13 +81,13 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
-    final static String REQUEST_URI = "jakarta.servlet.include.request_uri";
-    final static String CONTEXT_PATH = "jakarta.servlet.include.context_path";
-    final static String SERVLET_PATH = "jakarta.servlet.include.servlet_path";
-    final static String PATH_INFO = "jakarta.servlet.include.path_info";
-    final static String QUERY_STRING = "jakarta.servlet.include.query_string";
+    static final String REQUEST_URI = "jakarta.servlet.include.request_uri";
+    static final String CONTEXT_PATH = "jakarta.servlet.include.context_path";
+    static final String SERVLET_PATH = "jakarta.servlet.include.servlet_path";
+    static final String PATH_INFO = "jakarta.servlet.include.path_info";
+    static final String QUERY_STRING = "jakarta.servlet.include.query_string";
 
-    private Hashtable _attributes = new Hashtable();
+    private Hashtable _attributes = new Hashtable<>();
 
     IncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         super(request, dispatcher);

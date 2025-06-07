@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -79,5 +79,5 @@ class NekoHTMLParser implements HTMLParser {
         return true;
     }
 
-    private final static char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
+    private static final char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
 }

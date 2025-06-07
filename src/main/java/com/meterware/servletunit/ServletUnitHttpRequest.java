@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -547,13 +547,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     private Vector getPreferredLocales() {
         if (_locales == null) {
-            _locales = new Vector();
+            _locales = new Vector<>();
             String languages = getHeader("accept-language");
             if (languages == null) {
                 _locales.add(Locale.getDefault());
             } else {
                 StringTokenizer st = new StringTokenizer(languages, ",");
-                ArrayList al = new ArrayList();
+                ArrayList al = new ArrayList<>();
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken();
                     al.add(new PrioritizedLocale(token));
@@ -639,7 +639,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-        Vector list = new Vector();
+        Vector list = new Vector<>();
         if (_headers.containsKey(name)) {
             list.add(_headers.get(name));
         }
@@ -777,15 +777,15 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- private members ----------------------------------------------
 
-    final static private String LOOPBACK_ADDRESS = "127.0.0.1";
+    static final private String LOOPBACK_ADDRESS = "127.0.0.1";
 
     private WebRequest _request;
     private ServletMetaData _servletRequest;
     private WebClient.HeaderDictionary _headers;
     private ServletUnitContext _context;
     private ServletUnitHttpSession _session;
-    private Hashtable _attributes = new Hashtable();
-    private Vector _cookies = new Vector();
+    private Hashtable _attributes = new Hashtable<>();
+    private Vector _cookies = new Vector<>();
     private String _sessionID;
     private byte[] _messageBody;
 

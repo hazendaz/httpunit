@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,9 +42,9 @@ public abstract class HttpUnitOptions {
     // comment out the scripting engine not to be used by allowing the appropriate number of asterisks in the comment on
     // the next line (1 or 2)
     /**/
-    final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
+    public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
     /*
-     * / final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
+     * / public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
      */
 
     /**

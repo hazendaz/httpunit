@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -34,7 +34,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private static final String[] NO_VALUES = {};
     private final String _characterSet;
 
-    private Hashtable _parameters = new Hashtable();
+    private Hashtable _parameters = new Hashtable<>();
     private boolean _submitAsMime;
 
     UncheckedParameterHolder() {

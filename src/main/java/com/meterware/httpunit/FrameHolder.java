@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -34,10 +34,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-    private Hashtable _contents = new Hashtable();
+    private Hashtable _contents = new Hashtable<>();
 
     /** Map from a frame selector to its subframe selectors. **/
-    private Hashtable _subframes = new Hashtable();
+    private Hashtable _subframes = new Hashtable<>();
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;
@@ -145,7 +145,7 @@ class FrameHolder {
     }
 
     List getActiveFrameNames() {
-        List result = new ArrayList();
+        List result = new ArrayList<>();
         for (Enumeration e = _contents.keys(); e.hasMoreElements();) {
             result.add(((FrameSelector) e.nextElement()).getName());
         }

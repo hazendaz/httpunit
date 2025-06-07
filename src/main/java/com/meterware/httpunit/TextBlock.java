@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,11 +33,11 @@ import org.w3c.dom.Node;
  **/
 public class TextBlock extends BlockElement {
 
-    private ArrayList _lists = new ArrayList();
+    private ArrayList _lists = new ArrayList<>();
     /** Predicate to match part or all of a block's class attribute. **/
-    public final static HTMLElementPredicate MATCH_CLASS;
+    public static final HTMLElementPredicate MATCH_CLASS;
     /** Predicate to match the tag associated with a block (case insensitive). **/
-    public final static HTMLElementPredicate MATCH_TAG;
+    public static final HTMLElementPredicate MATCH_TAG;
 
     public TextBlock(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {

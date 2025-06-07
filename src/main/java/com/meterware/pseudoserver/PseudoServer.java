@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -69,7 +69,7 @@ public class PseudoServer {
 
     private int _connectionNum = 0;
 
-    private ArrayList _classpathDirs = new ArrayList();
+    private ArrayList _classpathDirs = new ArrayList<>();
 
     private String _maxProtocolLevel = "1.1";
 
@@ -273,7 +273,7 @@ public class PseudoServer {
 
     // ------------------------------------- private members ---------------------------------------
 
-    private Hashtable _resources = new Hashtable();
+    private Hashtable _resources = new Hashtable<>();
 
     private boolean _active = true;
 
@@ -484,7 +484,7 @@ public class PseudoServer {
 
 class HttpResponseStream {
 
-    final private static String CRLF = "\r\n";
+    private static final String CRLF = "\r\n";
 
     void restart() {
         _headersWritten = false;
@@ -575,7 +575,7 @@ class HttpResponseStream {
     private OutputStream _stream;
     private PrintWriter _pw;
 
-    private Vector _headers = new Vector();
+    private Vector _headers = new Vector<>();
     private String _protocol = "HTTP/1.0";
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseText = "OK";

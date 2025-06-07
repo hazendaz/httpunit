@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -40,8 +40,8 @@ public class CookieJar {
 
     private static final int DEFAULT_HEADER_SIZE = 80;
 
-    private ArrayList _cookies = new ArrayList();
-    private ArrayList _globalCookies = new ArrayList();
+    private ArrayList _cookies = new ArrayList<>();
+    private ArrayList _globalCookies = new ArrayList<>();
     private CookiePress _press;
 
     /**
@@ -354,7 +354,7 @@ public class CookieJar {
         private Vector getCookieTokens(String cookieHeader) {
             StringReader sr = new StringReader(cookieHeader);
             StreamTokenizer st = new StreamTokenizer(sr);
-            Vector tokens = new Vector();
+            Vector tokens = new Vector<>();
 
             // clear syntax tables of the StreamTokenizer
             st.resetSyntax();

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -46,9 +46,9 @@ import org.xml.sax.SAXException;
  * @author Seth Ladd
  * @author Oliver Imbusch
  **/
-abstract public class WebClient {
+public abstract class WebClient {
 
-    private ArrayList _openWindows = new ArrayList();
+    private ArrayList _openWindows = new ArrayList<>();
 
     /** The current main window. **/
     private WebWindow _mainWindow = new WebWindow(this);
@@ -60,7 +60,7 @@ abstract public class WebClient {
     private String _authorizationString;
 
     private String _proxyAuthorizationString;
-    private Hashtable _credentials = new Hashtable();
+    private Hashtable _credentials = new Hashtable<>();
 
     public WebWindow getMainWindow() {
         return _mainWindow;
@@ -433,7 +433,7 @@ abstract public class WebClient {
     /**
      * Writes the message body for the request.
      **/
-    final protected void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
+    protected final void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
         request.writeMessageBody(stream);
     }
 
@@ -466,7 +466,7 @@ abstract public class WebClient {
      * Updates this web client based on a received response. This includes updating cookies and frames. This method is
      * required by ServletUnit, which cannot call the updateWindow method directly.
      **/
-    final protected void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
+    protected final void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
         getMainWindow().updateWindow(frame.getName(), response, new RequestContext());
     }
 
@@ -608,9 +608,9 @@ abstract public class WebClient {
 
     private boolean _exceptionsThrownOnErrorStatus = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
 
-    private final List _clientListeners = new ArrayList();
+    private final List _clientListeners = new ArrayList<>();
 
-    private final List _windowListeners = new ArrayList();
+    private final List _windowListeners = new ArrayList<>();
 
     private DialogResponder _dialogResponder = new DialogAdapter();
 

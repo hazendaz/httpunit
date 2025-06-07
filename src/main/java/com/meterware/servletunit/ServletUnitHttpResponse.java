@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -51,7 +51,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private boolean _committed;
     private Locale _locale = Locale.getDefault();
 
-    private static final Hashtable ENCODING_MAP = new Hashtable();
+    private static final Hashtable ENCODING_MAP = new Hashtable<>();
 
     /**
      * Adds the specified cookie to the response. It can be called multiple times to set more than one cookie.
@@ -148,7 +148,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      **/
     @Override
     public void setHeader(String name, String value) {
-        ArrayList values = new ArrayList();
+        ArrayList values = new ArrayList<>();
         values.add(value);
         synchronized (_headers) {
             _headers.put(name.toUpperCase(), values);
@@ -292,7 +292,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
             String key = name.toUpperCase();
             ArrayList values = (ArrayList) _headers.get(key);
             if (values == null) {
-                values = new ArrayList();
+                values = new ArrayList<>();
                 _headers.put(key, values);
             }
             values.add(value);
@@ -446,7 +446,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector();
+        Vector names = new Vector<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             names.addElement(e.nextElement());
         }
@@ -537,11 +537,11 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     private String _statusMessage = "OK";
 
-    private final Hashtable _headers = new Hashtable();
+    private final Hashtable _headers = new Hashtable<>();
 
     private boolean _headersComplete;
 
-    private Vector _cookies = new Vector();
+    private Vector _cookies = new Vector<>();
 
     private void completeHeaders() {
         if (_headersComplete) {
@@ -616,7 +616,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector();
+        Vector names = new Vector<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             names.addElement(e.nextElement());
         }

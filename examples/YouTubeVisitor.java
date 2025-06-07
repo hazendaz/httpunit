@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -98,12 +98,12 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 		this.withDisplay = withDisplay;
 		this.displayCheckbox.setSelected(withDisplay);
 	}
-	final static String helpMessage = "Select Target Folder and cut&paste Video URLs then click 'visit'";
+	static final String helpMessage = "Select Target Folder and cut&paste Video URLs then click 'visit'";
 
 	// Create a file chooser
 	protected JFileChooser fileChooser;
 
-	final static String chooserTitle = "Select Target Folder";
+	static final String chooserTitle = "Select Target Folder";
 
 	// Layout constraints
 	GridBagConstraints gbc = new GridBagConstraints();
@@ -304,7 +304,7 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 				BrowserDisplayer.showResponseInBrowser(response);
 			
 			WebLink[] links = response.getLinks();
-			ArrayList result = new ArrayList();
+			ArrayList result = new ArrayList<>();
 			for (int i = 0; i < links.length; i++) {
 				WebLink link = links[i];
 				String linkText=link.getText();

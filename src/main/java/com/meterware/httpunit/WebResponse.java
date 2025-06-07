@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -61,7 +61,7 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  * @author Wolfgang Fahl
  **/
-abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
+public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
 
     private static final String HTML_CONTENT = "text/html";
     private static final String XHTML_CONTENT = "application/xhtml+xml";
@@ -212,12 +212,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the response code associated with this response.
      **/
-    abstract public int getResponseCode();
+    public abstract int getResponseCode();
 
     /**
      * Returns the response message associated with this response.
      **/
-    abstract public String getResponseMessage();
+    public abstract String getResponseMessage();
 
     /**
      * Returns the content length of this response.
@@ -275,13 +275,13 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the names of the header fields found in the response.
      **/
-    abstract public String[] getHeaderFieldNames();
+    public abstract String[] getHeaderFieldNames();
 
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null. If more than one
      * header is defined for the specified name, returns only the first found.
      **/
-    abstract public String getHeaderField(String fieldName);
+    public abstract String getHeaderField(String fieldName);
 
     /**
      * Returns the actual byte stream of the response e.g. for download results
@@ -979,7 +979,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     // ---------------------------------------- Object methods --------------------------------------------
 
     @Override
-    abstract public String toString();
+    public abstract String toString();
 
     // ----------------------------------------- protected members -----------------------------------------------
 
@@ -1016,7 +1016,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         _responseText = text;
     }
 
-    final protected void defineRawInputStream(InputStream inputStream) throws IOException {
+    protected final void defineRawInputStream(InputStream inputStream) throws IOException {
         if (_inputStream != null || _responseText != null) {
             throw new IllegalStateException("Must be called before response text is defined.");
         }
@@ -1055,7 +1055,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     // ------------------------------------------ package members ------------------------------------------------
 
-    final static String BLANK_HTML = "";
+    static final String BLANK_HTML = "";
 
     static WebResponse createBlankResponse() {
         return new DefaultWebResponse(BLANK_HTML);
@@ -1103,7 +1103,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     WebRequest[] getFrameRequests() throws SAXException {
         WebFrame[] frames = getFrames();
-        Vector requests = new Vector();
+        Vector requests = new Vector<>();
         for (WebFrame frame : frames) {
             if (frame.hasInitialRequest()) {
                 requests.addElement(frame.getInitialRequest());
@@ -1507,7 +1507,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         private Hashtable getAttributes() {
             if (_attributes == null) {
-                _attributes = new Hashtable();
+                _attributes = new Hashtable<>();
             }
             return _attributes;
         }

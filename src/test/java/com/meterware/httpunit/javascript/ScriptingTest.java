@@ -441,7 +441,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 + "/Target.txt', 'sample' );\">go</a>" + "<a href='#' onClick=\"otherWindow.close();\">go</a>"
                 + "<a href='#' onClick=\"alert( 'window is ' + (otherWindow.closed ? '' : 'not ') + 'closed' );\">go</a>"
                 + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override
@@ -477,7 +477,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 + "<a href='#' onClick=\"otherWindow.close();\">go</a>"
                 + "<a href='#' onClick=\"alert( 'window is ' + (otherWindow.closed ? '' : 'not ') + 'closed' );\">go</a>"
                 + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override
@@ -513,7 +513,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 + "/Target.txt', '_self' );\">go</a>" + "<a href='#' onClick=\"otherWindow.close();\">go</a>"
                 + "<a href='#' onClick=\"alert( 'window is ' + (otherWindow.closed ? '' : 'not ') + 'closed' );\">go</a>"
                 + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override
@@ -541,7 +541,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                         + "<body><script language='JavaScript'>function newWindow(hrefTarget) {"
                         + "      window.open(hrefTarget);" + "}</script>" + "<a href='javascript:newWindow( \""
                         + getHostPath() + "/Target.txt#middle\" );'>go</a>" + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override
@@ -565,7 +565,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     void windowOpenNoContents() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" + "<body>"
                 + "<a href='#' onClick=\"window.open( null, 'sample' );\">go</a>" + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override
@@ -595,7 +595,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 "<html><head><title>Amazing!</title></head>" + "<body>" + "<a href='#' onClick=\"window.open( '"
                         + getHostPath() + "/Target.html', 'sample' );\">go</a>" + "<a href='#' onClick=\"window.open( '"
                         + getHostPath() + "/Revise.html', 'sample' );\">go</a>" + "</body></html>");
-        final ArrayList windowsOpened = new ArrayList();
+        final ArrayList windowsOpened = new ArrayList<>();
         WebConversation wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override

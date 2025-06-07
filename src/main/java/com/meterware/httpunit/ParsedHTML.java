@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -51,9 +51,9 @@ import org.w3c.dom.html.HTMLTableRowElement;
  **/
 public class ParsedHTML {
 
-    final static private HTMLElement[] NO_ELEMENTS = {};
+    static final private HTMLElement[] NO_ELEMENTS = {};
 
-    final static private String[] TEXT_ELEMENTS = { "p", "h1", "h2", "h3", "h4", "h5", "h6" };
+    static final private String[] TEXT_ELEMENTS = { "p", "h1", "h2", "h3", "h4", "h5", "h6" };
 
     private Node _rootNode;
 
@@ -83,13 +83,13 @@ public class ParsedHTML {
     /** map of DOM elements to HTML elements **/
     private ElementRegistry _registry = new ElementRegistry();
 
-    private ArrayList _blocksList = new ArrayList();
+    private ArrayList _blocksList = new ArrayList<>();
     private TextBlock[] _blocks;
 
-    private ArrayList _tableList = new ArrayList();
+    private ArrayList _tableList = new ArrayList<>();
     private WebTable[] _tables;
 
-    private ArrayList _frameList = new ArrayList();
+    private ArrayList _frameList = new ArrayList<>();
     private WebFrame[] _frames;
 
     ParsedHTML(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
@@ -269,7 +269,7 @@ public class ParsedHTML {
      */
     public HTMLElement[] getElementsWithAttribute(String name, String value) {
         loadElements();
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         for (Iterator i = _registry.iterator(); i.hasNext();) {
             HTMLElement element = (HTMLElement) i.next();
             String aValue = element.getAttribute(name);
@@ -361,7 +361,7 @@ public class ParsedHTML {
      * Returns all links found in the page matching the specified criteria.
      **/
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) {
-        ArrayList matches = new ArrayList();
+        ArrayList matches = new ArrayList<>();
         WebForm[] forms = getForms();
         for (WebForm form : forms) {
             if (predicate.matchesCriteria(form, criteria)) {
@@ -514,11 +514,11 @@ public class ParsedHTML {
             return false;
         }
 
-        final protected ParsedHTML getParsedHTML(NodeUtils.PreOrderTraversal pot) {
+        protected final ParsedHTML getParsedHTML(NodeUtils.PreOrderTraversal pot) {
             return (ParsedHTML) getClosestContext(pot, ParsedHTML.class);
         }
 
-        final protected Object getClosestContext(NodeUtils.PreOrderTraversal pot, Class aClass) {
+        protected final Object getClosestContext(NodeUtils.PreOrderTraversal pot, Class aClass) {
             return pot.getClosestContext(aClass);
         }
 
@@ -991,7 +991,7 @@ public class ParsedHTML {
                 if (_elementsByClass.containsKey(token)) {
                     ((ArrayList) _elementsByClass.get(token)).add(htmlElement);
                 } else {
-                    ArrayList arrayList = new ArrayList();
+                    ArrayList arrayList = new ArrayList<>();
                     arrayList.add(htmlElement);
                     _elementsByClass.put(token, arrayList);
                 }
@@ -1002,7 +1002,7 @@ public class ParsedHTML {
     private void addNamedElement(String name, HTMLElement htmlElement) {
         List list = (List) _elementsByName.get(name);
         if (list == null) {
-            _elementsByName.put(name, list = new ArrayList());
+            _elementsByName.put(name, list = new ArrayList<>());
         }
         list.add(htmlElement);
     }
@@ -1066,7 +1066,7 @@ public class ParsedHTML {
      * Returns all links found in the page matching the specified criteria.
      **/
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) {
-        ArrayList matches = new ArrayList();
+        ArrayList matches = new ArrayList<>();
         WebLink[] links = getLinks();
         for (WebLink link : links) {
             if (predicate.matchesCriteria(link, criteria)) {
@@ -1286,7 +1286,7 @@ public class ParsedHTML {
      * Returns the tables which match the specified criteria.
      **/
     private WebTable[] getTablesSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
-        ArrayList matches = new ArrayList();
+        ArrayList matches = new ArrayList<>();
         for (WebTable table : tables) {
             if (predicate.matchesCriteria(table, value)) {
                 matches.add(table);

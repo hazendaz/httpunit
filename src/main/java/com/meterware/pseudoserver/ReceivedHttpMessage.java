@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,7 +36,7 @@ abstract class ReceivedHttpMessage {
     private static final int CR = 13;
     private static final int LF = 10;
     private Reader _reader;
-    private Hashtable _headers = new Hashtable();
+    private Hashtable _headers = new Hashtable<>();
     private byte[] _requestBody;
 
     ReceivedHttpMessage(InputStream inputStream) throws IOException {

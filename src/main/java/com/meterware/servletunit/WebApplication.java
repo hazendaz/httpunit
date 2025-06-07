@@ -133,7 +133,7 @@ class WebApplication implements SessionListenerDispatcher {
      * Constructs an application spec from an XML document.
      */
     WebApplication(Document document, File file, String contextPath) throws MalformedURLException, SAXException {
-        if (contextPath != null && contextPath.length() > 0 && !contextPath.startsWith("/")) {
+        if (contextPath != null && !contextPath.isEmpty() && !contextPath.startsWith("/")) {
             throw new IllegalArgumentException("Context path " + contextPath + " must start with '/'");
         }
         _contextDir = file;

@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -290,7 +291,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     public void addHeader(String name, String value) {
         synchronized (_headers) {
             String key = name.toUpperCase();
-            ArrayList values = (ArrayList) _headers.get(key);
+            List values = (ArrayList) _headers.get(key);
             if (values == null) {
                 values = new ArrayList<>();
                 _headers.put(key, values);
@@ -601,12 +602,12 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     @Override
     public Collection<String> getHeaders(String name) {
-        ArrayList values;
+        List values;
         synchronized (_headers) {
             values = (ArrayList) _headers.get(name.toUpperCase());
         }
         if (values == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return values;
     }

@@ -213,7 +213,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
     }
 
     private void loadPresetParameters() {
-        _presetParameterMap = new HashMap();
+        _presetParameterMap = new HashMap<>();
         _presetParameterList = new ArrayList<>();
         loadDestinationParameters();
     }

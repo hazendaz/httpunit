@@ -972,7 +972,7 @@ public class WebForm extends WebRequestSource {
      * controls with a particular name. Unnamed parameters are ignored.
      */
     private Map getFormParameters() {
-        Map formParameters = new HashMap();
+        Map formParameters = new HashMap<>();
         loadFormParameters(formParameters, getPresetParameters());
         loadFormParameters(formParameters, getFormControls());
         return formParameters;

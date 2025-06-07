@@ -72,13 +72,13 @@ public class ParsedHTML {
     private boolean _enableNoScriptNodes;
 
     /** map of element IDs to elements. **/
-    private HashMap _elementsByID = new HashMap();
+    private HashMap _elementsByID = new HashMap<>();
 
     /** map of element names to lists of elements. **/
-    private HashMap _elementsByName = new HashMap();
+    private HashMap _elementsByName = new HashMap<>();
 
     /** map of element class to elements. **/
-    private HashMap _elementsByClass = new HashMap();
+    private HashMap _elementsByClass = new HashMap<>();
 
     /** map of DOM elements to HTML elements **/
     private ElementRegistry _registry = new ElementRegistry();
@@ -812,7 +812,7 @@ public class ParsedHTML {
         }
     }
 
-    private static HashMap _htmlFactoryClasses = new HashMap();
+    private static HashMap _htmlFactoryClasses = new HashMap<>();
     private static HTMLElementFactory _defaultFactory = new DefaultElementFactory();
 
     static {

@@ -94,7 +94,7 @@ public class CookieTest {
     }
 
     private void checkMatching(int index, boolean success, URL url, String domain, String path) {
-        HashMap attributes = new HashMap();
+        HashMap attributes = new HashMap<>();
         attributes.put("path", path);
         attributes.put("domain", domain);
         Cookie cookie = new Cookie("name", "value", attributes);

@@ -406,7 +406,7 @@ public class CookieJar {
 
         // the current value
         private StringBuilder _value = new StringBuilder();
-        private HashMap _attributes = new HashMap();
+        private HashMap _attributes = new HashMap<>();
         private URL _sourceURL;
 
         /**

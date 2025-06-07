@@ -141,7 +141,7 @@ public class WebApplet extends HTMLElementBase {
 
     private Map getParameterMap() {
         if (_parameters == null) {
-            _parameters = new HashMap();
+            _parameters = new HashMap<>();
             NodeList nl = ((Element) getNode()).getElementsByTagName("param");
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -130,8 +130,8 @@ public class JavaScript {
         private static final long serialVersionUID = 1L;
         protected ScriptableDelegate _scriptable;
         protected JavaScriptEngine _parent;
-        protected Map _eventListeners = new HashMap(); // Map<String,Set<EventListener>>
-        protected Map _eventCaptureListeners = new HashMap(); // Map<String,Set<EventListener>>
+        protected Map _eventListeners = new HashMap<>(); // Map<String,Set<EventListener>>
+        protected Map _eventCaptureListeners = new HashMap<>(); // Map<String,Set<EventListener>>
 
         /**
          * initialize JavaScript for the given ScriptEngine

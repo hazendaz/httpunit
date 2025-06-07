@@ -925,9 +925,9 @@ class WebApplication implements SessionListenerDispatcher {
      */
     class WebResourceMap {
 
-        private final Map _exactMatches = new HashMap();
-        private final Map _extensions = new HashMap();
-        private final Map _urlTree = new HashMap();
+        private final Map _exactMatches = new HashMap<>();
+        private final Map _extensions = new HashMap<>();
+        private final Map _urlTree = new HashMap<>();
         private WebResourceMapping _defaultMapping;
 
         void put(String mapping, WebResourceConfiguration configuration) {
@@ -947,7 +947,7 @@ class WebApplication implements SessionListenerDispatcher {
                         return;
                     }
                     if (!context.containsKey(part)) {
-                        context.put(part, new HashMap());
+                        context.put(part, new HashMap<>());
                     }
                     context = (Map) context.get(part);
                 }

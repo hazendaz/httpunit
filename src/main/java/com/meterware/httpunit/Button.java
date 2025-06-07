@@ -141,7 +141,7 @@ public class Button extends FormControl {
 
         @Override
         public String getMessage() {
-            return "Button" + (getName().length() == 0 ? "" : " '" + getName() + "'")
+            return "Button" + (getName().isEmpty() ? "" : " '" + getName() + "'")
                     + " is disabled and may not be clicked.";
         }
 

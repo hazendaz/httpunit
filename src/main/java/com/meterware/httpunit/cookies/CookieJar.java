@@ -328,7 +328,7 @@ public class CookieJar {
         }
 
         private char lastCharOf(String string) {
-            return string.length() == 0 ? ' ' : string.charAt(string.length() - 1);
+            return string.isEmpty() ? ' ' : string.charAt(string.length() - 1);
         }
 
         /**
@@ -512,7 +512,7 @@ public class CookieJar {
         }
 
         private int getPathAttributeStatus(String pathAttribute, String sourcePath) {
-            if (!CookieProperties.isPathMatchingStrict() || sourcePath.length() == 0
+            if (!CookieProperties.isPathMatchingStrict() || sourcePath.isEmpty()
                     || sourcePath.startsWith(pathAttribute)) {
                 return CookieListener.ACCEPTED;
             }

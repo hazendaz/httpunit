@@ -81,7 +81,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * Returns the target for this request source.
      */
     public String getTarget() {
-        if (getSpecifiedTarget().length() == 0) {
+        if (getSpecifiedTarget().isEmpty()) {
             return _defaultTarget;
         }
         return getSpecifiedTarget();
@@ -161,7 +161,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     protected String getRelativeURL() {
         String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));
-        if (result.trim().length() == 0) {
+        if (result.trim().isEmpty()) {
             result = getBaseURL().getFile();
         }
         return result;
@@ -428,7 +428,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     private String getParametersString() {
         String url = HttpUnitUtils.trimFragment(getDestination());
-        if (url.trim().length() == 0) {
+        if (url.trim().isEmpty()) {
             url = getBaseURL().toExternalForm();
         }
         if (HttpUnitUtils.isJavaScriptURL(url)) {

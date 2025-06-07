@@ -106,7 +106,7 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     private Hashtable readParameters(String content) {
         Hashtable parameters = new Hashtable<>();
-        if (content == null || content.trim().length() == 0) {
+        if (content == null || content.trim().isEmpty()) {
             return parameters;
         }
 

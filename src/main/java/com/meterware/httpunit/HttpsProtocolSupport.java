@@ -192,7 +192,7 @@ public abstract class HttpsProtocolSupport {
      */
     private static void registerSSLProtocolHandler() {
         String list = System.getProperty(PROTOCOL_HANDLER_PKGS);
-        if (list == null || list.length() == 0) {
+        if (list == null || list.isEmpty()) {
             System.setProperty(PROTOCOL_HANDLER_PKGS, SSL_PROTOCOL_HANDLER);
         } else if (list.indexOf(SSL_PROTOCOL_HANDLER) < 0) {
             // [ 1516007 ] Default SSL provider not being used

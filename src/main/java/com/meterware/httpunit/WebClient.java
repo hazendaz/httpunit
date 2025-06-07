@@ -80,7 +80,7 @@ public abstract class WebClient {
     }
 
     public WebWindow getOpenWindow(String name) {
-        if (name == null || name.length() == 0) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         for (Iterator i = _openWindows.iterator(); i.hasNext();) {

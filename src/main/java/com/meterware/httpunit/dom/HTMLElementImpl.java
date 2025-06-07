@@ -121,12 +121,12 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
     protected int getIntegerAttribute(String name) {
         String value = getAttribute(name);
-        return value.length() == 0 ? 0 : Integer.parseInt(value);
+        return value.isEmpty() ? 0 : Integer.parseInt(value);
     }
 
     protected int getIntegerAttribute(String name, int defaultValue) {
         String value = getAttribute(name);
-        return value.length() == 0 ? defaultValue : Integer.parseInt(value);
+        return value.isEmpty() ? defaultValue : Integer.parseInt(value);
     }
 
     protected void setAttribute(String name, boolean disabled) {

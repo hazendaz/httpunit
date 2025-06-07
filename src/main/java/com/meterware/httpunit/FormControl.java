@@ -693,7 +693,7 @@ class CheckboxFormControl extends BooleanFormControl {
     @Override
     String getQueryValue() {
         final String value = getValueAttribute();
-        return value.length() == 0 ? "on" : value;
+        return value.isEmpty() ? "on" : value;
     }
 
     /**

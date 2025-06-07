@@ -128,7 +128,7 @@ public class WebTable extends HTMLElementBase {
         // look for rows and columns with any text in a non-spanning cell
         for (int row = 0; row < rowHasText.length; row++) {
             for (int col = 0; col < columnHasText.length; col++) {
-                if (getCellAsText(row, col).trim().length() == 0) {
+                if (getCellAsText(row, col).trim().isEmpty()) {
                     continue;
                 }
                 if (getTableCell(row, col).getColSpan() == 1 && getTableCell(row, col).getRowSpan() == 1) {

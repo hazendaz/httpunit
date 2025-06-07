@@ -149,7 +149,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      */
     @Override
     public boolean doEventScript(String eventScript) {
-        if (eventScript.length() == 0) {
+        if (eventScript.isEmpty()) {
             return true;
         }
         try {

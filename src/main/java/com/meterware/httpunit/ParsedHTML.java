@@ -873,7 +873,7 @@ public class ParsedHTML {
 
             @Override
             public void processTextNode(NodeUtils.PreOrderTraversal pot, Node textNode) {
-                if (textNode.getNodeValue().trim().length() == 0) {
+                if (textNode.getNodeValue().trim().isEmpty()) {
                     return;
                 }
 

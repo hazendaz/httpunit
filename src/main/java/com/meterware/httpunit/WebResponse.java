@@ -815,7 +815,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
-        if (relativeUrl == null || relativeUrl.trim().length() == 0) {
+        if (relativeUrl == null || relativeUrl.trim().isEmpty()) {
             relativeUrl = "about:";
         }
         GetMethodWebRequest request = new GetMethodWebRequest(getURL(), relativeUrl, _frame, name);
@@ -1324,7 +1324,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     private void interpretRefreshHeaderElement(String token, String refreshHeader) {
-        if (token.length() == 0) {
+        if (token.isEmpty()) {
             return;
         }
         try {

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -59,7 +59,7 @@ public class JUnitServlet extends HttpServlet {
         ResultsFormatter formatter = getResultsFormatter(request.getParameter("format"));
         response.setContentType(formatter.getContentType());
         final String testName = request.getParameter("test");
-        if (testName == null || testName.length() == 0) {
+        if (testName == null || testName.isEmpty()) {
             reportCannotRunTest(response.getWriter(), "No test class specified");
         } else {
             ServletTestRunner runner = new ServletTestRunner(response.getWriter(), formatter);

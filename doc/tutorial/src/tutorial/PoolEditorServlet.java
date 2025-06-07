@@ -64,14 +64,14 @@ public class PoolEditorServlet extends HttpServlet {
     String[] getValidationErrors() {
         ArrayList errorList = new ArrayList<>();
         BettingPoolGame game = BettingPool.getGames()[ BettingPool.getTieBreakerIndex() ];
-        if (game.getAwayTeam().length() == 0 || game.getHomeTeam().length() == 0) {
+        if (game.getAwayTeam().isEmpty() || game.getHomeTeam().isEmpty()) {
             errorList.add( "Tiebreaker is not a valid game" );
         }
         BettingPoolGame[] games = BettingPool.getGames();
         for (int i = 0; i < games.length; i++) {
-            if (games[i].getAwayTeam().length() == 0 && games[i].getHomeTeam().length() != 0) {
+            if (games[i].getAwayTeam().isEmpty() && games[i].getHomeTeam().length() != 0) {
                 errorList.add( "Game " + i + " has no away team" );
-            } else if (games[i].getAwayTeam().length() != 0 && games[i].getHomeTeam().length() == 0) {
+            } else if (games[i].getAwayTeam().length() != 0 && games[i].getHomeTeam().isEmpty()) {
                 errorList.add( "Game " + i + " has no home team" );
             }
         }

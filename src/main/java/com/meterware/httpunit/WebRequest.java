@@ -513,7 +513,7 @@ public abstract class WebRequest {
 
     protected String getURLString() {
         final String queryString = getQueryString();
-        if (queryString.length() == 0) {
+        if (queryString.isEmpty()) {
             return _urlString;
         }
         return _urlString + "?" + queryString;

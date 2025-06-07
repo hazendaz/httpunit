@@ -224,7 +224,7 @@ class FrameHolder {
      * frame.
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
-        if (relativeName == null || relativeName.length() == 0) {
+        if (relativeName == null || relativeName.isEmpty()) {
             return new FrameSelector();
         }
         return new FrameSelector(relativeName, parentFrame);

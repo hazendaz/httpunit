@@ -459,12 +459,12 @@ class WebApplication implements SessionListenerDispatcher {
             _authenticationRealm = XMLUtils.getChildNodeValue(loginConfigElement, "realm-name", "");
             if (authenticationMethod.equalsIgnoreCase("BASIC")) {
                 _useBasicAuthentication = true;
-                if (_authenticationRealm.length() == 0) {
+                if (_authenticationRealm.isEmpty()) {
                     throw new SAXException("No realm specified for BASIC Authorization");
                 }
             } else if (authenticationMethod.equalsIgnoreCase("FORM")) {
                 _useFormAuthentication = true;
-                if (_authenticationRealm.length() == 0) {
+                if (_authenticationRealm.isEmpty()) {
                     throw new SAXException("No realm specified for FORM Authorization");
                 }
                 _loginURL = new URL("http", "localhost",

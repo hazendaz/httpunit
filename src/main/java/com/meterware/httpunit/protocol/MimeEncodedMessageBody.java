@@ -98,7 +98,7 @@ class MimeEncodedMessageBody extends MessageBody {
          */
         @Override
         public void addParameter(String name, String value, String characterSet) throws IOException {
-            if (name == null || name.length() == 0 || value == null) {
+            if (name == null || name.isEmpty() || value == null) {
                 return;
             }
             writeLn(_outputStream, "--" + BOUNDARY);

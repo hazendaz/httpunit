@@ -980,7 +980,7 @@ public class WebForm extends WebRequestSource {
 
     private void loadFormParameters(Map formParameters, FormControl[] controls) {
         for (FormControl control : controls) {
-            if (control.getName().length() == 0) {
+            if (control.getName().isEmpty()) {
                 continue;
             }
             FormParameter parameter = (FormParameter) formParameters.get(control.getName());

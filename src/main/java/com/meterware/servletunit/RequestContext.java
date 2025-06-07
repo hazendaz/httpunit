@@ -89,7 +89,7 @@ class RequestContext {
      * name have_equals -> initial: record parameter with null value have_value -> initial: record parameter with value
      **/
     void loadParameters(String queryString) {
-        if (queryString.length() == 0) {
+        if (queryString.isEmpty()) {
             return;
         }
         StringTokenizer st = new StringTokenizer(queryString, "&=", /* return tokens */ true);

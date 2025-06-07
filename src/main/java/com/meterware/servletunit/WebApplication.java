@@ -181,7 +181,7 @@ class WebApplication implements SessionListenerDispatcher {
     private void notifyContextInitialized() {
         ServletContextEvent event = new ServletContextEvent(getServletContext());
 
-        for (Iterator i = _contextListeners.iterator(); i.hasNext();) {
+        for (Iterator<ServletContextListener> i = _contextListeners.iterator(); i.hasNext();) {
             ServletContextListener listener = (ServletContextListener) i.next();
             listener.contextInitialized(event);
         }
@@ -195,7 +195,8 @@ class WebApplication implements SessionListenerDispatcher {
     private void notifyContextDestroyed() {
         ServletContextEvent event = new ServletContextEvent(getServletContext());
 
-        for (ListIterator i = _contextListeners.listIterator(_contextListeners.size()); i.hasPrevious();) {
+        for (ListIterator<ServletContextListener> i = _contextListeners.listIterator(_contextListeners.size()); i
+                .hasPrevious();) {
             ServletContextListener listener = (ServletContextListener) i.previous();
             listener.contextDestroyed(event);
         }
@@ -204,7 +205,7 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeAdded(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
             ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
             listener.attributeAdded(event);
         }
@@ -213,7 +214,7 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeReplaced(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
             ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
             listener.attributeReplaced(event);
         }
@@ -222,7 +223,7 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeRemoved(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
             ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
             listener.attributeRemoved(event);
         }

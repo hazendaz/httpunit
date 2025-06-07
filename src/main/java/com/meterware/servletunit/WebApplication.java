@@ -182,7 +182,7 @@ class WebApplication implements SessionListenerDispatcher {
         ServletContextEvent event = new ServletContextEvent(getServletContext());
 
         for (Iterator<ServletContextListener> i = _contextListeners.iterator(); i.hasNext();) {
-            ServletContextListener listener = (ServletContextListener) i.next();
+            ServletContextListener listener = i.next();
             listener.contextInitialized(event);
         }
     }
@@ -197,7 +197,7 @@ class WebApplication implements SessionListenerDispatcher {
 
         for (ListIterator<ServletContextListener> i = _contextListeners.listIterator(_contextListeners.size()); i
                 .hasPrevious();) {
-            ServletContextListener listener = (ServletContextListener) i.previous();
+            ServletContextListener listener = i.previous();
             listener.contextDestroyed(event);
         }
     }
@@ -206,7 +206,7 @@ class WebApplication implements SessionListenerDispatcher {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
         for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+            ServletContextAttributeListener listener = i.next();
             listener.attributeAdded(event);
         }
     }
@@ -215,7 +215,7 @@ class WebApplication implements SessionListenerDispatcher {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
         for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+            ServletContextAttributeListener listener = i.next();
             listener.attributeReplaced(event);
         }
     }
@@ -224,7 +224,7 @@ class WebApplication implements SessionListenerDispatcher {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
         for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+            ServletContextAttributeListener listener = i.next();
             listener.attributeRemoved(event);
         }
     }

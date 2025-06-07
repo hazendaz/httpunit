@@ -63,14 +63,6 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
         return _node == null ? "p" : _node.getNodeName();
     }
 
-    /**
-     * Returns a copy of the domain object model associated with this HTML segment.
-     */
-    @Override
-    public Node getDOM() {
-        return super.getDOM();
-    }
-
     // -------------------------------- HTMLElement methods
     // ---------------------------------------
 

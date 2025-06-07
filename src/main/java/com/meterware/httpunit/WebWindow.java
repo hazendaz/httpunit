@@ -241,8 +241,8 @@ public class WebWindow {
      * Returns the name of the currently active frames.
      **/
     public String[] getFrameNames() {
-        final List names = _frameContents.getActiveFrameNames();
-        return (String[]) names.toArray(new String[names.size()]);
+        final List<String> names = _frameContents.getActiveFrameNames();
+        return names.toArray(new String[names.size()]);
     }
 
     /**

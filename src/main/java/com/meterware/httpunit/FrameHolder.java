@@ -144,8 +144,8 @@ class FrameHolder {
         return null;
     }
 
-    List getActiveFrameNames() {
-        List result = new ArrayList<>();
+    List<String> getActiveFrameNames() {
+        List<String> result = new ArrayList<>();
         for (Enumeration e = _contents.keys(); e.hasMoreElements();) {
             result.add(((FrameSelector) e.nextElement()).getName());
         }

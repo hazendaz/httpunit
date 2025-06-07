@@ -341,14 +341,14 @@ public class JavaScript {
             if (useCapture) {
                 Set set = (Set) _eventCaptureListeners.get(type); // Set<Scriptable>
                 if (set == null) {
-                    set = new HashSet();
+                    set = new HashSet<>();
                     _eventCaptureListeners.put(type, set);
                 }
                 set.add(listener);
             } else {
                 Set set = (Set) _eventListeners.get(type); // Set<Scriptable>
                 if (set == null) {
-                    set = new HashSet();
+                    set = new HashSet<>();
                     _eventListeners.put(type, set);
                 }
                 set.add(listener);

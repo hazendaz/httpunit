@@ -293,7 +293,7 @@ public abstract class WebRequest {
      * @since 1.3.1
      **/
     public String[] getRequestParameterNames() {
-        final HashSet names = new HashSet();
+        final HashSet names = new HashSet<>();
         ParameterProcessor pp = new ParameterProcessor() {
             @Override
             public void addParameter(String name, String value, String characterSet) throws IOException {

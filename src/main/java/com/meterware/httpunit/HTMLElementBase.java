@@ -36,7 +36,7 @@ abstract class HTMLElementBase implements HTMLElement {
 
     private Node _node;
     private ScriptingHandler _scriptable;
-    private Set _supportedAttributes = new HashSet();
+    private Set _supportedAttributes = new HashSet<>();
 
     @Override
     public String getID() {

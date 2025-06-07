@@ -544,7 +544,7 @@ public abstract class HttpUnitOptions {
     @Deprecated
     public static void addCustomAttribute(String attributeName) {
         if (_customAttributes == null) {
-            _customAttributes = new HashSet();
+            _customAttributes = new HashSet<>();
         }
         _customAttributes.add(attributeName);
     }

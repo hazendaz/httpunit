@@ -229,7 +229,7 @@ public class CookieJar {
             return null;
         }
         StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);
-        HashSet restrictedCookies = new HashSet();
+        HashSet restrictedCookies = new HashSet<>();
         for (Iterator i = _cookies.iterator(); i.hasNext();) {
             Cookie cookie = (Cookie) i.next();
             if (!cookie.mayBeSentTo(targetURL)) {

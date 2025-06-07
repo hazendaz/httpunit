@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.PostMethodWebRequest;
 import com.meterware.httpunit.PutMethodWebRequest;
 import com.meterware.httpunit.WebRequest;
@@ -779,7 +778,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void getReaderDefaultCharset() throws Exception {
         String body = "12345678901234567890";
-        InputStream stream = new ByteArrayInputStream(body.getBytes(HttpUnitUtils.DEFAULT_CHARACTER_SET));
+        InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
                 body.getBytes(StandardCharsets.UTF_8));
@@ -815,7 +814,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void specifiedCharEncoding() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
-        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use iso-8859-8 to encode the data
+        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use ISO-8859-8 to encode the data
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Content-Type", "application/x-www-form-urlencoded; charset=ISO-8859-8");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
@@ -840,7 +839,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void specifiedCharEncoding2() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
-        HttpUnitOptions.setDefaultCharacterSet("iso-8859-8");
+        HttpUnitOptions.setDefaultCharacterSet("ISO-8859-8");
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         wr.setParameter("param1", "red");
         wr.setParameter("param2", hebrewValue);
@@ -857,7 +856,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void suppliedCharEncoding() throws Exception { // xxx turn this back on
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
-        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use iso-8859-8 to encode the data, then string is URL
+        String paramString = "param1=red&param2=%E0%E1%E2%E3"; // use ISO-8859-8 to encode the data, then string is URL
         // encoded
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,

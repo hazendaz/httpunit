@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,7 +22,7 @@ package com.meterware.httpunit;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
 public class HttpUnitUtils {
 
     public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
-    public static final String DEFAULT_CHARACTER_SET = "iso-8859-1";
+
     /**
      * set to true to debug Exception handling
      */
@@ -113,12 +113,12 @@ public class HttpUnitUtils {
     }
 
     /**
-     * Returns an interpretation of the specified URL-encoded string, using the iso-8859-1 character set.
+     * Returns an interpretation of the specified URL-encoded string, using the ISO-8859-1 character set.
      *
      * @since 1.6
      **/
     public static String decode(String byteString) {
-        return decode(byteString, "iso-8859-1");
+        return decode(byteString, "ISO-8859-1");
     }
 
     /**
@@ -154,15 +154,11 @@ public class HttpUnitUtils {
      *             thrown if URL decoding is unsuccessful,
      */
     public static String decode(String string, String charset) {
-        try {
-            if (string == null) {
-                return null;
-            }
-
-            return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), charset);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e.toString());
+        if (string == null) {
+            return null;
         }
+
+        return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), Charset.forName(charset));
     }
 
     /**

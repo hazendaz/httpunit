@@ -36,13 +36,13 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
@@ -1092,7 +1092,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         try {
             readTags(text.getBytes(StandardCharsets.UTF_8));
-        } catch (UnsupportedEncodingException | MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new RuntimeException("Failure while attempting to reparse text: " + e);
         }
         return true;
@@ -1227,10 +1227,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @param rawMessage
      *
-     * @throws UnsupportedEncodingException
      * @throws MalformedURLException
      */
-    private void readTags(byte[] rawMessage) throws UnsupportedEncodingException, MalformedURLException {
+    private void readTags(byte[] rawMessage) throws MalformedURLException {
         ByteTagParser parser = new ByteTagParser(rawMessage);
         ByteTag tag = parser.getNextTag();
         while (tag != null) {
@@ -1425,8 +1424,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     private static String _defaultEncoding;
 
-    private final static String[] DEFAULT_ENCODING_CANDIDATES = { HttpUnitUtils.DEFAULT_CHARACTER_SET, "us-ascii",
-            "utf-8", "utf8" };
+    private static final String[] DEFAULT_ENCODING_CANDIDATES = { StandardCharsets.ISO_8859_1.name(),
+            StandardCharsets.US_ASCII.name() };
 
     static String getDefaultEncoding() {
         if (_defaultEncoding == null) {
@@ -1450,8 +1449,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     private static boolean isSupportedCharacterSet(String characterSet) {
         try {
-            return "abcd".getBytes(characterSet).length > 0;
-        } catch (UnsupportedEncodingException e) {
+            return "abcd".getBytes(Charset.forName(characterSet)).length > 0;
+        } catch (UnsupportedCharsetException e) {
             return false;
         }
     }
@@ -1472,8 +1471,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     static class ByteTag {
 
-        ByteTag(byte[] buffer, int start, int length) throws UnsupportedEncodingException {
-            _buffer = new String(buffer, start, length, WebResponse.getDefaultEncoding()).toCharArray();
+        ByteTag(byte[] buffer, int start, int length) {
+            _buffer = new String(buffer, start, length, Charset.forName(WebResponse.getDefaultEncoding()))
+                    .toCharArray();
             _name = nextToken();
 
             String attribute = "";
@@ -1557,7 +1557,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
             _buffer = buffer;
         }
 
-        ByteTag getNextTag() throws UnsupportedEncodingException {
+        ByteTag getNextTag() {
             ByteTag byteTag = null;
             do {
                 int _start = _end + 1;

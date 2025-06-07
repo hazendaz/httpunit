@@ -197,7 +197,7 @@ class WebPageTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/SimpleTitlePage.html");
         WebResponse simplePage = wc.getResponse(request);
         assertEquals("A Sample Page", simplePage.getTitle(), "Title");
-        assertEquals("iso-8859-1", simplePage.getCharacterSet(), "Character set");
+        assertEquals("ISO-8859-1", simplePage.getCharacterSet(), "Character set");
         assertNull(simplePage.getRefreshRequest(), "No refresh request should have been found");
     }
 

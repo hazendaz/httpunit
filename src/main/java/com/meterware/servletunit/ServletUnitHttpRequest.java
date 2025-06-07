@@ -42,7 +42,6 @@ import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -482,7 +481,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             initializeInputStream();
             String encoding = getCharacterEncoding();
             if (encoding == null) {
-                encoding = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+                encoding = StandardCharsets.ISO_8859_1.name();
             }
             _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));
             _gotReader = true;
@@ -678,7 +677,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @since 1.3
      **/
     @Override
-    public void setCharacterEncoding(String charset) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(String charset) {
         _charset = charset;
         _requestContext.setMessageEncoding(charset);
     }

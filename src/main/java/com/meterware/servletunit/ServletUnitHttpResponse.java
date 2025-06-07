@@ -30,7 +30,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -205,7 +206,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      **/
     @Override
     public String getCharacterEncoding() {
-        return _encoding == null ? HttpUnitUtils.DEFAULT_CHARACTER_SET : _encoding;
+        return _encoding == null ? StandardCharsets.ISO_8859_1.name() : _encoding;
     }
 
     /**
@@ -254,20 +255,18 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * You cannot use this method if you have already called {@link #getOutputStream} for this
      * <code>ServletResponse</code> object.
      *
-     * @exception UnsupportedEncodingException
-     *                if the character encoding specified in <code>setContentType</code> cannot be used
      * @exception IllegalStateException
      *                if the <code>getOutputStream</code> method has already been called for this response object; in
      *                that case, you can't use this method
      **/
     @Override
-    public PrintWriter getWriter() throws UnsupportedEncodingException {
+    public PrintWriter getWriter() {
         if (_servletStream != null) {
             throw new IllegalStateException("Tried to create writer; output stream already exists");
         }
         if (_writer == null) {
             _outputStream = new ByteArrayOutputStream();
-            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, getCharacterEncoding()));
+            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, Charset.forName(getCharacterEncoding())));
         }
         return _writer;
     }
@@ -579,14 +578,14 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     }
 
     static {
-        ENCODING_MAP.put("iso-8859-1", "ca da de en es fi fr is it nl no pt sv ");
-        ENCODING_MAP.put("iso-8859-2", "cs hr hu pl ro sh sk sl sq ");
-        ENCODING_MAP.put("iso-8859-4", "et lt lv ");
-        ENCODING_MAP.put("iso-8859-5", "be bg mk ru sr uk ");
-        ENCODING_MAP.put("iso-8859-6", "ar ");
-        ENCODING_MAP.put("iso-8859-7", "el ");
-        ENCODING_MAP.put("iso-8859-8", "iw he ");
-        ENCODING_MAP.put("iso-8859-9", "tr ");
+        ENCODING_MAP.put("ISO-8859-1", "ca da de en es fi fr is it nl no pt sv ");
+        ENCODING_MAP.put("ISO-8859-2", "cs hr hu pl ro sh sk sl sq ");
+        ENCODING_MAP.put("ISO-8859-4", "et lt lv ");
+        ENCODING_MAP.put("ISO-8859-5", "be bg mk ru sr uk ");
+        ENCODING_MAP.put("ISO-8859-6", "ar ");
+        ENCODING_MAP.put("ISO-8859-7", "el ");
+        ENCODING_MAP.put("ISO-8859-8", "iw he ");
+        ENCODING_MAP.put("ISO-8859-9", "tr ");
 
         ENCODING_MAP.put("Shift_JIS", "ja ");
         ENCODING_MAP.put("EUC-KR", "ko ");

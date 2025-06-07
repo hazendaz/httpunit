@@ -47,7 +47,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -286,15 +285,14 @@ public class WebXMLTest {
      *
      * @return the new document
      *
-     * @throws UnsupportedEncodingException
      * @throws SAXException
      * @throws IOException
      */
-    private Document newDocument(String contents) throws UnsupportedEncodingException, SAXException, IOException {
+    private Document newDocument(String contents) throws SAXException, IOException {
         return HttpUnitUtils.parse(toInputStream(contents));
     }
 
-    private ByteArrayInputStream toInputStream(String contents) throws UnsupportedEncodingException {
+    private ByteArrayInputStream toInputStream(String contents) {
         return new ByteArrayInputStream(contents.getBytes(StandardCharsets.UTF_8));
     }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -97,7 +97,7 @@ public class PseudoServerTestSupport extends ExternalResource {
         if (xmlns == null) {
             xmlns = "";
         } else {
-            preamble = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
+            preamble = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
             preamble += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
             xmlns = " xmlns=\"" + xmlns + "\"";
         }

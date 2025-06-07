@@ -19,7 +19,6 @@
  */
 package com.meterware.httpunit;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.nio.charset.StandardCharsets;
@@ -167,13 +166,12 @@ class AuthenticationChallenge extends HttpHeader {
                     String ha1 = H(a1);
                     String ha2 = H(a2);
                     return KD(ha1, nonce + ':' + ha2);
-                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                } catch (NoSuchAlgorithmException e) {
                     return "";
                 }
             }
 
-            protected String A1(String userName, String password, String realm, String nonce)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            protected String A1(String userName, String password, String realm, String nonce) {
                 return userName + ':' + realm + ':' + password;
             }
 
@@ -181,8 +179,7 @@ class AuthenticationChallenge extends HttpHeader {
                 return method + ':' + uri;
             }
 
-            final protected String KD(String secret, String data)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            protected final String KD(String secret, String data) throws NoSuchAlgorithmException {
                 return H(secret + ":" + data);
             }
 

@@ -31,10 +31,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -500,11 +500,7 @@ class HttpResponseStream {
 
     HttpResponseStream(OutputStream stream) {
         _stream = stream;
-        try {
-            setCharacterSet("us-ascii");
-        } catch (UnsupportedEncodingException e) {
-            _pw = new PrintWriter(new OutputStreamWriter(_stream));
-        }
+        setCharacterSet("us-ascii");
     }
 
     void setProtocol(String protocol) {
@@ -540,11 +536,11 @@ class HttpResponseStream {
         _stream.flush();
     }
 
-    private void setCharacterSet(String characterSet) throws UnsupportedEncodingException {
+    private void setCharacterSet(String characterSet) {
         if (_pw != null) {
             _pw.flush();
         }
-        _pw = new PrintWriter(new OutputStreamWriter(_stream, characterSet));
+        _pw = new PrintWriter(new OutputStreamWriter(_stream, Charset.forName(characterSet)));
     }
 
     private void flushHeaders() {

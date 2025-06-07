@@ -604,7 +604,7 @@ class FormSubmitTest extends HttpUnitTest {
         defineWebPage("abc/form",
                 "<form name=\"test\" method='POST' action='/doit'>" + "  <input type='text' name='text_field-name*'>"
                         + "  <input type='submit' name='apply' value='Apply'>" + "</form>");
-        setResourceCharSet("abc/form.html", "iso-8859-3", true);
+        setResourceCharSet("abc/form.html", "UTF-8", true);
         defineResource("doit", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() throws IOException {

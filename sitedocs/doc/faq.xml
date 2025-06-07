@@ -3,7 +3,7 @@
 
     MIT License
 
-    Copyright 2011-2024 Russell Gold
+    Copyright 2011-2025 Russell Gold
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -79,7 +79,7 @@
         </faq>
         <faq id="charset">
             <question>Why isn't HttpUnit handling my non-English pages?</question>
-            <answer><![CDATA[When no Content-Type header is specified, HTML 1.1 says that the character set is to be taken as iso-8859-1.
+            <answer><![CDATA[When no Content-Type header is specified, HTML 1.1 says that the character set is to be taken as UTF-8.
                     Unfortunately, some HTTP servers do not send this parameter correctly, and many browsers provide a workaround
                     to permit the user to determine the character set in some other fashion.  To imitate this behavior,
                     HttpUnit allows you to set the expected character set for future pages by calling

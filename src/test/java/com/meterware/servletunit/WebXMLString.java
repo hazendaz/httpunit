@@ -20,7 +20,6 @@
 package com.meterware.servletunit;
 
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ class WebXMLString {
     private Hashtable _contextParams = new Hashtable<>();
     private Hashtable _loadOnStartup = new Hashtable<>();
 
-    ByteArrayInputStream asInputStream() throws UnsupportedEncodingException {
+    ByteArrayInputStream asInputStream() {
         return new ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
     }
 

@@ -24,8 +24,8 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
@@ -166,11 +166,7 @@ class RequestContext {
     }
 
     private String getMessageBodyAsString() {
-        try {
-            return new String(_messageBody, "iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        }
+        return new String(_messageBody, StandardCharsets.UTF_8);
     }
 
     void setMessageBody(byte[] bytes) {
@@ -183,7 +179,7 @@ class RequestContext {
 
     private String getMessageEncoding() {
         return _messageEncoding == null ?
-        /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
+        /* Fixing 1705925: StandardCharsets.ISO_8859_1.name() */
                 HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;
     }
 

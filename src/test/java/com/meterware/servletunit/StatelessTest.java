@@ -194,7 +194,7 @@ class StatelessTest {
         sr.registerServlet("ReportData", BodyEcho.class.getName());
 
         String sourceData = "This is an interesting test\nWith two lines";
-        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.UTF_8));
 
         WebClient wc = sr.newClient();
         WebRequest wr = new PostMethodWebRequest("http://localhost/ReportData", source, "text/sample");

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,6 +20,7 @@
 package com.meterware.httpunit.protocol;
 
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -57,11 +58,7 @@ public class URLEncodedString implements ParameterProcessor {
      * Returns a URL-encoded version of the string.
      **/
     private String encode(String source, String characterSet) {
-        try {
-            return URLEncoder.encode(source, characterSet);
-        } catch (java.io.UnsupportedEncodingException e) {
-            return "???"; // XXX should pass the exception through as IOException ultimately
-        }
+        return URLEncoder.encode(source, Charset.forName(characterSet));
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -24,6 +24,7 @@ import com.meterware.httpunit.protocol.ParameterProcessor;
 import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This abstract class is extended by classes which hold parameters for web requests. Note that it is an abstract class
@@ -86,7 +87,7 @@ abstract class ParameterHolder implements ParameterCollection {
      * Returns the character set encoding for the request.
      **/
     String getCharacterSet() {
-        return HttpUnitUtils.DEFAULT_CHARACTER_SET;
+        return StandardCharsets.ISO_8859_1.name();
     }
 
     abstract boolean isSubmitAsMime();

@@ -26,6 +26,7 @@ import com.meterware.httpunit.scripting.ScriptingEngineFactory;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -58,7 +59,7 @@ public abstract class HttpUnitOptions {
         _matchesIgnoreCase = true;
         _checkContentLength = false;
         _redirectDelay = 0; // TODO move this to ClientProperties
-        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+        _characterSet = StandardCharsets.ISO_8859_1.name();
         _contentType = DEFAULT_CONTENT_TYPE;
         _postIncludesCharset = false;
         _exceptionsThrownOnScriptError = true;
@@ -114,7 +115,7 @@ public abstract class HttpUnitOptions {
      * Resets the default character set to the HTTP default encoding.
      **/
     public static void resetDefaultCharacterSet() {
-        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+        _characterSet = StandardCharsets.ISO_8859_1.name();
     }
 
     /**
@@ -126,7 +127,7 @@ public abstract class HttpUnitOptions {
 
     /**
      * Sets the default character set for pages which do not specify one and for requests created without HTML sources.
-     * By default, HttpUnit uses the HTTP default encoding, iso-8859-1.
+     * By default, HttpUnit uses the HTTP default encoding, ISO-8859-1.
      **/
     public static void setDefaultCharacterSet(String characterSet) {
         _characterSet = characterSet;
@@ -576,7 +577,7 @@ public abstract class HttpUnitOptions {
 
     private static int _redirectDelay;
 
-    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+    private static String _characterSet = StandardCharsets.ISO_8859_1.name();
 
     private static String _contentType = DEFAULT_CONTENT_TYPE;
 

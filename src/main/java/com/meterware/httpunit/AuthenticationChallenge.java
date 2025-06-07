@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -184,8 +184,8 @@ class AuthenticationChallenge extends HttpHeader {
                 return H(secret + ":" + data);
             }
 
-            final protected String H(String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-                MessageDigest digest = MessageDigest.getInstance("MD5");
+            protected final String H(String data) throws NoSuchAlgorithmException {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 digest.update(data.getBytes(StandardCharsets.UTF_8));
                 byte[] bytes = digest.digest();
                 StringBuilder sb = new StringBuilder();

@@ -23,7 +23,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * This class acts as a test environment for servlets.
@@ -40,7 +40,7 @@ class ServletUnitServletConfig implements ServletConfig {
      * @param initParams
      *            the init params
      */
-    ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {
+    ServletUnitServletConfig(String name, WebApplication application, Properties initParams) {
         _name = name;
         _initParameters = initParams;
         _context = application.getServletContext();
@@ -88,7 +88,7 @@ class ServletUnitServletConfig implements ServletConfig {
     private String _name;
 
     /** The init parameters. */
-    private final Hashtable _initParameters;
+    private final Properties _initParameters;
 
     /** The context. */
     private final ServletContext _context;

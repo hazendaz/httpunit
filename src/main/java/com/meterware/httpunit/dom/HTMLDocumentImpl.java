@@ -22,9 +22,9 @@ package com.meterware.httpunit.dom;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.DOMException;
@@ -49,7 +49,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
     private static final long serialVersionUID = 1L;
 
     /** The exemplars. */
-    private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
+    private static Properties<String, HTMLElementImpl> _exemplars = new Properties();
 
     /** The window. */
     private DomWindow _window;

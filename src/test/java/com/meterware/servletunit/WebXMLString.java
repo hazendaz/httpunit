@@ -24,7 +24,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -47,7 +46,7 @@ class WebXMLString {
     private ArrayList _servletNames = new ArrayList<>();
 
     /** The init params. */
-    private Hashtable _initParams = new Hashtable<>();
+    private Properties _initParams = new Properties();
 
     /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();
@@ -56,25 +55,25 @@ class WebXMLString {
     private ArrayList _filters = new ArrayList<>();
 
     /** The filter mappings. */
-    private Hashtable _filterMappings = new Hashtable<>();
+    private Properties _filterMappings = new Properties();
 
     /** The filter names. */
     private ArrayList _filterNames = new ArrayList<>();
 
     /** The filter params. */
-    private Hashtable _filterParams = new Hashtable<>();
+    private Properties _filterParams = new Properties();
 
     /** The login config. */
     private String _loginConfig = "";
 
     /** The resources. */
-    private Hashtable _resources = new Hashtable<>();
+    private Properties _resources = new Properties();
 
     /** The context params. */
-    private Hashtable _contextParams = new Hashtable<>();
+    private Properties _contextParams = new Properties();
 
     /** The load on startup. */
-    private Hashtable _loadOnStartup = new Hashtable<>();
+    private Properties _loadOnStartup = new Properties();
 
     /**
      * As input stream.
@@ -142,7 +141,7 @@ class WebXMLString {
             Object name = _filterNames.get(i);
             result.append("  <filter>\n    <filter-name>").append(name).append("</filter-name>\n");
             result.append("    <filter-class>").append(((Class) _filters.get(i)).getName()).append("</filter-class>\n");
-            appendParams(result, "init-param", (Hashtable) _filterParams.get(name));
+            appendParams(result, "init-param", (Properties) _filterParams.get(name));
             result.append("  </filter>\n");
         }
         for (int i = 0; i < _filters.size(); i++) {
@@ -160,7 +159,7 @@ class WebXMLString {
             result.append("  <servlet>\n    <servlet-name>").append(name).append("</servlet-name>\n");
             result.append("    <servlet-class>").append(((Class) _servlets.get(i)).getName())
                     .append("</servlet-class>\n");
-            appendParams(result, "init-param", (Hashtable) _initParams.get(name));
+            appendParams(result, "init-param", (Properties) _initParams.get(name));
             appendLoadOnStartup(result, _loadOnStartup.get(name));
             result.append("  </servlet>\n");
         }
@@ -208,7 +207,7 @@ class WebXMLString {
      * @param params
      *            the params
      */
-    private void appendParams(StringBuilder result, String tagName, Hashtable params) {
+    private void appendParams(StringBuilder result, String tagName, Properties params) {
         if (params == null) {
             return;
         }

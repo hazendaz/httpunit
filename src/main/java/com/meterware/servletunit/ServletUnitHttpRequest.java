@@ -52,11 +52,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -865,7 +865,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private ServletUnitHttpSession _session;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private Properties _attributes = new Properties();
 
     /** The cookies. */
     private List<Cookie> _cookies = new ArrayList<>();

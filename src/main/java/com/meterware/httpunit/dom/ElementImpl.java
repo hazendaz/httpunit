@@ -20,8 +20,8 @@
 package com.meterware.httpunit.dom;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -39,7 +39,7 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
     private static final long serialVersionUID = 1L;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private Properties _attributes = new Properties();
 
     /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();

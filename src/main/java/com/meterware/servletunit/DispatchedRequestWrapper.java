@@ -24,8 +24,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * This class represents a request dispatched via a RequestDispatcherImpl.
@@ -120,7 +120,7 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
     static final String PATH_INFO = "jakarta.servlet.include.path_info";
     static final String QUERY_STRING = "jakarta.servlet.include.query_string";
 
-    private Hashtable _attributes = new Hashtable<>();
+    private Properties _attributes = new Properties();
 
     IncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         super(request, dispatcher);

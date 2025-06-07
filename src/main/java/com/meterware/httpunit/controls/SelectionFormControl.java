@@ -30,8 +30,8 @@ import com.meterware.httpunit.scripting.SelectionOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -194,7 +194,7 @@ public class SelectionFormControl extends FormControl {
      * @param required
      *            the required
      */
-    void updateRequiredParameters(Hashtable required) {
+    void updateRequiredParameters(Properties required) {
         if (isReadOnly()) {
             required.put(getName(), getValues());
         }

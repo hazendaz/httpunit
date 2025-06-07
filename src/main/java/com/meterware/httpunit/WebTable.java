@@ -24,7 +24,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -146,7 +146,7 @@ public class WebTable extends HTMLElementBase {
         int numColumnsWithText = 0;
         boolean[] rowHasText = new boolean[getRowCount()];
         boolean[] columnHasText = new boolean[getColumnCount()];
-        Hashtable spanningCells = new Hashtable<>();
+        Properties spanningCells = new Properties();
 
         // look for rows and columns with any text in a non-spanning cell
         for (int row = 0; row < rowHasText.length; row++) {

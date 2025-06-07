@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.xml.sax.SAXException;
 
@@ -61,7 +61,7 @@ public abstract class WebClient {
     private String _proxyAuthorizationString;
 
     /** The credentials. */
-    private Hashtable _credentials = new Hashtable<>();
+    private Properties _credentials = new Properties();
 
     /**
      * Gets the main window.
@@ -618,7 +618,7 @@ public abstract class WebClient {
      * @return the header fields
      */
     protected Dictionary getHeaderFields(URL targetURL) {
-        Hashtable result = (Hashtable) _headers.clone();
+        Properties result = (Properties) _headers.clone();
         result.put("User-Agent", getClientProperties().getUserAgent());
         if (getClientProperties().isAcceptGzip()) {
             result.put("Accept-Encoding", "gzip");
@@ -643,7 +643,7 @@ public abstract class WebClient {
      * @param headerValue
      *            the header value
      */
-    private void AddHeaderIfNotNull(Hashtable result, final String headerName, final String headerValue) {
+    private void AddHeaderIfNotNull(Properties result, final String headerName, final String headerValue) {
         if (headerValue != null) {
             result.put(headerName, headerValue);
         }
@@ -988,7 +988,7 @@ public abstract class WebClient {
     /**
      * The Class HeaderDictionary.
      */
-    static public class HeaderDictionary extends Hashtable {
+    static public class HeaderDictionary extends Properties {
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;

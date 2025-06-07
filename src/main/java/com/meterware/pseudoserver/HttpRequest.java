@@ -23,7 +23,7 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -41,7 +41,7 @@ public class HttpRequest extends ReceivedHttpMessage {
     private String _uri;
 
     /** The parameters. */
-    private Hashtable _parameters;
+    private Properties _parameters;
 
     /**
      * Instantiates a new http request.
@@ -148,10 +148,10 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @param content
      *            the content
      *
-     * @return the hashtable
+     * @return the properties
      */
-    private Hashtable readParameters(String content) {
-        Hashtable parameters = new Hashtable<>();
+    private Properties readParameters(String content) {
+        Properties parameters = new Properties<>();
         if (content == null || content.trim().isEmpty()) {
             return parameters;
         }
@@ -174,7 +174,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @param value
      *            the value
      */
-    private void addParameter(Hashtable parameters, String name, String value) {
+    private void addParameter(Properties parameters, String name, String value) {
         String[] oldValues = (String[]) parameters.get(name);
         if (oldValues == null) {
             parameters.put(name, new String[] { value });

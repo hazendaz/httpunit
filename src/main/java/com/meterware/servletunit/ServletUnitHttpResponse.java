@@ -500,7 +500,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (values == null) {
             return new String[0];
         }
-        String results[] = new String[values.size()];
+        String[] results = new String[values.size()];
         return (String[]) values.toArray(results);
 
     }

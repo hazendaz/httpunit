@@ -121,8 +121,8 @@ public class WebTable extends HTMLElementBase {
     public void purgeEmptyCells() {
         int numRowsWithText = 0;
         int numColumnsWithText = 0;
-        boolean rowHasText[] = new boolean[getRowCount()];
-        boolean columnHasText[] = new boolean[getColumnCount()];
+        boolean[] rowHasText = new boolean[getRowCount()];
+        boolean[] columnHasText = new boolean[getColumnCount()];
         Hashtable spanningCells = new Hashtable<>();
 
         // look for rows and columns with any text in a non-spanning cell
@@ -164,7 +164,7 @@ public class WebTable extends HTMLElementBase {
         // none of its rows already have text, or none of its columns already have text.
         for (Enumeration e = spanningCells.keys(); e.hasMoreElements();) {
             TableCell cell = (TableCell) e.nextElement();
-            int coords[] = (int[]) spanningCells.get(cell);
+            int[] coords = (int[]) spanningCells.get(cell);
             boolean neededInRow = true;
             boolean neededInCol = true;
             for (int i = coords[0]; neededInRow && i < rowHasText.length && i < coords[0] + cell.getRowSpan(); i++) {

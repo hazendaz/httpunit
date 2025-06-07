@@ -240,8 +240,8 @@ class FormSubmitTest extends HttpUnitTest {
      */
     @Test
     void doubleSubmitProblem() throws Exception {
-        boolean states[] = { false, true };
-        String expected[] = { "", "1" };
+        boolean[] states = { false, true };
+        String[] expected = { "", "1" };
         for (int i = 0; i < states.length; i++) {
             // countMySelf Tipp from http://www.tipstrs.com/tip/1084/Static-variables-in-Javascript
             defineWebPage("Default",

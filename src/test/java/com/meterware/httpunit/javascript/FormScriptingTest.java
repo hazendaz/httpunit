@@ -135,7 +135,7 @@ public class FormScriptingTest extends HttpUnitTest {
         for (WebLink link : links) {
             link.click();
         }
-        String expected[] = { "#FFFFCC", "#E00000", "#0000E0", "#000080", "#000000" };
+        String[] expected = { "#FFFFCC", "#E00000", "#0000E0", "#000080", "#000000" };
 
         for (int i = 0; i < links.length; i++) {
             assertEquals(expected[i], wc.popNextAlert(), "Message for link  " + i);
@@ -169,7 +169,7 @@ public class FormScriptingTest extends HttpUnitTest {
         for (WebLink link : links) {
             link.click();
         }
-        String expected[] = { "left" };
+        String[] expected = { "left" };
         for (int i = 0; i < links.length; i++) {
             assertEquals(expected[i], wc.popNextAlert(), "Message for link  " + i);
         }
@@ -212,7 +212,7 @@ public class FormScriptingTest extends HttpUnitTest {
         WebConversation wc = new WebConversation();
         WebResponse response = wc.getResponse(getHostPath() + "/OnCommand.html");
         response.getElementNames();
-        HTMLElement elements[] = response.getElementsByTagName("span");
+        HTMLElement[] elements = response.getElementsByTagName("span");
         assertEquals(2, elements.length, "Two span elements should be found ");
         HTMLElement span1 = elements[0];
         String onclick = "crtCtrla(this, \"rim_ModuleSearchResult=Drilldown=key_\", null, null);";

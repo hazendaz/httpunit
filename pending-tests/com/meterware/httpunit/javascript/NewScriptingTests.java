@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -104,7 +104,7 @@ public class NewScriptingTests extends AbstractJavaScriptTest {
         // the quick version only runs 1000 and 1000 lines for the levels -2 to 1
         boolean quicktest = true;
         boolean showProgress = false;
-        int linesToTest[] = {1000, 10000, 100000, 1000000};
+        int[] linesToTest = {1000, 10000, 100000, 1000000};
         int numTests = linesToTest.length;
         int minOptLevel = -2;
         int maxOptLevel = 9;

@@ -254,7 +254,7 @@ public class MultiDownload extends JPanel implements ActionListener {
 		String text = urlArea.getText();
 		int totalLines = urlArea.getLineCount();
 		int count=0;
-		String urls[] = new String[totalLines];
+		String[] urls = new String[totalLines];
 		try {
 			for (int i = 0; i < totalLines; i++) {
 				int start;

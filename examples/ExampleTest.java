@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -81,7 +81,7 @@ public class ExampleTest extends TestCase {
       WebRequest request = new GetMethodWebRequest( "http://www.meterware.com/servlet/TopSecret" );
      	WebResponse response = tryGetResponse(conversation, request );
       
-      WebForm forms[] = response.getForms();
+      WebForm[] forms = response.getForms();
       assertEquals( 1, forms.length );
       assertEquals( 1, forms[0].getParameterNames().length );
       assertEquals( "name", forms[0].getParameterNames()[0] );

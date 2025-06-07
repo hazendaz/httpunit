@@ -664,7 +664,7 @@ public class FormParametersTest extends HttpUnitTest {
         System.out.println("\nResponse von URL '" + url + "'.");
 
         WebForm form = response.getFormWithID("suchen");
-        String param[] = form.getParameterNames();
+        String[] param = form.getParameterNames();
 
         for (String element : param) {
             System.err.println(element);

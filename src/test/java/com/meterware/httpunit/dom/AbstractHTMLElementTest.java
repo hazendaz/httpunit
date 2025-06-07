@@ -166,7 +166,7 @@ public abstract class AbstractHTMLElementTest implements DomListener {
             propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName(propertyName);
         }
 
-        PropertyDescriptor properties[] = beanInfo.getPropertyDescriptors();
+        PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
         for (PropertyDescriptor property : properties) {
             if (property.getName().equalsIgnoreCase(propertyName)) {
                 return property;

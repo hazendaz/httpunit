@@ -337,7 +337,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
         HttpUnitOptions.setExceptionsThrownOnScriptError(false);
         HttpUnitOptions.clearScriptErrorMessages();
         response.getLinkWith("go").click();
-        String messages[] = HttpUnitOptions.getScriptErrorMessages();
+        String[] messages = HttpUnitOptions.getScriptErrorMessages();
         assertEquals(1, messages.length, "there should be one message");
         String message = messages[0];
         assertTrue(message.indexOf("is not defined") > 0, "is not defined should be found");

@@ -329,6 +329,7 @@ public class WebWindow {
             Thread.sleep(numMilliseconds);
         } catch (InterruptedException e) {
             // ignore the exception
+            Thread.interrupted();
         }
     }
 

@@ -93,6 +93,7 @@ class SessionTest extends ServletUnitTest {
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
+            Thread.interrupted();
         }
         assertEquals(accessedAt, _context.getSession(session.getId()).getLastAccessedTime(), "Initial access time");
         session.access();

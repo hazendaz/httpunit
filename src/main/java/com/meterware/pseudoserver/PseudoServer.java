@@ -140,6 +140,7 @@ public class PseudoServer {
                         System.out.println("Error in pseudo server: " + e);
                         HttpUnitUtils.handleException(e);
                     } catch (InterruptedException e) {
+                        Thread.interrupted();
                         System.out.println("Interrupted. Shutting down");
                         _active = false;
                     }
@@ -338,6 +339,7 @@ public class PseudoServer {
                     try {
                         Thread.sleep(INPUT_POLL_INTERVAL);
                     } catch (InterruptedException e) {
+                        Thread.interrupted();
                     }
                 }
             }

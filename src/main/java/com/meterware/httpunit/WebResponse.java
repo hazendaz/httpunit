@@ -1216,7 +1216,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
             try {
                 Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);
             } catch (InterruptedException e) {
-                /* do nothing */ }
+                Thread.interrupted();
+                /* do nothing */
+            }
             available = inputStream.available();
         } while (available == 0 && timeLeft > 0);
         return available;

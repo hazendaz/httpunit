@@ -57,7 +57,7 @@ abstract class WebResourceConfiguration {
      *
      * @throws SAXException
      */
-    public WebResourceConfiguration(Element resourceElement, String resourceNodeName, String className)
+    protected WebResourceConfiguration(Element resourceElement, String resourceNodeName, String className)
             throws SAXException {
         this(className);
         final NodeList initParams = resourceElement.getElementsByTagName("init-param");

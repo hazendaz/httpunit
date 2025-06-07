@@ -1478,12 +1478,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
             String attribute = "";
             String token = nextToken();
-            while (token.length() != 0) {
-                if (token.equals("=") && attribute.length() != 0) {
+            while (!token.isEmpty()) {
+                if (token.equals("=") && !attribute.isEmpty()) {
                     getAttributes().put(attribute.toLowerCase(), nextToken());
                     attribute = "";
                 } else {
-                    if (attribute.length() > 0) {
+                    if (!attribute.isEmpty()) {
                         getAttributes().put(attribute.toLowerCase(), "");
                     }
                     attribute = token;

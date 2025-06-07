@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpSession;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 class ServletUnitHttpSession implements HttpSession {
 
@@ -179,7 +179,7 @@ class ServletUnitHttpSession implements HttpSession {
         if (_invalid) {
             throw new IllegalStateException();
         }
-        return _values.keys();
+        return (Enumeration<String>) _values.propertyNames();
     }
 
     // ---------------------------- methods added to HttpSession in JSDK 2.3 ----------------------------------------
@@ -252,7 +252,7 @@ class ServletUnitHttpSession implements HttpSession {
 
     private boolean _invalid;
 
-    private Hashtable _values = new Hashtable<>();
+    private Properties _values = new Properties();
 
     private boolean _isNew = true;
 

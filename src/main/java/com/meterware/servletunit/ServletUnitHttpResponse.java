@@ -38,11 +38,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
 
@@ -53,7 +53,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private boolean _committed;
     private Locale _locale = Locale.getDefault();
 
-    private static final Hashtable ENCODING_MAP = new Hashtable<>();
+    private static final Properties ENCODING_MAP = new Properties();
 
     /**
      * Adds the specified cookie to the response. It can be called multiple times to set more than one cookie.
@@ -537,7 +537,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     private String _statusMessage = "OK";
 
-    private final Hashtable _headers = new Hashtable<>();
+    private final Properties _headers = new Properties();
 
     private boolean _headersComplete;
 

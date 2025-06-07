@@ -29,7 +29,7 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -212,7 +212,7 @@ class HttpWebResponse extends WebResponse {
         _responseMessage = message;
     }
 
-    private Hashtable _headers = new Hashtable<>();
+    private Properties _headers = new Properties();
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,7 +23,7 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletContext;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -32,9 +32,9 @@ class FilterConfigImpl implements FilterConfig {
 
     private String _name;
     private ServletContext _servletContext;
-    private Hashtable _initParams;
+    private Properties _initParams;
 
-    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {
+    FilterConfigImpl(String name, ServletContext servletContext, Properties initParams) {
         _name = name;
         _servletContext = servletContext;
         _initParams = initParams;

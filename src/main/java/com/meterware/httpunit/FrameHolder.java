@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 
 import org.xml.sax.SAXException;
 
@@ -34,10 +34,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-    private Hashtable _contents = new Hashtable<>();
+    private Properties _contents = new Properties();
 
     /** Map from a frame selector to its subframe selectors. **/
-    private Hashtable _subframes = new Hashtable<>();
+    private Properties _subframes = new Properties();
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;

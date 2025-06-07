@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,8 +22,8 @@ package com.meterware.httpunit.dom;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.DOMException;
@@ -45,7 +45,7 @@ import org.w3c.dom.html.HTMLTitleElement;
 public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTMLContainerElement {
 
     private static final long serialVersionUID = 1L;
-    private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
+    private static Properties _exemplars = new Properties();
     private DomWindow _window;
     private StringBuilder _writeBuffer;
     private HTMLContainerDelegate _containerDelegate = new HTMLContainerDelegate(SKIP_IFRAMES);

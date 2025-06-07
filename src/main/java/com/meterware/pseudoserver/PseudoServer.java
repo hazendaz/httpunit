@@ -37,8 +37,8 @@ import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -274,7 +274,7 @@ public class PseudoServer {
 
     // ------------------------------------- private members ---------------------------------------
 
-    private Hashtable _resources = new Hashtable<>();
+    private Properties _resources = new Properties();
 
     private boolean _active = true;
 

@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -36,7 +36,7 @@ abstract class ReceivedHttpMessage {
     private static final int CR = 13;
     private static final int LF = 10;
     private Reader _reader;
-    private Hashtable _headers = new Hashtable<>();
+    private Properties _headers = new Properties();
     private byte[] _requestBody;
 
     ReceivedHttpMessage(InputStream inputStream) throws IOException {

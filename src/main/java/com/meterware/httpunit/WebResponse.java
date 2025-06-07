@@ -43,8 +43,7 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Properties;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -1506,15 +1505,15 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
             return "ByteTag[ name=" + _name + ";attributes = " + _attributes + ']';
         }
 
-        private Hashtable getAttributes() {
+        private Properties getAttributes() {
             if (_attributes == null) {
-                _attributes = new Hashtable<>();
+                _attributes = new Properties();
             }
             return _attributes;
         }
 
         private String _name = "";
-        private Hashtable _attributes;
+        private Properties _attributes;
 
         private char[] _buffer;
         private int _end = -1;

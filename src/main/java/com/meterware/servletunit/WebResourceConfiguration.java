@@ -19,7 +19,7 @@
  */
 package com.meterware.servletunit;
 
-import java.util.Hashtable;
+import java.util.Properties;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -31,13 +31,13 @@ import org.xml.sax.SAXException;
 abstract class WebResourceConfiguration {
 
     private String _className;
-    private Hashtable _initParams = new Hashtable<>();
+    private Properties _initParams = new Properties();
 
     WebResourceConfiguration(String className) {
         _className = className;
     }
 
-    WebResourceConfiguration(String className, Hashtable initParams) {
+    WebResourceConfiguration(String className, Properties initParams) {
         _className = className;
         if (initParams != null) {
             _initParams = initParams;
@@ -73,7 +73,7 @@ abstract class WebResourceConfiguration {
         return _className;
     }
 
-    Hashtable getInitParams() {
+    Properties getInitParams() {
         return _initParams;
     }
 

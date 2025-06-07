@@ -27,8 +27,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -36,8 +36,8 @@ import java.util.StringTokenizer;
  **/
 class RequestContext {
 
-    private Hashtable _parameters = new Hashtable<>();
-    private Hashtable _visibleParameters;
+    private Properties _parameters = new Properties();
+    private Properties _visibleParameters;
     private HttpServletRequest _parentRequest;
     private URL _url;
     private byte[] _messageBody;
@@ -142,7 +142,7 @@ class RequestContext {
         return result;
     }
 
-    private Hashtable getParameters() {
+    private Properties getParameters() {
         if (_messageBody != null) {
             loadParameters(getMessageBodyAsString());
             _messageBody = null;
@@ -151,7 +151,7 @@ class RequestContext {
             if (_parentRequest == null) {
                 _visibleParameters = _parameters;
             } else {
-                _visibleParameters = new Hashtable<>();
+                _visibleParameters = new Properties();
                 final Map parameterMap = _parentRequest.getParameterMap();
                 for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));

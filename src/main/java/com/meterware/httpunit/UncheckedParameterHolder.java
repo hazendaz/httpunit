@@ -24,7 +24,7 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -34,7 +34,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private static final String[] NO_VALUES = {};
     private final String _characterSet;
 
-    private Hashtable _parameters = new Hashtable<>();
+    private Properties _parameters = new Properties();
     private boolean _submitAsMime;
 
     UncheckedParameterHolder() {

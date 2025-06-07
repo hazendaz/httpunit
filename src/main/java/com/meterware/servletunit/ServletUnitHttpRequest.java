@@ -51,10 +51,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -786,7 +786,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private WebClient.HeaderDictionary _headers;
     private ServletUnitContext _context;
     private ServletUnitHttpSession _session;
-    private Hashtable _attributes = new Hashtable<>();
+    private Properties _attributes = new Properties();
     private Vector _cookies = new Vector<>();
     private String _sessionID;
     private byte[] _messageBody;

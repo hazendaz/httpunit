@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,7 @@
  */
 package com.meterware.httpunit.dom;
 
-import java.util.Hashtable;
+import java.util.Properties;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
@@ -30,11 +30,11 @@ import org.w3c.dom.Node;
  **/
 public class NamedNodeMapImpl implements NamedNodeMap {
 
-    private Hashtable _items;
+    private Properties _items;
     private Node[] _itemArray;
 
-    NamedNodeMapImpl(Hashtable items) {
-        _items = (Hashtable) items.clone();
+    NamedNodeMapImpl(Properties items) {
+        _items = (Properties) items.clone();
         _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);
     }
 

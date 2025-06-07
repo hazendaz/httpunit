@@ -33,7 +33,7 @@ import java.util.Vector;
  **/
 public class WebResource {
 
-    final static String DEFAULT_CONTENT_TYPE = "text/html";
+    static final String DEFAULT_CONTENT_TYPE = "text/html";
 
     final static String DEFAULT_CHARACTER_SET = "iso-8859-1";
     private boolean _closesConnection;

@@ -19,7 +19,6 @@
  */
 package com.meterware.servletunit;
 
-import com.meterware.httpunit.Base64;
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
@@ -45,7 +44,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -754,7 +755,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         String authorizationHeader = (String) _headers.get("Authorization");
 
         if (authorizationHeader != null) {
-            String userAndPassword = Base64.decode(authorizationHeader.substring(authorizationHeader.indexOf(' ') + 1));
+            String userAndPassword = new String(Base64.getDecoder().decode(authorizationHeader
+                    .substring(authorizationHeader.indexOf(' ') + 1).getBytes(StandardCharsets.UTF_8)),
+                    StandardCharsets.UTF_8);
             int colonPos = userAndPassword.indexOf(':');
             recordAuthenticationInfo(userAndPassword.substring(0, colonPos),
                     toArray(userAndPassword.substring(colonPos + 1)));

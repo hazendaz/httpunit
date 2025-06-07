@@ -27,7 +27,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -244,7 +246,8 @@ public abstract class WebClient {
      * emulation of browser behavior.
      **/
     public void setAuthorization(String userName, String password) {
-        _fixedAuthorizationString = "Basic " + Base64.encode(userName + ':' + password);
+        _fixedAuthorizationString = "Basic "
+                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -291,7 +294,8 @@ public abstract class WebClient {
      */
     public void setProxyServer(String proxyHost, int proxyPort, String userName, String password) {
         setProxyServer(proxyHost, proxyPort);
-        _proxyAuthorizationString = "Basic " + Base64.encode(userName + ':' + password);
+        _proxyAuthorizationString = "Basic "
+                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
     }
 
     /**

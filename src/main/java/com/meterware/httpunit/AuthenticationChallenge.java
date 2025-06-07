@@ -25,6 +25,7 @@ import java.net.PasswordAuthentication;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * A challenge for authentication from the server to a client.
@@ -129,7 +130,8 @@ class AuthenticationChallenge extends HttpHeader {
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-            return "Basic " + Base64.encode(userName + ':' + password);
+            return "Basic "
+                    + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
         }
 
     }

@@ -12,7 +12,7 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * The Class UncheckedParameterHolder.
@@ -26,7 +26,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private final String _characterSet;
 
     /** The parameters. */
-    private Hashtable _parameters = new Hashtable<>();
+    private Properties _parameters = new Properties();
 
     /** The submit as mime. */
     private boolean _submitAsMime;

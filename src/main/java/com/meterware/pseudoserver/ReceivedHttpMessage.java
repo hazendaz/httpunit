@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * The Class ReceivedHttpMessage.
@@ -31,7 +31,7 @@ abstract class ReceivedHttpMessage {
     private Reader _reader;
 
     /** The headers. */
-    private Hashtable _headers = new Hashtable<>();
+    private Properties _headers = new Properties();
 
     /** The request body. */
     private byte[] _requestBody;

@@ -18,8 +18,8 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -233,7 +233,7 @@ class HttpWebResponse extends WebResponse {
     }
 
     /** The headers. */
-    private Hashtable _headers = new Hashtable<>();
+    private Properties _headers = new Properties();
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly.

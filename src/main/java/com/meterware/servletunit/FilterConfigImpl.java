@@ -11,7 +11,7 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletContext;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * The Class FilterConfigImpl.
@@ -25,7 +25,7 @@ class FilterConfigImpl implements FilterConfig {
     private ServletContext _servletContext;
 
     /** The init params. */
-    private Hashtable _initParams;
+    private Properties _initParams;
 
     /**
      * Instantiates a new filter config impl.
@@ -37,7 +37,7 @@ class FilterConfigImpl implements FilterConfig {
      * @param initParams
      *            the init params
      */
-    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {
+    FilterConfigImpl(String name, ServletContext servletContext, Properties initParams) {
         _name = name;
         _servletContext = servletContext;
         _initParams = initParams;

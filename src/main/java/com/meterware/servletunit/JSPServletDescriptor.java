@@ -7,7 +7,7 @@
  */
 package com.meterware.servletunit;
 
-import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * Describes a servlet used to handle JSPs.
@@ -31,6 +31,6 @@ public interface JSPServletDescriptor {
      *
      * @return the initialization parameters
      */
-    Hashtable getInitializationParameters(String classPath, String workingDirectory);
+    Properties getInitializationParameters(String classPath, String workingDirectory);
 
 }

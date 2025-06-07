@@ -40,9 +40,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -97,7 +97,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     void headerAccess() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("sample", "value");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         assertEquals("value", request.getHeader("sample"), "sample header value");
 
@@ -121,7 +121,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         String dateStr = "Mon, 26 Jul 1997 05:00:00 GMT";
         Date testDate = new Date(dateStr);
         wr.setHeaderField("Expires", dateStr);
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         String dateStrRequest = request.getHeader("Expires");
         assertEquals(dateStrRequest, dateStr, "Expires header field");
@@ -164,7 +164,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void getDefaultProperties() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         assertNull(request.getAuthType(), "Authorization incorrectly specified");
         assertNull(request.getCharacterEncoding(), "Character encoding incorrectly specified");
@@ -183,7 +183,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[] { "red", "blue" });
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertEquals("12", request.getParameter("age"), "age parameter");
@@ -201,7 +201,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[] { "red", "blue" });
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertMatchingSet("age parameter", new String[] { "12" }, request.getParameterValues("age"));
@@ -259,7 +259,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[] { "red", "blue" });
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         Map map = request.getParameterMap();
@@ -279,7 +279,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setParameter("age", "12");
         wr.setParameter("color", new String[] { "red", "blue" });
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertEquals("color=red&color=blue&age=12", request.getQueryString(), "query string");
@@ -319,7 +319,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void inlineSingleValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertEquals("12", request.getParameter("age"), "age parameter");
@@ -335,7 +335,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void inlineParameterWithEmbeddedSpace() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=dark+red&age=12");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertEquals("12", request.getParameter("age"), "age parameter");
@@ -351,7 +351,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void inlineMultiValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertMatchingSet("age parameter", new String[] { "12" }, request.getParameterValues("age"));
@@ -375,7 +375,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         wr.setParameter("param1", "red");
         wr.setParameter("param2", hebrewValue);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), new byte[0]);
+                new Properties(), new byte[0]);
         assertEquals("red", request.getParameter("param1"), "param1 value");
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
@@ -398,7 +398,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         wr.setParameter("param1", "red");
         wr.setParameter("param2", hebrewValue);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), new byte[0]);
+                new Properties(), new byte[0]);
         assertEquals("red", request.getParameter("param1"), "param1 value");
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
@@ -411,7 +411,7 @@ class HttpServletRequestTest extends ServletUnitTest {
      */
     public void notestInlineQueryString() throws Exception { // TODO make this work
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertEquals("color=red&color=blue&age=12", request.getQueryString(), "query string");
@@ -428,7 +428,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PutMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 body.getBytes(StandardCharsets.UTF_8));
 
         assertEquals(body.length(), request.getContentLength(), "Request content length");
@@ -447,7 +447,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void defaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         assertNull(request.getAttribute("unset"), "attribute should not be defined yet");
@@ -463,7 +463,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void nonDefaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         Object value = Integer.valueOf(1);
 
@@ -486,7 +486,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void duplicateAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         request.setAttribute("one", Integer.valueOf(1));
@@ -503,7 +503,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void nullAttributeValue() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
 
         request.setAttribute("one", "One");
@@ -521,7 +521,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void defaultCookies() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         Cookie[] cookies = request.getCookies();
         assertNull(cookies, "Unexpected cookies found");
@@ -538,7 +538,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Cookie", "flavor=vanilla,variety=sandwich");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+                new Properties(), NO_MESSAGE_BODY);
 
         Cookie[] cookies = request.getCookies();
         assertNotNull(cookies, "No cookies found");
@@ -563,8 +563,8 @@ class HttpServletRequestTest extends ServletUnitTest {
         ServletUnitContext context = _context;
         assertEquals(0, context.getSessionIDs().size(), "Initial number of sessions in context");
 
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(),
+                NO_MESSAGE_BODY);
         assertNull(request.getRequestedSessionId(), "New request should not have a request session ID");
         assertNull(request.getSession( /* create */ false), "New request should not have a session");
         assertEquals(0, context.getSessionIDs().size(),
@@ -631,8 +631,8 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + sessionID);
 
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(),
+                NO_MESSAGE_BODY);
         assertEquals(sessionID, request.getRequestedSessionId(), "Requested session ID defined in request");
 
         assertSame(session, request.getSession( /* create */ false), "Session returned when creation not requested");
@@ -651,7 +651,7 @@ class HttpServletRequestTest extends ServletUnitTest {
 
         HttpSession session = context.newSession();
         session.setAttribute("Initial", Integer.valueOf(1));
-        Enumeration attributeNames = session.getAttributeNames();
+        Enumeration<String> attributeNames = session.getAttributeNames();
         assertTrue(attributeNames.hasMoreElements());
         assertEquals("Initial", attributeNames.nextElement());
 
@@ -687,8 +687,8 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + originalID);
 
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(),
+                NO_MESSAGE_BODY);
         originalSession.setAttribute("Initial", Integer.valueOf(1));
         Enumeration attributeNames = originalSession.getAttributeNames();
         assertTrue(attributeNames.hasMoreElements());
@@ -723,12 +723,12 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + originalID);
 
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(),
+                NO_MESSAGE_BODY);
         request.getSession();
 
         wr.setHeaderField("Cookie", ServletUnitHttpSession.SESSION_COOKIE_NAME + '=' + originalID + "BAD");
-        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable<>(), NO_MESSAGE_BODY);
+        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(), NO_MESSAGE_BODY);
 
         assertNull(request.getSession(false), "Unexpected session returned for bad cookie");
         assertNotNull(request.getSession(true), "Should have returned session when asked");
@@ -754,13 +754,13 @@ class HttpServletRequestTest extends ServletUnitTest {
         ServletUnitContext context = _context;
         WebRequest wr = new GetMethodWebRequest(uri);
 
-        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+        ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(),
+                NO_MESSAGE_BODY);
         assertEquals(path, request.getRequestURI());
         assertEquals(uri, request.getRequestURL().toString());
 
         wr = new GetMethodWebRequest(uri + "?foo=bar");
-        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Hashtable<>(), NO_MESSAGE_BODY);
+        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, context, new Properties(), NO_MESSAGE_BODY);
         assertEquals(path, request.getRequestURI());
         assertEquals(uri, request.getRequestURL().toString());
     }
@@ -802,7 +802,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+                new Properties(), NO_MESSAGE_BODY);
         Locale[] expectedLocales = { Locale.getDefault() };
         verifyLocales(request, expectedLocales);
 
@@ -819,24 +819,24 @@ class HttpServletRequestTest extends ServletUnitTest {
     void secureProperty() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+                new Properties(), NO_MESSAGE_BODY);
         assertFalse(request.isSecure(), "Incorrectly noted request as secure");
         assertEquals("http", request.getScheme(), "http");
 
         WebRequest secureReq = new GetMethodWebRequest("https://localhost/simple");
-        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Hashtable<>(),
+        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Properties(),
                 NO_MESSAGE_BODY);
         assertTrue(request.isSecure(), "Request not marked as secure");
         assertEquals("https", request.getScheme(), "https");
 
         wr = new GetMethodWebRequest("ftp://localhost/simple");
-        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(), NO_MESSAGE_BODY);
+        request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(), NO_MESSAGE_BODY);
         assertFalse(request.isSecure(), "Incorrectly noted request as secure");
         assertEquals("ftp", request.getScheme(), "ftp");
 
         secureReq = new GetMethodWebRequest("ftps://localhost/simple");
         try {
-            request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Hashtable<>(),
+            request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, secureReq, _context, new Properties(),
                     NO_MESSAGE_BODY);
             assertTrue(request.isSecure(), "Request not marked as secure");
             assertEquals("ftps", request.getScheme(), "ftps");
@@ -881,7 +881,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         wr.setHeaderField("Accept-language", "fr, en;q=0.6, en-us;q=0.7");
 
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), NO_MESSAGE_BODY);
+                new Properties(), NO_MESSAGE_BODY);
         verifyLocales(request, new Locale[] { Locale.FRENCH, Locale.US, Locale.ENGLISH });
     }
 
@@ -901,7 +901,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 bytes);
 
         InputStream first = request.getInputStream();
@@ -922,7 +922,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 bytes);
 
         request.getReader();
@@ -947,7 +947,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 body.getBytes(StandardCharsets.UTF_8));
 
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
@@ -969,7 +969,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 bytes);
 
         BufferedReader first = request.getReader();
@@ -990,7 +990,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 bytes);
 
         request.getInputStream();
@@ -1015,7 +1015,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 body.getBytes(StandardCharsets.UTF_8));
 
         char[] buffer = new char[body.length()];
@@ -1033,7 +1033,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         String body = "\u05d0\u05d1\u05d2\u05d3";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain; charset=UTF-8");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 body.getBytes(StandardCharsets.UTF_8));
 
         char[] buffer = new char[body.length()];
@@ -1054,7 +1054,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         wr.setHeaderField("Content-Type", "application/x-www-form-urlencoded; charset=ISO-8859-8");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), paramString.getBytes(StandardCharsets.ISO_8859_1));
+                new Properties(), paramString.getBytes(StandardCharsets.ISO_8859_1));
         assertEquals("red", request.getParameter("param1"), "param1 value");
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
@@ -1090,7 +1090,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         ServletUnitClient client = ServletUnitClient.newClient(_dummyfactory);
         ByteArrayOutputStream messageBody = client.getMessageBody(wr);
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), messageBody.toByteArray());
+                new Properties(), messageBody.toByteArray());
         String parameter = request.getParameter("param2");
         assertEquals(hebrewValue, parameter, "param2 value");
         assertEquals("red", request.getParameter("param1"), "param1 value");
@@ -1109,7 +1109,7 @@ class HttpServletRequestTest extends ServletUnitTest {
         // encoded
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple");
         ServletUnitHttpRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
-                new Hashtable<>(), paramString.getBytes(StandardCharsets.ISO_8859_1));
+                new Properties(), paramString.getBytes(StandardCharsets.ISO_8859_1));
         request.setCharacterEncoding("ISO-8859-8");
         assertEquals("red", request.getParameter("param1"), "param1 value");
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
@@ -1124,7 +1124,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void defaultHttpServerPort() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         int serverPort = request.getServerPort();
         assertEquals(80, serverPort, "default http server port");
@@ -1139,7 +1139,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void suppliedHttpServerPort() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost:8080/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         int serverPort = request.getServerPort();
         assertEquals(8080, serverPort, "supplied http server port");
@@ -1154,7 +1154,7 @@ class HttpServletRequestTest extends ServletUnitTest {
     @Test
     void serverName() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://myhost:8080/simple");
-        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
+        HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Properties(),
                 NO_MESSAGE_BODY);
         String serverName = request.getServerName();
         assertEquals("myhost", serverName, "server name");

@@ -25,11 +25,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Properties;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,16 +55,16 @@ class WebApplication implements SessionListenerDispatcher {
     private WebResourceMap _servletMapping = new WebResourceMap();
 
     /** A mapping of filter names to FilterConfigurations. */
-    private Hashtable _filters = new Hashtable<>();
+    private Properties _filters = new Properties();
 
     /** A mapping of servlet names to ServletConfigurations. */
-    private Hashtable _servlets = new Hashtable<>();
+    private Properties _servlets = new Properties();
 
     /** A mapping of resource names to filter configurations. **/
     private FilterUrlMap _filterUrlMapping = new FilterUrlMap();
 
     /** A mapping of servlet names to filter configurations. **/
-    private Hashtable _filterMapping = new Hashtable<>();
+    private Properties _filterMapping = new Properties();
 
     /** The security constraints. */
     private List<SecurityConstraint> _securityConstraints = new ArrayList<>();
@@ -97,7 +97,7 @@ class WebApplication implements SessionListenerDispatcher {
     private URL _errorURL;
 
     /** The context parameters. */
-    private Hashtable _contextParameters = new Hashtable<>();
+    private Properties _contextParameters = new Properties();
 
     /** The context dir. */
     private File _contextDir = null;
@@ -351,7 +351,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @param initParams
      *            the init params
      */
-    void registerServlet(String resourceName, String servletClassName, Hashtable initParams) {
+    void registerServlet(String resourceName, String servletClassName, Properties initParams) {
         registerServlet(resourceName, new ServletConfiguration(servletClassName, initParams));
     }
 
@@ -515,7 +515,7 @@ class WebApplication implements SessionListenerDispatcher {
      *
      * @return the context parameters
      */
-    Hashtable getContextParameters() {
+    Properties getContextParameters() {
         return _contextParameters;
     }
 
@@ -580,7 +580,7 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerFilters(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable<>();
+        Properties nameToClass = new Properties();
         NodeList nl = document.getElementsByTagName("filter");
         for (int i = 0; i < nl.getLength(); i++) {
             registerFilterClass(nameToClass, (Element) nl.item(i));
@@ -704,7 +704,7 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerServlets(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable<>();
+        Properties nameToClass = new Properties();
         NodeList nl = document.getElementsByTagName("servlet");
         for (int i = 0; i < nl.getLength(); i++) {
             registerServletClass(nameToClass, (Element) nl.item(i));
@@ -887,7 +887,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @param initParams
          *            the init params
          */
-        ServletConfiguration(String className, Hashtable initParams) {
+        ServletConfiguration(String className, Properties initParams) {
             super(className, initParams);
         }
 
@@ -1231,7 +1231,7 @@ class WebApplication implements SessionListenerDispatcher {
         private WebResourceMapping _mapping;
 
         /** The filters per name. */
-        private Hashtable _filtersPerName;
+        private Properties _filtersPerName;
 
         /** The filters per url. */
         private FilterUrlMap _filtersPerUrl;
@@ -1250,7 +1250,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @param filtersPerUrl
          *            the filters per url
          */
-        ServletRequestImpl(URL url, String servletPath, WebResourceMapping mapping, Hashtable filtersPerName,
+        ServletRequestImpl(URL url, String servletPath, WebResourceMapping mapping, Properties filtersPerName,
                 FilterUrlMap filtersPerUrl) {
             _url = url;
             _fullServletPath = servletPath;

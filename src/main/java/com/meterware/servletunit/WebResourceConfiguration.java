@@ -7,7 +7,7 @@
  */
 package com.meterware.servletunit;
 
-import java.util.Hashtable;
+import java.util.Properties;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,7 +22,7 @@ abstract class WebResourceConfiguration {
     private String _className;
 
     /** The init params. */
-    private Hashtable _initParams = new Hashtable<>();
+    private Properties _initParams = new Properties();
 
     /**
      * Instantiates a new web resource configuration.
@@ -42,7 +42,7 @@ abstract class WebResourceConfiguration {
      * @param initParams
      *            the init params
      */
-    WebResourceConfiguration(String className, Hashtable initParams) {
+    WebResourceConfiguration(String className, Properties initParams) {
         _className = className;
         if (initParams != null) {
             _initParams = initParams;
@@ -106,7 +106,7 @@ abstract class WebResourceConfiguration {
      *
      * @return the inits the params
      */
-    Hashtable getInitParams() {
+    Properties getInitParams() {
         return _initParams;
     }
 

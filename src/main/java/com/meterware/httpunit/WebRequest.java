@@ -22,8 +22,8 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.Dictionary;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -58,7 +58,7 @@ public abstract class WebRequest {
     private String _urlString;
 
     /** The headers. */
-    private Hashtable _headers;
+    private Properties _headers;
 
     /** The web request source. */
     private WebRequestSource _webRequestSource;
@@ -801,9 +801,9 @@ public abstract class WebRequest {
      *
      * @return the header dictionary
      */
-    Hashtable getHeaderDictionary() {
+    Properties getHeaderDictionary() {
         if (_headers == null) {
-            _headers = new Hashtable<>();
+            _headers = new Properties();
             if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
             }

@@ -20,8 +20,8 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.EventListener;
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -287,7 +287,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public Enumeration<String> getInitParameterNames() {
-        return getContextParams().keys();
+        return (Enumeration<String>) getContextParams().propertyNames();
     }
 
     /**
@@ -303,7 +303,7 @@ public class ServletUnitServletContext implements ServletContext {
 
     @Override
     public Enumeration<String> getAttributeNames() {
-        return _attributes.keys();
+        return (Enumeration<String>) _attributes.propertyNames();
     }
 
     @Override
@@ -398,7 +398,7 @@ public class ServletUnitServletContext implements ServletContext {
     // ----------------------------------------------------
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private Properties _attributes = new Properties();
 
     /** The application. */
     private WebApplication _application;
@@ -408,7 +408,7 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return the context params
      */
-    private Hashtable getContextParams() {
+    private Properties getContextParams() {
         return _application.getContextParameters();
     }
 

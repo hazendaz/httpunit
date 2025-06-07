@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -211,7 +211,7 @@ public class ServletRunner {
      * @param initParameters
      *            the init parameters
      */
-    public void registerServlet(String resourceName, String servletClassName, Hashtable initParameters) {
+    public void registerServlet(String resourceName, String servletClassName, Properties initParameters) {
         _application.registerServlet(resourceName, servletClassName, initParameters);
     }
 
@@ -323,8 +323,8 @@ public class ServletRunner {
         }
 
         @Override
-        public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-            Hashtable params = new Hashtable<>();
+        public Properties getInitializationParameters(String classPath, String workingDirectory) {
+            Properties params = new Properties();
             if (classPath != null) {
                 params.put("classpath", classPath);
             }

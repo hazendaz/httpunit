@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.13.1</version>
+            <version>5.13.2</version>
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>

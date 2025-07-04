@@ -134,13 +134,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.13.2</version>
+            <version>5.13.3</version>
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-migrationsupport</artifactId>
-            <version>5.13.2</version>
+            <version>5.13.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>

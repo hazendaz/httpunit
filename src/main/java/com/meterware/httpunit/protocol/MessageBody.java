@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * An abstract class representing the body of a web request.
  **/
-abstract public class MessageBody {
+public abstract class MessageBody {
 
     private String _characterSet;
 
@@ -58,10 +58,10 @@ abstract public class MessageBody {
     /**
      * Returns the content type of this message body. For text messages, this should include the character set.
      **/
-    abstract public String getContentType();
+    public abstract String getContentType();
 
     /**
      * Transmits the body of this request as a sequence of bytes.
      **/
-    abstract public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException;
+    public abstract void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException;
 }

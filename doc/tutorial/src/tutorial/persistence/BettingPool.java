@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -56,10 +56,10 @@ public class BettingPool {
     }
 
 
-    private final static int NUM_GAMES = 10;
+    private static final int NUM_GAMES = 10;
 
-    private final static int INITIAL_STATE = 0;
-    private final static int POOL_OPEN     = 1;
+    private static final int INITIAL_STATE = 0;
+    private static final int POOL_OPEN     = 1;
 
     private static int _state;
 

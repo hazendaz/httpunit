@@ -102,7 +102,7 @@ public class HTMLPage extends ParsedHTML {
      * return { "index","follow" } getMetaTagContent("http-equiv","Expires") will return { "now" } &lt;/code&gt;
      **/
     public String[] getMetaTagContent(String attribute, String attributeValue) {
-        Vector matches = new Vector();
+        Vector matches = new Vector<>();
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("meta");
         int length = nl.getLength();
 

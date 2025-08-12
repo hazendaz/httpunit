@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
  *
  * @since 1.6
  */
-abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
+public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
 
     private ScriptingHandler _scriptable;
     private Node _node;
@@ -61,14 +61,6 @@ abstract public class BlockElement extends ParsedHTML implements HTMLSegment, HT
     @Override
     public String getTagName() {
         return _node == null ? "p" : _node.getNodeName();
-    }
-
-    /**
-     * Returns a copy of the domain object model associated with this HTML segment.
-     */
-    @Override
-    public Node getDOM() {
-        return super.getDOM();
     }
 
     // -------------------------------- HTMLElement methods

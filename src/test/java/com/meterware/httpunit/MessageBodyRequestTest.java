@@ -30,7 +30,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
@@ -51,13 +50,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * @param contentType
      *
      * @return the new WebRequest
-     *
-     * @throws UnsupportedEncodingException
      */
-    public WebRequest makeRequest(String resourceName, String sourceData, String contentType)
-            throws UnsupportedEncodingException {
+    public WebRequest makeRequest(String resourceName, String sourceData, String contentType) {
         defineResource(resourceName, new BodyEcho());
-        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.UTF_8));
         return new PostMethodWebRequest(getHostPath() + "/" + resourceName, source, contentType);
     }
 
@@ -94,7 +90,7 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     void putRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
         String sourceData = "This is an interesting test\nWith two lines";
-        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
+        InputStream source = new ByteArrayInputStream(sourceData.getBytes(StandardCharsets.UTF_8));
 
         WebConversation wc = new WebConversation();
         WebRequest wr = new PutMethodWebRequest(getHostPath() + "/ReportData", source, "text/plain");

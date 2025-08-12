@@ -35,7 +35,7 @@ public class CookieProperties {
     private static boolean _pathMatchingStrict = true;
 
     /** A collection of listeners for cookie events. **/
-    private static ArrayList _listeners;
+    private static ArrayList<CookieListener> _listeners;
 
     public static void reset() {
         _domainMatchingStrict = true;
@@ -79,7 +79,7 @@ public class CookieProperties {
      */
     public static void addCookieListener(CookieListener listener) {
         if (_listeners == null) {
-            _listeners = new ArrayList();
+            _listeners = new ArrayList<>();
         }
         synchronized (_listeners) {
             _listeners.add(listener);
@@ -91,13 +91,13 @@ public class CookieProperties {
             return;
         }
 
-        List listeners;
+        List<CookieListener> listeners;
         synchronized (_listeners) {
-            listeners = (List) _listeners.clone();
+            listeners = (List<CookieListener>) _listeners.clone();
         }
 
-        for (Iterator i = listeners.iterator(); i.hasNext();) {
-            ((CookieListener) i.next()).cookieRejected(source, reason, attribute);
+        for (Iterator<CookieListener> i = listeners.iterator(); i.hasNext();) {
+            (i.next()).cookieRejected(source, reason, attribute);
         }
     }
 }

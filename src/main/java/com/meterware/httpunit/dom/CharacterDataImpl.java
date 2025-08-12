@@ -25,7 +25,7 @@ import org.w3c.dom.DOMException;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract public class CharacterDataImpl extends NodeImpl implements CharacterData {
+public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {
 
     private static final long serialVersionUID = 1L;
     private String _data;

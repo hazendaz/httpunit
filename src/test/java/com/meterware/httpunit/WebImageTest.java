@@ -58,7 +58,7 @@ public class WebImageTest extends HttpUnitTest {
     @Test
     void getImageManyTimes() throws Exception {
         // try this for different numbers of images
-        int testCounts[] = { 10, 100
+        int[] testCounts = { 10, 100
                 // ,1000 // approx 2.5 secs
                 // ,2000 // approx 15 secs
                 // ,3000 // approx 47 secs

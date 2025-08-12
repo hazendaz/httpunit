@@ -36,8 +36,8 @@ import org.w3c.dom.TypeInfo;
 public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
 
     private static final long serialVersionUID = 1L;
-    private Hashtable _attributes = new Hashtable();
-    private ArrayList _listeners = new ArrayList();
+    private Hashtable _attributes = new Hashtable<>();
+    private ArrayList _listeners = new ArrayList<>();
 
     static ElementImpl createElement(DocumentImpl owner, String tagName) {
         ElementImpl element = new ElementImpl();

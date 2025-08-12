@@ -26,7 +26,7 @@ import com.meterware.httpunit.HTMLElement;
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract public class ScriptableDelegate implements ScriptingHandler {
+public abstract class ScriptableDelegate implements ScriptingHandler {
 
     private ScriptingEngine _scriptEngine;
 
@@ -103,7 +103,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      **/
     @Override
     public boolean doEventScript(String eventScript) {
-        return eventScript.length() == 0 || getScriptEngine().doEventScript(eventScript);
+        return eventScript.isEmpty() || getScriptEngine().doEventScript(eventScript);
     }
 
     /**
@@ -128,7 +128,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      **/
     @Override
     public String runScript(String language, String script) {
-        return script.length() == 0 ? "" : getScriptEngine().runScript(language, script);
+        return script.isEmpty() ? "" : getScriptEngine().runScript(language, script);
     }
 
     /**
@@ -136,7 +136,7 @@ abstract public class ScriptableDelegate implements ScriptingHandler {
      **/
     @Override
     public Object evaluateExpression(String urlString) {
-        if (urlString.length() == 0) {
+        if (urlString.isEmpty()) {
             return null;
         }
         return getScriptEngine().evaluateExpression(urlString);

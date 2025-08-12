@@ -446,7 +446,7 @@ public class ServletUnitServletContext implements ServletContext {
     // ------------------------------------------- private members
     // ----------------------------------------------------
 
-    private Hashtable _attributes = new Hashtable();
+    private Hashtable _attributes = new Hashtable<>();
 
     private WebApplication _application;
 

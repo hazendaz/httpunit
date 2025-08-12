@@ -34,10 +34,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-    private Hashtable _contents = new Hashtable();
+    private Hashtable _contents = new Hashtable<>();
 
     /** Map from a frame selector to its subframe selectors. **/
-    private Hashtable _subframes = new Hashtable();
+    private Hashtable _subframes = new Hashtable<>();
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;
@@ -144,8 +144,8 @@ class FrameHolder {
         return null;
     }
 
-    List getActiveFrameNames() {
-        List result = new ArrayList();
+    List<String> getActiveFrameNames() {
+        List<String> result = new ArrayList<>();
         for (Enumeration e = _contents.keys(); e.hasMoreElements();) {
             result.add(((FrameSelector) e.nextElement()).getName());
         }
@@ -224,7 +224,7 @@ class FrameHolder {
      * frame.
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
-        if (relativeName == null || relativeName.length() == 0) {
+        if (relativeName == null || relativeName.isEmpty()) {
             return new FrameSelector();
         }
         return new FrameSelector(relativeName, parentFrame);

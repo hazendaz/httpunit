@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import java.util.ArrayList;
  **/
 public class Citations extends FragmentTemplate {
 
-    private ArrayList _sections = new ArrayList();
+    private ArrayList _sections = new ArrayList<>();
 
     public FragmentTemplate newFragment() {
         return new Citations();
@@ -79,7 +79,7 @@ public class Citations extends FragmentTemplate {
 
 
     public class Section {
-        private ArrayList _citations = new ArrayList();
+        private ArrayList _citations = new ArrayList<>();
         private String _title;
 
 

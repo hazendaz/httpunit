@@ -301,7 +301,7 @@ class ServletUnitHttpSession implements HttpSession {
 
     private boolean _invalid;
 
-    private Hashtable _values = new Hashtable();
+    private Hashtable _values = new Hashtable<>();
 
     private boolean _isNew = true;
 

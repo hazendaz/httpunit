@@ -194,7 +194,7 @@ class AttributesTest {
     private void assertAttributesInMap(NamedNodeMap attributes, NVPair[] expectedAttributes) {
         assertEquals(expectedAttributes.length, attributes.getLength(), "Number of known attribute nodes");
 
-        List attributesMissing = new ArrayList();
+        List attributesMissing = new ArrayList<>();
         for (int i = 0; i < attributes.getLength(); i++) {
             attributesMissing.add(new NVPair((Attr) attributes.item(i)));
         }
@@ -214,7 +214,7 @@ class AttributesTest {
     private void assertAttributesInMap(NamedNodeMap attributes, Attr[] expectedAttributes) {
         assertEquals(expectedAttributes.length, attributes.getLength(), "Number of known attribute nodes");
 
-        List attributesMissing = new ArrayList();
+        List attributesMissing = new ArrayList<>();
         for (int i = 0; i < attributes.getLength(); i++) {
             attributesMissing.add(attributes.item(i));
         }

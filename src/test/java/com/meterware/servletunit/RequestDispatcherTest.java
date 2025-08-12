@@ -45,11 +45,11 @@ class RequestDispatcherTest {
     final String decodeExampleName = "repository/Default%20repository";
     final String errorPageServletName = "errorPage";
 
-    final static String REQUEST_URI = "javax.servlet.include.request_uri";
-    final static String CONTEXT_PATH = "javax.servlet.include.context_path";
-    final static String SERVLET_PATH = "javax.servlet.include.servlet_path";
-    final static String PATH_INFO = "javax.servlet.include.path_info";
-    final static String QUERY_STRING = "javax.servlet.include.query_string";
+    static final String REQUEST_URI = "javax.servlet.include.request_uri";
+    static final String CONTEXT_PATH = "javax.servlet.include.context_path";
+    static final String SERVLET_PATH = "javax.servlet.include.servlet_path";
+    static final String PATH_INFO = "javax.servlet.include.path_info";
+    static final String QUERY_STRING = "javax.servlet.include.query_string";
 
     private ServletRunner _runner;
     private WebXMLString _wxs;

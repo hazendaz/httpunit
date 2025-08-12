@@ -51,8 +51,8 @@ class MimeEncodedMessageBody extends MessageBody {
         encoding.sendClose();
     }
 
-    private final static String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
-    private final static byte[] CRLF = { 0x0d, 0x0A };
+    private static final String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
+    private static final byte[] CRLF = { 0x0d, 0x0A };
 
     private String encode(String string) {
         char[] chars = string.toCharArray();
@@ -98,7 +98,7 @@ class MimeEncodedMessageBody extends MessageBody {
          */
         @Override
         public void addParameter(String name, String value, String characterSet) throws IOException {
-            if (name == null || name.length() == 0 || value == null) {
+            if (name == null || name.isEmpty() || value == null) {
                 return;
             }
             writeLn(_outputStream, "--" + BOUNDARY);
@@ -109,8 +109,8 @@ class MimeEncodedMessageBody extends MessageBody {
             writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
         }
 
-        private final static char CR = 0x0D;
-        private final static char LF = 0x0A;
+        private static final char CR = 0x0D;
+        private static final char LF = 0x0A;
 
         private String fixLineEndings(String value) {
             StringBuilder sb = new StringBuilder();

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -54,7 +54,7 @@ public class WebApplet extends HTMLElementBase {
     private HashMap _parameters;
     private String[] _parameterNames;
 
-    final private String CLASS_EXTENSION = ".class";
+    private final String CLASS_EXTENSION = ".class";
     private HTMLAppletElement _element;
 
     public WebApplet(WebResponse response, HTMLAppletElement element, String baseTarget) {
@@ -113,7 +113,7 @@ public class WebApplet extends HTMLElementBase {
     }
 
     List getArchiveList() throws MalformedURLException {
-        ArrayList al = new ArrayList();
+        ArrayList al = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(getArchiveSpecification(), ",");
         while (st.hasMoreTokens()) {
             al.add(new URL(getCodeBaseURL(), st.nextToken()));
@@ -141,7 +141,7 @@ public class WebApplet extends HTMLElementBase {
 
     private Map getParameterMap() {
         if (_parameters == null) {
-            _parameters = new HashMap();
+            _parameters = new HashMap<>();
             NodeList nl = ((Element) getNode()).getElementsByTagName("param");
             for (int i = 0; i < nl.getLength(); i++) {
                 Node n = nl.item(i);

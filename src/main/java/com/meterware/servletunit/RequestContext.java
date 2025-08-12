@@ -22,8 +22,8 @@ package com.meterware.servletunit;
 import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.HttpUnitUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 class RequestContext {
 
-    private Hashtable _parameters = new Hashtable();
+    private Hashtable _parameters = new Hashtable<>();
     private Hashtable _visibleParameters;
     private HttpServletRequest _parentRequest;
     private URL _url;
@@ -77,10 +77,10 @@ class RequestContext {
         return (String[]) getParameters().get(name);
     }
 
-    final static private int STATE_INITIAL = 0;
-    final static private int STATE_HAVE_NAME = 1;
-    final static private int STATE_HAVE_EQUALS = 2;
-    final static private int STATE_HAVE_VALUE = 3;
+    static final private int STATE_INITIAL = 0;
+    static final private int STATE_HAVE_NAME = 1;
+    static final private int STATE_HAVE_EQUALS = 2;
+    static final private int STATE_HAVE_VALUE = 3;
 
     /**
      * This method employs a state machine to parse a parameter query string. The transition rules are as follows: State
@@ -89,7 +89,7 @@ class RequestContext {
      * name have_equals -> initial: record parameter with null value have_value -> initial: record parameter with value
      **/
     void loadParameters(String queryString) {
-        if (queryString.length() == 0) {
+        if (queryString.isEmpty()) {
             return;
         }
         StringTokenizer st = new StringTokenizer(queryString, "&=", /* return tokens */ true);
@@ -151,7 +151,7 @@ class RequestContext {
             if (_parentRequest == null) {
                 _visibleParameters = _parameters;
             } else {
-                _visibleParameters = new Hashtable();
+                _visibleParameters = new Hashtable<>();
                 final Map parameterMap = _parentRequest.getParameterMap();
                 for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));
@@ -166,11 +166,7 @@ class RequestContext {
     }
 
     private String getMessageBodyAsString() {
-        try {
-            return new String(_messageBody, "iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        }
+        return new String(_messageBody, StandardCharsets.UTF_8);
     }
 
     void setMessageBody(byte[] bytes) {
@@ -183,7 +179,7 @@ class RequestContext {
 
     private String getMessageEncoding() {
         return _messageEncoding == null ?
-        /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
+        /* Fixing 1705925: StandardCharsets.ISO_8859_1.name() */
                 HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;
     }
 

@@ -20,6 +20,7 @@
 package com.meterware.httpunit.protocol;
 
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
@@ -57,11 +58,7 @@ public class URLEncodedString implements ParameterProcessor {
      * Returns a URL-encoded version of the string.
      **/
     private String encode(String source, String characterSet) {
-        try {
-            return URLEncoder.encode(source, characterSet);
-        } catch (java.io.UnsupportedEncodingException e) {
-            return "???"; // XXX should pass the exception through as IOException ultimately
-        }
+        return URLEncoder.encode(source, Charset.forName(characterSet));
     }
 
 }

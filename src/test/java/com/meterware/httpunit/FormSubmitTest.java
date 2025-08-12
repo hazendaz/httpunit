@@ -240,8 +240,8 @@ class FormSubmitTest extends HttpUnitTest {
      */
     @Test
     void doubleSubmitProblem() throws Exception {
-        boolean states[] = { false, true };
-        String expected[] = { "", "1" };
+        boolean[] states = { false, true };
+        String[] expected = { "", "1" };
         for (int i = 0; i < states.length; i++) {
             // countMySelf Tipp from http://www.tipstrs.com/tip/1084/Static-variables-in-Javascript
             defineWebPage("Default",
@@ -604,7 +604,7 @@ class FormSubmitTest extends HttpUnitTest {
         defineWebPage("abc/form",
                 "<form name=\"test\" method='POST' action='/doit'>" + "  <input type='text' name='text_field-name*'>"
                         + "  <input type='submit' name='apply' value='Apply'>" + "</form>");
-        setResourceCharSet("abc/form.html", "iso-8859-3", true);
+        setResourceCharSet("abc/form.html", "UTF-8", true);
         defineResource("doit", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() throws IOException {

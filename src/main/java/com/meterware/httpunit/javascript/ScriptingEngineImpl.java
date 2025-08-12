@@ -40,9 +40,9 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     private static final long serialVersionUID = 1L;
 
-    private final static Object[] NO_ARGS = {};
+    private static final Object[] NO_ARGS = {};
 
-    private static ArrayList _errorMessages = new ArrayList();
+    private static ArrayList _errorMessages = new ArrayList<>();
 
     /**
      * clear the list of error Messages
@@ -149,7 +149,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      */
     @Override
     public boolean doEventScript(String eventScript) {
-        if (eventScript.length() == 0) {
+        if (eventScript.isEmpty()) {
             return true;
         }
         try {

@@ -44,7 +44,7 @@ package com.meterware.httpunit;
  *
  * @author Russell Gold
  **/
-abstract public class IllegalRequestParameterException extends RuntimeException {
+public abstract class IllegalRequestParameterException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 }

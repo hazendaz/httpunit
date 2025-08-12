@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,10 +42,10 @@ import org.w3c.dom.html.HTMLOptionElement;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract public class AbstractHTMLElementTest implements DomListener {
+public abstract class AbstractHTMLElementTest implements DomListener {
 
     protected HTMLDocumentImpl _htmlDocument;
-    private List _eventsReceived = new ArrayList();
+    private List _eventsReceived = new ArrayList<>();
 
     @BeforeEach
     public void setUpAbstractHTMLElementTest() throws Exception {
@@ -166,7 +166,7 @@ abstract public class AbstractHTMLElementTest implements DomListener {
             propertyName = ((AttributeNameAdjusted) element).getJavaAttributeName(propertyName);
         }
 
-        PropertyDescriptor properties[] = beanInfo.getPropertyDescriptors();
+        PropertyDescriptor[] properties = beanInfo.getPropertyDescriptors();
         for (PropertyDescriptor property : properties) {
             if (property.getName().equalsIgnoreCase(propertyName)) {
                 return property;

@@ -47,7 +47,7 @@ public class WebList extends HTMLElementBase {
     private String _baseTarget;
     private String _characterSet;
 
-    private ArrayList _items = new ArrayList();
+    private ArrayList _items = new ArrayList<>();
     private int _listType;
 
     public WebList(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Element element,

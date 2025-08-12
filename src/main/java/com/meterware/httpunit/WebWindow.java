@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -241,8 +241,8 @@ public class WebWindow {
      * Returns the name of the currently active frames.
      **/
     public String[] getFrameNames() {
-        final List names = _frameContents.getActiveFrameNames();
-        return (String[]) names.toArray(new String[names.size()]);
+        final List<String> names = _frameContents.getActiveFrameNames();
+        return names.toArray(new String[names.size()]);
     }
 
     /**
@@ -301,7 +301,7 @@ public class WebWindow {
         _client = client;
         _frameContents = new FrameHolder(this);
         _name = NO_NAME + _client.getOpenWindows().length;
-        _redirects = new Hashtable();
+        _redirects = new Hashtable<>();
     }
 
     WebWindow(WebClient client, WebResponse opener) {
@@ -329,6 +329,7 @@ public class WebWindow {
             Thread.sleep(numMilliseconds);
         } catch (InterruptedException e) {
             // ignore the exception
+            Thread.interrupted();
         }
     }
 

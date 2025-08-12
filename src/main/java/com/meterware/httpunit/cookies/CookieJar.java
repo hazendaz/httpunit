@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -40,8 +40,8 @@ public class CookieJar {
 
     private static final int DEFAULT_HEADER_SIZE = 80;
 
-    private ArrayList _cookies = new ArrayList();
-    private ArrayList _globalCookies = new ArrayList();
+    private ArrayList _cookies = new ArrayList<>();
+    private ArrayList _globalCookies = new ArrayList<>();
     private CookiePress _press;
 
     /**
@@ -229,7 +229,7 @@ public class CookieJar {
             return null;
         }
         StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);
-        HashSet restrictedCookies = new HashSet();
+        HashSet restrictedCookies = new HashSet<>();
         for (Iterator i = _cookies.iterator(); i.hasNext();) {
             Cookie cookie = (Cookie) i.next();
             if (!cookie.mayBeSentTo(targetURL)) {
@@ -328,7 +328,7 @@ public class CookieJar {
         }
 
         private char lastCharOf(String string) {
-            return string.length() == 0 ? ' ' : string.charAt(string.length() - 1);
+            return string.isEmpty() ? ' ' : string.charAt(string.length() - 1);
         }
 
         /**
@@ -354,7 +354,7 @@ public class CookieJar {
         private Vector getCookieTokens(String cookieHeader) {
             StringReader sr = new StringReader(cookieHeader);
             StreamTokenizer st = new StreamTokenizer(sr);
-            Vector tokens = new Vector();
+            Vector tokens = new Vector<>();
 
             // clear syntax tables of the StreamTokenizer
             st.resetSyntax();
@@ -406,7 +406,7 @@ public class CookieJar {
 
         // the current value
         private StringBuilder _value = new StringBuilder();
-        private HashMap _attributes = new HashMap();
+        private HashMap _attributes = new HashMap<>();
         private URL _sourceURL;
 
         /**
@@ -512,7 +512,7 @@ public class CookieJar {
         }
 
         private int getPathAttributeStatus(String pathAttribute, String sourcePath) {
-            if (!CookieProperties.isPathMatchingStrict() || sourcePath.length() == 0
+            if (!CookieProperties.isPathMatchingStrict() || sourcePath.isEmpty()
                     || sourcePath.startsWith(pathAttribute)) {
                 return CookieListener.ACCEPTED;
             }

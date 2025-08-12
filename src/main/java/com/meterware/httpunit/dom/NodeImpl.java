@@ -35,7 +35,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
 /**
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
-abstract public class NodeImpl extends AbstractDomComponent implements Node {
+public abstract class NodeImpl extends AbstractDomComponent implements Node {
 
     private static final long serialVersionUID = 1L;
     private DocumentImpl _ownerDocument;
@@ -43,7 +43,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     private NodeImpl _firstChild;
     private NodeImpl _nextSibling;
     private NodeImpl _previousSibling;
-    private Hashtable _userData = new Hashtable();
+    private Hashtable _userData = new Hashtable<>();
 
     static IteratorMask SKIP_IFRAMES = subtreeRoot -> subtreeRoot instanceof HTMLIFrameElement;
 
@@ -73,7 +73,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
 
     @Override
     public NodeList getChildNodes() {
-        ArrayList list = new ArrayList();
+        ArrayList list = new ArrayList<>();
         for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {
             list.add(child);
         }
@@ -315,7 +315,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     // ---------------------------------------------------
 
     public NodeList getElementsByTagName(String name) {
-        ArrayList matchingElements = new ArrayList();
+        ArrayList matchingElements = new ArrayList<>();
         appendElementsWithTag(name, matchingElements);
         return new NodeListImpl(matchingElements);
     }
@@ -333,7 +333,7 @@ abstract public class NodeImpl extends AbstractDomComponent implements Node {
     }
 
     protected NodeList getElementsByTagNames(String[] names) {
-        ArrayList matchingElements = new ArrayList();
+        ArrayList matchingElements = new ArrayList<>();
         appendElementsWithTags(names, matchingElements);
         return new NodeListImpl(matchingElements);
     }

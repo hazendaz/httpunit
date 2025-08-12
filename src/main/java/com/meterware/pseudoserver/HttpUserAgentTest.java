@@ -132,7 +132,7 @@ public class HttpUserAgentTest {
     }
 
     protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
-        Vector foundItems = new Vector();
+        Vector foundItems = new Vector<>();
         while (found.hasMoreElements()) {
             foundItems.addElement(found.nextElement());
         }
@@ -141,7 +141,7 @@ public class HttpUserAgentTest {
     }
 
     private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
-        Vector expectedItems = new Vector();
+        Vector expectedItems = new Vector<>();
         for (Object element : expected) {
             expectedItems.addElement(element);
         }
@@ -159,12 +159,12 @@ public class HttpUserAgentTest {
     }
 
     public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
-        Vector foundItems = new Vector();
+        Vector foundItems = new Vector<>();
         for (Object element : found) {
             foundItems.addElement(element);
         }
 
-        Vector expectedItems = new Vector();
+        Vector expectedItems = new Vector<>();
 
         for (Object element : expected) {
             expectedItems.addElement(element);
@@ -244,7 +244,7 @@ public class HttpUserAgentTest {
 
         private String _path;
         private String _fullString;
-        private Vector _parameters = new Vector();
+        private Vector _parameters = new Vector<>();
 
         private boolean equals(QuerySpec o) {
             if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {

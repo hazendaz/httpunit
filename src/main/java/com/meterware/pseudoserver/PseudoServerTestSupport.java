@@ -97,7 +97,7 @@ public class PseudoServerTestSupport extends ExternalResource {
         if (xmlns == null) {
             xmlns = "";
         } else {
-            preamble = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
+            preamble = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
             preamble += "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
             xmlns = " xmlns=\"" + xmlns + "\"";
         }

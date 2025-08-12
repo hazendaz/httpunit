@@ -34,7 +34,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private static final String[] NO_VALUES = {};
     private final String _characterSet;
 
-    private Hashtable _parameters = new Hashtable();
+    private Hashtable _parameters = new Hashtable<>();
     private boolean _submitAsMime;
 
     UncheckedParameterHolder() {

@@ -29,7 +29,7 @@ import org.w3c.dom.html.HTMLElement;
 public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
     private static final long serialVersionUID = 1L;
-    public final static String UNSPECIFIED_ATTRIBUTE = null;
+    public static final String UNSPECIFIED_ATTRIBUTE = null;
 
     ElementImpl create() {
         return new HTMLElementImpl();
@@ -100,14 +100,14 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
     // ---------------------------------------------- protected methods
     // -----------------------------------------------------
 
-    final protected String getAttributeWithDefault(String attributeName, String defaultValue) {
+    protected final String getAttributeWithDefault(String attributeName, String defaultValue) {
         if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
         }
         return defaultValue;
     }
 
-    final protected String getAttributeWithNoDefault(String attributeName) {
+    protected final String getAttributeWithNoDefault(String attributeName) {
         if (hasAttribute(attributeName)) {
             return getAttribute(attributeName);
         }
@@ -121,12 +121,12 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
     protected int getIntegerAttribute(String name) {
         String value = getAttribute(name);
-        return value.length() == 0 ? 0 : Integer.parseInt(value);
+        return value.isEmpty() ? 0 : Integer.parseInt(value);
     }
 
     protected int getIntegerAttribute(String name, int defaultValue) {
         String value = getAttribute(name);
-        return value.length() == 0 ? defaultValue : Integer.parseInt(value);
+        return value.isEmpty() ? defaultValue : Integer.parseInt(value);
     }
 
     protected void setAttribute(String name, boolean disabled) {

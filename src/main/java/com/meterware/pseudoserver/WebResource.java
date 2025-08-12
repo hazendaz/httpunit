@@ -24,8 +24,9 @@ import com.meterware.httpunit.HttpUnitUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 /**
@@ -33,10 +34,22 @@ import java.util.Vector;
  **/
 public class WebResource {
 
-    final static String DEFAULT_CONTENT_TYPE = "text/html";
+    static final String DEFAULT_CONTENT_TYPE = "text/html";
 
-    final static String DEFAULT_CHARACTER_SET = "iso-8859-1";
     private boolean _closesConnection;
+
+    private byte[] _contents;
+    private String _string;
+    private InputStream _stream;
+
+    private int _responseCode;
+    private boolean _sendCharacterSet;
+    private String _contentType = DEFAULT_CONTENT_TYPE;
+    private String _characterSet = StandardCharsets.ISO_8859_1.name();
+    private boolean _hasExplicitContentTypeHeader;
+    private boolean _hasExplicitContentLengthHeader;
+    private Vector _headers = new Vector<>();
+    private boolean _isChunked;
 
     public WebResource(String contents) {
         this(contents, DEFAULT_CONTENT_TYPE);
@@ -106,7 +119,7 @@ public class WebResource {
         addHeader("Connection: close");
     }
 
-    String[] getHeaders() throws UnsupportedEncodingException {
+    String[] getHeaders() {
         final Vector effectiveHeaders = (Vector) _headers.clone();
         if (!_hasExplicitContentTypeHeader) {
             effectiveHeaders.add(getContentTypeHeader());
@@ -148,7 +161,7 @@ public class WebResource {
         return sb.toString();
     }
 
-    private byte[] getContentsAsBytes() throws UnsupportedEncodingException {
+    private byte[] getContentsAsBytes() {
         if (_contents != null) {
             return _contents;
         }
@@ -162,12 +175,12 @@ public class WebResource {
         return "Content-Type: " + _contentType + getCharacterSetParameter();
     }
 
-    private String getContentLengthHeader() throws UnsupportedEncodingException {
+    private String getContentLengthHeader() {
         return "Content-Length: " + getContentsAsBytes().length;
     }
 
-    String getCharacterSet() {
-        return HttpUnitUtils.stripQuotes(_characterSet);
+    Charset getCharacterSet() {
+        return Charset.forName(HttpUnitUtils.stripQuotes(_characterSet));
     }
 
     String getCharacterSetParameter() {
@@ -194,16 +207,4 @@ public class WebResource {
         return "<< hex bytes >>";
     }
 
-    private byte[] _contents;
-    private String _string;
-    private InputStream _stream;
-
-    private int _responseCode;
-    private boolean _sendCharacterSet;
-    private String _contentType = DEFAULT_CONTENT_TYPE;
-    private String _characterSet = DEFAULT_CHARACTER_SET;
-    private boolean _hasExplicitContentTypeHeader;
-    private boolean _hasExplicitContentLengthHeader;
-    private Vector _headers = new Vector();
-    private boolean _isChunked;
 }

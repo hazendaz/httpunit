@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
  */
 class ElementRegistry {
 
-    private Map _map = new HashMap();
+    private Map _map = new HashMap<>();
 
     /**
      * Registers an HttpUnit element for a node.

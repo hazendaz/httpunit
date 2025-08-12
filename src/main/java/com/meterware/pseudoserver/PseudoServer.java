@@ -31,10 +31,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -69,7 +69,7 @@ public class PseudoServer {
 
     private int _connectionNum = 0;
 
-    private ArrayList _classpathDirs = new ArrayList();
+    private ArrayList _classpathDirs = new ArrayList<>();
 
     private String _maxProtocolLevel = "1.1";
 
@@ -140,6 +140,7 @@ public class PseudoServer {
                         System.out.println("Error in pseudo server: " + e);
                         HttpUnitUtils.handleException(e);
                     } catch (InterruptedException e) {
+                        Thread.interrupted();
                         System.out.println("Interrupted. Shutting down");
                         _active = false;
                     }
@@ -273,7 +274,7 @@ public class PseudoServer {
 
     // ------------------------------------- private members ---------------------------------------
 
-    private Hashtable _resources = new Hashtable();
+    private Hashtable _resources = new Hashtable<>();
 
     private boolean _active = true;
 
@@ -338,6 +339,7 @@ public class PseudoServer {
                     try {
                         Thread.sleep(INPUT_POLL_INTERVAL);
                     } catch (InterruptedException e) {
+                        Thread.interrupted();
                     }
                 }
             }
@@ -484,7 +486,7 @@ public class PseudoServer {
 
 class HttpResponseStream {
 
-    final private static String CRLF = "\r\n";
+    private static final String CRLF = "\r\n";
 
     void restart() {
         _headersWritten = false;
@@ -500,11 +502,7 @@ class HttpResponseStream {
 
     HttpResponseStream(OutputStream stream) {
         _stream = stream;
-        try {
-            setCharacterSet("us-ascii");
-        } catch (UnsupportedEncodingException e) {
-            _pw = new PrintWriter(new OutputStreamWriter(_stream));
-        }
+        setCharacterSet("us-ascii");
     }
 
     void setProtocol(String protocol) {
@@ -540,11 +538,11 @@ class HttpResponseStream {
         _stream.flush();
     }
 
-    private void setCharacterSet(String characterSet) throws UnsupportedEncodingException {
+    private void setCharacterSet(String characterSet) {
         if (_pw != null) {
             _pw.flush();
         }
-        _pw = new PrintWriter(new OutputStreamWriter(_stream, characterSet));
+        _pw = new PrintWriter(new OutputStreamWriter(_stream, Charset.forName(characterSet)));
     }
 
     private void flushHeaders() {
@@ -575,7 +573,7 @@ class HttpResponseStream {
     private OutputStream _stream;
     private PrintWriter _pw;
 
-    private Vector _headers = new Vector();
+    private Vector _headers = new Vector<>();
     private String _protocol = "HTTP/1.0";
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseText = "OK";

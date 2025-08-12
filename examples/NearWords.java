@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -123,7 +123,7 @@ class WordSeeker {
 		String[] words;
 		BrowserDisplayer.showResponseInBrowser(response);
 		WebLink[] links = response.getLinks();
-		ArrayList result = new ArrayList();
+		ArrayList result = new ArrayList<>();
 		// start from the "Advanced" link section
 		boolean start = false;
 		for (int i = 0; i < links.length; i++) {

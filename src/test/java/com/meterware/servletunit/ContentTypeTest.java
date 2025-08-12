@@ -134,10 +134,10 @@ public class ContentTypeTest {
         assertNull(response.getHeaderField("No-Such-Header"));
         // the BR proposes to have a default "null" content-type
         // assertNull(response.getHeaderField("Content-Type"));
-        // unfortunately currently the default content type is "text/plain; charset=iso-8859-1"
+        // unfortunately currently the default content type is "text/plain; charset=ISO-8859-1"
         // whereas the HttpUnitOptions default Content Type is "text/html" ...
         // we'll check for the current state for the time being 2012-09-13
-        assertEquals("text/plain; charset=iso-8859-1", response.getHeaderField("Content-Type"));
+        assertEquals("text/plain; charset=ISO-8859-1", response.getHeaderField("Content-Type"));
     }
 
     /*

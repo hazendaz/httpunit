@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -130,8 +130,8 @@ public class JavaScript {
         private static final long serialVersionUID = 1L;
         protected ScriptableDelegate _scriptable;
         protected JavaScriptEngine _parent;
-        protected Map _eventListeners = new HashMap(); // Map<String,Set<EventListener>>
-        protected Map _eventCaptureListeners = new HashMap(); // Map<String,Set<EventListener>>
+        protected Map _eventListeners = new HashMap<>(); // Map<String,Set<EventListener>>
+        protected Map _eventCaptureListeners = new HashMap<>(); // Map<String,Set<EventListener>>
 
         /**
          * initialize JavaScript for the given ScriptEngine
@@ -341,14 +341,14 @@ public class JavaScript {
             if (useCapture) {
                 Set set = (Set) _eventCaptureListeners.get(type); // Set<Scriptable>
                 if (set == null) {
-                    set = new HashSet();
+                    set = new HashSet<>();
                     _eventCaptureListeners.put(type, set);
                 }
                 set.add(listener);
             } else {
                 Set set = (Set) _eventListeners.get(type); // Set<Scriptable>
                 if (set == null) {
-                    set = new HashSet();
+                    set = new HashSet<>();
                     _eventListeners.put(type, set);
                 }
                 set.add(listener);
@@ -420,7 +420,7 @@ public class JavaScript {
 
         public Scriptable jsGet_frames() throws SAXException, JavaScriptException, EvaluatorException {
             if (_frames == null) {
-                WebResponse.Scriptable scriptables[] = getDelegate().getFrames();
+                WebResponse.Scriptable[] scriptables = getDelegate().getFrames();
                 Window[] frames = new Window[scriptables.length];
                 for (int i = 0; i < frames.length; i++) {
                     frames[i] = (Window) toScriptable(scriptables[i]);
@@ -878,7 +878,7 @@ public class JavaScript {
     static public class ElementArray extends ScriptableObject {
 
         private static final long serialVersionUID = 1L;
-        private JavaScriptEngine _contents[] = new HTMLElement[0];
+        private JavaScriptEngine[] _contents = new HTMLElement[0];
 
         static ElementArray newElementArray(Scriptable parent) {
             try {
@@ -1054,7 +1054,7 @@ public class JavaScript {
         }
 
         private void initializeControls() throws EvaluatorException, JavaScriptException {
-            ScriptableDelegate scriptables[] = getDelegate().getElementDelegates();
+            ScriptableDelegate[] scriptables = getDelegate().getElementDelegates();
             Control[] controls = new Control[scriptables.length];
             for (int i = 0; i < controls.length; i++) {
                 controls[i] = (Control) toScriptable(scriptables[i]);

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -17,7 +17,6 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
 /*
  * Originally licensed: Copyright (c) 2008, Wolfgang Fahl, BITPlan GmbH (http://www.bitplan.com)
  */
@@ -128,7 +127,7 @@ public class GoogleMapsExample {
 		outputOptions.setIndent(4);
 		outputOptions.setMethod("xml");
 		// if (System.getProperty("os.name").startsWith("Windows")) {
-		outputOptions.setEncoding("ISO-8859-1");
+		outputOptions.setEncoding("UTF-8");
 		Writer writer = new BufferedWriter(new FileWriter(new File(filename)));
 		DOMSerializer serializer = new XMLSerializer(writer, outputOptions);
 		serializer.serialize(document);

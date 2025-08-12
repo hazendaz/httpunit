@@ -78,7 +78,7 @@ class JTidyHTMLParser implements HTMLParser {
         return true;
     }
 
-    final private static char NBSP = (char) 160; // non-breaking space, defined by JTidy
+    private static final char NBSP = (char) 160; // non-breaking space, defined by JTidy
 
     /**
      * get the parser of the given url

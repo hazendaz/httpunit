@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -40,19 +40,19 @@ import org.xml.sax.SAXException;
 public class WebLink extends FixedURLWebRequestSource {
 
     /** Predicate to match part or all of a link's URL string. **/
-    public final static HTMLElementPredicate MATCH_URL_STRING;
+    public static final HTMLElementPredicate MATCH_URL_STRING;
 
     /** Predicate to match a link's text exactly. **/
-    public final static HTMLElementPredicate MATCH_TEXT;
+    public static final HTMLElementPredicate MATCH_TEXT;
 
     /** Predicate to match part or all of a link's contained text. **/
-    public final static HTMLElementPredicate MATCH_CONTAINED_TEXT;
+    public static final HTMLElementPredicate MATCH_CONTAINED_TEXT;
 
     /** Predicate to match a link's ID. **/
-    public final static HTMLElementPredicate MATCH_ID;
+    public static final HTMLElementPredicate MATCH_ID;
 
     /** Predicate to match a link's name. **/
-    public final static HTMLElementPredicate MATCH_NAME;
+    public static final HTMLElementPredicate MATCH_NAME;
 
     /**
      * Returns the URL referenced by this link. This may be a relative URL. It will not include any fragment identifier.

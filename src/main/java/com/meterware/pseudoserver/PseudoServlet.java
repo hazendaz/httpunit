@@ -25,9 +25,9 @@ import java.io.Reader;
 /**
  * A basic simulated servlet for testing the HttpUnit library.
  **/
-abstract public class PseudoServlet {
+public abstract class PseudoServlet {
 
-    final static public String CONTENTS = "contents";
+    public static final String CONTENTS = "contents";
 
     /**
      * Returns a resource object as a result of a get request.

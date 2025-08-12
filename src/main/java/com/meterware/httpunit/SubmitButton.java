@@ -238,7 +238,7 @@ public class SubmitButton extends Button {
     }
 
     private boolean equals(SubmitButton button) {
-        return getName().equals(button.getName()) && (getName().length() == 0 || getValue().equals(button.getValue()));
+        return getName().equals(button.getName()) && (getName().isEmpty() || getValue().equals(button.getValue()));
     }
 
     @Override

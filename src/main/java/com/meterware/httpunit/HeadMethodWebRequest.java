@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -52,7 +52,7 @@ import java.net.URL;
  * itself. This method is often used for testing hypertext links for validity, accessibility, and recent modification.
  * The response to a HEAD request MAY be cacheable in the sense that the information contained in the response MAY be
  * used to update a previously cached entity from that resource. If the new field values indicate that the cached entity
- * differs from the current entity (as would be indicated by a change in Content-Length, Content-MD5, ETag or
+ * differs from the current entity (as would be indicated by a change in Content-Length, Content-SHA-256, ETag or
  * Last-Modified), then the cache MUST treat the cache entry as stale.
  *
  * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>

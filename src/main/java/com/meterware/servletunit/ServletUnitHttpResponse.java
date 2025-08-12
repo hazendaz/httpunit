@@ -25,7 +25,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +35,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -51,7 +53,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private boolean _committed;
     private Locale _locale = Locale.getDefault();
 
-    private static final Hashtable ENCODING_MAP = new Hashtable();
+    private static final Hashtable ENCODING_MAP = new Hashtable<>();
 
     /**
      * @deprecated Use encodeURL(String url)
@@ -177,7 +179,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      **/
     @Override
     public void setHeader(String name, String value) {
-        ArrayList values = new ArrayList();
+        ArrayList values = new ArrayList<>();
         values.add(value);
         synchronized (_headers) {
             _headers.put(name.toUpperCase(), values);
@@ -233,7 +235,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      **/
     @Override
     public String getCharacterEncoding() {
-        return _encoding == null ? HttpUnitUtils.DEFAULT_CHARACTER_SET : _encoding;
+        return _encoding == null ? StandardCharsets.ISO_8859_1.name() : _encoding;
     }
 
     /**
@@ -282,20 +284,18 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * You cannot use this method if you have already called {@link #getOutputStream} for this
      * <code>ServletResponse</code> object.
      *
-     * @exception UnsupportedEncodingException
-     *                if the character encoding specified in <code>setContentType</code> cannot be used
      * @exception IllegalStateException
      *                if the <code>getOutputStream</code> method has already been called for this response object; in
      *                that case, you can't use this method
      **/
     @Override
-    public PrintWriter getWriter() throws UnsupportedEncodingException {
+    public PrintWriter getWriter() {
         if (_servletStream != null) {
             throw new IllegalStateException("Tried to create writer; output stream already exists");
         }
         if (_writer == null) {
             _outputStream = new ByteArrayOutputStream();
-            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, getCharacterEncoding()));
+            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, Charset.forName(getCharacterEncoding())));
         }
         return _writer;
     }
@@ -319,9 +319,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     public void addHeader(String name, String value) {
         synchronized (_headers) {
             String key = name.toUpperCase();
-            ArrayList values = (ArrayList) _headers.get(key);
+            List values = (ArrayList) _headers.get(key);
             if (values == null) {
-                values = new ArrayList();
+                values = new ArrayList<>();
                 _headers.put(key, values);
             }
             values.add(value);
@@ -475,7 +475,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector();
+        Vector names = new Vector<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             names.addElement(e.nextElement());
         }
@@ -529,7 +529,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (values == null) {
             return new String[0];
         }
-        String results[] = new String[values.size()];
+        String[] results = new String[values.size()];
         return (String[]) values.toArray(results);
 
     }
@@ -566,11 +566,11 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     private String _statusMessage = "OK";
 
-    private final Hashtable _headers = new Hashtable();
+    private final Hashtable _headers = new Hashtable<>();
 
     private boolean _headersComplete;
 
-    private Vector _cookies = new Vector();
+    private Vector _cookies = new Vector<>();
 
     private void completeHeaders() {
         if (_headersComplete) {
@@ -607,14 +607,14 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     }
 
     static {
-        ENCODING_MAP.put("iso-8859-1", "ca da de en es fi fr is it nl no pt sv ");
-        ENCODING_MAP.put("iso-8859-2", "cs hr hu pl ro sh sk sl sq ");
-        ENCODING_MAP.put("iso-8859-4", "et lt lv ");
-        ENCODING_MAP.put("iso-8859-5", "be bg mk ru sr uk ");
-        ENCODING_MAP.put("iso-8859-6", "ar ");
-        ENCODING_MAP.put("iso-8859-7", "el ");
-        ENCODING_MAP.put("iso-8859-8", "iw he ");
-        ENCODING_MAP.put("iso-8859-9", "tr ");
+        ENCODING_MAP.put("ISO-8859-1", "ca da de en es fi fr is it nl no pt sv ");
+        ENCODING_MAP.put("ISO-8859-2", "cs hr hu pl ro sh sk sl sq ");
+        ENCODING_MAP.put("ISO-8859-4", "et lt lv ");
+        ENCODING_MAP.put("ISO-8859-5", "be bg mk ru sr uk ");
+        ENCODING_MAP.put("ISO-8859-6", "ar ");
+        ENCODING_MAP.put("ISO-8859-7", "el ");
+        ENCODING_MAP.put("ISO-8859-8", "iw he ");
+        ENCODING_MAP.put("ISO-8859-9", "tr ");
 
         ENCODING_MAP.put("Shift_JIS", "ja ");
         ENCODING_MAP.put("EUC-KR", "ko ");
@@ -630,12 +630,12 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     @Override
     public Collection<String> getHeaders(String name) {
-        ArrayList values;
+        List values;
         synchronized (_headers) {
             values = (ArrayList) _headers.get(name.toUpperCase());
         }
         if (values == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return values;
     }
@@ -645,7 +645,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector();
+        Vector names = new Vector<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
             names.addElement(e.nextElement());
         }

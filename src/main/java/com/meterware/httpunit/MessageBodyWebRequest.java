@@ -32,7 +32,7 @@ import java.net.URLConnection;
  * A web request which contains a non-empty message body. Note that such requests <em>must</em> use the
  * <code>http</code> or <code>https</code> protocols.
  **/
-abstract public class MessageBodyWebRequest extends WebRequest {
+public abstract class MessageBodyWebRequest extends WebRequest {
 
     protected MessageBody _body;
     private boolean _mimeEncoded;

@@ -263,7 +263,7 @@ public class ServletRunner {
 
         @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-            Hashtable params = new Hashtable();
+            Hashtable params = new Hashtable<>();
             if (classPath != null) {
                 params.put("classpath", classPath);
             }
@@ -274,7 +274,7 @@ public class ServletRunner {
         }
     }
 
-    public final static JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
+    public static final JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
 
     // -------------------------------------------- package methods
     // ---------------------------------------------------------

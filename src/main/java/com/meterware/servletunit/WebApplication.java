@@ -81,16 +81,16 @@ class WebApplication implements SessionListenerDispatcher {
     private WebResourceMap _servletMapping = new WebResourceMap();
 
     /** A mapping of filter names to FilterConfigurations */
-    private Hashtable _filters = new Hashtable();
+    private Hashtable _filters = new Hashtable<>();
 
     /** A mapping of servlet names to ServletConfigurations */
-    private Hashtable _servlets = new Hashtable();
+    private Hashtable _servlets = new Hashtable<>();
 
     /** A mapping of resource names to filter configurations. **/
     private FilterUrlMap _filterUrlMapping = new FilterUrlMap();
 
     /** A mapping of servlet names to filter configurations. **/
-    private Hashtable _filterMapping = new Hashtable();
+    private Hashtable _filterMapping = new Hashtable<>();
 
     private List<SecurityConstraint> _securityConstraints = new ArrayList<>();
 
@@ -112,7 +112,7 @@ class WebApplication implements SessionListenerDispatcher {
 
     private URL _errorURL;
 
-    private Hashtable _contextParameters = new Hashtable();
+    private Hashtable _contextParameters = new Hashtable<>();
 
     private File _contextDir = null;
 
@@ -147,7 +147,7 @@ class WebApplication implements SessionListenerDispatcher {
      * Constructs an application spec from an XML document.
      */
     WebApplication(Document document, File file, String contextPath) throws MalformedURLException, SAXException {
-        if (contextPath != null && contextPath.length() > 0 && !contextPath.startsWith("/")) {
+        if (contextPath != null && !contextPath.isEmpty() && !contextPath.startsWith("/")) {
             throw new IllegalArgumentException("Context path " + contextPath + " must start with '/'");
         }
         _contextDir = file;
@@ -195,8 +195,8 @@ class WebApplication implements SessionListenerDispatcher {
     private void notifyContextInitialized() {
         ServletContextEvent event = new ServletContextEvent(getServletContext());
 
-        for (Iterator i = _contextListeners.iterator(); i.hasNext();) {
-            ServletContextListener listener = (ServletContextListener) i.next();
+        for (Iterator<ServletContextListener> i = _contextListeners.iterator(); i.hasNext();) {
+            ServletContextListener listener = i.next();
             listener.contextInitialized(event);
         }
     }
@@ -209,8 +209,9 @@ class WebApplication implements SessionListenerDispatcher {
     private void notifyContextDestroyed() {
         ServletContextEvent event = new ServletContextEvent(getServletContext());
 
-        for (ListIterator i = _contextListeners.listIterator(_contextListeners.size()); i.hasPrevious();) {
-            ServletContextListener listener = (ServletContextListener) i.previous();
+        for (ListIterator<ServletContextListener> i = _contextListeners.listIterator(_contextListeners.size()); i
+                .hasPrevious();) {
+            ServletContextListener listener = i.previous();
             listener.contextDestroyed(event);
         }
     }
@@ -218,8 +219,8 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeAdded(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
+            ServletContextAttributeListener listener = i.next();
             listener.attributeAdded(event);
         }
     }
@@ -227,8 +228,8 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeReplaced(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
+            ServletContextAttributeListener listener = i.next();
             listener.attributeReplaced(event);
         }
     }
@@ -236,8 +237,8 @@ class WebApplication implements SessionListenerDispatcher {
     void sendAttributeRemoved(String name, Object value) {
         ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);
 
-        for (Iterator i = _contextAttributeListeners.iterator(); i.hasNext();) {
-            ServletContextAttributeListener listener = (ServletContextAttributeListener) i.next();
+        for (Iterator<ServletContextAttributeListener> i = _contextAttributeListeners.iterator(); i.hasNext();) {
+            ServletContextAttributeListener listener = i.next();
             listener.attributeRemoved(event);
         }
     }
@@ -423,7 +424,7 @@ class WebApplication implements SessionListenerDispatcher {
     // --------------------------------------------------
 
     private void registerFilters(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable();
+        Hashtable nameToClass = new Hashtable<>();
         NodeList nl = document.getElementsByTagName("filter");
         for (int i = 0; i < nl.getLength(); i++) {
             registerFilterClass(nameToClass, (Element) nl.item(i));
@@ -458,7 +459,7 @@ class WebApplication implements SessionListenerDispatcher {
     private void registerFilterForServlet(String servletName, FilterConfiguration filterConfiguration) {
         List list = (List) _filterMapping.get(servletName);
         if (list == null) {
-            list = new ArrayList();
+            list = new ArrayList<>();
             _filterMapping.put(servletName, list);
         }
         list.add(filterConfiguration);
@@ -472,12 +473,12 @@ class WebApplication implements SessionListenerDispatcher {
             _authenticationRealm = XMLUtils.getChildNodeValue(loginConfigElement, "realm-name", "");
             if (authenticationMethod.equalsIgnoreCase("BASIC")) {
                 _useBasicAuthentication = true;
-                if (_authenticationRealm.length() == 0) {
+                if (_authenticationRealm.isEmpty()) {
                     throw new SAXException("No realm specified for BASIC Authorization");
                 }
             } else if (authenticationMethod.equalsIgnoreCase("FORM")) {
                 _useFormAuthentication = true;
-                if (_authenticationRealm.length() == 0) {
+                if (_authenticationRealm.isEmpty()) {
                     throw new SAXException("No realm specified for FORM Authorization");
                 }
                 _loginURL = new URL("http", "localhost",
@@ -489,7 +490,7 @@ class WebApplication implements SessionListenerDispatcher {
     }
 
     private void registerServlets(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable();
+        Hashtable nameToClass = new Hashtable<>();
         NodeList nl = document.getElementsByTagName("servlet");
         for (int i = 0; i < nl.getLength(); i++) {
             registerServletClass(nameToClass, (Element) nl.item(i));
@@ -938,9 +939,9 @@ class WebApplication implements SessionListenerDispatcher {
      */
     class WebResourceMap {
 
-        private final Map _exactMatches = new HashMap();
-        private final Map _extensions = new HashMap();
-        private final Map _urlTree = new HashMap();
+        private final Map _exactMatches = new HashMap<>();
+        private final Map _extensions = new HashMap<>();
+        private final Map _urlTree = new HashMap<>();
         private WebResourceMapping _defaultMapping;
 
         void put(String mapping, WebResourceConfiguration configuration) {
@@ -960,7 +961,7 @@ class WebApplication implements SessionListenerDispatcher {
                         return;
                     }
                     if (!context.containsKey(part)) {
-                        context.put(part, new HashMap());
+                        context.put(part, new HashMap<>());
                     }
                     context = (Map) context.get(part);
                 }
@@ -1010,7 +1011,7 @@ class WebApplication implements SessionListenerDispatcher {
         }
 
         void autoLoadServlets() {
-            ArrayList autoLoadable = new ArrayList();
+            ArrayList autoLoadable = new ArrayList<>();
             if (_defaultMapping != null && _defaultMapping.getConfiguration().isLoadOnStartup()) {
                 autoLoadable.add(_defaultMapping.getConfiguration());
             }

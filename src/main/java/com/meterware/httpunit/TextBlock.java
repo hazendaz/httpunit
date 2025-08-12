@@ -33,11 +33,11 @@ import org.w3c.dom.Node;
  **/
 public class TextBlock extends BlockElement {
 
-    private ArrayList _lists = new ArrayList();
+    private ArrayList _lists = new ArrayList<>();
     /** Predicate to match part or all of a block's class attribute. **/
-    public final static HTMLElementPredicate MATCH_CLASS;
+    public static final HTMLElementPredicate MATCH_CLASS;
     /** Predicate to match the tag associated with a block (case insensitive). **/
-    public final static HTMLElementPredicate MATCH_TAG;
+    public static final HTMLElementPredicate MATCH_TAG;
 
     public TextBlock(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {

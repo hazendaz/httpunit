@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
 abstract class WebResourceConfiguration {
 
     private String _className;
-    private Hashtable _initParams = new Hashtable();
+    private Hashtable _initParams = new Hashtable<>();
 
     WebResourceConfiguration(String className) {
         _className = className;
@@ -57,7 +57,7 @@ abstract class WebResourceConfiguration {
      *
      * @throws SAXException
      */
-    public WebResourceConfiguration(Element resourceElement, String resourceNodeName, String className)
+    protected WebResourceConfiguration(Element resourceElement, String resourceNodeName, String className)
             throws SAXException {
         this(className);
         final NodeList initParams = resourceElement.getElementsByTagName("init-param");

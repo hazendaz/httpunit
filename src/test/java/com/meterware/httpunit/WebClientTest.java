@@ -543,7 +543,7 @@ public class WebClientTest extends HttpUnitTest {
                 .append("       realm=\"testrealm@host.com\",")
                 .append("       nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\",")
                 .append("       uri=\"/dir/index.html\",")
-                .append("       response=\"1949323746fe6a43ef61f9606e7febea\"");
+                .append("       response=\"89381827616a396139e299fae10b3a81aaa7bb9e04bee0dcb56ca48dd58af998\"");
         if (withOpaque) {
             expectedHeaderStr.append(", opaque=\"5ccc069c403ebaf9f0171e9517f40e41\"");
         }
@@ -649,8 +649,8 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     static class Deltas {
-        private ArrayList _missingValues = new ArrayList();
-        private ArrayList _extraValues = new ArrayList();
+        private ArrayList _missingValues = new ArrayList<>();
+        private ArrayList _extraValues = new ArrayList<>();
 
         @Override
         public String toString() {
@@ -1089,7 +1089,7 @@ public class WebClientTest extends HttpUnitTest {
                         + "</FRAMESET></HTML>");
 
         WebConversation wc = new WebConversation();
-        ArrayList messageLog = new ArrayList();
+        ArrayList messageLog = new ArrayList<>();
         wc.addClientListener(new ListenerExample(messageLog));
 
         wc.getResponse(getHostPath() + "/Frames.html");

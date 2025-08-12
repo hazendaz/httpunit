@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -36,13 +36,13 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
@@ -61,7 +61,7 @@ import org.xml.sax.SAXException;
  * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  * @author Wolfgang Fahl
  **/
-abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
+public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
 
     private static final String HTML_CONTENT = "text/html";
     private static final String XHTML_CONTENT = "application/xhtml+xml";
@@ -212,12 +212,12 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the response code associated with this response.
      **/
-    abstract public int getResponseCode();
+    public abstract int getResponseCode();
 
     /**
      * Returns the response message associated with this response.
      **/
-    abstract public String getResponseMessage();
+    public abstract String getResponseMessage();
 
     /**
      * Returns the content length of this response.
@@ -275,13 +275,13 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the names of the header fields found in the response.
      **/
-    abstract public String[] getHeaderFieldNames();
+    public abstract String[] getHeaderFieldNames();
 
     /**
      * Returns the value for the specified header field. If no such field is defined, will return null. If more than one
      * header is defined for the specified name, returns only the first found.
      **/
-    abstract public String getHeaderField(String fieldName);
+    public abstract String getHeaderField(String fieldName);
 
     /**
      * Returns the actual byte stream of the response e.g. for download results
@@ -815,7 +815,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
-        if (relativeUrl == null || relativeUrl.trim().length() == 0) {
+        if (relativeUrl == null || relativeUrl.trim().isEmpty()) {
             relativeUrl = "about:";
         }
         GetMethodWebRequest request = new GetMethodWebRequest(getURL(), relativeUrl, _frame, name);
@@ -979,7 +979,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     // ---------------------------------------- Object methods --------------------------------------------
 
     @Override
-    abstract public String toString();
+    public abstract String toString();
 
     // ----------------------------------------- protected members -----------------------------------------------
 
@@ -1016,7 +1016,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
         _responseText = text;
     }
 
-    final protected void defineRawInputStream(InputStream inputStream) throws IOException {
+    protected final void defineRawInputStream(InputStream inputStream) throws IOException {
         if (_inputStream != null || _responseText != null) {
             throw new IllegalStateException("Must be called before response text is defined.");
         }
@@ -1055,7 +1055,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     // ------------------------------------------ package members ------------------------------------------------
 
-    final static String BLANK_HTML = "";
+    static final String BLANK_HTML = "";
 
     static WebResponse createBlankResponse() {
         return new DefaultWebResponse(BLANK_HTML);
@@ -1092,7 +1092,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         try {
             readTags(text.getBytes(StandardCharsets.UTF_8));
-        } catch (UnsupportedEncodingException | MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new RuntimeException("Failure while attempting to reparse text: " + e);
         }
         return true;
@@ -1103,7 +1103,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     WebRequest[] getFrameRequests() throws SAXException {
         WebFrame[] frames = getFrames();
-        Vector requests = new Vector();
+        Vector requests = new Vector<>();
         for (WebFrame frame : frames) {
             if (frame.hasInitialRequest()) {
                 requests.addElement(frame.getInitialRequest());
@@ -1216,7 +1216,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             try {
                 Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);
             } catch (InterruptedException e) {
-                /* do nothing */ }
+                Thread.interrupted();
+                /* do nothing */
+            }
             available = inputStream.available();
         } while (available == 0 && timeLeft > 0);
         return available;
@@ -1227,10 +1229,9 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @param rawMessage
      *
-     * @throws UnsupportedEncodingException
      * @throws MalformedURLException
      */
-    private void readTags(byte[] rawMessage) throws UnsupportedEncodingException, MalformedURLException {
+    private void readTags(byte[] rawMessage) throws MalformedURLException {
         ByteTagParser parser = new ByteTagParser(rawMessage);
         ByteTag tag = parser.getNextTag();
         while (tag != null) {
@@ -1325,7 +1326,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     private void interpretRefreshHeaderElement(String token, String refreshHeader) {
-        if (token.length() == 0) {
+        if (token.isEmpty()) {
             return;
         }
         try {
@@ -1425,8 +1426,8 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     private static String _defaultEncoding;
 
-    private final static String[] DEFAULT_ENCODING_CANDIDATES = { HttpUnitUtils.DEFAULT_CHARACTER_SET, "us-ascii",
-            "utf-8", "utf8" };
+    private static final String[] DEFAULT_ENCODING_CANDIDATES = { StandardCharsets.ISO_8859_1.name(),
+            StandardCharsets.US_ASCII.name() };
 
     static String getDefaultEncoding() {
         if (_defaultEncoding == null) {
@@ -1450,8 +1451,8 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     private static boolean isSupportedCharacterSet(String characterSet) {
         try {
-            return "abcd".getBytes(characterSet).length > 0;
-        } catch (UnsupportedEncodingException e) {
+            return "abcd".getBytes(Charset.forName(characterSet)).length > 0;
+        } catch (UnsupportedCharsetException e) {
             return false;
         }
     }
@@ -1472,18 +1473,19 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     static class ByteTag {
 
-        ByteTag(byte[] buffer, int start, int length) throws UnsupportedEncodingException {
-            _buffer = new String(buffer, start, length, WebResponse.getDefaultEncoding()).toCharArray();
+        ByteTag(byte[] buffer, int start, int length) {
+            _buffer = new String(buffer, start, length, Charset.forName(WebResponse.getDefaultEncoding()))
+                    .toCharArray();
             _name = nextToken();
 
             String attribute = "";
             String token = nextToken();
-            while (token.length() != 0) {
-                if (token.equals("=") && attribute.length() != 0) {
+            while (!token.isEmpty()) {
+                if (token.equals("=") && !attribute.isEmpty()) {
                     getAttributes().put(attribute.toLowerCase(), nextToken());
                     attribute = "";
                 } else {
-                    if (attribute.length() > 0) {
+                    if (!attribute.isEmpty()) {
                         getAttributes().put(attribute.toLowerCase(), "");
                     }
                     attribute = token;
@@ -1507,7 +1509,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
         private Hashtable getAttributes() {
             if (_attributes == null) {
-                _attributes = new Hashtable();
+                _attributes = new Hashtable<>();
             }
             return _attributes;
         }
@@ -1557,7 +1559,7 @@ abstract public class WebResponse implements HTMLSegment, CookieSource, DomWindo
             _buffer = buffer;
         }
 
-        ByteTag getNextTag() throws UnsupportedEncodingException {
+        ByteTag getNextTag() {
             ByteTag byteTag = null;
             do {
                 int _start = _end + 1;

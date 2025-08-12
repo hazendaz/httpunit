@@ -105,7 +105,7 @@ class AppletContextImpl implements AppletContext {
     @Override
     public Enumeration getApplets() {
         WebApplet[] webApplets = _webApplet.getAppletsInPage();
-        Vector v = new Vector();
+        Vector v = new Vector<>();
         try {
             for (WebApplet webApplet : webApplets) {
                 v.add(webApplet.getApplet());

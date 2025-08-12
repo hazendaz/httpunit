@@ -59,7 +59,7 @@ public class JUnitServlet extends HttpServlet {
         ResultsFormatter formatter = getResultsFormatter(request.getParameter("format"));
         response.setContentType(formatter.getContentType());
         final String testName = request.getParameter("test");
-        if (testName == null || testName.length() == 0) {
+        if (testName == null || testName.isEmpty()) {
             reportCannotRunTest(response.getWriter(), "No test class specified");
         } else {
             ServletTestRunner runner = new ServletTestRunner(response.getWriter(), formatter);

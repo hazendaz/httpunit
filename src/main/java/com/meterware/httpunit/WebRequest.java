@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 /**
  * A request sent to a web server.
  **/
-abstract public class WebRequest {
+public abstract class WebRequest {
 
     static final String REFERER_HEADER_NAME = "Referer";
 
@@ -293,7 +293,7 @@ abstract public class WebRequest {
      * @since 1.3.1
      **/
     public String[] getRequestParameterNames() {
-        final HashSet names = new HashSet();
+        final HashSet<String> names = new HashSet<>();
         ParameterProcessor pp = new ParameterProcessor() {
             @Override
             public void addParameter(String name, String value, String characterSet) throws IOException {
@@ -312,7 +312,7 @@ abstract public class WebRequest {
         } catch (IOException e) {
         }
 
-        return (String[]) names.toArray(new String[names.size()]);
+        return names.toArray(new String[names.size()]);
     }
 
     /**
@@ -486,7 +486,7 @@ abstract public class WebRequest {
     /**
      * Returns the character set required for this request.
      **/
-    final protected String getCharacterSet() {
+    protected final String getCharacterSet() {
         return _characterSet;
     }
 
@@ -505,7 +505,7 @@ abstract public class WebRequest {
     protected void writeMessageBody(OutputStream stream) throws IOException {
     }
 
-    final protected URL getURLBase() {
+    protected final URL getURLBase() {
         return _urlBase;
     }
 
@@ -513,13 +513,13 @@ abstract public class WebRequest {
 
     protected String getURLString() {
         final String queryString = getQueryString();
-        if (queryString.length() == 0) {
+        if (queryString.isEmpty()) {
             return _urlString;
         }
         return _urlString + "?" + queryString;
     }
 
-    final protected ParameterHolder getParameterHolder() {
+    protected final ParameterHolder getParameterHolder() {
         return _parameterHolder;
     }
 
@@ -539,7 +539,7 @@ abstract public class WebRequest {
 
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
-            _headers = new Hashtable();
+            _headers = new Hashtable<>();
             if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
             }

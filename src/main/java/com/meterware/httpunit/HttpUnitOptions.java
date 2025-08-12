@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,6 +26,7 @@ import com.meterware.httpunit.scripting.ScriptingEngineFactory;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -42,9 +43,9 @@ public abstract class HttpUnitOptions {
     // comment out the scripting engine not to be used by allowing the appropriate number of asterisks in the comment on
     // the next line (1 or 2)
     /**/
-    final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
+    public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
     /*
-     * / final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
+     * / public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
      */
 
     /**
@@ -58,7 +59,7 @@ public abstract class HttpUnitOptions {
         _matchesIgnoreCase = true;
         _checkContentLength = false;
         _redirectDelay = 0; // TODO move this to ClientProperties
-        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+        _characterSet = StandardCharsets.ISO_8859_1.name();
         _contentType = DEFAULT_CONTENT_TYPE;
         _postIncludesCharset = false;
         _exceptionsThrownOnScriptError = true;
@@ -114,7 +115,7 @@ public abstract class HttpUnitOptions {
      * Resets the default character set to the HTTP default encoding.
      **/
     public static void resetDefaultCharacterSet() {
-        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+        _characterSet = StandardCharsets.ISO_8859_1.name();
     }
 
     /**
@@ -126,7 +127,7 @@ public abstract class HttpUnitOptions {
 
     /**
      * Sets the default character set for pages which do not specify one and for requests created without HTML sources.
-     * By default, HttpUnit uses the HTTP default encoding, iso-8859-1.
+     * By default, HttpUnit uses the HTTP default encoding, ISO-8859-1.
      **/
     public static void setDefaultCharacterSet(String characterSet) {
         _characterSet = characterSet;
@@ -543,7 +544,7 @@ public abstract class HttpUnitOptions {
     @Deprecated
     public static void addCustomAttribute(String attributeName) {
         if (_customAttributes == null) {
-            _customAttributes = new HashSet();
+            _customAttributes = new HashSet<>();
         }
         _customAttributes.add(attributeName);
     }
@@ -576,7 +577,7 @@ public abstract class HttpUnitOptions {
 
     private static int _redirectDelay;
 
-    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+    private static String _characterSet = StandardCharsets.ISO_8859_1.name();
 
     private static String _contentType = DEFAULT_CONTENT_TYPE;
 

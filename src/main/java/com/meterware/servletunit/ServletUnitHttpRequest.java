@@ -19,7 +19,6 @@
  */
 package com.meterware.servletunit;
 
-import com.meterware.httpunit.Base64;
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
@@ -27,9 +26,10 @@ import com.meterware.httpunit.WebRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -500,7 +500,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             initializeInputStream();
             String encoding = getCharacterEncoding();
             if (encoding == null) {
-                encoding = HttpUnitUtils.DEFAULT_CHARACTER_SET;
+                encoding = StandardCharsets.ISO_8859_1.name();
             }
             _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));
             _gotReader = true;
@@ -566,13 +566,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     private Vector getPreferredLocales() {
         if (_locales == null) {
-            _locales = new Vector();
+            _locales = new Vector<>();
             String languages = getHeader("accept-language");
             if (languages == null) {
                 _locales.add(Locale.getDefault());
             } else {
                 StringTokenizer st = new StringTokenizer(languages, ",");
-                ArrayList al = new ArrayList();
+                ArrayList al = new ArrayList<>();
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken();
                     al.add(new PrioritizedLocale(token));
@@ -658,7 +658,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-        Vector list = new Vector();
+        Vector list = new Vector<>();
         if (_headers.containsKey(name)) {
             list.add(_headers.get(name));
         }
@@ -696,7 +696,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @since 1.3
      **/
     @Override
-    public void setCharacterEncoding(String charset) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(String charset) {
         _charset = charset;
         _requestContext.setMessageEncoding(charset);
     }
@@ -773,7 +773,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         String authorizationHeader = (String) _headers.get("Authorization");
 
         if (authorizationHeader != null) {
-            String userAndPassword = Base64.decode(authorizationHeader.substring(authorizationHeader.indexOf(' ') + 1));
+            String userAndPassword = new String(Base64.getDecoder().decode(authorizationHeader
+                    .substring(authorizationHeader.indexOf(' ') + 1).getBytes(StandardCharsets.UTF_8)),
+                    StandardCharsets.UTF_8);
             int colonPos = userAndPassword.indexOf(':');
             recordAuthenticationInfo(userAndPassword.substring(0, colonPos),
                     toArray(userAndPassword.substring(colonPos + 1)));
@@ -796,15 +798,15 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- private members ----------------------------------------------
 
-    final static private String LOOPBACK_ADDRESS = "127.0.0.1";
+    static final private String LOOPBACK_ADDRESS = "127.0.0.1";
 
     private WebRequest _request;
     private ServletMetaData _servletRequest;
     private WebClient.HeaderDictionary _headers;
     private ServletUnitContext _context;
     private ServletUnitHttpSession _session;
-    private Hashtable _attributes = new Hashtable();
-    private Vector _cookies = new Vector();
+    private Hashtable _attributes = new Hashtable<>();
+    private Vector _cookies = new Vector<>();
     private String _sessionID;
     private byte[] _messageBody;
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -119,8 +119,8 @@ class WebWindowTest extends HttpUnitTest {
         defineResource("goHere", "You made it!");
         defineWebPage("start", "<a href='goHere' id='go' target='_blank'>here</a>");
 
-        final ArrayList newWindowContents = new ArrayList();
-        final ArrayList closedWindows = new ArrayList();
+        final ArrayList newWindowContents = new ArrayList<>();
+        final ArrayList closedWindows = new ArrayList<>();
         WebClient wc = new WebConversation();
         wc.addWindowListener(new WebWindowListener() {
             @Override

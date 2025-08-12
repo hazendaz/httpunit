@@ -62,8 +62,8 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("text/html", response.getContentType(), "Content type");
         assertEquals("Sample Page", response.getTitle(), "Title");
         assertEquals(65, response.getContentLength(), "Content length");
-        assertEquals("iso-8859-1", response.getCharacterSet(), "Content encoding");
-        assertEquals("text/html; charset=iso-8859-1", response.getHeaderField("Content-type"), "Content header");
+        assertEquals("ISO-8859-1", response.getCharacterSet(), "Content encoding");
+        assertEquals("text/html; charset=ISO-8859-1", response.getHeaderField("Content-type"), "Content header");
     }
 
     @Test
@@ -72,13 +72,13 @@ class HttpServletResponseTest extends ServletUnitTest {
         String page = "<html><head><title>" + hebrewTitle + "</title></head>\n" + "<body>This has no data\n"
                 + "</body></html>\n";
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
-        servletResponse.setContentType("text/html; charset=iso-8859-8");
+        servletResponse.setContentType("text/html; charset=UTF-8");
         PrintWriter pw = servletResponse.getWriter();
         pw.print(page);
         pw.close();
 
         WebResponse response = new ServletUnitWebResponse(null, FrameSelector.TOP_FRAME, null, servletResponse);
-        assertEquals("iso-8859-8", response.getCharacterSet(), "Character set");
+        assertEquals("UTF-8", response.getCharacterSet(), "Character set");
         assertEquals(hebrewTitle, response.getTitle(), "Title");
     }
 
@@ -90,7 +90,7 @@ class HttpServletResponseTest extends ServletUnitTest {
         servletResponse.setContentType("text/html");
         servletResponse.setLocale(new Locale("he", "IL"));
         assertEquals(new Locale("he", "IL"), servletResponse.getLocale(), "Specified locale");
-        assertEquals("text/html; charset=iso-8859-8", servletResponse.getHeaderField("Content-type"), "Content type");
+        assertEquals("text/html; charset=ISO-8859-8", servletResponse.getHeaderField("Content-type"), "Content type");
 
     }
 

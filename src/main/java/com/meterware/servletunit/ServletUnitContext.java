@@ -90,7 +90,7 @@ class ServletUnitContext {
 
     // ------------------------------- private members ---------------------------
 
-    private Hashtable _sessions = new Hashtable();
+    private Hashtable _sessions = new Hashtable<>();
 
     private String _contextPath = null;
 

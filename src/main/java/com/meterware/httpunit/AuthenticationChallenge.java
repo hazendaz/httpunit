@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -19,12 +19,12 @@
  */
 package com.meterware.httpunit;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * A challenge for authentication from the server to a client.
@@ -129,7 +129,8 @@ class AuthenticationChallenge extends HttpHeader {
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-            return "Basic " + Base64.encode(userName + ':' + password);
+            return "Basic "
+                    + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
         }
 
     }
@@ -165,13 +166,12 @@ class AuthenticationChallenge extends HttpHeader {
                     String ha1 = H(a1);
                     String ha2 = H(a2);
                     return KD(ha1, nonce + ':' + ha2);
-                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                } catch (NoSuchAlgorithmException e) {
                     return "";
                 }
             }
 
-            protected String A1(String userName, String password, String realm, String nonce)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            protected String A1(String userName, String password, String realm, String nonce) {
                 return userName + ':' + realm + ':' + password;
             }
 
@@ -179,13 +179,12 @@ class AuthenticationChallenge extends HttpHeader {
                 return method + ':' + uri;
             }
 
-            final protected String KD(String secret, String data)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            protected final String KD(String secret, String data) throws NoSuchAlgorithmException {
                 return H(secret + ":" + data);
             }
 
-            final protected String H(String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-                MessageDigest digest = MessageDigest.getInstance("MD5");
+            protected final String H(String data) throws NoSuchAlgorithmException {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 digest.update(data.getBytes(StandardCharsets.UTF_8));
                 byte[] bytes = digest.digest();
                 StringBuilder sb = new StringBuilder();

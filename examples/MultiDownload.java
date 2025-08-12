@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -83,12 +83,12 @@ public class MultiDownload extends JPanel implements ActionListener {
 		this.displayCheckbox.setSelected(withDisplay);
 	}
 	
-	final static String helpMessage = "Select Target Folder and cut&paste File URLs then click 'download'";
+	static final String helpMessage = "Select Target Folder and cut&paste File URLs then click 'download'";
 
 	// Create a file chooser
 	protected JFileChooser fileChooser;
 
-	final static String chooserTitle = "Select Target Folder";
+	static final String chooserTitle = "Select Target Folder";
 
 	// Layout constraints
 	GridBagConstraints gbc = new GridBagConstraints();
@@ -254,7 +254,7 @@ public class MultiDownload extends JPanel implements ActionListener {
 		String text = urlArea.getText();
 		int totalLines = urlArea.getLineCount();
 		int count=0;
-		String urls[] = new String[totalLines];
+		String[] urls = new String[totalLines];
 		try {
 			for (int i = 0; i < totalLines; i++) {
 				int start;

@@ -40,7 +40,7 @@ import org.w3c.dom.html.HTMLDocument;
  */
 public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
-    private final static Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);
 
     /**
      * check whether this ScriptingEngineFactory is enabled

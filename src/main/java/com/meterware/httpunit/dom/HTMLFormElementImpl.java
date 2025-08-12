@@ -150,7 +150,7 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
 
     @Override
     public HTMLCollection getElements() {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         String[] names = { "INPUT", "TEXTAREA", "BUTTON", "SELECT" };
         for (Iterator each = preOrderIteratorAfterNode(); each.hasNext();) {
             Node node = (Node) each.next();

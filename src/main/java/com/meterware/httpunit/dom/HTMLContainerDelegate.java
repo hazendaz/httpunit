@@ -49,7 +49,7 @@ class HTMLContainerDelegate {
      * @return
      */
     HTMLCollection getLinks(NodeImpl rootNode) {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
             if (node.getNodeType() != Node.ELEMENT_NODE) {
@@ -72,7 +72,7 @@ class HTMLContainerDelegate {
      * @return - an array of forms
      */
     HTMLCollection getForms(NodeImpl rootNode) {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {
             Node node = (Node) each.next();
             if (node.getNodeType() != Node.ELEMENT_NODE) {
@@ -88,7 +88,7 @@ class HTMLContainerDelegate {
 
     HTMLCollection getAnchors(NodeImpl rootNode) {
         NodeList nodeList = rootNode.getElementsByTagName("A");
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getAttributes().getNamedItem("name") != null) {
@@ -99,13 +99,13 @@ class HTMLContainerDelegate {
     }
 
     HTMLCollection getImages(NodeImpl rootNode) {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         rootNode.appendElementsWithTags(new String[] { "img" }, elements);
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
     HTMLCollection getApplets(NodeImpl rootNode) {
-        ArrayList elements = new ArrayList();
+        ArrayList elements = new ArrayList<>();
         rootNode.appendElementsWithTags(new String[] { "applet" }, elements);
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }

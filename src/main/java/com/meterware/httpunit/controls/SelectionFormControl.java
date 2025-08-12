@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -147,7 +147,7 @@ public class SelectionFormControl extends FormControl {
         @Override
         public void set(String propertyName, Object value) {
             if (propertyName.equalsIgnoreCase("value")) {
-                ArrayList values = new ArrayList();
+                ArrayList values = new ArrayList<>();
                 values.add(value);
                 _selectionOptions.claimUniqueValues(values);
             } else if (propertyName.equalsIgnoreCase("selectedIndex")) {
@@ -322,14 +322,14 @@ public class SelectionFormControl extends FormControl {
          *
          * @param values
          */
-        final protected void reportNoMatches(List values) {
+        protected final void reportNoMatches(List values) {
             if (!_listBox) {
                 throw new IllegalParameterValueException(getName(), values, getOptionValues());
             }
         }
 
         String[] getSelectedValues() {
-            ArrayList list = new ArrayList();
+            ArrayList list = new ArrayList<>();
             for (Option _option : _options) {
                 _option.addValueIfSelected(list);
             }

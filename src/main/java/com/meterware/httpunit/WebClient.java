@@ -27,7 +27,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -46,9 +48,9 @@ import org.xml.sax.SAXException;
  * @author Seth Ladd
  * @author Oliver Imbusch
  **/
-abstract public class WebClient {
+public abstract class WebClient {
 
-    private ArrayList _openWindows = new ArrayList();
+    private ArrayList _openWindows = new ArrayList<>();
 
     /** The current main window. **/
     private WebWindow _mainWindow = new WebWindow(this);
@@ -60,7 +62,7 @@ abstract public class WebClient {
     private String _authorizationString;
 
     private String _proxyAuthorizationString;
-    private Hashtable _credentials = new Hashtable();
+    private Hashtable _credentials = new Hashtable<>();
 
     public WebWindow getMainWindow() {
         return _mainWindow;
@@ -78,7 +80,7 @@ abstract public class WebClient {
     }
 
     public WebWindow getOpenWindow(String name) {
-        if (name == null || name.length() == 0) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         for (Iterator i = _openWindows.iterator(); i.hasNext();) {
@@ -244,7 +246,8 @@ abstract public class WebClient {
      * emulation of browser behavior.
      **/
     public void setAuthorization(String userName, String password) {
-        _fixedAuthorizationString = "Basic " + Base64.encode(userName + ':' + password);
+        _fixedAuthorizationString = "Basic "
+                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -291,7 +294,8 @@ abstract public class WebClient {
      */
     public void setProxyServer(String proxyHost, int proxyPort, String userName, String password) {
         setProxyServer(proxyHost, proxyPort);
-        _proxyAuthorizationString = "Basic " + Base64.encode(userName + ':' + password);
+        _proxyAuthorizationString = "Basic "
+                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -433,7 +437,7 @@ abstract public class WebClient {
     /**
      * Writes the message body for the request.
      **/
-    final protected void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
+    protected final void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
         request.writeMessageBody(stream);
     }
 
@@ -466,7 +470,7 @@ abstract public class WebClient {
      * Updates this web client based on a received response. This includes updating cookies and frames. This method is
      * required by ServletUnit, which cannot call the updateWindow method directly.
      **/
-    final protected void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
+    protected final void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
         getMainWindow().updateWindow(frame.getName(), response, new RequestContext());
     }
 
@@ -608,9 +612,9 @@ abstract public class WebClient {
 
     private boolean _exceptionsThrownOnErrorStatus = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
 
-    private final List _clientListeners = new ArrayList();
+    private final List _clientListeners = new ArrayList<>();
 
-    private final List _windowListeners = new ArrayList();
+    private final List _windowListeners = new ArrayList<>();
 
     private DialogResponder _dialogResponder = new DialogAdapter();
 

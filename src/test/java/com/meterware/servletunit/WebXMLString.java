@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -20,7 +20,6 @@
 package com.meterware.servletunit;
 
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -39,24 +38,24 @@ class WebXMLString {
 
     private String _displayName;
 
-    private ArrayList _servlets = new ArrayList();
-    private ArrayList _mappings = new ArrayList();
-    private ArrayList _servletNames = new ArrayList();
-    private Hashtable _initParams = new Hashtable();
+    private ArrayList _servlets = new ArrayList<>();
+    private ArrayList _mappings = new ArrayList<>();
+    private ArrayList _servletNames = new ArrayList<>();
+    private Hashtable _initParams = new Hashtable<>();
 
-    private ArrayList _listeners = new ArrayList();
+    private ArrayList _listeners = new ArrayList<>();
 
-    private ArrayList _filters = new ArrayList();
-    private Hashtable _filterMappings = new Hashtable();
-    private ArrayList _filterNames = new ArrayList();
-    private Hashtable _filterParams = new Hashtable();
+    private ArrayList _filters = new ArrayList<>();
+    private Hashtable _filterMappings = new Hashtable<>();
+    private ArrayList _filterNames = new ArrayList<>();
+    private Hashtable _filterParams = new Hashtable<>();
 
     private String _loginConfig = "";
-    private Hashtable _resources = new Hashtable();
-    private Hashtable _contextParams = new Hashtable();
-    private Hashtable _loadOnStartup = new Hashtable();
+    private Hashtable _resources = new Hashtable<>();
+    private Hashtable _contextParams = new Hashtable<>();
+    private Hashtable _loadOnStartup = new Hashtable<>();
 
-    ByteArrayInputStream asInputStream() throws UnsupportedEncodingException {
+    ByteArrayInputStream asInputStream() {
         return new ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
     }
 
@@ -298,6 +297,6 @@ class WebResourceSpec {
     }
 
     private String _name;
-    private ArrayList _urls = new ArrayList();
-    private ArrayList _roles = new ArrayList();
+    private ArrayList _urls = new ArrayList<>();
+    private ArrayList _roles = new ArrayList<>();
 }

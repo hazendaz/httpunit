@@ -94,7 +94,7 @@ public class CookieTest {
     }
 
     private void checkMatching(int index, boolean success, URL url, String domain, String path) {
-        HashMap attributes = new HashMap();
+        HashMap attributes = new HashMap<>();
         attributes.put("path", path);
         attributes.put("domain", domain);
         Cookie cookie = new Cookie("name", "value", attributes);
@@ -195,11 +195,11 @@ public class CookieTest {
      */
     @Test
     void cookieAge() throws Exception {
-        String ages[] = { "max-age=5000", "Max-Age=3000", "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
+        String[] ages = { "max-age=5000", "Max-Age=3000", "expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000",
                 "Max-Age=2592000;expires=Tue, 29-Mar-2005 19:30:42 GMT", "expires=Tue, 29-Mar-2005 19:30:42 GMT",
                 "Expires=Wednesday, 01-Jan-1970 00:00:00 GMT" };
         long now = System.currentTimeMillis();
-        long expectedMilliSeconds[] = { now + 5000 * 1000, now + 3000 * 1000, now + 2592000 * 1000,
+        long[] expectedMilliSeconds = { now + 5000 * 1000, now + 3000 * 1000, now + 2592000 * 1000,
                 now + 2592000 * 1000, 1112124642000L, 0 };
 
         for (int i = 0; i < ages.length; i++) {

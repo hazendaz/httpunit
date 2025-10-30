@@ -43,8 +43,9 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.w3c.dom.Document;
@@ -1103,16 +1104,14 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     WebRequest[] getFrameRequests() throws SAXException {
         WebFrame[] frames = getFrames();
-        Vector requests = new Vector<>();
+        List<WebRequest> requests = new ArrayList<>();
         for (WebFrame frame : frames) {
             if (frame.hasInitialRequest()) {
-                requests.addElement(frame.getInitialRequest());
+                requests.add(frame.getInitialRequest());
             }
         }
 
-        WebRequest[] result = new WebRequest[requests.size()];
-        requests.copyInto(result);
-        return result;
+        return requests.toArray(new WebRequest[requests.size()]);
     }
 
     // --------------------------------- private members --------------------------------------

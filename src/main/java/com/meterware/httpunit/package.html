@@ -2,7 +2,7 @@
 
     MIT License
 
-    Copyright 2011-2023 Russell Gold
+    Copyright 2011-2025 Russell Gold
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,53 +28,37 @@
         <code>jar</code>
         directory:
         <dl>
-            <dt>
-                nekohtml.jar
-            </dt>
+            <dt>nekohtml.jar</dt>
             <dd>
                 The
                 <a href="http://www.apache.org/~andyc/neko/doc/html/index.html">NekoHTML parser</a>
                 , used to convert raw HTML into an XML DOM. This is required for handling HTML.
             </dd>
-            <dt>
-                js.jar
-            </dt>
+            <dt>js.jar</dt>
             <dd>
                 The
                 <a href="http://www.mozilla.org/rhino">Rhino JavaScript interpreter</a>
                 , required for any JavaScript processing.
             </dd>
-            <dt>
-                xmlParserAPIs.jar
-            </dt>
+            <dt>xmlParserAPIs.jar</dt>
+            <dd>The interfaces for a W3-compliant XML parser. Required for interpreting either HTML or XML pages.</dd>
+            <dt>xercesImpl.jar</dt>
             <dd>
-                The interfaces for a W3-compliant XML parser. Required for interpreting either HTML or XML pages.
-            </dd>
-            <dt>
-                xercesImpl.jar
-            </dt>
-            <dd>
-                <a>The </a>
+                <a>The</a>
                 <a href="http://xml.apache.org/xerces2-j/index.html">Xerces 2 implementation</a>
                 of an XML parser. NekoHTML requires this implementation.
             </dd>
-            <dt>
-                servlet.jar
-            </dt>
+            <dt>servlet.jar</dt>
             <dd>
                 The APIs and common classes for the Java Servlet 1.3 standard. Required for use with
                 <a href="../../../../servletunit-intro.html">ServletUnit.</a>
             </dd>
-            <dt>
-                junit.jar
-            </dt>
+            <dt>junit.jar</dt>
             <dd>
                 <a href="http://www.junit.org">JUnit</a>
                 , the unit test framework. Used to test HttpUnit and recommended for writing tests that use HttpUnit.
             </dd>
-            <dt>
-                tidy.jar
-            </dt>
+            <dt>tidy.jar</dt>
             <dd>
                 <a href="http://lempinen.net/sami/jtidy">JTidy</a>
                 , an alternate HTML parser/validator. JTidy is a lot pickier about HTML structure than NekoHTML, and uses its own implementation of the DOM classes, rather than using those found in the xerces jar. Some JavaScript features, such as

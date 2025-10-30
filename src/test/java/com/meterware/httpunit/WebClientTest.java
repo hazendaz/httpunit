@@ -45,6 +45,8 @@ import java.util.zip.GZIPOutputStream;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
@@ -1063,6 +1065,7 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     @Test
+    @EnabledOnJre(value = JRE.JAVA_21, disabledReason = "Locks up on JDK 24+ due to missing Content-Length on GZIP response")
     void gzipUndefinedLengthHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
                 + "than the raw message. It should be obvious when you reach that point. "

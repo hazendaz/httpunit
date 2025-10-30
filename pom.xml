@@ -87,9 +87,9 @@
     </distributionManagement>
 
     <properties>
-        <java.version>11</java.version>
-        <java.release.version>11</java.release.version>
-        <javadoc.java.release.version>11</javadoc.java.release.version>
+        <java.version>17</java.version>
+        <java.release.version>17</java.release.version>
+        <javadoc.java.release.version>17</javadoc.java.release.version>
         <legacyMode>true</legacyMode>
     </properties>
 
@@ -134,13 +134,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.14.0</version>
+            <version>6.0.0</version>
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-migrationsupport</artifactId>
-            <version>5.14.0</version>
+            <version>6.0.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>

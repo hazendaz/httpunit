@@ -93,7 +93,7 @@
           <ul class="breadcrumb">
         <li id="publishDate">Last Published: 2025-10-25<span class="divider">|</span>
 </li>
-          <li id="projectVersion">Version: 2.4.0</li>
+          <li id="projectVersion">Version: 1.15.0</li>
           </ul>
         </div>
       </header>
@@ -143,7 +143,7 @@
 <th>Tag strings used by tag class</th></tr>
 <tr class="b">
 <td><a href="#tag_class_3">Deprecated Work</a></td>
-<td>41</td>
+<td>55</td>
 <td>@deprecated</td></tr>
 <tr class="a">
 <td><a href="#tag_class_1">FIXME Work</a></td>
@@ -151,11 +151,11 @@
 <td>fixme, @fixme</td></tr>
 <tr class="b">
 <td><a href="#tag_class_2">Todo Work</a></td>
-<td>89</td>
+<td>83</td>
 <td>todo, @todo</td></tr></table>
 <p>Each tag is detailed below:</p><section><a id="tag_class_3"></a>
 <h2>Deprecated Work</h2>
-<p>Number of occurrences found in the code: 41</p>
+<p>Number of occurrences found in the code: 55</p>
 <table class="table table-striped">
 <tr class="a">
 <th>com.meterware.httpunit.BlockElement</th>
@@ -318,13 +318,67 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>as of 1.6, use {@link #ServletRunner(File)}</td>
-<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L61">61</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L60">60</a></td></tr>
 <tr class="a">
 <td>as of 1.6, use {@link #ServletRunner(File,String)}</td>
-<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L76">76</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L75">75</a></td></tr>
 <tr class="b">
 <td>- test case for this function deactivated wf 2007-12-30</td>
-<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L236">236</a></td></tr></table></section><section><a id="tag_class_1"></a>
+<td><a href="./xref/com/meterware/servletunit/ServletRunner.html#L235">235</a></td></tr>
+<tr class="a">
+<th>com.meterware.servletunit.ServletUnitHttpRequest</th>
+<th>Line</th></tr>
+<tr class="b">
+<td>use #isRequestedSessionIdFromURL */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L315">315</a></td></tr>
+<tr class="a">
+<td>As of Version 2.1 of the Java Servlet API, use {@link javax.servlet.ServletContext#getRealPath} instead.</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L475">475</a></td></tr>
+<tr class="b">
+<th>com.meterware.servletunit.ServletUnitHttpResponse</th>
+<th>Line</th></tr>
+<tr class="a">
+<td>Use encodeURL(String url)</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpResponse.html#L59">59</a></td></tr>
+<tr class="b">
+<td>Use encodeRedirectURL(String url) */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpResponse.html#L84">84</a></td></tr>
+<tr class="a">
+<td>As of version 2.1, due to ambiguous meaning of the message parameter. To set a status code use setStatus(int), to send an error with a description use sendError(int, String). Sets the status code and message for this response. */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpResponse.html#L165">165</a></td></tr>
+<tr class="b">
+<th>com.meterware.servletunit.ServletUnitHttpSession</th>
+<th>Line</th></tr>
+<tr class="a">
+<td>no replacement. */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpSession.html#L126">126</a></td></tr>
+<tr class="b">
+<td>as of JSDK 2.2, use getAttribute */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpSession.html#L135">135</a></td></tr>
+<tr class="a">
+<td>as of JSDK 2.2, use setAttribute */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpSession.html#L144">144</a></td></tr>
+<tr class="b">
+<td>as of JSDK 2.2, use removeAttribute */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpSession.html#L153">153</a></td></tr>
+<tr class="a">
+<td>as of JSDK 2.2, use getAttributeNames. */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpSession.html#L162">162</a></td></tr>
+<tr class="b">
+<th>com.meterware.servletunit.ServletUnitServletContext</th>
+<th>Line</th></tr>
+<tr class="a">
+<td>as of Servlet API 2.1 */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L249">249</a></td></tr>
+<tr class="b">
+<td>as of Servlet API 2.0 */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L258">258</a></td></tr>
+<tr class="a">
+<td>as of Servlet API 2.1 */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L267">267</a></td></tr>
+<tr class="b">
+<td>use log( String, Throwable ) */</td>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L285">285</a></td></tr></table></section><section><a id="tag_class_1"></a>
 <h2>FIXME Work</h2>
 <p>Number of occurrences found in the code: 4</p>
 <table class="table table-striped">
@@ -351,9 +405,9 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>- shouldn't everything start with one or the other?</td>
-<td><a href="./xref/com/meterware/servletunit/WebApplication.html#L261">261</a></td></tr></table></section><section><a id="tag_class_2"></a>
+<td><a href="./xref/com/meterware/servletunit/WebApplication.html#L275">275</a></td></tr></table></section><section><a id="tag_class_2"></a>
 <h2>Todo Work</h2>
-<p>Number of occurrences found in the code: 89</p>
+<p>Number of occurrences found in the code: 83</p>
 <table class="table table-striped">
 <tr class="a">
 <th>com.meterware.httpunit.FormControl</th>
@@ -552,139 +606,121 @@
 <th>Line</th></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L379">379</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L388">388</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L385">385</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L394">394</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L392">392</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L401">401</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L398">398</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L407">407</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L404">404</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L413">413</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L410">410</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L419">419</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L416">416</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L425">425</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L422">422</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L431">431</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L428">428</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L437">437</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L434">434</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L443">443</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L440">440</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L449">449</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L446">446</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L455">455</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L452">452</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L461">461</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L458">458</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L467">467</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L464">464</a></td></tr>
+<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L473">473</a></td></tr>
 <tr class="a">
-<td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L470">470</a></td></tr>
-<tr class="b">
-<td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L476">476</a></td></tr>
-<tr class="a">
-<td>Auto-generated method stub</td>
-<td><a href="./xref-test/com/meterware/servletunit/RequestContextTest.html#L482">482</a></td></tr>
-<tr class="b">
 <th>com.meterware.servletunit.ServletAccessTestClass</th>
 <th>Line</th></tr>
-<tr class="a">
+<tr class="b">
 <td>JWL 4/20/2025 Keep 'test' on this method as well as public until such time its not using junit 3.</td>
 <td><a href="./xref-test/com/meterware/servletunit/ServletAccessTestClass.html#L42">42</a></td></tr>
-<tr class="b">
+<tr class="a">
 <th>com.meterware.servletunit.ServletInputStreamImpl</th>
 <th>Line</th></tr>
-<tr class="a">
+<tr class="b">
 <td>Auto-generated method stub</td>
 <td><a href="./xref/com/meterware/servletunit/ServletInputStreamImpl.html#L48">48</a></td></tr>
-<tr class="b">
+<tr class="a">
 <td>Auto-generated method stub</td>
 <td><a href="./xref/com/meterware/servletunit/ServletInputStreamImpl.html#L54">54</a></td></tr>
-<tr class="a">
+<tr class="b">
 <td>Auto-generated method stub</td>
 <td><a href="./xref/com/meterware/servletunit/ServletInputStreamImpl.html#L60">60</a></td></tr>
-<tr class="b">
+<tr class="a">
 <th>com.meterware.servletunit.ServletUnitHttpRequest</th>
 <th>Line</th></tr>
-<tr class="a">
-<td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L870">870</a></td></tr>
-<tr class="b">
-<td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L877">877</a></td></tr>
-<tr class="a">
-<td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L883">883</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
 <td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L889">889</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L895">895</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L896">896</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L901">901</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L902">902</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L907">907</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L908">908</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L913">913</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L914">914</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L919">919</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L920">920</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L925">925</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L926">926</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L931">931</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L932">932</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L937">937</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L938">938</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L943">943</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L944">944</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L949">949</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L950">950</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L955">955</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L956">956</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L961">961</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L962">962</a></td></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L967">967</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitHttpRequest.html#L968">968</a></td></tr>
 <tr class="b">
 <th>com.meterware.servletunit.ServletUnitServletContext</th>
 <th>Line</th></tr>
 <tr class="a">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L425">425</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L471">471</a></td></tr>
 <tr class="b">
 <td>Auto-generated method stub</td>
-<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L431">431</a></td></tr>
+<td><a href="./xref/com/meterware/servletunit/ServletUnitServletContext.html#L477">477</a></td></tr>
 <tr class="a">
 <th>com.meterware.servletunit.WebXMLTest</th>
 <th>Line</th></tr>

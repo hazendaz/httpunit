@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -50,7 +50,7 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> * A request sent to a web server.</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> **/</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REFERER_HEADER_NAME = <span class="jxr_string">"Referer"</span>;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
@@ -301,7 +301,7 @@
 <a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * @since 1.3.1</em>
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> <em class="jxr_javadoccomment">     **/</em>
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">public</strong> String[] getRequestParameterNames() {
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">final</strong> HashSet names = <strong class="jxr_keyword">new</strong> HashSet();
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">final</strong> HashSet&lt;String&gt; names = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>         <a name="ParameterProcessor" href="../../../com/meterware/httpunit/protocol/ParameterProcessor.html#ParameterProcessor">ParameterProcessor</a> pp = <strong class="jxr_keyword">new</strong> <a name="ParameterProcessor" href="../../../com/meterware/httpunit/protocol/ParameterProcessor.html#ParameterProcessor">ParameterProcessor</a>() {
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>             @Override
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addParameter(String name, String value, String characterSet) <strong class="jxr_keyword">throws</strong> IOException {
@@ -320,7 +320,7 @@
 <a class="jxr_linenumber" name="L312" href="#L312">312</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
 <a class="jxr_linenumber" name="L313" href="#L313">313</a>         }
 <a class="jxr_linenumber" name="L314" href="#L314">314</a> 
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <strong class="jxr_keyword">return</strong> (String[]) names.toArray(<strong class="jxr_keyword">new</strong> String[names.size()]);
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <strong class="jxr_keyword">return</strong> names.toArray(<strong class="jxr_keyword">new</strong> String[names.size()]);
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>     }
 <a class="jxr_linenumber" name="L317" href="#L317">317</a> 
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>     <em class="jxr_javadoccomment">/**</em>
@@ -494,7 +494,7 @@
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     * Returns the character set required for this request.</em>
 <a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     **/</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> String getCharacterSet() {
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> String getCharacterSet() {
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">return</strong> _characterSet;
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>     }
 <a class="jxr_linenumber" name="L492" href="#L492">492</a> 
@@ -513,7 +513,7 @@
 <a class="jxr_linenumber" name="L505" href="#L505">505</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> writeMessageBody(OutputStream stream) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L506" href="#L506">506</a>     }
 <a class="jxr_linenumber" name="L507" href="#L507">507</a> 
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> URL getURLBase() {
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> URL getURLBase() {
 <a class="jxr_linenumber" name="L509" href="#L509">509</a>         <strong class="jxr_keyword">return</strong> _urlBase;
 <a class="jxr_linenumber" name="L510" href="#L510">510</a>     }
 <a class="jxr_linenumber" name="L511" href="#L511">511</a> 
@@ -521,13 +521,13 @@
 <a class="jxr_linenumber" name="L513" href="#L513">513</a> 
 <a class="jxr_linenumber" name="L514" href="#L514">514</a>     <strong class="jxr_keyword">protected</strong> String getURLString() {
 <a class="jxr_linenumber" name="L515" href="#L515">515</a>         <strong class="jxr_keyword">final</strong> String queryString = getQueryString();
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">if</strong> (queryString.length() == 0) {
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">if</strong> (queryString.isEmpty()) {
 <a class="jxr_linenumber" name="L517" href="#L517">517</a>             <strong class="jxr_keyword">return</strong> _urlString;
 <a class="jxr_linenumber" name="L518" href="#L518">518</a>         }
 <a class="jxr_linenumber" name="L519" href="#L519">519</a>         <strong class="jxr_keyword">return</strong> _urlString + <span class="jxr_string">"?"</span> + queryString;
 <a class="jxr_linenumber" name="L520" href="#L520">520</a>     }
 <a class="jxr_linenumber" name="L521" href="#L521">521</a> 
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <a name="ParameterHolder" href="../../../com/meterware/httpunit/ParameterHolder.html#ParameterHolder">ParameterHolder</a> getParameterHolder() {
+<a class="jxr_linenumber" name="L522" href="#L522">522</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <a name="ParameterHolder" href="../../../com/meterware/httpunit/ParameterHolder.html#ParameterHolder">ParameterHolder</a> getParameterHolder() {
 <a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">return</strong> _parameterHolder;
 <a class="jxr_linenumber" name="L524" href="#L524">524</a>     }
 <a class="jxr_linenumber" name="L525" href="#L525">525</a> 
@@ -547,7 +547,7 @@
 <a class="jxr_linenumber" name="L539" href="#L539">539</a> 
 <a class="jxr_linenumber" name="L540" href="#L540">540</a>     Hashtable getHeaderDictionary() {
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>         <strong class="jxr_keyword">if</strong> (_headers == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>             _headers = <strong class="jxr_keyword">new</strong> Hashtable();
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>             _headers = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
 <a class="jxr_linenumber" name="L543" href="#L543">543</a>             <strong class="jxr_keyword">if</strong> (getContentType() != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L544" href="#L544">544</a>                 _headers.put(<span class="jxr_string">"Content-Type"</span>, getContentType());
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>             }

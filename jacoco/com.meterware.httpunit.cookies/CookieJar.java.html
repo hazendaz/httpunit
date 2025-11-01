@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CookieJar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.cookies</a> &gt; <span class="el_source">CookieJar.java</span></div><h1>CookieJar.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -40,8 +40,8 @@ public class CookieJar {
 
     private static final int DEFAULT_HEADER_SIZE = 80;
 
-<span class="fc" id="L43">    private ArrayList _cookies = new ArrayList();</span>
-<span class="fc" id="L44">    private ArrayList _globalCookies = new ArrayList();</span>
+<span class="fc" id="L43">    private ArrayList _cookies = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L44">    private ArrayList _globalCookies = new ArrayList&lt;&gt;();</span>
     private CookiePress _press;
 
     /**
@@ -229,7 +229,7 @@ public class CookieJar {
 <span class="fc" id="L229">            return null;</span>
         }
 <span class="fc" id="L231">        StringBuilder sb = new StringBuilder(DEFAULT_HEADER_SIZE);</span>
-<span class="fc" id="L232">        HashSet restrictedCookies = new HashSet();</span>
+<span class="fc" id="L232">        HashSet restrictedCookies = new HashSet&lt;&gt;();</span>
 <span class="fc bfc" id="L233" title="All 2 branches covered.">        for (Iterator i = _cookies.iterator(); i.hasNext();) {</span>
 <span class="fc" id="L234">            Cookie cookie = (Cookie) i.next();</span>
 <span class="fc bfc" id="L235" title="All 2 branches covered.">            if (!cookie.mayBeSentTo(targetURL)) {</span>
@@ -328,7 +328,7 @@ public class CookieJar {
 <span class="fc" id="L328">        }</span>
 
         private char lastCharOf(String string) {
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">            return string.length() == 0 ? ' ' : string.charAt(string.length() - 1);</span>
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">            return string.isEmpty() ? ' ' : string.charAt(string.length() - 1);</span>
         }
 
         /**
@@ -354,7 +354,7 @@ public class CookieJar {
         private Vector getCookieTokens(String cookieHeader) {
 <span class="fc" id="L355">            StringReader sr = new StringReader(cookieHeader);</span>
 <span class="fc" id="L356">            StreamTokenizer st = new StreamTokenizer(sr);</span>
-<span class="fc" id="L357">            Vector tokens = new Vector();</span>
+<span class="fc" id="L357">            Vector tokens = new Vector&lt;&gt;();</span>
 
             // clear syntax tables of the StreamTokenizer
 <span class="fc" id="L360">            st.resetSyntax();</span>
@@ -406,7 +406,7 @@ public class CookieJar {
 
         // the current value
 <span class="fc" id="L408">        private StringBuilder _value = new StringBuilder();</span>
-<span class="fc" id="L409">        private HashMap _attributes = new HashMap();</span>
+<span class="fc" id="L409">        private HashMap _attributes = new HashMap&lt;&gt;();</span>
         private URL _sourceURL;
 
         /**
@@ -512,7 +512,7 @@ public class CookieJar {
         }
 
         private int getPathAttributeStatus(String pathAttribute, String sourcePath) {
-<span class="fc bfc" id="L515" title="All 4 branches covered.">            if (!CookieProperties.isPathMatchingStrict() || sourcePath.length() == 0</span>
+<span class="fc bfc" id="L515" title="All 4 branches covered.">            if (!CookieProperties.isPathMatchingStrict() || sourcePath.isEmpty()</span>
 <span class="fc bfc" id="L516" title="All 2 branches covered.">                    || sourcePath.startsWith(pathAttribute)) {</span>
 <span class="fc" id="L517">                return CookieListener.ACCEPTED;</span>
             }
@@ -612,4 +612,4 @@ public class CookieJar {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

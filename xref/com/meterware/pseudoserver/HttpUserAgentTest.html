@@ -140,7 +140,7 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     }
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> 
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> assertMatchingSet(String comment, Object[] expected, Enumeration found) {
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         Vector foundItems = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         Vector foundItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">while</strong> (found.hasMoreElements()) {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>             foundItems.addElement(found.nextElement());
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
@@ -149,7 +149,7 @@
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     }
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">for</strong> (Object element : expected) {
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>             expectedItems.addElement(element);
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         }
@@ -167,12 +167,12 @@
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>     }
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> 
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> assertMatchingSet(String comment, Object[] expected, Object[] found) {
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         Vector foundItems = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         Vector foundItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">for</strong> (Object element : found) {
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>             foundItems.addElement(element);
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>         }
 <a class="jxr_linenumber" name="L166" href="#L166">166</a> 
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> 
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">for</strong> (Object element : expected) {
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             expectedItems.addElement(element);
@@ -252,7 +252,7 @@
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">private</strong> String _path;
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">private</strong> String _fullString;
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         <strong class="jxr_keyword">private</strong> Vector _parameters = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>         <strong class="jxr_keyword">private</strong> Vector _parameters = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L248" href="#L248">248</a> 
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> equals(QuerySpec o) {
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>             <strong class="jxr_keyword">if</strong> (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {

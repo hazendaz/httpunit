@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebForm.java</span></div><h1>WebForm.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
  * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class WebForm extends WebRequestSource {
-<span class="fc" id="L52">    private final static String[] NO_VALUES = {};</span>
+<span class="fc" id="L52">    private static final String[] NO_VALUES = {};</span>
 
     private Button[] _buttons;
 
@@ -67,7 +67,7 @@ public class WebForm extends WebRequestSource {
     private ElementRegistry _registry;
 
     /** Predicate to match a link's name. **/
-    public final static HTMLElementPredicate MATCH_NAME;
+    public static final HTMLElementPredicate MATCH_NAME;
     private HTMLFormElement _domElement;
 
     /**
@@ -172,7 +172,7 @@ public class WebForm extends WebRequestSource {
     public Button[] getButtons() {
 <span class="fc bfc" id="L173" title="All 2 branches covered.">        if (_buttons == null) {</span>
 <span class="fc" id="L174">            FormControl[] controls = getFormControls();</span>
-<span class="fc" id="L175">            ArrayList buttonList = new ArrayList();</span>
+<span class="fc" id="L175">            ArrayList buttonList = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L176" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
 <span class="fc bfc" id="L177" title="All 2 branches covered.">                if (control instanceof Button) {</span>
 <span class="fc" id="L178">                    buttonList.add(control);</span>
@@ -903,7 +903,7 @@ public class WebForm extends WebRequestSource {
      */
     private Vector getSubmitButtonVector() {
 <span class="fc bfc" id="L905" title="All 2 branches covered.">        if (_buttonVector == null) {</span>
-<span class="fc" id="L906">            _buttonVector = new Vector();</span>
+<span class="fc" id="L906">            _buttonVector = new Vector&lt;&gt;();</span>
 <span class="fc" id="L907">            FormControl[] controls = getFormControls();</span>
 <span class="fc bfc" id="L908" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
 <span class="fc bfc" id="L909" title="All 2 branches covered.">                if (control instanceof SubmitButton) {</span>
@@ -925,7 +925,7 @@ public class WebForm extends WebRequestSource {
 
     private FormControl[] getPresetParameters() {
 <span class="fc bfc" id="L927" title="All 2 branches covered.">        if (_presetParameters == null) {</span>
-<span class="fc" id="L928">            _presets = new ArrayList();</span>
+<span class="fc" id="L928">            _presets = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L929">            loadDestinationParameters();</span>
 <span class="fc" id="L930">            _presetParameters = (FormControl[]) _presets.toArray(new FormControl[_presets.size()]);</span>
         }
@@ -972,7 +972,7 @@ public class WebForm extends WebRequestSource {
      * controls with a particular name. Unnamed parameters are ignored.
      */
     private Map getFormParameters() {
-<span class="fc" id="L975">        Map formParameters = new HashMap();</span>
+<span class="fc" id="L975">        Map formParameters = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L976">        loadFormParameters(formParameters, getPresetParameters());</span>
 <span class="fc" id="L977">        loadFormParameters(formParameters, getFormControls());</span>
 <span class="fc" id="L978">        return formParameters;</span>
@@ -980,7 +980,7 @@ public class WebForm extends WebRequestSource {
 
     private void loadFormParameters(Map formParameters, FormControl[] controls) {
 <span class="fc bfc" id="L982" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc bfc" id="L983" title="All 2 branches covered.">            if (control.getName().length() == 0) {</span>
+<span class="fc bfc" id="L983" title="All 2 branches covered.">            if (control.getName().isEmpty()) {</span>
 <span class="fc" id="L984">                continue;</span>
             }
 <span class="fc" id="L986">            FormParameter parameter = (FormParameter) formParameters.get(control.getName());</span>
@@ -1186,4 +1186,4 @@ class PresetFormParameter extends FormControl {
     private String _value;
     private String[] _values;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

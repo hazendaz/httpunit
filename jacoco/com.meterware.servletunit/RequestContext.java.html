@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">RequestContext.java</span></div><h1>RequestContext.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -24,8 +24,8 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
  **/
 class RequestContext {
 
-<span class="fc" id="L39">    private Hashtable _parameters = new Hashtable();</span>
+<span class="fc" id="L39">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
     private Hashtable _visibleParameters;
     private HttpServletRequest _parentRequest;
     private URL _url;
@@ -77,10 +77,10 @@ class RequestContext {
 <span class="fc" id="L77">        return (String[]) getParameters().get(name);</span>
     }
 
-    final static private int STATE_INITIAL = 0;
-    final static private int STATE_HAVE_NAME = 1;
-    final static private int STATE_HAVE_EQUALS = 2;
-    final static private int STATE_HAVE_VALUE = 3;
+    static final private int STATE_INITIAL = 0;
+    static final private int STATE_HAVE_NAME = 1;
+    static final private int STATE_HAVE_EQUALS = 2;
+    static final private int STATE_HAVE_VALUE = 3;
 
     /**
      * This method employs a state machine to parse a parameter query string. The transition rules are as follows: State
@@ -89,7 +89,7 @@ class RequestContext {
      * name have_equals -&gt; initial: record parameter with null value have_value -&gt; initial: record parameter with value
      **/
     void loadParameters(String queryString) {
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (queryString.length() == 0) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (queryString.isEmpty()) {</span>
 <span class="fc" id="L93">            return;</span>
         }
 <span class="fc" id="L95">        StringTokenizer st = new StringTokenizer(queryString, &quot;&amp;=&quot;, /* return tokens */ true);</span>
@@ -151,7 +151,7 @@ class RequestContext {
 <span class="fc bfc" id="L151" title="All 2 branches covered.">            if (_parentRequest == null) {</span>
 <span class="fc" id="L152">                _visibleParameters = _parameters;</span>
             } else {
-<span class="fc" id="L154">                _visibleParameters = new Hashtable();</span>
+<span class="fc" id="L154">                _visibleParameters = new Hashtable&lt;&gt;();</span>
 <span class="fc" id="L155">                final Map parameterMap = _parentRequest.getParameterMap();</span>
 <span class="fc bfc" id="L156" title="All 2 branches covered.">                for (Object key : parameterMap.keySet()) {</span>
 <span class="fc" id="L157">                    _visibleParameters.put(key, parameterMap.get(key));</span>
@@ -166,26 +166,22 @@ class RequestContext {
     }
 
     private String getMessageBodyAsString() {
-        try {
-<span class="fc" id="L170">            return new String(_messageBody, &quot;iso-8859-1&quot;);</span>
-<span class="nc" id="L171">        } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L172">            return &quot;&quot;;</span>
-        }
+<span class="fc" id="L169">        return new String(_messageBody, StandardCharsets.UTF_8);</span>
     }
 
     void setMessageBody(byte[] bytes) {
-<span class="fc" id="L177">        _messageBody = bytes;</span>
-<span class="fc" id="L178">    }</span>
+<span class="fc" id="L173">        _messageBody = bytes;</span>
+<span class="fc" id="L174">    }</span>
 
     public void setMessageEncoding(String messageEncoding) {
-<span class="fc" id="L181">        _messageEncoding = messageEncoding;</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L177">        _messageEncoding = messageEncoding;</span>
+<span class="fc" id="L178">    }</span>
 
     private String getMessageEncoding() {
-<span class="fc bfc" id="L185" title="All 2 branches covered.">        return _messageEncoding == null ?</span>
-        /* Fixing 1705925: HttpUnitUtils.DEFAULT_CHARACTER_SET */
-<span class="fc" id="L187">                HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        return _messageEncoding == null ?</span>
+        /* Fixing 1705925: StandardCharsets.ISO_8859_1.name() */
+<span class="fc" id="L183">                HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

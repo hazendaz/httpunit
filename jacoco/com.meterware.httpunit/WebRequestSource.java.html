@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebRequestSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebRequestSource.java</span></div><h1>WebRequestSource.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
  *
  * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  */
-abstract public class WebRequestSource extends ParameterHolder implements HTMLElement {
+public abstract class WebRequestSource extends ParameterHolder implements HTMLElement {
 
     private FrameSelector _frame;
 
@@ -81,7 +81,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * Returns the target for this request source.
      */
     public String getTarget() {
-<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (getSpecifiedTarget().length() == 0) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (getSpecifiedTarget().isEmpty()) {</span>
 <span class="fc" id="L85">            return _defaultTarget;</span>
         }
 <span class="fc" id="L87">        return getSpecifiedTarget();</span>
@@ -125,19 +125,19 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Creates and returns a web request from this request source.
      */
-    abstract public WebRequest getRequest();
+    public abstract WebRequest getRequest();
 
     /**
      * Returns an array containing the names of any parameters to be sent on a request based on this request source.
      */
     @Override
-    abstract public String[] getParameterNames();
+    public abstract String[] getParameterNames();
 
     /**
      * Returns the values of the named parameter.
      */
     @Override
-    abstract public String[] getParameterValues(String name);
+    public abstract String[] getParameterValues(String name);
 
     /**
      * Returns the URL relative to the current page which will handle the request.
@@ -161,7 +161,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     protected String getRelativeURL() {
 <span class="fc" id="L163">        String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));</span>
-<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (result.trim().length() == 0) {</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (result.trim().isEmpty()) {</span>
 <span class="fc" id="L165">            result = getBaseURL().getFile();</span>
         }
 <span class="fc" id="L167">        return result;</span>
@@ -230,7 +230,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      * Extracts any parameters specified as part of the destination URL, calling addPresetParameter for each one in the
      * order in which they are found.
      */
-    final protected void loadDestinationParameters() {
+    protected final void loadDestinationParameters() {
 <span class="fc" id="L234">        StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);</span>
 <span class="fc bfc" id="L235" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
 <span class="fc" id="L236">            stripOneParameter(st.nextToken());</span>
@@ -302,14 +302,14 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Submits a request to the web client from which this request source was originally obtained.
      */
-    final protected WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
+    protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
 <span class="pc bpc" id="L306" title="1 of 2 branches missed.">        return getDestination().equals(&quot;#&quot;) ? _baseResponse : _baseResponse.getWindow().sendRequest(request);</span>
     }
 
     /**
      * Returns the web response containing this request source.
      */
-    final protected WebResponse getBaseResponse() {
+    protected final WebResponse getBaseResponse() {
 <span class="fc" id="L313">        return _baseResponse;</span>
     }
 
@@ -428,7 +428,7 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     private String getParametersString() {
 <span class="fc" id="L430">        String url = HttpUnitUtils.trimFragment(getDestination());</span>
-<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (url.trim().length() == 0) {</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (url.trim().isEmpty()) {</span>
 <span class="fc" id="L432">            url = getBaseURL().toExternalForm();</span>
         }
 <span class="pc bpc" id="L434" title="1 of 2 branches missed.">        if (HttpUnitUtils.isJavaScriptURL(url)) {</span>
@@ -475,4 +475,4 @@ abstract public class WebRequestSource extends ParameterHolder implements HTMLEl
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

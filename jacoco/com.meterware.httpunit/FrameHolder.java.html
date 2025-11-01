@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FrameHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">FrameHolder.java</span></div><h1>FrameHolder.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -34,10 +34,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-<span class="fc" id="L37">    private Hashtable _contents = new Hashtable();</span>
+<span class="fc" id="L37">    private Hashtable _contents = new Hashtable&lt;&gt;();</span>
 
     /** Map from a frame selector to its subframe selectors. **/
-<span class="fc" id="L40">    private Hashtable _subframes = new Hashtable();</span>
+<span class="fc" id="L40">    private Hashtable _subframes = new Hashtable&lt;&gt;();</span>
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;
@@ -144,8 +144,8 @@ class FrameHolder {
 <span class="fc" id="L144">        return null;</span>
     }
 
-    List getActiveFrameNames() {
-<span class="fc" id="L148">        List result = new ArrayList();</span>
+    List&lt;String&gt; getActiveFrameNames() {
+<span class="fc" id="L148">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L149" title="All 2 branches covered.">        for (Enumeration e = _contents.keys(); e.hasMoreElements();) {</span>
 <span class="fc" id="L150">            result.add(((FrameSelector) e.nextElement()).getName());</span>
         }
@@ -224,11 +224,11 @@ class FrameHolder {
      * frame.
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
-<span class="pc bpc" id="L227" title="1 of 4 branches missed.">        if (relativeName == null || relativeName.length() == 0) {</span>
+<span class="pc bpc" id="L227" title="1 of 4 branches missed.">        if (relativeName == null || relativeName.isEmpty()) {</span>
 <span class="fc" id="L228">            return new FrameSelector();</span>
         }
 <span class="fc" id="L230">        return new FrameSelector(relativeName, parentFrame);</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

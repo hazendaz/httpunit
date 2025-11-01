@@ -202,7 +202,7 @@
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         sr.registerServlet(<span class="jxr_string">"ReportData"</span>, BodyEcho.<strong class="jxr_keyword">class</strong>.getName());
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         String sourceData = <span class="jxr_string">"This is an interesting test\nWith two lines"</span>;
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         InputStream source = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(sourceData.getBytes(StandardCharsets.ISO_8859_1));
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         InputStream source = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(sourceData.getBytes(StandardCharsets.UTF_8));
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> 
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         WebClient wc = sr.newClient();
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         WebRequest wr = <strong class="jxr_keyword">new</strong> PostMethodWebRequest(<span class="jxr_string">"http://localhost/ReportData"</span>, source, <span class="jxr_string">"text/sample"</span>);

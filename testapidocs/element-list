@@ -3,6 +3,4 @@ com.meterware.httpunit.cookies
 com.meterware.httpunit.dom
 com.meterware.httpunit.javascript
 com.meterware.httpunit.parsing
-com.meterware.httpunit.ssl
-com.meterware.pseudoserver
 com.meterware.servletunit

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebRequest.java</span></div><h1>WebRequest.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 /**
  * A request sent to a web server.
  **/
-abstract public class WebRequest {
+public abstract class WebRequest {
 
     static final String REFERER_HEADER_NAME = &quot;Referer&quot;;
 
@@ -293,7 +293,7 @@ abstract public class WebRequest {
      * @since 1.3.1
      **/
     public String[] getRequestParameterNames() {
-<span class="fc" id="L296">        final HashSet names = new HashSet();</span>
+<span class="fc" id="L296">        final HashSet&lt;String&gt; names = new HashSet&lt;&gt;();</span>
 <span class="fc" id="L297">        ParameterProcessor pp = new ParameterProcessor() {</span>
             @Override
             public void addParameter(String name, String value, String characterSet) throws IOException {
@@ -312,7 +312,7 @@ abstract public class WebRequest {
 <span class="nc" id="L312">        } catch (IOException e) {</span>
 <span class="fc" id="L313">        }</span>
 
-<span class="fc" id="L315">        return (String[]) names.toArray(new String[names.size()]);</span>
+<span class="fc" id="L315">        return names.toArray(new String[names.size()]);</span>
     }
 
     /**
@@ -486,7 +486,7 @@ abstract public class WebRequest {
     /**
      * Returns the character set required for this request.
      **/
-    final protected String getCharacterSet() {
+    protected final String getCharacterSet() {
 <span class="fc" id="L490">        return _characterSet;</span>
     }
 
@@ -505,7 +505,7 @@ abstract public class WebRequest {
     protected void writeMessageBody(OutputStream stream) throws IOException {
 <span class="fc" id="L506">    }</span>
 
-    final protected URL getURLBase() {
+    protected final URL getURLBase() {
 <span class="fc" id="L509">        return _urlBase;</span>
     }
 
@@ -513,13 +513,13 @@ abstract public class WebRequest {
 
     protected String getURLString() {
 <span class="fc" id="L515">        final String queryString = getQueryString();</span>
-<span class="fc bfc" id="L516" title="All 2 branches covered.">        if (queryString.length() == 0) {</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        if (queryString.isEmpty()) {</span>
 <span class="fc" id="L517">            return _urlString;</span>
         }
 <span class="fc" id="L519">        return _urlString + &quot;?&quot; + queryString;</span>
     }
 
-    final protected ParameterHolder getParameterHolder() {
+    protected final ParameterHolder getParameterHolder() {
 <span class="fc" id="L523">        return _parameterHolder;</span>
     }
 
@@ -539,7 +539,7 @@ abstract public class WebRequest {
 
     Hashtable getHeaderDictionary() {
 <span class="fc bfc" id="L541" title="All 2 branches covered.">        if (_headers == null) {</span>
-<span class="fc" id="L542">            _headers = new Hashtable();</span>
+<span class="fc" id="L542">            _headers = new Hashtable&lt;&gt;();</span>
 <span class="fc bfc" id="L543" title="All 2 branches covered.">            if (getContentType() != null) {</span>
 <span class="fc" id="L544">                _headers.put(&quot;Content-Type&quot;, getContentType());</span>
             }
@@ -648,4 +648,4 @@ class IllegalButtonPositionException extends IllegalRequestParameterException {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

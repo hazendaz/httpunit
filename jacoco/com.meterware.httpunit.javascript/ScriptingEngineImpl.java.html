@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptingEngineImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.javascript</a> &gt; <span class="el_source">ScriptingEngineImpl.java</span></div><h1>ScriptingEngineImpl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -40,9 +40,9 @@ import org.mozilla.javascript.Undefined;
 
     private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L43">    private final static Object[] NO_ARGS = {};</span>
+<span class="fc" id="L43">    private static final Object[] NO_ARGS = {};</span>
 
-<span class="fc" id="L45">    private static ArrayList _errorMessages = new ArrayList();</span>
+<span class="fc" id="L45">    private static ArrayList _errorMessages = new ArrayList&lt;&gt;();</span>
 
     /**
      * clear the list of error Messages
@@ -149,7 +149,7 @@ import org.mozilla.javascript.Undefined;
      */
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (eventScript.length() == 0) {</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (eventScript.isEmpty()) {</span>
 <span class="nc" id="L153">            return true;</span>
         }
         try {
@@ -228,4 +228,4 @@ import org.mozilla.javascript.Undefined;
 <span class="pc bpc" id="L228" title="1 of 4 branches missed.">        return c == 0x0A || c == 0x0D;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

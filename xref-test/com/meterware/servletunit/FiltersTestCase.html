@@ -67,12 +67,12 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  <strong class="jxr_keyword">class</strong> <a name="FiltersTestCase" href="../../../com/meterware/servletunit/FiltersTestCase.html#FiltersTestCase">FiltersTestCase</a> {
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER1 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(1);
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER2 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(2);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER3 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(3);
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER4 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(4);
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER5 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(5);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> FilterMetaData FILTER6 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(6);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER1 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(1);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER2 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(2);
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER3 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(3);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER4 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(4);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER5 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(5);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> FilterMetaData FILTER6 = <strong class="jxr_keyword">new</strong> FilterMetaDataImpl(6);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> _servletCalled;
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
@@ -289,7 +289,7 @@
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         assertNull(filterConfig.getInitParameter(<span class="jxr_string">"gender"</span>), <span class="jxr_string">"init parameter 'gender' should be null"</span>);
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         assertEquals(<span class="jxr_string">"red"</span>, filterConfig.getInitParameter(<span class="jxr_string">"color"</span>), <span class="jxr_string">"init parameter 'red'"</span>);
 <a class="jxr_linenumber" name="L283" href="#L283">283</a> 
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         ArrayList names = <strong class="jxr_keyword">new</strong> ArrayList();
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         ArrayList names = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>         <strong class="jxr_keyword">for</strong> (Enumeration e = filterConfig.getInitParameterNames(); e.hasMoreElements();) {
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>             String name = (String) e.nextElement();
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>             names.add(name);

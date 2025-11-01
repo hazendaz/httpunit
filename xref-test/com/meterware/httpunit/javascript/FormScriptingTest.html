@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">for</strong> (WebLink link : links) {
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             link.click();
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         }
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         String expected[] = { <span class="jxr_string">"#FFFFCC"</span>, <span class="jxr_string">"#E00000"</span>, <span class="jxr_string">"#0000E0"</span>, <span class="jxr_string">"#000080"</span>, <span class="jxr_string">"#000000"</span> };
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         String[] expected = { <span class="jxr_string">"#FFFFCC"</span>, <span class="jxr_string">"#E00000"</span>, <span class="jxr_string">"#0000E0"</span>, <span class="jxr_string">"#000080"</span>, <span class="jxr_string">"#000000"</span> };
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> 
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; links.length; i++) {
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>             assertEquals(expected[i], wc.popNextAlert(), <span class="jxr_string">"Message for link  "</span> + i);
@@ -177,7 +177,7 @@
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">for</strong> (WebLink link : links) {
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>             link.click();
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         }
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>         String expected[] = { <span class="jxr_string">"left"</span> };
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         String[] expected = { <span class="jxr_string">"left"</span> };
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; links.length; i++) {
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>             assertEquals(expected[i], wc.popNextAlert(), <span class="jxr_string">"Message for link  "</span> + i);
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>         }
@@ -220,7 +220,7 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>         WebConversation wc = <strong class="jxr_keyword">new</strong> WebConversation();
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         WebResponse response = wc.getResponse(getHostPath() + <span class="jxr_string">"/OnCommand.html"</span>);
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         response.getElementNames();
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>         HTMLElement elements[] = response.getElementsByTagName(<span class="jxr_string">"span"</span>);
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         HTMLElement[] elements = response.getElementsByTagName(<span class="jxr_string">"span"</span>);
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         assertEquals(2, elements.length, <span class="jxr_string">"Two span elements should be found "</span>);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         HTMLElement span1 = elements[0];
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         String onclick = <span class="jxr_string">"crtCtrla(this, \&quot;rim_ModuleSearchResult=Drilldown=key_\&quot;, null, null);"</span>;
@@ -1378,8 +1378,8 @@
 <a class="jxr_linenumber" name="L1370" href="#L1370">1370</a>     }
 <a class="jxr_linenumber" name="L1371" href="#L1371">1371</a> 
 <a class="jxr_linenumber" name="L1372" href="#L1372">1372</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> PromptCollector <strong class="jxr_keyword">implements</strong> DialogResponder {
-<a class="jxr_linenumber" name="L1373" href="#L1373">1373</a>         <strong class="jxr_keyword">public</strong> List confirmPromptsSeen = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L1374" href="#L1374">1374</a>         <strong class="jxr_keyword">public</strong> List responsePromptSeen = <strong class="jxr_keyword">new</strong> ArrayList();
+<a class="jxr_linenumber" name="L1373" href="#L1373">1373</a>         <strong class="jxr_keyword">public</strong> List confirmPromptsSeen = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L1374" href="#L1374">1374</a>         <strong class="jxr_keyword">public</strong> List responsePromptSeen = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L1375" href="#L1375">1375</a> 
 <a class="jxr_linenumber" name="L1376" href="#L1376">1376</a>         @Override
 <a class="jxr_linenumber" name="L1377" href="#L1377">1377</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> getConfirmation(String confirmationPrompt) {

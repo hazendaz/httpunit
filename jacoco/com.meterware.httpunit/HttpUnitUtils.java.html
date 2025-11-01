@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUnitUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpUnitUtils.java</span></div><h1>HttpUnitUtils.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -22,7 +22,7 @@ package com.meterware.httpunit;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
 <span class="nc" id="L41">public class HttpUnitUtils {</span>
 
     public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
-    public static final String DEFAULT_CHARACTER_SET = &quot;iso-8859-1&quot;;
+
     /**
      * set to true to debug Exception handling
      */
@@ -113,12 +113,12 @@ import org.xml.sax.SAXException;
     }
 
     /**
-     * Returns an interpretation of the specified URL-encoded string, using the iso-8859-1 character set.
+     * Returns an interpretation of the specified URL-encoded string, using the ISO-8859-1 character set.
      *
      * @since 1.6
      **/
     public static String decode(String byteString) {
-<span class="fc" id="L121">        return decode(byteString, &quot;iso-8859-1&quot;);</span>
+<span class="fc" id="L121">        return decode(byteString, &quot;ISO-8859-1&quot;);</span>
     }
 
     /**
@@ -154,15 +154,11 @@ import org.xml.sax.SAXException;
      *             thrown if URL decoding is unsuccessful,
      */
     public static String decode(String string, String charset) {
-        try {
-<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (string == null) {</span>
-<span class="fc" id="L159">                return null;</span>
-            }
-
-<span class="fc" id="L162">            return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), charset);</span>
-<span class="nc" id="L163">        } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L164">            throw new RuntimeException(e.toString());</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (string == null) {</span>
+<span class="fc" id="L158">            return null;</span>
         }
+
+<span class="fc" id="L161">        return new String(decodeUrl(string.getBytes(StandardCharsets.US_ASCII)), Charset.forName(charset));</span>
     }
 
     /**
@@ -176,29 +172,29 @@ import org.xml.sax.SAXException;
      * @return array of original bytes
      */
     private static final byte[] decodeUrl(byte[] pArray) throws IllegalArgumentException {
-<span class="fc" id="L179">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
-<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (int i = 0; i &lt; pArray.length; i++) {</span>
-<span class="fc" id="L181">            int b = pArray[i];</span>
-<span class="fc bfc" id="L182" title="All 2 branches covered.">            if (b == '+') {</span>
-<span class="fc" id="L183">                buffer.write(' ');</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">            } else if (b != '%') {</span>
-<span class="fc" id="L185">                buffer.write(b);</span>
+<span class="fc" id="L175">        ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int i = 0; i &lt; pArray.length; i++) {</span>
+<span class="fc" id="L177">            int b = pArray[i];</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">            if (b == '+') {</span>
+<span class="fc" id="L179">                buffer.write(' ');</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            } else if (b != '%') {</span>
+<span class="fc" id="L181">                buffer.write(b);</span>
             } else {
                 try {
-<span class="fc" id="L188">                    i++;</span>
-<span class="fc" id="L189">                    int u = Character.digit((char) pArray[i], 16);</span>
-<span class="fc" id="L190">                    i++;</span>
-<span class="fc" id="L191">                    int l = Character.digit((char) pArray[i], 16);</span>
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">                    if (u == -1 || l == -1) {</span>
-<span class="nc" id="L193">                        throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
+<span class="fc" id="L184">                    i++;</span>
+<span class="fc" id="L185">                    int u = Character.digit((char) pArray[i], 16);</span>
+<span class="fc" id="L186">                    i++;</span>
+<span class="fc" id="L187">                    int l = Character.digit((char) pArray[i], 16);</span>
+<span class="pc bpc" id="L188" title="2 of 4 branches missed.">                    if (u == -1 || l == -1) {</span>
+<span class="nc" id="L189">                        throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
                     }
-<span class="fc" id="L195">                    buffer.write((char) ((u &lt;&lt; 4) + l));</span>
-<span class="nc" id="L196">                } catch (ArrayIndexOutOfBoundsException e) {</span>
-<span class="nc" id="L197">                    throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
-<span class="fc" id="L198">                }</span>
+<span class="fc" id="L191">                    buffer.write((char) ((u &lt;&lt; 4) + l));</span>
+<span class="nc" id="L192">                } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L193">                    throw new IllegalArgumentException(&quot;Invalid URL encoding&quot;);</span>
+<span class="fc" id="L194">                }</span>
             }
         }
-<span class="fc" id="L201">        return buffer.toByteArray();</span>
+<span class="fc" id="L197">        return buffer.toByteArray();</span>
     }
 
     /**
@@ -209,23 +205,23 @@ import org.xml.sax.SAXException;
      * @return the string gotten from the inputString
      */
     public static String parseISToString(java.io.InputStream is) {
-<span class="nc" id="L212">        java.io.DataInputStream din = new java.io.DataInputStream(is);</span>
-<span class="nc" id="L213">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L208">        java.io.DataInputStream din = new java.io.DataInputStream(is);</span>
+<span class="nc" id="L209">        StringBuilder sb = new StringBuilder();</span>
         try {
-<span class="nc" id="L215">            String line = null;</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">            while ((line = din.readLine()) != null) {</span>
-<span class="nc" id="L217">                sb.append(line + &quot;\n&quot;);</span>
+<span class="nc" id="L211">            String line = null;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            while ((line = din.readLine()) != null) {</span>
+<span class="nc" id="L213">                sb.append(line + &quot;\n&quot;);</span>
             }
-<span class="nc" id="L219">        } catch (Exception ex) {</span>
+<span class="nc" id="L215">        } catch (Exception ex) {</span>
             // TODO handle exception properly here
-<span class="nc" id="L221">            ex.getMessage();</span>
+<span class="nc" id="L217">            ex.getMessage();</span>
         } finally {
             try {
-<span class="nc" id="L224">                is.close();</span>
-<span class="nc" id="L225">            } catch (Exception ex) {</span>
-<span class="nc" id="L226">            }</span>
+<span class="nc" id="L220">                is.close();</span>
+<span class="nc" id="L221">            } catch (Exception ex) {</span>
+<span class="nc" id="L222">            }</span>
         }
-<span class="nc" id="L228">        return sb.toString();</span>
+<span class="nc" id="L224">        return sb.toString();</span>
     }
 
     /**
@@ -236,21 +232,21 @@ import org.xml.sax.SAXException;
      * @return the document parsed from the input Source
      */
     public static Document parse(InputSource inputSource) throws SAXException, IOException {
-<span class="fc" id="L239">        DocumentBuilder db = newParser();</span>
+<span class="fc" id="L235">        DocumentBuilder db = newParser();</span>
         try {
-<span class="fc" id="L241">            return db.parse(inputSource);</span>
-<span class="nc" id="L242">        } catch (java.net.MalformedURLException mue) {</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
-<span class="nc" id="L244">                String msg = mue.getMessage();</span>
-<span class="nc bnc" id="L245" title="All 2 branches missed.">                if (msg != null) {</span>
-<span class="nc" id="L246">                    System.err.println(msg);</span>
+<span class="fc" id="L237">            return db.parse(inputSource);</span>
+<span class="nc" id="L238">        } catch (java.net.MalformedURLException mue) {</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
+<span class="nc" id="L240">                String msg = mue.getMessage();</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                if (msg != null) {</span>
+<span class="nc" id="L242">                    System.err.println(msg);</span>
                 }
-<span class="nc" id="L248">                InputStream is = inputSource.getByteStream();</span>
-<span class="nc" id="L249">                is.reset();</span>
-<span class="nc" id="L250">                String content = parseISToString(is);</span>
-<span class="nc" id="L251">                System.err.println(content);</span>
+<span class="nc" id="L244">                InputStream is = inputSource.getByteStream();</span>
+<span class="nc" id="L245">                is.reset();</span>
+<span class="nc" id="L246">                String content = parseISToString(is);</span>
+<span class="nc" id="L247">                System.err.println(content);</span>
             }
-<span class="nc" id="L253">            throw mue;</span>
+<span class="nc" id="L249">            throw mue;</span>
         }
     }
 
@@ -262,21 +258,21 @@ import org.xml.sax.SAXException;
      * @return the document parsed from the input Stream
      */
     public static Document parse(InputStream inputStream) throws SAXException, IOException {
-<span class="fc" id="L265">        DocumentBuilder db = newParser();</span>
+<span class="fc" id="L261">        DocumentBuilder db = newParser();</span>
         try {
-<span class="fc" id="L267">            return db.parse(inputStream);</span>
-<span class="nc" id="L268">        } catch (java.net.MalformedURLException mue) {</span>
-<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
-<span class="nc" id="L270">                String msg = mue.getMessage();</span>
-<span class="nc bnc" id="L271" title="All 2 branches missed.">                if (msg != null) {</span>
-<span class="nc" id="L272">                    System.err.println(msg);</span>
+<span class="fc" id="L263">            return db.parse(inputStream);</span>
+<span class="nc" id="L264">        } catch (java.net.MalformedURLException mue) {</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if (EXCEPTION_DEBUG) {</span>
+<span class="nc" id="L266">                String msg = mue.getMessage();</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                if (msg != null) {</span>
+<span class="nc" id="L268">                    System.err.println(msg);</span>
                 }
-<span class="nc" id="L274">                InputStream is = inputStream;</span>
-<span class="nc" id="L275">                is.reset();</span>
-<span class="nc" id="L276">                String content = parseISToString(is);</span>
-<span class="nc" id="L277">                System.err.println(content);</span>
+<span class="nc" id="L270">                InputStream is = inputStream;</span>
+<span class="nc" id="L271">                is.reset();</span>
+<span class="nc" id="L272">                String content = parseISToString(is);</span>
+<span class="nc" id="L273">                System.err.println(content);</span>
             }
-<span class="nc" id="L279">            throw mue;</span>
+<span class="nc" id="L275">            throw mue;</span>
         }
     }
 
@@ -285,13 +281,13 @@ import org.xml.sax.SAXException;
      */
     public static DocumentBuilder newParser() throws SAXException {
         try {
-<span class="fc" id="L288">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
-<span class="fc" id="L289">            DocumentBuilder builder = factory.newDocumentBuilder();</span>
-<span class="fc" id="L290">            builder.setEntityResolver(new HttpUnitUtils.ClasspathEntityResolver());</span>
-<span class="fc" id="L291">            return builder;</span>
-<span class="nc" id="L292">        } catch (ParserConfigurationException ex) {</span>
+<span class="fc" id="L284">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="fc" id="L285">            DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="fc" id="L286">            builder.setEntityResolver(new HttpUnitUtils.ClasspathEntityResolver());</span>
+<span class="fc" id="L287">            return builder;</span>
+<span class="nc" id="L288">        } catch (ParserConfigurationException ex) {</span>
             // redirect the new exception for code compatibility
-<span class="nc" id="L294">            throw new SAXException(ex);</span>
+<span class="nc" id="L290">            throw new SAXException(ex);</span>
         }
     }
 
@@ -300,14 +296,14 @@ import org.xml.sax.SAXException;
      **/
     static String[] withNewValue(String[] oldValue, String newValue) {
         String[] result;
-<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (oldValue == null) {</span>
-<span class="fc" id="L304">            result = new String[] { newValue };</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">        if (oldValue == null) {</span>
+<span class="fc" id="L300">            result = new String[] { newValue };</span>
         } else {
-<span class="fc" id="L306">            result = new String[oldValue.length + 1];</span>
-<span class="fc" id="L307">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
-<span class="fc" id="L308">            result[oldValue.length] = newValue;</span>
+<span class="fc" id="L302">            result = new String[oldValue.length + 1];</span>
+<span class="fc" id="L303">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
+<span class="fc" id="L304">            result[oldValue.length] = newValue;</span>
         }
-<span class="fc" id="L310">        return result;</span>
+<span class="fc" id="L306">        return result;</span>
     }
 
     /**
@@ -315,14 +311,14 @@ import org.xml.sax.SAXException;
      **/
     static Object[] withNewValue(Object[] oldValue, Object newValue) {
         Object[] result;
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        if (oldValue == null) {</span>
-<span class="fc" id="L319">            result = new Object[] { newValue };</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">        if (oldValue == null) {</span>
+<span class="fc" id="L315">            result = new Object[] { newValue };</span>
         } else {
-<span class="nc" id="L321">            result = new Object[oldValue.length + 1];</span>
-<span class="nc" id="L322">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
-<span class="nc" id="L323">            result[oldValue.length] = newValue;</span>
+<span class="nc" id="L317">            result = new Object[oldValue.length + 1];</span>
+<span class="nc" id="L318">            System.arraycopy(oldValue, 0, result, 0, oldValue.length);</span>
+<span class="nc" id="L319">            result[oldValue.length] = newValue;</span>
         }
-<span class="fc" id="L325">        return result;</span>
+<span class="fc" id="L321">        return result;</span>
     }
 
     /**
@@ -330,10 +326,10 @@ import org.xml.sax.SAXException;
      * HttpUnitOptions.matchesIgnoreCase
      */
     static boolean contains(String string, String substring) {
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
-<span class="fc bfc" id="L334" title="All 2 branches covered.">            return string.toUpperCase().indexOf(substring.toUpperCase()) &gt;= 0;</span>
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">            return string.toUpperCase().indexOf(substring.toUpperCase()) &gt;= 0;</span>
         }
-<span class="nc bnc" id="L336" title="All 2 branches missed.">        return string.indexOf(substring) &gt;= 0;</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        return string.indexOf(substring) &gt;= 0;</span>
     }
 
     /**
@@ -341,10 +337,10 @@ import org.xml.sax.SAXException;
      * HttpUnitOptions.matchesIgnoreCase
      */
     static boolean hasPrefix(String string, String prefix) {
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
-<span class="fc" id="L345">            return string.toUpperCase().startsWith(prefix.toUpperCase());</span>
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc" id="L341">            return string.toUpperCase().startsWith(prefix.toUpperCase());</span>
         }
-<span class="nc" id="L347">        return string.startsWith(prefix);</span>
+<span class="nc" id="L343">        return string.startsWith(prefix);</span>
     }
 
     /**
@@ -352,10 +348,10 @@ import org.xml.sax.SAXException;
      * HttpUnitOptions.matchesIgnoreCase
      */
     static boolean matches(String string1, String string2) {
-<span class="pc bpc" id="L355" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
-<span class="fc" id="L356">            return string1.equalsIgnoreCase(string2);</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">        if (HttpUnitOptions.getMatchesIgnoreCase()) {</span>
+<span class="fc" id="L352">            return string1.equalsIgnoreCase(string2);</span>
         }
-<span class="nc" id="L358">        return string1.equals(string2);</span>
+<span class="nc" id="L354">        return string1.equals(string2);</span>
     }
 
     /**
@@ -367,92 +363,92 @@ import org.xml.sax.SAXException;
      * @return - true if this is a javascript url
      */
     static boolean isJavaScriptURL(String urlString) {
-<span class="fc" id="L370">        return urlString.toLowerCase().startsWith(&quot;javascript:&quot;);</span>
+<span class="fc" id="L366">        return urlString.toLowerCase().startsWith(&quot;javascript:&quot;);</span>
     }
 
     /**
      * Trims whitespace from the ends, and encodes from the middle. Spaces within quotes are respected.
      */
     static String encodeSpaces(String s) {
-<span class="fc" id="L377">        s = s.trim();</span>
+<span class="fc" id="L373">        s = s.trim();</span>
         // if no spaces we are fine
-<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (s.indexOf(' ') &lt; 0) {</span>
-<span class="fc" id="L380">            return s;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (s.indexOf(' ') &lt; 0) {</span>
+<span class="fc" id="L376">            return s;</span>
         }
 
-<span class="fc" id="L383">        boolean inQuotes = false;</span>
-<span class="fc" id="L384">        StringBuilder sb = new StringBuilder();</span>
-<span class="fc" id="L385">        char[] chars = s.toCharArray();</span>
+<span class="fc" id="L379">        boolean inQuotes = false;</span>
+<span class="fc" id="L380">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L381">        char[] chars = s.toCharArray();</span>
         // loop over oper the chars of the URL
-<span class="fc bfc" id="L387" title="All 2 branches covered.">        for (char aChar : chars) {</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">        for (char aChar : chars) {</span>
             // toggle quotation and add quote
-<span class="pc bpc" id="L389" title="2 of 4 branches missed.">            if (aChar == '&quot;' || aChar == '\'') {</span>
-<span class="nc bnc" id="L390" title="All 2 branches missed.">                inQuotes = !inQuotes;</span>
-<span class="nc" id="L391">                sb.append(aChar);</span>
+<span class="pc bpc" id="L385" title="2 of 4 branches missed.">            if (aChar == '&quot;' || aChar == '\'') {</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                inQuotes = !inQuotes;</span>
+<span class="nc" id="L387">                sb.append(aChar);</span>
                 // append everything in quotes and printable chars above space
-<span class="pc bpc" id="L393" title="1 of 4 branches missed.">            } else if (inQuotes || aChar &gt; ' ') {</span>
-<span class="fc" id="L394">                sb.append(aChar);</span>
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">            } else if (aChar == ' ') {</span>
+<span class="pc bpc" id="L389" title="1 of 4 branches missed.">            } else if (inQuotes || aChar &gt; ' ') {</span>
+<span class="fc" id="L390">                sb.append(aChar);</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">            } else if (aChar == ' ') {</span>
                 // encode spaces
                 // TODO check what to do about breaking testLinkUrlAcrossLineBreaks then ...
                 // sb.append(&quot;%20&quot;);
             }
         }
-<span class="fc" id="L401">        return sb.toString();</span>
+<span class="fc" id="L397">        return sb.toString();</span>
     }
 
     static String replaceEntities(String string) {
-<span class="fc" id="L405">        int i = 0;</span>
+<span class="fc" id="L401">        int i = 0;</span>
         int ampIndex;
-<span class="fc bfc" id="L407" title="All 2 branches covered.">        while ((ampIndex = string.indexOf('&amp;', i)) &gt;= 0) {</span>
-<span class="fc" id="L408">            int semiColonIndex = string.indexOf(';', ampIndex + 1);</span>
-<span class="fc bfc" id="L409" title="All 2 branches covered.">            if (semiColonIndex &lt; 0) {</span>
-<span class="fc" id="L410">                break;</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        while ((ampIndex = string.indexOf('&amp;', i)) &gt;= 0) {</span>
+<span class="fc" id="L404">            int semiColonIndex = string.indexOf(';', ampIndex + 1);</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">            if (semiColonIndex &lt; 0) {</span>
+<span class="fc" id="L406">                break;</span>
             }
-<span class="fc" id="L412">            i = ampIndex + 1;</span>
+<span class="fc" id="L408">            i = ampIndex + 1;</span>
 
-<span class="fc" id="L414">            String entityName = string.substring(ampIndex + 1, semiColonIndex);</span>
-<span class="fc bfc" id="L415" title="All 2 branches covered.">            if (entityName.equalsIgnoreCase(&quot;amp&quot;)) {</span>
-<span class="fc" id="L416">                string = string.substring(0, ampIndex) + '&amp;' + string.substring(semiColonIndex + 1);</span>
+<span class="fc" id="L410">            String entityName = string.substring(ampIndex + 1, semiColonIndex);</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">            if (entityName.equalsIgnoreCase(&quot;amp&quot;)) {</span>
+<span class="fc" id="L412">                string = string.substring(0, ampIndex) + '&amp;' + string.substring(semiColonIndex + 1);</span>
             }
 
-<span class="fc" id="L419">        }</span>
-<span class="fc" id="L420">        return string;</span>
+<span class="fc" id="L415">        }</span>
+<span class="fc" id="L416">        return string;</span>
     }
 
     /**
      * Strips the fragment identifier (if any) from the Url.
      */
     static String trimFragment(String rawUrl) {
-<span class="pc bpc" id="L427" title="1 of 2 branches missed.">        if (isJavaScriptURL(rawUrl)) {</span>
-<span class="nc" id="L428">            return rawUrl;</span>
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">        if (isJavaScriptURL(rawUrl)) {</span>
+<span class="nc" id="L424">            return rawUrl;</span>
         }
-<span class="fc" id="L430">        final int hashIndex = rawUrl.indexOf('#');</span>
-<span class="fc bfc" id="L431" title="All 2 branches covered.">        return hashIndex &lt; 0 ? rawUrl : rawUrl.substring(0, hashIndex);</span>
+<span class="fc" id="L426">        final int hashIndex = rawUrl.indexOf('#');</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">        return hashIndex &lt; 0 ? rawUrl : rawUrl.substring(0, hashIndex);</span>
     }
 
-<span class="fc" id="L434">    static class ClasspathEntityResolver implements EntityResolver {</span>
+<span class="fc" id="L430">    static class ClasspathEntityResolver implements EntityResolver {</span>
 
         @Override
         public InputSource resolveEntity(String publicID, String systemID) {
-<span class="nc bnc" id="L438" title="All 2 branches missed.">            if (systemID == null) {</span>
-<span class="nc" id="L439">                return null;</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">            if (systemID == null) {</span>
+<span class="nc" id="L435">                return null;</span>
             }
 
-<span class="nc" id="L442">            String localName = systemID;</span>
-<span class="nc bnc" id="L443" title="All 2 branches missed.">            if (localName.indexOf(&quot;/&quot;) &gt; 0) {</span>
-<span class="nc" id="L444">                localName = localName.substring(localName.lastIndexOf(&quot;/&quot;) + 1);</span>
+<span class="nc" id="L438">            String localName = systemID;</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            if (localName.indexOf(&quot;/&quot;) &gt; 0) {</span>
+<span class="nc" id="L440">                localName = localName.substring(localName.lastIndexOf(&quot;/&quot;) + 1);</span>
             }
 
             try {
-<span class="nc" id="L448">                return new InputSource(getClass().getClassLoader().getResourceAsStream(localName));</span>
-<span class="nc" id="L449">            } catch (Exception e) {</span>
+<span class="nc" id="L444">                return new InputSource(getClass().getClassLoader().getResourceAsStream(localName));</span>
+<span class="nc" id="L445">            } catch (Exception e) {</span>
                 // proposed patch for bug report
                 // [ 1264706 ] [patch] replace ClasspathEntityResolver
                 // by fabrizio giustina
                 // even to return this in all cases!
                 // return new InputSource( new ByteArrayInputStream( new byte[0] ) );
-<span class="nc" id="L455">                return null;</span>
+<span class="nc" id="L451">                return null;</span>
             }
         }
     }
@@ -461,7 +457,7 @@ import org.xml.sax.SAXException;
      * @return the eXCEPTION_DEBUG
      */
     protected static boolean isEXCEPTION_DEBUG() {
-<span class="nc" id="L464">        return EXCEPTION_DEBUG;</span>
+<span class="nc" id="L460">        return EXCEPTION_DEBUG;</span>
     }
 
     /**
@@ -469,9 +465,9 @@ import org.xml.sax.SAXException;
      *            the eXCEPTION_DEBUG to set
      */
     public static boolean setEXCEPTION_DEBUG(boolean exception_debug) {
-<span class="fc" id="L472">        boolean oldExceptionDebug = exception_debug;</span>
-<span class="fc" id="L473">        EXCEPTION_DEBUG = exception_debug;</span>
-<span class="fc" id="L474">        return oldExceptionDebug;</span>
+<span class="fc" id="L468">        boolean oldExceptionDebug = exception_debug;</span>
+<span class="fc" id="L469">        EXCEPTION_DEBUG = exception_debug;</span>
+<span class="fc" id="L470">        return oldExceptionDebug;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

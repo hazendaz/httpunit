@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUnitOptions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpUnitOptions.java</span></div><h1>HttpUnitOptions.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -26,6 +26,7 @@ import com.meterware.httpunit.scripting.ScriptingEngineFactory;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -37,37 +38,37 @@ import java.util.Vector;
  * @author &lt;a href=&quot;mailto:dglo@ssec.wisc.edu&quot;&gt;Dave Glowacki&lt;/a&gt;
  * @author &lt;a href=&quot;mailto:bx@bigfoot.com&quot;&gt;Benoit Xhenseval&lt;/a&gt;
  **/
-<span class="nc" id="L40">public abstract class HttpUnitOptions {</span>
+<span class="nc" id="L41">public abstract class HttpUnitOptions {</span>
     public static final String ORIGINAL_SCRIPTING_ENGINE_FACTORY = &quot;com.meterware.httpunit.javascript.JavaScriptEngineFactory&quot;;
     // comment out the scripting engine not to be used by allowing the appropriate number of asterisks in the comment on
     // the next line (1 or 2)
     /**/
-    final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
+    public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = ORIGINAL_SCRIPTING_ENGINE_FACTORY;
     /*
-     * / final static public String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
+     * / public static final String DEFAULT_SCRIPT_ENGINE_FACTORY = NEW_SCRIPTING_ENGINE_FACTORY; /
      */
 
     /**
      * Resets all options to their default values.
      */
     public static void reset() {
-<span class="fc" id="L54">        _exceptionsOnErrorStatus = true;</span>
-<span class="fc" id="L55">        _parameterValuesValidated = true;</span>
-<span class="fc" id="L56">        _imagesTreatedAsAltText = false;</span>
-<span class="fc" id="L57">        _loggingHttpHeaders = false;</span>
-<span class="fc" id="L58">        _matchesIgnoreCase = true;</span>
-<span class="fc" id="L59">        _checkContentLength = false;</span>
-<span class="fc" id="L60">        _redirectDelay = 0; // TODO move this to ClientProperties</span>
-<span class="fc" id="L61">        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
-<span class="fc" id="L62">        _contentType = DEFAULT_CONTENT_TYPE;</span>
-<span class="fc" id="L63">        _postIncludesCharset = false;</span>
-<span class="fc" id="L64">        _exceptionsThrownOnScriptError = true;</span>
-<span class="fc" id="L65">        _customAttributes = null;</span>
-<span class="fc" id="L66">        _javaScriptOptimizationLevel = -1;</span>
-<span class="fc" id="L67">        _checkHtmlContentType = false;</span>
-<span class="fc" id="L68">        setScriptEngineClassName(DEFAULT_SCRIPT_ENGINE_FACTORY);</span>
-<span class="fc" id="L69">        setScriptingEnabled(true);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L55">        _exceptionsOnErrorStatus = true;</span>
+<span class="fc" id="L56">        _parameterValuesValidated = true;</span>
+<span class="fc" id="L57">        _imagesTreatedAsAltText = false;</span>
+<span class="fc" id="L58">        _loggingHttpHeaders = false;</span>
+<span class="fc" id="L59">        _matchesIgnoreCase = true;</span>
+<span class="fc" id="L60">        _checkContentLength = false;</span>
+<span class="fc" id="L61">        _redirectDelay = 0; // TODO move this to ClientProperties</span>
+<span class="fc" id="L62">        _characterSet = StandardCharsets.ISO_8859_1.name();</span>
+<span class="fc" id="L63">        _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L64">        _postIncludesCharset = false;</span>
+<span class="fc" id="L65">        _exceptionsThrownOnScriptError = true;</span>
+<span class="fc" id="L66">        _customAttributes = null;</span>
+<span class="fc" id="L67">        _javaScriptOptimizationLevel = -1;</span>
+<span class="fc" id="L68">        _checkHtmlContentType = false;</span>
+<span class="fc" id="L69">        setScriptEngineClassName(DEFAULT_SCRIPT_ENGINE_FACTORY);</span>
+<span class="fc" id="L70">        setScriptingEnabled(true);</span>
+<span class="fc" id="L71">    }</span>
 
     /**
      * Returns true if HttpUnit is accepting and saving cookies. The default is to accept them.
@@ -76,7 +77,7 @@ import java.util.Vector;
      */
     @Deprecated
     public static boolean isAcceptCookies() {
-<span class="nc" id="L79">        return ClientProperties.getDefaultProperties().isAcceptCookies();</span>
+<span class="nc" id="L80">        return ClientProperties.getDefaultProperties().isAcceptCookies();</span>
     }
 
     /**
@@ -86,8 +87,8 @@ import java.util.Vector;
      */
     @Deprecated
     public static void setAcceptCookies(boolean acceptCookies) {
-<span class="nc" id="L89">        ClientProperties.getDefaultProperties().setAcceptCookies(acceptCookies);</span>
-<span class="nc" id="L90">    }</span>
+<span class="nc" id="L90">        ClientProperties.getDefaultProperties().setAcceptCookies(acceptCookies);</span>
+<span class="nc" id="L91">    }</span>
 
     /**
      * Returns true if any WebClient created will accept GZIP encoding of responses. The default is to accept GZIP
@@ -97,7 +98,7 @@ import java.util.Vector;
      **/
     @Deprecated
     public static boolean isAcceptGzip() {
-<span class="nc" id="L100">        return ClientProperties.getDefaultProperties().isAcceptGzip();</span>
+<span class="nc" id="L101">        return ClientProperties.getDefaultProperties().isAcceptGzip();</span>
     }
 
     /**
@@ -107,36 +108,36 @@ import java.util.Vector;
      */
     @Deprecated
     public static void setAcceptGzip(boolean acceptGzip) {
-<span class="nc" id="L110">        ClientProperties.getDefaultProperties().setAcceptGzip(acceptGzip);</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L111">        ClientProperties.getDefaultProperties().setAcceptGzip(acceptGzip);</span>
+<span class="nc" id="L112">    }</span>
 
     /**
      * Resets the default character set to the HTTP default encoding.
      **/
     public static void resetDefaultCharacterSet() {
-<span class="nc" id="L117">        _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L118">        _characterSet = StandardCharsets.ISO_8859_1.name();</span>
+<span class="nc" id="L119">    }</span>
 
     /**
      * Resets the default content type to plain text.
      **/
     public static void resetDefaultContentType() {
-<span class="nc" id="L124">        _contentType = DEFAULT_CONTENT_TYPE;</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L125">        _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="nc" id="L126">    }</span>
 
     /**
      * Sets the default character set for pages which do not specify one and for requests created without HTML sources.
-     * By default, HttpUnit uses the HTTP default encoding, iso-8859-1.
+     * By default, HttpUnit uses the HTTP default encoding, ISO-8859-1.
      **/
     public static void setDefaultCharacterSet(String characterSet) {
-<span class="fc" id="L132">        _characterSet = characterSet;</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">        _characterSet = characterSet;</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Returns the character set to be used for pages which do not specify one.
      **/
     public static String getDefaultCharacterSet() {
-<span class="fc" id="L139">        return _characterSet;</span>
+<span class="fc" id="L140">        return _characterSet;</span>
     }
 
     /**
@@ -144,7 +145,7 @@ import java.util.Vector;
      * avoid such checks.
      */
     public static boolean isCheckContentLength() {
-<span class="fc" id="L147">        return _checkContentLength;</span>
+<span class="fc" id="L148">        return _checkContentLength;</span>
     }
 
     /**
@@ -152,36 +153,36 @@ import java.util.Vector;
      * actual received length. Defaults to false.
      */
     public static void setCheckContentLength(boolean checkContentLength) {
-<span class="fc" id="L155">        _checkContentLength = checkContentLength;</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L156">        _checkContentLength = checkContentLength;</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Determines whether a normal POST request will include the character set in the content-type header. The default
      * is to include it; however, some older servlet engines (most notably Tomcat 3.1) get confused when they see it.
      **/
     public static void setPostIncludesCharset(boolean postIncludesCharset) {
-<span class="nc" id="L163">        _postIncludesCharset = postIncludesCharset;</span>
-<span class="nc" id="L164">    }</span>
+<span class="nc" id="L164">        _postIncludesCharset = postIncludesCharset;</span>
+<span class="nc" id="L165">    }</span>
 
     /**
      * Returns true if POST requests should include the character set in the content-type header.
      **/
     public static boolean isPostIncludesCharset() {
-<span class="fc" id="L170">        return _postIncludesCharset;</span>
+<span class="fc" id="L171">        return _postIncludesCharset;</span>
     }
 
     /**
      * Sets the default content type for pages which do not specify one.
      **/
     public static void setDefaultContentType(String contentType) {
-<span class="nc" id="L177">        _contentType = contentType;</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L178">        _contentType = contentType;</span>
+<span class="nc" id="L179">    }</span>
 
     /**
      * Returns the content type to be used for pages which do not specify one.
      **/
     public static String getDefaultContentType() {
-<span class="nc" id="L184">        return _contentType;</span>
+<span class="nc" id="L185">        return _contentType;</span>
     }
 
     /**
@@ -191,7 +192,7 @@ import java.util.Vector;
      **/
     @Deprecated
     public static boolean getParserWarningsEnabled() {
-<span class="nc" id="L194">        return HTMLParserFactory.isParserWarningsEnabled();</span>
+<span class="nc" id="L195">        return HTMLParserFactory.isParserWarningsEnabled();</span>
     }
 
     /**
@@ -201,21 +202,21 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void setParserWarningsEnabled(boolean enabled) {
-<span class="nc" id="L204">        HTMLParserFactory.setParserWarningsEnabled(enabled);</span>
-<span class="nc" id="L205">    }</span>
+<span class="nc" id="L205">        HTMLParserFactory.setParserWarningsEnabled(enabled);</span>
+<span class="nc" id="L206">    }</span>
 
     /**
      * If true, WebClient.getResponse throws an exception when it receives an error status. Defaults to true.
      **/
     public static void setExceptionsThrownOnErrorStatus(boolean enabled) {
-<span class="fc" id="L211">        _exceptionsOnErrorStatus = enabled;</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L212">        _exceptionsOnErrorStatus = enabled;</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Returns true if WebClient.getResponse throws exceptions when detected an error status.
      **/
     public static boolean getExceptionsThrownOnErrorStatus() {
-<span class="fc" id="L218">        return _exceptionsOnErrorStatus;</span>
+<span class="fc" id="L219">        return _exceptionsOnErrorStatus;</span>
     }
 
     /**
@@ -225,7 +226,7 @@ import java.util.Vector;
      **/
     @Deprecated
     public static boolean getParameterValuesValidated() {
-<span class="fc" id="L228">        return _parameterValuesValidated;</span>
+<span class="fc" id="L229">        return _parameterValuesValidated;</span>
     }
 
     /**
@@ -239,14 +240,14 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void setParameterValuesValidated(boolean validated) {
-<span class="fc" id="L242">        _parameterValuesValidated = validated;</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L243">        _parameterValuesValidated = validated;</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Returns true if images are treated as text, using their alt attributes.
      **/
     public static boolean getImagesTreatedAsAltText() {
-<span class="fc" id="L249">        return _imagesTreatedAsAltText;</span>
+<span class="fc" id="L250">        return _imagesTreatedAsAltText;</span>
     }
 
     /**
@@ -254,15 +255,15 @@ import java.util.Vector;
      * in all searches and displays. The default is false (image text is generally ignored).
      **/
     public static void setImagesTreatedAsAltText(boolean asText) {
-<span class="fc" id="L257">        _imagesTreatedAsAltText = asText;</span>
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L258">        _imagesTreatedAsAltText = asText;</span>
+<span class="fc" id="L259">    }</span>
 
     /**
      * If true, text matches in methods such as {@link HTMLSegment#getLinkWith} are case insensitive. The default is
      * true (matches ignore case).
      **/
     public static boolean getMatchesIgnoreCase() {
-<span class="fc" id="L265">        return _matchesIgnoreCase;</span>
+<span class="fc" id="L266">        return _matchesIgnoreCase;</span>
     }
 
     /**
@@ -270,29 +271,29 @@ import java.util.Vector;
      * true (matches ignore case).
      **/
     public static void setMatchesIgnoreCase(boolean ignoreCase) {
-<span class="nc" id="L273">        _matchesIgnoreCase = ignoreCase;</span>
-<span class="nc" id="L274">    }</span>
+<span class="nc" id="L274">        _matchesIgnoreCase = ignoreCase;</span>
+<span class="nc" id="L275">    }</span>
 
     /**
      * Returns true if HTTP headers are to be dumped to system output.
      **/
     public static boolean isLoggingHttpHeaders() {
-<span class="fc" id="L280">        return _loggingHttpHeaders;</span>
+<span class="fc" id="L281">        return _loggingHttpHeaders;</span>
     }
 
     /**
      * If true, tells HttpUnit to log HTTP headers to system output. The default is false.
      **/
     public static void setLoggingHttpHeaders(boolean enabled) {
-<span class="fc" id="L287">        _loggingHttpHeaders = enabled;</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L288">        _loggingHttpHeaders = enabled;</span>
+<span class="fc" id="L289">    }</span>
 
     /**
      * Returns true if HttpUnit throws an exception when attempting to parse as HTML a response whose content type is
      * not HTML. The default is false (content type is ignored).
      **/
     public static boolean isCheckHtmlContentType() {
-<span class="fc" id="L295">        return _checkHtmlContentType;</span>
+<span class="fc" id="L296">        return _checkHtmlContentType;</span>
     }
 
     /**
@@ -300,8 +301,8 @@ import java.util.Vector;
      * The default is false (content type is ignored).
      **/
     public static void setCheckHtmlContentType(boolean checkHtmlContentType) {
-<span class="fc" id="L303">        _checkHtmlContentType = checkHtmlContentType;</span>
-<span class="fc" id="L304">    }</span>
+<span class="fc" id="L304">        _checkHtmlContentType = checkHtmlContentType;</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Returns true if HttpUnit should automatically follow page redirect requests (status 3xx). By default, this is
@@ -311,7 +312,7 @@ import java.util.Vector;
      **/
     @Deprecated
     public static boolean getAutoRedirect() {
-<span class="nc" id="L314">        return ClientProperties.getDefaultProperties().isAutoRedirect();</span>
+<span class="nc" id="L315">        return ClientProperties.getDefaultProperties().isAutoRedirect();</span>
     }
 
     /**
@@ -322,14 +323,14 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void setAutoRedirect(boolean autoRedirect) {
-<span class="nc" id="L325">        ClientProperties.getDefaultProperties().setAutoRedirect(autoRedirect);</span>
-<span class="nc" id="L326">    }</span>
+<span class="nc" id="L326">        ClientProperties.getDefaultProperties().setAutoRedirect(autoRedirect);</span>
+<span class="nc" id="L327">    }</span>
 
     /**
      * Returns the delay, in milliseconds, before a redirect request is issues.
      **/
     public static int getRedirectDelay() {
-<span class="fc" id="L332">        return _redirectDelay;</span>
+<span class="fc" id="L333">        return _redirectDelay;</span>
     }
 
     /**
@@ -339,8 +340,8 @@ import java.util.Vector;
      * an error in the server design, and therefore the default delay is zero.
      **/
     public static void setRedirectDelay(int delayInMilliseconds) {
-<span class="nc" id="L342">        _redirectDelay = delayInMilliseconds;</span>
-<span class="nc" id="L343">    }</span>
+<span class="nc" id="L343">        _redirectDelay = delayInMilliseconds;</span>
+<span class="nc" id="L344">    }</span>
 
     /**
      * Returns true if HttpUnit should automatically follow page refresh requests. By default, this is false, so that
@@ -350,7 +351,7 @@ import java.util.Vector;
      **/
     @Deprecated
     public static boolean getAutoRefresh() {
-<span class="nc" id="L353">        return ClientProperties.getDefaultProperties().isAutoRefresh();</span>
+<span class="nc" id="L354">        return ClientProperties.getDefaultProperties().isAutoRefresh();</span>
     }
 
     /**
@@ -362,8 +363,8 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void setAutoRefresh(boolean autoRefresh) {
-<span class="nc" id="L365">        ClientProperties.getDefaultProperties().setAutoRefresh(autoRefresh);</span>
-<span class="nc" id="L366">    }</span>
+<span class="nc" id="L366">        ClientProperties.getDefaultProperties().setAutoRefresh(autoRefresh);</span>
+<span class="nc" id="L367">    }</span>
 
     /**
      * Remove an Html error listener.
@@ -372,8 +373,8 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void removeHtmlErrorListener(HTMLParserListener el) {
-<span class="nc" id="L375">        HTMLParserFactory.removeHTMLParserListener(el);</span>
-<span class="nc" id="L376">    }</span>
+<span class="nc" id="L376">        HTMLParserFactory.removeHTMLParserListener(el);</span>
+<span class="nc" id="L377">    }</span>
 
     /**
      * Add an Html error listener.
@@ -382,8 +383,8 @@ import java.util.Vector;
      **/
     @Deprecated
     public static void addHtmlErrorListener(HTMLParserListener el) {
-<span class="nc" id="L385">        HTMLParserFactory.addHTMLParserListener(el);</span>
-<span class="nc" id="L386">    }</span>
+<span class="nc" id="L386">        HTMLParserFactory.addHTMLParserListener(el);</span>
+<span class="nc" id="L387">    }</span>
 
     /**
      * Get the list of Html Error Listeners
@@ -392,38 +393,38 @@ import java.util.Vector;
      **/
     @Deprecated
     public static Vector getHtmlErrorListeners() {
-<span class="nc" id="L395">        return null;</span>
+<span class="nc" id="L396">        return null;</span>
     }
 
     public static String getScriptEngineClassName() {
-<span class="nc" id="L399">        return _scriptEngineClassName;</span>
+<span class="nc" id="L400">        return _scriptEngineClassName;</span>
     }
 
     public static void setScriptEngineClassName(String scriptEngineClassName) {
-<span class="pc bpc" id="L403" title="1 of 4 branches missed.">        if (_scriptEngineClassName == null || !_scriptEngineClassName.equals(scriptEngineClassName)) {</span>
-<span class="fc" id="L404">            _scriptingEngine = null;</span>
+<span class="pc bpc" id="L404" title="1 of 4 branches missed.">        if (_scriptEngineClassName == null || !_scriptEngineClassName.equals(scriptEngineClassName)) {</span>
+<span class="fc" id="L405">            _scriptingEngine = null;</span>
         }
-<span class="fc" id="L406">        _scriptEngineClassName = scriptEngineClassName;</span>
-<span class="fc" id="L407">    }</span>
+<span class="fc" id="L407">        _scriptEngineClassName = scriptEngineClassName;</span>
+<span class="fc" id="L408">    }</span>
 
     public static ScriptingEngineFactory getScriptingEngine() {
-<span class="fc bfc" id="L410" title="All 2 branches covered.">        if (_scriptingEngine == null) {</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">        if (_scriptingEngine == null) {</span>
             try {
-<span class="fc" id="L412">                Class factoryClass = Class.forName(_scriptEngineClassName);</span>
-<span class="fc" id="L413">                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor()</span>
-<span class="fc" id="L414">                        .newInstance();</span>
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">                _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;</span>
-<span class="fc" id="L416">                _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);</span>
-<span class="nc" id="L417">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L418">                disableScripting(e, &quot;Unable to find scripting engine factory class &quot;);</span>
-<span class="nc" id="L419">            } catch (InstantiationException e) {</span>
-<span class="nc" id="L420">                disableScripting(e, &quot;Unable to instantiate scripting engine factory class &quot;);</span>
-<span class="nc" id="L421">            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
+<span class="fc" id="L413">                Class factoryClass = Class.forName(_scriptEngineClassName);</span>
+<span class="fc" id="L414">                final ScriptingEngineFactory factory = (ScriptingEngineFactory) factoryClass.getDeclaredConstructor()</span>
+<span class="fc" id="L415">                        .newInstance();</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">                _scriptingEngine = factory.isEnabled() ? factory : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="fc" id="L417">                _scriptingEngine.setThrowExceptionsOnError(_exceptionsThrownOnScriptError);</span>
+<span class="nc" id="L418">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L419">                disableScripting(e, &quot;Unable to find scripting engine factory class &quot;);</span>
+<span class="nc" id="L420">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L421">                disableScripting(e, &quot;Unable to instantiate scripting engine factory class &quot;);</span>
+<span class="nc" id="L422">            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
                     | NoSuchMethodException | SecurityException e) {
-<span class="nc" id="L423">                disableScripting(e, &quot;Unable to create scripting engine factory class &quot;);</span>
-<span class="pc" id="L424">            }</span>
+<span class="nc" id="L424">                disableScripting(e, &quot;Unable to create scripting engine factory class &quot;);</span>
+<span class="pc" id="L425">            }</span>
         }
-<span class="fc" id="L426">        return _scriptingEngine;</span>
+<span class="fc" id="L427">        return _scriptingEngine;</span>
     }
 
     /**
@@ -432,14 +433,14 @@ import java.util.Vector;
      * @param scriptingEnabled
      */
     public static void setScriptingEnabled(boolean scriptingEnabled) {
-<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (scriptingEnabled != _scriptingEnabled) {</span>
-<span class="fc bfc" id="L436" title="All 2 branches covered.">            _scriptingEngine = scriptingEnabled ? null : NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">        if (scriptingEnabled != _scriptingEnabled) {</span>
+<span class="fc bfc" id="L437" title="All 2 branches covered.">            _scriptingEngine = scriptingEnabled ? null : NULL_SCRIPTING_ENGINE_FACTORY;</span>
         }
-<span class="fc" id="L438">        _scriptingEnabled = scriptingEnabled;</span>
-<span class="fc" id="L439">    }</span>
+<span class="fc" id="L439">        _scriptingEnabled = scriptingEnabled;</span>
+<span class="fc" id="L440">    }</span>
 
     public static boolean isScriptingEnabled() {
-<span class="fc" id="L442">        return _scriptingEnabled;</span>
+<span class="fc" id="L443">        return _scriptingEnabled;</span>
     }
 
     /**
@@ -448,17 +449,17 @@ import java.util.Vector;
      * @return the current state
      */
     public static boolean setExceptionsThrownOnScriptError(boolean throwExceptions) {
-<span class="fc" id="L451">        boolean current = _exceptionsThrownOnScriptError;</span>
-<span class="fc" id="L452">        _exceptionsThrownOnScriptError = throwExceptions;</span>
-<span class="fc" id="L453">        getScriptingEngine().setThrowExceptionsOnError(throwExceptions);</span>
-<span class="fc" id="L454">        return current;</span>
+<span class="fc" id="L452">        boolean current = _exceptionsThrownOnScriptError;</span>
+<span class="fc" id="L453">        _exceptionsThrownOnScriptError = throwExceptions;</span>
+<span class="fc" id="L454">        getScriptingEngine().setThrowExceptionsOnError(throwExceptions);</span>
+<span class="fc" id="L455">        return current;</span>
     }
 
     /**
      * Returns true if script errors cause exceptions to be thrown.
      */
     public static boolean getExceptionsThrownOnScriptError() {
-<span class="fc" id="L461">        return _exceptionsThrownOnScriptError;</span>
+<span class="fc" id="L462">        return _exceptionsThrownOnScriptError;</span>
     }
 
     /**
@@ -466,73 +467,73 @@ import java.util.Vector;
      * 'throwExceptionsOnError' is disabled.
      */
     public static String[] getScriptErrorMessages() {
-<span class="fc" id="L469">        return getScriptingEngine().getErrorMessages();</span>
+<span class="fc" id="L470">        return getScriptingEngine().getErrorMessages();</span>
     }
 
     /**
      * Clears the accumulated script error messages.
      */
     public static void clearScriptErrorMessages() {
-<span class="fc" id="L476">        getScriptingEngine().clearErrorMessages();</span>
-<span class="fc" id="L477">    }</span>
+<span class="fc" id="L477">        getScriptingEngine().clearErrorMessages();</span>
+<span class="fc" id="L478">    }</span>
 
     private static void disableScripting(Exception e, String errorMessage) {
-<span class="nc" id="L480">        System.err.println(errorMessage + _scriptEngineClassName);</span>
-<span class="nc" id="L481">        System.err.println(&quot;&quot; + e);</span>
-<span class="nc" id="L482">        System.err.println(&quot;JavaScript execution disabled&quot;);</span>
-<span class="nc" id="L483">        _scriptingEngine = NULL_SCRIPTING_ENGINE_FACTORY;</span>
-<span class="nc" id="L484">    }</span>
+<span class="nc" id="L481">        System.err.println(errorMessage + _scriptEngineClassName);</span>
+<span class="nc" id="L482">        System.err.println(&quot;&quot; + e);</span>
+<span class="nc" id="L483">        System.err.println(&quot;JavaScript execution disabled&quot;);</span>
+<span class="nc" id="L484">        _scriptingEngine = NULL_SCRIPTING_ENGINE_FACTORY;</span>
+<span class="nc" id="L485">    }</span>
 
     // --------------------------------- private members --------------------------------------
 
     private static final String DEFAULT_CONTENT_TYPE = &quot;text/html&quot;;
 
-<span class="fc" id="L490">    private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {</span>
+<span class="fc" id="L491">    private static final ScriptingEngineFactory NULL_SCRIPTING_ENGINE_FACTORY = new ScriptingEngineFactory() {</span>
         @Override
         public boolean isEnabled() {
-<span class="nc" id="L493">            return false;</span>
+<span class="nc" id="L494">            return false;</span>
         }
 
         @Override
         public void associate(WebResponse response) {
-<span class="fc" id="L498">        }</span>
+<span class="fc" id="L499">        }</span>
 
         @Override
         public void load(WebResponse response) {
-<span class="fc" id="L502">        }</span>
+<span class="fc" id="L503">        }</span>
 
         @Override
         public void setThrowExceptionsOnError(boolean throwExceptions) {
-<span class="nc" id="L506">        }</span>
+<span class="nc" id="L507">        }</span>
 
         @Override
         public boolean isThrowExceptionsOnError() {
-<span class="nc" id="L510">            return false;</span>
+<span class="nc" id="L511">            return false;</span>
         }
 
         @Override
         public String[] getErrorMessages() {
-<span class="nc" id="L515">            return new String[0];</span>
+<span class="nc" id="L516">            return new String[0];</span>
         }
 
         @Override
         public void clearErrorMessages() {
-<span class="nc" id="L520">        }</span>
+<span class="nc" id="L521">        }</span>
 
         @Override
         public ScriptingHandler createHandler(HTMLElement element) {
-<span class="fc" id="L524">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+<span class="fc" id="L525">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
         }
 
         @Override
         public ScriptingHandler createHandler(WebResponse response) {
-<span class="nc" id="L529">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
+<span class="nc" id="L530">            return ScriptableDelegate.NULL_SCRIPT_ENGINE;</span>
         }
 
         @Override
         public void handleScriptException(Exception e, String badScript) {
             // happily ignore and exception
-<span class="nc" id="L535">        }</span>
+<span class="nc" id="L536">        }</span>
     };
 
     /**
@@ -542,11 +543,11 @@ import java.util.Vector;
      */
     @Deprecated
     public static void addCustomAttribute(String attributeName) {
-<span class="pc bpc" id="L545" title="1 of 2 branches missed.">        if (_customAttributes == null) {</span>
-<span class="fc" id="L546">            _customAttributes = new HashSet();</span>
+<span class="pc bpc" id="L546" title="1 of 2 branches missed.">        if (_customAttributes == null) {</span>
+<span class="fc" id="L547">            _customAttributes = new HashSet&lt;&gt;();</span>
         }
-<span class="fc" id="L548">        _customAttributes.add(attributeName);</span>
-<span class="fc" id="L549">    }</span>
+<span class="fc" id="L549">        _customAttributes.add(attributeName);</span>
+<span class="fc" id="L550">    }</span>
 
     /**
      * Get the Set of custom attribute names to be supported by form controls.
@@ -555,47 +556,47 @@ import java.util.Vector;
      */
     @Deprecated
     static Set getCustomAttributes() {
-<span class="fc" id="L558">        return _customAttributes;</span>
+<span class="fc" id="L559">        return _customAttributes;</span>
     }
 
-<span class="fc" id="L561">    private static Set _customAttributes = null;</span>
+<span class="fc" id="L562">    private static Set _customAttributes = null;</span>
 
-<span class="fc" id="L563">    private static boolean _exceptionsOnErrorStatus = true;</span>
+<span class="fc" id="L564">    private static boolean _exceptionsOnErrorStatus = true;</span>
 
-<span class="fc" id="L565">    private static boolean _parameterValuesValidated = true;</span>
+<span class="fc" id="L566">    private static boolean _parameterValuesValidated = true;</span>
 
     private static boolean _imagesTreatedAsAltText;
 
     private static boolean _loggingHttpHeaders;
 
-<span class="fc" id="L571">    private static boolean _matchesIgnoreCase = true;</span>
+<span class="fc" id="L572">    private static boolean _matchesIgnoreCase = true;</span>
 
-<span class="fc" id="L573">    private static boolean _postIncludesCharset = false;</span>
+<span class="fc" id="L574">    private static boolean _postIncludesCharset = false;</span>
 
-<span class="fc" id="L575">    private static boolean _checkContentLength = false;</span>
+<span class="fc" id="L576">    private static boolean _checkContentLength = false;</span>
 
     private static int _redirectDelay;
 
-<span class="fc" id="L579">    private static String _characterSet = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+<span class="fc" id="L580">    private static String _characterSet = StandardCharsets.ISO_8859_1.name();</span>
 
-<span class="fc" id="L581">    private static String _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L582">    private static String _contentType = DEFAULT_CONTENT_TYPE;</span>
 
     private static String _scriptEngineClassName;
 
     private static ScriptingEngineFactory _scriptingEngine;
 
-<span class="fc" id="L587">    private static boolean _scriptingEnabled = true;</span>
+<span class="fc" id="L588">    private static boolean _scriptingEnabled = true;</span>
 
-<span class="fc" id="L589">    private static boolean _exceptionsThrownOnScriptError = true;</span>
+<span class="fc" id="L590">    private static boolean _exceptionsThrownOnScriptError = true;</span>
 
-<span class="fc" id="L591">    private static int _javaScriptOptimizationLevel = -1;</span>
+<span class="fc" id="L592">    private static int _javaScriptOptimizationLevel = -1;</span>
 
-<span class="fc" id="L593">    private static boolean _checkHtmlContentType = false;</span>
+<span class="fc" id="L594">    private static boolean _checkHtmlContentType = false;</span>
 
     static {
-<span class="fc" id="L596">        reset();</span>
+<span class="fc" id="L597">        reset();</span>
 
-<span class="fc" id="L598">    }</span>
+<span class="fc" id="L599">    }</span>
 
     /**
      * getter for Java Script optimization level
@@ -603,7 +604,7 @@ import java.util.Vector;
      * @return the javaScriptOptimizationLevel to be use for running scripts
      */
     public static int getJavaScriptOptimizationLevel() {
-<span class="fc" id="L606">        return _javaScriptOptimizationLevel;</span>
+<span class="fc" id="L607">        return _javaScriptOptimizationLevel;</span>
     }
 
     /**
@@ -615,7 +616,7 @@ import java.util.Vector;
      *            optimize *
      */
     public static void setJavaScriptOptimizationLevel(int scriptOptimizationLevel) {
-<span class="nc" id="L618">        _javaScriptOptimizationLevel = scriptOptimizationLevel;</span>
-<span class="nc" id="L619">    }</span>
+<span class="nc" id="L619">        _javaScriptOptimizationLevel = scriptOptimizationLevel;</span>
+<span class="nc" id="L620">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

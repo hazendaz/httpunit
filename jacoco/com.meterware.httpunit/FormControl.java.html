@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FormControl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">FormControl.java</span></div><h1>FormControl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  **/
 public abstract class FormControl extends HTMLElementBase {
 
-<span class="fc" id="L47">    final static String[] NO_VALUE = {};</span>
+<span class="fc" id="L47">    static final String[] NO_VALUE = {};</span>
 
     private final WebForm _form;
     private HTMLControl _control;
@@ -67,7 +67,7 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Return the type of the control, as seen from JavaScript.
      */
-    abstract public String getType();
+    public abstract String getType();
 
     static ScriptableDelegate newSelectionOption() {
 <span class="fc" id="L73">        return new SelectionFormControl.Option();</span>
@@ -116,7 +116,7 @@ public abstract class FormControl extends HTMLElementBase {
 <span class="fc" id="L116">        return getScriptingHandler();</span>
     }
 
-    final protected WebForm getForm() {
+    protected final WebForm getForm() {
 <span class="fc" id="L120">        return _form;</span>
     }
 
@@ -333,7 +333,7 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Removes the specified required value from the list of values, throwing an exception if it is missing.
      **/
-    final protected void claimValueIsRequired(List values, final String value) {
+    protected final void claimValueIsRequired(List values, final String value) {
 <span class="fc bfc" id="L337" title="All 2 branches covered.">        if (!values.contains(value)) {</span>
 <span class="fc" id="L338">            throw new MissingParameterValueException(getName(), value,</span>
 <span class="fc" id="L339">                    (String[]) values.toArray(new String[values.size()]));</span>
@@ -693,7 +693,7 @@ class CheckboxFormControl extends BooleanFormControl {
     @Override
     String getQueryValue() {
 <span class="fc" id="L695">        final String value = getValueAttribute();</span>
-<span class="fc bfc" id="L696" title="All 2 branches covered.">        return value.length() == 0 ? &quot;on&quot; : value;</span>
+<span class="fc bfc" id="L696" title="All 2 branches covered.">        return value.isEmpty() ? &quot;on&quot; : value;</span>
     }
 
     /**
@@ -1039,4 +1039,4 @@ class MissingParameterValueException extends IllegalRequestParameterException {
     private String _missingValue;
     private String[] _proposedValues;
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

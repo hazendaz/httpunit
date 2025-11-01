@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebWindow.java</span></div><h1>WebWindow.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -241,8 +241,8 @@ public class WebWindow {
      * Returns the name of the currently active frames.
      **/
     public String[] getFrameNames() {
-<span class="fc" id="L244">        final List names = _frameContents.getActiveFrameNames();</span>
-<span class="fc" id="L245">        return (String[]) names.toArray(new String[names.size()]);</span>
+<span class="fc" id="L244">        final List&lt;String&gt; names = _frameContents.getActiveFrameNames();</span>
+<span class="fc" id="L245">        return names.toArray(new String[names.size()]);</span>
     }
 
     /**
@@ -301,7 +301,7 @@ public class WebWindow {
 <span class="fc" id="L301">        _client = client;</span>
 <span class="fc" id="L302">        _frameContents = new FrameHolder(this);</span>
 <span class="fc" id="L303">        _name = NO_NAME + _client.getOpenWindows().length;</span>
-<span class="fc" id="L304">        _redirects = new Hashtable();</span>
+<span class="fc" id="L304">        _redirects = new Hashtable&lt;&gt;();</span>
 <span class="fc" id="L305">    }</span>
 
     WebWindow(WebClient client, WebResponse opener) {
@@ -329,8 +329,9 @@ public class WebWindow {
 <span class="nc" id="L329">            Thread.sleep(numMilliseconds);</span>
 <span class="nc" id="L330">        } catch (InterruptedException e) {</span>
             // ignore the exception
-<span class="nc" id="L332">        }</span>
-<span class="nc" id="L333">    }</span>
+<span class="nc" id="L332">            Thread.interrupted();</span>
+<span class="nc" id="L333">        }</span>
+<span class="nc" id="L334">    }</span>
 
     /**
      * check whether redirect is configured
@@ -340,10 +341,10 @@ public class WebWindow {
      * @return
      */
     private boolean redirectConfigured(WebResponse response) {
-<span class="fc" id="L343">        boolean isAutoredirect = getClient().getClientProperties().isAutoRedirect();</span>
-<span class="fc bfc" id="L344" title="All 2 branches covered.">        boolean hasLocation = response.getHeaderField(&quot;Location&quot;) != null;</span>
-<span class="fc" id="L345">        int responseCode = response.getResponseCode();</span>
-<span class="pc bpc" id="L346" title="1 of 8 branches missed.">        return isAutoredirect &amp;&amp; responseCode &gt;= HttpURLConnection.HTTP_MOVED_PERM</span>
+<span class="fc" id="L344">        boolean isAutoredirect = getClient().getClientProperties().isAutoRedirect();</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        boolean hasLocation = response.getHeaderField(&quot;Location&quot;) != null;</span>
+<span class="fc" id="L346">        int responseCode = response.getResponseCode();</span>
+<span class="pc bpc" id="L347" title="1 of 8 branches missed.">        return isAutoredirect &amp;&amp; responseCode &gt;= HttpURLConnection.HTTP_MOVED_PERM</span>
                 &amp;&amp; responseCode &lt;= HttpURLConnection.HTTP_MOVED_TEMP &amp;&amp; hasLocation;
     }
 
@@ -358,60 +359,60 @@ public class WebWindow {
         // first check whether redirect is configured for this response
         // this is the old pre [ 1155415 ] Handle redirect instructions which can lead to a loop
         // shouldFollowRedirect method - just renamed
-<span class="fc bfc" id="L361" title="All 2 branches covered.">        if (!redirectConfigured(response)) {</span>
-<span class="fc" id="L362">            return false;</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (!redirectConfigured(response)) {</span>
+<span class="fc" id="L363">            return false;</span>
         }
         // now do the recursion check
-<span class="fc" id="L365">        String redirectLocation = response.getHeaderField(&quot;Location&quot;);</span>
+<span class="fc" id="L366">        String redirectLocation = response.getHeaderField(&quot;Location&quot;);</span>
 
-<span class="fc" id="L367">        URL url = null;</span>
+<span class="fc" id="L368">        URL url = null;</span>
 
         try {
-<span class="pc bpc" id="L370" title="1 of 2 branches missed.">            if (redirectLocation != null) {</span>
-<span class="fc" id="L371">                url = new URL(response.getURL(), redirectLocation);</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">            if (redirectLocation != null) {</span>
+<span class="fc" id="L372">                url = new URL(response.getURL(), redirectLocation);</span>
             }
-<span class="fc" id="L373">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L374">        } catch (MalformedURLException e) {</span>
             // Fall through and allow existing exception handling code deal
             // with any exception - we don't know at this stage whether it is
             // a redirect instruction, although it is highly likely, given
             // there is a location header present in the response!
-<span class="fc" id="L378">        }</span>
+<span class="fc" id="L379">        }</span>
 
-<span class="pc bpc" id="L380" title="1 of 2 branches missed.">        switch (response.getResponseCode()) {</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">        switch (response.getResponseCode()) {</span>
             case HttpURLConnection.HTTP_MOVED_PERM:
             case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
-<span class="fc" id="L383">                int count = 0;</span>
-<span class="fc bfc" id="L384" title="All 2 branches covered.">                if (null != url) {</span>
-<span class="fc" id="L385">                    Integer value = (Integer) _redirects.get(url);</span>
-<span class="fc bfc" id="L386" title="All 2 branches covered.">                    if (null != value) {</span>
+<span class="fc" id="L384">                int count = 0;</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">                if (null != url) {</span>
+<span class="fc" id="L386">                    Integer value = (Integer) _redirects.get(url);</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">                    if (null != value) {</span>
                         // We have already been instructed to redirect to that
                         // location in the course of this attempt to resolve the
                         // resource
 
-<span class="fc" id="L391">                        count = value.intValue();</span>
+<span class="fc" id="L392">                        count = value.intValue();</span>
 
-<span class="fc" id="L393">                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
+<span class="fc" id="L394">                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
 
-<span class="fc bfc" id="L395" title="All 2 branches covered.">                        if (count == maxRedirects) {</span>
-<span class="fc" id="L396">                            throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
+<span class="fc bfc" id="L396" title="All 2 branches covered.">                        if (count == maxRedirects) {</span>
+<span class="fc" id="L397">                            throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
                         }
                     }
 
-<span class="fc" id="L400">                    count++;</span>
-<span class="fc" id="L401">                    _redirects.put(url, Integer.valueOf(count));</span>
+<span class="fc" id="L401">                    count++;</span>
+<span class="fc" id="L402">                    _redirects.put(url, Integer.valueOf(count));</span>
                 }
                 break;
         }
-<span class="pc bpc" id="L405" title="1 of 2 branches missed.">        return redirectLocation != null;</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">        return redirectLocation != null;</span>
     }
 
     FrameSelector getTopFrame() {
-<span class="fc" id="L409">        return _frameContents.getTopFrame();</span>
+<span class="fc" id="L410">        return _frameContents.getTopFrame();</span>
     }
 
     FrameSelector getFrame(String target) {
-<span class="fc" id="L413">        return _frameContents.getFrame(target);</span>
+<span class="fc" id="L414">        return _frameContents.getFrame(target);</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

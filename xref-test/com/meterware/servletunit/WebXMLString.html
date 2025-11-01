@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -28,287 +28,286 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">package</strong> com.meterware.servletunit;
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.io.UnsupportedEncodingException;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.Hashtable;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * A class which allows dynamic creation of Servlet configuration XML</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:russgold@httpunit.org" target="alexandria_uri">mailto:russgold@httpunit.org</a>"&gt;Russell Gold&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">class</strong> <a name="WebXMLString" href="../../../com/meterware/servletunit/WebXMLString.html#WebXMLString">WebXMLString</a> {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> String _displayName;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> ArrayList _servlets = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> ArrayList _mappings = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> ArrayList _servletNames = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> Hashtable _initParams = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> ArrayList _listeners = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> ArrayList _filters = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">private</strong> Hashtable _filterMappings = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">private</strong> ArrayList _filterNames = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">private</strong> Hashtable _filterParams = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> String _loginConfig = <span class="jxr_string">""</span>;
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> Hashtable _resources = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">private</strong> Hashtable _contextParams = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">private</strong> Hashtable _loadOnStartup = <strong class="jxr_keyword">new</strong> Hashtable();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      ByteArrayInputStream asInputStream() <strong class="jxr_keyword">throws</strong> UnsupportedEncodingException {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <em class="jxr_comment">// the stream for testing the dtd file</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> URL dtdStream = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <em class="jxr_comment">// Document type definition to be used - should be one of the dtds available in META-INF</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String dtd = <span class="jxr_string">"javax/servlet/resources/web-app_2_3.dtd"</span>;
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment">     * check that the dtd is on the CLASSPATH</em>
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isDtdOnClasspath() {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">if</strong> (dtdStream == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>              dtdStream = WebXMLString.<strong class="jxr_keyword">class</strong>.getClassLoader().getResource(dtd);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          }
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">return</strong> dtdStream != <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>  
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     * return me as a Text/String containing the XML descriptor according to the Sun Microsystems's specification if</em>
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * running on Eclipse shorten the DOCTYPE specification as a work-around for a bogus java.net.MalformedURLException</em>
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     * (that is in fact caused by a null-pointer exception in handling the dtd part)</em>
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      String asText() {
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder(<span class="jxr_string">"&lt;?xml version='1.0' encoding='UTF-8'?&gt;\n"</span>);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          String doctype = <span class="jxr_string">"&lt;!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/"</span>
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>                  + dtd + <span class="jxr_string">"'&gt;"</span>;
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <em class="jxr_comment">// if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <em class="jxr_comment">// work - around if dtd is not in CLASSPATH so that only the one test case</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <em class="jxr_comment">// that checks the isDtdOnClassPath condition will fail</em>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">if</strong> (!isDtdOnClasspath()) {
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>              doctype = <span class="jxr_string">"&lt;!DOCTYPE web-app&gt;"</span>;
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          }
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          result.append(doctype);
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          result.append(<span class="jxr_string">"&lt;web-app&gt;\n"</span>);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <em class="jxr_comment">// result.append( "&lt;web-app version='2.4' xmlns='http://java.sun.com/xml/ns/j2ee'\n " );</em>
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <em class="jxr_comment">// result.append( " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" );</em>
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>         <em class="jxr_comment">// result.append( " xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee</em>
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <em class="jxr_comment">// http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'&gt;\n" );</em>
-<a class="jxr_linenumber" name="L104" href="#L104">104</a> 
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         <strong class="jxr_keyword">if</strong> (_displayName != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>             result.append(<span class="jxr_string">"  &lt;display-name&gt;"</span>).append(_displayName).append(<span class="jxr_string">"&lt;/display-name&gt;"</span>);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         }
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _contextParams.entrySet().iterator(); i.hasNext();) {
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             Map.Entry entry = (Map.Entry) i.next();
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>             result.append(<span class="jxr_string">"  &lt;context-param&gt;\n    &lt;param-name&gt;"</span>).append(entry.getKey());
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n    &lt;param-value&gt;"</span>).append(entry.getValue())
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n  &lt;/context-param&gt;\n"</span>);
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>             Object name = _filterNames.get(i);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>             result.append(<span class="jxr_string">"  &lt;filter&gt;\n    &lt;filter-name&gt;"</span>).append(name).append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>             result.append(<span class="jxr_string">"    &lt;filter-class&gt;"</span>).append(((Class) _filters.get(i)).getName()).append(<span class="jxr_string">"&lt;/filter-class&gt;\n"</span>);
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             appendParams(result, <span class="jxr_string">"init-param"</span>, (Hashtable) _filterParams.get(name));
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>             result.append(<span class="jxr_string">"  &lt;/filter&gt;\n"</span>);
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         }
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>             result.append(<span class="jxr_string">"  &lt;filter-mapping&gt;\n    &lt;filter-name&gt;"</span>).append(_filterNames.get(i))
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>                     .append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             result.append(<span class="jxr_string">"    "</span>).append(_filterMappings.get(_filterNames.get(i))).append(<span class="jxr_string">"\n  &lt;/filter-mapping&gt;\n"</span>);
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         }
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">for</strong> (Object _listener : _listeners) {
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>             Class aClass = (Class) _listener;
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>             result.append(<span class="jxr_string">"  &lt;listener&gt;&lt;listener-class&gt;"</span>).append(aClass.getName());
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             result.append(<span class="jxr_string">"&lt;/listener-class&gt;&lt;/listener&gt;\n"</span>);
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         }
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = _servlets.size() - 1; i &gt;= 0; i--) {
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             Object name = _servletNames.get(i);
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>             result.append(<span class="jxr_string">"  &lt;servlet&gt;\n    &lt;servlet-name&gt;"</span>).append(name).append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             result.append(<span class="jxr_string">"    &lt;servlet-class&gt;"</span>).append(((Class) _servlets.get(i)).getName())
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>                     .append(<span class="jxr_string">"&lt;/servlet-class&gt;\n"</span>);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>             appendParams(result, <span class="jxr_string">"init-param"</span>, (Hashtable) _initParams.get(name));
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             appendLoadOnStartup(result, _loadOnStartup.get(name));
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             result.append(<span class="jxr_string">"  &lt;/servlet&gt;\n"</span>);
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         }
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = _mappings.size() - 1; i &gt;= 0; i--) {
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>             result.append(<span class="jxr_string">"  &lt;servlet-mapping&gt;\n    &lt;servlet-name&gt;"</span>).append(_servletNames.get(i))
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>                     .append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             result.append(<span class="jxr_string">"    &lt;url-pattern&gt;"</span>).append(_mappings.get(i))
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>                     .append(<span class="jxr_string">"&lt;/url-pattern&gt;\n  &lt;/servlet-mapping&gt;\n"</span>);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         }
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">for</strong> (Enumeration e = _resources.elements(); e.hasMoreElements();) {
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             result.append(((<a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>) e.nextElement()).asText());
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         }
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         result.append(_loginConfig);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         result.append(<span class="jxr_string">"&lt;/web-app&gt;"</span>);
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">return</strong> result.toString();
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>     }
-<a class="jxr_linenumber" name="L153" href="#L153">153</a> 
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendLoadOnStartup(StringBuilder result, Object startupOrder) {
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">if</strong> (startupOrder == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         }
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>         result.append(<span class="jxr_string">"    &lt;load-on-startup"</span>);
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">if</strong> (startupOrder instanceof Number) {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>             result.append(<span class="jxr_string">"&gt;"</span>).append(startupOrder).append(<span class="jxr_string">"&lt;/load-on-startup&gt;\n"</span>);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>             result.append(<span class="jxr_string">"/&gt;\n"</span>);
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         }
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>     }
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> 
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendParams(StringBuilder result, String tagName, Hashtable params) {
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">if</strong> (params == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>             <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>         }
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">for</strong> (Iterator it = params.entrySet().iterator(); it.hasNext();) {
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>             Map.Entry entry = (Map.Entry) it.next();
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             result.append(<span class="jxr_string">"    &lt;"</span>).append(tagName).append(<span class="jxr_string">"&gt;\n      &lt;param-name&gt;"</span>).append(entry.getKey());
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n      &lt;param-value&gt;"</span>).append(entry.getValue())
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n    &lt;/"</span>);
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>             result.append(tagName).append(<span class="jxr_string">"&gt;\n"</span>);
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         }
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     }
-<a class="jxr_linenumber" name="L178" href="#L178">178</a> 
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">void</strong> addContextParam(String name, String value) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         _contextParams.put(name, value);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>     }
-<a class="jxr_linenumber" name="L182" href="#L182">182</a> 
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">void</strong> addServlet(String urlPattern, Class servletClass) {
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>         addServlet(<span class="jxr_string">"servlet_"</span> + _servlets.size(), urlPattern, servletClass);
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     }
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> 
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> addServlet(String name, String urlPattern, Class servletClass) {
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         _servlets.add(servletClass);
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         _mappings.add(urlPattern);
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         _servletNames.add(name);
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>     }
-<a class="jxr_linenumber" name="L192" href="#L192">192</a> 
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     <strong class="jxr_keyword">void</strong> addServlet(String name, String urlPattern, Class servletClass, Properties initParams) {
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         _initParams.put(name, initParams);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         addServlet(name, urlPattern, servletClass);
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     }
-<a class="jxr_linenumber" name="L197" href="#L197">197</a> 
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">void</strong> setLoadOnStartup(String servletName) {
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         _loadOnStartup.put(servletName, Boolean.TRUE);
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>     }
-<a class="jxr_linenumber" name="L201" href="#L201">201</a> 
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>     <strong class="jxr_keyword">void</strong> setLoadOnStartup(String servletName, <strong class="jxr_keyword">int</strong> i) {
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         _loadOnStartup.put(servletName, Integer.valueOf(i));
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> 
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>     <strong class="jxr_keyword">void</strong> addFilterForServlet(String name, Class filterClass, String servletName, Properties initParams) {
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         _filterParams.put(name, initParams);
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         addFilterForServlet(name, filterClass, servletName);
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>     }
-<a class="jxr_linenumber" name="L210" href="#L210">210</a> 
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>     <strong class="jxr_keyword">void</strong> addFilterForServlet(String name, Class filterClass, String servletName) {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         addFilter(filterClass, name, <span class="jxr_string">"&lt;servlet-name&gt;"</span> + servletName + <span class="jxr_string">"&lt;/servlet-name&gt;"</span>);
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>     }
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> 
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>     <strong class="jxr_keyword">void</strong> addFilterForUrl(String name, Class filterClass, String urlPattern) {
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         addFilter(filterClass, name, <span class="jxr_string">"&lt;url-pattern&gt;"</span> + urlPattern + <span class="jxr_string">"&lt;/url-pattern&gt;"</span>);
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>     }
-<a class="jxr_linenumber" name="L218" href="#L218">218</a> 
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addFilter(Class filterClass, String name, String mapping) {
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         _filters.add(filterClass);
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         _filterNames.add(name);
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         _filterMappings.put(name, mapping);
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
-<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">void</strong> requireBasicAuthorization(String realmName) {
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>     }
-<a class="jxr_linenumber" name="L229" href="#L229">229</a> 
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     <strong class="jxr_keyword">void</strong> requireBasicAuthentication(String realmName) {
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>     }
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> 
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>     <strong class="jxr_keyword">void</strong> requireFormAuthentication(String realmName, String loginPagePath, String errorPagePath) {
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;FORM&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"    &lt;form-login-config&gt;"</span> + <span class="jxr_string">"      &lt;form-login-page&gt;"</span> + loginPagePath
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>                 + <span class="jxr_string">"&lt;/form-login-page&gt;\n"</span> + <span class="jxr_string">"      &lt;form-error-page&gt;"</span> + errorPagePath + <span class="jxr_string">"&lt;/form-error-page&gt;\n"</span>
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                 + <span class="jxr_string">"    &lt;/form-login-config&gt;"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>     }
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> 
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>     <strong class="jxr_keyword">void</strong> addSecureURL(String resourceName, String urlPattern) {
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>         getWebResource(resourceName).addURLPattern(urlPattern);
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>     }
-<a class="jxr_linenumber" name="L245" href="#L245">245</a> 
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>     <strong class="jxr_keyword">void</strong> addAuthorizedRole(String resourceName, String roleName) {
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         getWebResource(resourceName).addAuthorizedRole(roleName);
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>     }
-<a class="jxr_linenumber" name="L249" href="#L249">249</a> 
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>     <strong class="jxr_keyword">void</strong> addContextListener(Class aClass) {
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         _listeners.add(aClass);
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>     }
-<a class="jxr_linenumber" name="L253" href="#L253">253</a> 
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">private</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> getWebResource(String resourceName) {
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> result = (<a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>) _resources.get(resourceName);
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <strong class="jxr_keyword">if</strong> (result == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>             result = <strong class="jxr_keyword">new</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>(resourceName);
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>             _resources.put(resourceName, result);
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         }
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>     }
-<a class="jxr_linenumber" name="L262" href="#L262">262</a> 
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>     <strong class="jxr_keyword">void</strong> setDisplayName(String displayName) {
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         _displayName = displayName;
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>     }
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> }
-<a class="jxr_linenumber" name="L267" href="#L267">267</a> 
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> <strong class="jxr_keyword">class</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> {
-<a class="jxr_linenumber" name="L269" href="#L269">269</a> 
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>     <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>(String name) {
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         _name = name;
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>     }
-<a class="jxr_linenumber" name="L273" href="#L273">273</a> 
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>     <strong class="jxr_keyword">void</strong> addURLPattern(String urlPattern) {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         _urls.add(urlPattern);
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>     }
-<a class="jxr_linenumber" name="L277" href="#L277">277</a> 
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">void</strong> addAuthorizedRole(String roleName) {
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         _roles.add(roleName);
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>     }
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>     String asText() {
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         sb.append(<span class="jxr_string">"  &lt;security-constraint&gt;\n"</span>);
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         sb.append(<span class="jxr_string">"    &lt;web-resource-collection&gt;\n"</span>);
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         sb.append(<span class="jxr_string">"      &lt;web-resource-name&gt;"</span>).append(_name).append(<span class="jxr_string">"&lt;/web-resource-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _urls.iterator(); i.hasNext();) {
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>             sb.append(<span class="jxr_string">"      &lt;url-pattern&gt;"</span>).append(i.next()).append(<span class="jxr_string">"&lt;/url-pattern&gt;\n"</span>);
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>         }
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         sb.append(<span class="jxr_string">"    &lt;/web-resource-collection&gt;\n"</span>);
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>         sb.append(<span class="jxr_string">"    &lt;auth-constraint&gt;\n"</span>);
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _roles.iterator(); i.hasNext();) {
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>             sb.append(<span class="jxr_string">"      &lt;role-name&gt;"</span>).append(i.next()).append(<span class="jxr_string">"&lt;/role-name&gt;\n"</span>);
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>         }
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         sb.append(<span class="jxr_string">"    &lt;/auth-constraint&gt;\n"</span>);
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         sb.append(<span class="jxr_string">"  &lt;/security-constraint&gt;\n"</span>);
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">return</strong> sb.toString();
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>     }
-<a class="jxr_linenumber" name="L299" href="#L299">299</a> 
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <strong class="jxr_keyword">private</strong> String _name;
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>     <strong class="jxr_keyword">private</strong> ArrayList _urls = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>     <strong class="jxr_keyword">private</strong> ArrayList _roles = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="L303" href="#L303">303</a> }
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.Hashtable;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * A class which allows dynamic creation of Servlet configuration XML</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:russgold@httpunit.org" target="alexandria_uri">mailto:russgold@httpunit.org</a>"&gt;Russell Gold&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">class</strong> <a name="WebXMLString" href="../../../com/meterware/servletunit/WebXMLString.html#WebXMLString">WebXMLString</a> {
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> String _displayName;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> ArrayList _servlets = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">private</strong> ArrayList _mappings = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> ArrayList _servletNames = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> Hashtable _initParams = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> ArrayList _listeners = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> ArrayList _filters = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> Hashtable _filterMappings = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">private</strong> ArrayList _filterNames = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">private</strong> Hashtable _filterParams = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">private</strong> String _loginConfig = <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> Hashtable _resources = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> Hashtable _contextParams = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">private</strong> Hashtable _loadOnStartup = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      ByteArrayInputStream asInputStream() {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <em class="jxr_comment">// the stream for testing the dtd file</em>
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> URL dtdStream = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <em class="jxr_comment">// Document type definition to be used - should be one of the dtds available in META-INF</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String dtd = <span class="jxr_string">"javax/servlet/resources/web-app_2_3.dtd"</span>;
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">     * check that the dtd is on the CLASSPATH</em>
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     * @return</em>
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> isDtdOnClasspath() {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">if</strong> (dtdStream == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>              dtdStream = WebXMLString.<strong class="jxr_keyword">class</strong>.getClassLoader().getResource(dtd);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          }
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">return</strong> dtdStream != <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     * return me as a Text/String containing the XML descriptor according to the Sun Microsystems's specification if</em>
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     * running on Eclipse shorten the DOCTYPE specification as a work-around for a bogus java.net.MalformedURLException</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * (that is in fact caused by a null-pointer exception in handling the dtd part)</em>
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     * @return</em>
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      String asText() {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          StringBuilder result = <strong class="jxr_keyword">new</strong> StringBuilder(<span class="jxr_string">"&lt;?xml version='1.0' encoding='UTF-8'?&gt;\n"</span>);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          String doctype = <span class="jxr_string">"&lt;!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/"</span>
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>                  + dtd + <span class="jxr_string">"'&gt;"</span>;
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <em class="jxr_comment">// if the dtd file is not on the CLASSPATH there will be nasty java.net.MalformedURLException problems</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <em class="jxr_comment">// work - around if dtd is not in CLASSPATH so that only the one test case</em>
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          <em class="jxr_comment">// that checks the isDtdOnClassPath condition will fail</em>
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">if</strong> (!isDtdOnClasspath()) {
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>              doctype = <span class="jxr_string">"&lt;!DOCTYPE web-app&gt;"</span>;
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          }
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          result.append(doctype);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          result.append(<span class="jxr_string">"&lt;web-app&gt;\n"</span>);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <em class="jxr_comment">// result.append( "&lt;web-app version='2.4' xmlns='http://java.sun.com/xml/ns/j2ee'\n " );</em>
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <em class="jxr_comment">// result.append( " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" );</em>
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <em class="jxr_comment">// result.append( " xsi:schemaLocation='http://java.sun.com/xml/ns/j2ee</em>
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         <em class="jxr_comment">// http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd'&gt;\n" );</em>
+<a class="jxr_linenumber" name="L103" href="#L103">103</a> 
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">if</strong> (_displayName != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             result.append(<span class="jxr_string">"  &lt;display-name&gt;"</span>).append(_displayName).append(<span class="jxr_string">"&lt;/display-name&gt;"</span>);
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         }
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _contextParams.entrySet().iterator(); i.hasNext();) {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             Map.Entry entry = (Map.Entry) i.next();
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             result.append(<span class="jxr_string">"  &lt;context-param&gt;\n    &lt;param-name&gt;"</span>).append(entry.getKey());
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n    &lt;param-value&gt;"</span>).append(entry.getValue())
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n  &lt;/context-param&gt;\n"</span>);
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         }
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             Object name = _filterNames.get(i);
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>             result.append(<span class="jxr_string">"  &lt;filter&gt;\n    &lt;filter-name&gt;"</span>).append(name).append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             result.append(<span class="jxr_string">"    &lt;filter-class&gt;"</span>).append(((Class) _filters.get(i)).getName()).append(<span class="jxr_string">"&lt;/filter-class&gt;\n"</span>);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             appendParams(result, <span class="jxr_string">"init-param"</span>, (Hashtable) _filterParams.get(name));
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>             result.append(<span class="jxr_string">"  &lt;/filter&gt;\n"</span>);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         }
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; _filters.size(); i++) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             result.append(<span class="jxr_string">"  &lt;filter-mapping&gt;\n    &lt;filter-name&gt;"</span>).append(_filterNames.get(i))
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>                     .append(<span class="jxr_string">"&lt;/filter-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             result.append(<span class="jxr_string">"    "</span>).append(_filterMappings.get(_filterNames.get(i))).append(<span class="jxr_string">"\n  &lt;/filter-mapping&gt;\n"</span>);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         }
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">for</strong> (Object _listener : _listeners) {
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             Class aClass = (Class) _listener;
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             result.append(<span class="jxr_string">"  &lt;listener&gt;&lt;listener-class&gt;"</span>).append(aClass.getName());
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>             result.append(<span class="jxr_string">"&lt;/listener-class&gt;&lt;/listener&gt;\n"</span>);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         }
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = _servlets.size() - 1; i &gt;= 0; i--) {
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             Object name = _servletNames.get(i);
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>             result.append(<span class="jxr_string">"  &lt;servlet&gt;\n    &lt;servlet-name&gt;"</span>).append(name).append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>             result.append(<span class="jxr_string">"    &lt;servlet-class&gt;"</span>).append(((Class) _servlets.get(i)).getName())
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>                     .append(<span class="jxr_string">"&lt;/servlet-class&gt;\n"</span>);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             appendParams(result, <span class="jxr_string">"init-param"</span>, (Hashtable) _initParams.get(name));
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             appendLoadOnStartup(result, _loadOnStartup.get(name));
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             result.append(<span class="jxr_string">"  &lt;/servlet&gt;\n"</span>);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = _mappings.size() - 1; i &gt;= 0; i--) {
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             result.append(<span class="jxr_string">"  &lt;servlet-mapping&gt;\n    &lt;servlet-name&gt;"</span>).append(_servletNames.get(i))
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>                     .append(<span class="jxr_string">"&lt;/servlet-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             result.append(<span class="jxr_string">"    &lt;url-pattern&gt;"</span>).append(_mappings.get(i))
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>                     .append(<span class="jxr_string">"&lt;/url-pattern&gt;\n  &lt;/servlet-mapping&gt;\n"</span>);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         }
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">for</strong> (Enumeration e = _resources.elements(); e.hasMoreElements();) {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>             result.append(((<a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>) e.nextElement()).asText());
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>         }
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         result.append(_loginConfig);
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         result.append(<span class="jxr_string">"&lt;/web-app&gt;"</span>);
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         <strong class="jxr_keyword">return</strong> result.toString();
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     }
+<a class="jxr_linenumber" name="L152" href="#L152">152</a> 
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendLoadOnStartup(StringBuilder result, Object startupOrder) {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         <strong class="jxr_keyword">if</strong> (startupOrder == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         }
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         result.append(<span class="jxr_string">"    &lt;load-on-startup"</span>);
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">if</strong> (startupOrder instanceof Number) {
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>             result.append(<span class="jxr_string">"&gt;"</span>).append(startupOrder).append(<span class="jxr_string">"&lt;/load-on-startup&gt;\n"</span>);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>             result.append(<span class="jxr_string">"/&gt;\n"</span>);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         }
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     }
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> 
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> appendParams(StringBuilder result, String tagName, Hashtable params) {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <strong class="jxr_keyword">if</strong> (params == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         }
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">for</strong> (Iterator it = params.entrySet().iterator(); it.hasNext();) {
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             Map.Entry entry = (Map.Entry) it.next();
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             result.append(<span class="jxr_string">"    &lt;"</span>).append(tagName).append(<span class="jxr_string">"&gt;\n      &lt;param-name&gt;"</span>).append(entry.getKey());
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>             result.append(<span class="jxr_string">"&lt;/param-name&gt;\n      &lt;param-value&gt;"</span>).append(entry.getValue())
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>                     .append(<span class="jxr_string">"&lt;/param-value&gt;\n    &lt;/"</span>);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>             result.append(tagName).append(<span class="jxr_string">"&gt;\n"</span>);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         }
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     }
+<a class="jxr_linenumber" name="L177" href="#L177">177</a> 
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>     <strong class="jxr_keyword">void</strong> addContextParam(String name, String value) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         _contextParams.put(name, value);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>     }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a> 
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">void</strong> addServlet(String urlPattern, Class servletClass) {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         addServlet(<span class="jxr_string">"servlet_"</span> + _servlets.size(), urlPattern, servletClass);
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a> 
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <strong class="jxr_keyword">void</strong> addServlet(String name, String urlPattern, Class servletClass) {
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         _servlets.add(servletClass);
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>         _mappings.add(urlPattern);
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         _servletNames.add(name);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     }
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> 
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">void</strong> addServlet(String name, String urlPattern, Class servletClass, Properties initParams) {
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         _initParams.put(name, initParams);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         addServlet(name, urlPattern, servletClass);
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>     }
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">void</strong> setLoadOnStartup(String servletName) {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         _loadOnStartup.put(servletName, Boolean.TRUE);
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     }
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> 
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">void</strong> setLoadOnStartup(String servletName, <strong class="jxr_keyword">int</strong> i) {
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         _loadOnStartup.put(servletName, Integer.valueOf(i));
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> 
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>     <strong class="jxr_keyword">void</strong> addFilterForServlet(String name, Class filterClass, String servletName, Properties initParams) {
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         _filterParams.put(name, initParams);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         addFilterForServlet(name, filterClass, servletName);
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>     }
+<a class="jxr_linenumber" name="L209" href="#L209">209</a> 
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <strong class="jxr_keyword">void</strong> addFilterForServlet(String name, Class filterClass, String servletName) {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         addFilter(filterClass, name, <span class="jxr_string">"&lt;servlet-name&gt;"</span> + servletName + <span class="jxr_string">"&lt;/servlet-name&gt;"</span>);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> 
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">void</strong> addFilterForUrl(String name, Class filterClass, String urlPattern) {
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         addFilter(filterClass, name, <span class="jxr_string">"&lt;url-pattern&gt;"</span> + urlPattern + <span class="jxr_string">"&lt;/url-pattern&gt;"</span>);
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     }
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> 
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addFilter(Class filterClass, String name, String mapping) {
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         _filters.add(filterClass);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         _filterNames.add(name);
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         _filterMappings.put(name, mapping);
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>     }
+<a class="jxr_linenumber" name="L223" href="#L223">223</a> 
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>     <strong class="jxr_keyword">void</strong> requireBasicAuthorization(String realmName) {
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>     }
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> 
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>     <strong class="jxr_keyword">void</strong> requireBasicAuthentication(String realmName) {
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     }
+<a class="jxr_linenumber" name="L233" href="#L233">233</a> 
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     <strong class="jxr_keyword">void</strong> requireFormAuthentication(String realmName, String loginPagePath, String errorPagePath) {
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         _loginConfig = <span class="jxr_string">"  &lt;login-config&gt;\n"</span> + <span class="jxr_string">"    &lt;auth-method&gt;FORM&lt;/auth-method&gt;\n"</span> + <span class="jxr_string">"    &lt;realm-name&gt;"</span> + realmName
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>                 + <span class="jxr_string">"&lt;/realm-name&gt;\n"</span> + <span class="jxr_string">"    &lt;form-login-config&gt;"</span> + <span class="jxr_string">"      &lt;form-login-page&gt;"</span> + loginPagePath
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>                 + <span class="jxr_string">"&lt;/form-login-page&gt;\n"</span> + <span class="jxr_string">"      &lt;form-error-page&gt;"</span> + errorPagePath + <span class="jxr_string">"&lt;/form-error-page&gt;\n"</span>
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>                 + <span class="jxr_string">"    &lt;/form-login-config&gt;"</span> + <span class="jxr_string">"  &lt;/login-config&gt;\n"</span>;
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>     }
+<a class="jxr_linenumber" name="L240" href="#L240">240</a> 
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">void</strong> addSecureURL(String resourceName, String urlPattern) {
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>         getWebResource(resourceName).addURLPattern(urlPattern);
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>     }
+<a class="jxr_linenumber" name="L244" href="#L244">244</a> 
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">void</strong> addAuthorizedRole(String resourceName, String roleName) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         getWebResource(resourceName).addAuthorizedRole(roleName);
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>     }
+<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <strong class="jxr_keyword">void</strong> addContextListener(Class aClass) {
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>         _listeners.add(aClass);
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>     }
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> 
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>     <strong class="jxr_keyword">private</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> getWebResource(String resourceName) {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> result = (<a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>) _resources.get(resourceName);
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">if</strong> (result == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             result = <strong class="jxr_keyword">new</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>(resourceName);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             _resources.put(resourceName, result);
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         }
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>     }
+<a class="jxr_linenumber" name="L261" href="#L261">261</a> 
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">void</strong> setDisplayName(String displayName) {
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>         _displayName = displayName;
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     }
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> }
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> 
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> <strong class="jxr_keyword">class</strong> <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a> {
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> 
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>     <a name="WebResourceSpec" href="../../../com/meterware/servletunit/WebXMLString.html#WebResourceSpec">WebResourceSpec</a>(String name) {
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         _name = name;
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>     }
+<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>     <strong class="jxr_keyword">void</strong> addURLPattern(String urlPattern) {
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         _urls.add(urlPattern);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     }
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> 
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <strong class="jxr_keyword">void</strong> addAuthorizedRole(String roleName) {
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>         _roles.add(roleName);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     }
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>     String asText() {
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         sb.append(<span class="jxr_string">"  &lt;security-constraint&gt;\n"</span>);
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         sb.append(<span class="jxr_string">"    &lt;web-resource-collection&gt;\n"</span>);
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         sb.append(<span class="jxr_string">"      &lt;web-resource-name&gt;"</span>).append(_name).append(<span class="jxr_string">"&lt;/web-resource-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _urls.iterator(); i.hasNext();) {
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             sb.append(<span class="jxr_string">"      &lt;url-pattern&gt;"</span>).append(i.next()).append(<span class="jxr_string">"&lt;/url-pattern&gt;\n"</span>);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         }
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         sb.append(<span class="jxr_string">"    &lt;/web-resource-collection&gt;\n"</span>);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         sb.append(<span class="jxr_string">"    &lt;auth-constraint&gt;\n"</span>);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">for</strong> (Iterator i = _roles.iterator(); i.hasNext();) {
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>             sb.append(<span class="jxr_string">"      &lt;role-name&gt;"</span>).append(i.next()).append(<span class="jxr_string">"&lt;/role-name&gt;\n"</span>);
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>         }
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>         sb.append(<span class="jxr_string">"    &lt;/auth-constraint&gt;\n"</span>);
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         sb.append(<span class="jxr_string">"  &lt;/security-constraint&gt;\n"</span>);
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">return</strong> sb.toString();
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a> 
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">private</strong> String _name;
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>     <strong class="jxr_keyword">private</strong> ArrayList _urls = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>     <strong class="jxr_keyword">private</strong> ArrayList _roles = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> }
 </pre>
 <hr/>
 <div id="footer">© 2011–2025 <a href="https://github.com/hazendaz/">hazendaz</a></div>

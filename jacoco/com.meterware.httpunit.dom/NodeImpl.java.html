@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NodeImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">NodeImpl.java</span></div><h1>NodeImpl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -35,7 +35,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
 /**
  * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
-<span class="fc" id="L38">abstract public class NodeImpl extends AbstractDomComponent implements Node {</span>
+<span class="fc" id="L38">public abstract class NodeImpl extends AbstractDomComponent implements Node {</span>
 
     private static final long serialVersionUID = 1L;
     private DocumentImpl _ownerDocument;
@@ -43,7 +43,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     private NodeImpl _firstChild;
     private NodeImpl _nextSibling;
     private NodeImpl _previousSibling;
-<span class="fc" id="L46">    private Hashtable _userData = new Hashtable();</span>
+<span class="fc" id="L46">    private Hashtable _userData = new Hashtable&lt;&gt;();</span>
 
 <span class="fc" id="L48">    static IteratorMask SKIP_IFRAMES = subtreeRoot -&gt; subtreeRoot instanceof HTMLIFrameElement;</span>
 
@@ -73,7 +73,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
 
     @Override
     public NodeList getChildNodes() {
-<span class="fc" id="L76">        ArrayList list = new ArrayList();</span>
+<span class="fc" id="L76">        ArrayList list = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L77" title="All 2 branches covered.">        for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {</span>
 <span class="fc" id="L78">            list.add(child);</span>
         }
@@ -315,7 +315,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     // ---------------------------------------------------
 
     public NodeList getElementsByTagName(String name) {
-<span class="fc" id="L318">        ArrayList matchingElements = new ArrayList();</span>
+<span class="fc" id="L318">        ArrayList matchingElements = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L319">        appendElementsWithTag(name, matchingElements);</span>
 <span class="fc" id="L320">        return new NodeListImpl(matchingElements);</span>
     }
@@ -333,7 +333,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
 <span class="fc" id="L333">    }</span>
 
     protected NodeList getElementsByTagNames(String[] names) {
-<span class="fc" id="L336">        ArrayList matchingElements = new ArrayList();</span>
+<span class="fc" id="L336">        ArrayList matchingElements = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L337">        appendElementsWithTags(names, matchingElements);</span>
 <span class="fc" id="L338">        return new NodeListImpl(matchingElements);</span>
     }
@@ -535,4 +535,4 @@ import org.w3c.dom.html.HTMLIFrameElement;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

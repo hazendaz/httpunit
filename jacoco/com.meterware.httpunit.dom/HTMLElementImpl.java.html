@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLElementImpl.java</span></div><h1>HTMLElementImpl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -29,7 +29,7 @@ import org.w3c.dom.html.HTMLElement;
 <span class="fc" id="L29">public class HTMLElementImpl extends ElementImpl implements HTMLElement {</span>
 
     private static final long serialVersionUID = 1L;
-<span class="fc" id="L32">    public final static String UNSPECIFIED_ATTRIBUTE = null;</span>
+<span class="fc" id="L32">    public static final String UNSPECIFIED_ATTRIBUTE = null;</span>
 
     ElementImpl create() {
 <span class="fc" id="L35">        return new HTMLElementImpl();</span>
@@ -100,14 +100,14 @@ import org.w3c.dom.html.HTMLElement;
     // ---------------------------------------------- protected methods
     // -----------------------------------------------------
 
-    final protected String getAttributeWithDefault(String attributeName, String defaultValue) {
+    protected final String getAttributeWithDefault(String attributeName, String defaultValue) {
 <span class="fc bfc" id="L104" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
 <span class="fc" id="L105">            return getAttribute(attributeName);</span>
         }
 <span class="fc" id="L107">        return defaultValue;</span>
     }
 
-    final protected String getAttributeWithNoDefault(String attributeName) {
+    protected final String getAttributeWithNoDefault(String attributeName) {
 <span class="fc bfc" id="L111" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
 <span class="fc" id="L112">            return getAttribute(attributeName);</span>
         }
@@ -121,12 +121,12 @@ import org.w3c.dom.html.HTMLElement;
 
     protected int getIntegerAttribute(String name) {
 <span class="fc" id="L123">        String value = getAttribute(name);</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        return value.length() == 0 ? 0 : Integer.parseInt(value);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return value.isEmpty() ? 0 : Integer.parseInt(value);</span>
     }
 
     protected int getIntegerAttribute(String name, int defaultValue) {
 <span class="fc" id="L128">        String value = getAttribute(name);</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">        return value.length() == 0 ? defaultValue : Integer.parseInt(value);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        return value.isEmpty() ? defaultValue : Integer.parseInt(value);</span>
     }
 
     protected void setAttribute(String name, boolean disabled) {
@@ -142,4 +142,4 @@ import org.w3c.dom.html.HTMLElement;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

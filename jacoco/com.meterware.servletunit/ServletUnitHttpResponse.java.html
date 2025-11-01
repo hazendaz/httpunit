@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpResponse.java</span></div><h1>ServletUnitHttpResponse.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -30,7 +30,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,34 +40,35 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.Vector;
 
-<span class="fc" id="L47">class ServletUnitHttpResponse implements HttpServletResponse {</span>
+<span class="fc" id="L49">class ServletUnitHttpResponse implements HttpServletResponse {</span>
 
     // rfc1123-date is &quot;Sun, 06 Nov 1994 08:49:37 GMT&quot;
     private static final String RFC1123_DATE_SPEC = &quot;EEE, dd MMM yyyy HH:mm:ss z&quot;;
     private boolean _committed;
-<span class="fc" id="L52">    private Locale _locale = Locale.getDefault();</span>
+<span class="fc" id="L54">    private Locale _locale = Locale.getDefault();</span>
 
-<span class="fc" id="L54">    private static final Hashtable ENCODING_MAP = new Hashtable();</span>
+<span class="fc" id="L56">    private static final Hashtable ENCODING_MAP = new Hashtable&lt;&gt;();</span>
 
     /**
      * Adds the specified cookie to the response. It can be called multiple times to set more than one cookie.
      */
     @Override
     public void addCookie(Cookie cookie) {
-<span class="fc" id="L61">        _cookies.addElement(cookie);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L63">        _cookies.addElement(cookie);</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Checks whether the response message header has a field with the specified name.
      */
     @Override
     public boolean containsHeader(String name) {
-<span class="fc" id="L69">        return _headers.containsKey(name.toUpperCase());</span>
+<span class="fc" id="L71">        return _headers.containsKey(name.toUpperCase());</span>
     }
 
     /**
@@ -77,7 +79,7 @@ import java.util.Vector;
      **/
     @Override
     public String encodeURL(String url) {
-<span class="nc" id="L80">        return url;</span>
+<span class="nc" id="L82">        return url;</span>
     }
 
     /**
@@ -88,7 +90,7 @@ import java.util.Vector;
      **/
     @Override
     public String encodeRedirectURL(String url) {
-<span class="nc" id="L91">        return url;</span>
+<span class="nc" id="L93">        return url;</span>
     }
 
     /**
@@ -98,9 +100,9 @@ import java.util.Vector;
      */
     @Override
     public void sendRedirect(String location) throws IOException {
-<span class="fc" id="L101">        setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);</span>
-<span class="fc" id="L102">        setHeader(&quot;Location&quot;, location);</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);</span>
+<span class="fc" id="L104">        setHeader(&quot;Location&quot;, location);</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Sends an error response to the client using the specified status code and descriptive message. If setStatus has
@@ -110,8 +112,8 @@ import java.util.Vector;
      **/
     @Override
     public void sendError(int sc) throws IOException {
-<span class="nc" id="L113">        sendError(sc, &quot;&quot;);</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L115">        sendError(sc, &quot;&quot;);</span>
+<span class="nc" id="L116">    }</span>
 
     /**
      * Sends an error response to the client using the specified status code and descriptive message. If setStatus has
@@ -121,15 +123,15 @@ import java.util.Vector;
      **/
     @Override
     public void sendError(int sc, String msg) throws IOException {
-<span class="nc" id="L124">        setStatus(sc);</span>
-<span class="nc" id="L125">        _statusMessage = msg;</span>
+<span class="nc" id="L126">        setStatus(sc);</span>
+<span class="nc" id="L127">        _statusMessage = msg;</span>
 
-<span class="nc" id="L127">        _writer = null;</span>
-<span class="nc" id="L128">        _servletStream = null;</span>
+<span class="nc" id="L129">        _writer = null;</span>
+<span class="nc" id="L130">        _servletStream = null;</span>
 
-<span class="nc" id="L130">        setContentType(&quot;text/html&quot;);</span>
-<span class="nc" id="L131">        getWriter().println(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;&quot; + msg + &quot;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot; + msg + &quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L132">        setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L133">        getWriter().println(&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;&quot; + msg + &quot;&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot; + msg + &quot;&lt;/body&gt;&lt;/html&gt;&quot;);</span>
+<span class="nc" id="L134">    }</span>
 
     /**
      * Sets the status code for this response. This method is used to set the return status code when there is no error
@@ -138,8 +140,8 @@ import java.util.Vector;
      **/
     @Override
     public void setStatus(int sc) {
-<span class="fc" id="L141">        _status = sc;</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L143">        _status = sc;</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Adds a field to the response header with the given name and value. If the field had already been set, the new
@@ -148,12 +150,12 @@ import java.util.Vector;
      **/
     @Override
     public void setHeader(String name, String value) {
-<span class="fc" id="L151">        ArrayList values = new ArrayList();</span>
-<span class="fc" id="L152">        values.add(value);</span>
-<span class="fc" id="L153">        synchronized (_headers) {</span>
-<span class="fc" id="L154">            _headers.put(name.toUpperCase(), values);</span>
-<span class="fc" id="L155">        }</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L153">        ArrayList values = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L154">        values.add(value);</span>
+<span class="fc" id="L155">        synchronized (_headers) {</span>
+<span class="fc" id="L156">            _headers.put(name.toUpperCase(), values);</span>
+<span class="fc" id="L157">        }</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Adds a field to the response header with the given name and integer value. If the field had already been set, the
@@ -162,8 +164,8 @@ import java.util.Vector;
      **/
     @Override
     public void setIntHeader(String name, int value) {
-<span class="fc" id="L165">        setHeader(name, asHeaderValue(value));</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L167">        setHeader(name, asHeaderValue(value));</span>
+<span class="fc" id="L168">    }</span>
 
     /**
      * Adds a field to the response header with the given name and integer value. If the field had already been set, the
@@ -171,15 +173,15 @@ import java.util.Vector;
      * presence of a header before setting its value.
      **/
     public void setLongHeader(String name, long value) {
-<span class="nc" id="L174">        setHeader(name, asHeaderLongValue(value));</span>
-<span class="nc" id="L175">    }</span>
+<span class="nc" id="L176">        setHeader(name, asHeaderLongValue(value));</span>
+<span class="nc" id="L177">    }</span>
 
     private String asHeaderValue(int value) {
-<span class="fc" id="L178">        return Integer.toString(value);</span>
+<span class="fc" id="L180">        return Integer.toString(value);</span>
     }
 
     private String asHeaderLongValue(long value) {
-<span class="nc" id="L182">        return Long.toString(value);</span>
+<span class="nc" id="L184">        return Long.toString(value);</span>
     }
 
     /**
@@ -189,14 +191,14 @@ import java.util.Vector;
      **/
     @Override
     public void setDateHeader(String name, long date) {
-<span class="fc" id="L192">        setHeader(name, asDateHeaderValue(date));</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L194">        setHeader(name, asDateHeaderValue(date));</span>
+<span class="fc" id="L195">    }</span>
 
     private String asDateHeaderValue(long date) {
-<span class="fc" id="L196">        Date value = new Date(date);</span>
-<span class="fc" id="L197">        SimpleDateFormat formatter = new SimpleDateFormat(RFC1123_DATE_SPEC, Locale.US);</span>
-<span class="fc" id="L198">        formatter.setTimeZone(TimeZone.getTimeZone(&quot;Greenwich Mean Time&quot;));</span>
-<span class="fc" id="L199">        return formatter.format(value);</span>
+<span class="fc" id="L198">        Date value = new Date(date);</span>
+<span class="fc" id="L199">        SimpleDateFormat formatter = new SimpleDateFormat(RFC1123_DATE_SPEC, Locale.US);</span>
+<span class="fc" id="L200">        formatter.setTimeZone(TimeZone.getTimeZone(&quot;Greenwich Mean Time&quot;));</span>
+<span class="fc" id="L201">        return formatter.format(value);</span>
     }
 
     /**
@@ -204,7 +206,7 @@ import java.util.Vector;
      **/
     @Override
     public String getCharacterEncoding() {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        return _encoding == null ? HttpUnitUtils.DEFAULT_CHARACTER_SET : _encoding;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        return _encoding == null ? StandardCharsets.ISO_8859_1.name() : _encoding;</span>
     }
 
     /**
@@ -216,13 +218,13 @@ import java.util.Vector;
      **/
     @Override
     public void setContentType(String type) {
-<span class="fc" id="L219">        String[] typeAndEncoding = HttpUnitUtils.parseContentTypeHeader(type);</span>
+<span class="fc" id="L221">        String[] typeAndEncoding = HttpUnitUtils.parseContentTypeHeader(type);</span>
 
-<span class="fc" id="L221">        _contentType = typeAndEncoding[0];</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (typeAndEncoding[1] != null) {</span>
-<span class="fc" id="L223">            _encoding = typeAndEncoding[1];</span>
+<span class="fc" id="L223">        _contentType = typeAndEncoding[0];</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (typeAndEncoding[1] != null) {</span>
+<span class="fc" id="L225">            _encoding = typeAndEncoding[1];</span>
         }
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L227">    }</span>
 
     /**
      * Returns a {@link ServletOutputStream} suitable for writing binary data in the response. The servlet engine does
@@ -233,14 +235,14 @@ import java.util.Vector;
      **/
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (_writer != null) {</span>
-<span class="fc" id="L237">            throw new IllegalStateException(&quot;Tried to create output stream; writer already exists&quot;);</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (_writer != null) {</span>
+<span class="fc" id="L239">            throw new IllegalStateException(&quot;Tried to create output stream; writer already exists&quot;);</span>
         }
-<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (_servletStream == null) {</span>
-<span class="fc" id="L240">            _outputStream = new ByteArrayOutputStream();</span>
-<span class="fc" id="L241">            _servletStream = new ServletUnitOutputStream(_outputStream);</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (_servletStream == null) {</span>
+<span class="fc" id="L242">            _outputStream = new ByteArrayOutputStream();</span>
+<span class="fc" id="L243">            _servletStream = new ServletUnitOutputStream(_outputStream);</span>
         }
-<span class="fc" id="L243">        return _servletStream;</span>
+<span class="fc" id="L245">        return _servletStream;</span>
     }
 
     /**
@@ -253,20 +255,18 @@ import java.util.Vector;
      * You cannot use this method if you have already called {@link #getOutputStream} for this
      * &lt;code&gt;ServletResponse&lt;/code&gt; object.
      *
-     * @exception UnsupportedEncodingException
-     *                if the character encoding specified in &lt;code&gt;setContentType&lt;/code&gt; cannot be used
      * @exception IllegalStateException
      *                if the &lt;code&gt;getOutputStream&lt;/code&gt; method has already been called for this response object; in
      *                that case, you can't use this method
      **/
     @Override
-    public PrintWriter getWriter() throws UnsupportedEncodingException {
+    public PrintWriter getWriter() {
 <span class="fc bfc" id="L264" title="All 2 branches covered.">        if (_servletStream != null) {</span>
 <span class="fc" id="L265">            throw new IllegalStateException(&quot;Tried to create writer; output stream already exists&quot;);</span>
         }
 <span class="fc bfc" id="L267" title="All 2 branches covered.">        if (_writer == null) {</span>
 <span class="fc" id="L268">            _outputStream = new ByteArrayOutputStream();</span>
-<span class="fc" id="L269">            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, getCharacterEncoding()));</span>
+<span class="fc" id="L269">            _writer = new PrintWriter(new OutputStreamWriter(_outputStream, Charset.forName(getCharacterEncoding())));</span>
         }
 <span class="fc" id="L271">        return _writer;</span>
     }
@@ -290,9 +290,9 @@ import java.util.Vector;
     public void addHeader(String name, String value) {
 <span class="fc" id="L291">        synchronized (_headers) {</span>
 <span class="fc" id="L292">            String key = name.toUpperCase();</span>
-<span class="fc" id="L293">            ArrayList values = (ArrayList) _headers.get(key);</span>
+<span class="fc" id="L293">            List values = (ArrayList) _headers.get(key);</span>
 <span class="fc bfc" id="L294" title="All 2 branches covered.">            if (values == null) {</span>
-<span class="fc" id="L295">                values = new ArrayList();</span>
+<span class="fc" id="L295">                values = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L296">                _headers.put(key, values);</span>
             }
 <span class="fc" id="L298">            values.add(value);</span>
@@ -446,7 +446,7 @@ import java.util.Vector;
 <span class="nc bnc" id="L446" title="All 2 branches missed.">        if (!_headersComplete) {</span>
 <span class="nc" id="L447">            completeHeaders();</span>
         }
-<span class="nc" id="L449">        Vector names = new Vector();</span>
+<span class="nc" id="L449">        Vector names = new Vector&lt;&gt;();</span>
 <span class="nc bnc" id="L450" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
 <span class="nc" id="L451">            names.addElement(e.nextElement());</span>
         }
@@ -500,7 +500,7 @@ import java.util.Vector;
 <span class="fc bfc" id="L500" title="All 2 branches covered.">        if (values == null) {</span>
 <span class="fc" id="L501">            return new String[0];</span>
         }
-<span class="fc" id="L503">        String results[] = new String[values.size()];</span>
+<span class="fc" id="L503">        String[] results = new String[values.size()];</span>
 <span class="fc" id="L504">        return (String[]) values.toArray(results);</span>
 
     }
@@ -537,11 +537,11 @@ import java.util.Vector;
 
 <span class="fc" id="L538">    private String _statusMessage = &quot;OK&quot;;</span>
 
-<span class="fc" id="L540">    private final Hashtable _headers = new Hashtable();</span>
+<span class="fc" id="L540">    private final Hashtable _headers = new Hashtable&lt;&gt;();</span>
 
     private boolean _headersComplete;
 
-<span class="fc" id="L544">    private Vector _cookies = new Vector();</span>
+<span class="fc" id="L544">    private Vector _cookies = new Vector&lt;&gt;();</span>
 
     private void completeHeaders() {
 <span class="pc bpc" id="L547" title="1 of 2 branches missed.">        if (_headersComplete) {</span>
@@ -578,14 +578,14 @@ import java.util.Vector;
 <span class="fc" id="L578">    }</span>
 
     static {
-<span class="fc" id="L581">        ENCODING_MAP.put(&quot;iso-8859-1&quot;, &quot;ca da de en es fi fr is it nl no pt sv &quot;);</span>
-<span class="fc" id="L582">        ENCODING_MAP.put(&quot;iso-8859-2&quot;, &quot;cs hr hu pl ro sh sk sl sq &quot;);</span>
-<span class="fc" id="L583">        ENCODING_MAP.put(&quot;iso-8859-4&quot;, &quot;et lt lv &quot;);</span>
-<span class="fc" id="L584">        ENCODING_MAP.put(&quot;iso-8859-5&quot;, &quot;be bg mk ru sr uk &quot;);</span>
-<span class="fc" id="L585">        ENCODING_MAP.put(&quot;iso-8859-6&quot;, &quot;ar &quot;);</span>
-<span class="fc" id="L586">        ENCODING_MAP.put(&quot;iso-8859-7&quot;, &quot;el &quot;);</span>
-<span class="fc" id="L587">        ENCODING_MAP.put(&quot;iso-8859-8&quot;, &quot;iw he &quot;);</span>
-<span class="fc" id="L588">        ENCODING_MAP.put(&quot;iso-8859-9&quot;, &quot;tr &quot;);</span>
+<span class="fc" id="L581">        ENCODING_MAP.put(&quot;ISO-8859-1&quot;, &quot;ca da de en es fi fr is it nl no pt sv &quot;);</span>
+<span class="fc" id="L582">        ENCODING_MAP.put(&quot;ISO-8859-2&quot;, &quot;cs hr hu pl ro sh sk sl sq &quot;);</span>
+<span class="fc" id="L583">        ENCODING_MAP.put(&quot;ISO-8859-4&quot;, &quot;et lt lv &quot;);</span>
+<span class="fc" id="L584">        ENCODING_MAP.put(&quot;ISO-8859-5&quot;, &quot;be bg mk ru sr uk &quot;);</span>
+<span class="fc" id="L585">        ENCODING_MAP.put(&quot;ISO-8859-6&quot;, &quot;ar &quot;);</span>
+<span class="fc" id="L586">        ENCODING_MAP.put(&quot;ISO-8859-7&quot;, &quot;el &quot;);</span>
+<span class="fc" id="L587">        ENCODING_MAP.put(&quot;ISO-8859-8&quot;, &quot;iw he &quot;);</span>
+<span class="fc" id="L588">        ENCODING_MAP.put(&quot;ISO-8859-9&quot;, &quot;tr &quot;);</span>
 
 <span class="fc" id="L590">        ENCODING_MAP.put(&quot;Shift_JIS&quot;, &quot;ja &quot;);</span>
 <span class="fc" id="L591">        ENCODING_MAP.put(&quot;EUC-KR&quot;, &quot;ko &quot;);</span>
@@ -601,12 +601,12 @@ import java.util.Vector;
 
     @Override
     public Collection&lt;String&gt; getHeaders(String name) {
-        ArrayList values;
+        List values;
 <span class="nc" id="L605">        synchronized (_headers) {</span>
 <span class="nc" id="L606">            values = (ArrayList) _headers.get(name.toUpperCase());</span>
 <span class="nc" id="L607">        }</span>
 <span class="nc bnc" id="L608" title="All 2 branches missed.">        if (values == null) {</span>
-<span class="nc" id="L609">            return Collections.EMPTY_LIST;</span>
+<span class="nc" id="L609">            return Collections.emptyList();</span>
         }
 <span class="nc" id="L611">        return values;</span>
     }
@@ -616,7 +616,7 @@ import java.util.Vector;
 <span class="nc bnc" id="L616" title="All 2 branches missed.">        if (!_headersComplete) {</span>
 <span class="nc" id="L617">            completeHeaders();</span>
         }
-<span class="nc" id="L619">        Vector names = new Vector();</span>
+<span class="nc" id="L619">        Vector names = new Vector&lt;&gt;();</span>
 <span class="nc bnc" id="L620" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
 <span class="nc" id="L621">            names.addElement(e.nextElement());</span>
         }
@@ -661,4 +661,4 @@ class ServletUnitOutputStream extends ServletOutputStream {
         // Do nothing
 <span class="nc" id="L662">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

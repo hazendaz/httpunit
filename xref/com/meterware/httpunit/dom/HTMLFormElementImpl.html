@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     @Override
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     <strong class="jxr_keyword">public</strong> HTMLCollection getElements() {
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         ArrayList elements = <strong class="jxr_keyword">new</strong> ArrayList();
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         ArrayList elements = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         String[] names = { <span class="jxr_string">"INPUT"</span>, <span class="jxr_string">"TEXTAREA"</span>, <span class="jxr_string">"BUTTON"</span>, <span class="jxr_string">"SELECT"</span> };
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">for</strong> (Iterator each = preOrderIteratorAfterNode(); each.hasNext();) {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>             Node node = (Node) each.next();

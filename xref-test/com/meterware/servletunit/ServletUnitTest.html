@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2023 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -39,8 +39,8 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <em class="jxr_comment">// ------------------------------------ protected members ------------------------------------------</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> assertMatchingSet(String comment, Object[] expected, Object[] found) {
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector();
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          Vector foundItems = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          Vector expectedItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          Vector foundItems = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">for</strong> (Object element : expected) {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>              expectedItems.addElement(element);

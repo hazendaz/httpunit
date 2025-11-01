@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -113,7 +113,7 @@
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>     @Override
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">public</strong> Enumeration getApplets() {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         <a name="WebApplet" href="../../../com/meterware/httpunit/WebApplet.html#WebApplet">WebApplet</a>[] webApplets = _webApplet.getAppletsInPage();
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         Vector v = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         Vector v = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             <strong class="jxr_keyword">for</strong> (<a name="WebApplet" href="../../../com/meterware/httpunit/WebApplet.html#WebApplet">WebApplet</a> webApplet : webApplets) {
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>                 v.add(webApplet.getApplet());

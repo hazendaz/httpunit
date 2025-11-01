@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -138,8 +138,8 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         <strong class="jxr_keyword">protected</strong> <a name="ScriptableDelegate" href="../../../../com/meterware/httpunit/scripting/ScriptableDelegate.html#ScriptableDelegate">ScriptableDelegate</a> _scriptable;
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">protected</strong> JavaScriptEngine _parent;
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">protected</strong> Map _eventListeners = <strong class="jxr_keyword">new</strong> HashMap(); <em class="jxr_comment">// Map&lt;String,Set&lt;EventListener&gt;&gt;</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">protected</strong> Map _eventCaptureListeners = <strong class="jxr_keyword">new</strong> HashMap(); <em class="jxr_comment">// Map&lt;String,Set&lt;EventListener&gt;&gt;</em>
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">protected</strong> Map _eventListeners = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;(); <em class="jxr_comment">// Map&lt;String,Set&lt;EventListener&gt;&gt;</em>
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">protected</strong> Map _eventCaptureListeners = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;(); <em class="jxr_comment">// Map&lt;String,Set&lt;EventListener&gt;&gt;</em>
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">         * initialize JavaScript for the given ScriptEngine</em>
@@ -349,14 +349,14 @@
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>             <strong class="jxr_keyword">if</strong> (useCapture) {
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>                 Set set = (Set) _eventCaptureListeners.get(type); <em class="jxr_comment">// Set&lt;Scriptable&gt;</em>
 <a class="jxr_linenumber" name="L343" href="#L343">343</a>                 <strong class="jxr_keyword">if</strong> (set == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>                     set = <strong class="jxr_keyword">new</strong> HashSet();
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>                     set = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>                     _eventCaptureListeners.put(type, set);
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>                 }
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>                 set.add(listener);
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>             } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>                 Set set = (Set) _eventListeners.get(type); <em class="jxr_comment">// Set&lt;Scriptable&gt;</em>
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>                 <strong class="jxr_keyword">if</strong> (set == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>                     set = <strong class="jxr_keyword">new</strong> HashSet();
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>                     set = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>                     _eventListeners.put(type, set);
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>                 }
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>                 set.add(listener);
@@ -428,7 +428,7 @@
 <a class="jxr_linenumber" name="L420" href="#L420">420</a> 
 <a class="jxr_linenumber" name="L421" href="#L421">421</a>         <strong class="jxr_keyword">public</strong> Scriptable jsGet_frames() <strong class="jxr_keyword">throws</strong> SAXException, JavaScriptException, EvaluatorException {
 <a class="jxr_linenumber" name="L422" href="#L422">422</a>             <strong class="jxr_keyword">if</strong> (_frames == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 WebResponse.Scriptable scriptables[] = getDelegate().getFrames();
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 WebResponse.Scriptable[] scriptables = getDelegate().getFrames();
 <a class="jxr_linenumber" name="L424" href="#L424">424</a>                 Window[] frames = <strong class="jxr_keyword">new</strong> Window[scriptables.length];
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; frames.length; i++) {
 <a class="jxr_linenumber" name="L426" href="#L426">426</a>                     frames[i] = (Window) toScriptable(scriptables[i]);
@@ -886,7 +886,7 @@
 <a class="jxr_linenumber" name="L878" href="#L878">878</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> ElementArray <strong class="jxr_keyword">extends</strong> ScriptableObject {
 <a class="jxr_linenumber" name="L879" href="#L879">879</a> 
 <a class="jxr_linenumber" name="L880" href="#L880">880</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
-<a class="jxr_linenumber" name="L881" href="#L881">881</a>         <strong class="jxr_keyword">private</strong> JavaScriptEngine _contents[] = <strong class="jxr_keyword">new</strong> <a name="HTMLElement" href="../../../../com/meterware/httpunit/HTMLElement.html#HTMLElement">HTMLElement</a>[0];
+<a class="jxr_linenumber" name="L881" href="#L881">881</a>         <strong class="jxr_keyword">private</strong> JavaScriptEngine[] _contents = <strong class="jxr_keyword">new</strong> <a name="HTMLElement" href="../../../../com/meterware/httpunit/HTMLElement.html#HTMLElement">HTMLElement</a>[0];
 <a class="jxr_linenumber" name="L882" href="#L882">882</a> 
 <a class="jxr_linenumber" name="L883" href="#L883">883</a>         <strong class="jxr_keyword">static</strong> ElementArray newElementArray(Scriptable parent) {
 <a class="jxr_linenumber" name="L884" href="#L884">884</a>             <strong class="jxr_keyword">try</strong> {
@@ -1062,7 +1062,7 @@
 <a class="jxr_linenumber" name="L1054" href="#L1054">1054</a>         }
 <a class="jxr_linenumber" name="L1055" href="#L1055">1055</a> 
 <a class="jxr_linenumber" name="L1056" href="#L1056">1056</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initializeControls() <strong class="jxr_keyword">throws</strong> EvaluatorException, JavaScriptException {
-<a class="jxr_linenumber" name="L1057" href="#L1057">1057</a>             <a name="ScriptableDelegate" href="../../../../com/meterware/httpunit/scripting/ScriptableDelegate.html#ScriptableDelegate">ScriptableDelegate</a> scriptables[] = getDelegate().getElementDelegates();
+<a class="jxr_linenumber" name="L1057" href="#L1057">1057</a>             <a name="ScriptableDelegate" href="../../../../com/meterware/httpunit/scripting/ScriptableDelegate.html#ScriptableDelegate">ScriptableDelegate</a>[] scriptables = getDelegate().getElementDelegates();
 <a class="jxr_linenumber" name="L1058" href="#L1058">1058</a>             Control[] controls = <strong class="jxr_keyword">new</strong> Control[scriptables.length];
 <a class="jxr_linenumber" name="L1059" href="#L1059">1059</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; controls.length; i++) {
 <a class="jxr_linenumber" name="L1060" href="#L1060">1060</a>                 controls[i] = (Control) toScriptable(scriptables[i]);

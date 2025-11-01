@@ -142,10 +142,10 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         assertNull(response.getHeaderField(<span class="jxr_string">"No-Such-Header"</span>));
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         <em class="jxr_comment">// the BR proposes to have a default "null" content-type</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         <em class="jxr_comment">// assertNull(response.getHeaderField("Content-Type"));</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <em class="jxr_comment">// unfortunately currently the default content type is "text/plain; charset=iso-8859-1"</em>
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         <em class="jxr_comment">// unfortunately currently the default content type is "text/plain; charset=ISO-8859-1"</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         <em class="jxr_comment">// whereas the HttpUnitOptions default Content Type is "text/html" ...</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         <em class="jxr_comment">// we'll check for the current state for the time being 2012-09-13</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         assertEquals(<span class="jxr_string">"text/plain; charset=iso-8859-1"</span>, response.getHeaderField(<span class="jxr_string">"Content-Type"</span>));
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         assertEquals(<span class="jxr_string">"text/plain; charset=ISO-8859-1"</span>, response.getHeaderField(<span class="jxr_string">"Content-Type"</span>));
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     }
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     <em class="jxr_comment">/*</em>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLContainerDelegate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLContainerDelegate.java</span></div><h1>HTMLContainerDelegate.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ class HTMLContainerDelegate {
      * @return
      */
     HTMLCollection getLinks(NodeImpl rootNode) {
-<span class="fc" id="L52">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L52">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {</span>
 <span class="fc" id="L54">            Node node = (Node) each.next();</span>
 <span class="fc bfc" id="L55" title="All 2 branches covered.">            if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
@@ -72,7 +72,7 @@ class HTMLContainerDelegate {
      * @return - an array of forms
      */
     HTMLCollection getForms(NodeImpl rootNode) {
-<span class="fc" id="L75">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L75">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L76" title="All 2 branches covered.">        for (Iterator each = rootNode.preOrderIteratorWithinNode(_iteratorMask); each.hasNext();) {</span>
 <span class="fc" id="L77">            Node node = (Node) each.next();</span>
 <span class="fc bfc" id="L78" title="All 2 branches covered.">            if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
@@ -88,7 +88,7 @@ class HTMLContainerDelegate {
 
     HTMLCollection getAnchors(NodeImpl rootNode) {
 <span class="fc" id="L90">        NodeList nodeList = rootNode.getElementsByTagName(&quot;A&quot;);</span>
-<span class="fc" id="L91">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L91">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L92" title="All 2 branches covered.">        for (int i = 0; i &lt; nodeList.getLength(); i++) {</span>
 <span class="fc" id="L93">            Node node = nodeList.item(i);</span>
 <span class="fc bfc" id="L94" title="All 2 branches covered.">            if (node.getAttributes().getNamedItem(&quot;name&quot;) != null) {</span>
@@ -99,15 +99,15 @@ class HTMLContainerDelegate {
     }
 
     HTMLCollection getImages(NodeImpl rootNode) {
-<span class="fc" id="L102">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L102">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L103">        rootNode.appendElementsWithTags(new String[] { &quot;img&quot; }, elements);</span>
 <span class="fc" id="L104">        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));</span>
     }
 
     HTMLCollection getApplets(NodeImpl rootNode) {
-<span class="fc" id="L108">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L108">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L109">        rootNode.appendElementsWithTags(new String[] { &quot;applet&quot; }, elements);</span>
 <span class="fc" id="L110">        return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

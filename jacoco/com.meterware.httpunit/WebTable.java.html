@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebTable.java</span></div><h1>WebTable.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -40,16 +40,16 @@ import org.w3c.dom.html.HTMLTableRowElement;
 public class WebTable extends HTMLElementBase {
 
     /** Predicate to match the complete text of a table's first non-blank cell. **/
-    public final static HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL;
+    public static final HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL;
 
     /** Predicate to match a prefix of a table's first non-blank cell. **/
-    public final static HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL_PREFIX;
+    public static final HTMLElementPredicate MATCH_FIRST_NONBLANK_CELL_PREFIX;
 
     /** Predicate to match a table's summary attribute. **/
-    public final static HTMLElementPredicate MATCH_SUMMARY;
+    public static final HTMLElementPredicate MATCH_SUMMARY;
 
     /** Predicate to match a table's ID. **/
-    public final static HTMLElementPredicate MATCH_ID;
+    public static final HTMLElementPredicate MATCH_ID;
 
     /**
      * Returns the number of rows in the table.
@@ -121,14 +121,14 @@ public class WebTable extends HTMLElementBase {
     public void purgeEmptyCells() {
 <span class="fc" id="L122">        int numRowsWithText = 0;</span>
 <span class="fc" id="L123">        int numColumnsWithText = 0;</span>
-<span class="fc" id="L124">        boolean rowHasText[] = new boolean[getRowCount()];</span>
-<span class="fc" id="L125">        boolean columnHasText[] = new boolean[getColumnCount()];</span>
-<span class="fc" id="L126">        Hashtable spanningCells = new Hashtable();</span>
+<span class="fc" id="L124">        boolean[] rowHasText = new boolean[getRowCount()];</span>
+<span class="fc" id="L125">        boolean[] columnHasText = new boolean[getColumnCount()];</span>
+<span class="fc" id="L126">        Hashtable spanningCells = new Hashtable&lt;&gt;();</span>
 
         // look for rows and columns with any text in a non-spanning cell
 <span class="fc bfc" id="L129" title="All 2 branches covered.">        for (int row = 0; row &lt; rowHasText.length; row++) {</span>
 <span class="fc bfc" id="L130" title="All 2 branches covered.">            for (int col = 0; col &lt; columnHasText.length; col++) {</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">                if (getCellAsText(row, col).trim().length() == 0) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">                if (getCellAsText(row, col).trim().isEmpty()) {</span>
 <span class="fc" id="L132">                    continue;</span>
                 }
 <span class="fc bfc" id="L134" title="All 4 branches covered.">                if (getTableCell(row, col).getColSpan() == 1 &amp;&amp; getTableCell(row, col).getRowSpan() == 1) {</span>
@@ -164,7 +164,7 @@ public class WebTable extends HTMLElementBase {
         // none of its rows already have text, or none of its columns already have text.
 <span class="fc bfc" id="L165" title="All 2 branches covered.">        for (Enumeration e = spanningCells.keys(); e.hasMoreElements();) {</span>
 <span class="fc" id="L166">            TableCell cell = (TableCell) e.nextElement();</span>
-<span class="fc" id="L167">            int coords[] = (int[]) spanningCells.get(cell);</span>
+<span class="fc" id="L167">            int[] coords = (int[]) spanningCells.get(cell);</span>
 <span class="fc" id="L168">            boolean neededInRow = true;</span>
 <span class="fc" id="L169">            boolean neededInCol = true;</span>
 <span class="pc bpc" id="L170" title="2 of 6 branches missed.">            for (int i = coords[0]; neededInRow &amp;&amp; i &lt; rowHasText.length &amp;&amp; i &lt; coords[0] + cell.getRowSpan(); i++) {</span>
@@ -317,7 +317,7 @@ public class WebTable extends HTMLElementBase {
 <span class="fc" id="L317">        _cells[row][column] = cell;</span>
 <span class="fc" id="L318">    }</span>
 
-<span class="fc" id="L320">    private ArrayList _rows = new ArrayList();</span>
+<span class="fc" id="L320">    private ArrayList _rows = new ArrayList&lt;&gt;();</span>
 
     void addRow(TableRow tableRow) {
 <span class="fc" id="L323">        _cells = null;</span>
@@ -373,4 +373,4 @@ public class WebTable extends HTMLElementBase {
 <span class="fc" id="L373">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>     @Override
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     <strong class="jxr_keyword">public</strong> String[] getHeaderFieldNames() {
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         Vector names = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         Vector names = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         <strong class="jxr_keyword">for</strong> (Enumeration e = _headers.keys(); e.hasMoreElements();) {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>             names.addElement(e.nextElement());
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         }
@@ -204,7 +204,7 @@
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     <em class="jxr_comment">// ------------------------------------- private members -------------------------------------</em>
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> 
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String FILE_ENCODING = Charset.defaultCharset().displayName();
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String FILE_ENCODING = Charset.defaultCharset().displayName();
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> 
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> _responseCode = HttpURLConnection.HTTP_OK;
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     <strong class="jxr_keyword">private</strong> String _responseMessage = <span class="jxr_string">"OK"</span>;
@@ -220,7 +220,7 @@
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>         _responseMessage = message;
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     }
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>     <strong class="jxr_keyword">private</strong> Hashtable _headers = <strong class="jxr_keyword">new</strong> Hashtable();
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>     <strong class="jxr_keyword">private</strong> Hashtable _headers = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> 
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> <em class="jxr_javadoccomment">     * read the response Header for the given connection and set the response code and message accordingly</em>

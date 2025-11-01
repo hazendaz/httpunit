@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthenticationChallenge.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">AuthenticationChallenge.java</span></div><h1>AuthenticationChallenge.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -19,12 +19,12 @@
  */
 package com.meterware.httpunit;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * A challenge for authentication from the server to a client.
@@ -129,7 +129,8 @@ class AuthenticationChallenge extends HttpHeader {
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-<span class="fc" id="L132">            return &quot;Basic &quot; + Base64.encode(userName + ':' + password);</span>
+<span class="fc" id="L132">            return &quot;Basic &quot;</span>
+<span class="fc" id="L133">                    + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));</span>
         }
 
     }
@@ -140,38 +141,37 @@ class AuthenticationChallenge extends HttpHeader {
 
             public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
                     String password) {
-<span class="fc" id="L143">                appendDigestParams(sb, challenge.getProperty(&quot;realm&quot;), challenge.getProperty(&quot;nonce&quot;),</span>
-<span class="fc" id="L144">                        challenge.getRequestUri(), userName, password, challenge.getMethod(),</span>
-<span class="fc" id="L145">                        challenge.getProperty(&quot;opaque&quot;));</span>
-<span class="fc" id="L146">            }</span>
+<span class="fc" id="L144">                appendDigestParams(sb, challenge.getProperty(&quot;realm&quot;), challenge.getProperty(&quot;nonce&quot;),</span>
+<span class="fc" id="L145">                        challenge.getRequestUri(), userName, password, challenge.getMethod(),</span>
+<span class="fc" id="L146">                        challenge.getProperty(&quot;opaque&quot;));</span>
+<span class="fc" id="L147">            }</span>
 
             protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
                     String password, String method, String opaque) {
-<span class="fc" id="L150">                sb.append(&quot;username=&quot;).append(quote(userName));</span>
-<span class="fc" id="L151">                append(sb, &quot;realm&quot;, realm);</span>
-<span class="fc" id="L152">                append(sb, &quot;nonce&quot;, nonce);</span>
-<span class="fc" id="L153">                append(sb, &quot;uri&quot;, uri);</span>
-<span class="fc" id="L154">                append(sb, &quot;response&quot;, getResponse(userName, realm, password, nonce, uri, method));</span>
-<span class="fc bfc" id="L155" title="All 2 branches covered.">                if (opaque != null) {</span>
-<span class="fc" id="L156">                    append(sb, &quot;opaque&quot;, opaque);</span>
+<span class="fc" id="L151">                sb.append(&quot;username=&quot;).append(quote(userName));</span>
+<span class="fc" id="L152">                append(sb, &quot;realm&quot;, realm);</span>
+<span class="fc" id="L153">                append(sb, &quot;nonce&quot;, nonce);</span>
+<span class="fc" id="L154">                append(sb, &quot;uri&quot;, uri);</span>
+<span class="fc" id="L155">                append(sb, &quot;response&quot;, getResponse(userName, realm, password, nonce, uri, method));</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">                if (opaque != null) {</span>
+<span class="fc" id="L157">                    append(sb, &quot;opaque&quot;, opaque);</span>
                 }
-<span class="fc" id="L158">            }</span>
+<span class="fc" id="L159">            }</span>
 
             protected String getResponse(String userName, String realm, String password, String nonce, String uri,
                     String method) {
                 try {
-<span class="fc" id="L163">                    String a1 = A1(userName, password, realm, nonce);</span>
-<span class="fc" id="L164">                    String a2 = A2(uri, method);</span>
-<span class="fc" id="L165">                    String ha1 = H(a1);</span>
-<span class="fc" id="L166">                    String ha2 = H(a2);</span>
-<span class="fc" id="L167">                    return KD(ha1, nonce + ':' + ha2);</span>
-<span class="nc" id="L168">                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {</span>
-<span class="nc" id="L169">                    return &quot;&quot;;</span>
+<span class="fc" id="L164">                    String a1 = A1(userName, password, realm, nonce);</span>
+<span class="fc" id="L165">                    String a2 = A2(uri, method);</span>
+<span class="fc" id="L166">                    String ha1 = H(a1);</span>
+<span class="fc" id="L167">                    String ha2 = H(a2);</span>
+<span class="fc" id="L168">                    return KD(ha1, nonce + ':' + ha2);</span>
+<span class="nc" id="L169">                } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L170">                    return &quot;&quot;;</span>
                 }
             }
 
-            protected String A1(String userName, String password, String realm, String nonce)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
+            protected String A1(String userName, String password, String realm, String nonce) {
 <span class="fc" id="L175">                return userName + ':' + realm + ':' + password;</span>
             }
 
@@ -179,52 +179,51 @@ class AuthenticationChallenge extends HttpHeader {
 <span class="fc" id="L179">                return method + ':' + uri;</span>
             }
 
-            final protected String KD(String secret, String data)
-                    throws NoSuchAlgorithmException, UnsupportedEncodingException {
-<span class="fc" id="L184">                return H(secret + &quot;:&quot; + data);</span>
+            protected final String KD(String secret, String data) throws NoSuchAlgorithmException {
+<span class="fc" id="L183">                return H(secret + &quot;:&quot; + data);</span>
             }
 
-            final protected String H(String data) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-<span class="fc" id="L188">                MessageDigest digest = MessageDigest.getInstance(&quot;MD5&quot;);</span>
-<span class="fc" id="L189">                digest.update(data.getBytes(StandardCharsets.UTF_8));</span>
-<span class="fc" id="L190">                byte[] bytes = digest.digest();</span>
-<span class="fc" id="L191">                StringBuilder sb = new StringBuilder();</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">                for (byte element : bytes) {</span>
-<span class="fc" id="L193">                    int aByte = element;</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">                    if (aByte &lt; 0) {</span>
-<span class="fc" id="L195">                        aByte += 256;</span>
+            protected final String H(String data) throws NoSuchAlgorithmException {
+<span class="fc" id="L187">                MessageDigest digest = MessageDigest.getInstance(&quot;SHA-256&quot;);</span>
+<span class="fc" id="L188">                digest.update(data.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L189">                byte[] bytes = digest.digest();</span>
+<span class="fc" id="L190">                StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">                for (byte element : bytes) {</span>
+<span class="fc" id="L192">                    int aByte = element;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">                    if (aByte &lt; 0) {</span>
+<span class="fc" id="L194">                        aByte += 256;</span>
                     }
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                    if (aByte &lt; 16) {</span>
-<span class="nc" id="L198">                        sb.append('0');</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">                    if (aByte &lt; 16) {</span>
+<span class="fc" id="L197">                        sb.append('0');</span>
                     }
-<span class="fc" id="L200">                    sb.append(Integer.toHexString(aByte));</span>
+<span class="fc" id="L199">                    sb.append(Integer.toHexString(aByte));</span>
                 }
 
-<span class="fc" id="L203">                return sb.toString();</span>
+<span class="fc" id="L202">                return sb.toString();</span>
             }
 
             private void append(StringBuilder sb, String name, String value) {
-<span class="fc" id="L207">                sb.append(&quot;,&quot;).append(name).append(&quot;=&quot;).append(quote(value));</span>
-<span class="fc" id="L208">            }</span>
+<span class="fc" id="L206">                sb.append(&quot;,&quot;).append(name).append(&quot;=&quot;).append(quote(value));</span>
+<span class="fc" id="L207">            }</span>
 
             private String quote(String value) {
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">                if (value.startsWith(&quot;\&quot;&quot;)) {</span>
-<span class="nc" id="L212">                    return value;</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">                if (value.startsWith(&quot;\&quot;&quot;)) {</span>
+<span class="nc" id="L211">                    return value;</span>
                 }
-<span class="fc" id="L214">                return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
+<span class="fc" id="L213">                return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
             }
 
         }
 
         @Override
         public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
-<span class="fc" id="L221">            StringBuilder sb = new StringBuilder(&quot;Digest &quot;);</span>
-<span class="fc" id="L222">            Algorithm algorithm = new Algorithm();</span>
-<span class="fc" id="L223">            algorithm.appendParams(sb, challenge, userName, password);</span>
-<span class="fc" id="L224">            return sb.toString();</span>
+<span class="fc" id="L220">            StringBuilder sb = new StringBuilder(&quot;Digest &quot;);</span>
+<span class="fc" id="L221">            Algorithm algorithm = new Algorithm();</span>
+<span class="fc" id="L222">            algorithm.appendParams(sb, challenge, userName, password);</span>
+<span class="fc" id="L223">            return sb.toString();</span>
         }
 
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

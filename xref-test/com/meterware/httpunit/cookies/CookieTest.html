@@ -102,7 +102,7 @@
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      }
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkMatching(<strong class="jxr_keyword">int</strong> index, <strong class="jxr_keyword">boolean</strong> success, URL url, String domain, String path) {
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          HashMap attributes = <strong class="jxr_keyword">new</strong> HashMap();
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          HashMap attributes = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          attributes.put(<span class="jxr_string">"path"</span>, path);
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          attributes.put(<span class="jxr_string">"domain"</span>, domain);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         Cookie cookie = <strong class="jxr_keyword">new</strong> Cookie(<span class="jxr_string">"name"</span>, <span class="jxr_string">"value"</span>, attributes);
@@ -203,11 +203,11 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     @Test
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">void</strong> cookieAge() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         String ages[] = { <span class="jxr_string">"max-age=5000"</span>, <span class="jxr_string">"Max-Age=3000"</span>, <span class="jxr_string">"expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000"</span>,
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         String[] ages = { <span class="jxr_string">"max-age=5000"</span>, <span class="jxr_string">"Max-Age=3000"</span>, <span class="jxr_string">"expires=Tue, 29-Mar-2005 19:30:42 GMT; Max-Age=2592000"</span>,
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>                 <span class="jxr_string">"Max-Age=2592000;expires=Tue, 29-Mar-2005 19:30:42 GMT"</span>, <span class="jxr_string">"expires=Tue, 29-Mar-2005 19:30:42 GMT"</span>,
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>                 <span class="jxr_string">"Expires=Wednesday, 01-Jan-1970 00:00:00 GMT"</span> };
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">long</strong> now = System.currentTimeMillis();
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">long</strong> expectedMilliSeconds[] = { now + 5000 * 1000, now + 3000 * 1000, now + 2592000 * 1000,
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">long</strong>[] expectedMilliSeconds = { now + 5000 * 1000, now + 3000 * 1000, now + 2592000 * 1000,
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>                 now + 2592000 * 1000, 1112124642000L, 0 };
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; ages.length; i++) {

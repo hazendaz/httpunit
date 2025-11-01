@@ -132,7 +132,7 @@ import org.junit.Rule;
 <span class="fc" id="L132">    }</span>
 
     protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
-<span class="fc" id="L135">        Vector foundItems = new Vector();</span>
+<span class="fc" id="L135">        Vector foundItems = new Vector&lt;&gt;();</span>
 <span class="fc bfc" id="L136" title="All 2 branches covered.">        while (found.hasMoreElements()) {</span>
 <span class="fc" id="L137">            foundItems.addElement(found.nextElement());</span>
         }
@@ -141,7 +141,7 @@ import org.junit.Rule;
 <span class="fc" id="L141">    }</span>
 
     private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
-<span class="fc" id="L144">        Vector expectedItems = new Vector();</span>
+<span class="fc" id="L144">        Vector expectedItems = new Vector&lt;&gt;();</span>
 <span class="fc bfc" id="L145" title="All 2 branches covered.">        for (Object element : expected) {</span>
 <span class="fc" id="L146">            expectedItems.addElement(element);</span>
         }
@@ -159,12 +159,12 @@ import org.junit.Rule;
 <span class="fc" id="L159">    }</span>
 
     public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
-<span class="fc" id="L162">        Vector foundItems = new Vector();</span>
+<span class="fc" id="L162">        Vector foundItems = new Vector&lt;&gt;();</span>
 <span class="fc bfc" id="L163" title="All 2 branches covered.">        for (Object element : found) {</span>
 <span class="fc" id="L164">            foundItems.addElement(element);</span>
         }
 
-<span class="fc" id="L167">        Vector expectedItems = new Vector();</span>
+<span class="fc" id="L167">        Vector expectedItems = new Vector&lt;&gt;();</span>
 
 <span class="fc bfc" id="L169" title="All 2 branches covered.">        for (Object element : expected) {</span>
 <span class="fc" id="L170">            expectedItems.addElement(element);</span>
@@ -244,7 +244,7 @@ import org.junit.Rule;
 
         private String _path;
         private String _fullString;
-<span class="fc" id="L247">        private Vector _parameters = new Vector();</span>
+<span class="fc" id="L247">        private Vector _parameters = new Vector&lt;&gt;();</span>
 
         private boolean equals(QuerySpec o) {
 <span class="pc bpc" id="L250" title="2 of 4 branches missed.">            if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {</span>
@@ -259,4 +259,4 @@ import org.junit.Rule;
         }
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

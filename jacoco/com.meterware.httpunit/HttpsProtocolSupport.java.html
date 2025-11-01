@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpsProtocolSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpsProtocolSupport.java</span></div><h1>HttpsProtocolSupport.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -36,18 +36,18 @@ import javax.net.ssl.X509TrustManager;
 <span class="nc" id="L36">public abstract class HttpsProtocolSupport {</span>
 
     /** The name of the system parameter used by java.net to locate protocol handlers. **/
-    private final static String PROTOCOL_HANDLER_PKGS = &quot;java.protocol.handler.pkgs&quot;;
+    private static final String PROTOCOL_HANDLER_PKGS = &quot;java.protocol.handler.pkgs&quot;;
 
     // Sun Microsystems:
-    public final static String SunJSSE_PROVIDER_CLASS = &quot;com.sun.net.ssl.internal.ssl.Provider&quot;;
+    public static final String SunJSSE_PROVIDER_CLASS = &quot;com.sun.net.ssl.internal.ssl.Provider&quot;;
     // 741145: &quot;sun.net.www.protocol.https&quot;;
-    public final static String SunJSSE_PROVIDER_CLASS2 = &quot;sun.net.www.protocol.https&quot;;
-    public final static String SunSSL_PROTOCOL_HANDLER = &quot;com.sun.net.ssl.internal.www.protocol&quot;;
+    public static final String SunJSSE_PROVIDER_CLASS2 = &quot;sun.net.www.protocol.https&quot;;
+    public static final String SunSSL_PROTOCOL_HANDLER = &quot;com.sun.net.ssl.internal.www.protocol&quot;;
 
     // IBM WebSphere
     // both ibm packages are inside ibmjsseprovider.jar that comes with WebSphere
-    public final static String IBMJSSE_PROVIDER_CLASS = &quot;com.ibm.jsse.IBMJSSEProvider&quot;;
-    public final static String IBMSSL_PROTOCOL_HANDLER = &quot;com.ibm.net.ssl.www.protocol&quot;;
+    public static final String IBMJSSE_PROVIDER_CLASS = &quot;com.ibm.jsse.IBMJSSEProvider&quot;;
+    public static final String IBMSSL_PROTOCOL_HANDLER = &quot;com.ibm.net.ssl.www.protocol&quot;;
 
     /** The name of the JSSE class which provides support for SSL. **/
 <span class="fc" id="L53">    private static String JSSE_PROVIDER_CLASS = SunJSSE_PROVIDER_CLASS;</span>
@@ -192,7 +192,7 @@ import javax.net.ssl.X509TrustManager;
      */
     private static void registerSSLProtocolHandler() {
 <span class="fc" id="L194">        String list = System.getProperty(PROTOCOL_HANDLER_PKGS);</span>
-<span class="pc bpc" id="L195" title="3 of 4 branches missed.">        if (list == null || list.length() == 0) {</span>
+<span class="pc bpc" id="L195" title="3 of 4 branches missed.">        if (list == null || list.isEmpty()) {</span>
 <span class="fc" id="L196">            System.setProperty(PROTOCOL_HANDLER_PKGS, SSL_PROTOCOL_HANDLER);</span>
 <span class="nc bnc" id="L197" title="All 2 branches missed.">        } else if (list.indexOf(SSL_PROTOCOL_HANDLER) &lt; 0) {</span>
             // [ 1516007 ] Default SSL provider not being used
@@ -200,4 +200,4 @@ import javax.net.ssl.X509TrustManager;
         }
 <span class="fc" id="L201">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

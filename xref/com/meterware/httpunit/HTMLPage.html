@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -110,7 +110,7 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * return { "index","follow" } getMetaTagContent("http-equiv","Expires") will return { "now" } &amp;lt;/code&amp;gt;</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     **/</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">public</strong> String[] getMetaTagContent(String attribute, String attributeValue) {
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>         Vector matches = <strong class="jxr_keyword">new</strong> Vector();
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         Vector matches = <strong class="jxr_keyword">new</strong> Vector&lt;&gt;();
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(<span class="jxr_string">"meta"</span>);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">int</strong> length = nl.getLength();
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 

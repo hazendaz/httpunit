@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebClient.java</span></div><h1>WebClient.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -27,7 +27,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -46,12 +48,12 @@ import org.xml.sax.SAXException;
  * @author Seth Ladd
  * @author Oliver Imbusch
  **/
-abstract public class WebClient {
+public abstract class WebClient {
 
-<span class="fc" id="L51">    private ArrayList _openWindows = new ArrayList();</span>
+<span class="fc" id="L53">    private ArrayList _openWindows = new ArrayList&lt;&gt;();</span>
 
     /** The current main window. **/
-<span class="fc" id="L54">    private WebWindow _mainWindow = new WebWindow(this);</span>
+<span class="fc" id="L56">    private WebWindow _mainWindow = new WebWindow(this);</span>
 
     /** An authorization string to be sent with every request, whether challenged or not. May be null. **/
     private String _fixedAuthorizationString;
@@ -60,34 +62,34 @@ abstract public class WebClient {
     private String _authorizationString;
 
     private String _proxyAuthorizationString;
-<span class="fc" id="L63">    private Hashtable _credentials = new Hashtable();</span>
+<span class="fc" id="L65">    private Hashtable _credentials = new Hashtable&lt;&gt;();</span>
 
     public WebWindow getMainWindow() {
-<span class="fc" id="L66">        return _mainWindow;</span>
+<span class="fc" id="L68">        return _mainWindow;</span>
     }
 
     public void setMainWindow(WebWindow mainWindow) {
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (!_openWindows.contains(mainWindow)) {</span>
-<span class="nc" id="L71">            throw new IllegalArgumentException(&quot;May only select an open window owned by this client&quot;);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (!_openWindows.contains(mainWindow)) {</span>
+<span class="nc" id="L73">            throw new IllegalArgumentException(&quot;May only select an open window owned by this client&quot;);</span>
         }
-<span class="nc" id="L73">        _mainWindow = mainWindow;</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L75">        _mainWindow = mainWindow;</span>
+<span class="nc" id="L76">    }</span>
 
     public WebWindow[] getOpenWindows() {
-<span class="fc" id="L77">        return (WebWindow[]) _openWindows.toArray(new WebWindow[_openWindows.size()]);</span>
+<span class="fc" id="L79">        return (WebWindow[]) _openWindows.toArray(new WebWindow[_openWindows.size()]);</span>
     }
 
     public WebWindow getOpenWindow(String name) {
-<span class="pc bpc" id="L81" title="2 of 4 branches missed.">        if (name == null || name.length() == 0) {</span>
-<span class="nc" id="L82">            return null;</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">        if (name == null || name.isEmpty()) {</span>
+<span class="nc" id="L84">            return null;</span>
         }
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        for (Iterator i = _openWindows.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L85">            WebWindow window = (WebWindow) i.next();</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">            if (name.equals(window.getName())) {</span>
-<span class="fc" id="L87">                return window;</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        for (Iterator i = _openWindows.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L87">            WebWindow window = (WebWindow) i.next();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (name.equals(window.getName())) {</span>
+<span class="fc" id="L89">                return window;</span>
             }
-<span class="fc" id="L89">        }</span>
-<span class="nc" id="L90">        return null;</span>
+<span class="fc" id="L91">        }</span>
+<span class="nc" id="L92">        return null;</span>
     }
 
     /**
@@ -97,21 +99,21 @@ abstract public class WebClient {
      *                thrown if there is an error parsing the retrieved page
      **/
     public WebResponse getResponse(String urlString) throws IOException, SAXException {
-<span class="fc" id="L100">        return _mainWindow.getResponse(urlString);</span>
+<span class="fc" id="L102">        return _mainWindow.getResponse(urlString);</span>
     }
 
     /**
      * Submits a web request and returns a response. This is an alternate name for the getResponse method.
      */
     public WebResponse sendRequest(WebRequest request) throws IOException, SAXException {
-<span class="fc" id="L107">        return _mainWindow.sendRequest(request);</span>
+<span class="fc" id="L109">        return _mainWindow.sendRequest(request);</span>
     }
 
     /**
      * Returns the response representing the current top page in the main window.
      */
     public WebResponse getCurrentPage() {
-<span class="fc" id="L114">        return _mainWindow.getCurrentPage();</span>
+<span class="fc" id="L116">        return _mainWindow.getCurrentPage();</span>
     }
 
     /**
@@ -122,14 +124,14 @@ abstract public class WebClient {
      *                thrown if there is an error parsing the retrieved page
      **/
     public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
-<span class="fc" id="L125">        return _mainWindow.getResponse(request);</span>
+<span class="fc" id="L127">        return _mainWindow.getResponse(request);</span>
     }
 
     /**
      * Returns the name of the currently active frames in the main window.
      **/
     public String[] getFrameNames() {
-<span class="fc" id="L132">        return _mainWindow.getFrameNames();</span>
+<span class="fc" id="L134">        return _mainWindow.getFrameNames();</span>
     }
 
     /**
@@ -137,7 +139,7 @@ abstract public class WebClient {
      * no matching frame is defined.
      **/
     public WebResponse getFrameContents(String frameName) {
-<span class="fc" id="L140">        return _mainWindow.getFrameContents(frameName);</span>
+<span class="fc" id="L142">        return _mainWindow.getFrameContents(frameName);</span>
     }
 
     /**
@@ -147,7 +149,7 @@ abstract public class WebClient {
      * @since 1.6
      **/
     public WebResponse getFrameContents(FrameSelector targetFrame) {
-<span class="fc" id="L150">        return _mainWindow.getFrameContents(targetFrame);</span>
+<span class="fc" id="L152">        return _mainWindow.getFrameContents(targetFrame);</span>
     }
 
     /**
@@ -155,7 +157,7 @@ abstract public class WebClient {
      * May return null if the resource is a JavaScript URL which would normally leave the client unchanged.
      */
     public WebResponse getResource(WebRequest request) throws IOException {
-<span class="nc" id="L158">        return _mainWindow.getResource(request);</span>
+<span class="nc" id="L160">        return _mainWindow.getResource(request);</span>
     }
 
     /**
@@ -163,10 +165,10 @@ abstract public class WebClient {
      * listeners or preferences which may have been set.
      **/
     public void clearContents() {
-<span class="nc" id="L166">        _mainWindow = new WebWindow(this);</span>
-<span class="nc" id="L167">        _cookieJar.clear();</span>
-<span class="nc" id="L168">        _headers = new HeaderDictionary();</span>
-<span class="nc" id="L169">    }</span>
+<span class="nc" id="L168">        _mainWindow = new WebWindow(this);</span>
+<span class="nc" id="L169">        _cookieJar.clear();</span>
+<span class="nc" id="L170">        _headers = new HeaderDictionary();</span>
+<span class="nc" id="L171">    }</span>
 
     /**
      * Defines a cookie to be sent to the server on every request.
@@ -175,22 +177,22 @@ abstract public class WebClient {
      **/
     @Deprecated
     public void addCookie(String name, String value) {
-<span class="nc" id="L178">        _cookieJar.addCookie(name, value);</span>
-<span class="nc" id="L179">    }</span>
+<span class="nc" id="L180">        _cookieJar.addCookie(name, value);</span>
+<span class="nc" id="L181">    }</span>
 
     /**
      * Defines a cookie to be sent to the server on every request. This overrides any previous setting for this cookie
      * name.
      **/
     public void putCookie(String name, String value) {
-<span class="fc" id="L186">        _cookieJar.putCookie(name, value);</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L188">        _cookieJar.putCookie(name, value);</span>
+<span class="fc" id="L189">    }</span>
 
     /**
      * Returns the name of all the active cookies which will be sent to the server.
      **/
     public String[] getCookieNames() {
-<span class="fc" id="L193">        return _cookieJar.getCookieNames();</span>
+<span class="fc" id="L195">        return _cookieJar.getCookieNames();</span>
     }
 
     /**
@@ -199,24 +201,24 @@ abstract public class WebClient {
      * @since [ 1488617 ] alternate patch for cookie bug #1371204
      */
     public Cookie getCookieDetails(String name) {
-<span class="fc" id="L202">        return _cookieJar.getCookie(name);</span>
+<span class="fc" id="L204">        return _cookieJar.getCookie(name);</span>
     }
 
     /**
      * Returns the value of the specified cookie.
      **/
     public String getCookieValue(String name) {
-<span class="fc" id="L209">        return _cookieJar.getCookieValue(name);</span>
+<span class="fc" id="L211">        return _cookieJar.getCookieValue(name);</span>
     }
 
     /**
      * Returns the properties associated with this client.
      */
     public ClientProperties getClientProperties() {
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (_clientProperties == null) {</span>
-<span class="fc" id="L217">            _clientProperties = ClientProperties.getDefaultProperties().cloneProperties();</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (_clientProperties == null) {</span>
+<span class="fc" id="L219">            _clientProperties = ClientProperties.getDefaultProperties().cloneProperties();</span>
         }
-<span class="fc" id="L219">        return _clientProperties;</span>
+<span class="fc" id="L221">        return _clientProperties;</span>
     }
 
     /**
@@ -226,8 +228,8 @@ abstract public class WebClient {
      **/
     @Deprecated
     public void setUserAgent(String userAgent) {
-<span class="nc" id="L229">        getClientProperties().setUserAgent(userAgent);</span>
-<span class="nc" id="L230">    }</span>
+<span class="nc" id="L231">        getClientProperties().setUserAgent(userAgent);</span>
+<span class="nc" id="L232">    }</span>
 
     /**
      * Returns the current user agent setting.
@@ -236,7 +238,7 @@ abstract public class WebClient {
      **/
     @Deprecated
     public String getUserAgent() {
-<span class="nc" id="L239">        return getClientProperties().getUserAgent();</span>
+<span class="nc" id="L241">        return getClientProperties().getUserAgent();</span>
     }
 
     /**
@@ -244,8 +246,9 @@ abstract public class WebClient {
      * emulation of browser behavior.
      **/
     public void setAuthorization(String userName, String password) {
-<span class="fc" id="L247">        _fixedAuthorizationString = &quot;Basic &quot; + Base64.encode(userName + ':' + password);</span>
-<span class="fc" id="L248">    }</span>
+<span class="fc" id="L249">        _fixedAuthorizationString = &quot;Basic &quot;</span>
+<span class="fc" id="L250">                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L251">    }</span>
 
     /**
      * Specifies a username and password for on-demand authentication. Will only send the authorization header when
@@ -259,8 +262,8 @@ abstract public class WebClient {
      *            the credentials for the user
      */
     public void setAuthentication(String realm, String username, String password) {
-<span class="fc" id="L262">        _credentials.put(realm, new PasswordAuthentication(username, password.toCharArray()));</span>
-<span class="fc" id="L263">    }</span>
+<span class="fc" id="L265">        _credentials.put(realm, new PasswordAuthentication(username, password.toCharArray()));</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * get the credentials for the given realm
@@ -270,13 +273,13 @@ abstract public class WebClient {
      * @return
      */
     PasswordAuthentication getCredentialsForRealm(String realm) {
-<span class="pc bpc" id="L273" title="1 of 2 branches missed.">        if (_credentials == null) {</span>
-<span class="nc" id="L274">            throw new Error(&quot;null _credentials while calling getCredentialsForRealm&quot;);</span>
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">        if (_credentials == null) {</span>
+<span class="nc" id="L277">            throw new Error(&quot;null _credentials while calling getCredentialsForRealm&quot;);</span>
         }
-<span class="pc bpc" id="L276" title="1 of 2 branches missed.">        if (realm == null) {</span>
-<span class="nc" id="L277">            throw new Error(&quot;null realm while calling getCredentialsForRealm&quot;);</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">        if (realm == null) {</span>
+<span class="nc" id="L280">            throw new Error(&quot;null realm while calling getCredentialsForRealm&quot;);</span>
         }
-<span class="fc" id="L279">        return (PasswordAuthentication) _credentials.get(realm);</span>
+<span class="fc" id="L282">        return (PasswordAuthentication) _credentials.get(realm);</span>
     }
 
     /**
@@ -290,21 +293,22 @@ abstract public class WebClient {
      * @since 1.6
      */
     public void setProxyServer(String proxyHost, int proxyPort, String userName, String password) {
-<span class="nc" id="L293">        setProxyServer(proxyHost, proxyPort);</span>
-<span class="nc" id="L294">        _proxyAuthorizationString = &quot;Basic &quot; + Base64.encode(userName + ':' + password);</span>
-<span class="nc" id="L295">    }</span>
+<span class="nc" id="L296">        setProxyServer(proxyHost, proxyPort);</span>
+<span class="nc" id="L297">        _proxyAuthorizationString = &quot;Basic &quot;</span>
+<span class="nc" id="L298">                + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L299">    }</span>
 
     /**
      * Clears the proxy server settings.
      */
     public void clearProxyServer() {
-<span class="nc" id="L301">    }</span>
+<span class="nc" id="L305">    }</span>
 
     /**
      * Returns the name of the active proxy server.
      */
     public String getProxyHost() {
-<span class="nc" id="L307">        return System.getProperty(&quot;proxyHost&quot;);</span>
+<span class="nc" id="L311">        return System.getProperty(&quot;proxyHost&quot;);</span>
     }
 
     /**
@@ -312,9 +316,9 @@ abstract public class WebClient {
      */
     public int getProxyPort() {
         try {
-<span class="nc" id="L315">            return Integer.getInteger(&quot;proxyPort&quot;);</span>
-<span class="nc" id="L316">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L317">            return 0;</span>
+<span class="nc" id="L319">            return Integer.getInteger(&quot;proxyPort&quot;);</span>
+<span class="nc" id="L320">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L321">            return 0;</span>
         }
     }
 
@@ -323,15 +327,15 @@ abstract public class WebClient {
      * those to be sent.
      **/
     public void setHeaderField(String fieldName, String fieldValue) {
-<span class="fc" id="L326">        _headers.put(fieldName, fieldValue);</span>
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L330">        _headers.put(fieldName, fieldValue);</span>
+<span class="fc" id="L331">    }</span>
 
     /**
      * Returns the value for the header field with the specified name. This method will ignore the case of the field
      * name.
      */
     public String getHeaderField(String fieldName) {
-<span class="nc" id="L334">        return (String) _headers.get(fieldName);</span>
+<span class="nc" id="L338">        return (String) _headers.get(fieldName);</span>
     }
 
     /**
@@ -339,61 +343,61 @@ abstract public class WebClient {
      * Defaults to the value returned by HttpUnitOptions.getExceptionsThrownOnErrorStatus.
      **/
     public void setExceptionsThrownOnErrorStatus(boolean throwExceptions) {
-<span class="fc" id="L342">        _exceptionsThrownOnErrorStatus = throwExceptions;</span>
-<span class="fc" id="L343">    }</span>
+<span class="fc" id="L346">        _exceptionsThrownOnErrorStatus = throwExceptions;</span>
+<span class="fc" id="L347">    }</span>
 
     /**
      * Returns true if an exception will be thrown when an error status (4xx or 5xx) is detected on a response.
      **/
     public boolean getExceptionsThrownOnErrorStatus() {
-<span class="fc" id="L349">        return _exceptionsThrownOnErrorStatus;</span>
+<span class="fc" id="L353">        return _exceptionsThrownOnErrorStatus;</span>
     }
 
     /**
      * Adds a listener to watch for requests and responses.
      */
     public void addClientListener(WebClientListener listener) {
-<span class="fc" id="L356">        synchronized (_clientListeners) {</span>
-<span class="pc bpc" id="L357" title="2 of 4 branches missed.">            if (listener != null &amp;&amp; !_clientListeners.contains(listener)) {</span>
-<span class="fc" id="L358">                _clientListeners.add(listener);</span>
+<span class="fc" id="L360">        synchronized (_clientListeners) {</span>
+<span class="pc bpc" id="L361" title="2 of 4 branches missed.">            if (listener != null &amp;&amp; !_clientListeners.contains(listener)) {</span>
+<span class="fc" id="L362">                _clientListeners.add(listener);</span>
             }
-<span class="fc" id="L360">        }</span>
-<span class="fc" id="L361">    }</span>
+<span class="fc" id="L364">        }</span>
+<span class="fc" id="L365">    }</span>
 
     /**
      * Removes a listener to watch for requests and responses.
      */
     public void removeClientListener(WebClientListener listener) {
-<span class="nc" id="L367">        synchronized (_clientListeners) {</span>
-<span class="nc" id="L368">            _clientListeners.remove(listener);</span>
-<span class="nc" id="L369">        }</span>
-<span class="nc" id="L370">    }</span>
+<span class="nc" id="L371">        synchronized (_clientListeners) {</span>
+<span class="nc" id="L372">            _clientListeners.remove(listener);</span>
+<span class="nc" id="L373">        }</span>
+<span class="nc" id="L374">    }</span>
 
     /**
      * Adds a listener to watch for window openings and closings.
      */
     public void addWindowListener(WebWindowListener listener) {
-<span class="fc" id="L376">        synchronized (_windowListeners) {</span>
-<span class="pc bpc" id="L377" title="2 of 4 branches missed.">            if (listener != null &amp;&amp; !_windowListeners.contains(listener)) {</span>
-<span class="fc" id="L378">                _windowListeners.add(listener);</span>
+<span class="fc" id="L380">        synchronized (_windowListeners) {</span>
+<span class="pc bpc" id="L381" title="2 of 4 branches missed.">            if (listener != null &amp;&amp; !_windowListeners.contains(listener)) {</span>
+<span class="fc" id="L382">                _windowListeners.add(listener);</span>
             }
-<span class="fc" id="L380">        }</span>
-<span class="fc" id="L381">    }</span>
+<span class="fc" id="L384">        }</span>
+<span class="fc" id="L385">    }</span>
 
     /**
      * Removes a listener to watch for window openings and closings.
      */
     public void removeWindowListener(WebWindowListener listener) {
-<span class="nc" id="L387">        synchronized (_windowListeners) {</span>
-<span class="nc" id="L388">            _windowListeners.remove(listener);</span>
-<span class="nc" id="L389">        }</span>
-<span class="nc" id="L390">    }</span>
+<span class="nc" id="L391">        synchronized (_windowListeners) {</span>
+<span class="nc" id="L392">            _windowListeners.remove(listener);</span>
+<span class="nc" id="L393">        }</span>
+<span class="nc" id="L394">    }</span>
 
     /**
      * Returns the next javascript alert without removing it from the queue.
      */
     public String getNextAlert() {
-<span class="fc bfc" id="L396" title="All 2 branches covered.">        return _alerts.isEmpty() ? null : (String) _alerts.getFirst();</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        return _alerts.isEmpty() ? null : (String) _alerts.getFirst();</span>
     }
 
     /**
@@ -401,24 +405,24 @@ abstract public class WebClient {
      * string.
      */
     public String popNextAlert() {
-<span class="fc bfc" id="L404" title="All 2 branches covered.">        if (_alerts.isEmpty()) {</span>
-<span class="fc" id="L405">            return &quot;&quot;;</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (_alerts.isEmpty()) {</span>
+<span class="fc" id="L409">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L407">        return (String) _alerts.removeFirst();</span>
+<span class="fc" id="L411">        return (String) _alerts.removeFirst();</span>
     }
 
     /**
      * Specifies the object which will respond to all dialogs.
      **/
     public void setDialogResponder(DialogResponder responder) {
-<span class="fc" id="L414">        _dialogResponder = responder;</span>
-<span class="fc" id="L415">    }</span>
+<span class="fc" id="L418">        _dialogResponder = responder;</span>
+<span class="fc" id="L419">    }</span>
 
     // ------------------------------------------ protected members -----------------------------------
 
-<span class="fc" id="L419">    protected WebClient() {</span>
-<span class="fc" id="L420">        _openWindows.add(_mainWindow);</span>
-<span class="fc" id="L421">    }</span>
+<span class="fc" id="L423">    protected WebClient() {</span>
+<span class="fc" id="L424">        _openWindows.add(_mainWindow);</span>
+<span class="fc" id="L425">    }</span>
 
     /**
      * Creates a web response object which represents the response to the specified web request.
@@ -433,42 +437,42 @@ abstract public class WebClient {
     /**
      * Writes the message body for the request.
      **/
-    final protected void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
-<span class="fc" id="L437">        request.writeMessageBody(stream);</span>
-<span class="fc" id="L438">    }</span>
+    protected final void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
+<span class="fc" id="L441">        request.writeMessageBody(stream);</span>
+<span class="fc" id="L442">    }</span>
 
     /**
      * Returns the value of all current header fields.
      **/
     protected Dictionary getHeaderFields(URL targetURL) {
-<span class="fc" id="L444">        Hashtable result = (Hashtable) _headers.clone();</span>
-<span class="fc" id="L445">        result.put(&quot;User-Agent&quot;, getClientProperties().getUserAgent());</span>
-<span class="fc bfc" id="L446" title="All 2 branches covered.">        if (getClientProperties().isAcceptGzip()) {</span>
-<span class="fc" id="L447">            result.put(&quot;Accept-Encoding&quot;, &quot;gzip&quot;);</span>
+<span class="fc" id="L448">        Hashtable result = (Hashtable) _headers.clone();</span>
+<span class="fc" id="L449">        result.put(&quot;User-Agent&quot;, getClientProperties().getUserAgent());</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (getClientProperties().isAcceptGzip()) {</span>
+<span class="fc" id="L451">            result.put(&quot;Accept-Encoding&quot;, &quot;gzip&quot;);</span>
         }
-<span class="fc" id="L449">        AddHeaderIfNotNull(result, &quot;Cookie&quot;, _cookieJar.getCookieHeaderField(targetURL));</span>
-<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (_authorizationString == null) {</span>
-<span class="fc" id="L451">            _authorizationString = _fixedAuthorizationString;</span>
+<span class="fc" id="L453">        AddHeaderIfNotNull(result, &quot;Cookie&quot;, _cookieJar.getCookieHeaderField(targetURL));</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">        if (_authorizationString == null) {</span>
+<span class="fc" id="L455">            _authorizationString = _fixedAuthorizationString;</span>
         }
-<span class="fc" id="L453">        AddHeaderIfNotNull(result, &quot;Authorization&quot;, _authorizationString);</span>
-<span class="fc" id="L454">        AddHeaderIfNotNull(result, &quot;Proxy-Authorization&quot;, _proxyAuthorizationString);</span>
-<span class="fc" id="L455">        _authorizationString = null;</span>
-<span class="fc" id="L456">        return result;</span>
+<span class="fc" id="L457">        AddHeaderIfNotNull(result, &quot;Authorization&quot;, _authorizationString);</span>
+<span class="fc" id="L458">        AddHeaderIfNotNull(result, &quot;Proxy-Authorization&quot;, _proxyAuthorizationString);</span>
+<span class="fc" id="L459">        _authorizationString = null;</span>
+<span class="fc" id="L460">        return result;</span>
     }
 
     private void AddHeaderIfNotNull(Hashtable result, final String headerName, final String headerValue) {
-<span class="fc bfc" id="L460" title="All 2 branches covered.">        if (headerValue != null) {</span>
-<span class="fc" id="L461">            result.put(headerName, headerValue);</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        if (headerValue != null) {</span>
+<span class="fc" id="L465">            result.put(headerName, headerValue);</span>
         }
-<span class="fc" id="L463">    }</span>
+<span class="fc" id="L467">    }</span>
 
     /**
      * Updates this web client based on a received response. This includes updating cookies and frames. This method is
      * required by ServletUnit, which cannot call the updateWindow method directly.
      **/
-    final protected void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
-<span class="fc" id="L470">        getMainWindow().updateWindow(frame.getName(), response, new RequestContext());</span>
-<span class="fc" id="L471">    }</span>
+    protected final void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
+<span class="fc" id="L474">        getMainWindow().updateWindow(frame.getName(), response, new RequestContext());</span>
+<span class="fc" id="L475">    }</span>
 
     // ------------------------------------------------- package members
     // ----------------------------------------------------
@@ -476,33 +480,33 @@ abstract public class WebClient {
     void tellListeners(WebRequest request) {
         List listeners;
 
-<span class="fc" id="L479">        synchronized (_clientListeners) {</span>
-<span class="fc" id="L480">            listeners = new ArrayList(_clientListeners);</span>
-<span class="fc" id="L481">        }</span>
+<span class="fc" id="L483">        synchronized (_clientListeners) {</span>
+<span class="fc" id="L484">            listeners = new ArrayList(_clientListeners);</span>
+<span class="fc" id="L485">        }</span>
 
-<span class="fc bfc" id="L483" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L484">            ((WebClientListener) i.next()).requestSent(this, request);</span>
+<span class="fc bfc" id="L487" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L488">            ((WebClientListener) i.next()).requestSent(this, request);</span>
         }
-<span class="fc" id="L486">    }</span>
+<span class="fc" id="L490">    }</span>
 
     void tellListeners(WebResponse response) {
         List listeners;
 
-<span class="fc" id="L491">        synchronized (_clientListeners) {</span>
-<span class="fc" id="L492">            listeners = new ArrayList(_clientListeners);</span>
-<span class="fc" id="L493">        }</span>
+<span class="fc" id="L495">        synchronized (_clientListeners) {</span>
+<span class="fc" id="L496">            listeners = new ArrayList(_clientListeners);</span>
+<span class="fc" id="L497">        }</span>
 
-<span class="fc bfc" id="L495" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L496">            ((WebClientListener) i.next()).responseReceived(this, response);</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L500">            ((WebClientListener) i.next()).responseReceived(this, response);</span>
         }
-<span class="fc" id="L498">    }</span>
+<span class="fc" id="L502">    }</span>
 
     void updateClient(WebResponse response) throws IOException {
-<span class="fc bfc" id="L501" title="All 2 branches covered.">        if (getClientProperties().isAcceptCookies()) {</span>
-<span class="fc" id="L502">            _cookieJar.updateCookies(response.getCookieJar());</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">        if (getClientProperties().isAcceptCookies()) {</span>
+<span class="fc" id="L506">            _cookieJar.updateCookies(response.getCookieJar());</span>
         }
-<span class="fc" id="L504">        validateHeaders(response);</span>
-<span class="fc" id="L505">    }</span>
+<span class="fc" id="L508">        validateHeaders(response);</span>
+<span class="fc" id="L509">    }</span>
 
     /**
      * Support Request [ 1288796 ] getCookieJar() in WebClient
@@ -513,76 +517,76 @@ abstract public class WebClient {
      */
     @Deprecated
     public CookieJar getCookieJar() {
-<span class="fc" id="L516">        return _cookieJar;</span>
+<span class="fc" id="L520">        return _cookieJar;</span>
     }
 
     void updateFrameContents(WebWindow requestWindow, String requestTarget, WebResponse response,
             RequestContext requestContext) throws IOException, SAXException {
-<span class="fc bfc" id="L521" title="All 2 branches covered.">        if (response.getFrame() == FrameSelector.NEW_FRAME) {</span>
-<span class="fc" id="L522">            WebWindow window = new WebWindow(this, requestWindow.getCurrentPage());</span>
-<span class="fc bfc" id="L523" title="All 2 branches covered.">            if (!WebRequest.NEW_WINDOW.equalsIgnoreCase(requestTarget)) {</span>
-<span class="fc" id="L524">                window.setName(requestTarget);</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">        if (response.getFrame() == FrameSelector.NEW_FRAME) {</span>
+<span class="fc" id="L526">            WebWindow window = new WebWindow(this, requestWindow.getCurrentPage());</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">            if (!WebRequest.NEW_WINDOW.equalsIgnoreCase(requestTarget)) {</span>
+<span class="fc" id="L528">                window.setName(requestTarget);</span>
             }
-<span class="fc" id="L526">            response.setFrame(window.getTopFrame());</span>
-<span class="fc" id="L527">            window.updateFrameContents(response, requestContext);</span>
-<span class="fc" id="L528">            _openWindows.add(window);</span>
-<span class="fc" id="L529">            reportWindowOpened(window);</span>
-<span class="fc bfc" id="L530" title="All 4 branches covered.">        } else if (response.getFrame().getWindow() != null &amp;&amp; response.getFrame().getWindow() != requestWindow) {</span>
-<span class="fc" id="L531">            response.getFrame().getWindow().updateFrameContents(response, requestContext);</span>
+<span class="fc" id="L530">            response.setFrame(window.getTopFrame());</span>
+<span class="fc" id="L531">            window.updateFrameContents(response, requestContext);</span>
+<span class="fc" id="L532">            _openWindows.add(window);</span>
+<span class="fc" id="L533">            reportWindowOpened(window);</span>
+<span class="fc bfc" id="L534" title="All 4 branches covered.">        } else if (response.getFrame().getWindow() != null &amp;&amp; response.getFrame().getWindow() != requestWindow) {</span>
+<span class="fc" id="L535">            response.getFrame().getWindow().updateFrameContents(response, requestContext);</span>
         } else {
-<span class="fc bfc" id="L533" title="All 2 branches covered.">            if (response.getFrame() == FrameSelector.TOP_FRAME) {</span>
-<span class="fc" id="L534">                response.setFrame(requestWindow.getTopFrame());</span>
+<span class="fc bfc" id="L537" title="All 2 branches covered.">            if (response.getFrame() == FrameSelector.TOP_FRAME) {</span>
+<span class="fc" id="L538">                response.setFrame(requestWindow.getTopFrame());</span>
             }
-<span class="fc" id="L536">            requestWindow.updateFrameContents(response, requestContext);</span>
+<span class="fc" id="L540">            requestWindow.updateFrameContents(response, requestContext);</span>
         }
-<span class="fc" id="L538">    }</span>
+<span class="fc" id="L542">    }</span>
 
     void close(WebWindow window) {
-<span class="pc bpc" id="L541" title="1 of 2 branches missed.">        if (!_openWindows.contains(window)) {</span>
-<span class="nc" id="L542">            throw new IllegalStateException(&quot;Window is already closed&quot;);</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">        if (!_openWindows.contains(window)) {</span>
+<span class="nc" id="L546">            throw new IllegalStateException(&quot;Window is already closed&quot;);</span>
         }
-<span class="fc" id="L544">        _openWindows.remove(window);</span>
-<span class="fc bfc" id="L545" title="All 2 branches covered.">        if (_openWindows.isEmpty()) {</span>
-<span class="fc" id="L546">            _openWindows.add(new WebWindow(this));</span>
+<span class="fc" id="L548">        _openWindows.remove(window);</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (_openWindows.isEmpty()) {</span>
+<span class="fc" id="L550">            _openWindows.add(new WebWindow(this));</span>
         }
-<span class="fc bfc" id="L548" title="All 2 branches covered.">        if (window.equals(_mainWindow)) {</span>
-<span class="fc" id="L549">            _mainWindow = (WebWindow) _openWindows.get(0);</span>
+<span class="fc bfc" id="L552" title="All 2 branches covered.">        if (window.equals(_mainWindow)) {</span>
+<span class="fc" id="L553">            _mainWindow = (WebWindow) _openWindows.get(0);</span>
         }
-<span class="fc" id="L551">        reportWindowClosed(window);</span>
-<span class="fc" id="L552">    }</span>
+<span class="fc" id="L555">        reportWindowClosed(window);</span>
+<span class="fc" id="L556">    }</span>
 
     private void reportWindowOpened(WebWindow window) {
         List listeners;
 
-<span class="fc" id="L557">        synchronized (_windowListeners) {</span>
-<span class="fc" id="L558">            listeners = new ArrayList(_windowListeners);</span>
-<span class="fc" id="L559">        }</span>
+<span class="fc" id="L561">        synchronized (_windowListeners) {</span>
+<span class="fc" id="L562">            listeners = new ArrayList(_windowListeners);</span>
+<span class="fc" id="L563">        }</span>
 
-<span class="fc bfc" id="L561" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L562">            ((WebWindowListener) i.next()).windowOpened(this, window);</span>
+<span class="fc bfc" id="L565" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L566">            ((WebWindowListener) i.next()).windowOpened(this, window);</span>
         }
-<span class="fc" id="L564">    }</span>
+<span class="fc" id="L568">    }</span>
 
     private void reportWindowClosed(WebWindow window) {
         List listeners;
 
-<span class="fc" id="L569">        synchronized (_windowListeners) {</span>
-<span class="fc" id="L570">            listeners = new ArrayList(_windowListeners);</span>
-<span class="fc" id="L571">        }</span>
+<span class="fc" id="L573">        synchronized (_windowListeners) {</span>
+<span class="fc" id="L574">            listeners = new ArrayList(_windowListeners);</span>
+<span class="fc" id="L575">        }</span>
 
-<span class="fc bfc" id="L573" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L574">            ((WebWindowListener) i.next()).windowClosed(this, window);</span>
+<span class="fc bfc" id="L577" title="All 2 branches covered.">        for (Iterator i = listeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L578">            ((WebWindowListener) i.next()).windowClosed(this, window);</span>
         }
-<span class="fc" id="L576">    }</span>
+<span class="fc" id="L580">    }</span>
 
     // ------------------------------------------ package members ------------------------------------
 
     boolean getConfirmationResponse(String message) {
-<span class="fc" id="L581">        return _dialogResponder.getConfirmation(message);</span>
+<span class="fc" id="L585">        return _dialogResponder.getConfirmation(message);</span>
     }
 
     String getUserResponse(String message, String defaultResponse) {
-<span class="fc" id="L585">        return _dialogResponder.getUserResponse(message, defaultResponse);</span>
+<span class="fc" id="L589">        return _dialogResponder.getUserResponse(message, defaultResponse);</span>
     }
 
     /**
@@ -592,27 +596,27 @@ abstract public class WebClient {
      *            - the alert message to post
      */
     void postAlert(String message) {
-<span class="fc" id="L595">        _alerts.addLast(message);</span>
-<span class="fc" id="L596">    }</span>
+<span class="fc" id="L599">        _alerts.addLast(message);</span>
+<span class="fc" id="L600">    }</span>
 
     // ------------------------------------------ private members -------------------------------------
 
     /** The list of alerts generated by JavaScript. **/
-<span class="fc" id="L601">    private LinkedList _alerts = new LinkedList();</span>
+<span class="fc" id="L605">    private LinkedList _alerts = new LinkedList();</span>
 
     /** The currently defined cookies. **/
-<span class="fc" id="L604">    private CookieJar _cookieJar = new CookieJar();</span>
+<span class="fc" id="L608">    private CookieJar _cookieJar = new CookieJar();</span>
 
     /** A map of header names to values. **/
-<span class="fc" id="L607">    private HeaderDictionary _headers = new HeaderDictionary();</span>
+<span class="fc" id="L611">    private HeaderDictionary _headers = new HeaderDictionary();</span>
 
-<span class="fc" id="L609">    private boolean _exceptionsThrownOnErrorStatus = HttpUnitOptions.getExceptionsThrownOnErrorStatus();</span>
+<span class="fc" id="L613">    private boolean _exceptionsThrownOnErrorStatus = HttpUnitOptions.getExceptionsThrownOnErrorStatus();</span>
 
-<span class="fc" id="L611">    private final List _clientListeners = new ArrayList();</span>
+<span class="fc" id="L615">    private final List _clientListeners = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L613">    private final List _windowListeners = new ArrayList();</span>
+<span class="fc" id="L617">    private final List _windowListeners = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L615">    private DialogResponder _dialogResponder = new DialogAdapter();</span>
+<span class="fc" id="L619">    private DialogResponder _dialogResponder = new DialogAdapter();</span>
 
     private ClientProperties _clientProperties;
 
@@ -622,35 +626,35 @@ abstract public class WebClient {
      * @parm response - the response to validate
      **/
     private void validateHeaders(WebResponse response) throws HttpException {
-<span class="fc" id="L625">        HttpException exception = null;</span>
-<span class="pc bpc" id="L626" title="1 of 2 branches missed.">        if (response.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {</span>
-<span class="nc" id="L627">            exception = new HttpInternalErrorException(response.getURL());</span>
-<span class="fc bfc" id="L628" title="All 2 branches covered.">        } else if (response.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {</span>
-<span class="fc" id="L629">            exception = new HttpNotFoundException(response.getResponseMessage(), response.getURL());</span>
-<span class="fc bfc" id="L630" title="All 2 branches covered.">        } else if (response.getResponseCode() &gt;= HttpURLConnection.HTTP_BAD_REQUEST) {</span>
-<span class="fc" id="L631">            exception = new HttpException(response.getResponseCode(), response.getResponseMessage(), response.getURL());</span>
+<span class="fc" id="L629">        HttpException exception = null;</span>
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">        if (response.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {</span>
+<span class="nc" id="L631">            exception = new HttpInternalErrorException(response.getURL());</span>
+<span class="fc bfc" id="L632" title="All 2 branches covered.">        } else if (response.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {</span>
+<span class="fc" id="L633">            exception = new HttpNotFoundException(response.getResponseMessage(), response.getURL());</span>
+<span class="fc bfc" id="L634" title="All 2 branches covered.">        } else if (response.getResponseCode() &gt;= HttpURLConnection.HTTP_BAD_REQUEST) {</span>
+<span class="fc" id="L635">            exception = new HttpException(response.getResponseCode(), response.getResponseMessage(), response.getURL());</span>
         }
         // is there an exception?
-<span class="fc bfc" id="L634" title="All 2 branches covered.">        if (exception != null) {</span>
+<span class="fc bfc" id="L638" title="All 2 branches covered.">        if (exception != null) {</span>
             // see feature request [ 914314 ] Add HttpException.getResponse for better reporting
-<span class="fc" id="L636">            exception.setResponse(response);</span>
+<span class="fc" id="L640">            exception.setResponse(response);</span>
             // shall we ignore errors?
-<span class="fc bfc" id="L638" title="All 2 branches covered.">            if (!getExceptionsThrownOnErrorStatus()) {</span>
-<span class="fc" id="L639">                return;</span>
+<span class="fc bfc" id="L642" title="All 2 branches covered.">            if (!getExceptionsThrownOnErrorStatus()) {</span>
+<span class="fc" id="L643">                return;</span>
             }
-<span class="fc" id="L641">            throw exception;</span>
+<span class="fc" id="L645">            throw exception;</span>
         }
-<span class="fc" id="L643">    }</span>
+<span class="fc" id="L647">    }</span>
 
     FrameSelector findFrame(String target) {
-<span class="fc bfc" id="L646" title="All 2 branches covered.">        for (Object _openWindow : _openWindows) {</span>
-<span class="fc" id="L647">            WebWindow webWindow = (WebWindow) _openWindow;</span>
-<span class="fc" id="L648">            FrameSelector frame = webWindow.getFrame(target);</span>
-<span class="fc bfc" id="L649" title="All 2 branches covered.">            if (frame != null) {</span>
-<span class="fc" id="L650">                return frame;</span>
+<span class="fc bfc" id="L650" title="All 2 branches covered.">        for (Object _openWindow : _openWindows) {</span>
+<span class="fc" id="L651">            WebWindow webWindow = (WebWindow) _openWindow;</span>
+<span class="fc" id="L652">            FrameSelector frame = webWindow.getFrame(target);</span>
+<span class="fc bfc" id="L653" title="All 2 branches covered.">            if (frame != null) {</span>
+<span class="fc" id="L654">                return frame;</span>
             }
-<span class="fc" id="L652">        }</span>
-<span class="fc" id="L653">        return null;</span>
+<span class="fc" id="L656">        }</span>
+<span class="fc" id="L657">        return null;</span>
     }
 
     /**
@@ -669,57 +673,57 @@ abstract public class WebClient {
      *             if an exception (including authorization failure) occurs
      */
     WebResponse createResponse(WebRequest request, FrameSelector targetFrame) throws IOException {
-<span class="fc" id="L672">        WebResponse response = newResponse(request, targetFrame);</span>
-<span class="fc" id="L673">        AuthenticationChallenge challenge = new AuthenticationChallenge(this, request,</span>
-<span class="fc" id="L674">                response.getHeaderField(&quot;WWW-Authenticate&quot;));</span>
-<span class="fc bfc" id="L675" title="All 2 branches covered.">        if (!challenge.needToAuthenticate()) {</span>
-<span class="fc" id="L676">            return response;</span>
+<span class="fc" id="L676">        WebResponse response = newResponse(request, targetFrame);</span>
+<span class="fc" id="L677">        AuthenticationChallenge challenge = new AuthenticationChallenge(this, request,</span>
+<span class="fc" id="L678">                response.getHeaderField(&quot;WWW-Authenticate&quot;));</span>
+<span class="fc bfc" id="L679" title="All 2 branches covered.">        if (!challenge.needToAuthenticate()) {</span>
+<span class="fc" id="L680">            return response;</span>
         }
-<span class="fc" id="L678">        setOnetimeAuthenticationHeader(challenge.createAuthenticationHeader());</span>
-<span class="fc" id="L679">        WebResponse response2 = newResponse(request, targetFrame);</span>
-<span class="pc bpc" id="L680" title="3 of 4 branches missed.">        if (response2.getHeaderField(&quot;WWW-Authenticate&quot;) != null &amp;&amp; getExceptionsThrownOnErrorStatus()) {</span>
-<span class="nc" id="L681">            throw AuthenticationChallenge.createException(response2.getHeaderField(&quot;WWW-Authenticate&quot;));</span>
+<span class="fc" id="L682">        setOnetimeAuthenticationHeader(challenge.createAuthenticationHeader());</span>
+<span class="fc" id="L683">        WebResponse response2 = newResponse(request, targetFrame);</span>
+<span class="pc bpc" id="L684" title="3 of 4 branches missed.">        if (response2.getHeaderField(&quot;WWW-Authenticate&quot;) != null &amp;&amp; getExceptionsThrownOnErrorStatus()) {</span>
+<span class="nc" id="L685">            throw AuthenticationChallenge.createException(response2.getHeaderField(&quot;WWW-Authenticate&quot;));</span>
         }
-<span class="fc" id="L683">        return response2;</span>
+<span class="fc" id="L687">        return response2;</span>
     }
 
     private void setOnetimeAuthenticationHeader(String authorizationHeader) {
-<span class="fc" id="L687">        _authorizationString = authorizationHeader;</span>
-<span class="fc" id="L688">    }</span>
+<span class="fc" id="L691">        _authorizationString = authorizationHeader;</span>
+<span class="fc" id="L692">    }</span>
 
     // ==================================================================================================
 
-<span class="fc" id="L692">    static public class HeaderDictionary extends Hashtable {</span>
+<span class="fc" id="L696">    static public class HeaderDictionary extends Hashtable {</span>
 
         private static final long serialVersionUID = 1L;
 
         public void addEntries(Dictionary source) {
-<span class="fc bfc" id="L697" title="All 2 branches covered.">            for (Enumeration e = source.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L698">                Object key = e.nextElement();</span>
-<span class="fc" id="L699">                put(key, source.get(key));</span>
-<span class="fc" id="L700">            }</span>
-<span class="fc" id="L701">        }</span>
+<span class="fc bfc" id="L701" title="All 2 branches covered.">            for (Enumeration e = source.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L702">                Object key = e.nextElement();</span>
+<span class="fc" id="L703">                put(key, source.get(key));</span>
+<span class="fc" id="L704">            }</span>
+<span class="fc" id="L705">        }</span>
 
         @Override
         public boolean containsKey(Object key) {
-<span class="fc" id="L705">            return super.containsKey(matchPreviousFieldName(key.toString()));</span>
+<span class="fc" id="L709">            return super.containsKey(matchPreviousFieldName(key.toString()));</span>
         }
 
         @Override
         public Object get(Object fieldName) {
-<span class="fc" id="L710">            return super.get(matchPreviousFieldName(fieldName.toString()));</span>
+<span class="fc" id="L714">            return super.get(matchPreviousFieldName(fieldName.toString()));</span>
         }
 
         @Override
         public Object put(Object fieldName, Object fieldValue) {
-<span class="fc" id="L715">            fieldName = matchPreviousFieldName(fieldName.toString());</span>
-<span class="fc" id="L716">            Object oldValue = super.get(fieldName);</span>
-<span class="pc bpc" id="L717" title="1 of 2 branches missed.">            if (fieldValue == null) {</span>
-<span class="nc" id="L718">                remove(fieldName);</span>
+<span class="fc" id="L719">            fieldName = matchPreviousFieldName(fieldName.toString());</span>
+<span class="fc" id="L720">            Object oldValue = super.get(fieldName);</span>
+<span class="pc bpc" id="L721" title="1 of 2 branches missed.">            if (fieldValue == null) {</span>
+<span class="nc" id="L722">                remove(fieldName);</span>
             } else {
-<span class="fc" id="L720">                super.put(fieldName, fieldValue);</span>
+<span class="fc" id="L724">                super.put(fieldName, fieldValue);</span>
             }
-<span class="fc" id="L722">            return oldValue;</span>
+<span class="fc" id="L726">            return oldValue;</span>
         }
 
         /**
@@ -727,13 +731,13 @@ abstract public class WebClient {
          * specified name.
          **/
         private String matchPreviousFieldName(String fieldName) {
-<span class="fc bfc" id="L730" title="All 2 branches covered.">            for (Enumeration e = keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L731">                String key = (String) e.nextElement();</span>
-<span class="fc bfc" id="L732" title="All 2 branches covered.">                if (key.equalsIgnoreCase(fieldName)) {</span>
-<span class="fc" id="L733">                    return key;</span>
+<span class="fc bfc" id="L734" title="All 2 branches covered.">            for (Enumeration e = keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L735">                String key = (String) e.nextElement();</span>
+<span class="fc bfc" id="L736" title="All 2 branches covered.">                if (key.equalsIgnoreCase(fieldName)) {</span>
+<span class="fc" id="L737">                    return key;</span>
                 }
-<span class="fc" id="L735">            }</span>
-<span class="fc" id="L736">            return fieldName;</span>
+<span class="fc" id="L739">            }</span>
+<span class="fc" id="L740">            return fieldName;</span>
         }
 
     }
@@ -745,18 +749,18 @@ abstract public class WebClient {
 class RedirectWebRequest extends WebRequest {
 
     RedirectWebRequest(WebResponse response) {
-<span class="fc" id="L748">        super(response.getURL(), response.getHeaderField(&quot;Location&quot;), response.getFrame(), response.getFrameName());</span>
-<span class="fc bfc" id="L749" title="All 2 branches covered.">        if (response.getReferer() != null) {</span>
-<span class="fc" id="L750">            setHeaderField(&quot;Referer&quot;, response.getReferer());</span>
+<span class="fc" id="L752">        super(response.getURL(), response.getHeaderField(&quot;Location&quot;), response.getFrame(), response.getFrameName());</span>
+<span class="fc bfc" id="L753" title="All 2 branches covered.">        if (response.getReferer() != null) {</span>
+<span class="fc" id="L754">            setHeaderField(&quot;Referer&quot;, response.getReferer());</span>
         }
-<span class="fc" id="L752">    }</span>
+<span class="fc" id="L756">    }</span>
 
     /**
      * Returns the HTTP method defined for this request.
      **/
     @Override
     public String getMethod() {
-<span class="fc" id="L759">        return &quot;GET&quot;;</span>
+<span class="fc" id="L763">        return &quot;GET&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

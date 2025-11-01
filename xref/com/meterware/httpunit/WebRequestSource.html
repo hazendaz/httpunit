@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -43,7 +43,7 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:russgold@httpunit.org" target="alexandria_uri">mailto:russgold@httpunit.org</a>"&gt;Russell Gold&lt;/a&gt;</em>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="WebRequestSource" href="../../../com/meterware/httpunit/WebRequestSource.html#WebRequestSource">WebRequestSource</a> <strong class="jxr_keyword">extends</strong> <a name="ParameterHolder" href="../../../com/meterware/httpunit/ParameterHolder.html#ParameterHolder">ParameterHolder</a> <strong class="jxr_keyword">implements</strong> <a name="HTMLElement" href="../../../com/meterware/httpunit/HTMLElement.html#HTMLElement">HTMLElement</a> {
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="WebRequestSource" href="../../../com/meterware/httpunit/WebRequestSource.html#WebRequestSource">WebRequestSource</a> <strong class="jxr_keyword">extends</strong> <a name="ParameterHolder" href="../../../com/meterware/httpunit/ParameterHolder.html#ParameterHolder">ParameterHolder</a> <strong class="jxr_keyword">implements</strong> <a name="HTMLElement" href="../../../com/meterware/httpunit/HTMLElement.html#HTMLElement">HTMLElement</a> {
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> <a name="FrameSelector" href="../../../com/meterware/httpunit/FrameSelector.html#FrameSelector">FrameSelector</a> _frame;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  
@@ -89,7 +89,7 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     * Returns the target for this request source.</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">public</strong> String getTarget() {
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">if</strong> (getSpecifiedTarget().length() == 0) {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">if</strong> (getSpecifiedTarget().isEmpty()) {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              <strong class="jxr_keyword">return</strong> _defaultTarget;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          }
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">return</strong> getSpecifiedTarget();
@@ -133,19 +133,19 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * Creates and returns a web request from this request source.</em>
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>     <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> <a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> getRequest();
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> getRequest();
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     * Returns an array containing the names of any parameters to be sent on a request based on this request source.</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     @Override
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> String[] getParameterNames();
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> String[] getParameterNames();
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     * Returns the values of the named parameter.</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     @Override
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> String[] getParameterValues(String name);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> String[] getParameterValues(String name);
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> 
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * Returns the URL relative to the current page which will handle the request.</em>
@@ -169,7 +169,7 @@
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     <strong class="jxr_keyword">protected</strong> String getRelativeURL() {
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">if</strong> (result.trim().length() == 0) {
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">if</strong> (result.trim().isEmpty()) {
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             result = getBaseURL().getFile();
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         }
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">return</strong> result;
@@ -238,7 +238,7 @@
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">     * Extracts any parameters specified as part of the destination URL, calling addPresetParameter for each one in the</em>
 <a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">     * order in which they are found.</em>
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> loadDestinationParameters() {
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> loadDestinationParameters() {
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>         StringTokenizer st = <strong class="jxr_keyword">new</strong> StringTokenizer(getParametersString(), PARAM_DELIM);
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>         <strong class="jxr_keyword">while</strong> (st.hasMoreTokens()) {
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>             stripOneParameter(st.nextToken());
@@ -310,14 +310,14 @@
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L303" href="#L303">303</a> <em class="jxr_javadoccomment">     * Submits a request to the web client from which this request source was originally obtained.</em>
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <a name="WebResponse" href="../../../com/meterware/httpunit/WebResponse.html#WebResponse">WebResponse</a> submitRequest(<a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> request) <strong class="jxr_keyword">throws</strong> IOException, SAXException {
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <a name="WebResponse" href="../../../com/meterware/httpunit/WebResponse.html#WebResponse">WebResponse</a> submitRequest(<a name="WebRequest" href="../../../com/meterware/httpunit/WebRequest.html#WebRequest">WebRequest</a> request) <strong class="jxr_keyword">throws</strong> IOException, SAXException {
 <a class="jxr_linenumber" name="L306" href="#L306">306</a>         <strong class="jxr_keyword">return</strong> getDestination().equals(<span class="jxr_string">"#"</span>) ? _baseResponse : _baseResponse.getWindow().sendRequest(request);
 <a class="jxr_linenumber" name="L307" href="#L307">307</a>     }
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> 
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     * Returns the web response containing this request source.</em>
 <a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <a name="WebResponse" href="../../../com/meterware/httpunit/WebResponse.html#WebResponse">WebResponse</a> getBaseResponse() {
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <a name="WebResponse" href="../../../com/meterware/httpunit/WebResponse.html#WebResponse">WebResponse</a> getBaseResponse() {
 <a class="jxr_linenumber" name="L313" href="#L313">313</a>         <strong class="jxr_keyword">return</strong> _baseResponse;
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     }
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> 
@@ -436,7 +436,7 @@
 <a class="jxr_linenumber" name="L428" href="#L428">428</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>     <strong class="jxr_keyword">private</strong> String getParametersString() {
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         String url = HttpUnitUtils.trimFragment(getDestination());
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>         <strong class="jxr_keyword">if</strong> (url.trim().length() == 0) {
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         <strong class="jxr_keyword">if</strong> (url.trim().isEmpty()) {
 <a class="jxr_linenumber" name="L432" href="#L432">432</a>             url = getBaseURL().toExternalForm();
 <a class="jxr_linenumber" name="L433" href="#L433">433</a>         }
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>         <strong class="jxr_keyword">if</strong> (HttpUnitUtils.isJavaScriptURL(url)) {

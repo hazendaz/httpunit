@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -52,7 +52,7 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> **/</em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="FormControl" href="../../../com/meterware/httpunit/FormControl.html#FormControl">FormControl</a> <strong class="jxr_keyword">extends</strong> <a name="HTMLElementBase" href="../../../com/meterware/httpunit/HTMLElementBase.html#HTMLElementBase">HTMLElementBase</a> {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String[] NO_VALUE = {};
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String[] NO_VALUE = {};
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a name="WebForm" href="../../../com/meterware/httpunit/WebForm.html#WebForm">WebForm</a> _form;
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">private</strong> <a name="HTMLControl" href="../../../com/meterware/httpunit/dom/HTMLControl.html#HTMLControl">HTMLControl</a> _control;
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment">     * Return the type of the control, as seen from JavaScript.</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">public</strong> String getType();
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> String getType();
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">static</strong> <a name="ScriptableDelegate" href="../../../com/meterware/httpunit/scripting/ScriptableDelegate.html#ScriptableDelegate">ScriptableDelegate</a> newSelectionOption() {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> SelectionFormControl.Option();
@@ -124,7 +124,7 @@
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">return</strong> getScriptingHandler();
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <a name="WebForm" href="../../../com/meterware/httpunit/WebForm.html#WebForm">WebForm</a> getForm() {
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <a name="WebForm" href="../../../com/meterware/httpunit/WebForm.html#WebForm">WebForm</a> getForm() {
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         <strong class="jxr_keyword">return</strong> _form;
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     }
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> 
@@ -341,7 +341,7 @@
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">     * Removes the specified required value from the list of values, throwing an exception if it is missing.</em>
 <a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_javadoccomment">     **/</em>
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> claimValueIsRequired(List values, <strong class="jxr_keyword">final</strong> String value) {
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> claimValueIsRequired(List values, <strong class="jxr_keyword">final</strong> String value) {
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>         <strong class="jxr_keyword">if</strong> (!values.contains(value)) {
 <a class="jxr_linenumber" name="L338" href="#L338">338</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="MissingParameterValueException" href="../../../com/meterware/httpunit/FormControl.html#MissingParameterValueException">MissingParameterValueException</a>(getName(), value,
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>                     (String[]) values.toArray(<strong class="jxr_keyword">new</strong> String[values.size()]));
@@ -701,7 +701,7 @@
 <a class="jxr_linenumber" name="L693" href="#L693">693</a>     @Override
 <a class="jxr_linenumber" name="L694" href="#L694">694</a>     String getQueryValue() {
 <a class="jxr_linenumber" name="L695" href="#L695">695</a>         <strong class="jxr_keyword">final</strong> String value = getValueAttribute();
-<a class="jxr_linenumber" name="L696" href="#L696">696</a>         <strong class="jxr_keyword">return</strong> value.length() == 0 ? <span class="jxr_string">"on"</span> : value;
+<a class="jxr_linenumber" name="L696" href="#L696">696</a>         <strong class="jxr_keyword">return</strong> value.isEmpty() ? <span class="jxr_string">"on"</span> : value;
 <a class="jxr_linenumber" name="L697" href="#L697">697</a>     }
 <a class="jxr_linenumber" name="L698" href="#L698">698</a> 
 <a class="jxr_linenumber" name="L699" href="#L699">699</a>     <em class="jxr_javadoccomment">/**</em>

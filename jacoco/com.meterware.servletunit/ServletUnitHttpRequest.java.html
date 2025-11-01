@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpRequest.java</span></div><h1>ServletUnitHttpRequest.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -19,7 +19,6 @@
  */
 package com.meterware.servletunit;
 
-import com.meterware.httpunit.Base64;
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
@@ -43,9 +42,10 @@ import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -481,7 +481,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 <span class="fc" id="L481">            initializeInputStream();</span>
 <span class="fc" id="L482">            String encoding = getCharacterEncoding();</span>
 <span class="pc bpc" id="L483" title="1 of 2 branches missed.">            if (encoding == null) {</span>
-<span class="fc" id="L484">                encoding = HttpUnitUtils.DEFAULT_CHARACTER_SET;</span>
+<span class="fc" id="L484">                encoding = StandardCharsets.ISO_8859_1.name();</span>
             }
 <span class="fc" id="L486">            _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));</span>
 <span class="fc" id="L487">            _gotReader = true;</span>
@@ -547,13 +547,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     private Vector getPreferredLocales() {
 <span class="fc bfc" id="L549" title="All 2 branches covered.">        if (_locales == null) {</span>
-<span class="fc" id="L550">            _locales = new Vector();</span>
+<span class="fc" id="L550">            _locales = new Vector&lt;&gt;();</span>
 <span class="fc" id="L551">            String languages = getHeader(&quot;accept-language&quot;);</span>
 <span class="fc bfc" id="L552" title="All 2 branches covered.">            if (languages == null) {</span>
 <span class="fc" id="L553">                _locales.add(Locale.getDefault());</span>
             } else {
 <span class="fc" id="L555">                StringTokenizer st = new StringTokenizer(languages, &quot;,&quot;);</span>
-<span class="fc" id="L556">                ArrayList al = new ArrayList();</span>
+<span class="fc" id="L556">                ArrayList al = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L557" title="All 2 branches covered.">                while (st.hasMoreTokens()) {</span>
 <span class="fc" id="L558">                    String token = st.nextToken();</span>
 <span class="fc" id="L559">                    al.add(new PrioritizedLocale(token));</span>
@@ -639,7 +639,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-<span class="fc" id="L642">        Vector list = new Vector();</span>
+<span class="fc" id="L642">        Vector list = new Vector&lt;&gt;();</span>
 <span class="pc bpc" id="L643" title="1 of 2 branches missed.">        if (_headers.containsKey(name)) {</span>
 <span class="fc" id="L644">            list.add(_headers.get(name));</span>
         }
@@ -677,7 +677,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @since 1.3
      **/
     @Override
-    public void setCharacterEncoding(String charset) throws UnsupportedEncodingException {
+    public void setCharacterEncoding(String charset) {
 <span class="fc" id="L681">        _charset = charset;</span>
 <span class="fc" id="L682">        _requestContext.setMessageEncoding(charset);</span>
 <span class="fc" id="L683">    }</span>
@@ -754,38 +754,40 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 <span class="fc" id="L754">        String authorizationHeader = (String) _headers.get(&quot;Authorization&quot;);</span>
 
 <span class="fc bfc" id="L756" title="All 2 branches covered.">        if (authorizationHeader != null) {</span>
-<span class="fc" id="L757">            String userAndPassword = Base64.decode(authorizationHeader.substring(authorizationHeader.indexOf(' ') + 1));</span>
-<span class="fc" id="L758">            int colonPos = userAndPassword.indexOf(':');</span>
-<span class="fc" id="L759">            recordAuthenticationInfo(userAndPassword.substring(0, colonPos),</span>
-<span class="fc" id="L760">                    toArray(userAndPassword.substring(colonPos + 1)));</span>
+<span class="fc" id="L757">            String userAndPassword = new String(Base64.getDecoder().decode(authorizationHeader</span>
+<span class="fc" id="L758">                    .substring(authorizationHeader.indexOf(' ') + 1).getBytes(StandardCharsets.UTF_8)),</span>
+                    StandardCharsets.UTF_8);
+<span class="fc" id="L760">            int colonPos = userAndPassword.indexOf(':');</span>
+<span class="fc" id="L761">            recordAuthenticationInfo(userAndPassword.substring(0, colonPos),</span>
+<span class="fc" id="L762">                    toArray(userAndPassword.substring(colonPos + 1)));</span>
         }
-<span class="fc" id="L762">    }</span>
+<span class="fc" id="L764">    }</span>
 
     static String[] toArray(String roleList) {
-<span class="fc" id="L765">        StringTokenizer st = new StringTokenizer(roleList, &quot;,&quot;);</span>
-<span class="fc" id="L766">        String[] result = new String[st.countTokens()];</span>
-<span class="fc bfc" id="L767" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc" id="L768">            result[i] = st.nextToken();</span>
+<span class="fc" id="L767">        StringTokenizer st = new StringTokenizer(roleList, &quot;,&quot;);</span>
+<span class="fc" id="L768">        String[] result = new String[st.countTokens()];</span>
+<span class="fc bfc" id="L769" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L770">            result[i] = st.nextToken();</span>
         }
-<span class="fc" id="L770">        return result;</span>
+<span class="fc" id="L772">        return result;</span>
     }
 
     void recordAuthenticationInfo(String userName, String[] roles) {
-<span class="fc" id="L774">        _userName = userName;</span>
-<span class="fc" id="L775">        _roles = roles;</span>
-<span class="fc" id="L776">    }</span>
+<span class="fc" id="L776">        _userName = userName;</span>
+<span class="fc" id="L777">        _roles = roles;</span>
+<span class="fc" id="L778">    }</span>
 
     // --------------------------------------------- private members ----------------------------------------------
 
-    final static private String LOOPBACK_ADDRESS = &quot;127.0.0.1&quot;;
+    static final private String LOOPBACK_ADDRESS = &quot;127.0.0.1&quot;;
 
     private WebRequest _request;
     private ServletMetaData _servletRequest;
     private WebClient.HeaderDictionary _headers;
     private ServletUnitContext _context;
     private ServletUnitHttpSession _session;
-<span class="fc" id="L787">    private Hashtable _attributes = new Hashtable();</span>
-<span class="fc" id="L788">    private Vector _cookies = new Vector();</span>
+<span class="fc" id="L789">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L790">    private Vector _cookies = new Vector&lt;&gt;();</span>
     private String _sessionID;
     private byte[] _messageBody;
 
@@ -793,63 +795,63 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private String[] _roles;
 
     private void throwNotImplementedYet() {
-<span class="nc" id="L796">        throw new RuntimeException(&quot;Not implemented yet&quot;);</span>
+<span class="nc" id="L798">        throw new RuntimeException(&quot;Not implemented yet&quot;);</span>
     }
 
     private void setCookiesFromHeader(Dictionary clientHeaders) {
-<span class="fc" id="L800">        String cookieHeader = (String) clientHeaders.get(&quot;Cookie&quot;);</span>
-<span class="fc bfc" id="L801" title="All 2 branches covered.">        if (cookieHeader == null) {</span>
-<span class="fc" id="L802">            return;</span>
+<span class="fc" id="L802">        String cookieHeader = (String) clientHeaders.get(&quot;Cookie&quot;);</span>
+<span class="fc bfc" id="L803" title="All 2 branches covered.">        if (cookieHeader == null) {</span>
+<span class="fc" id="L804">            return;</span>
         }
 
-<span class="fc" id="L805">        StringTokenizer st = new StringTokenizer(cookieHeader, &quot;,;=&quot;, true);</span>
-<span class="fc" id="L806">        String lastToken = st.nextToken();</span>
-<span class="fc bfc" id="L807" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L808">            String token = st.nextToken();</span>
-<span class="pc bpc" id="L809" title="1 of 4 branches missed.">            if (token.equals(&quot;=&quot;) &amp;&amp; st.hasMoreTokens()) {</span>
-<span class="fc" id="L810">                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));</span>
+<span class="fc" id="L807">        StringTokenizer st = new StringTokenizer(cookieHeader, &quot;,;=&quot;, true);</span>
+<span class="fc" id="L808">        String lastToken = st.nextToken();</span>
+<span class="fc bfc" id="L809" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L810">            String token = st.nextToken();</span>
+<span class="pc bpc" id="L811" title="1 of 4 branches missed.">            if (token.equals(&quot;=&quot;) &amp;&amp; st.hasMoreTokens()) {</span>
+<span class="fc" id="L812">                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));</span>
             }
-<span class="fc" id="L812">            lastToken = token;</span>
-<span class="fc" id="L813">        }</span>
-<span class="fc" id="L814">    }</span>
+<span class="fc" id="L814">            lastToken = token;</span>
+<span class="fc" id="L815">        }</span>
+<span class="fc" id="L816">    }</span>
 
     static class PrioritizedLocale implements Comparable {
 
         private Locale _locale;
         private float _priority;
 
-<span class="fc" id="L821">        PrioritizedLocale(String languageSpec) {</span>
-<span class="fc" id="L822">            int semiIndex = languageSpec.indexOf(';');</span>
-<span class="fc bfc" id="L823" title="All 2 branches covered.">            if (semiIndex &lt; 0) {</span>
-<span class="fc" id="L824">                _priority = 1;</span>
-<span class="fc" id="L825">                _locale = parseLocale(languageSpec);</span>
+<span class="fc" id="L823">        PrioritizedLocale(String languageSpec) {</span>
+<span class="fc" id="L824">            int semiIndex = languageSpec.indexOf(';');</span>
+<span class="fc bfc" id="L825" title="All 2 branches covered.">            if (semiIndex &lt; 0) {</span>
+<span class="fc" id="L826">                _priority = 1;</span>
+<span class="fc" id="L827">                _locale = parseLocale(languageSpec);</span>
             } else {
-<span class="fc" id="L827">                _priority = Float.parseFloat(languageSpec.substring(languageSpec.indexOf('=', semiIndex) + 1));</span>
-<span class="fc" id="L828">                _locale = parseLocale(languageSpec.substring(0, semiIndex));</span>
+<span class="fc" id="L829">                _priority = Float.parseFloat(languageSpec.substring(languageSpec.indexOf('=', semiIndex) + 1));</span>
+<span class="fc" id="L830">                _locale = parseLocale(languageSpec.substring(0, semiIndex));</span>
             }
-<span class="fc" id="L830">        }</span>
+<span class="fc" id="L832">        }</span>
 
         private Locale parseLocale(String range) {
-<span class="fc" id="L833">            range = range.trim();</span>
-<span class="fc" id="L834">            int dashIndex = range.indexOf('-');</span>
-<span class="fc bfc" id="L835" title="All 2 branches covered.">            if (dashIndex &lt; 0) {</span>
-<span class="fc" id="L836">                return new Locale(range, &quot;&quot;);</span>
+<span class="fc" id="L835">            range = range.trim();</span>
+<span class="fc" id="L836">            int dashIndex = range.indexOf('-');</span>
+<span class="fc bfc" id="L837" title="All 2 branches covered.">            if (dashIndex &lt; 0) {</span>
+<span class="fc" id="L838">                return new Locale(range, &quot;&quot;);</span>
             }
-<span class="fc" id="L838">            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));</span>
+<span class="fc" id="L840">            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));</span>
         }
 
         public Locale getLocale() {
-<span class="fc" id="L842">            return _locale;</span>
+<span class="fc" id="L844">            return _locale;</span>
         }
 
         @Override
         public int compareTo(Object o) {
-<span class="pc bpc" id="L847" title="1 of 2 branches missed.">            if (!(o instanceof PrioritizedLocale)) {</span>
-<span class="nc" id="L848">                throw new IllegalArgumentException(&quot;may only combine with other prioritized locales&quot;);</span>
+<span class="pc bpc" id="L849" title="1 of 2 branches missed.">            if (!(o instanceof PrioritizedLocale)) {</span>
+<span class="nc" id="L850">                throw new IllegalArgumentException(&quot;may only combine with other prioritized locales&quot;);</span>
             }
-<span class="fc" id="L850">            PrioritizedLocale other = (PrioritizedLocale) o;</span>
-<span class="pc bpc" id="L851" title="1 of 2 branches missed.">            return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())</span>
-<span class="fc bfc" id="L852" title="All 2 branches covered.">                    : _priority &lt; other._priority ? +1 : -1;</span>
+<span class="fc" id="L852">            PrioritizedLocale other = (PrioritizedLocale) o;</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">            return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())</span>
+<span class="fc bfc" id="L854" title="All 2 branches covered.">                    : _priority &lt; other._priority ? +1 : -1;</span>
         }
 
     }
@@ -857,113 +859,113 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     @Override
     public ServletContext getServletContext() {
         try {
-<span class="nc" id="L860">            return _servletRequest.getServlet().getServletConfig().getServletContext();</span>
-<span class="nc" id="L861">        } catch (ServletException e) {</span>
-<span class="nc" id="L862">            return null;</span>
+<span class="nc" id="L862">            return _servletRequest.getServlet().getServletConfig().getServletContext();</span>
+<span class="nc" id="L863">        } catch (ServletException e) {</span>
+<span class="nc" id="L864">            return null;</span>
         }
     }
 
     @Override
     public AsyncContext startAsync() throws IllegalStateException {
         // TODO Auto-generated method stub
-<span class="nc" id="L869">        return null;</span>
+<span class="nc" id="L871">        return null;</span>
     }
 
     @Override
     public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
             throws IllegalStateException {
         // TODO Auto-generated method stub
-<span class="nc" id="L876">        return null;</span>
+<span class="nc" id="L878">        return null;</span>
     }
 
     @Override
     public boolean isAsyncStarted() {
         // TODO Auto-generated method stub
-<span class="nc" id="L882">        return false;</span>
+<span class="nc" id="L884">        return false;</span>
     }
 
     @Override
     public boolean isAsyncSupported() {
         // TODO Auto-generated method stub
-<span class="nc" id="L888">        return false;</span>
+<span class="nc" id="L890">        return false;</span>
     }
 
     @Override
     public AsyncContext getAsyncContext() {
         // TODO Auto-generated method stub
-<span class="nc" id="L894">        return null;</span>
+<span class="nc" id="L896">        return null;</span>
     }
 
     @Override
     public DispatcherType getDispatcherType() {
         // TODO Auto-generated method stub
-<span class="nc" id="L900">        return null;</span>
+<span class="nc" id="L902">        return null;</span>
     }
 
     @Override
     public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L906">        return false;</span>
+<span class="nc" id="L908">        return false;</span>
     }
 
     @Override
     public void login(String username, String password) throws ServletException {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L913">    }</span>
+<span class="nc" id="L915">    }</span>
 
     @Override
     public void logout() throws ServletException {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L919">    }</span>
+<span class="nc" id="L921">    }</span>
 
     @Override
     public Collection&lt;Part&gt; getParts() throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L924">        return null;</span>
+<span class="nc" id="L926">        return null;</span>
     }
 
     @Override
     public Part getPart(String name) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L930">        return null;</span>
+<span class="nc" id="L932">        return null;</span>
     }
 
     @Override
     public long getContentLengthLong() {
         // TODO Auto-generated method stub
-<span class="nc" id="L936">        return 0;</span>
+<span class="nc" id="L938">        return 0;</span>
     }
 
     @Override
     public String changeSessionId() {
         // TODO Auto-generated method stub
-<span class="nc" id="L942">        return null;</span>
+<span class="nc" id="L944">        return null;</span>
     }
 
     @Override
     public &lt;T extends HttpUpgradeHandler&gt; T upgrade(Class&lt;T&gt; handlerClass) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L948">        return null;</span>
+<span class="nc" id="L950">        return null;</span>
     }
 
     @Override
     public String getRequestId() {
         // TODO Auto-generated method stub
-<span class="nc" id="L954">        return null;</span>
+<span class="nc" id="L956">        return null;</span>
     }
 
     @Override
     public String getProtocolRequestId() {
         // TODO Auto-generated method stub
-<span class="nc" id="L960">        return null;</span>
+<span class="nc" id="L962">        return null;</span>
     }
 
     @Override
     public ServletConnection getServletConnection() {
         // TODO Auto-generated method stub
-<span class="nc" id="L966">        return null;</span>
+<span class="nc" id="L968">        return null;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

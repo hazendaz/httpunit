@@ -9,7 +9,7 @@
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * MIT License</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2024 Russell Gold</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Copyright 2011-2025 Russell Gold</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * documentation files (the "Software"), to deal in the Software without restriction, including without limitation</em>
@@ -59,8 +59,8 @@
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          encoding.sendClose();
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String BOUNDARY = <span class="jxr_string">"--HttpUnit-part0-aSgQ2M"</span>;
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> byte[] CRLF = { 0x0d, 0x0A };
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String BOUNDARY = <span class="jxr_string">"--HttpUnit-part0-aSgQ2M"</span>;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> byte[] CRLF = { 0x0d, 0x0A };
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">private</strong> String encode(String string) {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">char</strong>[] chars = string.toCharArray();
@@ -106,7 +106,7 @@
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">         */</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          @Override
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addParameter(String name, String value, String characterSet) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>             <strong class="jxr_keyword">if</strong> (name == <strong class="jxr_keyword">null</strong> || name.length() == 0 || value == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>             <strong class="jxr_keyword">if</strong> (name == <strong class="jxr_keyword">null</strong> || name.isEmpty() || value == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>                 <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>             }
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>             writeLn(_outputStream, <span class="jxr_string">"--"</span> + BOUNDARY);
@@ -117,8 +117,8 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         }
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">char</strong> CR = 0x0D;
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">char</strong> LF = 0x0A;
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> CR = 0x0D;
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> LF = 0x0A;
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> 
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">private</strong> String fixLineEndings(String value) {
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder();

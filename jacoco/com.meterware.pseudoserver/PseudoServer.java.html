@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PseudoServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">PseudoServer.java</span></div><h1>PseudoServer.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -31,10 +31,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -69,7 +69,7 @@ public class PseudoServer {
 
 <span class="fc" id="L70">    private int _connectionNum = 0;</span>
 
-<span class="fc" id="L72">    private ArrayList _classpathDirs = new ArrayList();</span>
+<span class="fc" id="L72">    private ArrayList _classpathDirs = new ArrayList&lt;&gt;();</span>
 
 <span class="fc" id="L74">    private String _maxProtocolLevel = &quot;1.1&quot;;</span>
 
@@ -140,78 +140,79 @@ public class PseudoServer {
 <span class="nc" id="L140">                        System.out.println(&quot;Error in pseudo server: &quot; + e);</span>
 <span class="nc" id="L141">                        HttpUnitUtils.handleException(e);</span>
 <span class="nc" id="L142">                    } catch (InterruptedException e) {</span>
-<span class="nc" id="L143">                        System.out.println(&quot;Interrupted. Shutting down&quot;);</span>
-<span class="nc" id="L144">                        _active = false;</span>
-<span class="pc" id="L145">                    }</span>
+<span class="nc" id="L143">                        Thread.interrupted();</span>
+<span class="nc" id="L144">                        System.out.println(&quot;Interrupted. Shutting down&quot;);</span>
+<span class="nc" id="L145">                        _active = false;</span>
+<span class="pc" id="L146">                    }</span>
                 }
                 try {
-<span class="fc" id="L148">                    _serverSocket.close();</span>
-<span class="nc" id="L149">                } catch (IOException e) {</span>
-<span class="nc" id="L150">                    System.out.println(&quot;Error while closing socket: &quot; + e);</span>
-<span class="fc" id="L151">                }</span>
-<span class="fc" id="L152">                debug(&quot;Pseudoserver shutting down&quot;);</span>
-<span class="fc" id="L153">            }</span>
+<span class="fc" id="L149">                    _serverSocket.close();</span>
+<span class="nc" id="L150">                } catch (IOException e) {</span>
+<span class="nc" id="L151">                    System.out.println(&quot;Error while closing socket: &quot; + e);</span>
+<span class="fc" id="L152">                }</span>
+<span class="fc" id="L153">                debug(&quot;Pseudoserver shutting down&quot;);</span>
+<span class="fc" id="L154">            }</span>
         };
-<span class="fc" id="L155">        debug(&quot;Starting pseudoserver&quot;);</span>
-<span class="fc" id="L156">        t.start();</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L156">        debug(&quot;Starting pseudoserver&quot;);</span>
+<span class="fc" id="L157">        t.start();</span>
+<span class="fc" id="L158">    }</span>
 
     public void shutDown() {
-<span class="fc" id="L160">        debug(&quot;Requested shutdown of pseudoserver&quot;);</span>
-<span class="fc" id="L161">        _active = false;</span>
-<span class="fc" id="L162">    }</span>
+<span class="fc" id="L161">        debug(&quot;Requested shutdown of pseudoserver&quot;);</span>
+<span class="fc" id="L162">        _active = false;</span>
+<span class="fc" id="L163">    }</span>
 
     private void debug(String message) {
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (!_debug) {</span>
-<span class="fc" id="L166">            return;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (!_debug) {</span>
+<span class="fc" id="L167">            return;</span>
         }
-<span class="nc" id="L168">        message = replaceDebugToken(message, &quot;thread&quot;, &quot;thread (&quot; + Thread.currentThread().getName() + &quot;)&quot;);</span>
-<span class="nc" id="L169">        message = replaceDebugToken(message, &quot;server&quot;, &quot;server &quot; + _serverNum);</span>
-<span class="nc" id="L170">        System.out.println(&quot;** &quot; + message);</span>
-<span class="nc" id="L171">    }</span>
+<span class="nc" id="L169">        message = replaceDebugToken(message, &quot;thread&quot;, &quot;thread (&quot; + Thread.currentThread().getName() + &quot;)&quot;);</span>
+<span class="nc" id="L170">        message = replaceDebugToken(message, &quot;server&quot;, &quot;server &quot; + _serverNum);</span>
+<span class="nc" id="L171">        System.out.println(&quot;** &quot; + message);</span>
+<span class="nc" id="L172">    }</span>
 
     private static String replaceDebugToken(String message, String token, String replacement) {
-<span class="nc bnc" id="L174" title="All 2 branches missed.">        return !message.contains(token) ? message : message.replaceFirst(token, replacement);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        return !message.contains(token) ? message : message.replaceFirst(token, replacement);</span>
     }
 
     public void setMaxProtocolLevel(int majorLevel, int minorLevel) {
-<span class="fc" id="L178">        _maxProtocolLevel = majorLevel + &quot;.&quot; + minorLevel;</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L179">        _maxProtocolLevel = majorLevel + &quot;.&quot; + minorLevel;</span>
+<span class="fc" id="L180">    }</span>
 
     /**
      * Returns the port on which this server is listening.
      **/
     public int getConnectedPort() throws IOException {
-<span class="fc" id="L185">        return _serverSocket.getLocalPort();</span>
+<span class="fc" id="L186">        return _serverSocket.getLocalPort();</span>
     }
 
     /**
      * Defines the contents of an expected resource.
      **/
     public void setResource(String name, String value) {
-<span class="fc" id="L192">        setResource(name, value, &quot;text/html&quot;);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L193">        setResource(name, value, &quot;text/html&quot;);</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * Defines the contents of an expected resource.
      **/
     public void setResource(String name, PseudoServlet servlet) {
-<span class="fc" id="L199">        _resources.put(asResourceName(name), servlet);</span>
-<span class="fc" id="L200">    }</span>
+<span class="fc" id="L200">        _resources.put(asResourceName(name), servlet);</span>
+<span class="fc" id="L201">    }</span>
 
     /**
      * Defines the contents of an expected resource.
      **/
     public void setResource(String name, String value, String contentType) {
-<span class="fc" id="L206">        _resources.put(asResourceName(name), new WebResource(value, contentType));</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L207">        _resources.put(asResourceName(name), new WebResource(value, contentType));</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Defines the contents of an expected resource.
      **/
     public void setResource(String name, byte[] value, String contentType) {
-<span class="fc" id="L213">        _resources.put(asResourceName(name), new WebResource(value, contentType));</span>
-<span class="fc" id="L214">    }</span>
+<span class="fc" id="L214">        _resources.put(asResourceName(name), new WebResource(value, contentType));</span>
+<span class="fc" id="L215">    }</span>
 
     /**
      * Defines a resource which will result in an error message. return it for further use
@@ -223,134 +224,135 @@ public class PseudoServer {
      * @return the resource
      */
     public WebResource setErrorResource(String name, int errorCode, String errorMessage) {
-<span class="fc" id="L226">        WebResource resource = new WebResource(errorMessage, errorCode);</span>
-<span class="fc" id="L227">        _resources.put(asResourceName(name), resource);</span>
-<span class="fc" id="L228">        return resource;</span>
+<span class="fc" id="L227">        WebResource resource = new WebResource(errorMessage, errorCode);</span>
+<span class="fc" id="L228">        _resources.put(asResourceName(name), resource);</span>
+<span class="fc" id="L229">        return resource;</span>
     }
 
     /**
      * Enables the sending of the character set in the content-type header.
      **/
     public void setSendCharacterSet(String name, boolean enabled) {
-<span class="fc" id="L235">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        if (resource == null) {</span>
-<span class="nc" id="L237">            throw new IllegalArgumentException(&quot;No defined resource &quot; + name);</span>
+<span class="fc" id="L236">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        if (resource == null) {</span>
+<span class="nc" id="L238">            throw new IllegalArgumentException(&quot;No defined resource &quot; + name);</span>
         }
-<span class="fc" id="L239">        resource.setSendCharacterSet(enabled);</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L240">        resource.setSendCharacterSet(enabled);</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Specifies the character set encoding for a resource.
      **/
     public void setCharacterSet(String name, String characterSet) {
-<span class="fc" id="L246">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (resource == null) {</span>
-<span class="nc" id="L248">            resource = new WebResource(&quot;&quot;);</span>
-<span class="nc" id="L249">            _resources.put(asResourceName(name), resource);</span>
+<span class="fc" id="L247">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (resource == null) {</span>
+<span class="nc" id="L249">            resource = new WebResource(&quot;&quot;);</span>
+<span class="nc" id="L250">            _resources.put(asResourceName(name), resource);</span>
         }
-<span class="fc" id="L251">        resource.setCharacterSet(characterSet);</span>
-<span class="fc" id="L252">    }</span>
+<span class="fc" id="L252">        resource.setCharacterSet(characterSet);</span>
+<span class="fc" id="L253">    }</span>
 
     /**
      * Adds a header to a defined resource.
      **/
     public void addResourceHeader(String name, String header) {
-<span class="fc" id="L258">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
-<span class="pc bpc" id="L259" title="1 of 2 branches missed.">        if (resource == null) {</span>
-<span class="nc" id="L260">            resource = new WebResource(&quot;&quot;);</span>
-<span class="nc" id="L261">            _resources.put(asResourceName(name), resource);</span>
+<span class="fc" id="L259">        WebResource resource = (WebResource) _resources.get(asResourceName(name));</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">        if (resource == null) {</span>
+<span class="nc" id="L261">            resource = new WebResource(&quot;&quot;);</span>
+<span class="nc" id="L262">            _resources.put(asResourceName(name), resource);</span>
         }
-<span class="fc" id="L263">        resource.addHeader(header);</span>
-<span class="fc" id="L264">    }</span>
+<span class="fc" id="L264">        resource.addHeader(header);</span>
+<span class="fc" id="L265">    }</span>
 
     public void mapToClasspath(String directory) {
-<span class="fc" id="L267">        _classpathDirs.add(directory);</span>
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L268">        _classpathDirs.add(directory);</span>
+<span class="fc" id="L269">    }</span>
 
     public void setDebug(boolean debug) {
-<span class="nc" id="L271">        _debug = debug;</span>
-<span class="nc" id="L272">    }</span>
+<span class="nc" id="L272">        _debug = debug;</span>
+<span class="nc" id="L273">    }</span>
 
     // ------------------------------------- private members ---------------------------------------
 
-<span class="fc" id="L276">    private Hashtable _resources = new Hashtable();</span>
+<span class="fc" id="L277">    private Hashtable _resources = new Hashtable&lt;&gt;();</span>
 
-<span class="fc" id="L278">    private boolean _active = true;</span>
+<span class="fc" id="L279">    private boolean _active = true;</span>
 
-<span class="fc" id="L280">    private boolean _debug = false;</span>
+<span class="fc" id="L281">    private boolean _debug = false;</span>
 
     private String asResourceName(String rawName) {
-<span class="fc bfc" id="L283" title="All 4 branches covered.">        if (rawName.startsWith(&quot;http:&quot;) || rawName.startsWith(&quot;/&quot;)) {</span>
-<span class="fc" id="L284">            return escape(rawName);</span>
+<span class="fc bfc" id="L284" title="All 4 branches covered.">        if (rawName.startsWith(&quot;http:&quot;) || rawName.startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L285">            return escape(rawName);</span>
         }
-<span class="fc" id="L286">        return escape(&quot;/&quot; + rawName);</span>
+<span class="fc" id="L287">        return escape(&quot;/&quot; + rawName);</span>
     }
 
     private static String escape(String urlString) {
-<span class="fc bfc" id="L290" title="All 2 branches covered.">        if (urlString.indexOf(' ') &lt; 0) {</span>
-<span class="fc" id="L291">            return urlString;</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">        if (urlString.indexOf(' ') &lt; 0) {</span>
+<span class="fc" id="L292">            return urlString;</span>
         }
-<span class="fc" id="L293">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L294">        StringBuilder sb = new StringBuilder();</span>
 
-<span class="fc" id="L295">        int start = 0;</span>
+<span class="fc" id="L296">        int start = 0;</span>
         do {
-<span class="fc" id="L297">            int index = urlString.indexOf(' ', start);</span>
-<span class="fc bfc" id="L298" title="All 2 branches covered.">            if (index &lt; 0) {</span>
-<span class="fc" id="L299">                sb.append(urlString.substring(start));</span>
-<span class="fc" id="L300">                break;</span>
+<span class="fc" id="L298">            int index = urlString.indexOf(' ', start);</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">            if (index &lt; 0) {</span>
+<span class="fc" id="L300">                sb.append(urlString.substring(start));</span>
+<span class="fc" id="L301">                break;</span>
             }
-<span class="fc" id="L302">            sb.append(urlString.substring(start, index)).append(&quot;%20&quot;);</span>
-<span class="fc" id="L303">            start = index + 1;</span>
-<span class="fc" id="L304">        } while (true);</span>
-<span class="fc" id="L305">        return sb.toString();</span>
+<span class="fc" id="L303">            sb.append(urlString.substring(start, index)).append(&quot;%20&quot;);</span>
+<span class="fc" id="L304">            start = index + 1;</span>
+<span class="fc" id="L305">        } while (true);</span>
+<span class="fc" id="L306">        return sb.toString();</span>
     }
 
     private void handleNewConnection(final Socket socket) {
-<span class="fc" id="L309">        Thread t = new Thread(&quot;PseudoServer &quot; + _serverNum + &quot; connection &quot; + (++_connectionNum)) {</span>
+<span class="fc" id="L310">        Thread t = new Thread(&quot;PseudoServer &quot; + _serverNum + &quot; connection &quot; + (++_connectionNum)) {</span>
             @Override
             public void run() {
                 try {
-<span class="fc" id="L313">                    serveRequests(socket);</span>
-<span class="nc" id="L314">                } catch (IOException e) {</span>
-<span class="nc" id="L315">                    e.printStackTrace(); // To change body of catch statement use Options | File Templates.</span>
-<span class="fc" id="L316">                }</span>
-<span class="fc" id="L317">            }</span>
+<span class="fc" id="L314">                    serveRequests(socket);</span>
+<span class="nc" id="L315">                } catch (IOException e) {</span>
+<span class="nc" id="L316">                    e.printStackTrace(); // To change body of catch statement use Options | File Templates.</span>
+<span class="fc" id="L317">                }</span>
+<span class="fc" id="L318">            }</span>
         };
-<span class="fc" id="L319">        t.start();</span>
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L320">        t.start();</span>
+<span class="fc" id="L321">    }</span>
 
     private void serveRequests(Socket socket) throws IOException {
-<span class="fc" id="L323">        socket.setSoTimeout(_socketTimeout);</span>
-<span class="fc" id="L324">        socket.setTcpNoDelay(true);</span>
+<span class="fc" id="L324">        socket.setSoTimeout(_socketTimeout);</span>
+<span class="fc" id="L325">        socket.setTcpNoDelay(true);</span>
 
-<span class="fc" id="L326">        debug(&quot;Created server thread &quot; + socket.getInetAddress() + ':' + socket.getPort());</span>
-<span class="fc" id="L327">        final BufferedInputStream inputStream = new BufferedInputStream(socket.getInputStream());</span>
-<span class="fc" id="L328">        final HttpResponseStream outputStream = new HttpResponseStream(socket.getOutputStream());</span>
+<span class="fc" id="L327">        debug(&quot;Created server thread &quot; + socket.getInetAddress() + ':' + socket.getPort());</span>
+<span class="fc" id="L328">        final BufferedInputStream inputStream = new BufferedInputStream(socket.getInputStream());</span>
+<span class="fc" id="L329">        final HttpResponseStream outputStream = new HttpResponseStream(socket.getOutputStream());</span>
 
         try {
-<span class="fc bfc" id="L331" title="All 2 branches covered.">            while (_active) {</span>
-<span class="fc" id="L332">                HttpRequest request = new HttpRequest(inputStream);</span>
-<span class="fc" id="L333">                boolean keepAlive = respondToRequest(request, outputStream);</span>
-<span class="fc bfc" id="L334" title="All 2 branches covered.">                if (!keepAlive) {</span>
-<span class="fc" id="L335">                    break;</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">            while (_active) {</span>
+<span class="fc" id="L333">                HttpRequest request = new HttpRequest(inputStream);</span>
+<span class="fc" id="L334">                boolean keepAlive = respondToRequest(request, outputStream);</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">                if (!keepAlive) {</span>
+<span class="fc" id="L336">                    break;</span>
                 }
-<span class="fc bfc" id="L337" title="All 4 branches covered.">                while (_active &amp;&amp; 0 == inputStream.available()) {</span>
+<span class="fc bfc" id="L338" title="All 4 branches covered.">                while (_active &amp;&amp; 0 == inputStream.available()) {</span>
                     try {
-<span class="fc" id="L339">                        Thread.sleep(INPUT_POLL_INTERVAL);</span>
-<span class="nc" id="L340">                    } catch (InterruptedException e) {</span>
-<span class="pc" id="L341">                    }</span>
+<span class="fc" id="L340">                        Thread.sleep(INPUT_POLL_INTERVAL);</span>
+<span class="nc" id="L341">                    } catch (InterruptedException e) {</span>
+<span class="nc" id="L342">                        Thread.interrupted();</span>
+<span class="pc" id="L343">                    }</span>
                 }
-<span class="fc" id="L343">            }</span>
-<span class="fc" id="L344">        } catch (IOException e) {</span>
-<span class="fc" id="L345">            outputStream.restart();</span>
-<span class="fc" id="L346">            outputStream.setProtocol(&quot;HTTP/1.0&quot;);</span>
-<span class="fc" id="L347">            outputStream.setResponse(HttpURLConnection.HTTP_BAD_REQUEST, e.toString());</span>
-<span class="fc" id="L348">        }</span>
-<span class="fc" id="L349">        debug(&quot;Closing server thread&quot;);</span>
-<span class="fc" id="L350">        outputStream.close();</span>
-<span class="fc" id="L351">        socket.close();</span>
-<span class="fc" id="L352">        debug(&quot;Server thread closed&quot;);</span>
-<span class="fc" id="L353">    }</span>
+<span class="fc" id="L345">            }</span>
+<span class="fc" id="L346">        } catch (IOException e) {</span>
+<span class="fc" id="L347">            outputStream.restart();</span>
+<span class="fc" id="L348">            outputStream.setProtocol(&quot;HTTP/1.0&quot;);</span>
+<span class="fc" id="L349">            outputStream.setResponse(HttpURLConnection.HTTP_BAD_REQUEST, e.toString());</span>
+<span class="fc" id="L350">        }</span>
+<span class="fc" id="L351">        debug(&quot;Closing server thread&quot;);</span>
+<span class="fc" id="L352">        outputStream.close();</span>
+<span class="fc" id="L353">        socket.close();</span>
+<span class="fc" id="L354">        debug(&quot;Server thread closed&quot;);</span>
+<span class="fc" id="L355">    }</span>
 
     /**
      * respond to the given request
@@ -363,56 +365,56 @@ public class PseudoServer {
      * @return
      */
     private boolean respondToRequest(HttpRequest request, HttpResponseStream response) {
-<span class="fc" id="L366">        debug(&quot;Server thread handling request: &quot; + request);</span>
-<span class="fc" id="L367">        boolean keepAlive = isKeepAlive(request);</span>
-<span class="fc" id="L368">        WebResource resource = null;</span>
+<span class="fc" id="L368">        debug(&quot;Server thread handling request: &quot; + request);</span>
+<span class="fc" id="L369">        boolean keepAlive = isKeepAlive(request);</span>
+<span class="fc" id="L370">        WebResource resource = null;</span>
         try {
-<span class="fc" id="L370">            response.restart();</span>
-<span class="fc" id="L371">            response.setProtocol(getResponseProtocol(request));</span>
-<span class="fc" id="L372">            resource = getResource(request);</span>
-<span class="fc bfc" id="L373" title="All 2 branches covered.">            if (resource == null) {</span>
+<span class="fc" id="L372">            response.restart();</span>
+<span class="fc" id="L373">            response.setProtocol(getResponseProtocol(request));</span>
+<span class="fc" id="L374">            resource = getResource(request);</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">            if (resource == null) {</span>
                 // what resource could not be find?
-<span class="fc" id="L375">                String uri = request.getURI();</span>
+<span class="fc" id="L377">                String uri = request.getURI();</span>
                 // 404 - Not Found error code
-<span class="fc" id="L377">                int errorCode = HttpURLConnection.HTTP_NOT_FOUND;</span>
+<span class="fc" id="L379">                int errorCode = HttpURLConnection.HTTP_NOT_FOUND;</span>
                 // typical 404 error Message
-<span class="fc" id="L379">                String errorMessage = &quot;unable to find &quot; + uri;</span>
+<span class="fc" id="L381">                String errorMessage = &quot;unable to find &quot; + uri;</span>
                 // make sure there is a resource and
                 // next time we'll take it from the resource Cache
-<span class="fc" id="L382">                resource = setErrorResource(uri, errorCode, errorMessage);</span>
+<span class="fc" id="L384">                resource = setErrorResource(uri, errorCode, errorMessage);</span>
                 // set the errorCode for this response
-<span class="fc" id="L384">                response.setResponse(errorCode, errorMessage);</span>
-<span class="fc bfc" id="L385" title="All 2 branches covered.">            } else if (resource.getResponseCode() != HttpURLConnection.HTTP_OK) {</span>
-<span class="fc" id="L386">                response.setResponse(resource.getResponseCode(), &quot;&quot;);</span>
+<span class="fc" id="L386">                response.setResponse(errorCode, errorMessage);</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">            } else if (resource.getResponseCode() != HttpURLConnection.HTTP_OK) {</span>
+<span class="fc" id="L388">                response.setResponse(resource.getResponseCode(), &quot;&quot;);</span>
             }
-<span class="fc bfc" id="L388" title="All 2 branches covered.">            if (resource.closesConnection()) {</span>
-<span class="fc" id="L389">                keepAlive = false;</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">            if (resource.closesConnection()) {</span>
+<span class="fc" id="L391">                keepAlive = false;</span>
             }
-<span class="fc" id="L391">            String[] headers = resource.getHeaders();</span>
-<span class="fc bfc" id="L392" title="All 2 branches covered.">            for (String header : headers) {</span>
-<span class="fc" id="L393">                debug(&quot;Server thread sending header: &quot; + header);</span>
-<span class="fc" id="L394">                response.addHeader(header);</span>
+<span class="fc" id="L393">            String[] headers = resource.getHeaders();</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">            for (String header : headers) {</span>
+<span class="fc" id="L395">                debug(&quot;Server thread sending header: &quot; + header);</span>
+<span class="fc" id="L396">                response.addHeader(header);</span>
             }
-<span class="fc" id="L396">        } catch (UnknownMethodException e) {</span>
-<span class="fc" id="L397">            response.setResponse(HttpURLConnection.HTTP_BAD_METHOD, &quot;unsupported method: &quot; + e.getMethod());</span>
-<span class="nc" id="L398">        } catch (Throwable t) {</span>
-<span class="nc" id="L399">            t.printStackTrace();</span>
-<span class="nc" id="L400">            response.setResponse(HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString());</span>
-<span class="fc" id="L401">        }</span>
+<span class="fc" id="L398">        } catch (UnknownMethodException e) {</span>
+<span class="fc" id="L399">            response.setResponse(HttpURLConnection.HTTP_BAD_METHOD, &quot;unsupported method: &quot; + e.getMethod());</span>
+<span class="nc" id="L400">        } catch (Throwable t) {</span>
+<span class="nc" id="L401">            t.printStackTrace();</span>
+<span class="nc" id="L402">            response.setResponse(HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString());</span>
+<span class="fc" id="L403">        }</span>
         try {
-<span class="fc" id="L403">            response.write(resource);</span>
-<span class="nc" id="L404">        } catch (IOException e) {</span>
-<span class="nc" id="L405">            System.out.println(&quot;*** Failed to send reply: &quot; + e);</span>
-<span class="fc" id="L406">        }</span>
-<span class="fc" id="L407">        return keepAlive;</span>
+<span class="fc" id="L405">            response.write(resource);</span>
+<span class="nc" id="L406">        } catch (IOException e) {</span>
+<span class="nc" id="L407">            System.out.println(&quot;*** Failed to send reply: &quot; + e);</span>
+<span class="fc" id="L408">        }</span>
+<span class="fc" id="L409">        return keepAlive;</span>
     }
 
     private boolean isKeepAlive(HttpRequest request) {
-<span class="pc bpc" id="L411" title="1 of 4 branches missed.">        return request.wantsKeepAlive() &amp;&amp; _maxProtocolLevel.equals(&quot;1.1&quot;);</span>
+<span class="pc bpc" id="L413" title="1 of 4 branches missed.">        return request.wantsKeepAlive() &amp;&amp; _maxProtocolLevel.equals(&quot;1.1&quot;);</span>
     }
 
     private String getResponseProtocol(HttpRequest request) {
-<span class="fc bfc" id="L415" title="All 2 branches covered.">        return _maxProtocolLevel.equalsIgnoreCase(&quot;1.1&quot;) ? request.getProtocol() : &quot;HTTP/1.0&quot;;</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">        return _maxProtocolLevel.equalsIgnoreCase(&quot;1.1&quot;) ? request.getProtocol() : &quot;HTTP/1.0&quot;;</span>
     }
 
     /**
@@ -427,55 +429,55 @@ public class PseudoServer {
      * @throws IOException
      */
     private WebResource getResource(HttpRequest request) throws IOException {
-<span class="fc" id="L430">        Object resource = _resources.get(request.getURI());</span>
-<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (resource == null) {</span>
-<span class="fc" id="L432">            resource = _resources.get(withoutParameters(request.getURI()));</span>
+<span class="fc" id="L432">        Object resource = _resources.get(request.getURI());</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        if (resource == null) {</span>
+<span class="fc" id="L434">            resource = _resources.get(withoutParameters(request.getURI()));</span>
         }
 
         // check the method of the request
-<span class="fc" id="L436">        String command = request.getCommand();</span>
-<span class="fc bfc" id="L437" title="All 6 branches covered.">        if ((command.equals(&quot;GET&quot;) || command.equals(&quot;HEAD&quot;)) &amp;&amp; resource instanceof WebResource) {</span>
-<span class="fc" id="L438">            return (WebResource) resource;</span>
+<span class="fc" id="L438">        String command = request.getCommand();</span>
+<span class="fc bfc" id="L439" title="All 6 branches covered.">        if ((command.equals(&quot;GET&quot;) || command.equals(&quot;HEAD&quot;)) &amp;&amp; resource instanceof WebResource) {</span>
+<span class="fc" id="L440">            return (WebResource) resource;</span>
         }
-<span class="fc bfc" id="L440" title="All 2 branches covered.">        if (resource instanceof PseudoServlet) {</span>
-<span class="fc" id="L441">            return getResource((PseudoServlet) resource, request);</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">        if (resource instanceof PseudoServlet) {</span>
+<span class="fc" id="L443">            return getResource((PseudoServlet) resource, request);</span>
         }
-<span class="fc bfc" id="L443" title="All 2 branches covered.">        if (request.getURI().endsWith(&quot;.class&quot;)) {</span>
-<span class="pc bpc" id="L444" title="1 of 2 branches missed.">            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {</span>
-<span class="fc" id="L445">                String directory = (String) iterator.next();</span>
-<span class="pc bpc" id="L446" title="1 of 2 branches missed.">                if (request.getURI().startsWith(directory)) {</span>
-<span class="fc" id="L447">                    String resourceName = request.getURI().substring(directory.length() + 1);</span>
-<span class="fc" id="L448">                    return new WebResource(getClass().getClassLoader().getResourceAsStream(resourceName),</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">        if (request.getURI().endsWith(&quot;.class&quot;)) {</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L447">                String directory = (String) iterator.next();</span>
+<span class="pc bpc" id="L448" title="1 of 2 branches missed.">                if (request.getURI().startsWith(directory)) {</span>
+<span class="fc" id="L449">                    String resourceName = request.getURI().substring(directory.length() + 1);</span>
+<span class="fc" id="L450">                    return new WebResource(getClass().getClassLoader().getResourceAsStream(resourceName),</span>
                             &quot;application/class&quot;, 200);
                 }
-<span class="nc" id="L451">            }</span>
-<span class="pc bpc" id="L452" title="2 of 4 branches missed.">        } else if (request.getURI().endsWith(&quot;.zip&quot;) || request.getURI().endsWith(&quot;.jar&quot;)) {</span>
-<span class="nc bnc" id="L453" title="All 2 branches missed.">            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {</span>
-<span class="nc" id="L454">                String directory = (String) iterator.next();</span>
-<span class="nc bnc" id="L455" title="All 2 branches missed.">                if (request.getURI().startsWith(directory)) {</span>
-<span class="nc" id="L456">                    String resourceName = request.getURI().substring(directory.length() + 1);</span>
-<span class="nc" id="L457">                    String classPath = System.getProperty(&quot;java.class.path&quot;);</span>
-<span class="nc" id="L458">                    StringTokenizer st = new StringTokenizer(classPath, &quot;:;,&quot;);</span>
-<span class="nc bnc" id="L459" title="All 2 branches missed.">                    while (st.hasMoreTokens()) {</span>
-<span class="nc" id="L460">                        String file = st.nextToken();</span>
-<span class="nc bnc" id="L461" title="All 2 branches missed.">                        if (file.endsWith(resourceName)) {</span>
-<span class="nc" id="L462">                            File f = new File(file);</span>
-<span class="nc" id="L463">                            return new WebResource(new FileInputStream(f), &quot;application/zip&quot;, 200);</span>
+<span class="nc" id="L453">            }</span>
+<span class="pc bpc" id="L454" title="2 of 4 branches missed.">        } else if (request.getURI().endsWith(&quot;.zip&quot;) || request.getURI().endsWith(&quot;.jar&quot;)) {</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">            for (Iterator iterator = _classpathDirs.iterator(); iterator.hasNext();) {</span>
+<span class="nc" id="L456">                String directory = (String) iterator.next();</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">                if (request.getURI().startsWith(directory)) {</span>
+<span class="nc" id="L458">                    String resourceName = request.getURI().substring(directory.length() + 1);</span>
+<span class="nc" id="L459">                    String classPath = System.getProperty(&quot;java.class.path&quot;);</span>
+<span class="nc" id="L460">                    StringTokenizer st = new StringTokenizer(classPath, &quot;:;,&quot;);</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">                    while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L462">                        String file = st.nextToken();</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">                        if (file.endsWith(resourceName)) {</span>
+<span class="nc" id="L464">                            File f = new File(file);</span>
+<span class="nc" id="L465">                            return new WebResource(new FileInputStream(f), &quot;application/zip&quot;, 200);</span>
                         }
-<span class="nc" id="L465">                    }</span>
+<span class="nc" id="L467">                    }</span>
                 }
-<span class="nc" id="L467">            }</span>
+<span class="nc" id="L469">            }</span>
         }
-<span class="fc" id="L469">        return null;</span>
+<span class="fc" id="L471">        return null;</span>
     }
 
     private String withoutParameters(String uri) {
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        return uri.indexOf('?') &lt; 0 ? uri : uri.substring(0, uri.indexOf('?'));</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        return uri.indexOf('?') &lt; 0 ? uri : uri.substring(0, uri.indexOf('?'));</span>
     }
 
     private WebResource getResource(PseudoServlet servlet, HttpRequest request) throws IOException {
-<span class="fc" id="L477">        servlet.init(request);</span>
-<span class="fc" id="L478">        return servlet.getResponse(request.getCommand());</span>
+<span class="fc" id="L479">        servlet.init(request);</span>
+<span class="fc" id="L480">        return servlet.getResponse(request.getCommand());</span>
     }
 
     private ServerSocket _serverSocket;
@@ -484,32 +486,28 @@ public class PseudoServer {
 
 class HttpResponseStream {
 
-    final private static String CRLF = &quot;\r\n&quot;;
+    private static final String CRLF = &quot;\r\n&quot;;
 
     void restart() {
-<span class="fc" id="L490">        _headersWritten = false;</span>
-<span class="fc" id="L491">        _headers.clear();</span>
-<span class="fc" id="L492">        _responseCode = HttpURLConnection.HTTP_OK;</span>
-<span class="fc" id="L493">        _responseText = &quot;OK&quot;;</span>
-<span class="fc" id="L494">    }</span>
+<span class="fc" id="L492">        _headersWritten = false;</span>
+<span class="fc" id="L493">        _headers.clear();</span>
+<span class="fc" id="L494">        _responseCode = HttpURLConnection.HTTP_OK;</span>
+<span class="fc" id="L495">        _responseText = &quot;OK&quot;;</span>
+<span class="fc" id="L496">    }</span>
 
     void close() throws IOException {
-<span class="fc" id="L497">        flushHeaders();</span>
-<span class="fc" id="L498">        _pw.close();</span>
-<span class="fc" id="L499">    }</span>
+<span class="fc" id="L499">        flushHeaders();</span>
+<span class="fc" id="L500">        _pw.close();</span>
+<span class="fc" id="L501">    }</span>
 
-<span class="fc" id="L501">    HttpResponseStream(OutputStream stream) {</span>
-<span class="fc" id="L502">        _stream = stream;</span>
-        try {
-<span class="fc" id="L504">            setCharacterSet(&quot;us-ascii&quot;);</span>
-<span class="nc" id="L505">        } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L506">            _pw = new PrintWriter(new OutputStreamWriter(_stream));</span>
-<span class="fc" id="L507">        }</span>
-<span class="fc" id="L508">    }</span>
+<span class="fc" id="L503">    HttpResponseStream(OutputStream stream) {</span>
+<span class="fc" id="L504">        _stream = stream;</span>
+<span class="fc" id="L505">        setCharacterSet(&quot;us-ascii&quot;);</span>
+<span class="fc" id="L506">    }</span>
 
     void setProtocol(String protocol) {
-<span class="fc" id="L511">        _protocol = protocol;</span>
-<span class="fc" id="L512">    }</span>
+<span class="fc" id="L509">        _protocol = protocol;</span>
+<span class="fc" id="L510">    }</span>
 
     /**
      * set the response to the given response Code
@@ -518,67 +516,67 @@ class HttpResponseStream {
      * @param responseText
      */
     void setResponse(int responseCode, String responseText) {
-<span class="fc" id="L521">        _responseCode = responseCode;</span>
-<span class="fc" id="L522">        _responseText = responseText;</span>
-<span class="fc" id="L523">    }</span>
+<span class="fc" id="L519">        _responseCode = responseCode;</span>
+<span class="fc" id="L520">        _responseText = responseText;</span>
+<span class="fc" id="L521">    }</span>
 
     void addHeader(String header) {
-<span class="fc" id="L526">        _headers.addElement(header);</span>
-<span class="fc" id="L527">    }</span>
+<span class="fc" id="L524">        _headers.addElement(header);</span>
+<span class="fc" id="L525">    }</span>
 
     void write(String contents, String charset) throws IOException {
-<span class="nc" id="L530">        flushHeaders();</span>
-<span class="nc" id="L531">        setCharacterSet(charset);</span>
-<span class="nc" id="L532">        sendText(contents);</span>
-<span class="nc" id="L533">    }</span>
+<span class="nc" id="L528">        flushHeaders();</span>
+<span class="nc" id="L529">        setCharacterSet(charset);</span>
+<span class="nc" id="L530">        sendText(contents);</span>
+<span class="nc" id="L531">    }</span>
 
     void write(WebResource resource) throws IOException {
-<span class="fc" id="L536">        flushHeaders();</span>
-<span class="fc bfc" id="L537" title="All 2 branches covered.">        if (resource != null) {</span>
-<span class="fc" id="L538">            resource.writeTo(_stream);</span>
+<span class="fc" id="L534">        flushHeaders();</span>
+<span class="fc bfc" id="L535" title="All 2 branches covered.">        if (resource != null) {</span>
+<span class="fc" id="L536">            resource.writeTo(_stream);</span>
         }
-<span class="fc" id="L540">        _stream.flush();</span>
-<span class="fc" id="L541">    }</span>
+<span class="fc" id="L538">        _stream.flush();</span>
+<span class="fc" id="L539">    }</span>
 
-    private void setCharacterSet(String characterSet) throws UnsupportedEncodingException {
-<span class="pc bpc" id="L544" title="1 of 2 branches missed.">        if (_pw != null) {</span>
-<span class="nc" id="L545">            _pw.flush();</span>
+    private void setCharacterSet(String characterSet) {
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">        if (_pw != null) {</span>
+<span class="nc" id="L543">            _pw.flush();</span>
         }
-<span class="fc" id="L547">        _pw = new PrintWriter(new OutputStreamWriter(_stream, characterSet));</span>
-<span class="fc" id="L548">    }</span>
+<span class="fc" id="L545">        _pw = new PrintWriter(new OutputStreamWriter(_stream, Charset.forName(characterSet)));</span>
+<span class="fc" id="L546">    }</span>
 
     private void flushHeaders() {
-<span class="fc bfc" id="L551" title="All 2 branches covered.">        if (!_headersWritten) {</span>
-<span class="fc" id="L552">            sendResponse(_responseCode, _responseText);</span>
-<span class="fc bfc" id="L553" title="All 2 branches covered.">            for (Enumeration e = _headers.elements(); e.hasMoreElements();) {</span>
-<span class="fc" id="L554">                sendLine((String) e.nextElement());</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (!_headersWritten) {</span>
+<span class="fc" id="L550">            sendResponse(_responseCode, _responseText);</span>
+<span class="fc bfc" id="L551" title="All 2 branches covered.">            for (Enumeration e = _headers.elements(); e.hasMoreElements();) {</span>
+<span class="fc" id="L552">                sendLine((String) e.nextElement());</span>
             }
-<span class="fc" id="L556">            sendText(CRLF);</span>
-<span class="fc" id="L557">            _headersWritten = true;</span>
-<span class="fc" id="L558">            _pw.flush();</span>
+<span class="fc" id="L554">            sendText(CRLF);</span>
+<span class="fc" id="L555">            _headersWritten = true;</span>
+<span class="fc" id="L556">            _pw.flush();</span>
         }
-<span class="fc" id="L560">    }</span>
+<span class="fc" id="L558">    }</span>
 
     private void sendResponse(int responseCode, String responseText) {
-<span class="fc" id="L563">        sendLine(_protocol + ' ' + responseCode + ' ' + responseText);</span>
-<span class="fc" id="L564">    }</span>
+<span class="fc" id="L561">        sendLine(_protocol + ' ' + responseCode + ' ' + responseText);</span>
+<span class="fc" id="L562">    }</span>
 
     private void sendLine(String text) {
-<span class="fc" id="L567">        sendText(text);</span>
-<span class="fc" id="L568">        sendText(CRLF);</span>
-<span class="fc" id="L569">    }</span>
+<span class="fc" id="L565">        sendText(text);</span>
+<span class="fc" id="L566">        sendText(CRLF);</span>
+<span class="fc" id="L567">    }</span>
 
     private void sendText(String text) {
-<span class="fc" id="L572">        _pw.write(text);</span>
-<span class="fc" id="L573">    }</span>
+<span class="fc" id="L570">        _pw.write(text);</span>
+<span class="fc" id="L571">    }</span>
 
     private OutputStream _stream;
     private PrintWriter _pw;
 
-<span class="fc" id="L578">    private Vector _headers = new Vector();</span>
-<span class="fc" id="L579">    private String _protocol = &quot;HTTP/1.0&quot;;</span>
-<span class="fc" id="L580">    private int _responseCode = HttpURLConnection.HTTP_OK;</span>
-<span class="fc" id="L581">    private String _responseText = &quot;OK&quot;;</span>
+<span class="fc" id="L576">    private Vector _headers = new Vector&lt;&gt;();</span>
+<span class="fc" id="L577">    private String _protocol = &quot;HTTP/1.0&quot;;</span>
+<span class="fc" id="L578">    private int _responseCode = HttpURLConnection.HTTP_OK;</span>
+<span class="fc" id="L579">    private String _responseText = &quot;OK&quot;;</span>
 
     private boolean _headersWritten;
 
@@ -589,26 +587,26 @@ class RecordingOutputStream extends OutputStream {
     private OutputStream _nestedStream;
     private PrintStream _log;
 
-<span class="nc" id="L592">    public RecordingOutputStream(OutputStream nestedStream, PrintStream log) {</span>
-<span class="nc" id="L593">        _nestedStream = nestedStream;</span>
-<span class="nc" id="L594">        _log = log;</span>
-<span class="nc" id="L595">    }</span>
+<span class="nc" id="L590">    public RecordingOutputStream(OutputStream nestedStream, PrintStream log) {</span>
+<span class="nc" id="L591">        _nestedStream = nestedStream;</span>
+<span class="nc" id="L592">        _log = log;</span>
+<span class="nc" id="L593">    }</span>
 
     @Override
     public void write(int b) throws IOException {
-<span class="nc" id="L599">        _nestedStream.write(b);</span>
-<span class="nc" id="L600">        _log.println(&quot;sending &quot; + Integer.toHexString(b));</span>
-<span class="nc" id="L601">    }</span>
+<span class="nc" id="L597">        _nestedStream.write(b);</span>
+<span class="nc" id="L598">        _log.println(&quot;sending &quot; + Integer.toHexString(b));</span>
+<span class="nc" id="L599">    }</span>
 
     @Override
     public void write(byte b[], int offset, int len) throws IOException {
-<span class="nc" id="L605">        _nestedStream.write(b, offset, len);</span>
-<span class="nc" id="L606">        _log.print(&quot;sending&quot;);</span>
-<span class="nc bnc" id="L607" title="All 2 branches missed.">        for (int i = offset; i &lt; offset + len; i++) {</span>
-<span class="nc" id="L608">            _log.print(' ' + Integer.toHexString(b[i]));</span>
+<span class="nc" id="L603">        _nestedStream.write(b, offset, len);</span>
+<span class="nc" id="L604">        _log.print(&quot;sending&quot;);</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">        for (int i = offset; i &lt; offset + len; i++) {</span>
+<span class="nc" id="L606">            _log.print(' ' + Integer.toHexString(b[i]));</span>
         }
-<span class="nc" id="L610">        _log.println();</span>
-<span class="nc" id="L611">    }</span>
+<span class="nc" id="L608">        _log.println();</span>
+<span class="nc" id="L609">    }</span>
 }
 
 class RecordingInputStream extends InputStream {
@@ -616,18 +614,18 @@ class RecordingInputStream extends InputStream {
     private InputStream _nestedStream;
     private PrintStream _log;
 
-<span class="nc" id="L619">    public RecordingInputStream(InputStream nestedStream, PrintStream log) {</span>
-<span class="nc" id="L620">        _nestedStream = nestedStream;</span>
-<span class="nc" id="L621">        _log = log;</span>
-<span class="nc" id="L622">    }</span>
+<span class="nc" id="L617">    public RecordingInputStream(InputStream nestedStream, PrintStream log) {</span>
+<span class="nc" id="L618">        _nestedStream = nestedStream;</span>
+<span class="nc" id="L619">        _log = log;</span>
+<span class="nc" id="L620">    }</span>
 
     @Override
     public int read() throws IOException {
-<span class="nc" id="L626">        int value = _nestedStream.read();</span>
-<span class="nc bnc" id="L627" title="All 2 branches missed.">        if (value != -1) {</span>
-<span class="nc" id="L628">            _log.print(' ' + Integer.toHexString(value));</span>
+<span class="nc" id="L624">        int value = _nestedStream.read();</span>
+<span class="nc bnc" id="L625" title="All 2 branches missed.">        if (value != -1) {</span>
+<span class="nc" id="L626">            _log.print(' ' + Integer.toHexString(value));</span>
         }
-<span class="nc" id="L630">        return value;</span>
+<span class="nc" id="L628">        return value;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

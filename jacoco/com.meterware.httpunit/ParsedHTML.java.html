@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParsedHTML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">ParsedHTML.java</span></div><h1>ParsedHTML.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -51,9 +51,9 @@ import org.w3c.dom.html.HTMLTableRowElement;
  **/
 public class ParsedHTML {
 
-<span class="fc" id="L54">    final static private HTMLElement[] NO_ELEMENTS = {};</span>
+<span class="fc" id="L54">    static final private HTMLElement[] NO_ELEMENTS = {};</span>
 
-<span class="fc" id="L56">    final static private String[] TEXT_ELEMENTS = { &quot;p&quot;, &quot;h1&quot;, &quot;h2&quot;, &quot;h3&quot;, &quot;h4&quot;, &quot;h5&quot;, &quot;h6&quot; };</span>
+<span class="fc" id="L56">    static final private String[] TEXT_ELEMENTS = { &quot;p&quot;, &quot;h1&quot;, &quot;h2&quot;, &quot;h3&quot;, &quot;h4&quot;, &quot;h5&quot;, &quot;h6&quot; };</span>
 
     private Node _rootNode;
 
@@ -72,24 +72,24 @@ public class ParsedHTML {
     private boolean _enableNoScriptNodes;
 
     /** map of element IDs to elements. **/
-<span class="fc" id="L75">    private HashMap _elementsByID = new HashMap();</span>
+<span class="fc" id="L75">    private HashMap _elementsByID = new HashMap&lt;&gt;();</span>
 
     /** map of element names to lists of elements. **/
-<span class="fc" id="L78">    private HashMap _elementsByName = new HashMap();</span>
+<span class="fc" id="L78">    private HashMap _elementsByName = new HashMap&lt;&gt;();</span>
 
     /** map of element class to elements. **/
-<span class="fc" id="L81">    private HashMap _elementsByClass = new HashMap();</span>
+<span class="fc" id="L81">    private HashMap _elementsByClass = new HashMap&lt;&gt;();</span>
 
     /** map of DOM elements to HTML elements **/
 <span class="fc" id="L84">    private ElementRegistry _registry = new ElementRegistry();</span>
 
-<span class="fc" id="L86">    private ArrayList _blocksList = new ArrayList();</span>
+<span class="fc" id="L86">    private ArrayList _blocksList = new ArrayList&lt;&gt;();</span>
     private TextBlock[] _blocks;
 
-<span class="fc" id="L89">    private ArrayList _tableList = new ArrayList();</span>
+<span class="fc" id="L89">    private ArrayList _tableList = new ArrayList&lt;&gt;();</span>
     private WebTable[] _tables;
 
-<span class="fc" id="L92">    private ArrayList _frameList = new ArrayList();</span>
+<span class="fc" id="L92">    private ArrayList _frameList = new ArrayList&lt;&gt;();</span>
     private WebFrame[] _frames;
 
     ParsedHTML(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
@@ -269,7 +269,7 @@ public class ParsedHTML {
      */
     public HTMLElement[] getElementsWithAttribute(String name, String value) {
 <span class="fc" id="L271">        loadElements();</span>
-<span class="fc" id="L272">        ArrayList elements = new ArrayList();</span>
+<span class="fc" id="L272">        ArrayList elements = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L273" title="All 2 branches covered.">        for (Iterator i = _registry.iterator(); i.hasNext();) {</span>
 <span class="fc" id="L274">            HTMLElement element = (HTMLElement) i.next();</span>
 <span class="fc" id="L275">            String aValue = element.getAttribute(name);</span>
@@ -361,7 +361,7 @@ public class ParsedHTML {
      * Returns all links found in the page matching the specified criteria.
      **/
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) {
-<span class="nc" id="L364">        ArrayList matches = new ArrayList();</span>
+<span class="nc" id="L364">        ArrayList matches = new ArrayList&lt;&gt;();</span>
 <span class="nc" id="L365">        WebForm[] forms = getForms();</span>
 <span class="nc bnc" id="L366" title="All 2 branches missed.">        for (WebForm form : forms) {</span>
 <span class="nc bnc" id="L367" title="All 2 branches missed.">            if (predicate.matchesCriteria(form, criteria)) {</span>
@@ -514,11 +514,11 @@ public class ParsedHTML {
 <span class="fc" id="L514">            return false;</span>
         }
 
-        final protected ParsedHTML getParsedHTML(NodeUtils.PreOrderTraversal pot) {
+        protected final ParsedHTML getParsedHTML(NodeUtils.PreOrderTraversal pot) {
 <span class="nc" id="L518">            return (ParsedHTML) getClosestContext(pot, ParsedHTML.class);</span>
         }
 
-        final protected Object getClosestContext(NodeUtils.PreOrderTraversal pot, Class aClass) {
+        protected final Object getClosestContext(NodeUtils.PreOrderTraversal pot, Class aClass) {
 <span class="fc" id="L522">            return pot.getClosestContext(aClass);</span>
         }
 
@@ -812,7 +812,7 @@ public class ParsedHTML {
 <span class="nc" id="L812">        }</span>
     }
 
-<span class="fc" id="L815">    private static HashMap _htmlFactoryClasses = new HashMap();</span>
+<span class="fc" id="L815">    private static HashMap _htmlFactoryClasses = new HashMap&lt;&gt;();</span>
 <span class="fc" id="L816">    private static HTMLElementFactory _defaultFactory = new DefaultElementFactory();</span>
 
     static {
@@ -873,7 +873,7 @@ public class ParsedHTML {
 
             @Override
             public void processTextNode(NodeUtils.PreOrderTraversal pot, Node textNode) {
-<span class="fc bfc" id="L876" title="All 2 branches covered.">                if (textNode.getNodeValue().trim().length() == 0) {</span>
+<span class="fc bfc" id="L876" title="All 2 branches covered.">                if (textNode.getNodeValue().trim().isEmpty()) {</span>
 <span class="fc" id="L877">                    return;</span>
                 }
 
@@ -991,7 +991,7 @@ public class ParsedHTML {
 <span class="fc bfc" id="L991" title="All 2 branches covered.">                if (_elementsByClass.containsKey(token)) {</span>
 <span class="fc" id="L992">                    ((ArrayList) _elementsByClass.get(token)).add(htmlElement);</span>
                 } else {
-<span class="fc" id="L994">                    ArrayList arrayList = new ArrayList();</span>
+<span class="fc" id="L994">                    ArrayList arrayList = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L995">                    arrayList.add(htmlElement);</span>
 <span class="fc" id="L996">                    _elementsByClass.put(token, arrayList);</span>
 <span class="fc" id="L997">                }</span>
@@ -1002,7 +1002,7 @@ public class ParsedHTML {
     private void addNamedElement(String name, HTMLElement htmlElement) {
 <span class="fc" id="L1003">        List list = (List) _elementsByName.get(name);</span>
 <span class="fc bfc" id="L1004" title="All 2 branches covered.">        if (list == null) {</span>
-<span class="fc" id="L1005">            _elementsByName.put(name, list = new ArrayList());</span>
+<span class="fc" id="L1005">            _elementsByName.put(name, list = new ArrayList&lt;&gt;());</span>
         }
 <span class="fc" id="L1007">        list.add(htmlElement);</span>
 <span class="fc" id="L1008">    }</span>
@@ -1066,7 +1066,7 @@ public class ParsedHTML {
      * Returns all links found in the page matching the specified criteria.
      **/
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) {
-<span class="fc" id="L1069">        ArrayList matches = new ArrayList();</span>
+<span class="fc" id="L1069">        ArrayList matches = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L1070">        WebLink[] links = getLinks();</span>
 <span class="fc bfc" id="L1071" title="All 2 branches covered.">        for (WebLink link : links) {</span>
 <span class="fc bfc" id="L1072" title="All 2 branches covered.">            if (predicate.matchesCriteria(link, criteria)) {</span>
@@ -1286,7 +1286,7 @@ public class ParsedHTML {
      * Returns the tables which match the specified criteria.
      **/
     private WebTable[] getTablesSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
-<span class="nc" id="L1289">        ArrayList matches = new ArrayList();</span>
+<span class="nc" id="L1289">        ArrayList matches = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L1290" title="All 2 branches missed.">        for (WebTable table : tables) {</span>
 <span class="nc bnc" id="L1291" title="All 2 branches missed.">            if (predicate.matchesCriteria(table, value)) {</span>
 <span class="nc" id="L1292">                matches.add(table);</span>
@@ -1340,4 +1340,4 @@ public class ParsedHTML {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

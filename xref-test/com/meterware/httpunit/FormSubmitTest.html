@@ -248,8 +248,8 @@
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>     @Test
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>     <strong class="jxr_keyword">void</strong> doubleSubmitProblem() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>         <strong class="jxr_keyword">boolean</strong> states[] = { false, <strong class="jxr_keyword">true</strong> };
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>         String expected[] = { <span class="jxr_string">""</span>, <span class="jxr_string">"1"</span> };
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>         <strong class="jxr_keyword">boolean</strong>[] states = { false, <strong class="jxr_keyword">true</strong> };
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>         String[] expected = { <span class="jxr_string">""</span>, <span class="jxr_string">"1"</span> };
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; states.length; i++) {
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>             <em class="jxr_comment">// countMySelf Tipp from http://www.tipstrs.com/tip/1084/Static-variables-in-Javascript</em>
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>             defineWebPage(<span class="jxr_string">"Default"</span>,
@@ -612,7 +612,7 @@
 <a class="jxr_linenumber" name="L604" href="#L604">604</a>         defineWebPage(<span class="jxr_string">"abc/form"</span>,
 <a class="jxr_linenumber" name="L605" href="#L605">605</a>                 <span class="jxr_string">"&lt;form name=\&quot;test\&quot; method='POST' action='/doit'&gt;"</span> + <span class="jxr_string">"  &lt;input type='text' name='text_field-name*'&gt;"</span>
 <a class="jxr_linenumber" name="L606" href="#L606">606</a>                         + <span class="jxr_string">"  &lt;input type='submit' name='apply' value='Apply'&gt;"</span> + <span class="jxr_string">"&lt;/form&gt;"</span>);
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>         setResourceCharSet(<span class="jxr_string">"abc/form.html"</span>, <span class="jxr_string">"iso-8859-3"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L607" href="#L607">607</a>         setResourceCharSet(<span class="jxr_string">"abc/form.html"</span>, <span class="jxr_string">"UTF-8"</span>, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L608" href="#L608">608</a>         defineResource(<span class="jxr_string">"doit"</span>, <strong class="jxr_keyword">new</strong> PseudoServlet() {
 <a class="jxr_linenumber" name="L609" href="#L609">609</a>             @Override
 <a class="jxr_linenumber" name="L610" href="#L610">610</a>             <strong class="jxr_keyword">public</strong> WebResource getPostResponse() <strong class="jxr_keyword">throws</strong> IOException {

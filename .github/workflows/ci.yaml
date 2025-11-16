@@ -16,7 +16,7 @@ jobs:
       matrix:
         cache: [maven]
         distribution: [temurin]
-        java: [25]
+        java: [21, 25]
         os: [macos-latest, ubuntu-latest, windows-latest]
       fail-fast: false
       max-parallel: 6
@@ -30,9 +30,7 @@ jobs:
           cache: ${{ matrix.cache }}
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
-      - name: Run tests (Linux)
-        run: xvfb-run -a ./mvnw test --batch-mode --no-transfer-progress --show-version -Dlicense.skip=true
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-      - name: Run tests (Windows/Mac)
-        run: ./mvnw test --batch-mode --no-transfer-progress --show-version -D"license.skip=true"
-        if: ${{ matrix.os != 'ubuntu-latest' }}
+      - name: Test with Maven
+        uses: GabrielBB/xvfb-action@5bcda06da84ba084708898801da79736b88e00a9 # v1
+        with:
+          run: ./mvnw test --batch-mode --no-transfer-progress --show-version -D"license.skip=true"

@@ -22,15 +22,17 @@ jobs:
           distribution: temurin
           java-version: 25
       - name: Run the build
-        run: xvfb-run -a ./mvnw test --batch-mode --no-transfer-progress --quiet --show-version -Dlicense.skip=true
+        uses: GabrielBB/xvfb-action@5bcda06da84ba084708898801da79736b88e00a9 # v1
+        with:
+          run: ./mvnw test --batch-mode --no-transfer-progress --quiet --show-version -Dlicense.skip=true
       - name: Report Coverage to Coveralls for Pull Requests
         if: github.event_name == 'pull_request'
-        run: xvfb-run -a ./mvnw jacoco:report coveralls:report --batch-mode --no-transfer-progress -DpullRequest=${PR_NUMBER} -DrepoToken=${GITHUB_TOKEN} -DserviceName=github
+        run: ./mvnw generate-sources jacoco:report coveralls:report --batch-mode --no-transfer-progress -DpullRequest=${{ env.PR_NUMBER }} -DrepoToken=${{ env.GITHUB_TOKEN }} -DserviceName=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
       - name: Report Coverage to Coveralls for General Push
         if: github.event_name == 'push'
-        run: xvfb-run -a ./mvnw jacoco:report coveralls:report --batch-mode --no-transfer-progress -DrepoToken=${GITHUB_TOKEN} -DserviceName=github
+        run: ./mvnw generate-sources jacoco:report coveralls:report --batch-mode --no-transfer-progress -DrepoToken=${{ env.GITHUB_TOKEN }} -DserviceName=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

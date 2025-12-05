@@ -55,6 +55,12 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class FileUploadTest extends HttpUnitTest {
 
+    /**
+     * Parameters multipart encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void parametersMultipartEncoding() throws Exception {
         defineResource("ListParams", new MimeEcho());
@@ -71,6 +77,12 @@ class FileUploadTest extends HttpUnitTest {
                 "http://dummy?" + encoding.getText().trim());
     }
 
+    /**
+     * File parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileParameterValidation() throws Exception {
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
@@ -87,6 +99,12 @@ class FileUploadTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Non file parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nonFileParameterValidation() throws Exception {
         File file = new File("temp.html");
@@ -105,6 +123,12 @@ class FileUploadTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Url encoding file parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void urlEncodingFileParameterValidation() throws Exception {
         File file = new File("temp.html");
@@ -123,6 +147,12 @@ class FileUploadTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * File multipart encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileMultipartEncoding() throws Exception {
         File file = new File("temp.txt");
@@ -150,6 +180,7 @@ class FileUploadTest extends HttpUnitTest {
      * new test for BR 2822957 https://sourceforge.net/tracker/?func=detail&aid=2822957&group_id=6550&atid=106550
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void removeFileParameter() throws Exception {
@@ -172,6 +203,12 @@ class FileUploadTest extends HttpUnitTest {
         file.delete();
     }
 
+    /**
+     * Multi file submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multiFileSubmit() throws Exception {
         File file = new File("temp.txt");
@@ -207,6 +244,12 @@ class FileUploadTest extends HttpUnitTest {
         file2.delete();
     }
 
+    /**
+     * Illegal multi file submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void illegalMultiFileSubmit() throws Exception {
         File file = new File("temp.txt");
@@ -240,6 +283,12 @@ class FileUploadTest extends HttpUnitTest {
         file2.delete();
     }
 
+    /**
+     * Input stream as file.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inputStreamAsFile() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
@@ -257,6 +306,12 @@ class FileUploadTest extends HttpUnitTest {
         assertEquals("text/plain:message.name=temp.txt&message.lines=2&update=age", encoding.getText().trim());
     }
 
+    /**
+     * File upload without form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileUploadWithoutForm() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
@@ -272,10 +327,17 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * test the file content type for a given file
+     * test the file content type for a given file.
      *
      * @param file
+     *            the file
+     * @param contentType
+     *            the content type
      * @param expected
+     *            the expected
+     *
+     * @throws Exception
+     *             the exception
      */
     protected void doTestFileContentType(File file, String contentType, String expected) throws Exception {
         defineResource("ListParams", new MimeEcho());
@@ -297,16 +359,17 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * create a file from the given byte contents
+     * create a file from the given byte contents.
      *
      * @param name
      *            - the name of the file
      * @param content
      *            - the bytes to use as content
      *
-     * @return
+     * @return the file
      *
      * @throws Exception
+     *             the exception
      */
     private File createFile(String name, byte[] content) throws Exception {
         File file = new File(name);
@@ -320,6 +383,7 @@ class FileUploadTest extends HttpUnitTest {
      * test the file content type for several file types e.g. a gif image modified for patch 1415415
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void fileContentType() throws Exception {
@@ -349,6 +413,7 @@ class FileUploadTest extends HttpUnitTest {
      * test the file content type for some ".new" file
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void specifiedFileContentType() throws Exception {
@@ -357,9 +422,10 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * test submitting a file by Martin Burchell, Aptivate for BR 2034998
+     * test submitting a file by Martin Burchell, Aptivate for BR 2034998.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitFile() throws Exception {

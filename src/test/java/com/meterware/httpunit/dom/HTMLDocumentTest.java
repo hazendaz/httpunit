@@ -48,9 +48,18 @@ import org.w3c.dom.html.HTMLImageElement;
  */
 class HTMLDocumentTest extends AbstractHTMLElementTest {
 
+    /** The head element. */
     private Element _headElement;
+
+    /** The html element. */
     private Element _htmlElement;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _htmlDocument.appendChild(_htmlElement = createElement("html"));
@@ -59,6 +68,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that we can detect the lack of a document title.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void emptyDocumentTitle() throws Exception {
@@ -67,6 +79,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that we can find the document title.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void readDocumentTitle() throws Exception {
@@ -81,6 +96,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that we can modify an existing document title.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void modifyDocumentTitle() throws Exception {
@@ -96,6 +114,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that we can set the document title if none exists.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void createDocumentTitle() throws Exception {
@@ -105,6 +126,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieval of the body element.
+     *
+     * @return the body
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getBody() throws Exception {
@@ -116,6 +142,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies setting the body element.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void setBody() throws Exception {
@@ -127,6 +156,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieving elements by their ID attribute.
+     *
+     * @return the elements by id
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getElementsById() throws Exception {
@@ -150,6 +184,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieving elements by their name attribute.
+     *
+     * @return the elements by name
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getElementsByName() throws Exception {
@@ -171,12 +210,30 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Assert elements by name.
+     *
+     * @param document
+     *            the document
+     * @param name
+     *            the name
+     * @param expectedElements
+     *            the expected elements
+     */
     private void assertElementsByName(HTMLDocument document, String name, HTMLElement[] expectedElements) {
         NodeList actualElements = document.getElementsByName(name);
         HttpUserAgentTest.assertMatchingSet("Elements with name '" + name + "'", expectedElements,
                 toArray(actualElements));
     }
 
+    /**
+     * To array.
+     *
+     * @param list
+     *            the list
+     *
+     * @return the object[]
+     */
     private Object[] toArray(NodeList list) {
         Object[] result = new Object[list.getLength()];
         for (int i = 0; i < result.length; i++) {
@@ -187,6 +244,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieval of the collection of links ('img' tags).
+     *
+     * @return the images
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getImages() throws Exception {
@@ -216,6 +278,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieval of the collection of links ('area' tags and 'a' tags with 'href' attributes).
+     *
+     * @return the links
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getLinks() throws Exception {
@@ -254,6 +321,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieval of the collection of forms.
+     *
+     * @return the forms
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getForms() throws Exception {
@@ -289,6 +361,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies retrieval of the collection of anchors.
+     *
+     * @return the anchors
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getAnchors() throws Exception {
@@ -317,6 +394,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the document has an empty write buffer by default.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void initialWriteBuffer() throws Exception {
@@ -326,6 +406,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that writing to the document updates the write buffer.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void writeBufferUpdate() throws Exception {
@@ -336,6 +419,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that writing to the document updates the write buffer.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void writelnBufferUpdate() throws Exception {
@@ -348,6 +434,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that clearing the write buffer leaves it ready for new writes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void bufferClear() throws Exception {
@@ -361,6 +450,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the href of a link will be based on the URL of the enclosing window.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void linkHref() throws Exception {
@@ -375,6 +467,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the href of a link will be based on the base URL of the enclosing window, if there is one.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void linkHrefUsingBase() throws Exception {
@@ -392,6 +487,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the href of a javascript link does not use the enclosing window URL.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void javascriptLinkHref() throws Exception {
@@ -406,6 +504,9 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a click on an href link will send a request for the referenced page.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void clickOnLink() throws Exception {

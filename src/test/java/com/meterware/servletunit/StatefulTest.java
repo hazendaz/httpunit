@@ -48,6 +48,12 @@ import org.junit.jupiter.api.Test;
  */
 class StatefulTest {
 
+    /**
+     * No initial state.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noInitialState() throws Exception {
         final String resourceName = "something/interesting";
@@ -63,6 +69,12 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * State cookies.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void stateCookies() throws Exception {
         final String resourceName = "something/interesting";
@@ -77,6 +89,12 @@ class StatefulTest {
         assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * State preservation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void statePreservation() throws Exception {
         final String resourceName1 = "something/interesting/start";
@@ -102,6 +120,12 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Session preloading.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionPreloading() throws Exception {
         final String resourceName1 = "something/interesting/start";
@@ -121,6 +145,12 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Session access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionAccess() throws Exception {
         final String resourceName1 = "something/interesting/start";
@@ -138,6 +168,12 @@ class StatefulTest {
         assertEquals("yellow", sr.getSession(false).getAttribute("color"), "Color attribute in session");
     }
 
+    /**
+     * Invocation context.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void invocationContext() throws Exception {
         final String resourceName = "something/interesting";
@@ -166,6 +202,12 @@ class StatefulTest {
         assertEquals("color", names.nextElement(), "first name");
     }
 
+    /**
+     * Invocation completion.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void invocationCompletion() throws Exception {
         final String resourceName = "something/interesting";
@@ -187,6 +229,12 @@ class StatefulTest {
         assertEquals(1, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Invocation context update.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void invocationContextUpdate() throws Exception {
         final String resourceName = "something/interesting";
@@ -210,8 +258,15 @@ class StatefulTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * The Class StatefulServlet.
+     */
     static class StatefulServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "the desired content\r\n";
 
         @Override
@@ -234,15 +289,48 @@ class StatefulTest {
             pw.close();
         }
 
+        /**
+         * Write select message.
+         *
+         * @param color
+         *            the color
+         * @param pw
+         *            the pw
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         protected void writeSelectMessage(String color, PrintWriter pw) throws IOException {
             pw.print("You selected " + color);
             pw.close();
         }
 
+        /**
+         * Sets the color.
+         *
+         * @param req
+         *            the req
+         * @param color
+         *            the color
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         protected void setColor(HttpServletRequest req, String color) throws ServletException {
             req.getSession().setAttribute("color", color);
         }
 
+        /**
+         * Gets the color.
+         *
+         * @param req
+         *            the req
+         *
+         * @return the color
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         protected String getColor(HttpServletRequest req) throws ServletException {
             HttpSession session = req.getSession( /* create */ false);
             if (session == null) {

@@ -38,8 +38,15 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class FrameScriptingTest extends HttpUnitTest {
 
+    /** The wc. */
     private WebConversation _wc;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
@@ -120,6 +127,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Test that an image can be used as the source for a frame within a frameset.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void imageInFrame() throws Exception {
@@ -131,6 +141,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Test that a link within a frame that contains a <code>&lt;base ...&gt;</code> element is handled correctly.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void frameContainingBaseElement() throws Exception {
@@ -149,6 +162,9 @@ class FrameScriptingTest extends HttpUnitTest {
     /**
      * Test correct handling of a link within a frame that has been re-written by JavaScript, and which contains a
      * <code>&lt;base ...&gt;</code> element.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void frameRewrittenToUseBaseElement() throws Exception {
@@ -163,6 +179,9 @@ class FrameScriptingTest extends HttpUnitTest {
     /**
      * Test correct handling of a link within a frame that has been re-written by JavaScript over an image, and which
      * contains a <code>&lt;base ...&gt;</code> element.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void imageFrameRewrittenToUseBaseElement() throws Exception {
@@ -176,6 +195,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Verifies that a javascript URL which triggers refresh to the parent of a frame resolves with something sensible.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptURLToParentFrame() throws Exception {
@@ -193,6 +215,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Verifies that when JavaScript overwrites an empty frame, other empty frames stay empty.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptOverwritingBlankFrame() throws Exception {
@@ -212,6 +237,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Verifies that the onload event of a frameset can access subframes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void frameOnLoadEvent() throws Exception {
@@ -226,6 +254,9 @@ class FrameScriptingTest extends HttpUnitTest {
     /**
      * Verifies that the onload event of a frameset runs even if there is a noframes tag present that contains a body
      * tag.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void frameOnLoadEventWithNoFrames() throws Exception {
@@ -241,6 +272,9 @@ class FrameScriptingTest extends HttpUnitTest {
 
     /**
      * Verifies that IFrames can be found using their id.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void iFrameAccessById() throws Exception {

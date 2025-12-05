@@ -48,11 +48,23 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 public class FormParametersTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
     }
 
+    /**
+     * Choice parameter validation bypass deprecated.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void choiceParameterValidationBypassDeprecated() throws Exception {
         HttpUnitOptions.setParameterValuesValidated(false);
@@ -71,6 +83,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("fish", new String[] { "red", "pink" });
     }
 
+    /**
+     * Choice parameter validation bypass.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void choiceParameterValidationBypass() throws Exception {
         defineWebPage("Default",
@@ -88,6 +106,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("fish", new String[] { "red", "pink" });
     }
 
+    /**
+     * Choice parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void choiceParameterValidation() throws Exception {
         defineWebPage("Default",
@@ -115,9 +139,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug [ 1215734 ] another <select> problem by alex
+     * test for bug [ 1215734 ] another <select> problem by alex.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void choiceParameterBug1215734() throws Exception {
@@ -148,7 +173,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug Report [ 1122186 ] Duplicate select with same name cause error by Serge Knystautas
+     * test for bug Report [ 1122186 ] Duplicate select with same name cause error by Serge Knystautas.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void duplicateSelect() throws Exception {
@@ -175,6 +203,12 @@ public class FormParametersTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Text parameter validation bypass.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textParameterValidationBypass() throws Exception {
         defineWebPage("Default",
@@ -191,6 +225,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("secret", new String[] { "red", "pink" });
     }
 
+    /**
+     * Text parameter validation bypass deprecated.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textParameterValidationBypassDeprecated() throws Exception {
         HttpUnitOptions.setParameterValuesValidated(false);
@@ -208,6 +248,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("secret", new String[] { "red", "pink" });
     }
 
+    /**
+     * Text parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textParameterValidation() throws Exception {
         defineWebPage("Default",
@@ -227,6 +273,12 @@ public class FormParametersTest extends HttpUnitTest {
                 "setting hidden field to multiple values");
     }
 
+    /**
+     * Hidden parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void hiddenParameters() throws Exception {
         defineWebPage("Default", "<form method=GET action = '/ask'>" + "<Input type=text name=open value=value>"
@@ -244,6 +296,12 @@ public class FormParametersTest extends HttpUnitTest {
         assertEquals("new", form.getParameterValue("secret"), "New hidden value");
     }
 
+    /**
+     * Unknown parameter.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void unknownParameter() throws Exception {
         defineWebPage("Default", "<form method=GET action = '/ask'>" + "<Input type=submit></form>");
@@ -257,9 +315,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR [ 2099277 ] isHiddenParameter() returns true when non existent by Malcom Robbins
+     * test for BR [ 2099277 ] isHiddenParameter() returns true when non existent by Malcom Robbins.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void undefinedParameters() throws Exception {
@@ -273,9 +332,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * check that an UnusedParameterValueException is thrown if a parameter value is not supplied
+     * check that an UnusedParameterValueException is thrown if a parameter value is not supplied.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void unusedParameterValue() throws Exception {
@@ -293,9 +353,10 @@ public class FormParametersTest extends HttpUnitTest {
 
     /**
      * check that an UnusedParameterValueException is not thrown if a parameter value is not supplied See BR 1843978
-     * also BR 1449658
+     * also BR 1449658.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void bug1843978() throws Exception {
@@ -309,6 +370,12 @@ public class FormParametersTest extends HttpUnitTest {
         }, "Should not have rejected set of unused parameter value");
     }
 
+    /**
+     * Multiple text parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multipleTextParameterValidation() throws Exception {
         defineWebPage("Default",
@@ -330,6 +397,12 @@ public class FormParametersTest extends HttpUnitTest {
                 "setting password to multiple values");
     }
 
+    /**
+     * Radio button validation bypass.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void radioButtonValidationBypass() throws Exception {
         defineWebPage("Default",
@@ -342,6 +415,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("color", new String[] { "blue", "red" });
     }
 
+    /**
+     * Radio button validation bypass deprecated.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void radioButtonValidationBypassDeprecated() throws Exception {
         HttpUnitOptions.setParameterValuesValidated(false);
@@ -355,6 +434,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("color", new String[] { "blue", "red" });
     }
 
+    /**
+     * Radio button validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void radioButtonValidation() throws Exception {
         defineWebPage("Default",
@@ -374,6 +459,12 @@ public class FormParametersTest extends HttpUnitTest {
                 "setting radio buttons to multiple values");
     }
 
+    /**
+     * Checkbox validation bypass deprecated.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxValidationBypassDeprecated() throws Exception {
         defineWebPage("Default",
@@ -387,6 +478,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("color", "green");
     }
 
+    /**
+     * Checkbox validation bypass.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxValidationBypass() throws Exception {
         defineWebPage("Default",
@@ -399,6 +496,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("color", "green");
     }
 
+    /**
+     * Checkbox validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxValidation() throws Exception {
         defineWebPage("Default",
@@ -419,6 +522,12 @@ public class FormParametersTest extends HttpUnitTest {
                 "setting checkbox to an incorrect value");
     }
 
+    /**
+     * Checkbox shortcuts.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxShortcuts() throws Exception {
         defineWebPage("Default", "<form method=GET id='boxes'>" + "<Input type=checkbox name=use_color>"
@@ -459,6 +568,12 @@ public class FormParametersTest extends HttpUnitTest {
 
     }
 
+    /**
+     * Read only controls.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void readOnlyControls() throws Exception {
         defineWebPage("Default",
@@ -499,9 +614,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test disabled controls
+     * test disabled controls.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void disabledControls() throws Exception {
@@ -544,6 +660,12 @@ public class FormParametersTest extends HttpUnitTest {
         request.setParameter("big", "stop me");
     }
 
+    /**
+     * File parameter value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileParameterValue() throws Exception {
         defineWebPage("Default", "<form method=POST action='/ask'>" + "<Input type=file name=File>"
@@ -568,9 +690,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1510495 ] getParameterValue on a submit button fails by Julien HENRY
+     * test for bug report [ 1510495 ] getParameterValue on a submit button fails by Julien HENRY.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitButtonParameterValue() throws Exception {
@@ -586,7 +709,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1510582 ] setParameter fails with <input type="file"> by Julien HENRY
+     * test for bug report [ 1510582 ] setParameter fails with <input type="file"> by Julien HENRY.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void unusedParameterExceptionForFileParamWithStringValue() throws Exception {
@@ -617,7 +743,10 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1390695 ] bad error message by Martin Olsson
+     * test for bug report [ 1390695 ] bad error message by Martin Olsson.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void unusedUploadFileException() throws Exception {
@@ -644,7 +773,7 @@ public class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for BugReport 1937946 (different result on Mac than on other platforms
+     * test for BugReport 1937946 (different result on Mac than on other platforms.
      *
      * @throws Exception
      *             to activate test download
@@ -675,8 +804,24 @@ public class FormParametersTest extends HttpUnitTest {
     // ---------------------------------------------- private members
     // ------------------------------------------------
 
+    /** The wc. */
     private WebConversation _wc;
 
+    /**
+     * Validate set parameter rejected.
+     *
+     * @param request
+     *            the request
+     * @param parameterName
+     *            the parameter name
+     * @param value
+     *            the value
+     * @param comment
+     *            the comment
+     *
+     * @throws Exception
+     *             the exception
+     */
     private void validateSetParameterRejected(WebRequest request, String parameterName, String value, String comment)
             throws Exception {
         try {
@@ -686,6 +831,21 @@ public class FormParametersTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Validate set parameter rejected.
+     *
+     * @param request
+     *            the request
+     * @param parameterName
+     *            the parameter name
+     * @param values
+     *            the values
+     * @param comment
+     *            the comment
+     *
+     * @throws Exception
+     *             the exception
+     */
     private void validateSetParameterRejected(WebRequest request, String parameterName, String[] values, String comment)
             throws Exception {
         try {

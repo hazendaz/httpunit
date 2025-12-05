@@ -46,6 +46,12 @@ import org.junit.jupiter.api.Test;
  */
 class ConfigTest {
 
+    /**
+     * Config object.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void configObject() throws Exception {
         final String resourceName = "something/interesting";
@@ -60,9 +66,10 @@ class ConfigTest {
     }
 
     /**
-     * Test added by WF 2012-11-12 to answer question on developers mailing list
+     * Test added by WF 2012-11-12 to answer question on developers mailing list.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void invalidConfig() throws Exception {
@@ -83,6 +90,12 @@ class ConfigTest {
         }
     }
 
+    /**
+     * Context attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void contextAttributes() throws Exception {
         final String servlet1Name = "something/interesting";
@@ -101,6 +114,12 @@ class ConfigTest {
         assertEquals("found me", sc2.getAttribute("sample"), "attribute 'sample'");
     }
 
+    /**
+     * File mime type.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileMimeType() throws Exception {
         final String servlet1Name = "something/interesting";
@@ -115,6 +134,12 @@ class ConfigTest {
         checkMimeType(context, "sample.gif", "image/gif");
     }
 
+    /**
+     * Servlet context access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void servletContextAccess() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -125,12 +150,29 @@ class ConfigTest {
         assertSame(context, ic.getRequest().getSession().getServletContext(), "Context from session");
     }
 
+    /**
+     * Check mime type.
+     *
+     * @param context
+     *            the context
+     * @param fileName
+     *            the file name
+     * @param expectedMimeType
+     *            the expected mime type
+     */
     private void checkMimeType(ServletContext context, String fileName, String expectedMimeType) {
         assertEquals(expectedMimeType, context.getMimeType(fileName), "mime type for " + fileName);
     }
 
+    /**
+     * The Class ConfigServlet.
+     */
     static class ConfigServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "the desired content\r\n";
 
         @Override

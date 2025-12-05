@@ -35,10 +35,20 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+/**
+ * The Class DocumentImportTest.
+ */
 class DocumentImportTest {
 
+    /** The document. */
     private DocumentImpl _document;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
@@ -176,6 +186,14 @@ class DocumentImportTest {
         verifyNSElementWithNSAttributes("copy", copy);
     }
 
+    /**
+     * Verify NS element with NS attributes.
+     *
+     * @param comment
+     *            the comment
+     * @param element
+     *            the element
+     */
     private void verifyNSElementWithNSAttributes(String comment, Element element) {
         assertEquals(Node.ELEMENT_NODE, element.getNodeType(), comment + " node type");
         assertEquals("fs:zork", element.getNodeName(), comment + " node name");
@@ -232,6 +250,20 @@ class DocumentImportTest {
         verifyNode("3rd", child, Node.ELEMENT_NODE, "bar", null);
     }
 
+    /**
+     * Verify node.
+     *
+     * @param comment
+     *            the comment
+     * @param node
+     *            the node
+     * @param type
+     *            the type
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     private void verifyNode(String comment, Node node, short type, String name, String value) {
         assertEquals(type, node.getNodeType(), comment + " node type");
         assertEquals(name, node.getNodeName(), comment + " node name");

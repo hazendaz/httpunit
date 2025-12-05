@@ -36,15 +36,35 @@ import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLInputElement;
 import org.w3c.dom.html.HTMLTextAreaElement;
 
+/**
+ * The Class HTMLFormTest.
+ */
 class HTMLFormTest extends AbstractHTMLElementTest {
 
+    /** The form. */
     private HTMLFormElement _form;
+
+    /** The hidden field. */
     private HTMLInputElement _textField, _passwordField, _defaultField, _hiddenField;
+
+    /** The checkbox. */
     private HTMLInputElement _radio1[], _radio2[], _checkbox[];
+
+    /** The button input. */
     private HTMLInputElement _submitInput, _resetInput, _buttonInput;
+
+    /** The text area. */
     private HTMLTextAreaElement _textArea;
+
+    /** The body. */
     private Element _body;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _form = (HTMLFormElement) createElement("form", new String[][] { { "action", "go_here" } });
@@ -90,6 +110,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         _checkbox[1].setAttribute("checked", "true");
     }
 
+    /**
+     * Text values.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textValues() throws Exception {
         _form.appendChild(_textField);
@@ -103,6 +129,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         verifyTextField(_hiddenField, "saved");
     }
 
+    /**
+     * Text area.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textArea() throws Exception {
         _form.appendChild(_textArea);
@@ -119,6 +151,14 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertEquals("something here to see", _textArea.getDefaultValue(), "Reset default value");
     }
 
+    /**
+     * Verify text field.
+     *
+     * @param textField
+     *            the text field
+     * @param initialValue
+     *            the initial value
+     */
     private void verifyTextField(HTMLInputElement textField, String initialValue) {
         assertSame(_form, textField.getForm(), "Form for control");
         assertEquals(initialValue, textField.getValue(), "Initial value");
@@ -133,6 +173,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertEquals(initialValue, textField.getDefaultValue(), "Reset default value");
     }
 
+    /**
+     * Defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaults() throws Exception {
         _textField.setDefaultValue("green");
@@ -141,6 +187,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertTrue(_checkbox[0].getDefaultChecked(), "default checked value");
     }
 
+    /**
+     * Checkboxes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxes() throws Exception {
         String[] values = { "on1", "on2" };
@@ -179,6 +231,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertFalse(_checkbox[0].getChecked(), "checkbox 0 after 2nd click");
     }
 
+    /**
+     * Radio buttons.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void radioButtons() throws Exception {
         for (HTMLInputElement element : _radio1) {
@@ -203,12 +261,28 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         verifyRadioButtons("radio 1 after click", _radio1, new boolean[] { true, false, false });
     }
 
+    /**
+     * Verify radio buttons.
+     *
+     * @param comment
+     *            the comment
+     * @param radioButtons
+     *            the radio buttons
+     * @param expected
+     *            the expected
+     */
     private void verifyRadioButtons(String comment, HTMLInputElement[] radioButtons, boolean[] expected) {
         for (int i = 0; i < radioButtons.length; i++) {
             assertEquals(expected[i], radioButtons[i].getChecked(), comment + " checked " + i);
         }
     }
 
+    /**
+     * Form elements.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formElements() throws Exception {
         HTMLElement[] elements = { _textField, _passwordField, _hiddenField, _textArea, _checkbox[0], _checkbox[1],
@@ -230,6 +304,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
      * collection of elements.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void improperFormElements() throws Exception {
@@ -264,6 +339,7 @@ class HTMLFormTest extends AbstractHTMLElementTest {
      * Verifies that we can recognize buttons without forms.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void formDetection() throws Exception {
@@ -275,6 +351,12 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertSame(_form, _textField.getForm(), "Form for text field");
     }
 
+    /**
+     * Reset input.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void resetInput() throws Exception {
         _form.appendChild(_textArea);
@@ -287,6 +369,14 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         assertEquals("Original", _textArea.getValue(), "value after reset");
     }
 
+    /**
+     * Gets the control by name.
+     *
+     * @return the control by name
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getControlByName() throws Exception {
         _form.appendChild(_textField);
@@ -298,6 +388,16 @@ class HTMLFormTest extends AbstractHTMLElementTest {
         verifyNamedControlAndValue("hidden", _hiddenField, "saved");
     }
 
+    /**
+     * Verify named control and value.
+     *
+     * @param name
+     *            the name
+     * @param textField
+     *            the text field
+     * @param expectedValue
+     *            the expected value
+     */
     private void verifyNamedControlAndValue(String name, HTMLInputElement textField, String expectedValue) {
         Object o = ((HTMLFormElementImpl) _form).get(name, null);
         assertTrue(o instanceof ScriptableObject, "Result should be scriptable, is " + o);

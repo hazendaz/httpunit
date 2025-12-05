@@ -48,6 +48,12 @@ import org.xml.sax.SAXException;
 @ExtendWith(ExternalResourceSupport.class)
 class WebPageTest extends HttpUnitTest {
 
+    /**
+     * No response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noResponse() throws Exception {
         WebConversation wc = new WebConversation();
@@ -59,6 +65,12 @@ class WebPageTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Proxy server access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void proxyServerAccess() throws Exception {
         defineResource("http://someserver.com/sample", "Get this", "text/plain");
@@ -75,9 +87,10 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * check the valid contentTypes modified for bug report [ 1281655 ] [patch] allow text/xml to be parsed as html by
-     * fabrizio giustina
+     * fabrizio giustina.
      *
      * @throws Exception
+     *             the exception
      */
 
     @Test
@@ -147,6 +160,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals("A Sample Page", simplePage.getReceivedPage().getTitle(), "HTML Title");
     }
 
+    /**
+     * Html document.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void htmlDocument() throws Exception {
         defineWebPage("SimplePage", "This has no forms but it does\n"
@@ -161,9 +180,10 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * add test for HeadMethodWebRequest
+     * add test for HeadMethodWebRequest.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void headMethodWebRequest() throws Exception {
@@ -180,6 +200,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals("", text);
     }
 
+    /**
+     * Title.
+     *
+     * @throws Exception
+     *             the exception
+     */
     // @Ignore
     @Test
     void title() throws Exception {
@@ -196,6 +222,12 @@ class WebPageTest extends HttpUnitTest {
         assertNull(simplePage.getRefreshRequest(), "No refresh request should have been found");
     }
 
+    /**
+     * Local file.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void localFile() throws Exception {
         File file = new File("temp.html");
@@ -214,6 +246,12 @@ class WebPageTest extends HttpUnitTest {
         file.delete();
     }
 
+    /**
+     * No local file.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noLocalFile() throws Exception {
         File file = new File("temp.html");
@@ -229,6 +267,12 @@ class WebPageTest extends HttpUnitTest {
 
     }
 
+    /**
+     * Refresh header.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void refreshHeader() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
@@ -245,6 +289,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Meta refresh request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaRefreshRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
@@ -260,6 +310,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Meta refresh URL request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaRefreshURLRequest() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
@@ -276,6 +332,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Meta refresh absolute URL request with ampersand encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaRefreshAbsoluteURLRequestWithAmpersandEncoding() throws Exception {
         String refreshURL = "http://localhost:8080/someapp/secure/?username=abc&somevalue=abc";
@@ -292,6 +354,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(2, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Meta refresh URL request no delay.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaRefreshURLRequestNoDelay() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
@@ -308,6 +376,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(0, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Meta refresh URL request delay only.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaRefreshURLRequestDelayOnly() throws Exception {
         String refreshURL = getHostPath() + "/SimplePage.html";
@@ -323,6 +397,12 @@ class WebPageTest extends HttpUnitTest {
         assertEquals(5, simplePage.getRefreshDelay(), "Refresh delay");
     }
 
+    /**
+     * Auto refresh.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void autoRefresh() throws Exception {
         String refreshURL = getHostPath() + "/NextPage.html";
@@ -340,7 +420,10 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * Test the meta tag content retrieval
+     * Test the meta tag content retrieval.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void metaTag() throws Exception {
@@ -365,7 +448,12 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * test the stylesheet retrieval
+     * test the stylesheet retrieval.
+     *
+     * @return the external stylesheet
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getExternalStylesheet() throws Exception {
@@ -383,6 +471,9 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * This test verifies that an IO exception is thrown when only a partial response is received.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void truncatedPage() throws Exception {
@@ -402,6 +493,14 @@ class WebPageTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Gets the element by ID.
+     *
+     * @return the element by ID
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getElementByID() throws Exception {
         assertDoesNotThrow(() -> {
@@ -418,6 +517,14 @@ class WebPageTest extends HttpUnitTest {
         });
     }
 
+    /**
+     * Gets the elements by name.
+     *
+     * @return the elements by name
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getElementsByName() throws Exception {
         assertDoesNotThrow(() -> {
@@ -433,6 +540,14 @@ class WebPageTest extends HttpUnitTest {
         });
     }
 
+    /**
+     * Gets the elements by attribute.
+     *
+     * @return the elements by attribute
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getElementsByAttribute() throws Exception {
         assertDoesNotThrow(() -> {
@@ -455,9 +570,12 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * test for getElementsWithClassName supplied by Rick Huff
+     * test for getElementsWithClassName supplied by Rick Huff.
+     *
+     * @return the elements with class name
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getElementsWithClassName() throws Exception {
@@ -479,6 +597,9 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * Test the {@link WebResponse.ByteTagParser} to ensure that embedded JavaScript is skipped.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void byteTagParser() throws Exception {
@@ -504,6 +625,9 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * Test whether a base tag embedded within JavaScript in the header of a page confuses the parser.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void baseTagWithinJavaScriptInHeader() throws Exception {
@@ -528,6 +652,9 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * Test whether a base tag embedded within JavaScript in the body of a page confuses the parser.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void baseTagWithinJavaScriptInBody() throws Exception {
@@ -549,9 +676,12 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * test case for BR [ 2100376 ] Unable to implement an XPath Predicate (which used to work) by Stephane Mikaty
+     * test case for BR [ 2100376 ] Unable to implement an XPath Predicate (which used to work) by Stephane Mikaty.
+     *
+     * @return the first matching form
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getFirstMatchingForm() throws Exception {
@@ -575,10 +705,12 @@ class WebPageTest extends HttpUnitTest {
     }
 
     /**
-     * test case for BR 2883515
+     * test case for BR 2883515.
      *
-     * @throws SAXException
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     @Test
     void invalidNoScriptHandling() throws IOException, SAXException {

@@ -44,6 +44,12 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class WebFormTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
@@ -57,7 +63,12 @@ class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * placeholder for test for BR 2407470 by redsonic with comment and patch by Adam Heath
+     * placeholder for test for BR 2407470 by redsonic with comment and patch by Adam Heath.
+     *
+     * @return the form with ID
+     *
+     * @throws Exception
+     *             the exception
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
@@ -82,6 +93,12 @@ class WebFormTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Submit from form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitFromForm() throws Exception {
         defineWebPage("Form", "<form method=GET id=main action = 'tryMe'>" + "<Input type=text Name=name>"
@@ -94,6 +111,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("You made it!", _wc.getCurrentPage().getText(), "Expected response");
     }
 
+    /**
+     * Ambiguous submit from form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void ambiguousSubmitFromForm() throws Exception {
         defineWebPage("Form",
@@ -113,6 +136,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("You made it!", noButton.getText(), "Expected response");
     }
 
+    /**
+     * Submit from button.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitFromButton() throws Exception {
         defineWebPage("Form", "<form method=GET id=main action = 'tryMe'>" + "<Input type=text Name=name>"
@@ -128,9 +157,10 @@ class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * test clicking on a Positional Button with a given name "update"
+     * test clicking on a Positional Button with a given name "update".
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitFromPositionalButton() throws Exception {
@@ -149,6 +179,7 @@ class WebFormTest extends HttpUnitTest {
      * test clicking on a unnamed Image Button see also FormSubmitTest.testUnnamedImageButtonDefaultSubmit
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitFromUnnamedImageButton() throws Exception {
@@ -172,6 +203,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("You made it!", response.getText(), "Result of click");
     }
 
+    /**
+     * Find no form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findNoForm() throws Exception {
         defineWebPage("NoForms", "This has no forms but it does" + "have <a href=\"/other.html\">an active link</A>"
@@ -182,6 +219,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals(0, forms.length);
     }
 
+    /**
+     * Find one form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findOneForm() throws Exception {
         WebForm[] forms = _wc.getResponse(getHostPath() + "/OneForm.html").getForms();
@@ -189,6 +232,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals(1, forms.length);
     }
 
+    /**
+     * Find form by name.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findFormByName() throws Exception {
         defineWebPage("Default",
@@ -203,6 +252,12 @@ class WebFormTest extends HttpUnitTest {
         assertNotNull(page.getFormWithName("oneform"), "Did not find named form");
     }
 
+    /**
+     * Find form by ID.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findFormByID() throws Exception {
         defineWebPage("Default",
@@ -217,6 +272,12 @@ class WebFormTest extends HttpUnitTest {
         assertNotNull(page.getFormWithID("oneForm"), "Did not find specified form");
     }
 
+    /**
+     * Form parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formParameters() throws Exception {
         defineWebPage("AForm",
@@ -250,6 +311,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("Something", form.getParameterValue("name"), "Reset text area value");
     }
 
+    /**
+     * Form request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formRequest() throws Exception {
         WebForm form = _wc.getResponse(getHostPath() + "/OneForm.html").getForms()[0];
@@ -259,6 +326,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/servlet/Login", request.getURL().toExternalForm());
     }
 
+    /**
+     * Hidden parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void hiddenParameters() throws Exception {
         defineWebPage("Default",
@@ -288,7 +361,10 @@ class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * test Null textValues
+     * test Null textValues.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void nullTextValues() throws Exception {
@@ -338,6 +414,12 @@ class WebFormTest extends HttpUnitTest {
 
     }
 
+    /**
+     * Table form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void tableForm() throws Exception {
         defineWebPage("Default",
@@ -372,9 +454,10 @@ class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * test Select HTML Element
+     * test Select HTML Element.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void select() throws Exception {
@@ -410,6 +493,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("red", form.getParameterValue("color"), "Reverted color");
     }
 
+    /**
+     * Sized select.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sizedSelect() throws Exception {
         defineWebPage("Default",
@@ -424,6 +513,12 @@ class WebFormTest extends HttpUnitTest {
         assertNull(form.getParameterValue("songs"), "Default song should be null");
     }
 
+    /**
+     * Single select parameter ordering.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleSelectParameterOrdering() throws Exception {
         StringBuilder sb = new StringBuilder("<form action='sendIt' id='theform'>");
@@ -445,9 +540,10 @@ class WebFormTest extends HttpUnitTest {
     }
 
     /**
-     * testMultiSelect should fit to bug report [ 1060291 ] setting multiple values in selection list by Vladimir
+     * testMultiSelect should fit to bug report [ 1060291 ] setting multiple values in selection list by Vladimir.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void multiSelect() throws Exception {
@@ -486,6 +582,12 @@ class WebFormTest extends HttpUnitTest {
         assertMatchingSet("Reverted colors", new String[] { "red", "pink" }, form.getParameterValues("colors"));
     }
 
+    /**
+     * Unspecified defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void unspecifiedDefaults() throws Exception {
         defineWebPage("Default",
@@ -507,6 +609,12 @@ class WebFormTest extends HttpUnitTest {
         assertMatchingSet("inferred media default", new String[0], request.getParameterValues("media"));
     }
 
+    /**
+     * Checkbox controls.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxControls() throws Exception {
         defineWebPage("Default",
@@ -536,6 +644,14 @@ class WebFormTest extends HttpUnitTest {
         assertMatchingSet("reverted colors", new String[] { "red", "blue" }, form.getParameterValues("color"));
     }
 
+    /**
+     * Gets the with query string.
+     *
+     * @return the with query string
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getWithQueryString() throws Exception {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=GET action=\"SayHello?speed=fast\">"
@@ -560,6 +676,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("Hello, there", cells[0][0], "Message");
     }
 
+    /**
+     * Post with query string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void postWithQueryString() throws Exception {
         defineResource("QueryForm.html", "<html><head></head>" + "<form method=POST action=\"SayHello?speed=fast\">"
@@ -584,6 +706,12 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("Hello, there", cells[0][0], "Message");
     }
 
+    /**
+     * Post with embedded space.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void postWithEmbeddedSpace() throws Exception {
         String sessionID = "/ID=03.019c010101010001.00000001.a202000000000019. 0d09";
@@ -610,5 +738,6 @@ class WebFormTest extends HttpUnitTest {
         assertEquals("Hello, there", cells[0][0], "Message");
     }
 
+    /** The wc. */
     private WebConversation _wc;
 }

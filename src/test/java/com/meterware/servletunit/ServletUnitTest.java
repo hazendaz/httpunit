@@ -30,6 +30,16 @@ public abstract class ServletUnitTest {
 
     // ------------------------------------ protected members ------------------------------------------
 
+    /**
+     * Assert matching set.
+     *
+     * @param comment
+     *            the comment
+     * @param expected
+     *            the expected
+     * @param found
+     *            the found
+     */
     protected void assertMatchingSet(String comment, Object[] expected, Object[] found) {
         Vector expectedItems = new Vector<>();
         Vector foundItems = new Vector<>();
@@ -62,6 +72,14 @@ public abstract class ServletUnitTest {
         }
     }
 
+    /**
+     * As text.
+     *
+     * @param args
+     *            the args
+     *
+     * @return the string
+     */
     protected String asText(Object[] args) {
         StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < args.length; i++) {

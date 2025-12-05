@@ -37,7 +37,10 @@ import org.junit.jupiter.api.Test;
 class HttpsProtocolSupportTest {
 
     /**
-     * test the available HttpsProtocolProviders are available
+     * test the available HttpsProtocolProviders are available.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void provider() throws Exception {
@@ -51,7 +54,10 @@ class HttpsProtocolSupportTest {
     }
 
     /**
-     * test the available HttpsProtocolProviders
+     * test the available HttpsProtocolProviders.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void providerIBM() throws Exception {
@@ -66,9 +72,10 @@ class HttpsProtocolSupportTest {
     }
 
     /**
-     * test the socket Factory convenience method as proposed by Florian Weimar
+     * test the socket Factory convenience method as proposed by Florian Weimar.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void socketFactory() throws Exception {

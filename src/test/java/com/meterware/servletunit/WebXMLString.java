@@ -30,43 +30,73 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * A class which allows dynamic creation of Servlet configuration XML
+ * A class which allows dynamic creation of Servlet configuration XML.
  */
 class WebXMLString {
 
+    /** The display name. */
     private String _displayName;
 
+    /** The servlets. */
     private ArrayList _servlets = new ArrayList<>();
+
+    /** The mappings. */
     private ArrayList _mappings = new ArrayList<>();
+
+    /** The servlet names. */
     private ArrayList _servletNames = new ArrayList<>();
+
+    /** The init params. */
     private Hashtable _initParams = new Hashtable<>();
 
+    /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();
 
+    /** The filters. */
     private ArrayList _filters = new ArrayList<>();
+
+    /** The filter mappings. */
     private Hashtable _filterMappings = new Hashtable<>();
+
+    /** The filter names. */
     private ArrayList _filterNames = new ArrayList<>();
+
+    /** The filter params. */
     private Hashtable _filterParams = new Hashtable<>();
 
+    /** The login config. */
     private String _loginConfig = "";
+
+    /** The resources. */
     private Hashtable _resources = new Hashtable<>();
+
+    /** The context params. */
     private Hashtable _contextParams = new Hashtable<>();
+
+    /** The load on startup. */
     private Hashtable _loadOnStartup = new Hashtable<>();
 
+    /**
+     * As input stream.
+     *
+     * @return the byte array input stream
+     */
     ByteArrayInputStream asInputStream() {
         return new ByteArrayInputStream(asText().getBytes(StandardCharsets.UTF_8));
     }
 
+    /** The dtd stream. */
     // the stream for testing the dtd file
     private static URL dtdStream = null;
 
+    /** The dtd. */
     // Document type definition to be used - should be one of the dtds available in META-INF
     public static String dtd = "javax/servlet/resources/web-app_2_3.dtd";
 
     /**
-     * check that the dtd is on the CLASSPATH
+     * check that the dtd is on the CLASSPATH.
      *
-     * @return
+     * @return true, if is dtd on classpath
      */
     public static boolean isDtdOnClasspath() {
         if (dtdStream == null) {
@@ -80,7 +110,7 @@ class WebXMLString {
      * running on Eclipse shorten the DOCTYPE specification as a work-around for a bogus java.net.MalformedURLException
      * (that is in fact caused by a null-pointer exception in handling the dtd part)
      *
-     * @return
+     * @return the string
      */
     String asText() {
         StringBuilder result = new StringBuilder("<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -148,6 +178,14 @@ class WebXMLString {
         return result.toString();
     }
 
+    /**
+     * Append load on startup.
+     *
+     * @param result
+     *            the result
+     * @param startupOrder
+     *            the startup order
+     */
     private void appendLoadOnStartup(StringBuilder result, Object startupOrder) {
         if (startupOrder == null) {
             return;
@@ -160,6 +198,16 @@ class WebXMLString {
         }
     }
 
+    /**
+     * Append params.
+     *
+     * @param result
+     *            the result
+     * @param tagName
+     *            the tag name
+     * @param params
+     *            the params
+     */
     private void appendParams(StringBuilder result, String tagName, Hashtable params) {
         if (params == null) {
             return;
@@ -173,62 +221,178 @@ class WebXMLString {
         }
     }
 
+    /**
+     * Adds the context param.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     void addContextParam(String name, String value) {
         _contextParams.put(name, value);
     }
 
+    /**
+     * Adds the servlet.
+     *
+     * @param urlPattern
+     *            the url pattern
+     * @param servletClass
+     *            the servlet class
+     */
     void addServlet(String urlPattern, Class servletClass) {
         addServlet("servlet_" + _servlets.size(), urlPattern, servletClass);
     }
 
+    /**
+     * Adds the servlet.
+     *
+     * @param name
+     *            the name
+     * @param urlPattern
+     *            the url pattern
+     * @param servletClass
+     *            the servlet class
+     */
     void addServlet(String name, String urlPattern, Class servletClass) {
         _servlets.add(servletClass);
         _mappings.add(urlPattern);
         _servletNames.add(name);
     }
 
+    /**
+     * Adds the servlet.
+     *
+     * @param name
+     *            the name
+     * @param urlPattern
+     *            the url pattern
+     * @param servletClass
+     *            the servlet class
+     * @param initParams
+     *            the init params
+     */
     void addServlet(String name, String urlPattern, Class servletClass, Properties initParams) {
         _initParams.put(name, initParams);
         addServlet(name, urlPattern, servletClass);
     }
 
+    /**
+     * Sets the load on startup.
+     *
+     * @param servletName
+     *            the new load on startup
+     */
     void setLoadOnStartup(String servletName) {
         _loadOnStartup.put(servletName, Boolean.TRUE);
     }
 
+    /**
+     * Sets the load on startup.
+     *
+     * @param servletName
+     *            the servlet name
+     * @param i
+     *            the i
+     */
     void setLoadOnStartup(String servletName, int i) {
         _loadOnStartup.put(servletName, Integer.valueOf(i));
     }
 
+    /**
+     * Adds the filter for servlet.
+     *
+     * @param name
+     *            the name
+     * @param filterClass
+     *            the filter class
+     * @param servletName
+     *            the servlet name
+     * @param initParams
+     *            the init params
+     */
     void addFilterForServlet(String name, Class filterClass, String servletName, Properties initParams) {
         _filterParams.put(name, initParams);
         addFilterForServlet(name, filterClass, servletName);
     }
 
+    /**
+     * Adds the filter for servlet.
+     *
+     * @param name
+     *            the name
+     * @param filterClass
+     *            the filter class
+     * @param servletName
+     *            the servlet name
+     */
     void addFilterForServlet(String name, Class filterClass, String servletName) {
         addFilter(filterClass, name, "<servlet-name>" + servletName + "</servlet-name>");
     }
 
+    /**
+     * Adds the filter for url.
+     *
+     * @param name
+     *            the name
+     * @param filterClass
+     *            the filter class
+     * @param urlPattern
+     *            the url pattern
+     */
     void addFilterForUrl(String name, Class filterClass, String urlPattern) {
         addFilter(filterClass, name, "<url-pattern>" + urlPattern + "</url-pattern>");
     }
 
+    /**
+     * Adds the filter.
+     *
+     * @param filterClass
+     *            the filter class
+     * @param name
+     *            the name
+     * @param mapping
+     *            the mapping
+     */
     private void addFilter(Class filterClass, String name, String mapping) {
         _filters.add(filterClass);
         _filterNames.add(name);
         _filterMappings.put(name, mapping);
     }
 
+    /**
+     * Require basic authorization.
+     *
+     * @param realmName
+     *            the realm name
+     */
     void requireBasicAuthorization(String realmName) {
         _loginConfig = "  <login-config>\n" + "    <auth-method>BASIC</auth-method>\n" + "    <realm-name>" + realmName
                 + "</realm-name>\n" + "  </login-config>\n";
     }
 
+    /**
+     * Require basic authentication.
+     *
+     * @param realmName
+     *            the realm name
+     */
     void requireBasicAuthentication(String realmName) {
         _loginConfig = "  <login-config>\n" + "    <auth-method>BASIC</auth-method>\n" + "    <realm-name>" + realmName
                 + "</realm-name>\n" + "  </login-config>\n";
     }
 
+    /**
+     * Require form authentication.
+     *
+     * @param realmName
+     *            the realm name
+     * @param loginPagePath
+     *            the login page path
+     * @param errorPagePath
+     *            the error page path
+     */
     void requireFormAuthentication(String realmName, String loginPagePath, String errorPagePath) {
         _loginConfig = "  <login-config>\n" + "    <auth-method>FORM</auth-method>\n" + "    <realm-name>" + realmName
                 + "</realm-name>\n" + "    <form-login-config>" + "      <form-login-page>" + loginPagePath
@@ -236,18 +400,48 @@ class WebXMLString {
                 + "    </form-login-config>" + "  </login-config>\n";
     }
 
+    /**
+     * Adds the secure URL.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param urlPattern
+     *            the url pattern
+     */
     void addSecureURL(String resourceName, String urlPattern) {
         getWebResource(resourceName).addURLPattern(urlPattern);
     }
 
+    /**
+     * Adds the authorized role.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param roleName
+     *            the role name
+     */
     void addAuthorizedRole(String resourceName, String roleName) {
         getWebResource(resourceName).addAuthorizedRole(roleName);
     }
 
+    /**
+     * Adds the context listener.
+     *
+     * @param aClass
+     *            the a class
+     */
     void addContextListener(Class aClass) {
         _listeners.add(aClass);
     }
 
+    /**
+     * Gets the web resource.
+     *
+     * @param resourceName
+     *            the resource name
+     *
+     * @return the web resource
+     */
     private WebResourceSpec getWebResource(String resourceName) {
         WebResourceSpec result = (WebResourceSpec) _resources.get(resourceName);
         if (result == null) {
@@ -257,6 +451,12 @@ class WebXMLString {
         return result;
     }
 
+    /**
+     * Sets the display name.
+     *
+     * @param displayName
+     *            the new display name
+     */
     void setDisplayName(String displayName) {
         _displayName = displayName;
     }

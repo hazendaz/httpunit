@@ -31,24 +31,50 @@ import java.util.Stack;
 import org.junit.jupiter.api.Disabled;
 import org.xml.sax.SAXException;
 
+/**
+ * The Class TestWindowProxy.
+ */
 @Disabled
 class TestWindowProxy implements DomWindowProxy {
 
+    /** The proxy calls. */
     private static Stack _proxyCalls = new Stack();
+
+    /** The document. */
     private HTMLDocumentImpl _document;
+
+    /** The url. */
     private URL _url;
+
+    /** The replacement text. */
     private String _replacementText = null;
+
+    /** The answer. */
     private String _answer;
 
+    /**
+     * Instantiates a new test window proxy.
+     *
+     * @param htmlDocument
+     *            the html document
+     */
     public TestWindowProxy(HTMLDocumentImpl htmlDocument) {
         _document = htmlDocument;
         _document.getWindow().setProxy(this);
     }
 
+    /**
+     * Clear proxy calls.
+     */
     static void clearProxyCalls() {
         _proxyCalls.clear();
     }
 
+    /**
+     * Pop proxy call.
+     *
+     * @return the string
+     */
     static String popProxyCall() {
         if (_proxyCalls.isEmpty()) {
             return "";
@@ -56,18 +82,41 @@ class TestWindowProxy implements DomWindowProxy {
         return (String) _proxyCalls.pop();
     }
 
+    /**
+     * Push proxy call.
+     *
+     * @param call
+     *            the call
+     */
     static void pushProxyCall(String call) {
         _proxyCalls.push(call);
     }
 
+    /**
+     * Assert last proxy method.
+     *
+     * @param method
+     *            the method
+     */
     static void assertLastProxyMethod(String method) {
         assertEquals(method, popProxyCall(), "Last proxy method called");
     }
 
+    /**
+     * Sets the answer.
+     *
+     * @param answer
+     *            the new answer
+     */
     void setAnswer(String answer) {
         _answer = answer;
     }
 
+    /**
+     * Gets the replacement text.
+     *
+     * @return the replacement text
+     */
     String getReplacementText() {
         return _replacementText;
     }
@@ -112,6 +161,12 @@ class TestWindowProxy implements DomWindowProxy {
         return true;
     }
 
+    /**
+     * Sets the url.
+     *
+     * @param url
+     *            the new url
+     */
     void setUrl(URL url) {
         _url = url;
     }
@@ -129,6 +184,14 @@ class TestWindowProxy implements DomWindowProxy {
         return null;
     }
 
+    /**
+     * Stringify message body.
+     *
+     * @param requestBody
+     *            the request body
+     *
+     * @return the string
+     */
     private String stringifyMessageBody(MessageBody requestBody) {
         if (requestBody == null) {
             return "null";

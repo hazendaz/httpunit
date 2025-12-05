@@ -29,9 +29,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
+/**
+ * The Class HTMLElementTest.
+ */
 @ExtendWith(ExternalResourceSupport.class)
 class HTMLElementTest extends HttpUnitTest {
 
+    /**
+     * I D property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void iDProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showTitle( id ) {"
@@ -54,6 +63,12 @@ class HTMLElementTest extends HttpUnitTest {
         assertElementTitle(wc, "id", "myDiv", "first");
     }
 
+    /**
+     * Element by id returns null.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elementByIdReturnsNull() throws Exception {
         defineResource("start.html",
@@ -70,6 +85,12 @@ class HTMLElementTest extends HttpUnitTest {
         assertEquals("It returned null", wc.popNextAlert(), "Null test alert");
     }
 
+    /**
+     * Name property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nameProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showTitle( name ) {"
@@ -91,6 +112,12 @@ class HTMLElementTest extends HttpUnitTest {
         assertElementTitle(wc, "name", "input", "input2");
     }
 
+    /**
+     * Name property with id attribute.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void namePropertyWithIdAttribute() throws Exception {
         defineResource("start.html",
@@ -109,11 +136,29 @@ class HTMLElementTest extends HttpUnitTest {
         assertElementTitle(wc, "name", "seeme", "haha");
     }
 
+    /**
+     * Assert element title.
+     *
+     * @param wc
+     *            the wc
+     * @param propertyName
+     *            the property name
+     * @param id
+     *            the id
+     * @param title
+     *            the title
+     */
     private void assertElementTitle(WebConversation wc, String propertyName, final String id, final String title) {
         assertEquals("element with " + propertyName + ' ' + id + " has title " + title, wc.popNextAlert(),
                 "element '" + id + "' message");
     }
 
+    /**
+     * Element properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elementProperties() throws Exception {
         defineWebPage("start",

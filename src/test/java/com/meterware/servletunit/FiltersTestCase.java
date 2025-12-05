@@ -57,17 +57,32 @@ import org.xml.sax.InputSource;
  */
 class FiltersTestCase {
 
+    /** The Constant FILTER1. */
     static final FilterMetaData FILTER1 = new FilterMetaDataImpl(1);
+
+    /** The Constant FILTER2. */
     static final FilterMetaData FILTER2 = new FilterMetaDataImpl(2);
+
+    /** The Constant FILTER3. */
     static final FilterMetaData FILTER3 = new FilterMetaDataImpl(3);
+
+    /** The Constant FILTER4. */
     static final FilterMetaData FILTER4 = new FilterMetaDataImpl(4);
+
+    /** The Constant FILTER5. */
     static final FilterMetaData FILTER5 = new FilterMetaDataImpl(5);
+
+    /** The Constant FILTER6. */
     static final FilterMetaData FILTER6 = new FilterMetaDataImpl(6);
 
+    /** The servlet called. */
     private static boolean _servletCalled;
 
     /**
      * Verifies that the no-filter case is handled by servlet metadata.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void noFilterAssociation() throws Exception {
@@ -83,6 +98,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that a simple filter is associated with a servlet by its name.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void nameFilterAssociation() throws Exception {
@@ -100,6 +118,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that a simple filter will be called before a servlet with the same URL.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void filterByNameInvocation() throws Exception {
@@ -124,6 +145,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that a simple filter will be called before a servlet with the same URL.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void namedFilterOrder() throws Exception {
@@ -154,6 +178,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that request / response wrappering for filters is supported.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void filterRequestWrapping() throws Exception {
@@ -182,6 +209,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that the filter chain invokes the servlet.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void filterChain() throws Exception {
@@ -202,6 +232,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that filters are automatically called.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void filterInvocation() throws Exception {
@@ -216,6 +249,9 @@ class FiltersTestCase {
 
     /**
      * Verifies that a simple filter is associated with a url pattern.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void urlFilterAssociation() throws Exception {
@@ -232,6 +268,12 @@ class FiltersTestCase {
         assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
     }
 
+    /**
+     * Filter mapping.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void filterMapping() throws Exception {
         FilterUrlMap map = new FilterUrlMap();
@@ -253,11 +295,27 @@ class FiltersTestCase {
         checkMapping(map, "/something/else", new FilterMetaData[0]);
     }
 
+    /**
+     * Check mapping.
+     *
+     * @param map
+     *            the map
+     * @param urlString
+     *            the url string
+     * @param expectedFilters
+     *            the expected filters
+     */
     private void checkMapping(FilterUrlMap map, String urlString, FilterMetaData[] expectedFilters) {
         assertEquals(Arrays.asList(expectedFilters), Arrays.asList(map.getMatchingFilters(urlString)),
                 "Filters selected for '" + urlString + "'");
     }
 
+    /**
+     * Filter initialization.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void filterInitialization() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -294,8 +352,12 @@ class FiltersTestCase {
     // TODO filters with request dispatchers
     // TODO filters throwing UnavailableException
 
+    /**
+     * The Class AttributeFilter.
+     */
     static class AttributeFilter implements Filter {
 
+        /** The filter config. */
         private FilterConfig _filterConfig;
 
         @Override
@@ -316,6 +378,9 @@ class FiltersTestCase {
 
     }
 
+    /**
+     * The Class TrivialFilter.
+     */
     static class TrivialFilter implements Filter {
 
         @Override
@@ -335,8 +400,12 @@ class FiltersTestCase {
 
     }
 
+    /**
+     * The Class SimpleGetServlet.
+     */
     static class SimpleGetServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -349,10 +418,20 @@ class FiltersTestCase {
         }
     }
 
+    /**
+     * The Class FilterMetaDataImpl.
+     */
     static class FilterMetaDataImpl implements FilterMetaData {
 
+        /** The index. */
         private int _index;
 
+        /**
+         * Instantiates a new filter meta data impl.
+         *
+         * @param index
+         *            the index
+         */
         public FilterMetaDataImpl(int index) {
             _index = index;
         }

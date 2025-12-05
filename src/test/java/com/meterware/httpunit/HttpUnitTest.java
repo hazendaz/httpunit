@@ -30,7 +30,10 @@ import org.junit.jupiter.api.BeforeEach;
 public abstract class HttpUnitTest extends HttpUserAgentTest {
 
     /**
-     * setup the test by resetting the environment for Http Unit tests
+     * setup the test by resetting the environment for Http Unit tests.
+     *
+     * @throws Exception
+     *             the exception
      */
     @BeforeEach
     public void setUpHttpUnitTest() throws Exception {
@@ -38,20 +41,24 @@ public abstract class HttpUnitTest extends HttpUserAgentTest {
         HTMLParserFactory.reset();
     }
 
-    /**
-     * handling of tests that are temporarily disabled
-     */
+    /** handling of tests that are temporarily disabled. */
     public static boolean WARN_DISABLED = true;
+
+    /** The disabled index. */
     public static int disabledIndex = 0;
+
+    /** The first warn. */
     public static boolean firstWarn = true;
 
     /**
-     * return a left padded string
+     * return a left padded string.
      *
      * @param s
+     *            the s
      * @param pad
+     *            the pad
      *
-     * @return
+     * @return the string
      */
     private static String padLeft(String s, int pad) {
         String result = s;
@@ -64,13 +71,20 @@ public abstract class HttpUnitTest extends HttpUserAgentTest {
         return result;
     }
 
+    /** The warn delim. */
     public static String warnDelim = "";
 
     /**
-     * show a warning for disabled Tests
+     * show a warning for disabled Tests.
      *
      * @param testName
+     *            the test name
+     * @param priority
+     *            the priority
+     * @param urgency
+     *            the urgency
      * @param comment
+     *            the comment
      */
     public static void warnDisabled(String testName, String priority, int urgency, String comment) {
         if (WARN_DISABLED) {

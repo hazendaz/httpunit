@@ -25,17 +25,27 @@ import jakarta.servlet.http.HttpServlet;
 
 import org.junit.Test;
 
+/**
+ * The Class ServletAccessTestClass.
+ */
 public class ServletAccessTestClass extends ServletTestCase {
 
     /**
-     * construct a ServletAccessTest
+     * construct a ServletAccessTest.
      *
      * @param name
+     *            the name
      */
     public ServletAccessTestClass(String name) {
         super(name);
     }
 
+    /**
+     * Test servlet parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     // TODO JWL 4/20/2025 Keep 'test' on this method as well as public until such time its not using junit 3.
     @Test
     public void testServletParameters() throws Exception {

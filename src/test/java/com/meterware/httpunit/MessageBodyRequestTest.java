@@ -43,11 +43,14 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 public class MessageBodyRequestTest extends HttpUnitTest {
 
     /**
-     * make a Request from the given parameters
+     * make a Request from the given parameters.
      *
      * @param resourceName
+     *            the resource name
      * @param sourceData
+     *            the source data
      * @param contentType
+     *            the content type
      *
      * @return the new WebRequest
      */
@@ -58,9 +61,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     /**
-     * test a generic Post request
+     * test a generic Post request.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void genericPostRequest() throws Exception {
@@ -73,9 +77,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     /**
-     * test for Patch by Serge Maslyukov for empty content Types
+     * test for Patch by Serge Maslyukov for empty content Types.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void emptyContentType() throws Exception {
@@ -86,6 +91,12 @@ public class MessageBodyRequestTest extends HttpUnitTest {
         assertEquals("", wr.getContentType(), "Content-type");
     }
 
+    /**
+     * Put request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void putRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
@@ -99,7 +110,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     /**
-     * test for download problem described by Oliver Wahlen
+     * test for download problem described by Oliver Wahlen.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void downloadRequestUsingGetText() throws Exception {
@@ -123,6 +137,12 @@ public class MessageBodyRequestTest extends HttpUnitTest {
         assertArrayEquals(binaryData, download, "Body response");
     }
 
+    /**
+     * Download request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void downloadRequest() throws Exception {
         defineResource("ReportData", new BodyEcho());
@@ -144,7 +164,10 @@ public class MessageBodyRequestTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR [ 1964665 ] HeaderOnlyRequest cannot be constructed
+     * test for BR [ 1964665 ] HeaderOnlyRequest cannot be constructed.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void headerOnlyWebRequest() throws Exception {
@@ -157,10 +180,12 @@ public class MessageBodyRequestTest extends HttpUnitTest {
      * please do not copy this function any more - use getBytes instead ...
      *
      * @param response
+     *            the response
      *
-     * @return
+     * @return the download
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private byte[] getDownload(WebResponse response) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

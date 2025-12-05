@@ -64,8 +64,15 @@ import org.junit.jupiter.api.Test;
  */
 public class HttpServletRequestTest extends ServletUnitTest {
 
+    /** The context. */
     private ServletUnitContext _context;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _context = new ServletUnitContext(null, null, new SessionListenerDispatcher() {
@@ -92,6 +99,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
 
     }
 
+    /**
+     * Header access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void headerAccess() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -109,9 +122,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test getting a date header;
+     * test getting a date header;.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void dateHeaderAccess() throws Exception {
@@ -131,6 +145,16 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(requestDate, testDate.getTime(), "Expires date header field");
     }
 
+    /**
+     * Assert contains.
+     *
+     * @param comment
+     *            the comment
+     * @param string
+     *            the string
+     * @param headerNames
+     *            the header names
+     */
     private void assertContains(String comment, String string, Enumeration headerNames) {
         while (headerNames != null && headerNames.hasMoreElements()) {
             String name = (String) headerNames.nextElement();
@@ -141,6 +165,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         fail(comment + " does not contain " + string);
     }
 
+    /**
+     * Gets the default properties.
+     *
+     * @return the default properties
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getDefaultProperties() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -152,6 +184,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNotNull(request.getInputStream(), "No input stream available");
     }
 
+    /**
+     * Sets the single valued parameter.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setSingleValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -164,6 +202,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNull(request.getParameter("unset"), "unset parameter should be null");
     }
 
+    /**
+     * Sets the multi valued parameter.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setMultiValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -180,6 +224,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
     /**
      * test for bug report [ 1143757 ] encoding of Special charcters broken with 1.6 by Klaus Halfmann test for bug
      * report [ 1159810 ] URL encoding problem with ServletUnit by Sven Helmberger
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void parameterWithSpacesAndAt() throws Exception {
@@ -197,6 +244,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
+     * Parameter with at.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void parameterWithAt() throws Exception {
@@ -209,6 +260,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(pValueWithSpaces, result, "spaces should survive");
     }
 
+    /**
+     * Parameter map.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void parameterMap() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -223,6 +280,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNull(map.get("unset"), "unset parameter should be null");
     }
 
+    /**
+     * Sets the query string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setQueryString() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -235,9 +298,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test Bug report 1212204 by Brian Bonner
+     * test Bug report 1212204 by Brian Bonner.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void bug1212204() throws Exception {
@@ -258,6 +322,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("wsdl&abc=def&def=&test", wr.getQueryString());
     }
 
+    /**
+     * Inline single valued parameter.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inlineSingleValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
@@ -268,6 +338,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNull(request.getParameter("unset"), "unset parameter should be null");
     }
 
+    /**
+     * Inline parameter with embedded space.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inlineParameterWithEmbeddedSpace() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=dark+red&age=12");
@@ -278,6 +354,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("dark red", request.getParameter("color"), "color parameter");
     }
 
+    /**
+     * Inline multi valued parameter.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inlineMultiValuedParameter() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
@@ -294,6 +376,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1705925&amp;group_id=6550&amp;atid=106550
      *
      * @throws Exception
+     *             the exception
      */
 
     public void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_Hebrew() throws Exception {
@@ -313,7 +396,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * test patch for [ 1705925 ] Bug in URL-decoding of GET-Request-Parameters
      * http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1705925&amp;group_id=6550&amp;atid=106550
      *
+     * @return the method request parameters encoded with default character set UTF 8
+     *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getMethodRequestParametersEncodedWithDefaultCharacterSetUTF8() throws Exception {
@@ -329,6 +415,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
+    /**
+     * Notest inline query string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     public void notestInlineQueryString() throws Exception { // TODO make this work
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context, new Hashtable<>(),
@@ -337,6 +429,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("color=red&color=blue&age=12", request.getQueryString(), "query string");
     }
 
+    /**
+     * Request message body.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void requestMessageBody() throws Exception {
         String body = "12345678901234567890";
@@ -352,6 +450,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(body, new String(buffer), "Request content");
     }
 
+    /**
+     * Default attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -362,6 +466,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertFalse(request.getAttributeNames().hasMoreElements(), "attribute enumeration should be empty");
     }
 
+    /**
+     * Non default attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nonDefaultAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -379,6 +489,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertFalse(names.hasMoreElements(), "attribute enumeration should now be empty");
     }
 
+    /**
+     * Duplicate attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void duplicateAttributes() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -390,6 +506,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("One", request.getAttribute("one"), "Revised attribute value");
     }
 
+    /**
+     * Null attribute value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nullAttributeValue() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -402,6 +524,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNull(request.getAttribute("one"), "Attribute 'one' should have been removed");
     }
 
+    /**
+     * Default cookies.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultCookies() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -411,6 +539,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertNull(cookies, "Unexpected cookies found");
     }
 
+    /**
+     * Sets the cookie via request header.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setCookieViaRequestHeader() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -427,6 +561,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("sandwich", cookies[1].getValue(), "Cookie 2 value");
     }
 
+    /**
+     * Gets the session for first time.
+     *
+     * @return the session for first time
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     @Test
     void getSessionForFirstTime() throws MalformedURLException {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -451,6 +593,11 @@ public class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Test recognition of cookies defined on the client. is test case for [ 1151277 ] httpunit 1.6 breaks Cookie
      * handling for ServletUnitClient by Michael Corum
+     *
+     * @return the user cookies
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getUserCookies() throws Exception {
@@ -483,6 +630,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Verifies that even when session creation is not explicitly requested, the inclusion of a session cookie will
      * cause a session to be made available.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void retrieveSession() throws Exception {
@@ -501,6 +651,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertSame(session, request.getSession(true), "Session returned when creation requested");
     }
 
+    /**
+     * Access forbidden to invalid session.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void accessForbiddenToInvalidSession() throws Exception {
         ServletUnitContext context = _context;
@@ -530,6 +686,9 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * Verifies that a request for a session when the current one is invalid will result in a new session.
      * <p/>
      * Obtains a new session, invalidates it, and verifies that
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void sessionInvalidation() throws Exception {
@@ -561,6 +720,11 @@ public class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Verifies that a request with a bad session ID causes a new session to be generated only when explicitly
      * requested.
+     *
+     * @return the session with bad cookie
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getSessionWithBadCookie() throws Exception {
@@ -584,10 +748,15 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test getting the uri
+     * test getting the uri.
      *
      * @param uri
+     *            the uri
      * @param path
+     *            the path
+     *
+     * @throws Exception
+     *             the exception
      */
     public void testGetRequestURI(String uri, String path) throws Exception {
         /*
@@ -608,21 +777,38 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(uri, request.getRequestURL().toString());
     }
 
+    /**
+     * Gets the request URI.
+     *
+     * @return the request URI
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getRequestURI() throws Exception {
         testGetRequestURI("http://localhost/simple", "/simple");
     }
 
     /**
-     * test for BR 3076917 Missing port number in URL from ServletUnitHttpRequest
+     * test for BR 3076917 Missing port number in URL from ServletUnitHttpRequest.
+     *
+     * @return the request URI with port
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getRequestURIWithPort() throws Exception {
         testGetRequestURI("http://localhost:8042/simple8042", "/simple8042");
     }
 
+    /**
+     * Default locale.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultLocale() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -639,6 +825,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
      * ServletUnitHttpRequest.getScheme() returns "http" for secure by Jeff Mills
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void secureProperty() throws Exception {
@@ -673,6 +860,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Verify locales.
+     *
+     * @param request
+     *            the request
+     * @param expectedLocales
+     *            the expected locales
+     */
     private void verifyLocales(ServletUnitHttpRequest request, Locale[] expectedLocales) {
         assertNotNull(request.getLocale(), "No default locale found");
         assertEquals(expectedLocales[0], request.getLocale(), "default locale");
@@ -686,6 +881,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertFalse(locales.hasMoreElements(), "Too many locales returned");
     }
 
+    /**
+     * Specified locales.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void specifiedLocales() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
@@ -696,6 +897,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         verifyLocales(request, new Locale[] { Locale.FRENCH, Locale.US, Locale.ENGLISH });
     }
 
+    /**
+     * Gets the input stream same object.
+     *
+     * @return the input stream same object
+     *
+     * @throws Exception
+     *             the exception
+     */
     /*
      * Test for patch [ 1246438 ] For issue 1221537; ServletUnitHttpRequest.getReader not impl by Tim
      */
@@ -712,6 +921,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertSame(first, second, "Different InputStreams");
     }
 
+    /**
+     * Gets the input stream after get reader.
+     *
+     * @return the input stream after get reader
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getInputStreamAfterGetReader() throws Exception {
         byte[] bytes = {};
@@ -729,6 +946,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Gets the input stream.
+     *
+     * @return the input stream
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getInputStream() throws Exception {
         String body = "12345678901234567890";
@@ -743,6 +968,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(body, new String(buffer, "UTF-8"), "Request content");
     }
 
+    /**
+     * Gets the reader same object.
+     *
+     * @return the reader same object
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getReaderSameObject() throws Exception {
         byte[] bytes = {};
@@ -756,6 +989,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertSame(first, second, "Different Readers");
     }
 
+    /**
+     * Gets the reader after get input stream.
+     *
+     * @return the reader after get input stream
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getReaderAfterGetInputStream() throws Exception {
         byte[] bytes = {};
@@ -773,6 +1014,14 @@ public class HttpServletRequestTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Gets the reader default charset.
+     *
+     * @return the reader default charset
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getReaderDefaultCharset() throws Exception {
         String body = "12345678901234567890";
@@ -787,7 +1036,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test the reader with a Specific Character set (here UTF-8)
+     * test the reader with a Specific Character set (here UTF-8).
      *
      * @throws Exception
      *             FIXME make work an switch back on
@@ -805,9 +1054,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test the specific character encoding (here hebrew)
+     * test the specific character encoding (here hebrew).
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void specifiedCharEncoding() throws Exception {
@@ -821,6 +1071,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals(hebrewValue, request.getParameter("param2"), "param2 value");
     }
 
+    /** The dummyfactory. */
     private InvocationContextFactory _dummyfactory = new InvocationContextFactory() {
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
@@ -834,6 +1085,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         }
     };
 
+    /**
+     * Specified char encoding 2.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void specifiedCharEncoding2() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
@@ -851,6 +1108,12 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("red", request.getParameter("param1"), "param1 value");
     }
 
+    /**
+     * Supplied char encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void suppliedCharEncoding() throws Exception { // xxx turn this back on
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
@@ -865,9 +1128,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test for getServerPort and getServerName by Antoine Vernois
+     * test for getServerPort and getServerName by Antoine Vernois.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void defaultHttpServerPort() throws Exception {
@@ -879,9 +1143,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test for getServerPort and getServerName by Antoine Vernois
+     * test for getServerPort and getServerName by Antoine Vernois.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void suppliedHttpServerPort() throws Exception {
@@ -893,9 +1158,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * test for getServerPort and getServerName by Antoine Vernois
+     * test for getServerPort and getServerName by Antoine Vernois.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void serverName() throws Exception {
@@ -906,8 +1172,10 @@ public class HttpServletRequestTest extends ServletUnitTest {
         assertEquals("myhost", serverName, "server name");
     }
 
+    /** The Constant NO_MESSAGE_BODY. */
     private static final byte[] NO_MESSAGE_BODY = {};
 
+    /** The Constant NULL_SERVLET_REQUEST. */
     private static final ServletMetaData NULL_SERVLET_REQUEST = new ServletMetaData() {
 
         @Override

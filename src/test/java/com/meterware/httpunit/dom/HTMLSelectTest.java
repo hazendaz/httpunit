@@ -29,12 +29,26 @@ import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
+/**
+ * The Class HTMLSelectTest.
+ */
 class HTMLSelectTest extends AbstractHTMLElementTest {
 
+    /** The form. */
     private HTMLFormElement _form;
+
+    /** The select. */
     private HTMLSelectElement _select;
+
+    /** The options. */
     private HTMLOptionElement[] _options;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _form = (HTMLFormElement) createElement("form", new String[][] { { "action", "go_here" } });
@@ -49,6 +63,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
         }
     }
 
+    /**
+     * Single select.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleSelect() throws Exception {
         assertSame(_form, _select.getForm(), "Form for select");
@@ -75,6 +95,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
                 new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
     }
 
+    /**
+     * Multi select.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multiSelect() throws Exception {
         _select.setMultiple(true);
@@ -97,6 +123,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
                 new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE });
     }
 
+    /**
+     * Single line select.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleLineSelect() throws Exception {
         _select.setMultiple(true);
@@ -114,6 +146,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
                 new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.FALSE });
     }
 
+    /**
+     * Elements.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elements() throws Exception {
         assertEquals(_options.length, _select.getOptions().getLength(), "number of options");
@@ -129,6 +167,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
         assertEquals(_options.length, _select.getLength(), "select length");
     }
 
+    /**
+     * Single with nothing selected.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleWithNothingSelected() throws Exception {
         ((HTMLOptionElementImpl) _options[1]).setSelected(false);
@@ -139,6 +183,12 @@ class HTMLSelectTest extends AbstractHTMLElementTest {
                 new Boolean[] { Boolean.FALSE, Boolean.FALSE, Boolean.FALSE });
     }
 
+    /**
+     * Multiple with nothing selected.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multipleWithNothingSelected() throws Exception {
         _select.setMultiple(true);

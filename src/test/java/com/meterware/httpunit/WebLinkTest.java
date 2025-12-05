@@ -37,6 +37,12 @@ import org.xml.sax.SAXException;
 @ExtendWith(ExternalResourceSupport.class)
 class WebLinkTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         defineResource("SimplePage.html", "<html><head><title>A Sample Page</title></head>\n"
@@ -51,6 +57,12 @@ class WebLinkTest extends HttpUnitTest {
         _simplePage = wc.getResponse(getHostPath() + "/SimplePage.html");
     }
 
+    /**
+     * Find no links.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findNoLinks() throws Exception {
         defineResource("NoLinks.html", "<html><head><title>NoLinks</title></head><body>No links at all</body></html>");
@@ -69,6 +81,7 @@ class WebLinkTest extends HttpUnitTest {
      * http://www.bit%20plan.com as it's target
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void linkToURLWithBlanks() throws Exception {
@@ -91,9 +104,10 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * check the number of links in the sample page
+     * check the number of links in the sample page.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void links() throws Exception {
@@ -102,6 +116,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(4, links.length, "number of links in page");
     }
 
+    /**
+     * Embedded font tags.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void embeddedFontTags() throws Exception {
         defineResource("FontPage.html", "<html><head><title>A Sample Page</title></head>\n"
@@ -113,6 +133,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(3, wr.getLinks().length, "Number of links found");
     }
 
+    /**
+     * Link request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkRequest() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
@@ -121,6 +147,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/other.html", request.getURL().toExternalForm());
     }
 
+    /**
+     * Link reference.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkReference() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
@@ -128,9 +160,12 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2534057 getLinks() for a Cell return all page links
+     * test for BR 2534057 getLinks() for a Cell return all page links.
+     *
+     * @return the links for cell
      *
      * @throws SAXException
+     *             the SAX exception
      */
     @Test
     void getLinksForCell() throws SAXException {
@@ -147,6 +182,14 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("acelllink", cellLinks[0].getName());
     }
 
+    /**
+     * Gets the link by text.
+     *
+     * @return the link by text
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getLinkByText() throws Exception {
         WebLink link = _simplePage.getLinkWith("no link");
@@ -169,6 +212,12 @@ class WebLinkTest extends HttpUnitTest {
         assertNull(link, "the image link was found based on its hidden alt attribute");
     }
 
+    /**
+     * Custom matching.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void customMatching() throws Exception {
         WebLink link = _simplePage.getFirstMatchingLink(WebLink.MATCH_URL_STRING, "nothing");
@@ -187,6 +236,14 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(2, links.length, "Number of links with URL containing 'other.ht'");
     }
 
+    /**
+     * Gets the link by ID and name.
+     *
+     * @return the link by ID and name
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getLinkByIDAndName() throws Exception {
         WebLink link = _simplePage.getLinkWithID("noSuchID");
@@ -201,6 +258,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/basic.html", link.getRequest().getURL().toExternalForm(), "image link URL");
     }
 
+    /**
+     * Fragment identifier.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fragmentIdentifier() throws Exception {
         WebLink link = (WebLink) _simplePage.getElementWithID("activeID");
@@ -210,12 +273,24 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("", _simplePage.getLinks()[1].getFragmentIdentifier(), "fragment identifier #2");
     }
 
+    /**
+     * Link text.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkText() throws Exception {
         WebLink link = _simplePage.getLinks()[0];
         assertEquals("an active link", link.getText(), "Link text");
     }
 
+    /**
+     * Link image as text.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkImageAsText() throws Exception {
         WebConversation wc = new WebConversation();
@@ -228,7 +303,10 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
+     * Link following.
+     *
      * @throws Exception
+     *             the exception
      *
      * @see [ 1156972 ] isWebLink doesn't recognize all anchor tags for different opinion on weblink count.
      */
@@ -252,7 +330,12 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1232591 ] getTarget() gives "_top" even if target is not present by Rifi
+     * test for bug report [ 1232591 ] getTarget() gives "_top" even if target is not present by Rifi.
+     *
+     * @return the target top
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getTargetTop() throws Exception {
@@ -269,6 +352,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(target, expected);
     }
 
+    /**
+     * Links with fragments and parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linksWithFragmentsAndParameters() throws Exception {
         WebConversation wc = new WebConversation();
@@ -289,6 +378,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("Initial", thirdPage.getTitle(), "Title of next page");
     }
 
+    /**
+     * Links with slashes in query.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linksWithSlashesInQuery() throws Exception {
         WebConversation wc = new WebConversation();
@@ -305,6 +400,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals(1, nextPage.getLinks().length, "Num links in next page");
     }
 
+    /**
+     * Document base.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentBase() throws Exception {
         WebConversation wc = new WebConversation();
@@ -324,6 +425,12 @@ class WebLinkTest extends HttpUnitTest {
         assertTrue(nextPage.getText().indexOf("Found") >= 0, "Did not find the target");
     }
 
+    /**
+     * Target base.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void targetBase() throws Exception {
         WebConversation wc = new WebConversation();
@@ -338,6 +445,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("blue", link.getTarget(), "Target for link");
     }
 
+    /**
+     * Parameters on links.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void parametersOnLinks() throws Exception {
         defineResource("ParameterLinks.html",
@@ -378,6 +491,16 @@ class WebLinkTest extends HttpUnitTest {
                 new String[][] { { "value1", "value3" }, { "value2" } });
     }
 
+    /**
+     * Check link parameters.
+     *
+     * @param link
+     *            the link
+     * @param expectedNames
+     *            the expected names
+     * @param expectedValues
+     *            the expected values
+     */
     private void checkLinkParameters(WebLink link, String[] expectedNames, String[][] expectedValues) {
         WebRequest request = link.getRequest();
         assertNotNull(request);
@@ -388,6 +511,12 @@ class WebLinkTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Encoded link parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void encodedLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
@@ -402,6 +531,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("&ampersand", wr.getParameter("#hash"), "Value of #hash");
     }
 
+    /**
+     * Valueless link parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void valuelessLinkParameters() throws Exception {
         WebConversation wc = new WebConversation();
@@ -415,6 +550,12 @@ class WebLinkTest extends HttpUnitTest {
         assertNull(wr.getParameter("arg1"), "Value of arg1");
     }
 
+    /**
+     * Link parameter order.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkParameterOrder() throws Exception {
         WebConversation wc = new WebConversation();
@@ -429,6 +570,12 @@ class WebLinkTest extends HttpUnitTest {
         assertEquals("arg0=0&arg1&arg0=2&valueless=", wr.getQueryString(), "Actual query");
     }
 
+    /**
+     * Link parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkParameterValidation() throws Exception {
         WebConversation wc = new WebConversation();
@@ -445,6 +592,12 @@ class WebLinkTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Image map links.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageMapLinks() throws Exception {
         WebConversation wc = new WebConversation();
@@ -466,6 +619,7 @@ class WebLinkTest extends HttpUnitTest {
      * test for bug report [ 1035949 ] NullPointerException on Weblink.click by Ute Platzer
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void linkBug() throws Exception {
@@ -486,5 +640,6 @@ class WebLinkTest extends HttpUnitTest {
         assertTrue(html2.indexOf("test page2") > 0, "click should lead to page 2");
     }
 
+    /** The simple page. */
     private WebResponse _simplePage;
 }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,21 +28,24 @@ import com.meterware.httpunit.WebResponse;
  * of the httpunit framework supplies doTestJavaScript as a default operation for starting tests
  */
 public abstract class AbstractJavaScriptTest extends HttpUnitTest {
+
+    /** The debug HTML. */
     // set to true to get the static HTML Code on System.err
     public static boolean debugHTML = false;
 
     /**
      * test the given javaScript code by putting it into a function and calling it as a prerequisite make the html code
-     * snippet available in the body of the page
+     * snippet available in the body of the page.
      *
      * @param script
      *            - some javascript code to be called in a function
      * @param html
      *            - a html code snippet
      *
-     * @return
+     * @return the web conversation
      *
      * @throws Exception
+     *             the exception
      */
     public WebConversation doTestJavaScript(String script, String html) throws Exception {
         defineResource("OnCommand.html",
@@ -59,12 +62,15 @@ public abstract class AbstractJavaScriptTest extends HttpUnitTest {
     }
 
     /**
-     * test the given javaScript code by putting it into a function and calling it
+     * test the given javaScript code by putting it into a function and calling it.
      *
      * @param script
      *            the script to test
      *
      * @return the web client on which the test was run
+     *
+     * @throws Exception
+     *             the exception
      */
     public WebConversation doTestJavaScript(String script) throws Exception {
         return doTestJavaScript(script, "");

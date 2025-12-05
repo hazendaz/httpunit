@@ -61,14 +61,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly by Kevin Hunter
+ * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly by Kevin Hunter.
  */
 public class ContentTypeTest {
+
+    /** The runner. */
     private ServletRunner runner;
 
+    /**
+     * Instantiates a new content type test.
+     */
     public ContentTypeTest() {
     }
 
+    /**
+     * Sets the up.
+     */
     @BeforeEach
     void setUp() {
         runner = new ServletRunner();
@@ -76,11 +84,20 @@ public class ContentTypeTest {
         runner.registerServlet("/test2", TestServlet2.class.getName());
     }
 
+    /**
+     * Tear down.
+     */
     @AfterEach
     void tearDown() {
         runner.shutDown();
     }
 
+    /**
+     * Provided content type overwritten.
+     *
+     * @throws Exception
+     *             the exception
+     */
     /*
      * This test case demonstrates that ServletUnit incorrectly replaces the content type specified by the servlet with
      * one of its own. (Expected behavior would be that ServletUnit would not alter the response coming back from the
@@ -98,12 +115,20 @@ public class ContentTypeTest {
         assertEquals("text/xml", response.getContentType());
     }
 
+    /**
+     * The Class TestServlet1.
+     */
     /*
      * This servlet returns a simple XML document, with Content-Type set to "text/xml"
      */
     public static class TestServlet1 extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 5434730264615105319L;
 
+        /**
+         * Instantiates a new test servlet 1.
+         */
         public TestServlet1() {
         }
 
@@ -116,6 +141,12 @@ public class ContentTypeTest {
         }
     }
 
+    /**
+     * Content provided when none specified.
+     *
+     * @throws Exception
+     *             the exception
+     */
     /*
      * This test case demonstrates that ServletUnit incorrectly provides a content type when the servlet under test
      * doesn't provide one. (Expected behavior would be that ServletUnit would not alter the response coming back from
@@ -138,12 +169,20 @@ public class ContentTypeTest {
         assertEquals("text/plain; charset=ISO-8859-1", response.getHeaderField("Content-Type"));
     }
 
+    /**
+     * The Class TestServlet2.
+     */
     /*
      * This servlet returns a simple XML document, but omits the Content-Type header.
      */
     public static class TestServlet2 extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 5434730264615105319L;
 
+        /**
+         * Instantiates a new test servlet 2.
+         */
         public TestServlet2() {
         }
 

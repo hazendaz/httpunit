@@ -31,14 +31,26 @@ import junit.framework.TestCase;
 @Ignore
 public class ErrorTests extends TestCase {
 
+    /**
+     * Instantiates a new error tests.
+     *
+     * @param s
+     *            the s
+     */
     public ErrorTests(String s) {
         super(s);
     }
 
+    /**
+     * Test addition.
+     */
     public void testAddition() {
         throw new RuntimeException("Got a problem?");
     }
 
+    /**
+     * Test multiplication.
+     */
     public void testMultiplication() {
         assertEquals(4, 2 * 2);
     }

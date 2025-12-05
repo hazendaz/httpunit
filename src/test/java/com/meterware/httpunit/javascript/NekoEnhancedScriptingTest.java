@@ -40,6 +40,12 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 @ExtendWith(ExternalResourceSupport.class)
 class NekoEnhancedScriptingTest extends HttpUnitTest {
 
+    /**
+     * Embedded document write.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void embeddedDocumentWrite() throws Exception {
         defineResource("OnCommandWrite.html",
@@ -53,6 +59,12 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertEquals("something", link.getText(), "Link contents");
     }
 
+    /**
+     * Embedded document write with close.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void embeddedDocumentWriteWithClose() throws Exception {
         defineResource("OnCommand.html",
@@ -66,6 +78,12 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
         assertEquals("something", link.getText(), "Link contents");
     }
 
+    /**
+     * Unknown script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void unknownScript() throws Exception {
         defineWebPage("FunkyScript", "<SCRIPT>" + "var stuff='<A href=\"#\">Default JavaScript Working</A><BR>';"
@@ -83,9 +101,10 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test no script sections
+     * test no script sections.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void noScriptSections() throws Exception {
@@ -113,6 +132,9 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
      * Verifies that nodes defined before a script section are available to that script section, even if a preceding
      * script section has caused them to be cached. Currently does not work with JTidy since there is no way to parse
      * only to a specific position in the document. It may be possible to fix this with some logic changes...
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void formsCaching() throws Exception {
@@ -129,6 +151,9 @@ class NekoEnhancedScriptingTest extends HttpUnitTest {
 
     /**
      * Verifies that a script can write part of the frameset.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void scriptedFrames() throws Exception {

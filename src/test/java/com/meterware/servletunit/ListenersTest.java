@@ -36,8 +36,17 @@ import jakarta.servlet.http.HttpSessionListener;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * The Class ListenersTest.
+ */
 class ListenersTest extends EventAwareTestBase {
 
+    /**
+     * Context listeners.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void contextListeners() throws Exception {
         assertDoesNotThrow(() -> {
@@ -62,6 +71,9 @@ class ListenersTest extends EventAwareTestBase {
         });
     }
 
+    /**
+     * The Class ServletContextEventVerifier.
+     */
     static class ServletContextEventVerifier implements EventVerifier {
 
         @Override
@@ -72,6 +84,12 @@ class ListenersTest extends EventAwareTestBase {
         }
     }
 
+    /**
+     * Session lifecycle listeners.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionLifecycleListeners() throws Exception {
         assertDoesNotThrow(() -> {
@@ -103,6 +121,9 @@ class ListenersTest extends EventAwareTestBase {
         });
     }
 
+    /**
+     * The Class HttpSessionEventVerifier.
+     */
     static class HttpSessionEventVerifier implements EventVerifier {
 
         @Override
@@ -113,6 +134,12 @@ class ListenersTest extends EventAwareTestBase {
         }
     }
 
+    /**
+     * Session attribute listeners.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionAttributeListeners() throws Exception {
         assertDoesNotThrow(() -> {
@@ -152,9 +179,15 @@ class ListenersTest extends EventAwareTestBase {
         });
     }
 
+    /**
+     * The Class HttpSessionAttributeEventVerifier.
+     */
     static class HttpSessionAttributeEventVerifier implements EventVerifier {
 
+        /** The name. */
         private String _name;
+
+        /** The value. */
         private Object _value;
 
         @Override
@@ -167,12 +200,26 @@ class ListenersTest extends EventAwareTestBase {
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
+        /**
+         * Expect.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
         public void expect(String name, Object value) {
             _name = name;
             _value = value;
         }
     }
 
+    /**
+     * Context attribute listeners.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void contextAttributeListeners() throws Exception {
         assertDoesNotThrow(() -> {
@@ -215,9 +262,15 @@ class ListenersTest extends EventAwareTestBase {
         });
     }
 
+    /**
+     * The Class ContextAttributeEventVerifier.
+     */
     static class ContextAttributeEventVerifier implements EventVerifier {
 
+        /** The name. */
         private String _name;
+
+        /** The value. */
         private Object _value;
 
         @Override
@@ -230,76 +283,171 @@ class ListenersTest extends EventAwareTestBase {
             assertEquals(_value, bindingChange.getValue(), "Changed attribute value");
         }
 
+        /**
+         * Expect.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
         public void expect(String name, Object value) {
             _name = name;
             _value = value;
         }
     }
 
+    /**
+     * The Class EventDispatcher.
+     */
     static class EventDispatcher {
 
+        /**
+         * Context initialized.
+         *
+         * @param event
+         *            the event
+         */
         public void contextInitialized(ServletContextEvent event) {
             sendEvent("startup", this, event);
         }
 
+        /**
+         * Context destroyed.
+         *
+         * @param event
+         *            the event
+         */
         public void contextDestroyed(ServletContextEvent event) {
             sendEvent("shutdown", this, event);
         }
 
+        /**
+         * Session created.
+         *
+         * @param event
+         *            the event
+         */
         public void sessionCreated(HttpSessionEvent event) {
             sendEvent("created", this, event);
         }
 
+        /**
+         * Session destroyed.
+         *
+         * @param event
+         *            the event
+         */
         public void sessionDestroyed(HttpSessionEvent event) {
             sendEvent("destroyed", this, event);
         }
 
+        /**
+         * Attribute added.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeAdded(HttpSessionBindingEvent event) {
             sendEvent("added", this, event);
         }
 
+        /**
+         * Attribute removed.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeRemoved(HttpSessionBindingEvent event) {
             sendEvent("removed", this, event);
         }
 
+        /**
+         * Attribute replaced.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeReplaced(HttpSessionBindingEvent event) {
             sendEvent("replaced", this, event);
         }
 
+        /**
+         * Attribute added.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeAdded(ServletContextAttributeEvent event) {
             sendEvent("added", this, event);
         }
 
+        /**
+         * Attribute removed.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeRemoved(ServletContextAttributeEvent event) {
             sendEvent("removed", this, event);
         }
 
+        /**
+         * Attribute replaced.
+         *
+         * @param event
+         *            the event
+         */
         public void attributeReplaced(ServletContextAttributeEvent event) {
             sendEvent("replaced", this, event);
         }
     }
 
+    /**
+     * The Class ListenerClass1.
+     */
     static class ListenerClass1 extends EventDispatcher implements ServletContextListener {
     }
 
+    /**
+     * The Class ListenerClass2.
+     */
     static class ListenerClass2 extends EventDispatcher implements ServletContextListener {
     }
 
+    /**
+     * The Class ListenerClass3.
+     */
     static class ListenerClass3 extends EventDispatcher implements HttpSessionListener {
     }
 
+    /**
+     * The Class ListenerClass4.
+     */
     static class ListenerClass4 extends EventDispatcher implements HttpSessionListener {
     }
 
+    /**
+     * The Class ListenerClass5.
+     */
     static class ListenerClass5 extends EventDispatcher implements HttpSessionAttributeListener {
     }
 
+    /**
+     * The Class ListenerClass6.
+     */
     static class ListenerClass6 extends EventDispatcher implements HttpSessionAttributeListener {
     }
 
+    /**
+     * The Class ListenerClass7.
+     */
     static class ListenerClass7 extends EventDispatcher implements ServletContextAttributeListener {
     }
 
+    /**
+     * The Class ListenerClass8.
+     */
     static class ListenerClass8 extends EventDispatcher implements ServletContextAttributeListener {
     }
 

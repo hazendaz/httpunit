@@ -50,9 +50,18 @@ import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
+/**
+ * The Class WebClientTest.
+ */
 @ExtendWith(ExternalResourceSupport.class)
 public class WebClientTest extends HttpUnitTest {
 
+    /**
+     * Test no such server.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Disabled
     public void testNoSuchServer() throws Exception {
         WebConversation wc = new WebConversation();
@@ -66,9 +75,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * check access to resources that are not defined
+     * check access to resources that are not defined.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void notFound() throws Exception {
@@ -85,9 +95,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * check access to undefined resources
+     * check access to undefined resources.
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     @Test
     void undefinedResource() throws IOException {
@@ -125,6 +136,12 @@ public class WebClientTest extends HttpUnitTest {
         HttpUnitOptions.setExceptionsThrownOnErrorStatus(originalState);
     }
 
+    /**
+     * Not modified response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void notModifiedResponse() throws Exception {
         defineResource("error.htm", "Not Modified", 304);
@@ -137,6 +154,12 @@ public class WebClientTest extends HttpUnitTest {
         response.getInputStream().read();
     }
 
+    /**
+     * Internal error exception.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void internalErrorException() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
@@ -151,6 +174,12 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Internal error display.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void internalErrorDisplay() throws Exception {
         defineResource("internalError.htm", "Internal error", 501);
@@ -163,6 +192,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("Internal error", response.getText().trim(), "Message contents");
     }
 
+    /**
+     * Simple get.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void simpleGet() throws Exception {
         String resourceName = "something/interesting";
@@ -177,6 +212,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("text/html", response.getContentType(), "content type");
     }
 
+    /**
+     * Funky get.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void funkyGet() throws Exception {
         String resourceName = "ID=03.019c010101010001.00000001.a202000000000019. 0d09/login/";
@@ -192,9 +233,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test cookies
+     * test cookies.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void cookies() throws Exception {
@@ -236,6 +278,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("/something", cookie.getPath());
     }
 
+    /**
+     * Cookies disabled.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void cookiesDisabled() throws Exception {
         String resourceName = "something/baking";
@@ -253,6 +301,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(0, wc.getCookieNames().length, "number of cookies");
     }
 
+    /**
+     * Old cookies.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void oldCookies() throws Exception {
         String resourceName = "something/baking";
@@ -272,9 +326,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test setting a cookie manually
+     * test setting a cookie manually.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void manualCookies() throws Exception {
@@ -314,6 +369,7 @@ public class WebClientTest extends HttpUnitTest {
      * -the standard asks for opaque handling ... no mocking about with values by the server ...
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void emptyCookie() throws Exception {
@@ -336,6 +392,9 @@ public class WebClientTest extends HttpUnitTest {
         // for (int i=0;i<names.length;i++) System.err.println(names[i]);
     }
 
+    /**
+     * The Class CookieEcho.
+     */
     class CookieEcho extends PseudoServlet {
 
         @Override
@@ -344,6 +403,12 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Header fields.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void headerFields() throws Exception {
         defineResource("getHeaders", new PseudoServlet() {
@@ -362,6 +427,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("Mozilla 6<-->me alone", wr.getText(), "headers found");
     }
 
+    /**
+     * Basic authentication.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void basicAuthentication() throws Exception {
         defineResource("getAuthorization", new PseudoServlet() {
@@ -378,9 +449,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test on demand Basic Authentication
+     * test on demand Basic Authentication.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void onDemandBasicAuthentication() throws Exception {
@@ -404,9 +476,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test on demand Basic Authentication with InputStream
+     * test on demand Basic Authentication with InputStream.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void onDemandBasicAuthenticationInputStream() throws Exception {
@@ -470,9 +543,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test the Negotiate Header does not spoil authentication
+     * test the Negotiate Header does not spoil authentication.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void authenticationNegotiateRequest() throws Exception {
@@ -495,6 +569,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("unauthorized", wr.getText(), "authorization");
     }
 
+    /**
+     * Proxy server access with authentication.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     @Disabled
     void proxyServerAccessWithAuthentication() throws Exception {
@@ -511,11 +591,13 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test Rfc2069 optionally with or without opaque parameter
+     * test Rfc2069 optionally with or without opaque parameter.
      *
      * @param withOpaque
+     *            the with opaque
      *
      * @throws Exception
+     *             the exception
      */
     public void testRfc2069DigestAuthentication(final boolean withOpaque) throws Exception {
         defineResource("/dir/index.html", new PseudoServlet() {
@@ -563,7 +645,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2957505 No 'opaque' causes NPE when attempting DigestAuthentication
+     * test for BR 2957505 No 'opaque' causes NPE when attempting DigestAuthentication.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void rfc2069DigestAuthenticationNoOpaque() throws Exception {
@@ -574,6 +659,7 @@ public class WebClientTest extends HttpUnitTest {
      * Verifies one-time digest authentication with Quality of Protection (qop).
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled
@@ -606,16 +692,21 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * get page contents
+     * get page contents.
      *
      * @param pageAddress
+     *            the page address
      * @param protectionDomain
+     *            the protection domain
      * @param userName
+     *            the user name
      * @param password
+     *            the password
      *
      * @return the page content
      *
      * @throws Exception
+     *             the exception
      */
     private static String getPageContents(String pageAddress, String protectionDomain, String userName, String password)
             throws Exception {
@@ -625,6 +716,14 @@ public class WebClientTest extends HttpUnitTest {
         return wr.getText();
     }
 
+    /**
+     * Assert headers equals.
+     *
+     * @param expectedHeader
+     *            the expected header
+     * @param actualHeader
+     *            the actual header
+     */
     private void assertHeadersEquals(HttpHeader expectedHeader, HttpHeader actualHeader) {
         assertEquals(expectedHeader.getLabel(), actualHeader.getLabel(), "Authentication type");
         if (!expectedHeader.equals(actualHeader)) {
@@ -647,8 +746,15 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * The Class Deltas.
+     */
     static class Deltas {
+
+        /** The missing values. */
         private ArrayList _missingValues = new ArrayList<>();
+
+        /** The extra values. */
         private ArrayList _extraValues = new ArrayList<>();
 
         @Override
@@ -663,14 +769,40 @@ public class WebClientTest extends HttpUnitTest {
             return sb.toString();
         }
 
+        /**
+         * Adds the missing value.
+         *
+         * @param key
+         *            the key
+         * @param value
+         *            the value
+         */
         void addMissingValue(Object key, Object value) {
             _missingValues.add(key + "=" + value);
         }
 
+        /**
+         * Adds the extra value.
+         *
+         * @param key
+         *            the key
+         * @param value
+         *            the value
+         */
         void addExtraValue(Object key, Object value) {
             _extraValues.add(key + "=" + value);
         }
 
+        /**
+         * Compare values.
+         *
+         * @param key
+         *            the key
+         * @param expected
+         *            the expected
+         * @param actual
+         *            the actual
+         */
         void compareValues(Object key, Object expected, Object actual) {
             if (!expected.equals(actual)) {
                 addMissingValue(key, expected);
@@ -680,12 +812,13 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test the Referer Header
+     * test the Referer Header.
      *
      * @param refererEnabled
      *            - true if it should not be stripped
      *
      * @throws Exception
+     *             the exception
      */
     public void dotestRefererHeader(boolean refererEnabled) throws Exception {
         String resourceName = "tellMe" + refererEnabled;
@@ -729,21 +862,34 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(expected, response.getText().trim(), "Form Referer header");
     }
 
+    /**
+     * Referer header.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void refererHeader() throws Exception {
         dotestRefererHeader(true);
     }
 
     /**
-     * test the referer Header twice - with and without stripping it according to [ 844084 ] Block HTTP referer
+     * test the referer Header twice - with and without stripping it according to [ 844084 ] Block HTTP referer.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void refererHeaderWithStrippingReferer() throws Exception {
         dotestRefererHeader(false);
     }
 
+    /**
+     * Redirected referer header.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void redirectedRefererHeader() throws Exception {
         String linkSource = "fromLink";
@@ -774,6 +920,7 @@ public class WebClientTest extends HttpUnitTest {
      * aptivate
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void maxRedirectsNotExceeded() throws Exception {
@@ -815,9 +962,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * /** test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
+     * /** test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void selfReferentialRedirect() throws Exception {
@@ -835,9 +983,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
+     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void loopingMalformedRedirect() throws Exception {
@@ -864,9 +1013,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
+     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void redirectHistoryIsClearedOut() throws Exception {
@@ -900,9 +1050,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
+     * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void redirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {
@@ -939,6 +1090,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages by Roger Lindsj
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void emptyErrorPage() throws Exception {
@@ -962,9 +1114,10 @@ public class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test GZIP begin disabled
+     * test GZIP begin disabled.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void gzipDisabled() throws Exception {
@@ -979,6 +1132,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
+    /**
+     * Gzip handling.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void gzipHandling() throws Exception {
         String expectedResponse = "Here is my answer. It needs to be reasonably long to make compression smaller "
@@ -999,6 +1158,7 @@ public class WebClientTest extends HttpUnitTest {
      * website not under control of the project
      *
      * @throws Exception
+     *             the exception
      */
     public void xtestGZIPHandling2() throws Exception {
         String url = "http://sourceforge.net/project/showfiles.php?group_id=6550";
@@ -1007,15 +1167,35 @@ public class WebClientTest extends HttpUnitTest {
         conversation.getResponse(request);
     }
 
+    /**
+     * The Class CompressedPseudoServlet.
+     */
     private class CompressedPseudoServlet extends PseudoServlet {
 
+        /** The response text. */
         private String _responseText;
+
+        /** The suppress length header. */
         private boolean _suppressLengthHeader;
 
+        /**
+         * Instantiates a new compressed pseudo servlet.
+         *
+         * @param responseText
+         *            the response text
+         */
         public CompressedPseudoServlet(String responseText) {
             _responseText = responseText;
         }
 
+        /**
+         * Instantiates a new compressed pseudo servlet.
+         *
+         * @param responseText
+         *            the response text
+         * @param suppressLengthHeader
+         *            the suppress length header
+         */
         public CompressedPseudoServlet(String responseText, boolean suppressLengthHeader) {
             this(responseText);
             _suppressLengthHeader = suppressLengthHeader;
@@ -1034,6 +1214,11 @@ public class WebClientTest extends HttpUnitTest {
             return result;
         }
 
+        /**
+         * User accepts GZIP.
+         *
+         * @return true, if successful
+         */
         private boolean userAcceptsGZIP() {
             String header = getHeader("Accept-Encoding");
             if (header == null) {
@@ -1042,6 +1227,14 @@ public class WebClientTest extends HttpUnitTest {
             return header.toLowerCase().indexOf("gzip") >= 0;
         }
 
+        /**
+         * Gets the compressed contents.
+         *
+         * @return the compressed contents
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         private byte[] getCompressedContents() throws IOException {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             GZIPOutputStream gzip = new GZIPOutputStream(baos);
@@ -1053,6 +1246,12 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Gzip undefined length handling.
+     *
+     * @throws Exception
+     *             the exception
+     */
     // Test no longer working on java 21 either, just disable for now.
     @Disabled
     @Test
@@ -1070,6 +1269,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(expectedResponse, wr.getText().trim(), "Content");
     }
 
+    /**
+     * Client listener.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void clientListener() throws Exception {
         defineWebPage("Target", "This is another page with <a href=Form.html target='_top'>one link</a>");
@@ -1093,6 +1298,17 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Verify request response pair.
+     *
+     * @param messageLog
+     *            the message log
+     * @param i
+     *            the i
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private void verifyRequestResponsePair(ArrayList messageLog, int i) throws MalformedURLException {
         assertTrue(messageLog.get(i) instanceof WebRequest,
                 "Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass());
@@ -1104,10 +1320,20 @@ public class WebClientTest extends HttpUnitTest {
                 "Response URL");
     }
 
+    /**
+     * The Class ListenerExample.
+     */
     private static class ListenerExample implements WebClientListener {
 
+        /** The message log. */
         private List _messageLog;
 
+        /**
+         * Instantiates a new listener example.
+         *
+         * @param messageLog
+         *            the message log
+         */
         public ListenerExample(List messageLog) {
             _messageLog = messageLog;
         }
@@ -1123,6 +1349,12 @@ public class WebClientTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Redirect.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void redirect() throws Exception {
         String resourceName = "something/redirected";
@@ -1141,6 +1373,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals(HttpURLConnection.HTTP_OK, response.getResponseCode(), "status");
     }
 
+    /**
+     * Duplicate header redirect.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void duplicateHeaderRedirect() throws Exception {
         String resourceName = "something/redirected";
@@ -1159,6 +1397,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("text/html", response.getContentType(), "content type");
     }
 
+    /**
+     * Disabled redirect.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void disabledRedirect() throws Exception {
         String resourceName = "something/redirected";
@@ -1178,6 +1422,12 @@ public class WebClientTest extends HttpUnitTest {
         assertEquals("text/html", response.getContentType(), "content type");
     }
 
+    /**
+     * Dns override.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     @Disabled
     void dnsOverride() throws Exception {
@@ -1212,6 +1462,7 @@ public class WebClientTest extends HttpUnitTest {
      * test for Delete Response patch by Matthew M. Boedicker"
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void delete() throws Exception {

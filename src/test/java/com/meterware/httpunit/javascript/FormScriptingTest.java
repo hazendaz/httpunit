@@ -55,13 +55,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
+/**
+ * The Class FormScriptingTest.
+ */
 @ExtendWith(ExternalResourceSupport.class)
 public class FormScriptingTest extends HttpUnitTest {
 
     /**
-     * test to access form name in java script
+     * test to access form name in java script.
      *
      * @throws Exception
+     *             the exception
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
@@ -84,6 +88,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * FR [ 2163079 ] make form.name property mutable by Peter De Bruycker
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void modifyingFormNameProperty() throws Exception {
@@ -101,9 +106,12 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test to access attributes from java script
+     * test to access attributes from java script.
+     *
+     * @return the attribute for body
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getAttributeForBody() throws Exception {
@@ -140,9 +148,12 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test to access attributes from java script
+     * test to access attributes from java script.
+     *
+     * @return the attribute for div
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getAttributeForDiv() throws Exception {
@@ -172,6 +183,12 @@ public class FormScriptingTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Elements property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elementsProperty() throws Exception {
         defineResource("OnCommand.html",
@@ -198,7 +215,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test clicking on a span inspired by Mail from Christoph to developer mailinglist of 2008-04-01
+     * test clicking on a span inspired by Mail from Christoph to developer mailinglist of 2008-04-01.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void clickSpan() throws Exception {
@@ -231,6 +251,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("rim_ModuleSearchResult=Drilldown=key_", alert, "function should have been triggered to alert");
     }
 
+    /**
+     * Reset via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void resetViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -245,6 +271,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("green", form.getParameterValue("color"), "Value after reset");
     }
 
+    /**
+     * On reset event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void onResetEvent() throws Exception {
         defineResource("OnCommand.html",
@@ -268,6 +300,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Event ran unexpectedly");
     }
 
+    /**
+     * Submit via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -284,7 +322,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * Verifies bug #959918
+     * Verifies bug #959918.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void numericParameterSetting1() throws Exception {
@@ -303,7 +344,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * Verifies bug #1087180
+     * Verifies bug #1087180.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void numericParameterSetting2() throws Exception {
@@ -322,7 +366,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * Verifies bug #1073810 (Null pointer exception if javascript sets control value to null)
+     * Verifies bug #1073810 (Null pointer exception if javascript sets control value to null).
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void nullParameterSetting() throws Exception {
@@ -338,9 +385,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test changing form Action from JavaScript
+     * test changing form Action from JavaScript.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void formActionFromJavaScript() throws Exception {
@@ -350,7 +398,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * verify bug 1155792 ] problems setting form action from javascript [patch]
+     * verify bug 1155792 ] problems setting form action from javascript [patch].
+     *
+     * @throws Exception
+     *             the exception
      */
     public void xtestFormActionFromJavaScript2() throws Exception {
         // pending Patch 1155792 wf 2007-12-30
@@ -359,11 +410,13 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test doing a form action from Javascript
+     * test doing a form action from Javascript.
      *
      * @param paramName
+     *            the param name
      *
      * @throws Exception
+     *             the exception
      */
     public void dotestFormActionFromJavaScript(String paramName) throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
@@ -401,6 +454,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * by David D. Kilzer
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void indirectEventInvocation() throws Exception {
@@ -416,9 +470,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test disabling a submit button via script
+     * test disabling a submit button via script.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void enablingDisabledSubmitButtonViaScript() throws Exception {
@@ -441,6 +496,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Disabling enabled submit button via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void disablingEnabledSubmitButtonViaScript() throws Exception {
         defineResource("DoIt?color=green&change=success", "You made it!");
@@ -461,6 +522,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertDisabledSubmitButtonCanNotBeClicked(form);
     }
 
+    /**
+     * Enabling disabled normal button via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void enablingDisabledNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -483,6 +550,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Disabling enabledd normal button via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void disablingEnableddNormalButtonViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -503,53 +576,96 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * also fix for [ 1124024 ] Formcontrol and isDisabled should be public by wolfgang fahl
+     * also fix for [ 1124024 ] Formcontrol and isDisabled should be public by wolfgang fahl.
      *
      * @param form
+     *            the form
      */
     private void assertSubmitButtonDisabled(WebForm form) {
         assertTrue(form.getSubmitButton("change").isDisabled(), "Button should have been Disabled");
     }
 
+    /**
+     * Assert normal button disabled.
+     *
+     * @param form
+     *            the form
+     * @param buttonID
+     *            the button ID
+     */
     private void assertNormalButtonDisabled(WebForm form, String buttonID) {
         assertTrue(form.getButtonWithID(buttonID).isDisabled(), "Button should have been Disabled");
     }
 
+    /**
+     * Assert submit button enabled.
+     *
+     * @param form
+     *            the form
+     */
     private void assertSubmitButtonEnabled(WebForm form) {
         assertFalse(form.getSubmitButton("change").isDisabled(), "Button should have been enabled or NOT-Disabled");
     }
 
+    /**
+     * Assert normal button enabled.
+     *
+     * @param form
+     *            the form
+     * @param buttonID
+     *            the button ID
+     */
     private void assertNormalButtonEnabled(WebForm form, String buttonID) {
         assertFalse(form.getButtonWithID(buttonID).isDisabled(), "Button should have been enabled or NOT-Disabled");
     }
 
     /**
-     * click submit button to prove that it is enabled
+     * click submit button to prove that it is enabled.
      *
      * @param form
+     *            the form
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     private void clickSubmitButtonToProveThatItIsEnabled(WebForm form) throws IOException, SAXException {
         WebResponse response = form.submit();
         assertNotNull(response);
     }
 
+    /**
+     * Click button to prove that it is enabled.
+     *
+     * @param form
+     *            the form
+     * @param buttonID
+     *            the button ID
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     private void clickButtonToProveThatItIsEnabled(WebForm form, String buttonID) throws IOException, SAXException {
         form.getButtonWithID(buttonID).click();
     }
 
     /**
-     * change the enable State of Button via Javascript
+     * change the enable State of Button via Javascript.
      *
      * @param form
+     *            the form
      * @param wc
+     *            the wc
      *
-     * @return
+     * @return the web form
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     private WebForm runJavaScriptToToggleEnabledStateOfButton(WebForm form, WebConversation wc)
             throws IOException, SAXException {
@@ -559,6 +675,12 @@ public class FormScriptingTest extends HttpUnitTest {
         return currentPage.getFormWithName("spectrum");
     }
 
+    /**
+     * Assert disabled submit button can not be clicked.
+     *
+     * @param form
+     *            the form
+     */
     private void assertDisabledSubmitButtonCanNotBeClicked(WebForm form) {
         try {
             SubmitButton button = form.getSubmitButton("change");
@@ -570,6 +692,14 @@ public class FormScriptingTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Assert disabled normal button can not be clicked.
+     *
+     * @param form
+     *            the form
+     * @param buttonID
+     *            the button ID
+     */
     private void assertDisabledNormalButtonCanNotBeClicked(WebForm form, String buttonID) {
         try {
             Button button = form.getButtonWithID(buttonID);
@@ -579,6 +709,12 @@ public class FormScriptingTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Enabling disabled radio button via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void enablingDisabledRadioButtonViaScript() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name=spectrum action='DoIt'>"
@@ -603,6 +739,12 @@ public class FormScriptingTest extends HttpUnitTest {
         form.setParameter("color", "green");
     }
 
+    /**
+     * Submit via script with post params.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitViaScriptWithPostParams() throws Exception {
         defineResource("/servlet/TestServlet?param3=value3&param4=value4", new PseudoServlet() {
@@ -627,6 +769,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Submit buttonless form via script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitButtonlessFormViaScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -641,6 +789,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Submit via script button.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitViaScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -656,6 +810,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Disabled script button.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void disabledScriptButton() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -675,6 +835,12 @@ public class FormScriptingTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Update before submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void updateBeforeSubmit() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -689,6 +855,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Submit button script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitButtonScript() throws Exception {
         defineResource("DoIt?color=green", "You made it!");
@@ -703,6 +875,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "Result of submit");
     }
 
+    /**
+     * Sets the form text value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setFormTextValue() throws Exception {
         defineResource("OnCommand.html",
@@ -715,9 +893,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test for onMouseDownEvent support patch 884146 by Bjoern Beskow - bbeskow
+     * test for onMouseDownEvent support patch 884146 by Bjoern Beskow - bbeskow.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void checkboxOnMouseDownEvent() throws Exception {
@@ -747,9 +926,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test the onChange event
+     * test the onChange event.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void setFormTextOnChangeEvent() throws Exception {
@@ -773,6 +953,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
+    /**
+     * Checkbox properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
@@ -805,6 +991,12 @@ public class FormScriptingTest extends HttpUnitTest {
         form.setParameter("ready", "waiting");
     }
 
+    /**
+     * Indexed checkbox properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void indexedCheckboxProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
@@ -823,12 +1015,30 @@ public class FormScriptingTest extends HttpUnitTest {
         verifyCheckbox( /* default */ wc, false, /* checked */ false, /* value */ "bad");
     }
 
+    /**
+     * Verify checkbox.
+     *
+     * @param wc
+     *            the wc
+     * @param defaultChecked
+     *            the default checked
+     * @param checked
+     *            the checked
+     * @param value
+     *            the value
+     */
     private void verifyCheckbox(WebClient wc, boolean defaultChecked, boolean checked, String value) {
         assertEquals("checkbox ready default = " + defaultChecked, wc.popNextAlert(), "Message " + 1 + "-1");
         assertEquals("checkbox ready checked = " + checked, wc.popNextAlert(), "Message " + 1 + "-2");
         assertEquals("checkbox ready value = " + value, wc.popNextAlert(), "Message " + 1 + "-3");
     }
 
+    /**
+     * Checkbox on click event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void checkboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
@@ -854,6 +1064,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
+    /**
+     * Sets the checkbox on click event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setCheckboxOnClickEvent() throws Exception {
         defineResource("OnCommand.html",
@@ -871,9 +1087,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test the radio button properties via index
+     * test the radio button properties via index.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void indexedRadioProperties() throws Exception {
@@ -893,9 +1110,10 @@ public class FormScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test onMouseDownEvent for radio buttons
+     * test onMouseDownEvent for radio buttons.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void radioOnMouseDownEvent() throws Exception {
@@ -926,12 +1144,30 @@ public class FormScriptingTest extends HttpUnitTest {
 
     }
 
+    /**
+     * Verify radio.
+     *
+     * @param wc
+     *            the wc
+     * @param defaultChecked
+     *            the default checked
+     * @param checked
+     *            the checked
+     * @param value
+     *            the value
+     */
     private void verifyRadio(WebClient wc, boolean defaultChecked, boolean checked, String value) {
         assertEquals("radio ready default = " + defaultChecked, wc.popNextAlert(), "Message " + 1 + "-1");
         assertEquals("radio ready checked = " + checked, wc.popNextAlert(), "Message " + 1 + "-2");
         assertEquals("radio ready value = " + value, wc.popNextAlert(), "Message " + 1 + "-3");
     }
 
+    /**
+     * Radio on click event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void radioOnClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
@@ -960,6 +1196,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
+    /**
+     * Form action property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formActionProperty() throws Exception {
         WebConversation wc = new WebConversation();
@@ -978,6 +1220,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/tell?age=23", request.getURL().toExternalForm());
     }
 
+    /**
+     * Form target property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formTargetProperty() throws Exception {
         WebConversation wc = new WebConversation();
@@ -997,6 +1245,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("_blank", request.getTarget());
     }
 
+    /**
+     * Form validation on submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formValidationOnSubmit() throws Exception {
         defineResource("doIt?color=pink", "You got it!", "text/plain");
@@ -1017,6 +1271,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You got it!", newResponse.getText(), "Result of submit");
     }
 
+    /**
+     * Form select readable properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectReadableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
@@ -1052,7 +1312,10 @@ public class FormScriptingTest extends HttpUnitTest {
     /**
      * test that in case of an Index out of bounds problem an exception is thrown with a meaningful message (not
      * nullpointer exception) Bug report [ 1124057 ] Out of Bounds Exception should be avoided by Wolfgang Fahl of
-     * 2005-02-16 17:25
+     * 2005-02-16 17:25.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void selectIndexOutOfBoundsCatching() throws Exception {
@@ -1078,6 +1341,12 @@ public class FormScriptingTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Form select defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectDefaults() throws Exception {
         defineResource("OnCommand.html",
@@ -1101,6 +1370,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("fourth default index= 0", wc.popNextAlert(), "4th message");
     }
 
+    /**
+     * File submit properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileSubmitProperties() throws Exception {
         File file = new File("temp.html");
@@ -1119,6 +1394,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("file selected is [" + file.getAbsolutePath() + "]", wc.popNextAlert(), "2nd message");
     }
 
+    /**
+     * Form select on change event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectOnChangeEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>"
@@ -1146,6 +1427,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert message after JavaScript change");
     }
 
+    /**
+     * Form select writeable properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectWriteableProperties() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='the_form'>"
@@ -1162,6 +1449,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("Selected index is 0", wc.popNextAlert(), "Notification");
     }
 
+    /**
+     * Form select default properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectDefaultProperties() throws Exception {
         defineResource("OnCommand.html",
@@ -1198,6 +1491,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("7", form.getParameterValue("choices"), "5th selection");
     }
 
+    /**
+     * Form select overwrite options.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formSelectOverwriteOptions() throws Exception {
         defineResource("OnCommand.html",
@@ -1235,6 +1534,12 @@ public class FormScriptingTest extends HttpUnitTest {
                 form.getOptions("choices"));
     }
 
+    /**
+     * Access across frames.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void accessAcrossFrames() throws Exception {
         defineResource("First.html",
@@ -1254,6 +1559,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("value: new1", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Sets the from embedded script.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setFromEmbeddedScript() throws Exception {
         defineWebPage("OnCommand",
@@ -1265,6 +1576,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("new", response.getForms()[0].getParameterValue("testfield"), "Form parameter value");
     }
 
+    /**
+     * Submit from java script link.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitFromJavaScriptLink() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
@@ -1277,6 +1594,12 @@ public class FormScriptingTest extends HttpUnitTest {
         wr.getLinkWith("Link").click();
     }
 
+    /**
+     * Submit on load.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitOnLoad() throws Exception {
         defineResource("test2.txt?Submit=Submit", "You made it!", "text/plain");
@@ -1292,6 +1615,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("You made it!", wr.getText(), "returned page");
     }
 
+    /**
+     * Select value property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void selectValueProperty() throws Exception {
         defineResource("OnCommand.html",
@@ -1309,6 +1638,12 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("selected item is red", wc.popNextAlert(), "Message 2");
     }
 
+    /**
+     * Elements by ID property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elementsByIDProperty() throws Exception {
         defineResource("index.html",
@@ -1331,6 +1666,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Test that JavaScript can correctly access the 'type' property for every kind of form control.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void elementTypeAccess() throws Exception {
@@ -1366,8 +1702,15 @@ public class FormScriptingTest extends HttpUnitTest {
         assertMatchingSet("Set of types on form", expectedTypes, collector.confirmPromptsSeen.toArray());
     }
 
+    /**
+     * The Class PromptCollector.
+     */
     static class PromptCollector implements DialogResponder {
+
+        /** The confirm prompts seen. */
         public List confirmPromptsSeen = new ArrayList<>();
+
+        /** The response prompt seen. */
         public List responsePromptSeen = new ArrayList<>();
 
         @Override
@@ -1387,6 +1730,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * Test that the length (number of controls) of a form can be accessed from JavaScript.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void formLength() throws Exception {
@@ -1440,6 +1784,7 @@ public class FormScriptingTest extends HttpUnitTest {
      * setting it should not affect the 'defaultValue'.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void elementDefaultValue() throws Exception {

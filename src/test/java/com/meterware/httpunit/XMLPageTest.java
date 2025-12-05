@@ -43,6 +43,12 @@ import org.xml.sax.SAXException;
 @ExtendWith(ExternalResourceSupport.class)
 public class XMLPageTest extends HttpUnitTest {
 
+    /**
+     * Xml.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void xml() throws Exception {
         assertDoesNotThrow(() -> {
@@ -57,9 +63,10 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     /**
-     * test case for BR [2373755] by Frank Waldheim deactivated since it is the opposite of 1281655
+     * test case for BR [2373755] by Frank Waldheim deactivated since it is the opposite of 1281655.
      *
      * @throws Exception
+     *             the exception
      */
     @Disabled
     public void testXMLisHTML() throws Exception {
@@ -77,10 +84,14 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2946821
+     * test for BR 2946821.
      *
-     * @throws SAXException
+     * @return the document element
+     *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     @Test
     void getDocumentElement() throws IOException, SAXException {
@@ -95,6 +106,12 @@ public class XMLPageTest extends HttpUnitTest {
         assertNotNull(docElement, "There should be a root element");
     }
 
+    /**
+     * Traversal.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void traversal() throws Exception {
         defineResource("SimplePage.xml",

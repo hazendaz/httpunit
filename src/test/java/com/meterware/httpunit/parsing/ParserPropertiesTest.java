@@ -45,22 +45,33 @@ import org.xml.sax.SAXException;
 @ExtendWith(ExternalResourceSupport.class)
 public class ParserPropertiesTest extends HttpUnitTest {
 
+    /**
+     * Tear down.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @AfterEach
     void tearDown() throws Exception {
         HTMLParserFactory.reset();
     }
 
     /**
-     * verify the upper/lower case handling
+     * verify the upper/lower case handling.
      *
      * @param wc
+     *            the wc
      * @param request
+     *            the request
      * @param boldNodeContents
+     *            the bold node contents
      * @param tagName
      *            - the tagName to look for
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents,
             String tagName) throws IOException, SAXException {
@@ -74,30 +85,36 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * verify the upper/lower case handling
+     * verify the upper/lower case handling.
      *
      * @param wc
+     *            the wc
      * @param request
+     *            the request
      * @param boldNodeContents
+     *            the bold node contents
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents)
             throws IOException, SAXException {
         verifyMatchingBoldNodes(wc, request, boldNodeContents, "b");
     }
 
-    /**
-     * shared by all tests
-     */
+    /** shared by all tests. */
     private WebConversation wc = null;
+
+    /** The request. */
     private WebRequest request = null;
 
     /**
-     * same page for all tests
+     * same page for all tests.
      *
      * @throws Exception
+     *             the exception
      */
     public void prepareTestCase() throws Exception {
         defineResource("SimplePage.html",
@@ -109,11 +126,17 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * test the preserveTagCase configuration feature ofh the HTMLParserFactory
+     * test the preserveTagCase configuration feature ofh the HTMLParserFactory.
      *
      * @param preserveTagCase
+     *            the preserve tag case
+     * @param expected1
+     *            the expected 1
+     * @param expected2
+     *            the expected 2
      *
      * @throws Exception
+     *             the exception
      */
     public void doTestKeepCase(boolean preserveTagCase, String[] expected1, String[] expected2) throws Exception {
         prepareTestCase();
@@ -123,9 +146,10 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * test the keepcase setting
+     * test the keepcase setting.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled
@@ -134,9 +158,10 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen
+     * test for patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void lowerCase() throws Exception {
@@ -144,9 +169,10 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley
+     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled
@@ -160,7 +186,10 @@ public class ParserPropertiesTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley
+     * test for patch [ 1176688 ] Allow configuration of neko parser properties by james abley.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled

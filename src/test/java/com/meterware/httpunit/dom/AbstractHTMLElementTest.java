@@ -39,16 +39,47 @@ import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLOptionElement;
 
+/**
+ * The Class AbstractHTMLElementTest.
+ */
 public abstract class AbstractHTMLElementTest implements DomListener {
 
+    /** The html document. */
     protected HTMLDocumentImpl _htmlDocument;
+
+    /** The events received. */
     private List _eventsReceived = new ArrayList<>();
 
+    /**
+     * Sets the up abstract HTML element test.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     public void setUpAbstractHTMLElementTest() throws Exception {
         _htmlDocument = new HTMLDocumentImpl();
     }
 
+    /**
+     * Assert properties.
+     *
+     * @param comment
+     *            the comment
+     * @param name
+     *            the name
+     * @param elements
+     *            the elements
+     * @param expectedValues
+     *            the expected values
+     *
+     * @throws IntrospectionException
+     *             the introspection exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     */
     protected void assertProperties(String comment, String name, HTMLElement[] elements, Object[] expectedValues)
             throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         for (int i = 0; i < elements.length; i++) {
@@ -57,6 +88,18 @@ public abstract class AbstractHTMLElementTest implements DomListener {
         }
     }
 
+    /**
+     * Creates the option.
+     *
+     * @param value
+     *            the value
+     * @param text
+     *            the text
+     * @param selected
+     *            the selected
+     *
+     * @return the HTML option element
+     */
     protected HTMLOptionElement createOption(String value, String text, boolean selected) {
         HTMLOptionElement optionElement = (HTMLOptionElement) createElement("option",
                 selected ? new String[][] { { "value", value }, { "selected", "true" } }
@@ -78,6 +121,20 @@ public abstract class AbstractHTMLElementTest implements DomListener {
      * <li>the default value for the attribute (defaults to null)</li>
      * <li>"ro" if the attribute is read-only (defaults to writeable)</li>
      * </ol>
+     *
+     * @param tagName
+     *            the tag name
+     * @param interfaceName
+     *            the interface name
+     * @param attributes
+     *            the attributes
+     *
+     * @throws IntrospectionException
+     *             the introspection exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
      */
     protected void doElementTest(String tagName, Class interfaceName, Object[][] attributes)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {
@@ -117,10 +174,28 @@ public abstract class AbstractHTMLElementTest implements DomListener {
         }
     }
 
+    /**
+     * Creates the element.
+     *
+     * @param tagName
+     *            the tag name
+     *
+     * @return the element
+     */
     protected Element createElement(String tagName) {
         return createElement(tagName, new String[0][]);
     }
 
+    /**
+     * Creates the element.
+     *
+     * @param tagName
+     *            the tag name
+     * @param attributes
+     *            the attributes
+     *
+     * @return the element
+     */
     protected Element createElement(String tagName, Object[][] attributes) {
         Element element = _htmlDocument.createElement(tagName);
         for (Object[] attribute : attributes) {
@@ -129,10 +204,35 @@ public abstract class AbstractHTMLElementTest implements DomListener {
         return element;
     }
 
+    /**
+     * To attribute value.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private static String toAttributeValue(Object value) {
         return value == null ? null : value.toString();
     }
 
+    /**
+     * Gets the property.
+     *
+     * @param element
+     *            the element
+     * @param propertyName
+     *            the property name
+     *
+     * @return the property
+     *
+     * @throws IntrospectionException
+     *             the introspection exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
     private static Object getProperty(Object element, final String propertyName)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         PropertyDescriptor descriptor = getPropertyDescriptor(element, propertyName);
@@ -145,11 +245,37 @@ public abstract class AbstractHTMLElementTest implements DomListener {
 
     }
 
+    /**
+     * Gets the write method.
+     *
+     * @param element
+     *            the element
+     * @param propertyName
+     *            the property name
+     *
+     * @return the write method
+     *
+     * @throws IntrospectionException
+     *             the introspection exception
+     */
     private static Method getWriteMethod(Object element, final String propertyName) throws IntrospectionException {
         PropertyDescriptor descriptor = getPropertyDescriptor(element, propertyName);
         return descriptor == null ? null : descriptor.getWriteMethod();
     }
 
+    /**
+     * Gets the property descriptor.
+     *
+     * @param element
+     *            the element
+     * @param propertyName
+     *            the property name
+     *
+     * @return the property descriptor
+     *
+     * @throws IntrospectionException
+     *             the introspection exception
+     */
     private static PropertyDescriptor getPropertyDescriptor(Object element, String propertyName)
             throws IntrospectionException {
         BeanInfo beanInfo = Introspector.getBeanInfo(element.getClass(), Object.class);
@@ -172,10 +298,21 @@ public abstract class AbstractHTMLElementTest implements DomListener {
         return null;
     }
 
+    /**
+     * Clear received events.
+     */
     protected void clearReceivedEvents() {
         _eventsReceived.clear();
     }
 
+    /**
+     * Expect property change.
+     *
+     * @param element
+     *            the element
+     * @param property
+     *            the property
+     */
     protected void expectPropertyChange(Element element, String property) {
         assertFalse(_eventsReceived.isEmpty(),
                 "Did not receive a property change event for " + element.getTagName() + "." + property);

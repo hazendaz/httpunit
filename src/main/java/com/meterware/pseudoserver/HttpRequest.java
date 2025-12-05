@@ -28,8 +28,6 @@ import java.util.StringTokenizer;
 
 /**
  * Represents a single HTTP request, extracted from the input stream.
- *
- * @since 1.6
  */
 public class HttpRequest extends ReceivedHttpMessage {
 

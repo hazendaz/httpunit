@@ -63,8 +63,6 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
     /**
      * Constructs a web request for a form submitted via a button.
-     *
-     * @since 1.6
      **/
     protected MessageBodyWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x,
             int y) {

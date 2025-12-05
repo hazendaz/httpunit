@@ -197,8 +197,6 @@ public class ServletRunner {
      *
      * @param create
      *            if true, will create a new session if no valid session is defined.
-     *
-     * @since 1.6
      */
     public HttpSession getSession(boolean create) {
         return getClient().getSession(create);

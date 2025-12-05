@@ -140,8 +140,6 @@ public abstract class WebClient {
     /**
      * Returns the response associated with the specified frame name in the main window. Throws a runtime exception if
      * no matching frame is defined.
-     *
-     * @since 1.6
      **/
     public WebResponse getFrameContents(FrameSelector targetFrame) {
         return _mainWindow.getFrameContents(targetFrame);
@@ -192,8 +190,6 @@ public abstract class WebClient {
 
     /**
      * Returns an object containing the details of the named cookie
-     *
-     * @since [ 1488617 ] alternate patch for cookie bug #1371204
      */
     public Cookie getCookieDetails(String name) {
         return _cookieJar.getCookie(name);
@@ -284,8 +280,6 @@ public abstract class WebClient {
 
     /**
      * Specifies a proxy server to use, along with a user and password for authentication.
-     *
-     * @since 1.6
      */
     public void setProxyServer(String proxyHost, int proxyPort, String userName, String password) {
         setProxyServer(proxyHost, proxyPort);

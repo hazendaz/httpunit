@@ -289,8 +289,6 @@ public abstract class WebRequest {
 
     /**
      * Returns an array of all parameter names defined as part of this web request.
-     *
-     * @since 1.3.1
      **/
     public String[] getRequestParameterNames() {
         final HashSet<String> names = new HashSet<>();

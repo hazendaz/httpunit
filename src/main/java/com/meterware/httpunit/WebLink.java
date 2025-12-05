@@ -60,8 +60,6 @@ public class WebLink extends FixedURLWebRequestSource {
 
     /**
      * Returns the text value of this link.
-     *
-     * @since 1.6
      **/
     @Override
     public String getText() {

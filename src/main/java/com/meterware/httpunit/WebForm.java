@@ -88,8 +88,6 @@ public class WebForm extends WebRequestSource {
      * Submits this form using the web client from which it was originally obtained. Will usually return the result of
      * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
      * inhibits the submission, will return the updated contents of the frame containing this form.
-     *
-     * @since 1.6
      **/
     public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
         if (button == null) {
@@ -102,8 +100,6 @@ public class WebForm extends WebRequestSource {
     /**
      * Submits this form using the web client from which it was originally obtained, ignoring any buttons defined for
      * the form.
-     *
-     * @since 1.6
      **/
     public WebResponse submitNoButton() throws SAXException, IOException {
         return submit(SubmitButton.createFakeSubmitButton(this /* fake */));
@@ -640,8 +636,6 @@ public class WebForm extends WebRequestSource {
     /**
      * Sets the single value of a file upload parameter in this form. A more convenient way to do this than using
      * {@link #setParameter(String,com.meterware.httpunit.protocol.UploadFileSpec[])}
-     *
-     * @since 1.6
      */
     public void setParameter(String name, File file) {
         setParameter(name, new UploadFileSpec[] { new UploadFileSpec(file) });
@@ -655,8 +649,6 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void toggleCheckbox(String name) {
         FormParameter parameter = getParameter(name);
@@ -677,8 +669,6 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void toggleCheckbox(String name, String value) {
         FormParameter parameter = getParameter(name);
@@ -698,8 +688,6 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void setCheckbox(String name, boolean state) {
         FormParameter parameter = getParameter(name);
@@ -722,8 +710,6 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void setCheckbox(String name, String value, boolean state) {
         FormParameter parameter = getParameter(name);

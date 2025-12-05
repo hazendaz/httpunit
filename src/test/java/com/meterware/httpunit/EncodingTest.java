@@ -28,13 +28,10 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests handling of non-Latin scripts.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class EncodingTest extends HttpUnitTest {
 
     /**

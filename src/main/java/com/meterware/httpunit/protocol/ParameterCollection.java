@@ -21,9 +21,6 @@ package com.meterware.httpunit.protocol;
 
 import java.io.IOException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public interface ParameterCollection {
 
     /**

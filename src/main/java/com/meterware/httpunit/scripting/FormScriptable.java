@@ -19,9 +19,6 @@
  */
 package com.meterware.httpunit.scripting;
 
-/**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
- */
 public interface FormScriptable extends ScriptingEventHandler {
 
     /**

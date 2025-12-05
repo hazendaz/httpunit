@@ -26,11 +26,6 @@ import org.xml.sax.SAXException;
 
 /**
  * A front end to a DOM parser that can handle HTML.
- *
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
  **/
 public interface HTMLParser {
 

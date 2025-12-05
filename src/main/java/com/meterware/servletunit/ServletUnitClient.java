@@ -120,8 +120,6 @@ public class ServletUnitClient extends WebClient {
      *
      * @param create
      *            if true, will create a new session if no valid session is defined.
-     *
-     * @since 1.6
      */
     public HttpSession getSession(boolean create) {
         HttpSession session = _invocationContextFactory

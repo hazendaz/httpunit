@@ -88,8 +88,6 @@ public class ServletRunner {
      *
      * @param webXml
      *            the web.xml file
-     *
-     * @since 1.6
      */
     public ServletRunner(File webXml) throws IOException, SAXException {
         _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml));
@@ -104,8 +102,6 @@ public class ServletRunner {
      *            the web.xml file
      * @param contextPath
      *            the context path
-     *
-     * @since 1.6
      */
     public ServletRunner(File webXml, String contextPath) throws IOException, SAXException {
         _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml),
@@ -121,8 +117,6 @@ public class ServletRunner {
      *
      * @throws IOException
      * @throws SAXException
-     *
-     * @since 1.7
      */
     public ServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {
         DocumentBuilder parser = HttpUnitUtils.newParser();

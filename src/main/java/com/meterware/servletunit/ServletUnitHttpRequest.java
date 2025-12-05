@@ -655,8 +655,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the
      * request. For HTTP servlets, parameters are contained in the query string or posted form data.
-     *
-     * @since 1.3
      **/
     @Override
     public Map getParameterMap() {
@@ -666,8 +664,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Overrides the name of the character encoding used in the body of this request. This method must be called prior
      * to reading request parameters or reading input using getReader().
-     *
-     * @since 1.3
      **/
     @Override
     public void setCharacterEncoding(String charset) {
@@ -683,8 +679,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * number, and server path, but it does not include query string parameters. Because this method returns a
      * StringBuffer, not a string, you can modify the URL easily, for example, to append query parameters. This method
      * is useful for creating redirect messages and for reporting errors.
-     *
-     * @since 1.3
      */
     @Override
     public StringBuffer getRequestURL() {

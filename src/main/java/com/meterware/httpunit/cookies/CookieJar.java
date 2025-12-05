@@ -100,8 +100,6 @@ public class CookieJar {
      * Defines a cookie to be sent to the server on every request. This bypasses the normal mechanism by which only
      * certain cookies are sent based on their host and path. Values of null will result in the cookie being removed.
      * Any other value will leave the cookie unchanged expect for the value.
-     *
-     * @since 1.6
      **/
     public void putCookie(String name, String value) {
         boolean foundCookie = false;

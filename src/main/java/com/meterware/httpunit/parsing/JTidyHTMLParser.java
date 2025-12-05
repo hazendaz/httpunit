@@ -33,9 +33,6 @@ import org.w3c.dom.html.HTMLDocument;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 class JTidyHTMLParser implements HTMLParser {
 
     @Override

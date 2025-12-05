@@ -21,8 +21,6 @@ package com.meterware.httpunit;
 
 /**
  * This is a marker interface implemented by HTMLElement classes which hide their content.
- *
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
  **/
 interface ContentConcealer {
 

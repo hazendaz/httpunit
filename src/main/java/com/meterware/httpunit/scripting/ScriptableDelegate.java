@@ -23,8 +23,6 @@ import com.meterware.httpunit.HTMLElement;
 
 /**
  * An interface for objects which will be accessible via scripting.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class ScriptableDelegate implements ScriptingHandler {
 

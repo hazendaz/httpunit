@@ -27,11 +27,6 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 
-/**
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 abstract class HTMLElementBase implements HTMLElement {
 
     private Node _node;

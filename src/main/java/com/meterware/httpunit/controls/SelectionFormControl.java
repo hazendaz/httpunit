@@ -453,8 +453,6 @@ public class SelectionFormControl extends FormControl {
          *
          * @throws RuntimeException
          *             if index is out of bounds
-         *
-         * @since [ 1124057 ] Out of Bounds Exception should be avoided
          */
         @Override
         public Object get(int index) {

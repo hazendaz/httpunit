@@ -25,9 +25,6 @@ import java.io.IOException;
 
 import org.w3c.dom.html.HTMLDocument;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public interface DocumentAdapter {
 
     /**

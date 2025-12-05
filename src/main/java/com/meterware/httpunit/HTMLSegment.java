@@ -41,8 +41,6 @@ public interface HTMLSegment {
 
     /**
      * Returns the HTMLElements found with the specified attribute value.
-     *
-     * @since 1.6
      */
     HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException;
 
@@ -176,8 +174,6 @@ public interface HTMLSegment {
      *
      * @exception SAXException
      *                thrown if there is an error parsing the segment.
-     *
-     * @since 1.6
      */
     TextBlock[] getTextBlocks() throws SAXException;
 

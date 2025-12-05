@@ -382,8 +382,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return a list of all HTMLElements with that tag name
      *
      * @throws SAXException
-     *
-     * @since 1.7
      */
     public HTMLElement[] getElementsByTagName(String tagName) throws SAXException {
         return getReceivedPage().getElementsByTagName(getDOM(), tagName);
@@ -414,8 +412,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /**
      * Returns the HTMLElements found with the specified attribute value.
-     *
-     * @since 1.6
      */
     @Override
     public HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException {
@@ -600,8 +596,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /**
      * Returns an array of text blocks found in the page.
-     *
-     * @since 1.6
      */
     @Override
     public TextBlock[] getTextBlocks() throws SAXException {
@@ -610,8 +604,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /**
      * Returns the text block after the specified block, if any.
-     *
-     * @since 1.6
      */
     public TextBlock getNextTextBlock(TextBlock block) throws SAXException {
         return getReceivedPage().getNextTextBlock(block);
@@ -619,8 +611,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /**
      * Returns the first link found in the page matching the specified criteria.
-     *
-     * @since 1.6
      *
      * @exception SAXException
      *                thrown if there is an error parsing the response.
@@ -1145,8 +1135,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * getter for the WebClient
      *
-     * @since 1.7
-     *
      * @return the web client for this WebResponse (if any)
      */
     public WebClient getClient() {
@@ -1595,8 +1583,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * allow access to the valid content Types
      *
-     * @since 1.7
-     *
      * @return the validContentTypes
      */
     public static String[] getValidContentTypes() {
@@ -1605,8 +1591,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /**
      * allow modification of the valid content Types use with care
-     *
-     * @since 1.7
      *
      * @param validContentTypes
      *            the validContentTypes to set

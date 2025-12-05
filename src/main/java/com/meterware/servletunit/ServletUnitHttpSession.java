@@ -186,8 +186,6 @@ class ServletUnitHttpSession implements HttpSession {
 
     /**
      * Returns the ServletContext to which this session belongs.
-     *
-     * @since 1.3
      **/
     @Override
     public ServletContext getServletContext() {

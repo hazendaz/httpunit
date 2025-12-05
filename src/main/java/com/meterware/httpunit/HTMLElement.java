@@ -56,29 +56,21 @@ public interface HTMLElement extends ScriptingEventHandler {
     /**
      * Returns the value of the attribute of this element with the specified name. Returns the empty string if no such
      * attribute exists.
-     *
-     * @since 1.6
      */
     String getAttribute(String name);
 
     /**
      * Set the value of the attribute of this element with the specified name.
-     *
-     * @since 1.7
      */
     void setAttribute(String name, Object value);
 
     /**
      * Remove the attribute of this element with the specified name.
-     *
-     * @since 1.7
      */
     void removeAttribute(String name);
 
     /**
      * Returns true if this element may have an attribute with the specified name.
-     *
-     * @since 1.6
      */
     boolean isSupportedAttribute(String name);
 
@@ -89,15 +81,11 @@ public interface HTMLElement extends ScriptingEventHandler {
 
     /**
      * Returns the contents of this element, converted to a string.
-     *
-     * @since 1.6
      */
     String getText();
 
     /**
      * Returns the tag name of this node.
-     *
-     * @since 1.6.1
      */
     String getTagName();
 

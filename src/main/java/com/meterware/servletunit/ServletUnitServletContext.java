@@ -357,8 +357,6 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return a Set containing the directory listing, or null if there are no resources in the web application whose
      *         path begins with the supplied path.
-     *
-     * @since HttpUnit 1.3
      */
     @Override
     public Set<String> getResourcePaths(String path) {
@@ -370,8 +368,6 @@ public class ServletUnitServletContext implements ServletContext {
      * descriptor for this web application by the display-name element.
      *
      * @return The name of the web application or null if no name has been declared in the deployment descriptor
-     *
-     * @since HttpUnit 1.3
      */
     @Override
     public String getServletContextName() {

@@ -22,9 +22,6 @@ package com.meterware.httpunit.protocol;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class URLEncodedString implements ParameterProcessor {
 
     public static final int DEFAULT_BUFFER_SIZE = 128;

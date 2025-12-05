@@ -26,8 +26,6 @@ import java.io.InputStream;
 
 /**
  * A description of a file to be uploaded as part of a form submission.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class UploadFileSpec {
 

@@ -30,9 +30,6 @@ import java.util.StringTokenizer;
 /**
  * Basic "parser" for the JTidy error output. Will get the line and column number as well as the message. It assumes
  * that an error or warning is to be logged once println() has been called or if a string starts with "line"
- *
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- * @author <a href="mailto:proyal@managingpartners.com">Peter Royal</a>
  **/
 class JTidyPrintWriter extends PrintWriter {
     /**

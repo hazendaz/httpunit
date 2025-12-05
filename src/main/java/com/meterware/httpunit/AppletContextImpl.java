@@ -193,8 +193,6 @@ class AppletContextImpl implements AppletContext {
      *
      * @param key
      *            key whose associated stream is to be returned.
-     *
-     * @since JDK1.4
      */
     @Override
     public InputStream getStream(String key) {
@@ -209,8 +207,6 @@ class AppletContextImpl implements AppletContext {
      * <p>
      *
      * @return an Iterator of all the names of the streams in this applet context.
-     *
-     * @since JDK1.4
      */
     @Override
     public Iterator getStreamKeys() {
@@ -234,8 +230,6 @@ class AppletContextImpl implements AppletContext {
      * @throws <code>IOException</code>
      *            if the stream size exceeds a certain size limit. Size limit is decided by the implementor of this
      *            interface.
-     *
-     * @since JDK1.4
      */
     @Override
     public void setStream(String key, InputStream stream) throws IOException {

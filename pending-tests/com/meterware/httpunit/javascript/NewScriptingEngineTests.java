@@ -47,7 +47,7 @@ public class NewScriptingEngineTests extends AbstractJavaScriptTest {
     /**
      * test jsFunction_createElement() - supplied by Mark Childerson
      * also for bug report [ 1430378 ] createElement not found in JavaScript by Saliya Jinadasa
-     * @since 2008-03-26
+     *
      * @throws Exception on uncaught problem
      */
     public void testCreateElement() throws Exception {

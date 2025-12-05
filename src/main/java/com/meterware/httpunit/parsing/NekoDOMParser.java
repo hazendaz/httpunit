@@ -39,10 +39,6 @@ import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
-/**
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
- **/
 class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     /** Error reporting feature identifier. */

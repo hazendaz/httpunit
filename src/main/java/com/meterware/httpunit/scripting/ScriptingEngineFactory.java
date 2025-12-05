@@ -22,9 +22,6 @@ package com.meterware.httpunit.scripting;
 import com.meterware.httpunit.HTMLElement;
 import com.meterware.httpunit.WebResponse;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public interface ScriptingEngineFactory {
 
     /**

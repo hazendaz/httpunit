@@ -40,8 +40,6 @@ public interface ScriptingEventHandler {
      *
      * @param eventScript
      *
-     * @since 1.7
-     *
      * @return true if the script is empty or the result of the script
      */
     boolean doEventScript(String eventScript);

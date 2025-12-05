@@ -55,22 +55,16 @@ public class WebWindow {
 
     /**
      * The urls that have been encountered as redirect locations in the course of a single client-initiated request
-     *
-     * @since patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      */
     private final Map _redirects;
 
     /**
      * True if seen initial request
-     *
-     * @since patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      */
     private boolean _isInitialRequest = true;
 
     /**
      * Cache the initial client request to ensure that the _redirects structure gets reset.
-     *
-     * @since patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      */
     private WebRequest _initialRequest;
 

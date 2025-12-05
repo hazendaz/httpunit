@@ -1016,8 +1016,6 @@ public class JavaScript {
         }
 
         /**
-         * @since FR [ 2163079 ] make form.name property mutable by Peter De Bruycker
-         *
          * @param name
          */
         public void jsSet_name(String name) {

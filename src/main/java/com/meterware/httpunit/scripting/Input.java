@@ -43,8 +43,6 @@ public interface Input extends IdentifiedDelegate, NamedDelegate {
      *
      * @param attributeName
      * @param value
-     *
-     * @since 1.7
      */
     void setAttribute(String attributeName, Object value);
 
@@ -52,8 +50,6 @@ public interface Input extends IdentifiedDelegate, NamedDelegate {
      * remove the given attribute
      *
      * @param attributeName
-     *
-     * @since 1.7
      */
     void removeAttribute(String attributeName);
 

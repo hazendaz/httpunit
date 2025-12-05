@@ -24,9 +24,6 @@ import java.net.URL;
 /**
  * A listener for messages from the HTMLParser. This provides a mechanism to watch for errors and warnings generated
  * during parsing.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public interface HTMLParserListener {
 

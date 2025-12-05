@@ -19,6 +19,9 @@
  */
 package com.meterware.httpunit;
 
+/**
+ * The Class DialogAdapter.
+ */
 public class DialogAdapter implements DialogResponder {
 
     /**

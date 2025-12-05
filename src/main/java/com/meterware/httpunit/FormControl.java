@@ -42,48 +42,102 @@ import org.xml.sax.SAXException;
  **/
 public abstract class FormControl extends HTMLElementBase {
 
+    /** The Constant NO_VALUE. */
     static final String[] NO_VALUE = {};
 
+    /** The form. */
     private final WebForm _form;
+
+    /** The control. */
     private HTMLControl _control;
 
+    /** The Constant UNDEFINED_TYPE. */
     public static final String UNDEFINED_TYPE = "undefined";
+
+    /** The Constant BUTTON_TYPE. */
     public static final String BUTTON_TYPE = "button";
+
+    /** The Constant RESET_BUTTON_TYPE. */
     public static final String RESET_BUTTON_TYPE = "reset";
+
+    /** The Constant SUBMIT_BUTTON_TYPE. */
     public static final String SUBMIT_BUTTON_TYPE = "submit";
+
+    /** The Constant IMAGE_BUTTON_TYPE. */
     public static final String IMAGE_BUTTON_TYPE = "image";
+
+    /** The Constant RADIO_BUTTON_TYPE. */
     public static final String RADIO_BUTTON_TYPE = "radio";
+
+    /** The Constant CHECKBOX_TYPE. */
     public static final String CHECKBOX_TYPE = "checkbox";
+
+    /** The Constant TEXT_TYPE. */
     public static final String TEXT_TYPE = "text";
+
+    /** The Constant PASSWORD_TYPE. */
     public static final String PASSWORD_TYPE = "password";
+
+    /** The Constant HIDDEN_TYPE. */
     public static final String HIDDEN_TYPE = "hidden";
+
+    /** The Constant TEXTAREA_TYPE. */
     public static final String TEXTAREA_TYPE = "textarea";
+
+    /** The Constant FILE_TYPE. */
     public static final String FILE_TYPE = "file";
+
+    /** The Constant SINGLE_TYPE. */
     public static final String SINGLE_TYPE = "select-one";
+
+    /** The Constant MULTIPLE_TYPE. */
     public static final String MULTIPLE_TYPE = "select-multiple";
 
     /**
      * Return the type of the control, as seen from JavaScript.
+     *
+     * @return the type
      */
     public abstract String getType();
 
+    /**
+     * New selection option.
+     *
+     * @return the scriptable delegate
+     */
     static ScriptableDelegate newSelectionOption() {
         return new SelectionFormControl.Option();
     }
 
+    /**
+     * Instantiates a new form control.
+     *
+     * @param form
+     *            the form
+     */
     FormControl(WebForm form) {
         this(form, newEmptyControlElement(form));
     }
 
+    /**
+     * New empty control element.
+     *
+     * @param form
+     *            the form
+     *
+     * @return the HTML control
+     */
     private static HTMLControl newEmptyControlElement(WebForm form) {
         return (HTMLControl) form.getElement().getOwnerDocument().createElement("input");
     }
 
     /**
-     * initialize the given form control from a Webform and a HTMLControl
+     * initialize the given form control from a Webform and a HTMLControl.
      *
      * @param form
+     *            the form
      * @param control
+     *            the control
      */
     protected FormControl(WebForm form, HTMLControl control) {
         super(control);
@@ -103,17 +157,26 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
-     **/
+     *
+     * @return the values
+     */
     protected abstract String[] getValues();
 
     /**
      * Returns either a single delegate object or potentially an array of delegates as needed, given the form control.
      * This default implementation returns the scriptable delegate for the control.
+     *
+     * @return the delegate
      */
     Object getDelegate() {
         return getScriptingHandler();
     }
 
+    /**
+     * Gets the form.
+     *
+     * @return the form
+     */
     protected final WebForm getForm() {
         return _form;
     }
@@ -125,32 +188,46 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Returns the values permitted in this control. Does not apply to text or file controls.
-     **/
+     *
+     * @return the option values
+     */
     public String[] getOptionValues() {
         return NO_VALUE;
     }
 
     /**
      * Returns the list of values displayed by this control, if any.
-     **/
+     *
+     * @return the displayed options
+     */
     protected String[] getDisplayedOptions() {
         return NO_VALUE;
     }
 
     /**
      * Returns true if this control is read-only.
-     **/
+     *
+     * @return true, if is read only
+     */
     protected boolean isReadOnly() {
         return isDisabled() || _control.getReadOnly();
     }
 
     /**
      * Returns true if this control is hidden.
-     **/
+     *
+     * @return true, if is hidden
+     */
     public boolean isHidden() {
         return false;
     }
 
+    /**
+     * Sets the disabled.
+     *
+     * @param disabled
+     *            the new disabled
+     */
     void setDisabled(boolean disabled) {
         _control.setDisabled(disabled);
     }
@@ -158,62 +235,95 @@ public abstract class FormControl extends HTMLElementBase {
     /**
      * Returns true if this control is disabled, meaning that it will not send a value to the server as part of a
      * request.
-     **/
+     *
+     * @return true, if is disabled
+     */
     public boolean isDisabled() {
         return _control.getDisabled();
     }
 
     /**
      * Returns true if this control accepts free-form text.
-     **/
+     *
+     * @return true, if is text control
+     */
     boolean isTextControl() {
         return false;
     }
 
     /**
      * Returns true if only one control of this kind with this name can have a value. This is true for radio buttons.
-     **/
+     *
+     * @return true, if is exclusive
+     */
     boolean isExclusive() {
         return false;
     }
 
     /**
      * Returns true if a single control can have multiple values.
-     **/
+     *
+     * @return true, if is multi valued
+     */
     protected boolean isMultiValued() {
         return false;
     }
 
     /**
      * Returns true if this control accepts a file for upload.
-     **/
+     *
+     * @return true, if is file parameter
+     */
     boolean isFileParameter() {
         return false;
     }
 
+    /**
+     * Adds the values.
+     *
+     * @param processor
+     *            the processor
+     * @param characterSet
+     *            the character set
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     protected abstract void addValues(ParameterProcessor processor, String characterSet) throws IOException;
 
     /**
      * Remove any required values for this control from the list, throwing an exception if they are missing.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     void claimRequiredValues(List values) {
     }
 
     /**
      * Sets this control to the next compatible value from the list, removing it from the list.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     void claimValue(List values) {
     }
 
     /**
      * Sets this control to the next compatible value from the list, removing it from the list.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     protected void claimUniqueValue(List values) {
     }
 
     /**
      * Specifies a file to be uploaded via this control.
-     **/
+     *
+     * @param files
+     *            the files
+     */
     void claimUploadSpecification(List files) {
     }
 
@@ -233,6 +343,9 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Sets the state of this boolean control.
+     *
+     * @param state
+     *            the new state
      */
     public void setState(boolean state) {
         throw new FormParameter.IllegalCheckboxParameterException(getName(), "setCheckbox");
@@ -250,6 +363,8 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Performs the 'onchange' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnChangeEvent() {
         return handleEvent("onchange");
@@ -267,6 +382,8 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Performs the 'onClick' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnClickEvent() {
         return handleEvent("onclick");
@@ -284,6 +401,8 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Performs the 'onMouseUp' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnMouseUpEvent() {
         return handleEvent("onmouseup");
@@ -301,6 +420,8 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Performs the 'onMouseDown' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnMouseDownEvent() {
         return handleEvent("onmousedown");
@@ -317,20 +438,30 @@ public abstract class FormControl extends HTMLElementBase {
 
     /**
      * Returns the value of this control in the form. If no value is specified, defaults to the empty string.
-     **/
+     *
+     * @return the value attribute
+     */
     protected String getValueAttribute() {
         return "";
     }
 
     /**
      * Sets the value of this control in the form.
+     *
+     * @param value
+     *            the new value attribute
      */
     protected void setValueAttribute(String value) {
     }
 
     /**
      * Removes the specified required value from the list of values, throwing an exception if it is missing.
-     **/
+     *
+     * @param values
+     *            the values
+     * @param value
+     *            the value
+     */
     protected final void claimValueIsRequired(List values, final String value) {
         if (!values.contains(value)) {
             throw new MissingParameterValueException(getName(), value,
@@ -339,12 +470,17 @@ public abstract class FormControl extends HTMLElementBase {
         values.remove(value);
     }
 
+    /**
+     * Gets the control element tags.
+     *
+     * @return the control element tags
+     */
     static String[] getControlElementTags() {
         return new String[] { "textarea", "select", "button", "input" };
     }
 
     /**
-     * return the FormControl for the given parameter node in a form
+     * return the FormControl for the given parameter node in a form.
      *
      * @param form
      *            - the form in which the parameter is defined
@@ -409,12 +545,20 @@ public abstract class FormControl extends HTMLElementBase {
         return new TextFieldFormControl(form, element);
     }
 
+    /**
+     * Empty if null.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     protected String emptyIfNull(String value) {
         return value == null ? "" : value;
     }
 
     /**
-     * implementation of Scriptable input elements
+     * implementation of Scriptable input elements.
      */
     public class Scriptable extends HTMLElementScriptable implements Input {
 
@@ -439,7 +583,7 @@ public abstract class FormControl extends HTMLElementBase {
         }
 
         /**
-         * construct a Scriptable
+         * construct a Scriptable.
          */
         public Scriptable() {
             super(FormControl.this);
@@ -511,14 +655,14 @@ public abstract class FormControl extends HTMLElementBase {
         }
 
         /**
-         * simulate blur
+         * simulate blur.
          */
         public void blur() {
             handleEvent("onblur");
         }
 
         /**
-         * simulate focus;
+         * simulate focus;.
          */
         public void focus() {
             handleEvent("onfocus");

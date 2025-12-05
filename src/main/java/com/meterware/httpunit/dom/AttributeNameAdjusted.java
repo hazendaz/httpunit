@@ -19,7 +19,18 @@
  */
 package com.meterware.httpunit.dom;
 
+/**
+ * The Interface AttributeNameAdjusted.
+ */
 public interface AttributeNameAdjusted {
 
+    /**
+     * Gets the java attribute name.
+     *
+     * @param attributeName
+     *            the attribute name
+     *
+     * @return the java attribute name
+     */
     String getJavaAttributeName(String attributeName);
 }

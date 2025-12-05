@@ -19,10 +19,20 @@
  */
 package com.meterware.httpunit;
 
+/**
+ * The Class NoSuchFrameException.
+ */
 class NoSuchFrameException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new no such frame exception.
+     *
+     * @param frameName
+     *            the frame name
+     */
     NoSuchFrameException(String frameName) {
         _frameName = frameName;
     }
@@ -32,5 +42,6 @@ class NoSuchFrameException extends RuntimeException {
         return "No frame named " + _frameName + " is currently active";
     }
 
+    /** The frame name. */
     private String _frameName;
 }

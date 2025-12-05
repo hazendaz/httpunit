@@ -31,17 +31,41 @@ import java.util.Base64;
  **/
 class AuthenticationChallenge extends HttpHeader {
 
+    /** The client. */
     private WebClient _client;
+
+    /** The request. */
     private WebRequest _request;
 
+    /** The Constant BASIC_AUTHENTICATION. */
     private static final AuthenticationStrategy BASIC_AUTHENTICATION = new BasicAuthenticationStrategy();
+
+    /** The Constant DIGEST_AUTHENTICATION. */
     private static final AuthenticationStrategy DIGEST_AUTHENTICATION = new DigestAuthenticationStrategy();
 
+    /**
+     * Creates the exception.
+     *
+     * @param wwwAuthenticateHeader
+     *            the www authenticate header
+     *
+     * @return the authorization required exception
+     */
     static AuthorizationRequiredException createException(String wwwAuthenticateHeader) {
         AuthenticationChallenge challenge = new AuthenticationChallenge(null, null, wwwAuthenticateHeader);
         return challenge.createAuthorizationRequiredException();
     }
 
+    /**
+     * Instantiates a new authentication challenge.
+     *
+     * @param client
+     *            the client
+     * @param request
+     *            the request
+     * @param headerString
+     *            the header string
+     */
     AuthenticationChallenge(WebClient client, WebRequest request, String headerString) {
         super(headerString, "Basic");
         _client = client;
@@ -49,9 +73,9 @@ class AuthenticationChallenge extends HttpHeader {
     }
 
     /**
-     * check whether authentication is needed
+     * check whether authentication is needed.
      *
-     * @return
+     * @return true, if successful
      */
     boolean needToAuthenticate() {
         if (getAuthenticationType() == null) {
@@ -67,6 +91,11 @@ class AuthenticationChallenge extends HttpHeader {
         throw createAuthorizationRequiredException();
     }
 
+    /**
+     * Gets the authentication type.
+     *
+     * @return the authentication type
+     */
     private String getAuthenticationType() {
         String result = getLabel();
         if (_headerString != null && _headerString.equals("Negotiate")) {
@@ -75,12 +104,22 @@ class AuthenticationChallenge extends HttpHeader {
         return result;
     }
 
+    /**
+     * Creates the authentication header.
+     *
+     * @return the string
+     */
     String createAuthenticationHeader() {
         PasswordAuthentication credentials = getCredentialsForRealm();
         return getAuthenticationStrategy().createAuthenticationHeader(this, credentials.getUserName(),
                 new String(credentials.getPassword()));
     }
 
+    /**
+     * Gets the authentication strategy.
+     *
+     * @return the authentication strategy
+     */
     private AuthenticationStrategy getAuthenticationStrategy() {
         if (getAuthenticationType().equalsIgnoreCase("basic")) {
             return BASIC_AUTHENTICATION;
@@ -91,14 +130,19 @@ class AuthenticationChallenge extends HttpHeader {
         throw new RuntimeException("Unsupported authentication type '" + getAuthenticationType() + "'");
     }
 
+    /**
+     * Creates the authorization required exception.
+     *
+     * @return the authorization required exception
+     */
     private AuthorizationRequiredException createAuthorizationRequiredException() {
         return AuthorizationRequiredException.createException(getAuthenticationType(), getProperties());
     }
 
     /**
-     * get the credentials for the realm property
+     * get the credentials for the realm property.
      *
-     * @return
+     * @return the credentials for realm
      */
     private PasswordAuthentication getCredentialsForRealm() {
         String realm = getProperty("realm");
@@ -109,10 +153,20 @@ class AuthenticationChallenge extends HttpHeader {
         return result;
     }
 
+    /**
+     * Gets the method.
+     *
+     * @return the method
+     */
     private String getMethod() {
         return null == _request ? null : _request.getMethod();
     }
 
+    /**
+     * Gets the request uri.
+     *
+     * @return the request uri
+     */
     private String getRequestUri() {
         try {
             return null == _request ? null : _request.getURL().getFile();
@@ -121,10 +175,29 @@ class AuthenticationChallenge extends HttpHeader {
         }
     }
 
+    /**
+     * The Interface AuthenticationStrategy.
+     */
     private interface AuthenticationStrategy {
+
+        /**
+         * Creates the authentication header.
+         *
+         * @param challenge
+         *            the challenge
+         * @param username
+         *            the username
+         * @param password
+         *            the password
+         *
+         * @return the string
+         */
         String createAuthenticationHeader(AuthenticationChallenge challenge, String username, String password);
     }
 
+    /**
+     * The Class BasicAuthenticationStrategy.
+     */
     private static class BasicAuthenticationStrategy implements AuthenticationStrategy {
 
         @Override
@@ -135,10 +208,28 @@ class AuthenticationChallenge extends HttpHeader {
 
     }
 
+    /**
+     * The Class DigestAuthenticationStrategy.
+     */
     private static class DigestAuthenticationStrategy implements AuthenticationStrategy {
 
+        /**
+         * The Class Algorithm.
+         */
         private static class Algorithm {
 
+            /**
+             * Append params.
+             *
+             * @param sb
+             *            the sb
+             * @param challenge
+             *            the challenge
+             * @param userName
+             *            the user name
+             * @param password
+             *            the password
+             */
             public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
                     String password) {
                 appendDigestParams(sb, challenge.getProperty("realm"), challenge.getProperty("nonce"),
@@ -146,6 +237,26 @@ class AuthenticationChallenge extends HttpHeader {
                         challenge.getProperty("opaque"));
             }
 
+            /**
+             * Append digest params.
+             *
+             * @param sb
+             *            the sb
+             * @param realm
+             *            the realm
+             * @param nonce
+             *            the nonce
+             * @param uri
+             *            the uri
+             * @param userName
+             *            the user name
+             * @param password
+             *            the password
+             * @param method
+             *            the method
+             * @param opaque
+             *            the opaque
+             */
             protected void appendDigestParams(StringBuilder sb, String realm, String nonce, String uri, String userName,
                     String password, String method, String opaque) {
                 sb.append("username=").append(quote(userName));
@@ -158,6 +269,24 @@ class AuthenticationChallenge extends HttpHeader {
                 }
             }
 
+            /**
+             * Gets the response.
+             *
+             * @param userName
+             *            the user name
+             * @param realm
+             *            the realm
+             * @param password
+             *            the password
+             * @param nonce
+             *            the nonce
+             * @param uri
+             *            the uri
+             * @param method
+             *            the method
+             *
+             * @return the response
+             */
             protected String getResponse(String userName, String realm, String password, String nonce, String uri,
                     String method) {
                 try {
@@ -171,18 +300,66 @@ class AuthenticationChallenge extends HttpHeader {
                 }
             }
 
+            /**
+             * A1.
+             *
+             * @param userName
+             *            the user name
+             * @param password
+             *            the password
+             * @param realm
+             *            the realm
+             * @param nonce
+             *            the nonce
+             *
+             * @return the string
+             */
             protected String A1(String userName, String password, String realm, String nonce) {
                 return userName + ':' + realm + ':' + password;
             }
 
+            /**
+             * A2.
+             *
+             * @param uri
+             *            the uri
+             * @param method
+             *            the method
+             *
+             * @return the string
+             */
             protected String A2(String uri, String method) {
                 return method + ':' + uri;
             }
 
+            /**
+             * Kd.
+             *
+             * @param secret
+             *            the secret
+             * @param data
+             *            the data
+             *
+             * @return the string
+             *
+             * @throws NoSuchAlgorithmException
+             *             the no such algorithm exception
+             */
             protected final String KD(String secret, String data) throws NoSuchAlgorithmException {
                 return H(secret + ":" + data);
             }
 
+            /**
+             * H.
+             *
+             * @param data
+             *            the data
+             *
+             * @return the string
+             *
+             * @throws NoSuchAlgorithmException
+             *             the no such algorithm exception
+             */
             protected final String H(String data) throws NoSuchAlgorithmException {
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 digest.update(data.getBytes(StandardCharsets.UTF_8));
@@ -202,10 +379,28 @@ class AuthenticationChallenge extends HttpHeader {
                 return sb.toString();
             }
 
+            /**
+             * Append.
+             *
+             * @param sb
+             *            the sb
+             * @param name
+             *            the name
+             * @param value
+             *            the value
+             */
             private void append(StringBuilder sb, String name, String value) {
                 sb.append(",").append(name).append("=").append(quote(value));
             }
 
+            /**
+             * Quote.
+             *
+             * @param value
+             *            the value
+             *
+             * @return the string
+             */
             private String quote(String value) {
                 if (value.startsWith("\"")) {
                     return value;

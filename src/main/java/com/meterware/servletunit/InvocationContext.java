@@ -35,44 +35,85 @@ public interface InvocationContext {
 
     /**
      * Returns the request to be processed by the servlet or filter.
-     **/
+     *
+     * @return the request
+     */
     HttpServletRequest getRequest();
 
     /**
      * Returns the response which the servlet or filter should modify during its operation.
-     **/
+     *
+     * @return the response
+     */
     HttpServletResponse getResponse();
 
     /**
      * Invokes the current servlet or filter.
+     *
+     * @throws ServletException
+     *             the servlet exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     void service() throws ServletException, IOException;
 
     /**
      * Returns the selected servlet, initialized to provide access to sessions and servlet context information. Only
      * valid to call if {@link #isFilterActive} returns false.
-     **/
+     *
+     * @return the servlet
+     *
+     * @throws ServletException
+     *             the servlet exception
+     */
     Servlet getServlet() throws ServletException;
 
     /**
      * Returns the final response from the servlet. Note that this method should only be invoked after all processing
      * has been done to the servlet response.
-     **/
+     *
+     * @return the servlet response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     WebResponse getServletResponse() throws IOException;
 
     /**
      * Returns the target frame for the original request.
+     *
+     * @return the frame
      */
     FrameSelector getFrame();
 
     /**
      * Adds a request dispatcher to this context to simulate an include request.
+     *
+     * @param rd
+     *            the rd
+     * @param request
+     *            the request
+     * @param response
+     *            the response
+     *
+     * @throws ServletException
+     *             the servlet exception
      */
     void pushIncludeRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException;
 
     /**
      * Adds a request dispatcher to this context to simulate a forward request.
+     *
+     * @param rd
+     *            the rd
+     * @param request
+     *            the request
+     * @param response
+     *            the response
+     *
+     * @throws ServletException
+     *             the servlet exception
      */
     void pushForwardRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException;
@@ -84,16 +125,25 @@ public interface InvocationContext {
 
     /**
      * Returns true if the current context is a filter, rather than a servlet.
+     *
+     * @return true, if is filter active
      */
     boolean isFilterActive();
 
     /**
      * Returns the current active filter object. Only valid to call if {@link #isFilterActive} returns true.
+     *
+     * @return the filter
+     *
+     * @throws ServletException
+     *             the servlet exception
      */
     Filter getFilter() throws ServletException;
 
     /**
      * Returns the current filter chain. Only valid to call if {@link #isFilterActive} returns true.
+     *
+     * @return the filter chain
      */
     FilterChain getFilterChain();
 

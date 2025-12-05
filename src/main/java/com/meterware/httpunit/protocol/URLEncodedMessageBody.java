@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -30,6 +30,12 @@ import java.nio.charset.StandardCharsets;
  **/
 class URLEncodedMessageBody extends MessageBody {
 
+    /**
+     * Instantiates a new URL encoded message body.
+     *
+     * @param characterSet
+     *            the character set
+     */
     URLEncodedMessageBody(String characterSet) {
         super(characterSet);
     }
@@ -51,6 +57,14 @@ class URLEncodedMessageBody extends MessageBody {
         outputStream.write(getParameterString(parameters).getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * Gets the parameter string.
+     *
+     * @param parameters
+     *            the parameters
+     *
+     * @return the parameter string
+     */
     private String getParameterString(ParameterCollection parameters) {
         try {
             URLEncodedString encoder = new URLEncodedString();

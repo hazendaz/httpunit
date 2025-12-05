@@ -26,12 +26,14 @@ import junit.framework.TestCase;
  **/
 public abstract class ServletTestCase extends TestCase {
 
+    /** The invocation context factory. */
     private static InvocationContextFactory _invocationContextFactory;
 
     /**
-     * construct a ServletTestCase with the given name
+     * construct a ServletTestCase with the given name.
      *
      * @param name
+     *            the name
      */
     protected ServletTestCase(String name) {
         super(name);
@@ -39,6 +41,8 @@ public abstract class ServletTestCase extends TestCase {
 
     /**
      * Returns a client object which can access the servlet context in which this test is running.
+     *
+     * @return the servlet unit client
      */
     protected final ServletUnitClient newClient() {
         if (_invocationContextFactory == null) {
@@ -49,9 +53,10 @@ public abstract class ServletTestCase extends TestCase {
     }
 
     /**
-     * set the invocation context factory to be used
+     * set the invocation context factory to be used.
      *
      * @param invocationContextFactory
+     *            the new invocation context factory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
         if (invocationContextFactory == null) {

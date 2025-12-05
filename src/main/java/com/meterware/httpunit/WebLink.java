@@ -53,7 +53,9 @@ public class WebLink extends FixedURLWebRequestSource {
 
     /**
      * Returns the URL referenced by this link. This may be a relative URL. It will not include any fragment identifier.
-     **/
+     *
+     * @return the URL string
+     */
     public String getURLString() {
         return getRelativeURL();
     }
@@ -72,8 +74,10 @@ public class WebLink extends FixedURLWebRequestSource {
     /**
      * Returns the text value of this link.
      *
+     * @return the string
+     *
      * @deprecated as of 1.6, use #getText instead
-     **/
+     */
     @Deprecated
     public String asText() {
         return getText();
@@ -83,7 +87,14 @@ public class WebLink extends FixedURLWebRequestSource {
      * Submits a request as though the user had clicked on this link. Will also fire the 'onClick', 'onMouseDown' and
      * 'onMouseUp' event if defined. Returns the updated contents of the frame containing the link. Note that if the
      * click updates a different frame, that frame will not be returned by this method.
-     **/
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse click() throws IOException, SAXException {
         if (handleEvent("onclick")) {
             ((HTMLElementImpl) getNode()).doClickAction();
@@ -98,8 +109,14 @@ public class WebLink extends FixedURLWebRequestSource {
         handleEvent("onmouseover");
     }
 
+    /**
+     * The Class Scriptable.
+     */
     public class Scriptable extends HTMLElementScriptable implements NamedDelegate {
 
+        /**
+         * Instantiates a new scriptable.
+         */
         public Scriptable() {
             super(WebLink.this);
         }
@@ -126,6 +143,11 @@ public class WebLink extends FixedURLWebRequestSource {
             }
         }
 
+        /**
+         * Gets the reference.
+         *
+         * @return the reference
+         */
         private URL getReference() {
             try {
                 return getRequest().getURL();
@@ -148,7 +170,20 @@ public class WebLink extends FixedURLWebRequestSource {
 
     /**
      * Contructs a web link given the URL of its source page and the DOM extracted from that page.
-     **/
+     *
+     * @param response
+     *            the response
+     * @param baseURL
+     *            the base URL
+     * @param node
+     *            the node
+     * @param sourceFrame
+     *            the source frame
+     * @param defaultTarget
+     *            the default target
+     * @param characterSet
+     *            the character set
+     */
     WebLink(WebResponse response, URL baseURL, Node node, FrameSelector sourceFrame, String defaultTarget,
             String characterSet) {
         super(response, node, baseURL, "href", sourceFrame, defaultTarget, characterSet);

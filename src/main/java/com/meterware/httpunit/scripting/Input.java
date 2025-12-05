@@ -28,41 +28,56 @@ import org.xml.sax.SAXException;
  **/
 public interface Input extends IdentifiedDelegate, NamedDelegate {
 
+    /**
+     * Gets the.
+     *
+     * @param propertyName
+     *            the property name
+     *
+     * @return the object
+     */
     Object get(String propertyName);
 
     /**
-     * set the given property to the given value
+     * set the given property to the given value.
      *
      * @param propertyName
+     *            the property name
      * @param value
+     *            the value
      */
     void set(String propertyName, Object value);
 
     /**
-     * set the given attribute to the given value
+     * set the given attribute to the given value.
      *
      * @param attributeName
+     *            the attribute name
      * @param value
+     *            the value
      */
     void setAttribute(String attributeName, Object value);
 
     /**
-     * remove the given attribute
+     * remove the given attribute.
      *
      * @param attributeName
+     *            the attribute name
      */
     void removeAttribute(String attributeName);
 
     /**
-     * simulate a click
+     * simulate a click.
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     void click() throws IOException, SAXException;
 
     /**
-     * fire a on change event
+     * fire a on change event.
      */
     void sendOnChangeEvent();
 

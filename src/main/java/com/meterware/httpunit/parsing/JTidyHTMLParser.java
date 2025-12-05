@@ -33,6 +33,9 @@ import org.w3c.dom.html.HTMLDocument;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
+/**
+ * The Class JTidyHTMLParser.
+ */
 class JTidyHTMLParser implements HTMLParser {
 
     @Override
@@ -75,12 +78,14 @@ class JTidyHTMLParser implements HTMLParser {
         return true;
     }
 
+    /** The Constant NBSP. */
     private static final char NBSP = (char) 160; // non-breaking space, defined by JTidy
 
     /**
-     * get the parser of the given url
+     * get the parser of the given url.
      *
      * @param url
+     *            the url
      *
      * @return the parser
      */

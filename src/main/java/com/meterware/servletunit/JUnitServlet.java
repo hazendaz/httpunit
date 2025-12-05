@@ -42,11 +42,21 @@ import junit.runner.BaseTestRunner;
  **/
 public class JUnitServlet extends HttpServlet {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new j unit servlet.
+     */
     public JUnitServlet() {
     }
 
+    /**
+     * Instantiates a new j unit servlet.
+     *
+     * @param factory
+     *            the factory
+     */
     protected JUnitServlet(InvocationContextFactory factory) {
         _factory = factory;
     }
@@ -66,6 +76,14 @@ public class JUnitServlet extends HttpServlet {
         response.getWriter().close();
     }
 
+    /**
+     * Gets the results formatter.
+     *
+     * @param formatterName
+     *            the formatter name
+     *
+     * @return the results formatter
+     */
     private ResultsFormatter getResultsFormatter(String formatterName) {
         if ("text".equalsIgnoreCase(formatterName)) {
             return new TextResultsFormatter();
@@ -76,22 +94,52 @@ public class JUnitServlet extends HttpServlet {
         return new HTMLResultsFormatter();
     }
 
+    /** The factory. */
     private InvocationContextFactory _factory;
 
+    /**
+     * Report cannot run test.
+     *
+     * @param writer
+     *            the writer
+     * @param errorMessage
+     *            the error message
+     */
     private void reportCannotRunTest(PrintWriter writer, final String errorMessage) {
         writer.print("<html><head><title>Cannot run test</title></head><body>" + errorMessage + "</body></html>");
     }
 
+    /**
+     * The Class ServletTestRunner.
+     */
     class ServletTestRunner extends BaseTestRunner {
+
+        /** The writer. */
         private PrintWriter _writer;
+
+        /** The formatter. */
         private ResultsFormatter _formatter;
 
+        /**
+         * Instantiates a new servlet test runner.
+         *
+         * @param writer
+         *            the writer
+         * @param formatter
+         *            the formatter
+         */
         public ServletTestRunner(PrintWriter writer, ResultsFormatter formatter) {
             ServletTestCase.setInvocationContextFactory(_factory);
             _writer = writer;
             _formatter = formatter;
         }
 
+        /**
+         * Run test suite.
+         *
+         * @param testClassName
+         *            the test class name
+         */
         void runTestSuite(String testClassName) {
             Test suite = getTest(testClassName);
 
@@ -140,26 +188,83 @@ public class JUnitServlet extends HttpServlet {
 
     }
 
+    /**
+     * The Class ResultsFormatter.
+     */
     static abstract class ResultsFormatter {
 
+        /** The Constant LF. */
         private static final char LF = 10;
+
+        /** The Constant CR. */
         private static final char CR = 13;
 
+        /**
+         * Gets the content type.
+         *
+         * @return the content type
+         */
         abstract String getContentType();
 
+        /**
+         * Display results.
+         *
+         * @param writer
+         *            the writer
+         * @param testClassName
+         *            the test class name
+         * @param elapsedTimeString
+         *            the elapsed time string
+         * @param testResult
+         *            the test result
+         */
         void displayResults(PrintWriter writer, String testClassName, String elapsedTimeString, TestResult testResult) {
             displayHeader(writer, testClassName, testResult, elapsedTimeString);
             displayResults(writer, testResult);
             displayFooter(writer);
         }
 
+        /**
+         * Display header.
+         *
+         * @param writer
+         *            the writer
+         * @param testClassName
+         *            the test class name
+         * @param testResult
+         *            the test result
+         * @param elapsedTimeString
+         *            the elapsed time string
+         */
         protected abstract void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
                 String elapsedTimeString);
 
+        /**
+         * Display results.
+         *
+         * @param writer
+         *            the writer
+         * @param testResult
+         *            the test result
+         */
         protected abstract void displayResults(PrintWriter writer, TestResult testResult);
 
+        /**
+         * Display footer.
+         *
+         * @param writer
+         *            the writer
+         */
         protected abstract void displayFooter(PrintWriter writer);
 
+        /**
+         * Sgml escape.
+         *
+         * @param s
+         *            the s
+         *
+         * @return the string
+         */
         protected String sgmlEscape(String s) {
             if (s == null) {
                 return "NULL";
@@ -191,11 +296,19 @@ public class JUnitServlet extends HttpServlet {
             return result.toString();
         }
 
+        /**
+         * Gets the line break.
+         *
+         * @return the line break
+         */
         protected String getLineBreak() {
             return "<br>";
         }
     }
 
+    /**
+     * The Class DisplayedResultsFormatter.
+     */
     abstract static class DisplayedResultsFormatter extends ResultsFormatter {
 
         @Override
@@ -213,17 +326,75 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
+        /**
+         * Display header.
+         *
+         * @param writer
+         *            the writer
+         * @param testClassName
+         *            the test class name
+         * @param testCountText
+         *            the test count text
+         * @param elapsedTimeString
+         *            the elapsed time string
+         * @param resultString
+         *            the result string
+         */
         protected abstract void displayHeader(PrintWriter writer, String testClassName, String testCountText,
                 String elapsedTimeString, String resultString);
 
+        /**
+         * Display problem title.
+         *
+         * @param writer
+         *            the writer
+         * @param title
+         *            the title
+         */
         protected abstract void displayProblemTitle(PrintWriter writer, String title);
 
+        /**
+         * Display problem detail header.
+         *
+         * @param writer
+         *            the writer
+         * @param i
+         *            the i
+         * @param testName
+         *            the test name
+         */
         protected abstract void displayProblemDetailHeader(PrintWriter writer, int i, String testName);
 
+        /**
+         * Display problem detail footer.
+         *
+         * @param writer
+         *            the writer
+         */
         protected abstract void displayProblemDetailFooter(PrintWriter writer);
 
+        /**
+         * Display problem detail.
+         *
+         * @param writer
+         *            the writer
+         * @param message
+         *            the message
+         */
         protected abstract void displayProblemDetail(PrintWriter writer, String message);
 
+        /**
+         * Display problems.
+         *
+         * @param writer
+         *            the writer
+         * @param kind
+         *            the kind
+         * @param count
+         *            the count
+         * @param enumeration
+         *            the enumeration
+         */
         private void displayProblems(PrintWriter writer, String kind, int count, Enumeration enumeration) {
             if (count != 0) {
                 displayProblemTitle(writer, getFormatted(count, kind));
@@ -241,12 +412,25 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
+        /**
+         * Gets the formatted.
+         *
+         * @param count
+         *            the count
+         * @param name
+         *            the name
+         *
+         * @return the formatted
+         */
         private String getFormatted(int count, String name) {
             return count + " " + name + (count == 1 ? "" : "s");
         }
 
     }
 
+    /**
+     * The Class TextResultsFormatter.
+     */
     static class TextResultsFormatter extends DisplayedResultsFormatter {
 
         @Override
@@ -286,6 +470,9 @@ public class JUnitServlet extends HttpServlet {
         }
     }
 
+    /**
+     * The Class HTMLResultsFormatter.
+     */
     static class HTMLResultsFormatter extends DisplayedResultsFormatter {
 
         @Override
@@ -337,6 +524,9 @@ public class JUnitServlet extends HttpServlet {
 
     }
 
+    /**
+     * The Class XMLResultsFormatter.
+     */
     static class XMLResultsFormatter extends ResultsFormatter {
 
         @Override
@@ -353,10 +543,26 @@ public class JUnitServlet extends HttpServlet {
                     + " time=" + asAttribute(elapsedTimeString) + ">");
         }
 
+        /**
+         * As attribute.
+         *
+         * @param value
+         *            the value
+         *
+         * @return the string
+         */
         private String asAttribute(int value) {
             return '"' + Integer.toString(value) + '"';
         }
 
+        /**
+         * As attribute.
+         *
+         * @param value
+         *            the value
+         *
+         * @return the string
+         */
         private String asAttribute(String value) {
             return '"' + sgmlEscape(value) + '"';
         }
@@ -372,6 +578,16 @@ public class JUnitServlet extends HttpServlet {
             displayResults(writer, "error", testResult.errors());
         }
 
+        /**
+         * Display results.
+         *
+         * @param writer
+         *            the writer
+         * @param failureNodeName
+         *            the failure node name
+         * @param resultsEnumeration
+         *            the results enumeration
+         */
         private void displayResults(PrintWriter writer, String failureNodeName, Enumeration resultsEnumeration) {
             for (Enumeration e = resultsEnumeration; e.hasMoreElements();) {
                 TestFailure failure = (TestFailure) e.nextElement();
@@ -390,6 +606,11 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
+        /**
+         * Display exception.
+         *
+         * @return true, if successful
+         */
         private boolean displayException() {
             return true;
         }

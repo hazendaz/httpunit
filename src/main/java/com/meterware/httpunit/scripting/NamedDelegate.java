@@ -19,8 +19,16 @@
  */
 package com.meterware.httpunit.scripting;
 
+/**
+ * The Interface NamedDelegate.
+ */
 public interface NamedDelegate {
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     String getName();
 
 }

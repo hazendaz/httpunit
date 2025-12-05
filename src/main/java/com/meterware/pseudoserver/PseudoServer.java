@@ -49,12 +49,14 @@ public class PseudoServer {
 
     /**
      * allow factory use to be switched on and off by default the factory is not used any more since there were problems
-     * with the test cases as of 2012-10-09
+     * with the test cases as of 2012-10-09.
      */
     public static final boolean useFactory = false;
 
+    /** The Constant DEFAULT_SOCKET_TIMEOUT. */
     static final int DEFAULT_SOCKET_TIMEOUT = 1000;
 
+    /** The Constant INPUT_POLL_INTERVAL. */
     private static final int INPUT_POLL_INTERVAL = 10;
 
     /** Time in msec to wait for an outstanding server socket to be released before creating a new one. **/
@@ -63,21 +65,29 @@ public class PseudoServer {
     /** Number of outstanding server sockets that must be present before trying to wait for one to be released. **/
     private static int _waitThreshhold = 10;
 
+    /** The num servers. */
     private static int _numServers = 0;
 
+    /** The server num. */
     private int _serverNum = 0;
 
+    /** The connection num. */
     private int _connectionNum = 0;
 
+    /** The classpath dirs. */
     private ArrayList _classpathDirs = new ArrayList<>();
 
+    /** The max protocol level. */
     private String _maxProtocolLevel = "1.1";
 
+    /** The socket timeout. */
     private final int _socketTimeout;
 
     /**
      * Returns the amount of time the pseudo server will wait for a server socket to be released (in msec) before
      * allocating a new one. See also {@link #getWaitThreshhold getWaitThreshhold}.
+     *
+     * @return the socket release wait time
      */
     public static int getSocketReleaseWaitTime() {
         return _socketReleaseWaitTime;
@@ -86,6 +96,9 @@ public class PseudoServer {
     /**
      * Returns the amount of time the pseudo server will wait for a server socket to be released (in msec) before
      * allocating a new one. See also {@link #getWaitThreshhold getWaitThreshhold}.
+     *
+     * @param socketReleaseWaitTime
+     *            the new socket release wait time
      */
     public static void setSocketReleaseWaitTime(int socketReleaseWaitTime) {
         _socketReleaseWaitTime = socketReleaseWaitTime;
@@ -94,6 +107,8 @@ public class PseudoServer {
     /**
      * Returns the number of server sockets that must have been allocated and not returned before waiting for one to be
      * returned.
+     *
+     * @return the wait threshhold
      */
     public static int getWaitThreshhold() {
         return _waitThreshhold;
@@ -102,17 +117,23 @@ public class PseudoServer {
     /**
      * Specifies the number of server sockets that must have been allocated and not returned before waiting for one to
      * be returned.
+     *
+     * @param waitThreshhold
+     *            the new wait threshhold
      */
     public static void setWaitThreshhold(int waitThreshhold) {
         _waitThreshhold = waitThreshhold;
     }
 
+    /**
+     * Instantiates a new pseudo server.
+     */
     public PseudoServer() {
         this(DEFAULT_SOCKET_TIMEOUT);
     }
 
     /**
-     * create a PseudoServer with the given socketTimeout
+     * create a PseudoServer with the given socketTimeout.
      *
      * @param socketTimeout
      *            - the time out to use
@@ -157,11 +178,20 @@ public class PseudoServer {
         t.start();
     }
 
+    /**
+     * Shut down.
+     */
     public void shutDown() {
         debug("Requested shutdown of pseudoserver");
         _active = false;
     }
 
+    /**
+     * Debug.
+     *
+     * @param message
+     *            the message
+     */
     private void debug(String message) {
         if (!_debug) {
             return;
@@ -171,45 +201,94 @@ public class PseudoServer {
         System.out.println("** " + message);
     }
 
+    /**
+     * Replace debug token.
+     *
+     * @param message
+     *            the message
+     * @param token
+     *            the token
+     * @param replacement
+     *            the replacement
+     *
+     * @return the string
+     */
     private static String replaceDebugToken(String message, String token, String replacement) {
         return !message.contains(token) ? message : message.replaceFirst(token, replacement);
     }
 
+    /**
+     * Sets the max protocol level.
+     *
+     * @param majorLevel
+     *            the major level
+     * @param minorLevel
+     *            the minor level
+     */
     public void setMaxProtocolLevel(int majorLevel, int minorLevel) {
         _maxProtocolLevel = majorLevel + "." + minorLevel;
     }
 
     /**
      * Returns the port on which this server is listening.
-     **/
+     *
+     * @return the connected port
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public int getConnectedPort() throws IOException {
         return _serverSocket.getLocalPort();
     }
 
     /**
      * Defines the contents of an expected resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public void setResource(String name, String value) {
         setResource(name, value, "text/html");
     }
 
     /**
      * Defines the contents of an expected resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param servlet
+     *            the servlet
+     */
     public void setResource(String name, PseudoServlet servlet) {
         _resources.put(asResourceName(name), servlet);
     }
 
     /**
      * Defines the contents of an expected resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     * @param contentType
+     *            the content type
+     */
     public void setResource(String name, String value, String contentType) {
         _resources.put(asResourceName(name), new WebResource(value, contentType));
     }
 
     /**
      * Defines the contents of an expected resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     * @param contentType
+     *            the content type
+     */
     public void setResource(String name, byte[] value, String contentType) {
         _resources.put(asResourceName(name), new WebResource(value, contentType));
     }
@@ -218,8 +297,11 @@ public class PseudoServer {
      * Defines a resource which will result in an error message. return it for further use
      *
      * @param name
+     *            the name
      * @param errorCode
+     *            the error code
      * @param errorMessage
+     *            the error message
      *
      * @return the resource
      */
@@ -231,7 +313,12 @@ public class PseudoServer {
 
     /**
      * Enables the sending of the character set in the content-type header.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param enabled
+     *            the enabled
+     */
     public void setSendCharacterSet(String name, boolean enabled) {
         WebResource resource = (WebResource) _resources.get(asResourceName(name));
         if (resource == null) {
@@ -242,7 +329,12 @@ public class PseudoServer {
 
     /**
      * Specifies the character set encoding for a resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param characterSet
+     *            the character set
+     */
     public void setCharacterSet(String name, String characterSet) {
         WebResource resource = (WebResource) _resources.get(asResourceName(name));
         if (resource == null) {
@@ -254,7 +346,12 @@ public class PseudoServer {
 
     /**
      * Adds a header to a defined resource.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param header
+     *            the header
+     */
     public void addResourceHeader(String name, String header) {
         WebResource resource = (WebResource) _resources.get(asResourceName(name));
         if (resource == null) {
@@ -264,22 +361,45 @@ public class PseudoServer {
         resource.addHeader(header);
     }
 
+    /**
+     * Map to classpath.
+     *
+     * @param directory
+     *            the directory
+     */
     public void mapToClasspath(String directory) {
         _classpathDirs.add(directory);
     }
 
+    /**
+     * Sets the debug.
+     *
+     * @param debug
+     *            the new debug
+     */
     public void setDebug(boolean debug) {
         _debug = debug;
     }
 
     // ------------------------------------- private members ---------------------------------------
 
+    /** The resources. */
     private Hashtable _resources = new Hashtable<>();
 
+    /** The active. */
     private boolean _active = true;
 
+    /** The debug. */
     private boolean _debug = false;
 
+    /**
+     * As resource name.
+     *
+     * @param rawName
+     *            the raw name
+     *
+     * @return the string
+     */
     private String asResourceName(String rawName) {
         if (rawName.startsWith("http:") || rawName.startsWith("/")) {
             return escape(rawName);
@@ -287,6 +407,14 @@ public class PseudoServer {
         return escape("/" + rawName);
     }
 
+    /**
+     * Escape.
+     *
+     * @param urlString
+     *            the url string
+     *
+     * @return the string
+     */
     private static String escape(String urlString) {
         if (urlString.indexOf(' ') < 0) {
             return urlString;
@@ -306,6 +434,12 @@ public class PseudoServer {
         return sb.toString();
     }
 
+    /**
+     * Handle new connection.
+     *
+     * @param socket
+     *            the socket
+     */
     private void handleNewConnection(final Socket socket) {
         Thread t = new Thread("PseudoServer " + _serverNum + " connection " + (++_connectionNum)) {
             @Override
@@ -320,6 +454,15 @@ public class PseudoServer {
         t.start();
     }
 
+    /**
+     * Serve requests.
+     *
+     * @param socket
+     *            the socket
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void serveRequests(Socket socket) throws IOException {
         socket.setSoTimeout(_socketTimeout);
         socket.setTcpNoDelay(true);
@@ -355,14 +498,14 @@ public class PseudoServer {
     }
 
     /**
-     * respond to the given request
+     * respond to the given request.
      *
      * @param request
      *            - the request
      * @param response
      *            - the response stream
      *
-     * @return
+     * @return true, if successful
      */
     private boolean respondToRequest(HttpRequest request, HttpResponseStream response) {
         debug("Server thread handling request: " + request);
@@ -409,10 +552,26 @@ public class PseudoServer {
         return keepAlive;
     }
 
+    /**
+     * Checks if is keep alive.
+     *
+     * @param request
+     *            the request
+     *
+     * @return true, if is keep alive
+     */
     private boolean isKeepAlive(HttpRequest request) {
         return request.wantsKeepAlive() && _maxProtocolLevel.equals("1.1");
     }
 
+    /**
+     * Gets the response protocol.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the response protocol
+     */
     private String getResponseProtocol(HttpRequest request) {
         return _maxProtocolLevel.equalsIgnoreCase("1.1") ? request.getProtocol() : "HTTP/1.0";
     }
@@ -423,10 +582,12 @@ public class PseudoServer {
      * ".jar" are handled
      *
      * @param request
+     *            the request
      *
      * @return the WebResource or null if non of the recipes above will lead to a valid resource
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private WebResource getResource(HttpRequest request) throws IOException {
         Object resource = _resources.get(request.getURI());
@@ -471,15 +632,37 @@ public class PseudoServer {
         return null;
     }
 
+    /**
+     * Without parameters.
+     *
+     * @param uri
+     *            the uri
+     *
+     * @return the string
+     */
     private String withoutParameters(String uri) {
         return uri.indexOf('?') < 0 ? uri : uri.substring(0, uri.indexOf('?'));
     }
 
+    /**
+     * Gets the resource.
+     *
+     * @param servlet
+     *            the servlet
+     * @param request
+     *            the request
+     *
+     * @return the resource
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private WebResource getResource(PseudoServlet servlet, HttpRequest request) throws IOException {
         servlet.init(request);
         return servlet.getResponse(request.getCommand());
     }
 
+    /** The server socket. */
     private ServerSocket _serverSocket;
 
 }

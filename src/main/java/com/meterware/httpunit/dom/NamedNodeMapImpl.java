@@ -25,11 +25,23 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+/**
+ * The Class NamedNodeMapImpl.
+ */
 public class NamedNodeMapImpl implements NamedNodeMap {
 
+    /** The items. */
     private Hashtable _items;
+
+    /** The item array. */
     private Node[] _itemArray;
 
+    /**
+     * Instantiates a new named node map impl.
+     *
+     * @param items
+     *            the items
+     */
     NamedNodeMapImpl(Hashtable items) {
         _items = (Hashtable) items.clone();
         _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);

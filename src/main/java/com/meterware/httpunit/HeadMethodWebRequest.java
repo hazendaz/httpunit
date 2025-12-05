@@ -37,7 +37,7 @@ import java.net.URL;
 public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
-     * initialize me - set method to HEAD
+     * initialize me - set method to HEAD.
      */
     private void init() {
         super.setMethod("HEAD");

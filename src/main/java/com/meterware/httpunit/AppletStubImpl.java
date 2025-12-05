@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,10 +23,20 @@ import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.URL;
 
+/**
+ * The Class AppletStubImpl.
+ */
 class AppletStubImpl implements AppletStub {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
+    /**
+     * Instantiates a new applet stub impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
     AppletStubImpl(WebApplet webApplet) {
         _webApplet = webApplet;
     }

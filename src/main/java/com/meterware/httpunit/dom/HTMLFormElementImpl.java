@@ -35,8 +35,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFormElement;
 
+/**
+ * The Class HTMLFormElementImpl.
+ */
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement, FormScriptable {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -68,16 +72,32 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
     // ------------------------------- HTMLFormElement methods
     // ----------------------------------------------------------
 
+    /**
+     * Gets the accept charset.
+     *
+     * @return the accept charset
+     */
     @Override
     public String getAcceptCharset() {
         return getAttributeWithDefault("accept-charset", "UNKNOWN");
     }
 
+    /**
+     * Sets the accept charset.
+     *
+     * @param acceptCharset
+     *            the new accept charset
+     */
     @Override
     public void setAcceptCharset(String acceptCharset) {
         setAttribute("accept-charset", acceptCharset);
     }
 
+    /**
+     * Gets the action.
+     *
+     * @return the action
+     */
     @Override
     public String getAction() {
         return getAttribute("action");
@@ -96,28 +116,52 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         }
     }
 
+    /**
+     * Gets the enctype.
+     *
+     * @return the enctype
+     */
     @Override
     public String getEnctype() {
         return getAttributeWithDefault("enctype", "application/x-www-form-urlencoded");
     }
 
+    /**
+     * Sets the enctype.
+     *
+     * @param enctype
+     *            the new enctype
+     */
     @Override
     public void setEnctype(String enctype) {
         setAttribute("enctype", enctype);
     }
 
+    /**
+     * Gets the method.
+     *
+     * @return the method
+     */
     @Override
     public String getMethod() {
         return getAttributeWithDefault("method", "get");
     }
 
+    /**
+     * Sets the method.
+     *
+     * @param method
+     *            the new method
+     */
     @Override
     public void setMethod(String method) {
         setAttribute("method", method);
     }
 
     /**
-     * getter for the name
+     * getter for the name.
+     *
+     * @return the name
      *
      * @see org.w3c.dom.html.HTMLFormElement#getName()
      */
@@ -130,21 +174,43 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         return result;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
     @Override
     public void setName(String name) {
         setAttribute("name", name);
     }
 
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
     @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
     @Override
     public void setTarget(String target) {
         setAttribute("target", target);
     }
 
+    /**
+     * Gets the elements.
+     *
+     * @return the elements
+     */
     @Override
     public HTMLCollection getElements() {
         ArrayList elements = new ArrayList<>();
@@ -168,11 +234,19 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
+    /**
+     * Gets the length.
+     *
+     * @return the length
+     */
     @Override
     public int getLength() {
         return 0;
     }
 
+    /**
+     * Reset.
+     */
     @Override
     public void reset() {
         HTMLCollection elements = getElements();
@@ -184,6 +258,9 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         }
     }
 
+    /**
+     * Submit.
+     */
     @Override
     public void submit() {
         doSubmitAction();
@@ -206,6 +283,9 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         }
     }
 
+    /**
+     * Silence submit buttons.
+     */
     private void silenceSubmitButtons() {
         HTMLCollection controls = getElements();
         for (int i = 0; i < controls.getLength(); i++) {
@@ -213,6 +293,14 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         }
     }
 
+    /**
+     * Gets the effective url.
+     *
+     * @return the effective url
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private String getEffectiveUrl() throws IOException {
         StringBuilder spec = new StringBuilder(getAction());
         if ("get".equalsIgnoreCase(getMethod())) {
@@ -231,6 +319,11 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
         return new URL(getDomWindow().getUrl(), spec.toString()).toExternalForm();
     }
 
+    /**
+     * Gets the dom window.
+     *
+     * @return the dom window
+     */
     private DomWindow getDomWindow() {
         return ((HTMLDocumentImpl) getOwnerDocument()).getWindow();
     }

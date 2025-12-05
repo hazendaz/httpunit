@@ -58,15 +58,39 @@ class ScriptFilter extends DefaultFilter {
     /** The parser in which this filter is running. **/
     private ScriptHandler _scriptHandler;
 
-    /** Constructs a script object with the specified configuration. */
+    /**
+     * Constructs a script object with the specified configuration.
+     *
+     * @param config
+     *            the config
+     */
     ScriptFilter(HTMLConfiguration config) {
         _configuration = config;
     }
 
+    /**
+     * Sets the script handler.
+     *
+     * @param scriptHandler
+     *            the new script handler
+     */
     public void setScriptHandler(ScriptHandler scriptHandler) {
         _scriptHandler = scriptHandler;
     }
 
+    /**
+     * Start document.
+     *
+     * @param locator
+     *            the locator
+     * @param encoding
+     *            the encoding
+     * @param augs
+     *            the augs
+     *
+     * @throws XNIException
+     *             the XNI exception
+     */
     public void startDocument(XMLLocator locator, String encoding, Augmentations augs) throws XNIException {
         _activeScriptBlock = null;
         _systemID = locator == null ? "" : locator.getLiteralSystemId() + "_";
@@ -92,6 +116,16 @@ class ScriptFilter extends DefaultFilter {
         }
     }
 
+    /**
+     * Checks if is supported script.
+     *
+     * @param element
+     *            the element
+     * @param attrs
+     *            the attrs
+     *
+     * @return true, if is supported script
+     */
     private boolean isSupportedScript(QName element, XMLAttributes attrs) {
         if (!element.rawname.equalsIgnoreCase("script") || attrs == null) {
             return false;
@@ -100,6 +134,14 @@ class ScriptFilter extends DefaultFilter {
         return HttpUnitOptions.isScriptingEnabled() && _scriptHandler.supportsScriptLanguage(value);
     }
 
+    /**
+     * Gets the script language.
+     *
+     * @param attrs
+     *            the attrs
+     *
+     * @return the script language
+     */
     private String getScriptLanguage(XMLAttributes attrs) {
         return attrs == null ? null : attrs.getValue("language");
     }
@@ -136,6 +178,14 @@ class ScriptFilter extends DefaultFilter {
         }
     }
 
+    /**
+     * New input source.
+     *
+     * @param replacementText
+     *            the replacement text
+     *
+     * @return the XML input source
+     */
     private XMLInputSource newInputSource(String replacementText) {
         StringBuilder systemID = new StringBuilder(_systemID);
         systemID.append("script").append(++_scriptIndex);
@@ -143,6 +193,19 @@ class ScriptFilter extends DefaultFilter {
         return new XMLInputSource(null, systemID.toString(), null, new StringReader(replacementText), "UTF-8");
     }
 
+    /**
+     * Gets the translated script.
+     *
+     * @param language
+     *            the language
+     * @param scriptText
+     *            the script text
+     *
+     * @return the translated script
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     protected String getTranslatedScript(final String language, final String scriptText) throws IOException {
         return _scriptHandler.runScript(language, scriptText);
     }

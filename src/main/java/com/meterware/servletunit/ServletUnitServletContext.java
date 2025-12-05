@@ -42,8 +42,15 @@ import java.util.Set;
  **/
 public class ServletUnitServletContext implements ServletContext {
 
+    /** The log stream. */
     private PrintStream _logStream = System.out;
 
+    /**
+     * Instantiates a new servlet unit servlet context.
+     *
+     * @param application
+     *            the application
+     */
     ServletUnitServletContext(WebApplication application) {
         _application = application;
     }
@@ -270,6 +277,7 @@ public class ServletUnitServletContext implements ServletContext {
         return _application.getResourceFile(path).getAbsolutePath();
     }
 
+    /** The Constant DEFAULT_SERVER_INFO. */
     public static final String DEFAULT_SERVER_INFO = "ServletUnit test framework";
 
     /**
@@ -385,10 +393,24 @@ public class ServletUnitServletContext implements ServletContext {
     // ------------------------------------------- package members
     // ----------------------------------------------------
 
+    /**
+     * Sets the init parameter.
+     *
+     * @param name
+     *            the name
+     * @param initParameter
+     *            the init parameter
+     */
     void setInitParameter(String name, Object initParameter) {
         getContextParams().put(name, initParameter);
     }
 
+    /**
+     * Removes the init parameter.
+     *
+     * @param name
+     *            the name
+     */
     void removeInitParameter(String name) {
         getContextParams().remove(name);
     }
@@ -396,10 +418,17 @@ public class ServletUnitServletContext implements ServletContext {
     // ------------------------------------------- private members
     // ----------------------------------------------------
 
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
 
+    /** The application. */
     private WebApplication _application;
 
+    /**
+     * Gets the context params.
+     *
+     * @return the context params
+     */
     private Hashtable getContextParams() {
         return _application.getContextParameters();
     }

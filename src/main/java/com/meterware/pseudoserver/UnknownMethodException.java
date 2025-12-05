@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,16 +21,33 @@ package com.meterware.pseudoserver;
 
 import java.io.IOException;
 
+/**
+ * The Class UnknownMethodException.
+ */
 class UnknownMethodException extends IOException {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new unknown method exception.
+     *
+     * @param method
+     *            the method
+     */
     UnknownMethodException(String method) {
         _method = method;
     }
 
+    /**
+     * Gets the method.
+     *
+     * @return the method
+     */
     String getMethod() {
         return _method;
     }
 
+    /** The method. */
     private String _method;
 }

@@ -22,26 +22,37 @@ package com.meterware.httpunit;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * The Class HttpHeader.
+ */
 public class HttpHeader {
 
+    /** The label. */
     private String _label;
+
+    /** The properties. */
     private Map _properties;
+
+    /** The header string. */
     protected String _headerString;
 
     /**
-     * construct a HttpHeader from the given headerString
+     * construct a HttpHeader from the given headerString.
      *
      * @param headerString
+     *            the header string
      */
     public HttpHeader(String headerString) {
         this(headerString, null);
     }
 
     /**
-     * construct a HttpHeader from the given headerString and label
+     * construct a HttpHeader from the given headerString and label.
      *
      * @param headerString
+     *            the header string
      * @param defaultLabel
+     *            the default label
      */
     public HttpHeader(String headerString, String defaultLabel) {
         if (headerString != null) {
@@ -71,10 +82,26 @@ public class HttpHeader {
         return getLabel() + " " + getProperties();
     }
 
+    /**
+     * Gets the property.
+     *
+     * @param key
+     *            the key
+     *
+     * @return the property
+     */
     protected String getProperty(String key) {
         return unQuote((String) getProperties().get(key));
     }
 
+    /**
+     * Un quote.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private String unQuote(String value) {
         if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\"")) {
             return value;
@@ -88,6 +115,14 @@ public class HttpHeader {
     // property-def ::= name '=' value
     // name ::= ID
     // value ::= ID | QUOTED-STRING
+    /**
+     * Load properties.
+     *
+     * @param parameterString
+     *            the parameter string
+     *
+     * @return the map
+     */
     //
     static private Map loadProperties(String parameterString) {
         Properties properties = new Properties();
@@ -148,10 +183,20 @@ public class HttpHeader {
         return properties;
     }
 
+    /**
+     * Gets the label.
+     *
+     * @return the label
+     */
     public String getLabel() {
         return _label;
     }
 
+    /**
+     * Gets the properties.
+     *
+     * @return the properties
+     */
     public Map getProperties() {
         return _properties;
     }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -30,6 +30,16 @@ import java.util.Hashtable;
  **/
 class ServletUnitServletConfig implements ServletConfig {
 
+    /**
+     * Instantiates a new servlet unit servlet config.
+     *
+     * @param name
+     *            the name
+     * @param application
+     *            the application
+     * @param initParams
+     *            the init params
+     */
     ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {
         _name = name;
         _initParameters = initParams;
@@ -74,10 +84,13 @@ class ServletUnitServletConfig implements ServletConfig {
     // ----------------------------------------------- private members
     // ------------------------------------------------------
 
+    /** The name. */
     private String _name;
 
+    /** The init parameters. */
     private final Hashtable _initParameters;
 
+    /** The context. */
     private final ServletContext _context;
 
 }

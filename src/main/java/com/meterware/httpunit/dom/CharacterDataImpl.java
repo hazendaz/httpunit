@@ -22,11 +22,25 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
+/**
+ * The Class CharacterDataImpl.
+ */
 public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The data. */
     private String _data;
 
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     */
     protected void initialize(DocumentImpl ownerDocument, String data) {
         super.initialize(ownerDocument);
         _data = data;

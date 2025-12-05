@@ -25,12 +25,30 @@ import jakarta.servlet.ServletContext;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ * The Class FilterConfigImpl.
+ */
 class FilterConfigImpl implements FilterConfig {
 
+    /** The name. */
     private String _name;
+
+    /** The servlet context. */
     private ServletContext _servletContext;
+
+    /** The init params. */
     private Hashtable _initParams;
 
+    /**
+     * Instantiates a new filter config impl.
+     *
+     * @param name
+     *            the name
+     * @param servletContext
+     *            the servlet context
+     * @param initParams
+     *            the init params
+     */
     FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {
         _name = name;
         _servletContext = servletContext;

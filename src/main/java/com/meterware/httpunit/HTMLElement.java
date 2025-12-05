@@ -35,69 +35,110 @@ public interface HTMLElement extends ScriptingEventHandler {
 
     /**
      * Returns the ID associated with this element. IDs are unique throughout the HTML document.
-     **/
+     *
+     * @return the id
+     */
     String getID();
 
     /**
      * Returns the class associated with this element.
-     **/
+     *
+     * @return the class name
+     */
     String getClassName();
 
     /**
      * Returns the name associated with this element.
-     **/
+     *
+     * @return the name
+     */
     String getName();
 
     /**
      * Returns the title associated with this element.
-     **/
+     *
+     * @return the title
+     */
     String getTitle();
 
     /**
      * Returns the value of the attribute of this element with the specified name. Returns the empty string if no such
      * attribute exists.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the attribute
      */
     String getAttribute(String name);
 
     /**
      * Set the value of the attribute of this element with the specified name.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
      */
     void setAttribute(String name, Object value);
 
     /**
      * Remove the attribute of this element with the specified name.
+     *
+     * @param name
+     *            the name
      */
     void removeAttribute(String name);
 
     /**
      * Returns true if this element may have an attribute with the specified name.
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is supported attribute
      */
     boolean isSupportedAttribute(String name);
 
     /**
      * Returns the delegate which supports scripting this element.
+     *
+     * @return the scripting handler
      */
     ScriptingHandler getScriptingHandler();
 
     /**
      * Returns the contents of this element, converted to a string.
+     *
+     * @return the text
      */
     String getText();
 
     /**
      * Returns the tag name of this node.
+     *
+     * @return the tag name
      */
     String getTagName();
 
+    /**
+     * New scriptable.
+     *
+     * @return the scriptable delegate
+     */
     ScriptableDelegate newScriptable();
 
     /**
      * Returns the scriptable delegate which can provide the scriptable delegate for this element.
+     *
+     * @return the parent delegate
      */
     ScriptableDelegate getParentDelegate();
 
     /**
      * Returns the DOM node underlying this element.
+     *
+     * @return the node
      */
     Node getNode();
 }

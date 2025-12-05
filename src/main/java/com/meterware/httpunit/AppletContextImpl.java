@@ -30,10 +30,20 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
+/**
+ * The Class AppletContextImpl.
+ */
 class AppletContextImpl implements AppletContext {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
+    /**
+     * Instantiates a new applet context impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
     AppletContextImpl(WebApplet webApplet) {
         _webApplet = webApplet;
     }

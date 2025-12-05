@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -37,13 +37,20 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Constructs a response object from a servlet response.
      *
+     * @param client
+     *            the client
      * @param frame
      *            the target frame on which the response will be displayed
      * @param url
      *            the url from which the response was received
      * @param response
      *            the response populated by the servlet
-     **/
+     * @param throwExceptionOnError
+     *            the throw exception on error
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response,
             boolean throwExceptionOnError) throws IOException {
         super(client, frame, url);
@@ -60,13 +67,18 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Constructs a response object from a servlet response.
      *
+     * @param client
+     *            the client
      * @param frame
      *            the target frame on which the response will be displayed
      * @param url
      *            the url from which the response was received
      * @param response
      *            the response populated by the servlet
-     **/
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response)
             throws IOException {
         this(client, frame, url, response, true);
@@ -113,6 +125,7 @@ class ServletUnitWebResponse extends WebResponse {
 
     // -------------------------------------------- private members ------------------------------------------------
 
+    /** The response. */
     private ServletUnitHttpResponse _response;
 
 }

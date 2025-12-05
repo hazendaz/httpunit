@@ -44,16 +44,37 @@ import org.xml.sax.SAXException;
  **/
 public class WebApplet extends HTMLElementBase {
 
+    /** The response. */
     private WebResponse _response;
+
+    /** The base target. */
     private String _baseTarget;
 
+    /** The applet. */
     private Applet _applet;
+
+    /** The parameters. */
     private HashMap _parameters;
+
+    /** The parameter names. */
     private String[] _parameterNames;
 
+    /** The class extension. */
     private final String CLASS_EXTENSION = ".class";
+
+    /** The element. */
     private HTMLAppletElement _element;
 
+    /**
+     * Instantiates a new web applet.
+     *
+     * @param response
+     *            the response
+     * @param element
+     *            the element
+     * @param baseTarget
+     *            the base target
+     */
     public WebApplet(WebResponse response, HTMLAppletElement element, String baseTarget) {
         super(element);
         _element = element;
@@ -62,12 +83,22 @@ public class WebApplet extends HTMLElementBase {
     }
 
     /**
-     * Returns the URL of the codebase used to find the applet classes
+     * Returns the URL of the codebase used to find the applet classes.
+     *
+     * @return the code base URL
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
      */
     public URL getCodeBaseURL() throws MalformedURLException {
         return new URL(_response.getURL(), getCodeBase());
     }
 
+    /**
+     * Gets the code base.
+     *
+     * @return the code base
+     */
     private String getCodeBase() {
         final String codeBaseAttribute = _element.getCodeBase();
         return codeBaseAttribute.endsWith("/") ? codeBaseAttribute : codeBaseAttribute + "/";
@@ -75,6 +106,8 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns the name of the applet main class.
+     *
+     * @return the main class name
      */
     public String getMainClassName() {
         String className = _element.getCode();
@@ -86,6 +119,8 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns the width of the panel in which the applet will be drawn.
+     *
+     * @return the width
      */
     public int getWidth() {
         return Integer.parseInt(getAttribute("width"));
@@ -93,6 +128,8 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns the height of the panel in which the applet will be drawn.
+     *
+     * @return the height
      */
     public int getHeight() {
         return Integer.parseInt(getAttribute("height"));
@@ -100,6 +137,8 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns the archive specification.
+     *
+     * @return the archive specification
      */
     public String getArchiveSpecification() {
         String specification = getParameter("archive");
@@ -109,6 +148,14 @@ public class WebApplet extends HTMLElementBase {
         return specification;
     }
 
+    /**
+     * Gets the archive list.
+     *
+     * @return the archive list
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     List getArchiveList() throws MalformedURLException {
         ArrayList al = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(getArchiveSpecification(), ",");
@@ -120,6 +167,8 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns an array containing the names of the parameters defined for the applet.
+     *
+     * @return the parameter names
      */
     public String[] getParameterNames() {
         if (_parameterNames == null) {
@@ -131,11 +180,21 @@ public class WebApplet extends HTMLElementBase {
 
     /**
      * Returns the value of the specified applet parameter, or null if not defined.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter
      */
     public String getParameter(String name) {
         return (String) getParameterMap().get(name);
     }
 
+    /**
+     * Gets the parameter map.
+     *
+     * @return the parameter map
+     */
     private Map getParameterMap() {
         if (_parameters == null) {
             _parameters = new HashMap<>();
@@ -148,6 +207,28 @@ public class WebApplet extends HTMLElementBase {
         return _parameters;
     }
 
+    /**
+     * Gets the applet.
+     *
+     * @return the applet
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws ClassNotFoundException
+     *             the class not found exception
+     * @throws InstantiationException
+     *             the instantiation exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws IllegalArgumentException
+     *             the illegal argument exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws SecurityException
+     *             the security exception
+     */
     public Applet getApplet()
             throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -163,16 +244,34 @@ public class WebApplet extends HTMLElementBase {
         return _applet;
     }
 
+    /**
+     * Gets the class path.
+     *
+     * @return the class path
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private URL[] getClassPath() throws MalformedURLException {
         List classPath = getArchiveList();
         classPath.add(getCodeBaseURL());
         return (URL[]) classPath.toArray(new URL[classPath.size()]);
     }
 
+    /**
+     * Gets the base target.
+     *
+     * @return the base target
+     */
     String getBaseTarget() {
         return _baseTarget;
     }
 
+    /**
+     * Gets the applets in page.
+     *
+     * @return the applets in page
+     */
     WebApplet[] getAppletsInPage() {
         try {
             return _response.getApplets();
@@ -182,6 +281,14 @@ public class WebApplet extends HTMLElementBase {
         }
     }
 
+    /**
+     * Send request.
+     *
+     * @param url
+     *            the url
+     * @param target
+     *            the target
+     */
     void sendRequest(URL url, String target) {
         WebRequest wr = new GetMethodWebRequest(null, url.toExternalForm(), target);
         try {

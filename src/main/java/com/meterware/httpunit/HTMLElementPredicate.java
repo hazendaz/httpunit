@@ -25,6 +25,16 @@ package com.meterware.httpunit;
  **/
 public interface HTMLElementPredicate {
 
+    /**
+     * Matches criteria.
+     *
+     * @param htmlElement
+     *            the html element
+     * @param criteria
+     *            the criteria
+     *
+     * @return true, if successful
+     */
     boolean matchesCriteria(Object htmlElement, Object criteria);
 
 }

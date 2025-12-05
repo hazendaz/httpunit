@@ -19,10 +19,20 @@
  */
 package com.meterware.httpunit;
 
+/**
+ * The Class NotHTMLException.
+ */
 class NotHTMLException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new not HTML exception.
+     *
+     * @param contentType
+     *            the content type
+     */
     NotHTMLException(String contentType) {
         _contentType = contentType;
     }
@@ -33,5 +43,6 @@ class NotHTMLException extends RuntimeException {
                 + "': it must be 'text/html' in order to be recognized as HTML";
     }
 
+    /** The content type. */
     private String _contentType;
 }

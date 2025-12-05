@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -31,10 +31,11 @@ import java.util.List;
  **/
 public class IllegalParameterValueException extends IllegalRequestParameterException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * construct an IllegalParameterValueException
+     * construct an IllegalParameterValueException.
      *
      * @param parameterName
      *            - the name of the parameter
@@ -50,11 +51,12 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
     }
 
     /**
-     * get the bad value from a list of Values
+     * get the bad value from a list of Values.
      *
      * @param values
+     *            the values
      *
-     * @return
+     * @return the bad value
      */
     protected static String getBadValue(List values) {
         String result = "unknown bad value";
@@ -66,9 +68,14 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
     }
 
     /**
+     * Instantiates a new illegal parameter value exception.
+     *
      * @param parameterName
+     *            the parameter name
      * @param values
+     *            the values
      * @param allowed
+     *            the allowed
      */
     public IllegalParameterValueException(String parameterName, List values, String[] allowed) {
         this(parameterName, getBadValue(values), allowed);
@@ -89,7 +96,12 @@ public class IllegalParameterValueException extends IllegalRequestParameterExcep
         return sb.toString();
     }
 
+    /** The parameter name. */
     private String _parameterName;
+
+    /** The bad value. */
     private String _badValue;
+
+    /** The allowed values. */
     private String[] _allowedValues;
 }

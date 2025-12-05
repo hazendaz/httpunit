@@ -22,10 +22,18 @@ package com.meterware.servletunit;
 import jakarta.servlet.Filter;
 import jakarta.servlet.ServletException;
 
+/**
+ * The Interface FilterMetaData.
+ */
 interface FilterMetaData {
 
     /**
      * Returns the filter instance to use.
+     *
+     * @return the filter
+     *
+     * @throws ServletException
+     *             the servlet exception
      */
     Filter getFilter() throws ServletException;
 }

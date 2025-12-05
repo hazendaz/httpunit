@@ -33,26 +33,31 @@ import java.util.TimeZone;
  **/
 public class Cookie {
 
+    /** The name. */
     private String _name;
 
+    /** The value. */
     private String _value;
 
+    /** The path. */
     private String _path;
 
+    /** The domain. */
     private String _domain;
 
+    /** The expired time. */
     private long _expiredTime;
 
     /**
+     * Gets the expired time.
+     *
      * @return the _expiredTime in milliseconds
      */
     public long getExpiredTime() {
         return _expiredTime;
     }
 
-    /**
-     * DateFormat to be used to format original Netscape cookies
-     */
+    /** DateFormat to be used to format original Netscape cookies. */
     private static final DateFormat originalCookieFormat = new SimpleDateFormat("EEE,dd-MMM-yyyy HH:mm:ss z",
             Locale.US);
 
@@ -74,12 +79,16 @@ public class Cookie {
     }
 
     /**
-     * construct a cookie with domain and path restrictions
+     * construct a cookie with domain and path restrictions.
      *
      * @param name
+     *            the name
      * @param value
+     *            the value
      * @param domain
+     *            the domain
      * @param path
+     *            the path
      */
     Cookie(String name, String value, String domain, String path) {
         this(name, value);
@@ -115,7 +124,7 @@ public class Cookie {
     }
 
     /**
-     * get the age of the cookie in Milliseconds from a string representaiton in seconds
+     * get the age of the cookie in Milliseconds from a string representaiton in seconds.
      *
      * @param maxAgeValue
      *            - the string with the age in seconds
@@ -131,7 +140,7 @@ public class Cookie {
     }
 
     /**
-     * return the age of a cookie in milliesconds from a string formatted date value
+     * return the age of a cookie in milliesconds from a string formatted date value.
      *
      * @param dateValue
      *            - the string to parse
@@ -151,6 +160,8 @@ public class Cookie {
 
     /**
      * Returns the name of this cookie.
+     *
+     * @return the name
      */
     public String getName() {
         return _name;
@@ -158,6 +169,8 @@ public class Cookie {
 
     /**
      * Returns the value associated with this cookie.
+     *
+     * @return the value
      */
     public String getValue() {
         return _value;
@@ -165,6 +178,9 @@ public class Cookie {
 
     /**
      * Sets the value associated with this cookie.
+     *
+     * @param value
+     *            the new value
      */
     public void setValue(String value) {
         _value = value;
@@ -172,6 +188,8 @@ public class Cookie {
 
     /**
      * Returns the path to which this cookie is restricted.
+     *
+     * @return the path
      */
     public String getPath() {
         return _path;
@@ -179,15 +197,29 @@ public class Cookie {
 
     /**
      * Returns the domain to which this cookie may be sent.
+     *
+     * @return the domain
      */
     public String getDomain() {
         return _domain;
     }
 
+    /**
+     * Sets the path.
+     *
+     * @param path
+     *            the new path
+     */
     void setPath(String path) {
         _path = path;
     }
 
+    /**
+     * Sets the domain.
+     *
+     * @param domain
+     *            the new domain
+     */
     void setDomain(String domain) {
         _domain = domain;
     }
@@ -209,17 +241,35 @@ public class Cookie {
         return obj.getClass() == getClass() && equals((Cookie) obj);
     }
 
+    /**
+     * Equals.
+     *
+     * @param other
+     *            the other
+     *
+     * @return true, if successful
+     */
     private boolean equals(Cookie other) {
         return _name.equalsIgnoreCase(other._name) && equalProperties(getDomain(), other.getDomain())
                 && equalProperties(getPath(), other.getPath());
     }
 
+    /**
+     * Equal properties.
+     *
+     * @param first
+     *            the first
+     * @param second
+     *            the second
+     *
+     * @return true, if successful
+     */
     private boolean equalProperties(String first, String second) {
         return first == second || first != null && first.equals(second);
     }
 
     /**
-     * check whether the cookie is expired
+     * check whether the cookie is expired.
      *
      * @return true if the _expiredTime is higher than the current System time
      */
@@ -228,7 +278,7 @@ public class Cookie {
     }
 
     /**
-     * may this cookie be sent to the given url?
+     * may this cookie be sent to the given url?.
      *
      * @param url
      *            - the unform resource locator to check
@@ -247,10 +297,12 @@ public class Cookie {
     }
 
     /**
-     * accept path for the given hostpath
+     * accept path for the given hostpath.
      *
      * @param pathPattern
+     *            the path pattern
      * @param hostPath
+     *            the host path
      *
      * @return true - either if PathMatching is not strict or the hostpath starts with the given path pattern
      */
@@ -259,10 +311,12 @@ public class Cookie {
     }
 
     /**
-     * accept host if the given hostName fits to the given hostPattern
+     * accept host if the given hostName fits to the given hostPattern.
      *
      * @param hostPattern
+     *            the host pattern
      * @param hostName
+     *            the host name
      *
      * @return true if there is a fit
      */

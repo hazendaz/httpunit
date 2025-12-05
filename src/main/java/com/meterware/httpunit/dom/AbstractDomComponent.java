@@ -25,9 +25,15 @@ import com.meterware.httpunit.scripting.ScriptingEngine;
 
 import org.mozilla.javascript.Scriptable;
 
+/**
+ * The Class AbstractDomComponent.
+ */
 public abstract class AbstractDomComponent extends ScriptingEngineImpl implements Scriptable {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The anonymous function num. */
     private static int _anonymousFunctionNum;
 
     @Override
@@ -59,6 +65,14 @@ public abstract class AbstractDomComponent extends ScriptingEngineImpl implement
         return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);
     }
 
+    /**
+     * Gets the java property name.
+     *
+     * @param propertyName
+     *            the property name
+     *
+     * @return the java property name
+     */
     protected String getJavaPropertyName(String propertyName) {
         return propertyName;
     }
@@ -69,6 +83,11 @@ public abstract class AbstractDomComponent extends ScriptingEngineImpl implement
         ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);
     }
 
+    /**
+     * Creates the anonymous function name.
+     *
+     * @return the string
+     */
     protected static String createAnonymousFunctionName() {
         return "anon_" + (++_anonymousFunctionNum);
     }

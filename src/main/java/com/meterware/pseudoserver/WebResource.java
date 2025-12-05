@@ -34,35 +34,85 @@ import java.util.Vector;
  **/
 public class WebResource {
 
+    /** The Constant DEFAULT_CONTENT_TYPE. */
     static final String DEFAULT_CONTENT_TYPE = "text/html";
 
+    /** The closes connection. */
     private boolean _closesConnection;
 
+    /** The contents. */
     private byte[] _contents;
+
+    /** The string. */
     private String _string;
+
+    /** The stream. */
     private InputStream _stream;
 
+    /** The response code. */
     private int _responseCode;
+
+    /** The send character set. */
     private boolean _sendCharacterSet;
+
+    /** The content type. */
     private String _contentType = DEFAULT_CONTENT_TYPE;
+
+    /** The character set. */
     private String _characterSet = StandardCharsets.ISO_8859_1.name();
+
+    /** The has explicit content type header. */
     private boolean _hasExplicitContentTypeHeader;
+
+    /** The has explicit content length header. */
     private boolean _hasExplicitContentLengthHeader;
+
+    /** The headers. */
     private Vector _headers = new Vector<>();
+
+    /** The is chunked. */
     private boolean _isChunked;
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     */
     public WebResource(String contents) {
         this(contents, DEFAULT_CONTENT_TYPE);
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     * @param contentType
+     *            the content type
+     */
     public WebResource(String contents, String contentType) {
         this(contents, contentType, HttpURLConnection.HTTP_OK);
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     * @param contentType
+     *            the content type
+     */
     public WebResource(byte[] contents, String contentType) {
         this(contents, contentType, HttpURLConnection.HTTP_OK);
     }
 
+    /**
+     * Adds the header.
+     *
+     * @param header
+     *            the header
+     */
     public void addHeader(String header) {
         _headers.addElement(header);
         if (header.toLowerCase().startsWith("content-type")) {
@@ -80,38 +130,94 @@ public class WebResource {
         }
     }
 
+    /**
+     * Sets the character set.
+     *
+     * @param characterSet
+     *            the new character set
+     */
     public void setCharacterSet(String characterSet) {
         _characterSet = characterSet;
     }
 
+    /**
+     * Sets the send character set.
+     *
+     * @param enabled
+     *            the new send character set
+     */
     public void setSendCharacterSet(boolean enabled) {
         _sendCharacterSet = enabled;
     }
 
+    /**
+     * Suppress automatic length header.
+     */
     public void suppressAutomaticLengthHeader() {
         _hasExplicitContentLengthHeader = true;
     }
 
+    /**
+     * Suppress automatic content type header.
+     */
     public void suppressAutomaticContentTypeHeader() {
         _hasExplicitContentTypeHeader = true;
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     * @param responseCode
+     *            the response code
+     */
     public WebResource(String contents, int responseCode) {
         this(contents, DEFAULT_CONTENT_TYPE, responseCode);
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     * @param contentType
+     *            the content type
+     * @param responseCode
+     *            the response code
+     */
     public WebResource(String contents, String contentType, int responseCode) {
         _string = contents;
         _contentType = contentType;
         _responseCode = responseCode;
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param contents
+     *            the contents
+     * @param contentType
+     *            the content type
+     * @param responseCode
+     *            the response code
+     */
     public WebResource(byte[] contents, String contentType, int responseCode) {
         _contents = contents;
         _contentType = contentType;
         _responseCode = responseCode;
     }
 
+    /**
+     * Instantiates a new web resource.
+     *
+     * @param stream
+     *            the stream
+     * @param contentType
+     *            the content type
+     * @param responseCode
+     *            the response code
+     */
     public WebResource(InputStream stream, String contentType, int responseCode) {
         _stream = stream;
         _contentType = contentType;
@@ -119,6 +225,11 @@ public class WebResource {
         addHeader("Connection: close");
     }
 
+    /**
+     * Gets the headers.
+     *
+     * @return the headers
+     */
     String[] getHeaders() {
         final Vector effectiveHeaders = (Vector) _headers.clone();
         if (!_hasExplicitContentTypeHeader) {
@@ -132,14 +243,33 @@ public class WebResource {
         return headers;
     }
 
+    /**
+     * Checks if is chunked.
+     *
+     * @return true, if is chunked
+     */
     private boolean isChunked() {
         return _isChunked;
     }
 
+    /**
+     * Closes connection.
+     *
+     * @return true, if successful
+     */
     boolean closesConnection() {
         return _closesConnection;
     }
 
+    /**
+     * Write to.
+     *
+     * @param outputStream
+     *            the output stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void writeTo(OutputStream outputStream) throws IOException {
         if (_stream == null) {
             outputStream.write(getContentsAsBytes());
@@ -153,6 +283,14 @@ public class WebResource {
         }
     }
 
+    /**
+     * To string.
+     *
+     * @param contentsAsBytes
+     *            the contents as bytes
+     *
+     * @return the string
+     */
     static String toString(byte[] contentsAsBytes) {
         StringBuilder sb = new StringBuilder();
         for (byte contentsAsByte : contentsAsBytes) {
@@ -161,6 +299,11 @@ public class WebResource {
         return sb.toString();
     }
 
+    /**
+     * Gets the contents as bytes.
+     *
+     * @return the contents as bytes
+     */
     private byte[] getContentsAsBytes() {
         if (_contents != null) {
             return _contents;
@@ -171,18 +314,38 @@ public class WebResource {
         throw new IllegalStateException("Cannot get bytes from stream");
     }
 
+    /**
+     * Gets the content type header.
+     *
+     * @return the content type header
+     */
     private String getContentTypeHeader() {
         return "Content-Type: " + _contentType + getCharacterSetParameter();
     }
 
+    /**
+     * Gets the content length header.
+     *
+     * @return the content length header
+     */
     private String getContentLengthHeader() {
         return "Content-Length: " + getContentsAsBytes().length;
     }
 
+    /**
+     * Gets the character set.
+     *
+     * @return the character set
+     */
     Charset getCharacterSet() {
         return Charset.forName(HttpUnitUtils.stripQuotes(_characterSet));
     }
 
+    /**
+     * Gets the character set parameter.
+     *
+     * @return the character set parameter
+     */
     String getCharacterSetParameter() {
         if (!_sendCharacterSet) {
             return "";
@@ -190,6 +353,11 @@ public class WebResource {
         return "; charset=" + _characterSet;
     }
 
+    /**
+     * Gets the response code.
+     *
+     * @return the response code
+     */
     int getResponseCode() {
         return _responseCode;
     }
@@ -200,6 +368,11 @@ public class WebResource {
                 + "]\n" + getContentsAsString();
     }
 
+    /**
+     * Gets the contents as string.
+     *
+     * @return the contents as string
+     */
     private String getContentsAsString() {
         if (_string != null) {
             return _string;

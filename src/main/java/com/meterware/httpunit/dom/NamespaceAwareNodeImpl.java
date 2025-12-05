@@ -19,24 +19,45 @@
  */
 package com.meterware.httpunit.dom;
 
+/**
+ * The Class NamespaceAwareNodeImpl.
+ */
 public abstract class NamespaceAwareNodeImpl extends NodeImpl {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The tag name. */
     private String _tagName;
+
+    /** The local name. */
     private String _localName;
+
+    /** The namespace uri. */
     private String _namespaceUri;
 
+    /**
+     * Initialize.
+     *
+     * @param owner
+     *            the owner
+     * @param tagName
+     *            the tag name
+     */
     protected void initialize(DocumentImpl owner, String tagName) {
         initialize(owner);
         _localName = _tagName = tagName;
     }
 
     /**
-     * initialize the name space
+     * initialize the name space.
      *
      * @param owner
+     *            the owner
      * @param namespaceURI
+     *            the namespace URI
      * @param qualifiedName
+     *            the qualified name
      */
     protected void initialize(DocumentImpl owner, String namespaceURI, String qualifiedName) {
         initialize(owner);
@@ -55,6 +76,11 @@ public abstract class NamespaceAwareNodeImpl extends NodeImpl {
         return getTagName();
     }
 
+    /**
+     * Gets the tag name.
+     *
+     * @return the tag name
+     */
     public String getTagName() {
         return _tagName;
     }

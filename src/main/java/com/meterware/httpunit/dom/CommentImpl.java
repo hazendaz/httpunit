@@ -23,16 +23,40 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
+/**
+ * The Class CommentImpl.
+ */
 public class CommentImpl extends CharacterDataImpl implements Comment {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the comment.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     *
+     * @return the comment impl
+     */
     static CommentImpl createComment(DocumentImpl ownerDocument, String data) {
         CommentImpl comment = new CommentImpl();
         comment.initialize(ownerDocument, data);
         return comment;
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param comment
+     *            the comment
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, Comment comment) {
         return document.createComment(comment.getData());
     }

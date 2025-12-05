@@ -20,34 +20,38 @@
 package com.meterware.httpunit.scripting;
 
 /**
- * interface for every object that may have excutable events and their scripts attached
- **/
+ * interface for every object that may have excutable events and their scripts attached.
+ */
 public interface ScriptingEventHandler {
+
     /**
-     * run the Script for the given Event
+     * run the Script for the given Event.
      *
      * @param eventScript
-     *
-     * @deprecated since 1.7
+     *            the event script
      *
      * @return true if the script is empty or the result of the script
+     *
+     * @deprecated since 1.7
      */
     @Deprecated
     boolean doEvent(String eventScript);
 
     /**
-     * run the Script for the given Event
+     * run the Script for the given Event.
      *
      * @param eventScript
+     *            the event script
      *
      * @return true if the script is empty or the result of the script
      */
     boolean doEventScript(String eventScript);
 
     /**
-     * handle the event with the given name by getting the attribute and then executing the eventScript for it
+     * handle the event with the given name by getting the attribute and then executing the eventScript for it.
      *
      * @param eventName
+     *            the event name
      *
      * @return the result of doEventScript
      */

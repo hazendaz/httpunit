@@ -39,6 +39,9 @@ import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
+/**
+ * The Class NekoDOMParser.
+ */
 class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     /** Error reporting feature identifier. */
@@ -56,13 +59,16 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     /** Attribute case settings. possible values: "upper", "lower", "no-change" */
     private static final String ATTRIBUTE_NAME_CASE = "http://cyberneko.org/html/properties/names/attrs";
 
+    /** The document adapter. */
     private DocumentAdapter _documentAdapter;
 
     /**
-     * construct a new NekoDomParser with the given adapter and url
+     * construct a new NekoDomParser with the given adapter and url.
      *
      * @param adapter
+     *            the adapter
      * @param url
+     *            the url
      *
      * @return - the new parser patch [ 1211154 ] NekoDOMParser default to lowercase by Dan Allen patch [ 1176688 ]
      *         Allow configuration of neko parser properties by James Abley
@@ -110,6 +116,11 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
     }
 
+    /**
+     * Gets the current element.
+     *
+     * @return the current element
+     */
     private Element getCurrentElement() {
         try {
             return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
@@ -121,6 +132,14 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         }
     }
 
+    /**
+     * Instantiates a new neko DOM parser.
+     *
+     * @param configuration
+     *            the configuration
+     * @param adapter
+     *            the adapter
+     */
     NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
         super(configuration);
         _documentAdapter = adapter;
@@ -146,19 +165,42 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
         return getScriptingHandler().runScript(language, scriptText);
     }
 
+    /**
+     * Gets the scripting handler.
+     *
+     * @return the scripting handler
+     */
     private ScriptingHandler getScriptingHandler() {
         _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());
         return _documentAdapter.getScriptingHandler();
     }
 
+    /**
+     * The Class ScriptException.
+     */
     static class ScriptException extends RuntimeException {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The cause. */
         private IOException _cause;
 
+        /**
+         * Instantiates a new script exception.
+         *
+         * @param cause
+         *            the cause
+         */
         public ScriptException(IOException cause) {
             _cause = cause;
         }
 
+        /**
+         * Gets the exception.
+         *
+         * @return the exception
+         */
         public IOException getException() {
             return _cause;
         }

@@ -31,21 +31,49 @@ import org.w3c.dom.Element;
  **/
 public class WebList extends HTMLElementBase {
 
-    /** Indicator of an ordered list (HTML tag &lt;ol&gt;) */
+    /** Indicator of an ordered list (HTML tag &lt;ol&gt;). */
     public static final int ORDERED_LIST = 1;
 
-    /** Indicator of a bullet list (HTML tag &lt;ul&gt;) */
+    /** Indicator of a bullet list (HTML tag &lt;ul&gt;). */
     public static final int BULLET_LIST = 2;
 
+    /** The response. */
     private WebResponse _response;
+
+    /** The frame. */
     private FrameSelector _frame;
+
+    /** The base URL. */
     private URL _baseURL;
+
+    /** The base target. */
     private String _baseTarget;
+
+    /** The character set. */
     private String _characterSet;
 
+    /** The items. */
     private ArrayList _items = new ArrayList<>();
+
+    /** The list type. */
     private int _listType;
 
+    /**
+     * Instantiates a new web list.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param element
+     *            the element
+     * @param characterSet
+     *            the character set
+     */
     public WebList(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Element element,
             String characterSet) {
         super(element);
@@ -61,10 +89,20 @@ public class WebList extends HTMLElementBase {
         _characterSet = characterSet;
     }
 
+    /**
+     * Gets the list type.
+     *
+     * @return the list type
+     */
     public int getListType() {
         return _listType;
     }
 
+    /**
+     * Gets the items.
+     *
+     * @return the items
+     */
     public TextBlock[] getItems() {
         return (TextBlock[]) _items.toArray(new TextBlock[_items.size()]);
     }
@@ -79,6 +117,14 @@ public class WebList extends HTMLElementBase {
         return _response.getDocumentScriptable();
     }
 
+    /**
+     * Adds the new item.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the text block
+     */
     TextBlock addNewItem(Element element) {
         TextBlock listItem = new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);
         _items.add(listItem);

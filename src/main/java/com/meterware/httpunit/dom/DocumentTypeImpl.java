@@ -23,11 +23,15 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
+/**
+ * The Class DocumentTypeImpl.
+ */
 public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 
     // ---------------------------------------------- DocumentType methods
     // --------------------------------------------------
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override

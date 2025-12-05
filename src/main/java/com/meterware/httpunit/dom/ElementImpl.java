@@ -30,30 +30,72 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
+/**
+ * The Class ElementImpl.
+ */
 public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
+
+    /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();
 
+    /**
+     * Creates the element.
+     *
+     * @param owner
+     *            the owner
+     * @param tagName
+     *            the tag name
+     *
+     * @return the element impl
+     */
     static ElementImpl createElement(DocumentImpl owner, String tagName) {
         ElementImpl element = new ElementImpl();
         element.initialize(owner, tagName);
         return element;
     }
 
+    /**
+     * Creates the element.
+     *
+     * @param owner
+     *            the owner
+     * @param namespaceURI
+     *            the namespace URI
+     * @param qualifiedName
+     *            the qualified name
+     *
+     * @return the element
+     */
     public static Element createElement(DocumentImpl owner, String namespaceURI, String qualifiedName) {
         ElementImpl element = new ElementImpl();
         element.initialize(owner, namespaceURI, qualifiedName);
         return element;
     }
 
+    /**
+     * Adds the dom listener.
+     *
+     * @param listener
+     *            the listener
+     */
     public void addDomListener(DomListener listener) {
         synchronized (_listeners) {
             _listeners.add(listener);
         }
     }
 
+    /**
+     * Report property changed.
+     *
+     * @param propertyName
+     *            the property name
+     */
     protected void reportPropertyChanged(String propertyName) {
         ArrayList listeners;
         synchronized (_listeners) {
@@ -229,6 +271,18 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
         return false;
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param original
+     *            the original
+     * @param deep
+     *            the deep
+     *
+     * @return the element
+     */
     public static Element importNode(DocumentImpl document, Element original, boolean deep) {
         Element copy = document.createElementNS(original.getNamespaceURI(), original.getTagName());
         NamedNodeMap attributes = original.getAttributes();

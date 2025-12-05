@@ -19,10 +19,18 @@
  */
 package com.meterware.httpunit.scripting;
 
+/**
+ * The Interface ScriptingEngine.
+ */
 public interface ScriptingEngine extends ScriptingHandler {
 
     /**
      * Returns a new scripting engine for the specified delegate.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the scripting engine
      */
     ScriptingEngine newScriptingEngine(ScriptableDelegate child);
 

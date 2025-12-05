@@ -24,7 +24,7 @@ import java.net.URL;
 /**
  * A listener for messages from the HTMLParser. This provides a mechanism to watch for errors and warnings generated
  * during parsing.
- **/
+ */
 public interface HTMLParserListener {
 
     /**

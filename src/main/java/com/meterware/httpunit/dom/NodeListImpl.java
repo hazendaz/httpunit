@@ -26,11 +26,23 @@ import org.mozilla.javascript.ScriptableObject;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * The Class NodeListImpl.
+ */
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The list. */
     private List _list;
 
+    /**
+     * Instantiates a new node list impl.
+     *
+     * @param list
+     *            the list
+     */
     public NodeListImpl(List list) {
         _list = list;
     }

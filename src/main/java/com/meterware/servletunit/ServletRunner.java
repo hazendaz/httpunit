@@ -56,10 +56,15 @@ public class ServletRunner {
     /**
      * Constructor which expects the full path to the web.xml for the application.
      *
-     * @deprecated as of 1.6, use {@link #ServletRunner(File)}
-     *
      * @param webXMLFileSpec
      *            the full path to the web.xml file
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     *
+     * @deprecated as of 1.6, use {@link #ServletRunner(File)}
      */
     @Deprecated
     public ServletRunner(String webXMLFileSpec) throws IOException, SAXException {
@@ -71,12 +76,17 @@ public class ServletRunner {
      * Constructor which expects the full path to the web.xml for the application and a context path under which to
      * mount it.
      *
-     * @deprecated as of 1.6, use {@link #ServletRunner(File,String)}
-     *
      * @param webXMLFileSpec
      *            the full path to the web.xml file
      * @param contextPath
      *            the context path
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     *
+     * @deprecated as of 1.6, use {@link #ServletRunner(File,String)}
      */
     @Deprecated
     public ServletRunner(String webXMLFileSpec, String contextPath) throws IOException, SAXException {
@@ -88,6 +98,11 @@ public class ServletRunner {
      *
      * @param webXml
      *            the web.xml file
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     public ServletRunner(File webXml) throws IOException, SAXException {
         _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml));
@@ -102,6 +117,11 @@ public class ServletRunner {
      *            the web.xml file
      * @param contextPath
      *            the context path
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     public ServletRunner(File webXml, String contextPath) throws IOException, SAXException {
         _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml),
@@ -110,13 +130,17 @@ public class ServletRunner {
     }
 
     /**
-     * constructor with entity Resolver as asked for in Bug report 1222269 by jim - jafergus
+     * constructor with entity Resolver as asked for in Bug report 1222269 by jim - jafergus.
      *
      * @param webXMLFileSpec
+     *            the web XML file spec
      * @param resolver
+     *            the resolver
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     public ServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {
         DocumentBuilder parser = HttpUnitUtils.newParser();
@@ -127,7 +151,15 @@ public class ServletRunner {
 
     /**
      * Constructor which expects an input stream containing the web.xml for the application.
-     **/
+     *
+     * @param webXML
+     *            the web XML
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public ServletRunner(InputStream webXML) throws IOException, SAXException {
         this(webXML, null);
     }
@@ -136,10 +168,14 @@ public class ServletRunner {
      * Constructor which expects an input stream containing the web.xml for the application.
      *
      * @param webXML
+     *            the web XML
      * @param contextPath
+     *            the context path
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     public ServletRunner(InputStream webXML, String contextPath) throws IOException, SAXException {
         InputSource inputSource = new InputSource(webXML);
@@ -154,11 +190,22 @@ public class ServletRunner {
 
     /**
      * Registers a servlet class to be run.
-     **/
+     *
+     * @param resourceName
+     *            the resource name
+     * @param servletClassName
+     *            the servlet class name
+     */
     public void registerServlet(String resourceName, String servletClassName) {
         _application.registerServlet(resourceName, servletClassName, null);
     }
 
+    /**
+     * Complete initialization.
+     *
+     * @param contextPath
+     *            the context path
+     */
     private void completeInitialization(String contextPath) {
         _context = new ServletUnitContext(contextPath, _application.getServletContext(), _application);
         _application.registerServlet("*.jsp", _jspServletDescriptor.getClassName(),
@@ -167,7 +214,14 @@ public class ServletRunner {
 
     /**
      * Registers a servlet class to be run, specifying initialization parameters.
-     **/
+     *
+     * @param resourceName
+     *            the resource name
+     * @param servletClassName
+     *            the servlet class name
+     * @param initParameters
+     *            the init parameters
+     */
     public void registerServlet(String resourceName, String servletClassName, Hashtable initParameters) {
         _application.registerServlet(resourceName, servletClassName, initParameters);
     }
@@ -175,9 +229,19 @@ public class ServletRunner {
     /**
      * Returns the response from the specified servlet.
      *
+     * @param request
+     *            the request
+     *
+     * @return the response
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     *
      * @exception SAXException
      *                thrown if there is an error parsing the response
-     **/
+     */
     public WebResponse getResponse(WebRequest request) throws MalformedURLException, IOException, SAXException {
         return getClient().getResponse(request);
     }
@@ -185,9 +249,19 @@ public class ServletRunner {
     /**
      * Returns the response from the specified servlet using GET.
      *
+     * @param url
+     *            the url
+     *
+     * @return the response
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     *
      * @exception SAXException
      *                thrown if there is an error parsing the response
-     **/
+     */
     public WebResponse getResponse(String url) throws MalformedURLException, IOException, SAXException {
         return getClient().getResponse(url);
     }
@@ -197,6 +271,8 @@ public class ServletRunner {
      *
      * @param create
      *            if true, will create a new session if no valid session is defined.
+     *
+     * @return the session
      */
     public HttpSession getSession(boolean create) {
         return getClient().getSession(create);
@@ -240,11 +316,16 @@ public class ServletRunner {
 
     /**
      * Creates and returns a new web client that communicates with this servlet runner.
-     **/
+     *
+     * @return the servlet unit client
+     */
     public ServletUnitClient newClient() {
         return ServletUnitClient.newClient(_factory);
     }
 
+    /**
+     * The Class JasperJSPServletDescriptor.
+     */
     public static class JasperJSPServletDescriptor implements JSPServletDescriptor {
 
         @Override
@@ -265,29 +346,45 @@ public class ServletRunner {
         }
     }
 
+    /** The Constant JASPER_DESCRIPTOR. */
     public static final JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();
 
     // -------------------------------------------- package methods
     // ---------------------------------------------------------
 
+    /**
+     * Gets the context.
+     *
+     * @return the context
+     */
     ServletUnitContext getContext() {
         return _context;
     }
 
+    /**
+     * Gets the application.
+     *
+     * @return the application
+     */
     WebApplication getApplication() {
         return _application;
     }
 
     // ---------------------------- private members ------------------------------------
 
+    /** The jsp servlet descriptor. */
     private static JSPServletDescriptor _jspServletDescriptor = JASPER_DESCRIPTOR;
 
+    /** The application. */
     private WebApplication _application;
 
+    /** The client. */
     private ServletUnitClient _client;
 
+    /** The context. */
     private ServletUnitContext _context;
 
+    /** The factory. */
     private InvocationContextFactory _factory = new InvocationContextFactory() {
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
@@ -302,6 +399,11 @@ public class ServletRunner {
         }
     };
 
+    /**
+     * Gets the client.
+     *
+     * @return the client
+     */
     private ServletUnitClient getClient() {
         if (_client == null) {
             _client = newClient();

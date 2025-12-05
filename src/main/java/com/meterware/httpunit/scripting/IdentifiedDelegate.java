@@ -19,8 +19,16 @@
  */
 package com.meterware.httpunit.scripting;
 
+/**
+ * The Interface IdentifiedDelegate.
+ */
 public interface IdentifiedDelegate {
 
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
     String getID();
 
 }

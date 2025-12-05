@@ -31,7 +31,10 @@ import org.w3c.dom.Node;
  */
 public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
 
+    /** The scriptable. */
     private ScriptingHandler _scriptable;
+
+    /** The node. */
     private Node _node;
 
     /**
@@ -203,6 +206,14 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
         return getClass().equals(obj.getClass()) && equals((BlockElement) obj);
     }
 
+    /**
+     * Equals.
+     *
+     * @param block
+     *            the block
+     *
+     * @return true, if successful
+     */
     private boolean equals(BlockElement block) {
         return _node.equals(block._node);
     }
@@ -215,12 +226,40 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
     // ------------------------------------- protected members
     // --------------------------------------------------------------
 
+    /**
+     * Instantiates a new block element.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param rootNode
+     *            the root node
+     * @param characterSet
+     *            the character set
+     */
     protected BlockElement(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {
         super(response, frame, baseURL, baseTarget, rootNode, characterSet);
         _node = rootNode;
     }
 
+    /**
+     * Gets the attribute value.
+     *
+     * @param node
+     *            the node
+     * @param attributeName
+     *            the attribute name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the attribute value
+     */
     protected int getAttributeValue(Node node, String attributeName, int defaultValue) {
         return NodeUtils.getAttributeValue(node, attributeName, defaultValue);
     }

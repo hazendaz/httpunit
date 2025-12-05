@@ -19,6 +19,9 @@
  */
 package com.meterware.httpunit.scripting;
 
+/**
+ * The Interface DocumentElement.
+ */
 public interface DocumentElement {
 
 }

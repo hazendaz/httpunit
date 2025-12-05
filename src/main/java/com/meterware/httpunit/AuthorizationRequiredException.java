@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,18 +27,45 @@ import java.util.Properties;
  **/
 public class AuthorizationRequiredException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the basic authentication required exception.
+     *
+     * @param realm
+     *            the realm
+     *
+     * @return the authorization required exception
+     */
     public static AuthorizationRequiredException createBasicAuthenticationRequiredException(String realm) {
         Properties props = new Properties();
         props.put("realm", realm);
         return new AuthorizationRequiredException("Basic", props);
     }
 
+    /**
+     * Creates the exception.
+     *
+     * @param scheme
+     *            the scheme
+     * @param properties
+     *            the properties
+     *
+     * @return the authorization required exception
+     */
     static AuthorizationRequiredException createException(String scheme, Map properties) {
         return new AuthorizationRequiredException(scheme, properties);
     }
 
+    /**
+     * Instantiates a new authorization required exception.
+     *
+     * @param scheme
+     *            the scheme
+     * @param properties
+     *            the properties
+     */
     private AuthorizationRequiredException(String scheme, Map properties) {
         _scheme = scheme;
         _properties = properties;
@@ -70,6 +97,14 @@ public class AuthorizationRequiredException extends RuntimeException {
         return unQuote((String) _properties.get(parameterName));
     }
 
+    /**
+     * Un quote.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private String unQuote(String value) {
         if (value == null || value.length() <= 1 || !value.startsWith("\"") || !value.endsWith("\"")) {
             return value;
@@ -80,6 +115,9 @@ public class AuthorizationRequiredException extends RuntimeException {
 
     // ------------------------------------- private members ------------------------------------------
 
+    /** The scheme. */
     private String _scheme;
+
+    /** The properties. */
     private Map _properties;
 }

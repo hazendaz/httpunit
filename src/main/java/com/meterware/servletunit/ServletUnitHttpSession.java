@@ -27,13 +27,28 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ * The Class ServletUnitHttpSession.
+ */
 class ServletUnitHttpSession implements HttpSession {
 
+    /** The Constant SESSION_COOKIE_NAME. */
     public static final String SESSION_COOKIE_NAME = "JSESSION";
 
+    /** The servlet context. */
     private ServletContext _servletContext;
+
+    /** The listener dispatcher. */
     private SessionListenerDispatcher _listenerDispatcher;
 
+    /**
+     * Instantiates a new servlet unit http session.
+     *
+     * @param servletContext
+     *            the servlet context
+     * @param listenerDispatcher
+     *            the listener dispatcher
+     */
     ServletUnitHttpSession(ServletContext servletContext, SessionListenerDispatcher listenerDispatcher) {
         _servletContext = servletContext;
         _listenerDispatcher = listenerDispatcher;
@@ -203,10 +218,21 @@ class ServletUnitHttpSession implements HttpSession {
         _isNew = false;
     }
 
+    /**
+     * Gets the original URL.
+     *
+     * @return the original URL
+     */
     URL getOriginalURL() {
         return _originalURL;
     }
 
+    /**
+     * Sets the original URL.
+     *
+     * @param originalURL
+     *            the new original URL
+     */
     void setOriginalURL(URL originalURL) {
         _originalURL = originalURL;
     }
@@ -224,40 +250,66 @@ class ServletUnitHttpSession implements HttpSession {
         _roles = roles;
     }
 
+    /**
+     * Gets the user name.
+     *
+     * @return the user name
+     */
     String getUserName() {
         return _userName;
     }
 
+    /**
+     * Gets the roles.
+     *
+     * @return the roles
+     */
     String[] getRoles() {
         return _roles;
     }
 
+    /**
+     * Checks if is invalid.
+     *
+     * @return true, if is invalid
+     */
     boolean isInvalid() {
         return _invalid;
     }
 
     // ------------------------------------- private members ---------------------------------------
 
+    /** The Next ID. */
     private static int _NextID = 1;
 
+    /** The creation time. */
     private final long _creationTime = new Date().getTime();
 
+    /** The id. */
     private final String _id = Integer.toString(_NextID++);
 
+    /** The max inactive interval. */
     private int _maxInactiveInterval;
 
+    /** The last accessed time. */
     private long _lastAccessedTime = new Date().getTime();
 
+    /** The invalid. */
     private boolean _invalid;
 
+    /** The values. */
     private Hashtable _values = new Hashtable<>();
 
+    /** The is new. */
     private boolean _isNew = true;
 
+    /** The user name. */
     private String _userName;
 
+    /** The roles. */
     private String[] _roles;
 
+    /** The original URL. */
     private URL _originalURL;
 
 }

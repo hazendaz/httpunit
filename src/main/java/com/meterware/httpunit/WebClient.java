@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
  **/
 public abstract class WebClient {
 
+    /** The open windows. */
     private ArrayList _openWindows = new ArrayList<>();
 
     /** The current main window. **/
@@ -56,13 +57,27 @@ public abstract class WebClient {
     /** An authorization string to be sent with the next request only. May be null. **/
     private String _authorizationString;
 
+    /** The proxy authorization string. */
     private String _proxyAuthorizationString;
+
+    /** The credentials. */
     private Hashtable _credentials = new Hashtable<>();
 
+    /**
+     * Gets the main window.
+     *
+     * @return the main window
+     */
     public WebWindow getMainWindow() {
         return _mainWindow;
     }
 
+    /**
+     * Sets the main window.
+     *
+     * @param mainWindow
+     *            the new main window
+     */
     public void setMainWindow(WebWindow mainWindow) {
         if (!_openWindows.contains(mainWindow)) {
             throw new IllegalArgumentException("May only select an open window owned by this client");
@@ -70,10 +85,23 @@ public abstract class WebClient {
         _mainWindow = mainWindow;
     }
 
+    /**
+     * Gets the open windows.
+     *
+     * @return the open windows
+     */
     public WebWindow[] getOpenWindows() {
         return (WebWindow[]) _openWindows.toArray(new WebWindow[_openWindows.size()]);
     }
 
+    /**
+     * Gets the open window.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the open window
+     */
     public WebWindow getOpenWindow(String name) {
         if (name == null || name.isEmpty()) {
             return null;
@@ -90,15 +118,33 @@ public abstract class WebClient {
     /**
      * Submits a GET method request and returns a response.
      *
+     * @param urlString
+     *            the url string
+     *
+     * @return the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     *
      * @exception SAXException
      *                thrown if there is an error parsing the retrieved page
-     **/
+     */
     public WebResponse getResponse(String urlString) throws IOException, SAXException {
         return _mainWindow.getResponse(urlString);
     }
 
     /**
      * Submits a web request and returns a response. This is an alternate name for the getResponse method.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     public WebResponse sendRequest(WebRequest request) throws IOException, SAXException {
         return _mainWindow.sendRequest(request);
@@ -106,6 +152,8 @@ public abstract class WebClient {
 
     /**
      * Returns the response representing the current top page in the main window.
+     *
+     * @return the current page
      */
     public WebResponse getCurrentPage() {
         return _mainWindow.getCurrentPage();
@@ -115,16 +163,26 @@ public abstract class WebClient {
      * Submits a web request and returns a response, using all state developed so far as stored in cookies as requested
      * by the server.
      *
+     * @param request
+     *            the request
+     *
+     * @return the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     *
      * @exception SAXException
      *                thrown if there is an error parsing the retrieved page
-     **/
+     */
     public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
         return _mainWindow.getResponse(request);
     }
 
     /**
      * Returns the name of the currently active frames in the main window.
-     **/
+     *
+     * @return the frame names
+     */
     public String[] getFrameNames() {
         return _mainWindow.getFrameNames();
     }
@@ -132,7 +190,12 @@ public abstract class WebClient {
     /**
      * Returns the response associated with the specified frame name in the main window. Throws a runtime exception if
      * no matching frame is defined.
-     **/
+     *
+     * @param frameName
+     *            the frame name
+     *
+     * @return the frame contents
+     */
     public WebResponse getFrameContents(String frameName) {
         return _mainWindow.getFrameContents(frameName);
     }
@@ -140,7 +203,12 @@ public abstract class WebClient {
     /**
      * Returns the response associated with the specified frame name in the main window. Throws a runtime exception if
      * no matching frame is defined.
-     **/
+     *
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the frame contents
+     */
     public WebResponse getFrameContents(FrameSelector targetFrame) {
         return _mainWindow.getFrameContents(targetFrame);
     }
@@ -148,6 +216,14 @@ public abstract class WebClient {
     /**
      * Returns the resource specified by the request. Does not update the client or load included framesets or scripts.
      * May return null if the resource is a JavaScript URL which would normally leave the client unchanged.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the resource
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public WebResponse getResource(WebRequest request) throws IOException {
         return _mainWindow.getResource(request);
@@ -166,8 +242,13 @@ public abstract class WebClient {
     /**
      * Defines a cookie to be sent to the server on every request.
      *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
      * @deprecated as of 1.6, use #putCookie instead.
-     **/
+     */
     @Deprecated
     public void addCookie(String name, String value) {
         _cookieJar.addCookie(name, value);
@@ -176,20 +257,32 @@ public abstract class WebClient {
     /**
      * Defines a cookie to be sent to the server on every request. This overrides any previous setting for this cookie
      * name.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public void putCookie(String name, String value) {
         _cookieJar.putCookie(name, value);
     }
 
     /**
      * Returns the name of all the active cookies which will be sent to the server.
-     **/
+     *
+     * @return the cookie names
+     */
     public String[] getCookieNames() {
         return _cookieJar.getCookieNames();
     }
 
     /**
-     * Returns an object containing the details of the named cookie
+     * Returns an object containing the details of the named cookie.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the cookie details
      */
     public Cookie getCookieDetails(String name) {
         return _cookieJar.getCookie(name);
@@ -197,13 +290,20 @@ public abstract class WebClient {
 
     /**
      * Returns the value of the specified cookie.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the cookie value
+     */
     public String getCookieValue(String name) {
         return _cookieJar.getCookieValue(name);
     }
 
     /**
      * Returns the properties associated with this client.
+     *
+     * @return the client properties
      */
     public ClientProperties getClientProperties() {
         if (_clientProperties == null) {
@@ -215,8 +315,11 @@ public abstract class WebClient {
     /**
      * Specifies the user agent identification. Used to trigger browser-specific server behavior.
      *
+     * @param userAgent
+     *            the new user agent
+     *
      * @deprecated as of 1.4.6. Use ClientProperties#setUserAgent instead.
-     **/
+     */
     @Deprecated
     public void setUserAgent(String userAgent) {
         getClientProperties().setUserAgent(userAgent);
@@ -225,8 +328,10 @@ public abstract class WebClient {
     /**
      * Returns the current user agent setting.
      *
+     * @return the user agent
+     *
      * @deprecated as of 1.4.6. Use ClientProperties#getUserAgent instead.
-     **/
+     */
     @Deprecated
     public String getUserAgent() {
         return getClientProperties().getUserAgent();
@@ -235,7 +340,12 @@ public abstract class WebClient {
     /**
      * Sets a username and password for a basic authentication scheme. Use #setAuthentication for more accurate
      * emulation of browser behavior.
-     **/
+     *
+     * @param userName
+     *            the user name
+     * @param password
+     *            the password
+     */
     public void setAuthorization(String userName, String password) {
         _fixedAuthorizationString = "Basic "
                 + Base64.getEncoder().encodeToString((userName + ':' + password).getBytes(StandardCharsets.UTF_8));
@@ -257,11 +367,12 @@ public abstract class WebClient {
     }
 
     /**
-     * get the credentials for the given realm
+     * get the credentials for the given realm.
      *
      * @param realm
+     *            the realm
      *
-     * @return
+     * @return the credentials for realm
      */
     PasswordAuthentication getCredentialsForRealm(String realm) {
         if (_credentials == null) {
@@ -275,11 +386,25 @@ public abstract class WebClient {
 
     /**
      * Specifies a proxy server to use for requests from this client.
+     *
+     * @param proxyHost
+     *            the proxy host
+     * @param proxyPort
+     *            the proxy port
      */
     public abstract void setProxyServer(String proxyHost, int proxyPort);
 
     /**
      * Specifies a proxy server to use, along with a user and password for authentication.
+     *
+     * @param proxyHost
+     *            the proxy host
+     * @param proxyPort
+     *            the proxy port
+     * @param userName
+     *            the user name
+     * @param password
+     *            the password
      */
     public void setProxyServer(String proxyHost, int proxyPort, String userName, String password) {
         setProxyServer(proxyHost, proxyPort);
@@ -295,6 +420,8 @@ public abstract class WebClient {
 
     /**
      * Returns the name of the active proxy server.
+     *
+     * @return the proxy host
      */
     public String getProxyHost() {
         return System.getProperty("proxyHost");
@@ -302,6 +429,8 @@ public abstract class WebClient {
 
     /**
      * Returns the number of the active proxy port, or 0 is none is specified.
+     *
+     * @return the proxy port
      */
     public int getProxyPort() {
         try {
@@ -314,7 +443,12 @@ public abstract class WebClient {
     /**
      * Sets the value for a header field to be sent with all requests. If the value set is null, removes the header from
      * those to be sent.
-     **/
+     *
+     * @param fieldName
+     *            the field name
+     * @param fieldValue
+     *            the field value
+     */
     public void setHeaderField(String fieldName, String fieldValue) {
         _headers.put(fieldName, fieldValue);
     }
@@ -322,6 +456,11 @@ public abstract class WebClient {
     /**
      * Returns the value for the header field with the specified name. This method will ignore the case of the field
      * name.
+     *
+     * @param fieldName
+     *            the field name
+     *
+     * @return the header field
      */
     public String getHeaderField(String fieldName) {
         return (String) _headers.get(fieldName);
@@ -330,20 +469,28 @@ public abstract class WebClient {
     /**
      * Specifies whether an exception will be thrown when an error status (4xx or 5xx) is detected on a response.
      * Defaults to the value returned by HttpUnitOptions.getExceptionsThrownOnErrorStatus.
-     **/
+     *
+     * @param throwExceptions
+     *            the new exceptions thrown on error status
+     */
     public void setExceptionsThrownOnErrorStatus(boolean throwExceptions) {
         _exceptionsThrownOnErrorStatus = throwExceptions;
     }
 
     /**
      * Returns true if an exception will be thrown when an error status (4xx or 5xx) is detected on a response.
-     **/
+     *
+     * @return the exceptions thrown on error status
+     */
     public boolean getExceptionsThrownOnErrorStatus() {
         return _exceptionsThrownOnErrorStatus;
     }
 
     /**
      * Adds a listener to watch for requests and responses.
+     *
+     * @param listener
+     *            the listener
      */
     public void addClientListener(WebClientListener listener) {
         synchronized (_clientListeners) {
@@ -355,6 +502,9 @@ public abstract class WebClient {
 
     /**
      * Removes a listener to watch for requests and responses.
+     *
+     * @param listener
+     *            the listener
      */
     public void removeClientListener(WebClientListener listener) {
         synchronized (_clientListeners) {
@@ -364,6 +514,9 @@ public abstract class WebClient {
 
     /**
      * Adds a listener to watch for window openings and closings.
+     *
+     * @param listener
+     *            the listener
      */
     public void addWindowListener(WebWindowListener listener) {
         synchronized (_windowListeners) {
@@ -375,6 +528,9 @@ public abstract class WebClient {
 
     /**
      * Removes a listener to watch for window openings and closings.
+     *
+     * @param listener
+     *            the listener
      */
     public void removeWindowListener(WebWindowListener listener) {
         synchronized (_windowListeners) {
@@ -384,6 +540,8 @@ public abstract class WebClient {
 
     /**
      * Returns the next javascript alert without removing it from the queue.
+     *
+     * @return the next alert
      */
     public String getNextAlert() {
         return _alerts.isEmpty() ? null : (String) _alerts.getFirst();
@@ -392,6 +550,8 @@ public abstract class WebClient {
     /**
      * Returns the next javascript alert and removes it from the queue. If the queue is empty, will return an empty
      * string.
+     *
+     * @return the string
      */
     public String popNextAlert() {
         if (_alerts.isEmpty()) {
@@ -402,13 +562,19 @@ public abstract class WebClient {
 
     /**
      * Specifies the object which will respond to all dialogs.
-     **/
+     *
+     * @param responder
+     *            the new dialog responder
+     */
     public void setDialogResponder(DialogResponder responder) {
         _dialogResponder = responder;
     }
 
     // ------------------------------------------ protected members -----------------------------------
 
+    /**
+     * Instantiates a new web client.
+     */
     protected WebClient() {
         _openWindows.add(_mainWindow);
     }
@@ -420,19 +586,37 @@ public abstract class WebClient {
      *            the request to which the response should be generated
      * @param targetFrame
      *            the frame in which the response should be stored
-     **/
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     abstract protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame) throws IOException;
 
     /**
      * Writes the message body for the request.
-     **/
+     *
+     * @param request
+     *            the request
+     * @param stream
+     *            the stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     protected final void writeMessageBody(WebRequest request, OutputStream stream) throws IOException {
         request.writeMessageBody(stream);
     }
 
     /**
      * Returns the value of all current header fields.
-     **/
+     *
+     * @param targetURL
+     *            the target URL
+     *
+     * @return the header fields
+     */
     protected Dictionary getHeaderFields(URL targetURL) {
         Hashtable result = (Hashtable) _headers.clone();
         result.put("User-Agent", getClientProperties().getUserAgent());
@@ -449,6 +633,16 @@ public abstract class WebClient {
         return result;
     }
 
+    /**
+     * Adds the header if not null.
+     *
+     * @param result
+     *            the result
+     * @param headerName
+     *            the header name
+     * @param headerValue
+     *            the header value
+     */
     private void AddHeaderIfNotNull(Hashtable result, final String headerName, final String headerValue) {
         if (headerValue != null) {
             result.put(headerName, headerValue);
@@ -458,7 +652,17 @@ public abstract class WebClient {
     /**
      * Updates this web client based on a received response. This includes updating cookies and frames. This method is
      * required by ServletUnit, which cannot call the updateWindow method directly.
-     **/
+     *
+     * @param frame
+     *            the frame
+     * @param response
+     *            the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     protected final void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
         getMainWindow().updateWindow(frame.getName(), response, new RequestContext());
     }
@@ -466,6 +670,12 @@ public abstract class WebClient {
     // ------------------------------------------------- package members
     // ----------------------------------------------------
 
+    /**
+     * Tell listeners.
+     *
+     * @param request
+     *            the request
+     */
     void tellListeners(WebRequest request) {
         List listeners;
 
@@ -478,6 +688,12 @@ public abstract class WebClient {
         }
     }
 
+    /**
+     * Tell listeners.
+     *
+     * @param response
+     *            the response
+     */
     void tellListeners(WebResponse response) {
         List listeners;
 
@@ -490,6 +706,15 @@ public abstract class WebClient {
         }
     }
 
+    /**
+     * Update client.
+     *
+     * @param response
+     *            the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void updateClient(WebResponse response) throws IOException {
         if (getClientProperties().isAcceptCookies()) {
             _cookieJar.updateCookies(response.getCookieJar());
@@ -498,17 +723,34 @@ public abstract class WebClient {
     }
 
     /**
-     * Support Request [ 1288796 ] getCookieJar() in WebClient
-     *
-     * @deprecated - use with care - was not public in the past
+     * Support Request [ 1288796 ] getCookieJar() in WebClient.
      *
      * @return the cookie jar
+     *
+     * @deprecated - use with care - was not public in the past
      */
     @Deprecated
     public CookieJar getCookieJar() {
         return _cookieJar;
     }
 
+    /**
+     * Update frame contents.
+     *
+     * @param requestWindow
+     *            the request window
+     * @param requestTarget
+     *            the request target
+     * @param response
+     *            the response
+     * @param requestContext
+     *            the request context
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     void updateFrameContents(WebWindow requestWindow, String requestTarget, WebResponse response,
             RequestContext requestContext) throws IOException, SAXException {
         if (response.getFrame() == FrameSelector.NEW_FRAME) {
@@ -530,6 +772,12 @@ public abstract class WebClient {
         }
     }
 
+    /**
+     * Close.
+     *
+     * @param window
+     *            the window
+     */
     void close(WebWindow window) {
         if (!_openWindows.contains(window)) {
             throw new IllegalStateException("Window is already closed");
@@ -544,6 +792,12 @@ public abstract class WebClient {
         reportWindowClosed(window);
     }
 
+    /**
+     * Report window opened.
+     *
+     * @param window
+     *            the window
+     */
     private void reportWindowOpened(WebWindow window) {
         List listeners;
 
@@ -556,6 +810,12 @@ public abstract class WebClient {
         }
     }
 
+    /**
+     * Report window closed.
+     *
+     * @param window
+     *            the window
+     */
     private void reportWindowClosed(WebWindow window) {
         List listeners;
 
@@ -570,16 +830,34 @@ public abstract class WebClient {
 
     // ------------------------------------------ package members ------------------------------------
 
+    /**
+     * Gets the confirmation response.
+     *
+     * @param message
+     *            the message
+     *
+     * @return the confirmation response
+     */
     boolean getConfirmationResponse(String message) {
         return _dialogResponder.getConfirmation(message);
     }
 
+    /**
+     * Gets the user response.
+     *
+     * @param message
+     *            the message
+     * @param defaultResponse
+     *            the default response
+     *
+     * @return the user response
+     */
     String getUserResponse(String message, String defaultResponse) {
         return _dialogResponder.getUserResponse(message, defaultResponse);
     }
 
     /**
-     * simulate an alert by remembering the alert message on a Stack
+     * simulate an alert by remembering the alert message on a Stack.
      *
      * @param message
      *            - the alert message to post
@@ -599,21 +877,32 @@ public abstract class WebClient {
     /** A map of header names to values. **/
     private HeaderDictionary _headers = new HeaderDictionary();
 
+    /** The exceptions thrown on error status. */
     private boolean _exceptionsThrownOnErrorStatus = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
 
+    /** The client listeners. */
     private final List _clientListeners = new ArrayList<>();
 
+    /** The window listeners. */
     private final List _windowListeners = new ArrayList<>();
 
+    /** The dialog responder. */
     private DialogResponder _dialogResponder = new DialogAdapter();
 
+    /** The client properties. */
     private ClientProperties _clientProperties;
 
     /**
      * Examines the headers in the response and throws an exception if appropriate.
      *
+     * @param response
+     *            the response
+     *
+     * @throws HttpException
+     *             the http exception
+     *
      * @parm response - the response to validate
-     **/
+     */
     private void validateHeaders(WebResponse response) throws HttpException {
         HttpException exception = null;
         if (response.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
@@ -635,6 +924,14 @@ public abstract class WebClient {
         }
     }
 
+    /**
+     * Find frame.
+     *
+     * @param target
+     *            the target
+     *
+     * @return the frame selector
+     */
     FrameSelector findFrame(String target) {
         for (Object _openWindow : _openWindows) {
             WebWindow webWindow = (WebWindow) _openWindow;
@@ -676,16 +973,32 @@ public abstract class WebClient {
         return response2;
     }
 
+    /**
+     * Sets the onetime authentication header.
+     *
+     * @param authorizationHeader
+     *            the new onetime authentication header
+     */
     private void setOnetimeAuthenticationHeader(String authorizationHeader) {
         _authorizationString = authorizationHeader;
     }
 
     // ==================================================================================================
 
+    /**
+     * The Class HeaderDictionary.
+     */
     static public class HeaderDictionary extends Hashtable {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Adds the entries.
+         *
+         * @param source
+         *            the source
+         */
         public void addEntries(Dictionary source) {
             for (Enumeration e = source.keys(); e.hasMoreElements();) {
                 Object key = e.nextElement();
@@ -718,7 +1031,12 @@ public abstract class WebClient {
         /**
          * If a matching field name with different case is already known, returns the older name. Otherwise, returns the
          * specified name.
-         **/
+         *
+         * @param fieldName
+         *            the field name
+         *
+         * @return the string
+         */
         private String matchPreviousFieldName(String fieldName) {
             for (Enumeration e = keys(); e.hasMoreElements();) {
                 String key = (String) e.nextElement();

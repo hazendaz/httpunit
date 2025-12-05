@@ -28,6 +28,9 @@ import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+ * The Class NekoHTMLParser.
+ */
 class NekoHTMLParser implements HTMLParser {
 
     /**
@@ -74,5 +77,6 @@ class NekoHTMLParser implements HTMLParser {
         return true;
     }
 
+    /** The Constant NBSP. */
     private static final char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
 }

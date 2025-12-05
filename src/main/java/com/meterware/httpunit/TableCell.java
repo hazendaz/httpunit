@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,24 +28,31 @@ import org.w3c.dom.html.HTMLTableCellElement;
  **/
 public class TableCell extends BlockElement {
 
+    /** The element. */
     private HTMLTableCellElement _element;
 
     /**
      * Returns the number of columns spanned by this cell.
-     **/
+     *
+     * @return the col span
+     */
     public int getColSpan() {
         return _element.getColSpan();
     }
 
     /**
      * Returns the number of rows spanned by this cell.
-     **/
+     *
+     * @return the row span
+     */
     public int getRowSpan() {
         return _element.getRowSpan();
     }
 
     /**
      * Returns the text value of this cell.
+     *
+     * @return the string
      *
      * @deprecated as of 1.6, use #getText()
      */
@@ -56,6 +63,22 @@ public class TableCell extends BlockElement {
 
     // ---------------------------------------- package methods -----------------------------------------
 
+    /**
+     * Instantiates a new table cell.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param element
+     *            the element
+     * @param url
+     *            the url
+     * @param parentTarget
+     *            the parent target
+     * @param characterSet
+     *            the character set
+     */
     TableCell(WebResponse response, FrameSelector frame, HTMLTableCellElement element, URL url, String parentTarget,
             String characterSet) {
         super(response, frame, url, parentTarget, element, characterSet);

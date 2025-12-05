@@ -24,8 +24,12 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
+/**
+ * The Class HTMLTableRowElementImpl.
+ */
 public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement, AttributeNameAdjusted {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -33,76 +37,166 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
         return new HTMLTableRowElementImpl();
     }
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
         setAttribute("align", align);
     }
 
+    /**
+     * Gets the bg color.
+     *
+     * @return the bg color
+     */
     @Override
     public String getBgColor() {
         return getAttributeWithNoDefault("bgColor");
     }
 
+    /**
+     * Sets the bg color.
+     *
+     * @param bgColor
+     *            the new bg color
+     */
     @Override
     public void setBgColor(String bgColor) {
         setAttribute("bgColor", bgColor);
     }
 
+    /**
+     * Gets the ch.
+     *
+     * @return the ch
+     */
     @Override
     public String getCh() {
         return getAttributeWithDefault("char", ".");
     }
 
+    /**
+     * Sets the ch.
+     *
+     * @param ch
+     *            the new ch
+     */
     @Override
     public void setCh(String ch) {
         setAttribute("char", ch);
     }
 
+    /**
+     * Gets the ch off.
+     *
+     * @return the ch off
+     */
     @Override
     public String getChOff() {
         return getAttributeWithNoDefault("charoff");
     }
 
+    /**
+     * Sets the ch off.
+     *
+     * @param chOff
+     *            the new ch off
+     */
     @Override
     public void setChOff(String chOff) {
         setAttribute("charoff", chOff);
     }
 
+    /**
+     * Gets the v align.
+     *
+     * @return the v align
+     */
     @Override
     public String getVAlign() {
         return getAttributeWithDefault("valign", "middle");
     }
 
+    /**
+     * Sets the v align.
+     *
+     * @param vAlign
+     *            the new v align
+     */
     @Override
     public void setVAlign(String vAlign) {
         setAttribute("valign", vAlign);
     }
 
+    /**
+     * Delete cell.
+     *
+     * @param index
+     *            the index
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public void deleteCell(int index) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Gets the cells.
+     *
+     * @return the cells
+     */
     @Override
     public HTMLCollection getCells() {
         return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { "td", "th " }));
     }
 
+    /**
+     * Gets the row index.
+     *
+     * @return the row index
+     */
     @Override
     public int getRowIndex() {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Gets the section row index.
+     *
+     * @return the section row index
+     */
     @Override
     public int getSectionRowIndex() {
         return 0; // To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Insert cell.
+     *
+     * @param index
+     *            the index
+     *
+     * @return the HTML element
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public HTMLElement insertCell(int index) throws DOMException {
         return null; // To change body of implemented methods use File | Settings | File Templates.
@@ -119,16 +213,34 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
         return attributeName;
     }
 
+    /**
+     * Sets the row index.
+     *
+     * @param rowIndex
+     *            the new row index
+     */
     public void setRowIndex(int rowIndex) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Sets the section row index.
+     *
+     * @param sectionRowIndex
+     *            the new section row index
+     */
     public void setSectionRowIndex(int sectionRowIndex) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Sets the cells.
+     *
+     * @param cells
+     *            the new cells
+     */
     public void setCells(HTMLCollection cells) {
         // TODO Auto-generated method stub
 

@@ -38,14 +38,42 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
     /** The request being wrapped. **/
     private HttpServletRequest _baseRequest;
 
+    /**
+     * Creates the include request wrapper.
+     *
+     * @param request
+     *            the request
+     * @param dispatcher
+     *            the dispatcher
+     *
+     * @return the http servlet request
+     */
     static HttpServletRequest createIncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         return new IncludeRequestWrapper(request, dispatcher);
     }
 
+    /**
+     * Creates the forward request wrapper.
+     *
+     * @param request
+     *            the request
+     * @param dispatcher
+     *            the dispatcher
+     *
+     * @return the http servlet request
+     */
     static HttpServletRequest createForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         return new ForwardRequestWrapper(request, dispatcher);
     }
 
+    /**
+     * Instantiates a new dispatched request wrapper.
+     *
+     * @param baseRequest
+     *            the base request
+     * @param dispatcher
+     *            the dispatcher
+     */
     DispatchedRequestWrapper(HttpServletRequest baseRequest, RequestDispatcher dispatcher) {
         super(baseRequest);
         _baseRequest = baseRequest;
@@ -53,6 +81,11 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
         _requestContext.setParentRequest(baseRequest);
     }
 
+    /**
+     * Gets the base request.
+     *
+     * @return the base request
+     */
     HttpServletRequest getBaseRequest() {
         return _baseRequest;
     }

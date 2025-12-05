@@ -38,11 +38,36 @@ import org.w3c.dom.Node;
  **/
 abstract class FixedURLWebRequestSource extends WebRequestSource {
 
+    /** The Constant NO_VALUES. */
     private static final String[] NO_VALUES = {};
+
+    /** The preset parameter map. */
     private Map _presetParameterMap;
+
+    /** The preset parameter list. */
     private ArrayList _presetParameterList;
+
+    /** The character set. */
     private String _characterSet;
 
+    /**
+     * Instantiates a new fixed URL web request source.
+     *
+     * @param response
+     *            the response
+     * @param node
+     *            the node
+     * @param baseURL
+     *            the base URL
+     * @param attribute
+     *            the attribute
+     * @param frame
+     *            the frame
+     * @param defaultTarget
+     *            the default target
+     * @param characterSet
+     *            the character set
+     */
     public FixedURLWebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
             String defaultTarget, String characterSet) {
         super(response, node, baseURL, attribute, frame, defaultTarget);
@@ -162,6 +187,16 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
         return _characterSet;
     }
 
+    /**
+     * Equals.
+     *
+     * @param left
+     *            the left
+     * @param right
+     *            the right
+     *
+     * @return true, if successful
+     */
     private boolean equals(String[] left, String[] right) {
         if (left.length != right.length) {
             return false;
@@ -196,6 +231,11 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
         return false;
     }
 
+    /**
+     * Gets the preset parameter map.
+     *
+     * @return the preset parameter map
+     */
     private Map getPresetParameterMap() {
         if (_presetParameterMap == null) {
             loadPresetParameters();
@@ -203,6 +243,11 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
         return _presetParameterMap;
     }
 
+    /**
+     * Gets the preset parameter list.
+     *
+     * @return the preset parameter list
+     */
     private ArrayList getPresetParameterList() {
         if (_presetParameterList == null) {
             loadPresetParameters();
@@ -210,6 +255,9 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
         return _presetParameterList;
     }
 
+    /**
+     * Load preset parameters.
+     */
     private void loadPresetParameters() {
         _presetParameterMap = new HashMap<>();
         _presetParameterList = new ArrayList<>();

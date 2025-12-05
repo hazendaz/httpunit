@@ -45,13 +45,21 @@ import org.xml.sax.SAXException;
  **/
 public class ServletUnitClient extends WebClient {
 
+    /**
+     * Instantiates a new servlet unit client.
+     */
     private ServletUnitClient() {
         throw new RuntimeException("ServletUnitClient constructor needs InvocationContextFactory parameter");
     }
 
     /**
      * Creates and returns a new servlet unit client instance.
-     **/
+     *
+     * @param factory
+     *            the factory
+     *
+     * @return the servlet unit client
+     */
     public static ServletUnitClient newClient(InvocationContextFactory factory) {
         return new ServletUnitClient(factory);
     }
@@ -66,28 +74,52 @@ public class ServletUnitClient extends WebClient {
 
     /**
      * Creates and returns a new invocation context from a GET request.
-     **/
+     *
+     * @param requestString
+     *            the request string
+     *
+     * @return the invocation context
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     public InvocationContext newInvocation(String requestString) throws IOException, MalformedURLException {
         return newInvocation(new GetMethodWebRequest(requestString));
     }
 
     /**
      * Creates and returns a new invocation context to test calling of servlet methods.
-     **/
+     *
+     * @param request
+     *            the request
+     *
+     * @return the invocation context
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     public InvocationContext newInvocation(WebRequest request) throws IOException, MalformedURLException {
         return newInvocation(request, FrameSelector.TOP_FRAME);
     }
 
     /**
-     * get a new Invocation Context based on a request and a frame
+     * get a new Invocation Context based on a request and a frame.
      *
      * @param request
+     *            the request
      * @param frame
+     *            the frame
      *
-     * @return
+     * @return the invocation context
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
     InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
         ByteArrayOutputStream baos = getMessageBody(request);
@@ -98,6 +130,17 @@ public class ServletUnitClient extends WebClient {
                 baos.toByteArray());
     }
 
+    /**
+     * Gets the message body.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the message body
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ByteArrayOutputStream getMessageBody(WebRequest request) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         writeMessageBody(request, baos);
@@ -108,7 +151,19 @@ public class ServletUnitClient extends WebClient {
      * Updates this client and returns the response which would be displayed by the user agent. Note that this will
      * typically be the same as that returned by the servlet invocation unless that invocation results in a redirect
      * request.
-     **/
+     *
+     * @param invocation
+     *            the invocation
+     *
+     * @return the response
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse getResponse(InvocationContext invocation)
             throws MalformedURLException, IOException, SAXException {
         updateMainWindow(invocation.getFrame(), invocation.getServletResponse());
@@ -120,6 +175,8 @@ public class ServletUnitClient extends WebClient {
      *
      * @param create
      *            if true, will create a new session if no valid session is defined.
+     *
+     * @return the session
      */
     public HttpSession getSession(boolean create) {
         HttpSession session = _invocationContextFactory
@@ -151,10 +208,17 @@ public class ServletUnitClient extends WebClient {
 
     // -------------------------- private members -----------------------------------
 
+    /** The invocation context factory. */
     private InvocationContextFactory _invocationContextFactory;
 
     // --------------------------------- package methods ---------------------------------------
 
+    /**
+     * Instantiates a new servlet unit client.
+     *
+     * @param factory
+     *            the factory
+     */
     private ServletUnitClient(InvocationContextFactory factory) {
         if (factory == null) {
             throw new RuntimeException("constructor for ServletUnitClient called with null factory parameter");

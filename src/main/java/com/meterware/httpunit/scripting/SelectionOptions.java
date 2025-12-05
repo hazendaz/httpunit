@@ -20,22 +20,32 @@
 package com.meterware.httpunit.scripting;
 
 /**
- * Represents an array of Options
- **/
+ * Represents an array of Options.
+ */
 public interface SelectionOptions {
 
     /**
-     * Returns the length of this array
+     * Returns the length of this array.
+     *
+     * @return the length
      */
     int getLength();
 
     /**
-     * Sets a new length to this array
+     * Sets a new length to this array.
+     *
+     * @param length
+     *            the new length
      */
     void setLength(int length);
 
     /**
-     * Specify the specified option
+     * Specify the specified option.
+     *
+     * @param i
+     *            the i
+     * @param option
+     *            the option
      */
     void put(int i, SelectionOption option);
 

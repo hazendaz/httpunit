@@ -24,5 +24,6 @@ package com.meterware.httpunit;
  **/
 public abstract class IllegalRequestParameterException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 }

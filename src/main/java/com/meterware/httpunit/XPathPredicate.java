@@ -36,9 +36,13 @@ import org.w3c.dom.NodeList;
  */
 public class XPathPredicate implements HTMLElementPredicate {
 
-    /** XPath which dictates matching nodes, from root */
+    /** XPath which dictates matching nodes, from root. */
     private XPathExpression xpath;
+
+    /** The path. */
     private String path;
+
+    /** The Constant DEBUG. */
     // set to true for debugging
     public static final boolean DEBUG = false;
 
@@ -57,10 +61,12 @@ public class XPathPredicate implements HTMLElementPredicate {
     }
 
     /**
-     * debug Output for node structure
+     * debug Output for node structure.
      *
      * @param node
+     *            the node
      * @param indent
+     *            the indent
      */
     private void debugOut(Node node, String indent) {
         System.out.print(indent + node.getNodeName() + ":");

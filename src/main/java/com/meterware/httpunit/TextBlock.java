@@ -29,12 +29,29 @@ import org.w3c.dom.Node;
  **/
 public class TextBlock extends BlockElement {
 
+    /** The lists. */
     private ArrayList _lists = new ArrayList<>();
     /** Predicate to match part or all of a block's class attribute. **/
     public static final HTMLElementPredicate MATCH_CLASS;
     /** Predicate to match the tag associated with a block (case insensitive). **/
     public static final HTMLElementPredicate MATCH_TAG;
 
+    /**
+     * Instantiates a new text block.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param rootNode
+     *            the root node
+     * @param characterSet
+     *            the character set
+     */
     public TextBlock(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {
         super(response, frame, baseURL, baseTarget, rootNode, characterSet);
@@ -42,15 +59,31 @@ public class TextBlock extends BlockElement {
 
     /**
      * Returns any lists embedded in this text block.
+     *
+     * @return the lists
      */
     public WebList[] getLists() {
         return (WebList[]) _lists.toArray(new WebList[_lists.size()]);
     }
 
+    /**
+     * Adds the list.
+     *
+     * @param webList
+     *            the web list
+     */
     void addList(WebList webList) {
         _lists.add(webList);
     }
 
+    /**
+     * Gets the formats.
+     *
+     * @param characterPosition
+     *            the character position
+     *
+     * @return the formats
+     */
     String[] getFormats(int characterPosition) {
         return null;
     }

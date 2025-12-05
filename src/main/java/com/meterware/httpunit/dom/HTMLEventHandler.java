@@ -27,16 +27,22 @@ import org.mozilla.javascript.Function;
  */
 class HTMLEventHandler {
 
+    /** The base element. */
     private HTMLElementImpl _baseElement;
+
+    /** The handler name. */
     private String _handlerName;
 
+    /** The handler. */
     private Function _handler;
 
     /**
-     * create a handler for the given HTML Event
+     * create a handler for the given HTML Event.
      *
      * @param baseElement
+     *            the base element
      * @param handlerName
+     *            the handler name
      */
     public HTMLEventHandler(HTMLElementImpl baseElement, String handlerName) {
         _baseElement = baseElement;
@@ -44,18 +50,19 @@ class HTMLEventHandler {
     }
 
     /**
-     * set the handler Function for this event Handler
+     * set the handler Function for this event Handler.
      *
      * @param handler
+     *            the new handler
      */
     void setHandler(Function handler) {
         _handler = handler;
     }
 
     /**
-     * get the (cached) handler Function for this event Handler on first access compile the function
+     * get the (cached) handler Function for this event Handler on first access compile the function.
      *
-     * @return
+     * @return the handler
      */
     Function getHandler() {
         if (_handler == null) {

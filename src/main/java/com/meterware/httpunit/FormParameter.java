@@ -31,14 +31,24 @@ import java.util.Arrays;
  **/
 public class FormParameter {
 
+    /** The Constant UNKNOWN_PARAMETER. */
     private static final FormParameter UNKNOWN_PARAMETER = new FormParameter();
 
+    /** The controls. */
     private FormControl[] _controls;
+
+    /** The control list. */
     private ArrayList _controlList = new ArrayList<>();
+
+    /** The group. */
     private RadioGroupFormControl _group;
+
+    /** The name. */
     private String _name;
 
     /**
+     * Gets the unknown parameter.
+     *
      * @return the uNKNOWN_PARAMETER
      */
     public static FormParameter getUNKNOWN_PARAMETER() {
@@ -46,18 +56,19 @@ public class FormParameter {
     }
 
     /**
-     * return whether I am the unknown parameter
+     * return whether I am the unknown parameter.
      *
-     * @return
+     * @return true, if is unknown
      */
     public boolean isUnknown() {
         return this == UNKNOWN_PARAMETER;
     }
 
     /**
-     * add the given form control
+     * add the given form control.
      *
      * @param control
+     *            the control
      */
     void addControl(FormControl control) {
         _controls = null;
@@ -75,7 +86,7 @@ public class FormParameter {
     }
 
     /**
-     * get the controls for this form Parameter
+     * get the controls for this form Parameter.
      *
      * @return the controls
      */
@@ -87,7 +98,7 @@ public class FormParameter {
     }
 
     /**
-     * get the control for this form Parameter (assuming it has only one as for a text control
+     * get the control for this form Parameter (assuming it has only one as for a text control.
      *
      * @return the controls
      */
@@ -100,6 +111,11 @@ public class FormParameter {
         return controls[0];
     }
 
+    /**
+     * Gets the scriptable object.
+     *
+     * @return the scriptable object
+     */
     Object getScriptableObject() {
         if (getControls().length == 1) {
             return getControls()[0].getDelegate();
@@ -111,6 +127,11 @@ public class FormParameter {
         return list.toArray(new ScriptableDelegate[list.size()]);
     }
 
+    /**
+     * Gets the values.
+     *
+     * @return the values
+     */
     String[] getValues() {
         ArrayList valueList = new ArrayList<>();
         FormControl[] controls = getControls();
@@ -121,9 +142,10 @@ public class FormParameter {
     }
 
     /**
-     * set values to the given values
+     * set values to the given values.
      *
      * @param values
+     *            the new values
      */
     void setValues(String[] values) {
         ArrayList list = new ArrayList(values.length);
@@ -143,6 +165,9 @@ public class FormParameter {
         }
     }
 
+    /**
+     * Toggle checkbox.
+     */
     public void toggleCheckbox() {
         FormControl[] controls = getControls();
         if (controls.length != 1) {
@@ -151,6 +176,12 @@ public class FormParameter {
         controls[0].toggle();
     }
 
+    /**
+     * Toggle checkbox.
+     *
+     * @param value
+     *            the value
+     */
     public void toggleCheckbox(String value) {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
@@ -162,6 +193,12 @@ public class FormParameter {
         throw new IllegalCheckboxParameterException(_name + "/" + value, "toggleCheckbox");
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param state
+     *            the new value
+     */
     public void setValue(boolean state) {
         FormControl[] controls = getControls();
         if (controls.length != 1) {
@@ -170,6 +207,14 @@ public class FormParameter {
         controls[0].setState(state);
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the value
+     * @param state
+     *            the state
+     */
     public void setValue(String value, boolean state) {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
@@ -181,6 +226,12 @@ public class FormParameter {
         throw new IllegalCheckboxParameterException(_name + "/" + value, "setCheckbox");
     }
 
+    /**
+     * Sets the files.
+     *
+     * @param fileArray
+     *            the new files
+     */
     void setFiles(UploadFileSpec[] fileArray) {
         ArrayList list = new ArrayList(fileArray.length);
         list.addAll(Arrays.asList(fileArray));
@@ -192,6 +243,11 @@ public class FormParameter {
         }
     }
 
+    /**
+     * Gets the options.
+     *
+     * @return the options
+     */
     String[] getOptions() {
         ArrayList optionList = new ArrayList<>();
         FormControl[] controls = getControls();
@@ -201,6 +257,11 @@ public class FormParameter {
         return (String[]) optionList.toArray(new String[optionList.size()]);
     }
 
+    /**
+     * Gets the option values.
+     *
+     * @return the option values
+     */
     String[] getOptionValues() {
         ArrayList valueList = new ArrayList<>();
         for (int i = 0; i < getControls().length; i++) {
@@ -209,6 +270,11 @@ public class FormParameter {
         return (String[]) valueList.toArray(new String[valueList.size()]);
     }
 
+    /**
+     * Checks if is multi valued parameter.
+     *
+     * @return true, if is multi valued parameter
+     */
     boolean isMultiValuedParameter() {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
@@ -219,6 +285,11 @@ public class FormParameter {
         return false;
     }
 
+    /**
+     * Gets the num text parameters.
+     *
+     * @return the num text parameters
+     */
     int getNumTextParameters() {
         int result = 0;
         FormControl[] controls = getControls();
@@ -230,6 +301,11 @@ public class FormParameter {
         return result;
     }
 
+    /**
+     * Checks if is text parameter.
+     *
+     * @return true, if is text parameter
+     */
     boolean isTextParameter() {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
@@ -240,6 +316,11 @@ public class FormParameter {
         return false;
     }
 
+    /**
+     * Checks if is file parameter.
+     *
+     * @return true, if is file parameter
+     */
     boolean isFileParameter() {
         FormControl[] controls = getControls();
         for (FormControl control : controls) {
@@ -251,7 +332,7 @@ public class FormParameter {
     }
 
     /**
-     * is this a disabled parameter
+     * is this a disabled parameter.
      *
      * @return false if one of the controls is not disabled or this is the unknown parameter
      */
@@ -266,7 +347,7 @@ public class FormParameter {
     }
 
     /**
-     * is this a read only parameter
+     * is this a read only parameter.
      *
      * @return false if one of the controls is not read only or this is the unknown parameter
      */
@@ -281,7 +362,7 @@ public class FormParameter {
     }
 
     /**
-     * is this a hidden parameter?
+     * is this a hidden parameter?.
      *
      * @return false if one of the controls is not hidden or this is the unknown parameter
      */
@@ -295,6 +376,14 @@ public class FormParameter {
         return !this.isUnknown();
     }
 
+    /**
+     * Gets the radio group.
+     *
+     * @param form
+     *            the form
+     *
+     * @return the radio group
+     */
     private RadioGroupFormControl getRadioGroup(WebForm form) {
         if (_group == null) {
             _group = new RadioGroupFormControl(form);
@@ -311,13 +400,16 @@ public class FormParameter {
      **/
     public class UnusedParameterValueException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /**
-         * construct an exception for an unused parameter with the given name and the value that is bad
+         * construct an exception for an unused parameter with the given name and the value that is bad.
          *
          * @param parameterName
+         *            the parameter name
          * @param badValue
+         *            the bad value
          */
         UnusedParameterValueException(String parameterName, String badValue) {
             _parameterName = parameterName;
@@ -337,7 +429,10 @@ public class FormParameter {
             return sb.toString();
         }
 
+        /** The parameter name. */
         private String _parameterName;
+
+        /** The bad value. */
         private String _badValue;
     }
 
@@ -348,15 +443,19 @@ public class FormParameter {
      **/
     class UnusedUploadFileException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /**
          * construct a new UnusedUploadFileException exception base on the parameter Name the number of files expected
-         * and supplied
+         * and supplied.
          *
          * @param parameterName
+         *            the parameter name
          * @param numFilesExpected
+         *            the num files expected
          * @param numFilesSupplied
+         *            the num files supplied
          */
         UnusedUploadFileException(String parameterName, int numFilesExpected, int numFilesSupplied) {
             _parameterName = parameterName;
@@ -380,8 +479,13 @@ public class FormParameter {
             return sb.toString();
         }
 
+        /** The parameter name. */
         private String _parameterName;
+
+        /** The num expected. */
         private int _numExpected;
+
+        /** The num supplied. */
         private int _numSupplied;
     }
 
@@ -393,8 +497,17 @@ public class FormParameter {
      **/
     static class IllegalCheckboxParameterException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new illegal checkbox parameter exception.
+         *
+         * @param parameterName
+         *            the parameter name
+         * @param methodName
+         *            the method name
+         */
         IllegalCheckboxParameterException(String parameterName, String methodName) {
             _parameterName = parameterName;
             _methodName = methodName;
@@ -408,7 +521,10 @@ public class FormParameter {
             return sb.toString();
         }
 
+        /** The parameter name. */
         private String _parameterName;
+
+        /** The method name. */
         private String _methodName;
     }
 

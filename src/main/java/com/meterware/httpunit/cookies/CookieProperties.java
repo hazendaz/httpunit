@@ -37,6 +37,9 @@ public class CookieProperties {
     /** A collection of listeners for cookie events. **/
     private static ArrayList<CookieListener> _listeners;
 
+    /**
+     * Reset.
+     */
     public static void reset() {
         _domainMatchingStrict = true;
         _pathMatchingStrict = true;
@@ -47,6 +50,8 @@ public class CookieProperties {
      * Returns true (the default) if cookies should be rejected if they specify a domain which is not a suffix of the
      * host domain or does not contain all of the dots in that host domain name (see
      * <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
+     *
+     * @return true, if is domain matching strict
      */
     public static boolean isDomainMatchingStrict() {
         return _domainMatchingStrict;
@@ -54,6 +59,9 @@ public class CookieProperties {
 
     /**
      * Specifies whether strict domain name matching must be followed.
+     *
+     * @param domainMatchingStrict
+     *            the new domain matching strict
      */
     public static void setDomainMatchingStrict(boolean domainMatchingStrict) {
         _domainMatchingStrict = domainMatchingStrict;
@@ -62,6 +70,8 @@ public class CookieProperties {
     /**
      * Returns true (the default) if cookies should be rejected if they specify a path which is not a prefix of the
      * request path (see <a href="http://www.faqs.org/rfcs/rfc2965.html">RFC2965</a>).
+     *
+     * @return true, if is path matching strict
      */
     public static boolean isPathMatchingStrict() {
         return _pathMatchingStrict;
@@ -69,6 +79,9 @@ public class CookieProperties {
 
     /**
      * Specifies whether strict path name matching must be followed.
+     *
+     * @param pathMatchingStrict
+     *            the new path matching strict
      */
     public static void setPathMatchingStrict(boolean pathMatchingStrict) {
         _pathMatchingStrict = pathMatchingStrict;
@@ -76,6 +89,9 @@ public class CookieProperties {
 
     /**
      * Adds a listener for cookie events.
+     *
+     * @param listener
+     *            the listener
      */
     public static void addCookieListener(CookieListener listener) {
         if (_listeners == null) {
@@ -86,6 +102,16 @@ public class CookieProperties {
         }
     }
 
+    /**
+     * Report cookie rejected.
+     *
+     * @param reason
+     *            the reason
+     * @param attribute
+     *            the attribute
+     * @param source
+     *            the source
+     */
     public static void reportCookieRejected(int reason, String attribute, String source) {
         if (_listeners == null) {
             return;

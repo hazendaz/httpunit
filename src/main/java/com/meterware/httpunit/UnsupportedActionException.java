@@ -24,8 +24,15 @@ package com.meterware.httpunit;
  **/
 public class UnsupportedActionException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new unsupported action exception.
+     *
+     * @param message
+     *            the message
+     */
     public UnsupportedActionException(String message) {
         super(message);
     }

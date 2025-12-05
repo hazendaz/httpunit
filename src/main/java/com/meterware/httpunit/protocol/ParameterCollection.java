@@ -21,10 +21,19 @@ package com.meterware.httpunit.protocol;
 
 import java.io.IOException;
 
+/**
+ * The Interface ParameterCollection.
+ */
 public interface ParameterCollection {
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
-     **/
+     *
+     * @param processor
+     *            the processor
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void recordParameters(ParameterProcessor processor) throws IOException;
 }

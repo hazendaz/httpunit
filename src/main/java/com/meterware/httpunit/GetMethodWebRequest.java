@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
-     * initialize me - set method to GET
+     * initialize me - set method to GET.
      */
     private void init() {
         super.setMethod("GET");
@@ -50,7 +50,10 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request using a specific absolute url string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     */
     public GetMethodWebRequest(String urlString) {
         super(urlString);
         init();
@@ -58,7 +61,12 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request using a base URL and a relative url string.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     */
     public GetMethodWebRequest(URL urlBase, String urlString) {
         super(urlBase, urlString);
         init();
@@ -66,7 +74,14 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     public GetMethodWebRequest(URL urlBase, String urlString, String target) {
         super(urlBase, urlString, target);
         init();
@@ -76,7 +91,10 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request for a form submitted from JavaScript.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     */
     GetMethodWebRequest(WebForm sourceForm) {
         super(sourceForm);
         init();
@@ -84,7 +102,10 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request for a link or image.
-     **/
+     *
+     * @param source
+     *            the source
+     */
     GetMethodWebRequest(FixedURLWebRequestSource source) {
         super(source);
         init();
@@ -92,7 +113,18 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param referer
+     *            the referer
+     * @param sourceElement
+     *            the source element
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     GetMethodWebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target) {
         super(referer, sourceElement, urlBase, urlString, target);
         init();
@@ -100,7 +132,14 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs an initial web request for a frame.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param frame
+     *            the frame
+     */
     GetMethodWebRequest(URL urlBase, String urlString, FrameSelector frame) {
         super(urlBase, urlString, frame);
         init();
@@ -108,7 +147,16 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request for a javascript open call.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param frame
+     *            the frame
+     * @param target
+     *            the target
+     */
     GetMethodWebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
         super(urlBase, urlString, frame, target);
         init();
@@ -116,7 +164,18 @@ public class GetMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request for a form.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     * @param parameterHolder
+     *            the parameter holder
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     GetMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
         super(sourceForm, parameterHolder, button, x, y);
         init();

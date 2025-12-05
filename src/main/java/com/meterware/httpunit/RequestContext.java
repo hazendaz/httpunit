@@ -29,12 +29,25 @@ import org.xml.sax.SAXException;
  **/
 class RequestContext {
 
+    /** The new responses. */
     private ArrayList _newResponses = new ArrayList<>();
 
+    /**
+     * Adds the new response.
+     *
+     * @param response
+     *            the response
+     */
     void addNewResponse(WebResponse response) {
         _newResponses.add(response);
     }
 
+    /**
+     * Run scripts.
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     void runScripts() throws SAXException {
         for (Iterator iterator = _newResponses.iterator(); iterator.hasNext();) {
             WebResponse response = (WebResponse) iterator.next();

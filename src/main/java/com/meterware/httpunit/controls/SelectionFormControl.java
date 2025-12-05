@@ -40,13 +40,17 @@ import org.w3c.dom.NodeList;
 
 /**
  * FormControl for "Select" moved here by wf for testability and visibility see bugreport [ 1124057 ] Out of Bounds
- * Exception should be avoided
+ * Exception should be avoided.
  */
 public class SelectionFormControl extends FormControl {
 
+    /** The multi select. */
     private final boolean _multiSelect;
+
+    /** The list box. */
     private final boolean _listBox;
 
+    /** The selection options. */
     private Options _selectionOptions;
 
     @Override
@@ -54,6 +58,14 @@ public class SelectionFormControl extends FormControl {
         return isMultiValued() ? MULTIPLE_TYPE : SINGLE_TYPE;
     }
 
+    /**
+     * Instantiates a new selection form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public SelectionFormControl(WebForm form, HTMLSelectElementImpl element) {
         super(form, element);
         if (!element.getNodeName().equalsIgnoreCase("select")) {
@@ -91,6 +103,9 @@ public class SelectionFormControl extends FormControl {
         return _multiSelect;
     }
 
+    /**
+     * The Class Scriptable.
+     */
     class Scriptable extends FormControl.Scriptable {
 
         /**
@@ -131,6 +146,11 @@ public class SelectionFormControl extends FormControl {
             return _selectionOptions.get(index);
         }
 
+        /**
+         * Gets the selected value.
+         *
+         * @return the selected value
+         */
         private String getSelectedValue() {
             String[] values = getValues();
             return values.length == 0 ? "" : values[0];
@@ -168,6 +188,12 @@ public class SelectionFormControl extends FormControl {
         return new Scriptable();
     }
 
+    /**
+     * Update required parameters.
+     *
+     * @param required
+     *            the required
+     */
     void updateRequiredParameters(Hashtable required) {
         if (isReadOnly()) {
             required.put(getName(), getValues());
@@ -197,34 +223,78 @@ public class SelectionFormControl extends FormControl {
         _selectionOptions.reset();
     }
 
+    /**
+     * The Class Option.
+     */
     public static class Option extends ScriptableDelegate implements SelectionOption {
 
+        /** The text. */
         private String _text = "";
+
+        /** The value. */
         private String _value;
+
+        /** The default selected. */
         private boolean _defaultSelected;
+
+        /** The selected. */
         private boolean _selected;
+
+        /** The index. */
         private int _index;
+
+        /** The container. */
         private Options _container;
 
+        /**
+         * Instantiates a new option.
+         */
         public Option() {
         }
 
+        /**
+         * Instantiates a new option.
+         *
+         * @param text
+         *            the text
+         * @param value
+         *            the value
+         * @param selected
+         *            the selected
+         */
         Option(String text, String value, boolean selected) {
             _text = text;
             _value = value;
             _defaultSelected = _selected = selected;
         }
 
+        /**
+         * Reset.
+         */
         void reset() {
             _selected = _defaultSelected;
         }
 
+        /**
+         * Adds the value if selected.
+         *
+         * @param list
+         *            the list
+         */
         void addValueIfSelected(List list) {
             if (_selected) {
                 list.add(_value);
             }
         }
 
+        /**
+         * Sets the index.
+         *
+         * @param container
+         *            the container
+         * @param index
+         *            the index
+         */
         void setIndex(Options container, int index) {
             _container = container;
             _index = index;
@@ -284,10 +354,20 @@ public class SelectionFormControl extends FormControl {
         }
     }
 
+    /**
+     * The Class Options.
+     */
     public abstract class Options extends ScriptableDelegate implements SelectionOptions {
 
+        /** The options. */
         private Option[] _options;
 
+        /**
+         * Instantiates a new options.
+         *
+         * @param selectionNode
+         *            the selection node
+         */
         Options(Node selectionNode) {
             // BR [ 1843978 ] Accessing Options in a form is in lower case
             // calls for uppercase "option" here ... pending as of 2007-12-30
@@ -303,24 +383,35 @@ public class SelectionFormControl extends FormControl {
         }
 
         /**
-         * claim unique values from the given list of values
+         * claim unique values from the given list of values.
          *
          * @param values
          *            - the list of values
          *
-         * @return
+         * @return true, if successful
          */
         boolean claimUniqueValues(List values) {
             return claimUniqueValues(values, _options);
         }
 
+        /**
+         * Claim unique values.
+         *
+         * @param values
+         *            the values
+         * @param options
+         *            the options
+         *
+         * @return true, if successful
+         */
         protected abstract boolean claimUniqueValues(List values, Option[] options);
 
         /**
          * report if there are no matches be aware of [ 1100437 ] Patch for ClassCastException in FormControl TODO
-         * implement patch if test get's available
+         * implement patch if test get's available.
          *
          * @param values
+         *            the values
          */
         protected final void reportNoMatches(List values) {
             if (!_listBox) {
@@ -328,6 +419,11 @@ public class SelectionFormControl extends FormControl {
             }
         }
 
+        /**
+         * Gets the selected values.
+         *
+         * @return the selected values
+         */
         String[] getSelectedValues() {
             ArrayList list = new ArrayList<>();
             for (Option _option : _options) {
@@ -339,12 +435,20 @@ public class SelectionFormControl extends FormControl {
             return (String[]) list.toArray(new String[list.size()]);
         }
 
+        /**
+         * Reset.
+         */
         void reset() {
             for (Option _option : _options) {
                 _option.reset();
             }
         }
 
+        /**
+         * Gets the displayed text.
+         *
+         * @return the displayed text
+         */
         String[] getDisplayedText() {
             String[] displayedText = new String[_options.length];
             for (int i = 0; i < displayedText.length; i++) {
@@ -353,6 +457,11 @@ public class SelectionFormControl extends FormControl {
             return displayedText;
         }
 
+        /**
+         * Gets the values.
+         *
+         * @return the values
+         */
         String[] getValues() {
             String[] values = new String[_options.length];
             for (int i = 0; i < values.length; i++) {
@@ -363,7 +472,10 @@ public class SelectionFormControl extends FormControl {
 
         /**
          * Selects the matching item and deselects the others.
-         **/
+         *
+         * @param index
+         *            the new selected index
+         */
         void setSelectedIndex(int index) {
             for (int i = 0; i < _options.length; i++) {
                 _options[i]._selected = i == index;
@@ -372,6 +484,8 @@ public class SelectionFormControl extends FormControl {
 
         /**
          * Returns the index of the first item selected, or -1 if none is selected.
+         *
+         * @return the first selected index
          */
         int getFirstSelectedIndex() {
             for (int i = 0; i < _options.length; i++) {
@@ -382,6 +496,11 @@ public class SelectionFormControl extends FormControl {
             return noOptionSelectedIndex();
         }
 
+        /**
+         * No option selected index.
+         *
+         * @return the int
+         */
         protected abstract int noOptionSelectedIndex();
 
         @Override
@@ -430,8 +549,22 @@ public class SelectionFormControl extends FormControl {
             }
         }
 
+        /**
+         * Ensure unique option.
+         *
+         * @param options
+         *            the options
+         * @param i
+         *            the i
+         */
         protected abstract void ensureUniqueOption(Option[] options, int i);
 
+        /**
+         * Delete options entry.
+         *
+         * @param i
+         *            the i
+         */
         private void deleteOptionsEntry(int i) {
             Option[] newArray = new Option[_options.length - 1];
             System.arraycopy(_options, 0, newArray, 0, i);
@@ -439,6 +572,9 @@ public class SelectionFormControl extends FormControl {
             _options = newArray;
         }
 
+        /**
+         * Expand options array.
+         */
         private void expandOptionsArray() {
             Option[] newArray = new Option[_options.length + 1];
             System.arraycopy(_options, 0, newArray, 0, _options.length);
@@ -474,11 +610,26 @@ public class SelectionFormControl extends FormControl {
             return _options[index];
         } // get
 
-        /** Invoked when an option is set true. **/
+        /**
+         * Invoked when an option is set true. *
+         *
+         * @param i
+         *            the i
+         */
         void optionSet(int i) {
             ensureUniqueOption(_options, i);
         }
 
+        /**
+         * Gets the option value.
+         *
+         * @param optionNode
+         *            the option node
+         * @param displayedText
+         *            the displayed text
+         *
+         * @return the option value
+         */
         private String getOptionValue(Node optionNode, String displayedText) {
             NamedNodeMap nnm = optionNode.getAttributes();
             if (nnm.getNamedItem("value") != null) {
@@ -487,13 +638,30 @@ public class SelectionFormControl extends FormControl {
             return displayedText;
         }
 
+        /**
+         * Gets the value.
+         *
+         * @param node
+         *            the node
+         *
+         * @return the value
+         */
         private String getValue(Node node) {
             return node == null ? "" : emptyIfNull(node.getNodeValue());
         }
     }
 
+    /**
+     * The Class SingleSelectOptions.
+     */
     class SingleSelectOptions extends Options {
 
+        /**
+         * Instantiates a new single select options.
+         *
+         * @param selectionNode
+         *            the selection node
+         */
         public SingleSelectOptions(Node selectionNode) {
             super(selectionNode);
         }
@@ -539,8 +707,17 @@ public class SelectionFormControl extends FormControl {
         }
     }
 
+    /**
+     * The Class MultiSelectOptions.
+     */
     class MultiSelectOptions extends Options {
 
+        /**
+         * Instantiates a new multi select options.
+         *
+         * @param selectionNode
+         *            the selection node
+         */
         public MultiSelectOptions(Node selectionNode) {
             super(selectionNode);
         }

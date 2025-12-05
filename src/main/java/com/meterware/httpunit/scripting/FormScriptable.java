@@ -19,17 +19,21 @@
  */
 package com.meterware.httpunit.scripting;
 
+/**
+ * The Interface FormScriptable.
+ */
 public interface FormScriptable extends ScriptingEventHandler {
 
     /**
-     * set the action
+     * set the action.
      *
      * @param newAction
+     *            the new action
      */
     void setAction(String newAction);
 
     /**
-     * set the value of a parameter
+     * set the value of a parameter.
      *
      * @param name
      *            - the name of the parameter to set

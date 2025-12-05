@@ -29,12 +29,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Radio button control
+ * Radio button control.
  */
 public class RadioGroupFormControl extends FormControl {
 
+    /** The button list. */
     private List _buttonList = new ArrayList<>();
+
+    /** The buttons. */
     private RadioButtonFormControl[] _buttons;
+
+    /** The allowed values. */
     private String[] _allowedValues;
 
     @Override
@@ -43,18 +48,20 @@ public class RadioGroupFormControl extends FormControl {
     }
 
     /**
-     * construct Radiobuttons for a form
+     * construct Radiobuttons for a form.
      *
      * @param form
+     *            the form
      */
     public RadioGroupFormControl(WebForm form) {
         super(form);
     }
 
     /**
-     * add a radio button
+     * add a radio button.
      *
      * @param control
+     *            the control
      */
     void addRadioButton(RadioButtonFormControl control) {
         _buttonList.add(control);
@@ -160,6 +167,11 @@ public class RadioGroupFormControl extends FormControl {
         }
     }
 
+    /**
+     * Gets the allowed values.
+     *
+     * @return the allowed values
+     */
     private String[] getAllowedValues() {
         if (_allowedValues == null) {
             _allowedValues = new String[getButtons().length];
@@ -170,6 +182,11 @@ public class RadioGroupFormControl extends FormControl {
         return _allowedValues;
     }
 
+    /**
+     * Gets the buttons.
+     *
+     * @return the buttons
+     */
     private RadioButtonFormControl[] getButtons() {
         if (_buttons == null) {
             _buttons = (RadioButtonFormControl[]) _buttonList.toArray(new RadioButtonFormControl[_buttonList.size()]);

@@ -23,11 +23,14 @@ import java.net.URL;
 
 /**
  * Class used to indicate when a request to a resource resulted in an HTTP redirect response that lead to a recursive
- * loop of redirections
+ * loop of redirections.
  */
 public class RecursiveRedirectionException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The url. */
     private URL url;
 
     /**

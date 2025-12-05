@@ -41,7 +41,14 @@ public interface CookieListener {
 
     /**
      * Invoked when a cookie is rejected by HttpUnit.
-     **/
+     *
+     * @param cookieName
+     *            the cookie name
+     * @param reason
+     *            the reason
+     * @param attribute
+     *            the attribute
+     */
     void cookieRejected(String cookieName, int reason, String attribute);
 
 }

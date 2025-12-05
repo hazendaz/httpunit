@@ -58,23 +58,61 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+/**
+ * The Class ServletUnitHttpRequest.
+ */
 class ServletUnitHttpRequest implements HttpServletRequest {
 
+    /** The input stream. */
     private ServletInputStreamImpl _inputStream;
+
+    /** The locales. */
     private Vector _locales;
+
+    /** The protocol. */
     private String _protocol;
+
+    /** The secure. */
     private boolean _secure;
+
+    /** The request context. */
     private RequestContext _requestContext;
+
+    /** The charset. */
     private String _charset;
+
+    /** The got reader. */
     private boolean _gotReader;
+
+    /** The got input stream. */
     private boolean _gotInputStream;
+
+    /** The reader. */
     private BufferedReader _reader;
+
+    /** The server port. */
     private int _serverPort;
+
+    /** The server name. */
     private String _serverName;
 
     /**
      * Constructs a ServletUnitHttpRequest from a WebRequest object.
-     **/
+     *
+     * @param servletRequest
+     *            the servlet request
+     * @param request
+     *            the request
+     * @param context
+     *            the context
+     * @param clientHeaders
+     *            the client headers
+     * @param messageBody
+     *            the message body
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
             Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {
         if (context == null) {
@@ -361,7 +399,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     }
 
     /**
-     * initialize the inputStream
+     * initialize the inputStream.
      */
     private void initializeInputStream() {
         if (_inputStream == null) {
@@ -534,7 +572,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     }
 
     /**
-     * Parses the accept-language header to obtain a vector of preferred locales
+     * Parses the accept-language header to obtain a vector of preferred locales.
      *
      * @return the preferred locales, sorted by qvalue
      */
@@ -590,6 +628,16 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * Combined path.
+     *
+     * @param basePath
+     *            the base path
+     * @param relativePath
+     *            the relative path
+     *
+     * @return the string
+     */
     private String combinedPath(String basePath, String relativePath) {
         if (basePath.indexOf('/') < 0) {
             return relativePath;
@@ -720,6 +768,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- package members ----------------------------------------------
 
+    /**
+     * Adds the cookie.
+     *
+     * @param cookie
+     *            the cookie
+     */
     private void addCookie(Cookie cookie) {
         _cookies.addElement(cookie);
         if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {
@@ -727,16 +781,27 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * Gets the servlet session.
+     *
+     * @return the servlet session
+     */
     private ServletUnitHttpSession getServletSession() {
         return (ServletUnitHttpSession) getSession();
     }
 
+    /**
+     * Read form authentication.
+     */
     void readFormAuthentication() {
         if (getSession( /* create */ false) != null) {
             recordAuthenticationInfo(getServletSession().getUserName(), getServletSession().getRoles());
         }
     }
 
+    /**
+     * Read basic authentication.
+     */
     void readBasicAuthentication() {
         String authorizationHeader = (String) _headers.get("Authorization");
 
@@ -750,6 +815,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * To array.
+     *
+     * @param roleList
+     *            the role list
+     *
+     * @return the string[]
+     */
     static String[] toArray(String roleList) {
         StringTokenizer st = new StringTokenizer(roleList, ",");
         String[] result = new String[st.countTokens()];
@@ -759,6 +832,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         return result;
     }
 
+    /**
+     * Record authentication info.
+     *
+     * @param userName
+     *            the user name
+     * @param roles
+     *            the roles
+     */
     void recordAuthenticationInfo(String userName, String[] roles) {
         _userName = userName;
         _roles = roles;
@@ -766,25 +847,55 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- private members ----------------------------------------------
 
+    /** The Constant LOOPBACK_ADDRESS. */
     static final private String LOOPBACK_ADDRESS = "127.0.0.1";
 
+    /** The request. */
     private WebRequest _request;
+
+    /** The servlet request. */
     private ServletMetaData _servletRequest;
+
+    /** The headers. */
     private WebClient.HeaderDictionary _headers;
+
+    /** The context. */
     private ServletUnitContext _context;
+
+    /** The session. */
     private ServletUnitHttpSession _session;
+
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
+
+    /** The cookies. */
     private Vector _cookies = new Vector<>();
+
+    /** The session ID. */
     private String _sessionID;
+
+    /** The message body. */
     private byte[] _messageBody;
 
+    /** The user name. */
     private String _userName;
+
+    /** The roles. */
     private String[] _roles;
 
+    /**
+     * Throw not implemented yet.
+     */
     private void throwNotImplementedYet() {
         throw new RuntimeException("Not implemented yet");
     }
 
+    /**
+     * Sets the cookies from header.
+     *
+     * @param clientHeaders
+     *            the new cookies from header
+     */
     private void setCookiesFromHeader(Dictionary clientHeaders) {
         String cookieHeader = (String) clientHeaders.get("Cookie");
         if (cookieHeader == null) {
@@ -802,11 +913,23 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * The Class PrioritizedLocale.
+     */
     static class PrioritizedLocale implements Comparable {
 
+        /** The locale. */
         private Locale _locale;
+
+        /** The priority. */
         private float _priority;
 
+        /**
+         * Instantiates a new prioritized locale.
+         *
+         * @param languageSpec
+         *            the language spec
+         */
         PrioritizedLocale(String languageSpec) {
             int semiIndex = languageSpec.indexOf(';');
             if (semiIndex < 0) {
@@ -818,6 +941,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             }
         }
 
+        /**
+         * Parses the locale.
+         *
+         * @param range
+         *            the range
+         *
+         * @return the locale
+         */
         private Locale parseLocale(String range) {
             range = range.trim();
             int dashIndex = range.indexOf('-');
@@ -827,6 +958,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));
         }
 
+        /**
+         * Gets the locale.
+         *
+         * @return the locale
+         */
         public Locale getLocale() {
             return _locale;
         }

@@ -26,12 +26,19 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
- * An implementation of the standard servlet input stream
- **/
+ * An implementation of the standard servlet input stream.
+ */
 class ServletInputStreamImpl extends ServletInputStream {
 
+    /** The base stream. */
     private ByteArrayInputStream _baseStream;
 
+    /**
+     * Instantiates a new servlet input stream impl.
+     *
+     * @param messageBody
+     *            the message body
+     */
     public ServletInputStreamImpl(byte[] messageBody) {
         _baseStream = new ByteArrayInputStream(messageBody);
     }

@@ -31,6 +31,14 @@ public class ResetButton extends Button {
         return RESET_BUTTON_TYPE;
     }
 
+    /**
+     * Instantiates a new reset button.
+     *
+     * @param form
+     *            the form
+     * @param control
+     *            the control
+     */
     ResetButton(WebForm form, HTMLControl control) {
         super(form, control);
     }

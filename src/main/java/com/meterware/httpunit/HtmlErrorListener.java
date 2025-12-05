@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,9 +26,6 @@ import com.meterware.httpunit.parsing.HTMLParserListener;
  * HTML page.
  *
  * @deprecated as of 1.5.2, use HTMLParserListener
- *
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 @Deprecated
 public interface HtmlErrorListener extends HTMLParserListener {

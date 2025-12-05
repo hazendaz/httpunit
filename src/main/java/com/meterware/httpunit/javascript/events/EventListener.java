@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,10 +27,6 @@ import org.mozilla.javascript.Scriptable;
  * EventListener from its EventTarget after they have completed using the listener. When a Node is copied using the
  * cloneNode method the EventListeners attached to the source Node are not attached to the copied Node. If the user
  * wishes the same EventListeners to be added to the newly created copy the user must add them manually.
- *
- * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
- *
- * @version $Id$
  */
 public interface EventListener extends Scriptable {
     /**

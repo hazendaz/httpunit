@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,9 +41,6 @@ package com.meterware.httpunit;
 
 /**
  * A listener for messages sent and received by a web client.
- *
- * @author <a href="mailto:Oliver.Imbusch.extern@HVBSystems.com">Oliver Imbusch</a>
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface WebClientListener {
 

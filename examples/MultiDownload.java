@@ -36,9 +36,6 @@ import org.xml.sax.SAXException;
 
 /**
  * an example that shows how to automate downloads
- * 
- * @author wf
- * 
  */
 public class MultiDownload extends JPanel implements ActionListener {
 

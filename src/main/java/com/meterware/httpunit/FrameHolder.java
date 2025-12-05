@@ -28,9 +28,6 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/

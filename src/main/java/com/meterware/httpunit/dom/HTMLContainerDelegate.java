@@ -29,9 +29,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLCollection;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class HTMLContainerDelegate {
 
     private NodeImpl.IteratorMask _iteratorMask = NodeImpl.SKIP_IFRAMES;

@@ -31,8 +31,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 /**
  * A base class for test cases that use the pseudo server.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HttpUserAgentTest {
 

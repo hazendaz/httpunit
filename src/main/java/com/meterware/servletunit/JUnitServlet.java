@@ -39,8 +39,6 @@ import junit.runner.BaseTestRunner;
  * to such tests if a container-specific implementation of InvocationContextFactory is provided. Combined with
  * ServletTestCase, this would permit in-container tests of servlets in a fashion similar to that supported by
  * ServletUnit.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class JUnitServlet extends HttpServlet {
 

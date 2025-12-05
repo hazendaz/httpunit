@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -41,8 +41,6 @@ package com.meterware.httpunit.scripting;
 
 /**
  * Represents an array of Options
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface SelectionOptions {
 

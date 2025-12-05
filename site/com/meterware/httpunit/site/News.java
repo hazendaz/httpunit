@@ -46,10 +46,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 
-/**
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class News extends FragmentTemplate  {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat( "d MMM yyyy");

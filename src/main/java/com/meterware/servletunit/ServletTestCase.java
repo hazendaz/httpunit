@@ -23,8 +23,6 @@ import junit.framework.TestCase;
 
 /**
  * A base class for test cases to be run via {@link JUnitServlet JUnitServlet}.
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public abstract class ServletTestCase extends TestCase {
 

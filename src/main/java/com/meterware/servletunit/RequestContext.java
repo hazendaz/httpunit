@@ -31,9 +31,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-/**
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
- **/
 class RequestContext {
 
     private Hashtable _parameters = new Hashtable<>();

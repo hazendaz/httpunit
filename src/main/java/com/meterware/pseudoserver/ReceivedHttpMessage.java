@@ -28,9 +28,6 @@ import java.io.Reader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 abstract class ReceivedHttpMessage {
 
     private static final int CR = 13;

@@ -49,10 +49,6 @@ import org.xml.sax.SAXException;
 
 /**
  * This class represents the information recorded about a single web application. It is usually extracted from web.xml.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="balld@webslingerZ.com">Donald Ball</a>
- * @author <a href="jaydunning@users.sourceforge.net">Jay Dunning</a>
  **/
 class WebApplication implements SessionListenerDispatcher {
 
@@ -1113,8 +1109,6 @@ class WebApplication implements SessionListenerDispatcher {
 
 /**
  * A utility class for parsing URLs into paths
- *
- * @author <a href="balld@webslingerZ.com">Donald Ball</a>
  */
 class ParsedPath {
 

@@ -38,9 +38,6 @@ import org.xml.sax.SAXException;
  * please see
  * http://www.youtube.com/t/terms
  * for the legal aspects of modifying this software to allow downloads
- * 
- * @author wf
- * 
  */
 public class YouTubeVisitor extends JPanel implements ActionListener {
 

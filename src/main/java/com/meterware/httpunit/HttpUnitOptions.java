@@ -33,10 +33,6 @@ import java.util.Vector;
 
 /**
  * A collection of global options to control HttpUnit's behavior.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:dglo@ssec.wisc.edu">Dave Glowacki</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public abstract class HttpUnitOptions {
     public static final String ORIGINAL_SCRIPTING_ENGINE_FACTORY = "com.meterware.httpunit.javascript.JavaScriptEngineFactory";

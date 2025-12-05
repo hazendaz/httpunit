@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,9 +21,6 @@ package com.meterware.httpunit.dom;
 
 import org.w3c.dom.html.HTMLAppletElement;
 
-/**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
- */
 public class HTMLAppletElementImpl extends HTMLElementImpl implements HTMLAppletElement {
 
     private static final long serialVersionUID = 1L;

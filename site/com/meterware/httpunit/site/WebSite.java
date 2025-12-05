@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -45,10 +45,6 @@ import java.io.IOException;
 
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class WebSite extends Site {
 
     private int _groupId;

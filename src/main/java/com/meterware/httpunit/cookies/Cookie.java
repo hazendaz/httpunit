@@ -30,8 +30,6 @@ import java.util.TimeZone;
 
 /**
  * An HTTP client-side cookie.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class Cookie {
 

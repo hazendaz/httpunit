@@ -43,10 +43,6 @@ import com.meterware.website.FragmentTemplate;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class Citations extends FragmentTemplate {
 
     private ArrayList _sections = new ArrayList<>();

@@ -37,9 +37,6 @@ import org.xml.sax.SAXException;
 
 /**
  * This class represents an HTML page returned from a request.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public class HTMLPage extends ParsedHTML {
 

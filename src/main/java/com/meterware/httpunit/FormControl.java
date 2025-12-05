@@ -39,8 +39,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Represents a control in an HTML form.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class FormControl extends HTMLElementBase {
 

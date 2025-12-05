@@ -41,8 +41,6 @@ package com.meterware.httpunit;
 
 /**
  * This exception is thrown on an attempt to set a form parameter in a way not possible from a browser.
- *
- * @author Russell Gold
  **/
 public abstract class IllegalRequestParameterException extends RuntimeException {
 

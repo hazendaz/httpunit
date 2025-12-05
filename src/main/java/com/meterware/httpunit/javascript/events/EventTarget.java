@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,10 +26,6 @@ import org.mozilla.javascript.Scriptable;
  * Therefore, this interface can be obtained by using binding-specific casting methods on an instance of the Node
  * interface. The interface allows registration and removal of EventListeners on an EventTarget and dispatch of events
  * to that EventTarget.
- *
- * @author W3C
- *
- * @version $Id$
  */
 public interface EventTarget extends Scriptable {
     /**

@@ -32,9 +32,6 @@ import java.util.Vector;
 
 /**
  * A collection of HTTP cookies, which can interact with cookie and set-cookie header values.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:drew.varner@oracle.com">Drew Varner</a>
  **/
 public class CookieJar {
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -42,8 +42,6 @@ import org.xml.sax.SAXException;
  * inside' by creating a ServletInvocationContext and then calling any servlet methods which may be desired. Even in
  * this latter mode, end-to-end testing is supported, but requires a call to this class's getResponse method to update
  * its cookies and frames.
- *
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
  **/
 public class ServletUnitClient extends WebClient {
 

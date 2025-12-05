@@ -21,9 +21,6 @@ package com.meterware.servletunit;
 
 import java.util.ArrayList;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 class FilterUrlMap {
 
     private ArrayList _urlPatterns = new ArrayList<>();

@@ -54,8 +54,6 @@ import java.net.URL;
  * used to update a previously cached entity from that resource. If the new field values indicate that the cached entity
  * differs from the current entity (as would be indicated by a change in Content-Length, Content-SHA-256, ETag or
  * Last-Modified), then the cache MUST treat the cache entry as stale.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
 

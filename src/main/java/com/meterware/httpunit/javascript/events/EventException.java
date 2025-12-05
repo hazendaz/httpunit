@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,10 +21,6 @@ package com.meterware.httpunit.javascript.events;
 
 /**
  * Event operations may throw an EventException as specified in their method descriptions.
- *
- * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
- *
- * @version $Id$
  */
 public class EventException extends Exception {
     private static final long serialVersionUID = 1L;

@@ -58,9 +58,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-/**
- * This class represents a servlet request created from a WebRequest.
- **/
 class ServletUnitHttpRequest implements HttpServletRequest {
 
     private ServletInputStreamImpl _inputStream;
@@ -465,10 +462,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     /**
      * Returns the body of the request as a <code>BufferedReader</code> that translates character set encodings.
-     *
-     * @since [ 1221537 ] Patch: ServletUnitHttpRequest.getReader not implemented yet
-     *
-     * @author Tim - timmorrow (SourceForge)
      *
      * @return the reader
      **/

@@ -26,9 +26,6 @@ import java.util.ArrayList;
 import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class TableRow extends HTMLElementBase {
 
     private ArrayList _cells = new ArrayList<>();

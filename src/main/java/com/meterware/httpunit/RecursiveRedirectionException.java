@@ -24,8 +24,6 @@ import java.net.URL;
 /**
  * Class used to indicate when a request to a resource resulted in an HTTP redirect response that lead to a recursive
  * loop of redirections
- *
- * @author <a href="mailto:james.abley@gmail.com">James Abley </a>
  */
 public class RecursiveRedirectionException extends RuntimeException {
 

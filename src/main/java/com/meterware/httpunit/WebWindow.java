@@ -33,8 +33,6 @@ import org.xml.sax.SAXException;
 
 /**
  * A window managed by a {@link com.meterware.httpunit.WebClient WebClient}.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebWindow {
 

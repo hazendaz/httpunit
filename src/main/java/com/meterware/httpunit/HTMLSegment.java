@@ -23,8 +23,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Represents the parse tree for a segment of HTML.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public interface HTMLSegment {
 

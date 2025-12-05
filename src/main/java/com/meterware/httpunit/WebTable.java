@@ -33,9 +33,6 @@ import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
  * This class represents a table in an HTML page.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public class WebTable extends HTMLElementBase {
 

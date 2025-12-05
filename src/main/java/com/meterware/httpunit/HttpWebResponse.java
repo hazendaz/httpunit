@@ -35,8 +35,6 @@ import java.util.Vector;
 
 /**
  * A response from a web server to an Http request.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class HttpWebResponse extends WebResponse {
 

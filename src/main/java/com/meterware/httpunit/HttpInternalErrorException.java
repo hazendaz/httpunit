@@ -24,9 +24,6 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an internal error is found on the server.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpInternalErrorException extends HttpException {
 

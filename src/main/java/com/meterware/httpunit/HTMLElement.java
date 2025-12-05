@@ -27,10 +27,6 @@ import org.w3c.dom.Node;
 
 /**
  * An interface which defines the common properties for an HTML element, which can correspond to any HTML tag.
- *
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 // TODO activate the extends Element as
 // in http://www.w3.org/TR/REC-DOM-Level-1/java-language-binding.html

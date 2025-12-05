@@ -30,8 +30,6 @@ import javax.net.ssl.X509TrustManager;
 
 /**
  * Encapsulates support for the HTTPS protocol.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class HttpsProtocolSupport {
 

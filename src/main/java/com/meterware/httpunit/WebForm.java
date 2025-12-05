@@ -45,8 +45,6 @@ import org.xml.sax.SAXException;
  * This class represents a form in an HTML page. Users of this class may examine the parameters defined for the form,
  * the structure of the form (as a DOM), or the text of the form. They may also create a {@link WebRequest} to simulate
  * the submission of the form.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebForm extends WebRequestSource {
     private static final String[] NO_VALUES = {};

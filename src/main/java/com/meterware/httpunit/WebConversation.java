@@ -31,8 +31,6 @@ import java.util.Properties;
 /**
  * The context for a series of HTTP requests. This class manages cookies used to maintain session context, computes
  * relative URLs, and generally emulates the browser behavior needed to build an automated test of a web site.
- *
- * @author Russell Gold
  **/
 public class WebConversation extends WebClient {
 

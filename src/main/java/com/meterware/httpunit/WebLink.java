@@ -33,9 +33,6 @@ import org.xml.sax.SAXException;
 /**
  * This class represents a link in an HTML page. Users of this class may examine the structure of the link (as a DOM),
  * or create a {@link WebRequest} to simulate clicking on the link.
- *
- * @author Russell Gold russgold@httpunit.org
- * @author Benoit Xhenseval benoit.xhenseval@avondi.com
  **/
 public class WebLink extends FixedURLWebRequestSource {
 

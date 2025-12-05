@@ -25,9 +25,6 @@ import java.util.Map;
 
 import org.w3c.dom.Node;
 
-/**
- * @author <a href="mailto:russgold@httpunit,org">Russell Gold</a>
- */
 class ElementRegistry {
 
     private Map _map = new HashMap<>();

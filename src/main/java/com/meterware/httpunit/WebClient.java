@@ -42,11 +42,6 @@ import org.xml.sax.SAXException;
 /**
  * The context for a series of web requests. This class manages cookies used to maintain session context, computes
  * relative URLs, and generally emulates the browser behavior needed to build an automated test of a web site.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author Jan Ohrstrom
- * @author Seth Ladd
- * @author Oliver Imbusch
  **/
 public abstract class WebClient {
 

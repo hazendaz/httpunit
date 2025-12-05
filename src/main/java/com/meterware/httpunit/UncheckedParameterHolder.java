@@ -26,9 +26,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
 
     private static final String[] NO_VALUES = {};

@@ -29,8 +29,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * This abstract class is extended by classes which hold parameters for web requests. Note that it is an abstract class
  * rather than an interface in order to keep its methods package-local.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 abstract class ParameterHolder implements ParameterCollection {
 

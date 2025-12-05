@@ -23,9 +23,6 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an Http error (response code 4xx or 5xx) is detected.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpException extends RuntimeException {
 

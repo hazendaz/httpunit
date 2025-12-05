@@ -45,10 +45,6 @@ import org.w3c.dom.html.HTMLImageElement;
 import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- **/
 public class ParsedHTML {
 
     static final private HTMLElement[] NO_ELEMENTS = {};

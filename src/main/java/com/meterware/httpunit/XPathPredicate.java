@@ -33,9 +33,6 @@ import org.w3c.dom.NodeList;
  * very advanced matching techniques. THREAD: Instances are not thread safe, each thread should create its own instance
  * with a specific xpath. (The same instance can be used for multiple documents, each change in document will result in
  * its internal caches being flushed).
- *
- * @author <a href="mailto:edA-qa@disemia.com">edA-qa mort-ora-y</a>
- * @author <a href="mailto:stephane@mikaty.net">Stephane Mikaty</a>
  */
 public class XPathPredicate implements HTMLElementPredicate {
 

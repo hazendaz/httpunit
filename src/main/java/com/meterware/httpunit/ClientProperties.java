@@ -21,8 +21,6 @@ package com.meterware.httpunit;
 
 /**
  * A class which represents the properties of a web client.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class ClientProperties {
 

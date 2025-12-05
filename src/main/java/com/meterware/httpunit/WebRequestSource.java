@@ -32,8 +32,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Base class for objects which can be clicked to generate new web requests.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 public abstract class WebRequestSource extends ParameterHolder implements HTMLElement {
 

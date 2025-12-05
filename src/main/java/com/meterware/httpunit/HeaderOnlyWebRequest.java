@@ -28,8 +28,6 @@ import org.w3c.dom.Element;
 
 /**
  * A web request which has no information in its message body.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HeaderOnlyWebRequest extends WebRequest {
 

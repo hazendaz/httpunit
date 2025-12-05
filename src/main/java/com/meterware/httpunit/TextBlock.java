@@ -26,10 +26,6 @@ import org.w3c.dom.Node;
 
 /**
  * A class which represents a block of text in a web page. Experimental.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- *
- * @since 1.6
  **/
 public class TextBlock extends BlockElement {
 

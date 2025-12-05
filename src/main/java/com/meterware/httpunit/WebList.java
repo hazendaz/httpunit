@@ -28,10 +28,6 @@ import org.w3c.dom.Element;
 
 /**
  * Represents an HTML list. Experimental.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- *
- * @since 1.6
  **/
 public class WebList extends HTMLElementBase {
 

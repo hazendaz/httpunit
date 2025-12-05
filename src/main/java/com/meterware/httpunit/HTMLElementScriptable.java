@@ -22,9 +22,6 @@ package com.meterware.httpunit;
 import com.meterware.httpunit.scripting.DocumentElement;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 class HTMLElementScriptable extends ScriptableDelegate implements DocumentElement {
 
     /**

@@ -28,8 +28,6 @@ import java.util.Arrays;
 /**
  * Represents the aggregate of all form controls with a particular name. This permits us to abstract setting values so
  * that changing a control type does not break a test.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class FormParameter {
 

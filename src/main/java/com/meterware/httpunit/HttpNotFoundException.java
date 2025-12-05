@@ -24,9 +24,6 @@ import java.net.URL;
 
 /**
  * This exception is thrown when the desired URL is not found.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpNotFoundException extends HttpException {
 

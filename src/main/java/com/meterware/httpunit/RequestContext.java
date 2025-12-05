@@ -26,8 +26,6 @@ import org.xml.sax.SAXException;
 
 /**
  * The context for a request which could have subrequests.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class RequestContext {
 

@@ -55,12 +55,6 @@ import org.xml.sax.SAXException;
 
 /**
  * A response to a web request from a web server.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:DREW.VARNER@oracle.com">Drew Varner</a>
- * @author <a href="mailto:dglo@ssec.wisc.edu">Dave Glowacki</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- * @author Wolfgang Fahl
  **/
 public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindowProxy {
 

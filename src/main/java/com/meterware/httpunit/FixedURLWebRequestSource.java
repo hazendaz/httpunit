@@ -35,8 +35,6 @@ import org.w3c.dom.Node;
 
 /**
  * An implementation of web request source whose URL does not change under user action.
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 abstract class FixedURLWebRequestSource extends WebRequestSource {
 

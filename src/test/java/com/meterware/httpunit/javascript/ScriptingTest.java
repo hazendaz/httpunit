@@ -48,10 +48,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author Wolfgang Fahl - for compiling patches from the Source Forge web site 2008-03
- */
 @ExtendWith(ExternalResourceSupport.class)
 class ScriptingTest extends AbstractJavaScriptTest {
 
@@ -850,11 +846,6 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("element with id test has style.visibility visible", wc.popNextAlert());
     }
 
-    /**
-     * test for Patch proposal 1653410 Date: 2008-01-08 15:49
-     *
-     * @author Mattias Jiderhamn (mattias78)
-     */
     @Test
     void setAttribute() throws Exception {
         /*

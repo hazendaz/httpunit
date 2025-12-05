@@ -31,9 +31,6 @@ import java.net.URL;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.html.HTMLDocument;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class DomWindowTest extends AbstractHTMLElementTest {
 
     private TestWindowProxy _proxy;

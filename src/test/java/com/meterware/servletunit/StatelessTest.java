@@ -50,8 +50,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests support for stateless HttpServlets.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class StatelessTest {
 

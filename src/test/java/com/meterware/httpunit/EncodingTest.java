@@ -33,9 +33,6 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests handling of non-Latin scripts.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:matsuhashi@quick.co.jp">Kazuaki Matsuhashi</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 class EncodingTest extends HttpUnitTest {

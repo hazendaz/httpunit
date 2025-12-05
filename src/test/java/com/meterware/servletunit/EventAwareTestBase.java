@@ -25,9 +25,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class EventAwareTestBase {
 
     private static ArrayList _events;

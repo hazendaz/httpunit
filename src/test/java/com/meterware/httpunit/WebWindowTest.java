@@ -32,9 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 @ExtendWith(ExternalResourceSupport.class)
 class WebWindowTest extends HttpUnitTest {
 

@@ -39,9 +39,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLOptionElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public abstract class AbstractHTMLElementTest implements DomListener {
 
     protected HTMLDocumentImpl _htmlDocument;

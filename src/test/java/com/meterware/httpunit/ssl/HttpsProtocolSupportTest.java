@@ -32,10 +32,7 @@ import javax.net.ssl.SSLSocketFactory;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the HttpsProtocolSupport
- *
- * @author <a href="mailto:russ@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:wf@bitplan.com">Wolfgang Fahl</a>
+ * Tests the HttpsProtocolSupport.
  */
 class HttpsProtocolSupportTest {
 

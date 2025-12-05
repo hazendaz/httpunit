@@ -62,8 +62,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for BR 3301056 ServletUnit handling Content-Type incorrectly by Kevin Hunter
- *
- * @author wf
  */
 public class ContentTypeTest {
     private ServletRunner runner;

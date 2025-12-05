@@ -51,10 +51,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
- */
-
 class RequestContextTest extends HttpUnitTest {
 
     /**

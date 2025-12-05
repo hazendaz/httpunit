@@ -52,9 +52,6 @@ import org.w3c.dom.html.HTMLStyleElement;
 import org.w3c.dom.html.HTMLTextAreaElement;
 import org.w3c.dom.html.HTMLTitleElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class HTMLElementTest extends AbstractHTMLElementTest {
 
     @Test

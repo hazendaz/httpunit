@@ -49,9 +49,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class JUnitServletTest {
     private ServletRunner _runner;
 

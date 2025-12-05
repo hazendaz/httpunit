@@ -27,9 +27,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Verifies handling of URLs with odd features.
- *
- * @author <a href="mailto:ddkilzer@users.sourceforge.net">David D. Kilzer</a>
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class NormalizeURLTest extends HttpUnitTest {
 

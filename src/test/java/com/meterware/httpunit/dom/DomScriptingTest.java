@@ -35,8 +35,6 @@ import org.w3c.dom.html.HTMLBodyElement;
 
 /**
  * Tests basic scripting via the DOM.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class DomScriptingTest extends AbstractHTMLElementTest {
 

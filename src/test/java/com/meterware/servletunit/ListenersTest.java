@@ -36,9 +36,6 @@ import jakarta.servlet.http.HttpSessionListener;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class ListenersTest extends EventAwareTestBase {
 
     @Test

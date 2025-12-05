@@ -36,9 +36,6 @@ import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLInputElement;
 import org.w3c.dom.html.HTMLTextAreaElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class HTMLFormTest extends AbstractHTMLElementTest {
 
     private HTMLFormElement _form;

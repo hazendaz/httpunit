@@ -34,9 +34,6 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * More complex tests of frame functionality.
- *
- * @author <a href="andrew.bickerton@hp.com">Andrew Bickerton</a>
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 class FrameScriptingTest extends HttpUnitTest {

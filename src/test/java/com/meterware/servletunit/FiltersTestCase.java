@@ -54,8 +54,6 @@ import org.xml.sax.InputSource;
 
 /**
  * Tests the servlet filtering capability added in Servlet 2.3.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class FiltersTestCase {
 

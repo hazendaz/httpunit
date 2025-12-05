@@ -33,9 +33,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Tests for the WebLink class.
- *
- * @author <a href="mailto:russgold@httpunit.org>Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com>Benoit Xhenseval</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 class WebLinkTest extends HttpUnitTest {

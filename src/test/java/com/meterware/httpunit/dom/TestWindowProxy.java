@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -31,9 +31,6 @@ import java.util.Stack;
 import org.junit.jupiter.api.Disabled;
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 @Disabled
 class TestWindowProxy implements DomWindowProxy {
 

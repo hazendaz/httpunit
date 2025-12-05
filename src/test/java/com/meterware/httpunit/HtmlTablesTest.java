@@ -33,9 +33,6 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the table handling code.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 public class HtmlTablesTest extends HttpUnitTest {

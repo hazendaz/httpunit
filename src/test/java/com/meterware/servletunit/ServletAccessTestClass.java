@@ -25,9 +25,6 @@ import jakarta.servlet.http.HttpServlet;
 
 import org.junit.Test;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class ServletAccessTestClass extends ServletTestCase {
 
     /**

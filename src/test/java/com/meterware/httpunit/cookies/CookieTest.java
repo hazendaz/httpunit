@@ -35,10 +35,7 @@ import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
-public class CookieTest {
+class CookieTest {
 
     @BeforeEach
     void setUp() throws Exception {

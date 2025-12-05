@@ -41,9 +41,6 @@ import org.xml.sax.SAXException;
 
 /**
  * This test checks certain customizable behaviors of the HTML parsers. Not every parser implements every behavior.
- *
- * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 public class ParserPropertiesTest extends HttpUnitTest {

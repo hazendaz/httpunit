@@ -61,8 +61,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests the ServletUnitHttpRequest class.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 public class HttpServletRequestTest extends ServletUnitTest {
 

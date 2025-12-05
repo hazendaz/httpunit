@@ -36,8 +36,6 @@ import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests that work under NekoHTML but not JTidy due to the ability to do script processing during parsing.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 class NekoEnhancedScriptingTest extends HttpUnitTest {

@@ -55,9 +55,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
- */
 @ExtendWith(ExternalResourceSupport.class)
 public class FormScriptingTest extends HttpUnitTest {
 

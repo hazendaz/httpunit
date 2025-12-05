@@ -25,8 +25,6 @@ import junit.framework.TestCase;
 
 /**
  * This test is run by the junit servlet only.
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
 // XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
 // nor any IDE

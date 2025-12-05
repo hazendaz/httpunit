@@ -33,9 +33,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
-/**
- * @author Wolfgang Fahl
- */
 @ExtendWith(ExternalResourceSupport.class)
 class EventHandlingTest extends HttpUnitTest {
 

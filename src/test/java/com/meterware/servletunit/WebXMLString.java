@@ -31,8 +31,6 @@ import java.util.Properties;
 
 /**
  * A class which allows dynamic creation of Servlet configuration XML
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class WebXMLString {
 

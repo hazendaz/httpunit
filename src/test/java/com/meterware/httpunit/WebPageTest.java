@@ -44,9 +44,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Unit tests for page structure, style, and headers.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  */
 @ExtendWith(ExternalResourceSupport.class)
 class WebPageTest extends HttpUnitTest {
@@ -167,8 +164,6 @@ class WebPageTest extends HttpUnitTest {
      * add test for HeadMethodWebRequest
      *
      * @throws Exception
-     *
-     * @author Dan Lipofsky 2009-08-19
      */
     @Test
     void headMethodWebRequest() throws Exception {

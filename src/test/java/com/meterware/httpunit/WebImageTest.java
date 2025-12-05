@@ -28,9 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-/**
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
- */
 @ExtendWith(ExternalResourceSupport.class)
 public class WebImageTest extends HttpUnitTest {
 

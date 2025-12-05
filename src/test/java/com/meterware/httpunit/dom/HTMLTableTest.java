@@ -32,9 +32,6 @@ import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class HTMLTableTest extends AbstractHTMLElementTest {
 
     private Element _body;

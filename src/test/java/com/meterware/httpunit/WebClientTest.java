@@ -50,9 +50,6 @@ import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 @ExtendWith(ExternalResourceSupport.class)
 public class WebClientTest extends HttpUnitTest {
 
@@ -821,8 +818,6 @@ public class WebClientTest extends HttpUnitTest {
      * /** test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
-     *
-     * @author james abley
      */
     @Test
     void selfReferentialRedirect() throws Exception {
@@ -843,8 +838,6 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
-     *
-     * @author james abley
      */
     @Test
     void loopingMalformedRedirect() throws Exception {
@@ -874,8 +867,6 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
-     *
-     * @author james abley
      */
     @Test
     void redirectHistoryIsClearedOut() throws Exception {
@@ -912,8 +903,6 @@ public class WebClientTest extends HttpUnitTest {
      * test for patch [ 1155415 ] Handle redirect instructions which can lead to a loop
      *
      * @throws Exception
-     *
-     * @author james abley
      */
     @Test
     void redirectionLeadingToMalformedURLStillClearsOutRedirectionList() throws Exception {

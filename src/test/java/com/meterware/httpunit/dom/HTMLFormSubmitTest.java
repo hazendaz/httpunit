@@ -32,9 +32,6 @@ import org.w3c.dom.html.HTMLInputElement;
 import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     private HTMLFormElement _form;

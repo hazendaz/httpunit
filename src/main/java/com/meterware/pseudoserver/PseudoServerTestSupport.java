@@ -21,22 +21,24 @@ package com.meterware.pseudoserver;
 
 import java.io.IOException;
 
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * helper class for JUnit Tests of httpunit
  */
-public class PseudoServerTestSupport extends ExternalResource {
+public class PseudoServerTestSupport implements BeforeEachCallback, AfterEachCallback {
     private String _hostPath;
     private PseudoServer _server;
 
     @Override
-    public void before() throws Throwable {
+    public void beforeEach(ExtensionContext context) throws Exception {
         setUpServer();
     }
 
     @Override
-    public void after() {
+    public void afterEach(ExtensionContext context) {
         tearDownServer();
     }
 

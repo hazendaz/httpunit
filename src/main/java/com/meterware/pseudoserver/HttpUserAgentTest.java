@@ -27,7 +27,7 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.junit.Rule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 /**
  * A base class for test cases that use the pseudo server.
@@ -36,8 +36,8 @@ import org.junit.Rule;
  **/
 public class HttpUserAgentTest {
 
-    @Rule
-    public PseudoServerTestSupport testSupport = new PseudoServerTestSupport();
+    @RegisterExtension
+    public static final PseudoServerTestSupport testSupport = new PseudoServerTestSupport();
 
     protected void defineResource(String resourceName, PseudoServlet servlet) {
         testSupport.defineResource(resourceName, servlet);

@@ -38,10 +38,12 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 class PseudoServerTest {
 
-    private PseudoServerTestSupport support = new PseudoServerTestSupport();
+    @RegisterExtension
+    private static final PseudoServerTestSupport support = new PseudoServerTestSupport();
 
     @BeforeEach
     void setUp() throws Exception {

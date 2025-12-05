@@ -22,9 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {
 
     private static final long serialVersionUID = 1L;

@@ -21,9 +21,6 @@ package com.meterware.httpunit.dom;
 
 import org.w3c.dom.html.HTMLCollection;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public interface HTMLContainerElement {
 
     HTMLCollection getLinks();

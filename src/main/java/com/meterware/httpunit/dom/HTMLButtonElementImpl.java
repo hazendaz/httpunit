@@ -21,9 +21,6 @@ package com.meterware.httpunit.dom;
 
 import org.w3c.dom.html.HTMLButtonElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class HTMLButtonElementImpl extends HTMLControl implements HTMLButtonElement {
 
     private static final long serialVersionUID = 1L;

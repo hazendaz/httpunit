@@ -22,9 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLTableCellElement;
 
-/**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
- */
 public class HTMLTableCellElementImpl extends HTMLElementImpl
         implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 

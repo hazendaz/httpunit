@@ -28,10 +28,6 @@ import org.w3c.dom.Node;
 
 /**
  * Represents a block-level element such as a paragraph or table cell, which can contain other elements.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- *
- * @since 1.6
  */
 public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
 

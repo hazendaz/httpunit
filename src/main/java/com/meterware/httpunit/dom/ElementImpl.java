@@ -30,9 +30,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
 
     private static final long serialVersionUID = 1L;

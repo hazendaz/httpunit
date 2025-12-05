@@ -25,9 +25,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class NamedNodeMapImpl implements NamedNodeMap {
 
     private Hashtable _items;

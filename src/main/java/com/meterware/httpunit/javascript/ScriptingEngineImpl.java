@@ -33,9 +33,6 @@ import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Undefined;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {
 
     private static final long serialVersionUID = 1L;

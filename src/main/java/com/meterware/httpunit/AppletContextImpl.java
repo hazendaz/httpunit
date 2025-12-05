@@ -30,9 +30,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 class AppletContextImpl implements AppletContext {
 
     private WebApplet _webApplet;

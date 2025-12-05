@@ -26,9 +26,6 @@ import org.mozilla.javascript.ScriptableObject;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
     private static final long serialVersionUID = 1L;

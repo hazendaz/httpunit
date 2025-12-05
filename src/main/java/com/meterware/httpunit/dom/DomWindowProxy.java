@@ -27,9 +27,6 @@ import java.net.URL;
 
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public interface DomWindowProxy {
 
     DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException;

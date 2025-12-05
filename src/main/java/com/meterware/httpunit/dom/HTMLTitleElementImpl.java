@@ -23,9 +23,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTitleElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {
 
     private static final long serialVersionUID = 1L;

@@ -24,9 +24,6 @@ import java.net.URL;
 
 import org.w3c.dom.html.HTMLAreaElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElement {
 
     private static final long serialVersionUID = 1L;

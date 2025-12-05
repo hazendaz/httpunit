@@ -32,9 +32,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html.HTMLIFrameElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public abstract class NodeImpl extends AbstractDomComponent implements Node {
 
     private static final long serialVersionUID = 1L;

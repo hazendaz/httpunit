@@ -29,9 +29,6 @@ import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElement {
 
     private static final long serialVersionUID = 1L;

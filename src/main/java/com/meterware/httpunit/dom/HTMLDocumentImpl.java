@@ -39,9 +39,6 @@ import org.w3c.dom.html.HTMLHeadElement;
 import org.w3c.dom.html.HTMLHtmlElement;
 import org.w3c.dom.html.HTMLTitleElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTMLContainerElement {
 
     private static final long serialVersionUID = 1L;

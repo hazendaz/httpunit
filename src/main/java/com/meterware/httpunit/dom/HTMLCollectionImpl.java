@@ -26,9 +26,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {
 
     private static final long serialVersionUID = 1L;

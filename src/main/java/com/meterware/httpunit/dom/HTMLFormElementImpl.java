@@ -35,9 +35,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFormElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElement, FormScriptable {
 
     private static final long serialVersionUID = 1L;

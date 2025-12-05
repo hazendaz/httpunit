@@ -28,9 +28,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLInputElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {
 
     private static final long serialVersionUID = 1L;

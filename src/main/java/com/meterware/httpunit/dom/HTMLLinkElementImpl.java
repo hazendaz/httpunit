@@ -21,9 +21,6 @@ package com.meterware.httpunit.dom;
 
 import org.w3c.dom.html.HTMLLinkElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {
 
     private static final long serialVersionUID = 1L;

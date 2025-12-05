@@ -24,9 +24,6 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
-/**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
- */
 public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement, AttributeNameAdjusted {
 
     private static final long serialVersionUID = 1L;

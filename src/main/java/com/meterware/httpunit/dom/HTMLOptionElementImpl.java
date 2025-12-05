@@ -26,9 +26,6 @@ import java.io.IOException;
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLOptionElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {
 
     private static final long serialVersionUID = 1L;

@@ -23,9 +23,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 
     // ---------------------------------------------- DocumentType methods

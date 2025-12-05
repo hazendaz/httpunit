@@ -22,9 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.Document;
 import org.w3c.dom.html.HTMLIFrameElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {
 
     private static final long serialVersionUID = 1L;

@@ -23,9 +23,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {
 
     private static final long serialVersionUID = 1L;

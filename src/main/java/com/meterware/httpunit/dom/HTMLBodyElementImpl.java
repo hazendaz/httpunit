@@ -23,9 +23,6 @@ import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.html.HTMLBodyElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {
 
     private static final long serialVersionUID = 1L;

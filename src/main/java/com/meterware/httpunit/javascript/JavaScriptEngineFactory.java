@@ -28,8 +28,6 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 /**
  * An implementation of the scripting engine factory which selects a Rhino-based implementation of JavaScript.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class JavaScriptEngineFactory implements ScriptingEngineFactory {
 

@@ -26,9 +26,6 @@ import org.w3c.dom.html.HTMLTableCaptionElement;
 import org.w3c.dom.html.HTMLTableElement;
 import org.w3c.dom.html.HTMLTableSectionElement;
 
-/**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
- */
 public class HTMLTableElementImpl extends HTMLElementImpl implements HTMLTableElement {
 
     private static final long serialVersionUID = 1L;

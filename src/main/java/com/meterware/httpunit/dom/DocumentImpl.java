@@ -38,9 +38,6 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class DocumentImpl extends NodeImpl implements Document {
 
     private static final long serialVersionUID = 1L;

@@ -22,9 +22,6 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLParagraphElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLParagraphElement, HTMLContainerElement {
 
     private static final long serialVersionUID = 1L;

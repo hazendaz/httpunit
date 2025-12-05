@@ -23,9 +23,6 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class CommentImpl extends CharacterDataImpl implements Comment {
 
     private static final long serialVersionUID = 1L;

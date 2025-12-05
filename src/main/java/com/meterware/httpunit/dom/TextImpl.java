@@ -23,9 +23,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class TextImpl extends CharacterDataImpl implements Text {
 
     private static final long serialVersionUID = 1L;

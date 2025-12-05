@@ -23,9 +23,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- */
 public class HTMLElementImpl extends ElementImpl implements HTMLElement {
 
     private static final long serialVersionUID = 1L;

@@ -24,9 +24,6 @@ import java.net.URL;
 
 import org.w3c.dom.html.HTMLAnchorElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {
 
     private static final long serialVersionUID = 1L;

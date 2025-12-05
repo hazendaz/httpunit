@@ -58,8 +58,6 @@ import org.xml.sax.SAXException;
 
 /**
  * This class is the Rhino-compatible implementation of the JavaScript DOM objects.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class JavaScript {
 

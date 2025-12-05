@@ -21,9 +21,6 @@ package com.meterware.httpunit.dom;
 
 import org.w3c.dom.html.HTMLHeadElement;
 
-/**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
 public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElement {
 
     private static final long serialVersionUID = 1L;

@@ -35,13 +35,10 @@ import java.net.HttpURLConnection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A test of the web form functionality.
  **/
-@ExtendWith(ExternalResourceSupport.class)
 class WebFormTest extends HttpUnitTest {
 
     /**

@@ -36,13 +36,10 @@ import java.io.PrintWriter;
 import java.net.URL;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class HTMLParserListenerTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class HTMLParserListenerTest extends HttpUnitTest {
 
     /**

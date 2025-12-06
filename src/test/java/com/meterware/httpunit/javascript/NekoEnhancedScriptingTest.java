@@ -31,13 +31,10 @@ import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests that work under NekoHTML but not JTidy due to the ability to do script processing during parsing.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class NekoEnhancedScriptingTest extends HttpUnitTest {
 
     /**

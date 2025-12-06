@@ -48,14 +48,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.JRE;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class WebClientTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebClientTest extends HttpUnitTest {
+class WebClientTest extends HttpUnitTest {
 
     /**
      * Test no such server.

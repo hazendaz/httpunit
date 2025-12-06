@@ -46,13 +46,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the file upload simulation capability.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class FileUploadTest extends HttpUnitTest {
 
     /**

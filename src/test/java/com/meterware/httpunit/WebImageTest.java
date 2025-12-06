@@ -25,14 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class WebImageTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebImageTest extends HttpUnitTest {
+class WebImageTest extends HttpUnitTest {
 
     /**
      * Gets the images.

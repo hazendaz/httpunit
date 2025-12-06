@@ -29,13 +29,10 @@ import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * More complex tests of frame functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class FrameScriptingTest extends HttpUnitTest {
 
     /** The wc. */

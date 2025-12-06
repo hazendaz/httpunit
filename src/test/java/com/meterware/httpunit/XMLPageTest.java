@@ -31,8 +31,6 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -41,8 +39,7 @@ import org.xml.sax.SAXException;
 /**
  * A test for the XML handling functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class XMLPageTest extends HttpUnitTest {
+class XMLPageTest extends HttpUnitTest {
 
     /**
      * Xml.

@@ -26,13 +26,10 @@ import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebResponse;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class HTMLElementTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class HTMLElementTest extends HttpUnitTest {
 
     /**

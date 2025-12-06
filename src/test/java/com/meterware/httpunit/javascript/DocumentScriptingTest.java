@@ -31,13 +31,10 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.WebWindow;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class DocumentScriptingTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class DocumentScriptingTest extends HttpUnitTest {
 
     /**

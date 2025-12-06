@@ -35,8 +35,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLDocument;
@@ -45,7 +43,6 @@ import org.xml.sax.SAXException;
 /**
  * Unit tests for page structure, style, and headers.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class WebPageTest extends HttpUnitTest {
 
     /**

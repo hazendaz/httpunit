@@ -35,14 +35,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class WebAppletTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebAppletTest extends HttpUnitTest {
+class WebAppletTest extends HttpUnitTest {
 
     /**
      * Delete me.

@@ -35,13 +35,10 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A test of the parameter validation functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class FormSubmitTest extends HttpUnitTest {
 
     /**

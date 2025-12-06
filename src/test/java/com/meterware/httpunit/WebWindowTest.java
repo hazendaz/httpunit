@@ -29,13 +29,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class WebWindowTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class WebWindowTest extends HttpUnitTest {
 
     /**

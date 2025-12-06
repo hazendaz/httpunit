@@ -27,14 +27,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
 /**
  * Tests for the WebLink class.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class WebLinkTest extends HttpUnitTest {
 
     /**

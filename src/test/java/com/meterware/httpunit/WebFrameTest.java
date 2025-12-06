@@ -29,14 +29,11 @@ import java.net.HttpURLConnection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A test of the web frame functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebFrameTest extends HttpUnitTest {
+class WebFrameTest extends HttpUnitTest {
 
     /**
      * Sets the up.

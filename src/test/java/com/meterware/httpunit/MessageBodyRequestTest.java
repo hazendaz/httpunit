@@ -33,14 +33,11 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test to verify miscellaneous requests with message bodies.
  **/
-@ExtendWith(ExternalResourceSupport.class)
-public class MessageBodyRequestTest extends HttpUnitTest {
+class MessageBodyRequestTest extends HttpUnitTest {
 
     /**
      * make a Request from the given parameters.

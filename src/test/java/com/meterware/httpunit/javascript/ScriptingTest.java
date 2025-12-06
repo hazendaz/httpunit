@@ -45,13 +45,10 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class ScriptingTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class ScriptingTest extends AbstractJavaScriptTest {
 
     /**

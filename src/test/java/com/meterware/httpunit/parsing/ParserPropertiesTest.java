@@ -33,8 +33,6 @@ import java.io.IOException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -42,7 +40,6 @@ import org.xml.sax.SAXException;
 /**
  * This test checks certain customizable behaviors of the HTML parsers. Not every parser implements every behavior.
  */
-@ExtendWith(ExternalResourceSupport.class)
 public class ParserPropertiesTest extends HttpUnitTest {
 
     /**

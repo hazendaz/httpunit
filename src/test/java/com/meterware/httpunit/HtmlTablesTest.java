@@ -28,13 +28,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the table handling code.
  */
-@ExtendWith(ExternalResourceSupport.class)
 public class HtmlTablesTest extends HttpUnitTest {
 
     /**

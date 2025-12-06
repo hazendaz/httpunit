@@ -28,13 +28,10 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * The Class TextBlockTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class TextBlockTest extends HttpUnitTest {
 
     /**

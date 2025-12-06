@@ -22,6 +22,7 @@ package com.meterware.httpunit.protocol;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 /**
  * A POST-method message body which is MIME-encoded. This is used when uploading files, and is selected when the enctype
@@ -98,7 +99,7 @@ class MimeEncodedMessageBody extends MessageBody {
      *             Signals that an I/O exception has occurred.
      */
     private void writeLn(OutputStream os, String value, String encoding) throws IOException {
-        os.write(value.getBytes(encoding));
+        os.write(value.getBytes(Charset.forName(encoding)));
         os.write(CRLF);
     }
 

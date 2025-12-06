@@ -43,6 +43,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -512,7 +513,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             if (encoding == null) {
                 encoding = StandardCharsets.ISO_8859_1.name();
             }
-            _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));
+            _reader = new BufferedReader(new InputStreamReader(_inputStream, Charset.forName(encoding)));
             _gotReader = true;
         }
         return _reader;

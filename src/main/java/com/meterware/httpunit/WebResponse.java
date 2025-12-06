@@ -1474,7 +1474,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
             _bytes = readFromStream(inputStream, bytesRemaining);
 
             readTags(_bytes);
-            _responseText = new String(_bytes, getCharacterSet());
+            _responseText = new String(_bytes, Charset.forName(getCharacterSet()));
             _inputStream = new ByteArrayInputStream(_bytes);
 
             if (HttpUnitOptions.isCheckContentLength() && contentLength >= 0 && _bytes.length != contentLength) {

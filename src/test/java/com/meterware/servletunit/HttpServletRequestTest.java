@@ -62,7 +62,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests the ServletUnitHttpRequest class.
  */
-public class HttpServletRequestTest extends ServletUnitTest {
+class HttpServletRequestTest extends ServletUnitTest {
 
     /** The context. */
     private ServletUnitContext _context;
@@ -965,7 +965,7 @@ public class HttpServletRequestTest extends ServletUnitTest {
         BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
         byte[] buffer = new byte[request.getContentLength()];
         bis.read(buffer);
-        assertEquals(body, new String(buffer, "UTF-8"), "Request content");
+        assertEquals(body, new String(buffer, StandardCharsets.UTF_8), "Request content");
     }
 
     /**

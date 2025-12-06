@@ -26,13 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -227,20 +228,20 @@ class WebPageTest extends HttpUnitTest {
      */
     @Test
     void localFile() throws Exception {
-        File file = new File("temp.html");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.html");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("<html><head><title>A Sample Page</title></head>");
         pw.println("<body>This is a very simple page<p>With not much text</body></html>");
         pw.close();
 
         WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest("file:" + file.getAbsolutePath());
+        WebRequest request = new GetMethodWebRequest("file:" + file.toFile().getAbsolutePath());
         WebResponse simplePage = wc.getResponse(request);
         assertEquals("A Sample Page", simplePage.getTitle(), "Title");
         assertEquals(Charset.defaultCharset().displayName(), simplePage.getCharacterSet(), "Character set");
 
-        file.delete();
+        file.toFile().delete();
     }
 
     /**
@@ -251,12 +252,12 @@ class WebPageTest extends HttpUnitTest {
      */
     @Test
     void noLocalFile() throws Exception {
-        File file = new File("temp.html");
-        file.delete();
+        Path file = Path.of("temp.html");
+        file.toFile().delete();
 
         try {
             WebConversation wc = new WebConversation();
-            WebRequest request = new GetMethodWebRequest("file:" + file.getAbsolutePath());
+            WebRequest request = new GetMethodWebRequest("file:" + file.toFile().getAbsolutePath());
             wc.getResponse(request);
             fail("Should have complained about missing file");
         } catch (java.io.FileNotFoundException e) {

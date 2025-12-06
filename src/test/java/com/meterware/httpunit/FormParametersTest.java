@@ -35,6 +35,7 @@ import com.meterware.httpunit.controls.IllegalParameterValueException;
 import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -673,17 +674,18 @@ class FormParametersTest extends HttpUnitTest {
         assertEquals(1, values.length, "Number of file parameter values");
         assertEquals("", values[0], "Default selected filename");
 
-        final File file = new File("dummy.txt");
-        form.setParameter("File", new UploadFileSpec[] { new UploadFileSpec(file) });
-        assertEquals(file.getAbsolutePath(), form.getParameterValue("File"), "Selected filename");
+        final Path file = Path.of("dummy.txt");
+        form.setParameter("File", new UploadFileSpec[] { new UploadFileSpec(file.toFile()) });
+        assertEquals(file.toFile().getAbsolutePath(), form.getParameterValue("File"), "Selected filename");
 
-        form.setParameter("File", file);
+        form.setParameter("File", file.toFile());
 
         WebRequest wr = form.getRequest();
-        assertEquals(file.getAbsolutePath(), wr.getParameterValues("File")[0], "File from validated request");
+        assertEquals(file.toFile().getAbsolutePath(), wr.getParameterValues("File")[0], "File from validated request");
 
         wr = form.newUnvalidatedRequest();
-        assertEquals(file.getAbsolutePath(), wr.getParameterValues("File")[0], "File from unvalidated request");
+        assertEquals(file.toFile().getAbsolutePath(), wr.getParameterValues("File")[0],
+                "File from unvalidated request");
     }
 
     /**
@@ -719,13 +721,13 @@ class FormParametersTest extends HttpUnitTest {
         WebForm form = page.getForms()[0];
         try {
             // this works with no exception
-            form.setParameter("file1", new File("/tmp/test.txt"));
+            form.setParameter("file1", Path.of("/tmp/test.txt").toFile());
             // this doesn't
             form.setParameter("file2", "/tmp/test.txt");
             fail("There should have been an exception");
         } catch (UnusedParameterValueException upe) {
             String msg = upe.getMessage();
-            // this is the pre 1.7 behaviour
+            // this is the pre 1.7 behavior
             String expected = "Attempted to assign to parameter 'file2' the extraneous value '/tmp/test.txt'.";
             System.err.println(msg);
             assertEquals(msg, expected, "exception message is not as expected");
@@ -753,7 +755,7 @@ class FormParametersTest extends HttpUnitTest {
         WebForm form = page.getForms()[0];
         try {
             // purposely try to set a non existing file name
-            form.setParameter("wrong_field_name", new File("exists.txt"));
+            form.setParameter("wrong_field_name", Path.of("exists.txt").toFile());
             fail("There should have been an exception");
         } catch (NoSuchParameterException npe) {
             String msg = npe.getMessage();

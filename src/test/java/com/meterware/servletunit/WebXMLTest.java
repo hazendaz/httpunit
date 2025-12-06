@@ -44,11 +44,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -127,20 +129,21 @@ public class WebXMLTest {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
-        File webXml = createWebXml(new File(TEST_TARGET_PATH + "/base"), wxs);
+        File webXml = createWebXml(Path.of(TEST_TARGET_PATH + "/base").toFile(), wxs);
 
-        assertRealPath("path with no context", new ServletRunner(webXml), new File("something.txt"), "/something.txt");
+        assertRealPath("path with no context", new ServletRunner(webXml), Path.of("something.txt").toFile(),
+                "/something.txt");
         assertRealPath("path with context", new ServletRunner(webXml, "/testing"),
-                new File(TEST_TARGET_PATH + "/base/something.txt"), "/something.txt");
+                Path.of(TEST_TARGET_PATH + "/base/something.txt").toFile(), "/something.txt");
         // attempt for an assertion a long the line of bug report [ 1113728 ] getRealPath throws
         // IndexOutOfBoundsException on empty string
         // TODO check what was meant by Adrian Baker
         // assertRealPath( "empty path with context", new ServletRunner( webXml, "/testing" ), new File( "" ),
         // "/testing" );
-        assertRealPath("path with no context, no slash", new ServletRunner(webXml), new File("something.txt"),
+        assertRealPath("path with no context, no slash", new ServletRunner(webXml), Path.of("something.txt").toFile(),
                 "something.txt");
         assertRealPath("path with context, no slash", new ServletRunner(webXml, "/testing"),
-                new File(TEST_TARGET_PATH + "/base/something.txt"), "something.txt");
+                Path.of(TEST_TARGET_PATH + "/base/something.txt").toFile(), "something.txt");
     }
 
     /**
@@ -172,7 +175,7 @@ public class WebXMLTest {
      *             Signals that an I/O exception has occurred.
      */
     private File createWebXml(WebXMLString wxs) throws IOException {
-        return createWebXml(new File(TEST_TARGET_PATH), wxs);
+        return createWebXml(Path.of(TEST_TARGET_PATH).toFile(), wxs);
     }
 
     /**
@@ -189,13 +192,13 @@ public class WebXMLTest {
      *             Signals that an I/O exception has occurred.
      */
     private File createWebXml(File parent, WebXMLString wxs) throws IOException {
-        File dir = new File(parent, "META-INF");
-        dir.mkdirs();
-        File webXml = new File(dir, "web.xml");
-        FileOutputStream fos = new FileOutputStream(webXml);
+        Path dir = parent.toPath().resolve("META-INF");
+        dir.toFile().mkdirs();
+        Path webXml = dir.resolve("web.xml");
+        OutputStream fos = Files.newOutputStream(webXml);
         fos.write(wxs.asText().getBytes(StandardCharsets.UTF_8));
         fos.close();
-        return webXml;
+        return webXml.toFile();
     }
 
     /**

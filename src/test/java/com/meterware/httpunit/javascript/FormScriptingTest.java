@@ -46,6 +46,7 @@ import com.meterware.pseudoserver.WebResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1375,7 +1376,7 @@ public class FormScriptingTest extends HttpUnitTest {
      */
     @Test
     void fileSubmitProperties() throws Exception {
-        File file = new File("temp.html");
+        Path file = Path.of("temp.html");
         defineResource("OnCommand.html", "<html><head></head>" + "<body'>" + "<form name='the_form'>"
                 + "  <input type='file' name='file'>" + "</form>"
                 + "<a href='#' onMouseOver=\"alert( 'file selected is [' + document.the_form.file.value + ']' );\">which</a>"
@@ -1386,9 +1387,9 @@ public class FormScriptingTest extends HttpUnitTest {
         assertEquals("file selected is []", wc.popNextAlert(), "1st message");
 
         WebForm form = response.getFormWithName("the_form");
-        form.setParameter("file", new UploadFileSpec[] { new UploadFileSpec(file) });
+        form.setParameter("file", new UploadFileSpec[] { new UploadFileSpec(file.toFile()) });
         response.getLinks()[0].mouseOver();
-        assertEquals("file selected is [" + file.getAbsolutePath() + "]", wc.popNextAlert(), "2nd message");
+        assertEquals("file selected is [" + file.toFile().getAbsolutePath() + "]", wc.popNextAlert(), "2nd message");
     }
 
     /**

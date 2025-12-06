@@ -209,7 +209,7 @@ class BodyEcho extends PseudoServlet {
     public WebResource getResponse(String method) {
         String contentType = getHeader("Content-type");
         if (contentType.startsWith("text")) {
-            return new WebResource("\n" + method + "\n" + new String(getBody()), contentType);
+            return new WebResource("\n" + method + "\n" + new String(getBody(), StandardCharsets.UTF_8), contentType);
         }
         return new WebResource(getBody(), contentType);
     }

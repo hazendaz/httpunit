@@ -1236,10 +1236,9 @@ class WebClientTest extends HttpUnitTest {
         private byte[] getCompressedContents() throws IOException {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             GZIPOutputStream gzip = new GZIPOutputStream(baos);
-            OutputStreamWriter out = new OutputStreamWriter(gzip);
-            out.write(_responseText);
-            out.flush();
-            out.close();
+            try (OutputStreamWriter out = new OutputStreamWriter(gzip, StandardCharsets.UTF_8)) {
+                out.write(_responseText);
+            }
             return baos.toByteArray();
         }
     }
@@ -1286,7 +1285,7 @@ class WebClientTest extends HttpUnitTest {
                         + "</FRAMESET></HTML>");
 
         WebConversation wc = new WebConversation();
-        ArrayList messageLog = new ArrayList<>();
+        List messageLog = new ArrayList<>();
         wc.addClientListener(new ListenerExample(messageLog));
 
         wc.getResponse(getHostPath() + "/Frames.html");
@@ -1307,7 +1306,7 @@ class WebClientTest extends HttpUnitTest {
      * @throws MalformedURLException
      *             the malformed URL exception
      */
-    private void verifyRequestResponsePair(ArrayList messageLog, int i) throws MalformedURLException {
+    private void verifyRequestResponsePair(List messageLog, int i) throws MalformedURLException {
         assertTrue(messageLog.get(i) instanceof WebRequest,
                 "Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass());
         assertTrue(messageLog.get(i + 1) instanceof WebResponse,

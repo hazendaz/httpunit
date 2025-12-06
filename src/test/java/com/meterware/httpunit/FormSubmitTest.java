@@ -32,6 +32,7 @@ import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -781,7 +782,7 @@ class FormSubmitTest extends HttpUnitTest {
         defineResource("doit", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() throws IOException {
-                return new WebResource(new String(getBody()));
+                return new WebResource(new String(getBody(), StandardCharsets.UTF_8));
             }
         });
 

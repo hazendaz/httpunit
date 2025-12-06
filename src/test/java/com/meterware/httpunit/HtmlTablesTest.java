@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Locale;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -481,8 +483,10 @@ public class HtmlTablesTest extends HttpUnitTest {
     @Test
     void cellTagName() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
-        assertEquals("TH", table.getTableCell(0, 0).getTagName().toUpperCase(), "Tag name of header cell");
-        assertEquals("TD", table.getTableCell(0, 1).getTagName().toUpperCase(), "Tag name of non-header cell");
+        assertEquals("TH", table.getTableCell(0, 0).getTagName().toUpperCase(Locale.ENGLISH),
+                "Tag name of header cell");
+        assertEquals("TD", table.getTableCell(0, 1).getTagName().toUpperCase(Locale.ENGLISH),
+                "Tag name of non-header cell");
     }
 
     /** The wc. */

@@ -84,8 +84,6 @@ class XMLPageTest extends HttpUnitTest {
     /**
      * test for BR 2946821.
      *
-     * @return the document element
-     *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException

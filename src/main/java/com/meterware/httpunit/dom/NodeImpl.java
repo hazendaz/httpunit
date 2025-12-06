@@ -22,6 +22,7 @@ package com.meterware.httpunit.dom;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -363,7 +364,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
      * @return the elements by tag name
      */
     public NodeList getElementsByTagName(String name) {
-        ArrayList matchingElements = new ArrayList<>();
+        List matchingElements = new ArrayList<>();
         appendElementsWithTag(name, matchingElements);
         return new NodeListImpl(matchingElements);
     }
@@ -376,7 +377,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
      * @param matchingElements
      *            the matching elements
      */
-    private void appendElementsWithTag(String name, ArrayList matchingElements) {
+    private void appendElementsWithTag(String name, List matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != ELEMENT_NODE) {
                 continue;
@@ -397,7 +398,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
      * @return the elements by tag names
      */
     protected NodeList getElementsByTagNames(String[] names) {
-        ArrayList matchingElements = new ArrayList<>();
+        List matchingElements = new ArrayList<>();
         appendElementsWithTags(names, matchingElements);
         return new NodeListImpl(matchingElements);
     }
@@ -410,7 +411,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
      * @param matchingElements
      *            the matching elements
      */
-    void appendElementsWithTags(String[] names, ArrayList matchingElements) {
+    void appendElementsWithTags(String[] names, List matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != ELEMENT_NODE) {
                 continue;

@@ -1469,7 +1469,7 @@ public class ParsedHTML {
      *            the html element
      */
     private void addToList(HTMLElement htmlElement) {
-        ArrayList list = getListForElement(htmlElement);
+        List list = getListForElement(htmlElement);
         if (list != null) {
             list.add(htmlElement);
         }
@@ -1483,7 +1483,7 @@ public class ParsedHTML {
      *
      * @return the list for element
      */
-    private ArrayList getListForElement(HTMLElement element) {
+    private List getListForElement(HTMLElement element) {
         if (element instanceof WebTable) {
             return _tableList;
         }

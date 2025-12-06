@@ -89,6 +89,6 @@ public abstract class AbstractDomComponent extends ScriptingEngineImpl implement
      * @return the string
      */
     protected static String createAnonymousFunctionName() {
-        return "anon_" + (++_anonymousFunctionNum);
+        return "anon_" + ++_anonymousFunctionNum;
     }
 }

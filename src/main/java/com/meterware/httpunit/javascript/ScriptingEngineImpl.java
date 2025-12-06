@@ -179,8 +179,9 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      * it's assigned by calling doEvent for the script
      *
      * @param eventName
+     *            the event name
      *
-     * @return
+     * @return true, if successful
      */
     @Override
     public boolean handleEvent(String eventName) {

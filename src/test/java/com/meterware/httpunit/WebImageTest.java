@@ -34,8 +34,6 @@ class WebImageTest extends HttpUnitTest {
     /**
      * Gets the images.
      *
-     * @return the images
-     *
      * @throws Exception
      *             the exception
      */
@@ -57,8 +55,6 @@ class WebImageTest extends HttpUnitTest {
 
     /**
      * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon.
-     *
-     * @return the image many times
      *
      * @throws Exception
      *             the exception

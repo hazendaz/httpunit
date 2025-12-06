@@ -342,8 +342,6 @@ class WebFrameTest extends HttpUnitTest {
     /**
      * Gets the subframes.
      *
-     * @return the subframes
-     *
      * @throws Exception
      *             the exception
      */
@@ -600,8 +598,6 @@ class WebFrameTest extends HttpUnitTest {
 
     /**
      * Gets the nested frame by name.
-     *
-     * @return the nested frame by name
      *
      * @throws Exception
      *             the exception

@@ -62,8 +62,6 @@ class WebFormTest extends HttpUnitTest {
     /**
      * placeholder for test for BR 2407470 by redsonic with comment and patch by Adam Heath.
      *
-     * @return the form with ID
-     *
      * @throws Exception
      *             the exception
      */
@@ -643,8 +641,6 @@ class WebFormTest extends HttpUnitTest {
 
     /**
      * Gets the with query string.
-     *
-     * @return the with query string
      *
      * @throws Exception
      *             the exception

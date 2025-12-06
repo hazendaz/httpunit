@@ -256,8 +256,9 @@ public class JavaScript {
          * if it's assigned by calling doEvent for the script
          *
          * @param eventName
+         *            the event name
          *
-         * @return
+         * @return true, if successful
          */
         @Override
         public boolean handleEvent(String eventName) {

@@ -159,8 +159,6 @@ class WebLinkTest extends HttpUnitTest {
     /**
      * test for BR 2534057 getLinks() for a Cell return all page links.
      *
-     * @return the links for cell
-     *
      * @throws SAXException
      *             the SAX exception
      */
@@ -181,8 +179,6 @@ class WebLinkTest extends HttpUnitTest {
 
     /**
      * Gets the link by text.
-     *
-     * @return the link by text
      *
      * @throws Exception
      *             the exception
@@ -235,8 +231,6 @@ class WebLinkTest extends HttpUnitTest {
 
     /**
      * Gets the link by ID and name.
-     *
-     * @return the link by ID and name
      *
      * @throws Exception
      *             the exception
@@ -328,8 +322,6 @@ class WebLinkTest extends HttpUnitTest {
 
     /**
      * test for bug report [ 1232591 ] getTarget() gives "_top" even if target is not present by Rifi.
-     *
-     * @return the target top
      *
      * @throws Exception
      *             the exception

@@ -756,6 +756,12 @@ abstract class BooleanFormControl extends FormControl {
         _element.setValue(value);
     }
 
+    /**
+     * Sets the checked.
+     *
+     * @param checked
+     *            the new checked
+     */
     public void setChecked(boolean checked) {
         _element.setChecked(checked);
     }
@@ -799,6 +805,11 @@ abstract class BooleanFormControl extends FormControl {
         }
     }
 
+    /**
+     * Checks if is value required.
+     *
+     * @return true, if is value required
+     */
     protected boolean isValueRequired() {
         return isReadOnly() && isChecked();
     }

@@ -448,8 +448,6 @@ class WebPageTest extends HttpUnitTest {
     /**
      * test the stylesheet retrieval.
      *
-     * @return the external stylesheet
-     *
      * @throws Exception
      *             the exception
      */
@@ -494,8 +492,6 @@ class WebPageTest extends HttpUnitTest {
     /**
      * Gets the element by ID.
      *
-     * @return the element by ID
-     *
      * @throws Exception
      *             the exception
      */
@@ -518,8 +514,6 @@ class WebPageTest extends HttpUnitTest {
     /**
      * Gets the elements by name.
      *
-     * @return the elements by name
-     *
      * @throws Exception
      *             the exception
      */
@@ -540,8 +534,6 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * Gets the elements by attribute.
-     *
-     * @return the elements by attribute
      *
      * @throws Exception
      *             the exception
@@ -569,8 +561,6 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * test for getElementsWithClassName supplied by Rick Huff.
-     *
-     * @return the elements with class name
      *
      * @throws Exception
      *             the exception
@@ -675,8 +665,6 @@ class WebPageTest extends HttpUnitTest {
 
     /**
      * test case for BR [ 2100376 ] Unable to implement an XPath Predicate (which used to work) by Stephane Mikaty.
-     *
-     * @return the first matching form
      *
      * @throws Exception
      *             the exception

@@ -180,7 +180,9 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
         /**
          * Returns the content type of this message body.
-         **/
+         *
+         * @return the content type
+         */
         @Override
         public String getContentType() {
             return _contentType;
@@ -190,7 +192,9 @@ public abstract class MessageBodyWebRequest extends WebRequest {
          * Transmits the body of this request as a sequence of bytes.
          *
          * @param outputStream
+         *            the output stream
          * @param parameters
+         *            the parameters
          *
          * @throws IOException
          *             if the tranmission fails

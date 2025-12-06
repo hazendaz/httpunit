@@ -161,7 +161,7 @@
                 <groupId>org.gaul</groupId>
                 <artifactId>modernizer-maven-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <failOnViolations>false</failOnViolations>
                 </configuration>
             </plugin>
         </plugins>

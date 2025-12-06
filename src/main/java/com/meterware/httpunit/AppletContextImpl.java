@@ -26,17 +26,26 @@ import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class AppletContextImpl.
+ */
 class AppletContextImpl implements AppletContext {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
+    /**
+     * Instantiates a new applet context impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
     AppletContextImpl(WebApplet webApplet) {
         _webApplet = webApplet;
     }
@@ -105,7 +114,7 @@ class AppletContextImpl implements AppletContext {
     @Override
     public Enumeration getApplets() {
         WebApplet[] webApplets = _webApplet.getAppletsInPage();
-        Vector v = new Vector<>();
+        List v = new ArrayList<>();
         try {
             for (WebApplet webApplet : webApplets) {
                 v.add(webApplet.getApplet());
@@ -114,7 +123,7 @@ class AppletContextImpl implements AppletContext {
             e.printStackTrace();
             throw new RuntimeException(e.toString());
         }
-        return v.elements();
+        return Collections.enumeration(v);
     }
 
     /**
@@ -196,8 +205,6 @@ class AppletContextImpl implements AppletContext {
      *
      * @param key
      *            key whose associated stream is to be returned.
-     *
-     * @since JDK1.4
      */
     @Override
     public InputStream getStream(String key) {
@@ -212,8 +219,6 @@ class AppletContextImpl implements AppletContext {
      * <p>
      *
      * @return an Iterator of all the names of the streams in this applet context.
-     *
-     * @since JDK1.4
      */
     @Override
     public Iterator getStreamKeys() {
@@ -237,8 +242,6 @@ class AppletContextImpl implements AppletContext {
      * @throws <code>IOException</code>
      *            if the stream size exceeds a certain size limit. Size limit is decided by the implementor of this
      *            interface.
-     *
-     * @since JDK1.4
      */
     @Override
     public void setStream(String key, InputStream stream) throws IOException {

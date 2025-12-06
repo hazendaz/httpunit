@@ -39,20 +39,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.Vector;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The Class ServletUnitHttpResponse.
+ */
 class ServletUnitHttpResponse implements HttpServletResponse {
 
+    /** The Constant RFC1123_DATE_SPEC. */
     // rfc1123-date is "Sun, 06 Nov 1994 08:49:37 GMT"
     private static final String RFC1123_DATE_SPEC = "EEE, dd MMM yyyy HH:mm:ss z";
+
+    /** The committed. */
     private boolean _committed;
+
+    /** The locale. */
     private Locale _locale = Locale.getDefault();
 
+    /** The Constant ENCODING_MAP. */
     private static final Hashtable ENCODING_MAP = new Hashtable<>();
 
     /**
@@ -69,7 +77,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      */
     @Override
     public void addCookie(Cookie cookie) {
-        _cookies.addElement(cookie);
+        _cookies.add(cookie);
     }
 
     /**
@@ -200,15 +208,36 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * Adds a field to the response header with the given name and integer value. If the field had already been set, the
      * new value overwrites the previous one. The <code>containsHeader</code> method can be used to test for the
      * presence of a header before setting its value.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public void setLongHeader(String name, long value) {
         setHeader(name, asHeaderLongValue(value));
     }
 
+    /**
+     * As header value.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private String asHeaderValue(int value) {
         return Integer.toString(value);
     }
 
+    /**
+     * As header long value.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private String asHeaderLongValue(long value) {
         return Long.toString(value);
     }
@@ -223,6 +252,14 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         setHeader(name, asDateHeaderValue(date));
     }
 
+    /**
+     * As date header value.
+     *
+     * @param date
+     *            the date
+     *
+     * @return the string
+     */
     private String asDateHeaderValue(long date) {
         Date value = new Date(date);
         SimpleDateFormat formatter = new SimpleDateFormat(RFC1123_DATE_SPEC, Locale.US);
@@ -428,8 +465,6 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     /**
      * Clears the content of the underlying buffer in the response without clearing headers or status code. If the
      * response has been committed, this method throws an IllegalStateException.
-     *
-     * @since 1.3
      */
     @Override
     public void resetBuffer() {
@@ -445,7 +480,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     /**
      * Returns the contents of this response.
-     **/
+     *
+     * @return the contents
+     */
     byte[] getContents() {
         if (_outputStream == null) {
             return new byte[0];
@@ -466,22 +503,27 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     /**
      * Returns the message associated with this response's status.
-     **/
+     *
+     * @return the message
+     */
     String getMessage() {
         return _statusMessage;
     }
 
+    /**
+     * Gets the header field names.
+     *
+     * @return the header field names
+     */
     public String[] getHeaderFieldNames() {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector<>();
+        List<String> names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add((String) e.nextElement());
         }
-        String[] result = new String[names.size()];
-        names.copyInto(result);
-        return result;
+        return names.toArray(new String[0]);
     }
 
     /**
@@ -489,7 +531,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      *
      * @param name
      *            - the name of the field to get
-     **/
+     *
+     * @return the header field direct
+     */
     String getHeaderFieldDirect(String name) {
         ArrayList values;
         synchronized (_headers) {
@@ -503,7 +547,10 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * Returns the headers defined for this response.
      *
      * @param name
-     **/
+     *            the name
+     *
+     * @return the header field
+     */
     String getHeaderField(String name) {
         if (!_headersComplete) {
             completeHeaders();
@@ -517,6 +564,8 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      *
      * @param name
      *            Header name to look up
+     *
+     * @return the header fields
      */
     public String[] getHeaderFields(String name) {
         if (!_headersComplete) {
@@ -552,26 +601,39 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
     // ------------------------------------------- private members ------------------------------------
 
+    /** The content type. */
     private String _contentType = "text/plain";
 
+    /** The encoding. */
     private String _encoding;
 
+    /** The writer. */
     private PrintWriter _writer;
 
+    /** The servlet stream. */
     private ServletOutputStream _servletStream;
 
+    /** The output stream. */
     private ByteArrayOutputStream _outputStream;
 
+    /** The status. */
     private int _status = SC_OK;
 
+    /** The status message. */
     private String _statusMessage = "OK";
 
+    /** The headers. */
     private final Hashtable _headers = new Hashtable<>();
 
+    /** The headers complete. */
     private boolean _headersComplete;
 
-    private Vector _cookies = new Vector<>();
+    /** The cookies. */
+    private List<Cookie> _cookies = new ArrayList<>();
 
+    /**
+     * Complete headers.
+     */
     private void completeHeaders() {
         if (_headersComplete) {
             return;
@@ -584,13 +646,16 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         _headersComplete = true;
     }
 
+    /**
+     * Adds the cookie header.
+     */
     private void addCookieHeader() {
         if (_cookies.isEmpty()) {
             return;
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Enumeration e = _cookies.elements(); e.hasMoreElements();) {
+        for (Enumeration e = Collections.enumeration(_cookies); e.hasMoreElements();) {
             Cookie cookie = (Cookie) e.nextElement();
             sb.append(cookie.getName()).append('=').append(cookie.getValue());
             if (cookie.getPath() != null) {
@@ -645,9 +710,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector<>();
+        List names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add(e.nextElement());
         }
         return names;
     }

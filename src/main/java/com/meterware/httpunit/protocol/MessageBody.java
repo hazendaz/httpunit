@@ -27,6 +27,7 @@ import java.io.OutputStream;
  **/
 public abstract class MessageBody {
 
+    /** The character set. */
     private String _characterSet;
 
     /**
@@ -44,12 +45,20 @@ public abstract class MessageBody {
                 : (MessageBody) new URLEncodedMessageBody(characterSet);
     }
 
+    /**
+     * Instantiates a new message body.
+     *
+     * @param characterSet
+     *            the character set
+     */
     public MessageBody(String characterSet) {
         _characterSet = characterSet;
     }
 
     /**
      * Returns the character set associated with this message body.
+     *
+     * @return the character set
      */
     public String getCharacterSet() {
         return _characterSet;
@@ -57,11 +66,21 @@ public abstract class MessageBody {
 
     /**
      * Returns the content type of this message body. For text messages, this should include the character set.
-     **/
+     *
+     * @return the content type
+     */
     public abstract String getContentType();
 
     /**
      * Transmits the body of this request as a sequence of bytes.
-     **/
+     *
+     * @param outputStream
+     *            the output stream
+     * @param parameters
+     *            the parameters
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public abstract void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException;
 }

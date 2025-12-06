@@ -36,26 +36,48 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * test the Request Dispatcher
+ * test the Request Dispatcher.
  */
 class RequestDispatcherTest {
 
+    /** The outer servlet name. */
     final String outerServletName = "something/interesting";
+
+    /** The inner servlet name. */
     final String innerServletName = "something/more";
+
+    /** The decode example name. */
     final String decodeExampleName = "repository/Default%20repository";
+
+    /** The error page servlet name. */
     final String errorPageServletName = "errorPage";
 
+    /** The Constant REQUEST_URI. */
     static final String REQUEST_URI = "javax.servlet.include.request_uri";
+
+    /** The Constant CONTEXT_PATH. */
     static final String CONTEXT_PATH = "javax.servlet.include.context_path";
+
+    /** The Constant SERVLET_PATH. */
     static final String SERVLET_PATH = "javax.servlet.include.servlet_path";
+
+    /** The Constant PATH_INFO. */
     static final String PATH_INFO = "javax.servlet.include.path_info";
+
+    /** The Constant QUERY_STRING. */
     static final String QUERY_STRING = "javax.servlet.include.query_string";
 
+    /** The runner. */
     private ServletRunner _runner;
+
+    /** The wxs. */
     private WebXMLString _wxs;
 
     /**
-     * prepare the test
+     * prepare the test.
+     *
+     * @throws Exception
+     *             the exception
      */
     @BeforeEach
     void setUp() throws Exception {
@@ -67,6 +89,12 @@ class RequestDispatcherTest {
         _runner = new ServletRunner(_wxs.asInputStream(), "/sample");
     }
 
+    /**
+     * Request dispatcher parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void requestDispatcherParameters() throws Exception {
         InvocationContext ic = _runner.newClient()
@@ -100,6 +128,12 @@ class RequestDispatcherTest {
         assertEquals(RequestDispatcherServlet.class, ic.getServlet().getClass(), "Included servlet class");
     }
 
+    /**
+     * Request dispatcher include paths.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void requestDispatcherIncludePaths() throws Exception {
         InvocationContext ic = _runner.newClient()
@@ -146,7 +180,10 @@ class RequestDispatcherTest {
     }
 
     /**
-     * test for fix of bug [ 1323031 ] getPathInfo does not decode request URL by Hugh Winkler -
+     * test for fix of bug [ 1323031 ] getPathInfo does not decode request URL by Hugh Winkler -.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void decodeRequestURL() throws Exception {
@@ -162,9 +199,12 @@ class RequestDispatcherTest {
     }
 
     /**
-     * test for implementation of getNamedDispatcher as patched up by Izzy Alanis
+     * test for implementation of getNamedDispatcher as patched up by Izzy Alanis.
+     *
+     * @return the named dispatcher
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getNamedDispatcher() throws Exception {
@@ -177,6 +217,12 @@ class RequestDispatcherTest {
         });
     }
 
+    /**
+     * Request dispatcher forward paths.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void requestDispatcherForwardPaths() throws Exception {
         InvocationContext ic = _runner.newClient()
@@ -215,8 +261,12 @@ class RequestDispatcherTest {
         // QUERY_STRING ) );
     }
 
+    /**
+     * The Class RequestDispatcherServlet.
+     */
     static class RequestDispatcherServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -228,18 +278,34 @@ class RequestDispatcherTest {
         }
     }
 
+    /**
+     * The Class ErrorPageServlet.
+     */
     static class ErrorPageServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
     }
 
+    /**
+     * The Class IncludedServlet.
+     */
     static class IncludedServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The desired request uri. */
         static String DESIRED_REQUEST_URI = "localhost/subdir/pagename.jsp";
+
+        /** The desired servlet path. */
         static String DESIRED_SERVLET_PATH = "/subdir/pagename.jsp";
+
+        /** The desired query string. */
         static String DESIRED_QUERY_STRING = "param=value&param2=value";
+
+        /** The desired output. */
         static String DESIRED_OUTPUT = DESIRED_REQUEST_URI + DESIRED_QUERY_STRING + DESIRED_SERVLET_PATH;
 
         @Override
@@ -255,6 +321,14 @@ class RequestDispatcherTest {
             pw.close();
         }
 
+        /**
+         * Blank if null.
+         *
+         * @param s
+         *            the s
+         *
+         * @return the string
+         */
         private String blankIfNull(String s) {
             return s == null ? "" : s;
         }

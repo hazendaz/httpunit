@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
@@ -46,29 +47,38 @@ import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- **/
+ * The Class ParsedHTML.
+ */
 public class ParsedHTML {
 
+    /** The Constant NO_ELEMENTS. */
     static final private HTMLElement[] NO_ELEMENTS = {};
 
+    /** The Constant TEXT_ELEMENTS. */
     static final private String[] TEXT_ELEMENTS = { "p", "h1", "h2", "h3", "h4", "h5", "h6" };
 
+    /** The root node. */
     private Node _rootNode;
 
+    /** The base URL. */
     private URL _baseURL;
 
+    /** The frame. */
     private FrameSelector _frame;
 
+    /** The base target. */
     private String _baseTarget;
 
+    /** The character set. */
     private String _characterSet;
 
+    /** The response. */
     private WebResponse _response;
 
+    /** The update elements. */
     private boolean _updateElements = true;
 
+    /** The enable no script nodes. */
     private boolean _enableNoScriptNodes;
 
     /** map of element IDs to elements. **/
@@ -80,18 +90,43 @@ public class ParsedHTML {
     /** map of element class to elements. **/
     private HashMap _elementsByClass = new HashMap<>();
 
-    /** map of DOM elements to HTML elements **/
+    /** map of DOM elements to HTML elements *. */
     private ElementRegistry _registry = new ElementRegistry();
 
+    /** The blocks list. */
     private ArrayList _blocksList = new ArrayList<>();
+
+    /** The blocks. */
     private TextBlock[] _blocks;
 
+    /** The table list. */
     private ArrayList _tableList = new ArrayList<>();
+
+    /** The tables. */
     private WebTable[] _tables;
 
+    /** The frame list. */
     private ArrayList _frameList = new ArrayList<>();
+
+    /** The frames. */
     private WebFrame[] _frames;
 
+    /**
+     * Instantiates a new parsed HTML.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param rootNode
+     *            the root node
+     * @param characterSet
+     *            the character set
+     */
     ParsedHTML(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {
         _response = response;
@@ -117,6 +152,14 @@ public class ParsedHTML {
         return result;
     }
 
+    /**
+     * Gets the web form.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the web form
+     */
     private WebForm getWebForm(Node node) {
         WebForm webForm = (WebForm) _registry.getRegisteredElement(node);
         return webForm != null ? webForm : (WebForm) _registry.registerElement(node, toWebForm((Element) node));
@@ -124,7 +167,9 @@ public class ParsedHTML {
 
     /**
      * Returns the links found in the page in the order in which they appear.
-     **/
+     *
+     * @return the links
+     */
     public WebLink[] getLinks() {
         loadElements();
         HTMLCollection links = ((HTMLContainerElement) _rootNode).getLinks();
@@ -141,6 +186,8 @@ public class ParsedHTML {
 
     /**
      * Returns a proxy for each applet found embedded in this page.
+     *
+     * @return the applets
      */
     public WebApplet[] getApplets() {
         loadElements();
@@ -158,6 +205,8 @@ public class ParsedHTML {
 
     /**
      * Returns the images found in the page in the order in which they appear.
+     *
+     * @return the images
      */
     public WebImage[] getImages() {
         loadElements();
@@ -176,6 +225,8 @@ public class ParsedHTML {
 
     /**
      * Returns the top-level block elements found in the page in the order in which they appear.
+     *
+     * @return the text blocks
      */
     public TextBlock[] getTextBlocks() {
         loadElements();
@@ -188,6 +239,13 @@ public class ParsedHTML {
 
     /**
      * Returns the first text block found in the page which matches the specified predicate and value.
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the first matching text block
      */
     public TextBlock getFirstMatchingTextBlock(HTMLElementPredicate predicate, Object criteria) {
         loadElements();
@@ -201,9 +259,10 @@ public class ParsedHTML {
     }
 
     /**
-     * get the next text block based on the given block
+     * get the next text block based on the given block.
      *
      * @param block
+     *            the block
      *
      * @return - the next text block
      */
@@ -243,6 +302,11 @@ public class ParsedHTML {
 
     /**
      * Returns the HTML elements with the specified name.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the elements with name
      */
     public HTMLElement[] getElementsWithName(String name) {
         loadElements();
@@ -252,6 +316,11 @@ public class ParsedHTML {
 
     /**
      * Returns the HTML elements with the specified class.
+     *
+     * @param className
+     *            the class name
+     *
+     * @return the elements with class name
      */
     public HTMLElement[] getElementsWithClassName(String className) {
         loadElements();
@@ -266,6 +335,8 @@ public class ParsedHTML {
      *            - the name of the attribute to check
      * @param value
      *            - the value of the attribute to check
+     *
+     * @return the elements with attribute
      */
     public HTMLElement[] getElementsWithAttribute(String name, String value) {
         loadElements();
@@ -283,6 +354,8 @@ public class ParsedHTML {
 
     /**
      * Returns a list of HTML element names contained in this HTML section.
+     *
+     * @return the element names
      */
     public String[] getElementNames() {
         loadElements();
@@ -290,14 +363,14 @@ public class ParsedHTML {
     }
 
     /**
-     * get the elements with the given tagname
+     * get the elements with the given tagname.
      *
      * @param dom
      *            - the node to start from
      * @param name
      *            - the name of the attribute to look for
      *
-     * @return
+     * @return the elements by tag name
      */
     HTMLElement[] getElementsByTagName(Node dom, String name) {
         loadElements();
@@ -307,6 +380,14 @@ public class ParsedHTML {
         return getElementsFromList(((Document) dom).getElementsByTagName(name));
     }
 
+    /**
+     * Gets the elements from list.
+     *
+     * @param nl
+     *            the nl
+     *
+     * @return the elements from list
+     */
     private HTMLElement[] getElementsFromList(NodeList nl) {
         HTMLElement[] elements = new HTMLElement[nl.getLength()];
         for (int i = 0; i < elements.length; i++) {
@@ -322,31 +403,68 @@ public class ParsedHTML {
 
     /**
      * Returns the form found in the page with the specified ID.
-     **/
+     *
+     * @param id
+     *            the id
+     *
+     * @return the form with ID
+     */
     public WebForm getFormWithID(String id) {
         return (WebForm) getElementWithID(id, WebForm.class);
     }
 
     /**
      * Returns the link found in the page with the specified ID.
-     **/
+     *
+     * @param id
+     *            the id
+     *
+     * @return the link with ID
+     */
     public WebLink getLinkWithID(String id) {
         return (WebLink) getElementWithID(id, WebLink.class);
 
     }
 
+    /**
+     * Gets the element with ID.
+     *
+     * @param id
+     *            the id
+     * @param klass
+     *            the klass
+     *
+     * @return the element with ID
+     */
     private Object getElementWithID(String id, final Class klass) {
         loadElements();
         return whenCast(_elementsByID.get(id), klass);
     }
 
+    /**
+     * When cast.
+     *
+     * @param o
+     *            the o
+     * @param klass
+     *            the klass
+     *
+     * @return the object
+     */
     private Object whenCast(Object o, Class klass) {
         return klass.isInstance(o) ? o : null;
     }
 
     /**
      * Returns the first link found in the page matching the specified criteria.
-     **/
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the first matching form
+     */
     public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object criteria) {
         WebForm[] forms = getForms();
         for (WebForm form : forms) {
@@ -359,7 +477,14 @@ public class ParsedHTML {
 
     /**
      * Returns all links found in the page matching the specified criteria.
-     **/
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the matching forms
+     */
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) {
         ArrayList matches = new ArrayList<>();
         WebForm[] forms = getForms();
@@ -373,15 +498,21 @@ public class ParsedHTML {
 
     /**
      * Returns the form found in the page with the specified name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the form with name
+     */
     public WebForm getFormWithName(String name) {
         return getFirstMatchingForm(WebForm.MATCH_NAME, name);
     }
 
     /**
-     * interpret the given script element
+     * interpret the given script element.
      *
      * @param element
+     *            the element
      */
     void interpretScriptElement(Element element) {
         if (!HttpUnitOptions.isScriptingEnabled()) {
@@ -405,9 +536,10 @@ public class ParsedHTML {
     }
 
     /**
-     * get the script for the given node
+     * get the script for the given node.
      *
      * @param scriptNode
+     *            the script node
      *
      * @return the script
      */
@@ -460,6 +592,11 @@ public class ParsedHTML {
 
     /**
      * If noscript node content is enabled, returns null - otherwise returns a concealing element.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the HTML element
      */
     private HTMLElement toNoscriptElement(Element element) {
         HTMLElement result = null;
@@ -469,8 +606,21 @@ public class ParsedHTML {
         return result;
     }
 
+    /**
+     * The Class HtmlElementRecorder.
+     */
     static class HtmlElementRecorder {
 
+        /**
+         * Record html element.
+         *
+         * @param pot
+         *            the pot
+         * @param node
+         *            the node
+         * @param htmlElement
+         *            the html element
+         */
         protected void recordHtmlElement(NodeUtils.PreOrderTraversal pot, Node node, HTMLElement htmlElement) {
             if (htmlElement != null) {
                 addToMaps(pot, node, htmlElement);
@@ -478,6 +628,14 @@ public class ParsedHTML {
             }
         }
 
+        /**
+         * Adds the to lists.
+         *
+         * @param pot
+         *            the pot
+         * @param htmlElement
+         *            the html element
+         */
         protected void addToLists(NodeUtils.PreOrderTraversal pot, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
@@ -487,6 +645,16 @@ public class ParsedHTML {
             }
         }
 
+        /**
+         * Adds the to maps.
+         *
+         * @param pot
+         *            the pot
+         * @param node
+         *            the node
+         * @param htmlElement
+         *            the html element
+         */
         protected void addToMaps(NodeUtils.PreOrderTraversal pot, Node node, HTMLElement htmlElement) {
             for (Iterator i = pot.getContexts(); i.hasNext();) {
                 Object o = i.next();
@@ -498,35 +666,103 @@ public class ParsedHTML {
 
     }
 
+    /**
+     * A factory for creating HTMLElement objects.
+     */
     abstract static class HTMLElementFactory extends HtmlElementRecorder {
+
+        /**
+         * To HTML element.
+         *
+         * @param pot
+         *            the pot
+         * @param parsedHTML
+         *            the parsed HTML
+         * @param element
+         *            the element
+         *
+         * @return the HTML element
+         */
         abstract HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element);
 
+        /**
+         * Record element.
+         *
+         * @param pot
+         *            the pot
+         * @param element
+         *            the element
+         * @param parsedHTML
+         *            the parsed HTML
+         */
         void recordElement(NodeUtils.PreOrderTraversal pot, Element element, ParsedHTML parsedHTML) {
             HTMLElement htmlElement = toHTMLElement(pot, parsedHTML, element);
             recordHtmlElement(pot, element, htmlElement);
         }
 
+        /**
+         * Checks if is recognized.
+         *
+         * @param properties
+         *            the properties
+         *
+         * @return true, if is recognized
+         */
         protected boolean isRecognized(ClientProperties properties) {
             return true;
         }
 
+        /**
+         * Adds the to context.
+         *
+         * @return true, if successful
+         */
         protected boolean addToContext() {
             return false;
         }
 
+        /**
+         * Gets the parsed HTML.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the parsed HTML
+         */
         protected final ParsedHTML getParsedHTML(NodeUtils.PreOrderTraversal pot) {
             return (ParsedHTML) getClosestContext(pot, ParsedHTML.class);
         }
 
+        /**
+         * Gets the closest context.
+         *
+         * @param pot
+         *            the pot
+         * @param aClass
+         *            the a class
+         *
+         * @return the closest context
+         */
         protected final Object getClosestContext(NodeUtils.PreOrderTraversal pot, Class aClass) {
             return pot.getClosestContext(aClass);
         }
 
+        /**
+         * Gets the root context.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the root context
+         */
         protected ParsedHTML getRootContext(NodeUtils.PreOrderTraversal pot) {
             return (ParsedHTML) pot.getRootContext();
         }
     }
 
+    /**
+     * A factory for creating DefaultElement objects.
+     */
     static class DefaultElementFactory extends HTMLElementFactory {
 
         @Override
@@ -543,6 +779,14 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * To default element.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the HTML element
+     */
     private HTMLElement toDefaultElement(Element element) {
         return new HTMLElementBase(element) {
             @Override
@@ -557,6 +801,9 @@ public class ParsedHTML {
         };
     }
 
+    /**
+     * A factory for creating WebForm objects.
+     */
     static class WebFormFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -564,6 +811,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebLink objects.
+     */
     static class WebLinkFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -571,6 +821,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating TextBlock objects.
+     */
     static class TextBlockFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -596,6 +849,9 @@ public class ParsedHTML {
 
     }
 
+    /**
+     * A factory for creating Script objects.
+     */
     static class ScriptFactory extends HTMLElementFactory {
 
         @Override
@@ -609,6 +865,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating NoScript objects.
+     */
     static class NoScriptFactory extends HTMLElementFactory {
 
         @Override
@@ -622,6 +881,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebFrame objects.
+     */
     static class WebFrameFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -629,6 +891,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebIFrame objects.
+     */
     static class WebIFrameFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -646,6 +911,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebImage objects.
+     */
     static class WebImageFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -653,6 +921,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebApplet objects.
+     */
     static class WebAppletFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -665,6 +936,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating WebTable objects.
+     */
     static class WebTableFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -690,6 +964,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating TableRow objects.
+     */
     static class TableRowFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -700,6 +977,14 @@ public class ParsedHTML {
             return wt.newTableRow((HTMLTableRowElement) element);
         }
 
+        /**
+         * Gets the web table.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the web table
+         */
         private WebTable getWebTable(NodeUtils.PreOrderTraversal pot) {
             return (WebTable) getClosestContext(pot, WebTable.class);
         }
@@ -715,6 +1000,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating TableCell objects.
+     */
     static class TableCellFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -725,6 +1013,14 @@ public class ParsedHTML {
             return tr.newTableCell((HTMLTableCellElement) element);
         }
 
+        /**
+         * Gets the table row.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the table row
+         */
         private TableRow getTableRow(NodeUtils.PreOrderTraversal pot) {
             return (TableRow) getClosestContext(pot, TableRow.class);
         }
@@ -740,6 +1036,9 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * A factory for creating FormControl objects.
+     */
     static class FormControlFactory extends HTMLElementFactory {
 
         @Override
@@ -751,6 +1050,16 @@ public class ParsedHTML {
             return parsedHTML.getWebForm(form).newFormControl(element);
         }
 
+        /**
+         * New control without form.
+         *
+         * @param parsedHTML
+         *            the parsed HTML
+         * @param element
+         *            the element
+         *
+         * @return the HTML element
+         */
         private HTMLElement newControlWithoutForm(ParsedHTML parsedHTML, Element element) {
             if ((element.getNodeName().equalsIgnoreCase("button") || element.getNodeName().equalsIgnoreCase("input"))
                     && isValidNonFormButtonType(NodeUtils.getNodeAttribute(element, "type"))) {
@@ -759,11 +1068,22 @@ public class ParsedHTML {
             return null;
         }
 
+        /**
+         * Checks if is valid non form button type.
+         *
+         * @param buttonType
+         *            the button type
+         *
+         * @return true, if is valid non form button type
+         */
         private boolean isValidNonFormButtonType(String buttonType) {
             return buttonType.equals("") || buttonType.equalsIgnoreCase("button");
         }
     }
 
+    /**
+     * A factory for creating WebList objects.
+     */
     static class WebListFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -783,11 +1103,22 @@ public class ParsedHTML {
             }
         }
 
+        /**
+         * Gets the text block.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the text block
+         */
         private TextBlock getTextBlock(NodeUtils.PreOrderTraversal pot) {
             return (TextBlock) getClosestContext(pot, TextBlock.class);
         }
     }
 
+    /**
+     * A factory for creating ListItem objects.
+     */
     static class ListItemFactory extends HTMLElementFactory {
         @Override
         HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
@@ -798,6 +1129,14 @@ public class ParsedHTML {
             return webList.addNewItem(element);
         }
 
+        /**
+         * Gets the web list.
+         *
+         * @param pot
+         *            the pot
+         *
+         * @return the web list
+         */
         private WebList getWebList(NodeUtils.PreOrderTraversal pot) {
             return (WebList) getClosestContext(pot, WebList.class);
         }
@@ -812,7 +1151,10 @@ public class ParsedHTML {
         }
     }
 
+    /** The html factory classes. */
     private static HashMap _htmlFactoryClasses = new HashMap<>();
+
+    /** The default factory. */
     private static HTMLElementFactory _defaultFactory = new DefaultElementFactory();
 
     static {
@@ -842,11 +1184,22 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * Gets the HTML element factory.
+     *
+     * @param tagName
+     *            the tag name
+     *
+     * @return the HTML element factory
+     */
     private static HTMLElementFactory getHTMLElementFactory(String tagName) {
         final HTMLElementFactory factory = (HTMLElementFactory) _htmlFactoryClasses.get(tagName);
         return factory != null ? factory : _defaultFactory;
     }
 
+    /**
+     * Load elements.
+     */
     private void loadElements() {
         if (!_updateElements) {
             return;
@@ -855,7 +1208,7 @@ public class ParsedHTML {
         NodeUtils.NodeAction action = new NodeUtils.NodeAction() {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
-                HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());
+                HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase(Locale.ENGLISH));
                 if (factory == null || !factory.isRecognized(getClientProperties())
                         || pot.getClosestContext(ContentConcealer.class) != null) {
                     return true;
@@ -892,40 +1245,78 @@ public class ParsedHTML {
         _updateElements = false;
     }
 
+    /**
+     * Gets the client properties.
+     *
+     * @return the client properties
+     */
     private ClientProperties getClientProperties() {
         WebWindow window = _response.getWindow();
         return window == null ? ClientProperties.getDefaultProperties() : window.getClient().getClientProperties();
     }
 
+    /**
+     * To button without form.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the button
+     */
     private Button toButtonWithoutForm(Element element) {
         return new Button(_response, (HTMLControl) element);
     }
 
+    /**
+     * To web form.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web form
+     */
     private WebForm toWebForm(Element element) {
         return new WebForm(_response, _baseURL, element, _frame, _baseTarget, _characterSet, _registry);
     }
 
+    /**
+     * To web frame.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web frame
+     */
     private WebFrame toWebFrame(Element element) {
         return new WebFrame(_response, _baseURL, element, _frame);
     }
 
+    /**
+     * To web I frame.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web frame
+     */
     private WebFrame toWebIFrame(Element element) {
         return new WebIFrame(_baseURL, element, _frame);
     }
 
     /**
-     * convert the given child to a link anchor
+     * convert the given child to a link anchor.
      *
      * @param child
+     *            the child
      *
-     * @return
+     * @return the web link
      */
     private WebLink toLinkAnchor(Element child) {
         return !isWebLink(child) ? null : new WebLink(_response, _baseURL, child, _frame, _baseTarget, _characterSet);
     }
 
     /**
-     * check whether the given node is a Web link by checking that the node is of type "A"
+     * check whether the given node is a Web link by checking that the node is of type "A".
      *
      * @param node
      *            - the node to check
@@ -949,30 +1340,86 @@ public class ParsedHTML {
         return result;
     }
 
+    /**
+     * To web image.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the web image
+     */
     private WebImage toWebImage(Element child) {
         return new WebImage(_response, this, _baseURL, (HTMLImageElement) child, _frame, _baseTarget, _characterSet);
     }
 
+    /**
+     * To web applet.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web applet
+     */
     private WebApplet toWebApplet(Element element) {
         return new WebApplet(_response, (HTMLAppletElement) element, _baseTarget);
     }
 
+    /**
+     * To web table.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web table
+     */
     private WebTable toWebTable(Element element) {
         return new WebTable(_response, _frame, element, _baseURL, _baseTarget, _characterSet);
     }
 
+    /**
+     * To text block.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the text block
+     */
     private TextBlock toTextBlock(Element element) {
         return new TextBlock(_response, _frame, _baseURL, _baseTarget, element, _characterSet);
     }
 
+    /**
+     * New text block.
+     *
+     * @param textNode
+     *            the text node
+     *
+     * @return the text block
+     */
     private TextBlock newTextBlock(Node textNode) {
         return new TextBlock(_response, _frame, _baseURL, _baseTarget, textNode, _characterSet);
     }
 
+    /**
+     * To ordered list.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the web list
+     */
     private WebList toOrderedList(Element element) {
         return new WebList(_response, _frame, _baseURL, _baseTarget, element, _characterSet);
     }
 
+    /**
+     * Adds the to maps.
+     *
+     * @param node
+     *            the node
+     * @param htmlElement
+     *            the html element
+     */
     private void addToMaps(Node node, HTMLElement htmlElement) {
         _registry.registerElement(node, htmlElement);
         if (htmlElement.getID() != null) {
@@ -999,6 +1446,14 @@ public class ParsedHTML {
         }
     }
 
+    /**
+     * Adds the named element.
+     *
+     * @param name
+     *            the name
+     * @param htmlElement
+     *            the html element
+     */
     private void addNamedElement(String name, HTMLElement htmlElement) {
         List list = (List) _elementsByName.get(name);
         if (list == null) {
@@ -1007,14 +1462,28 @@ public class ParsedHTML {
         list.add(htmlElement);
     }
 
+    /**
+     * Adds the to list.
+     *
+     * @param htmlElement
+     *            the html element
+     */
     private void addToList(HTMLElement htmlElement) {
-        ArrayList list = getListForElement(htmlElement);
+        List list = getListForElement(htmlElement);
         if (list != null) {
             list.add(htmlElement);
         }
     }
 
-    private ArrayList getListForElement(HTMLElement element) {
+    /**
+     * Gets the list for element.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the list for element
+     */
+    private List getListForElement(HTMLElement element) {
         if (element instanceof WebTable) {
             return _tableList;
         }
@@ -1029,14 +1498,24 @@ public class ParsedHTML {
 
     /**
      * Returns the first link which contains the specified text.
-     **/
+     *
+     * @param text
+     *            the text
+     *
+     * @return the link with
+     */
     public WebLink getLinkWith(String text) {
         return getFirstMatchingLink(WebLink.MATCH_CONTAINED_TEXT, text);
     }
 
     /**
      * Returns the link which contains the first image with the specified text as its 'alt' attribute.
-     **/
+     *
+     * @param text
+     *            the text
+     *
+     * @return the link with image text
+     */
     public WebLink getLinkWithImageText(String text) {
         WebImage image = getImageWithAltText(text);
         return image == null ? null : image.getLink();
@@ -1044,14 +1523,26 @@ public class ParsedHTML {
 
     /**
      * Returns the link found in the page with the specified name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the link with name
+     */
     public WebLink getLinkWithName(String name) {
         return getFirstMatchingLink(WebLink.MATCH_NAME, name);
     }
 
     /**
      * Returns the first link found in the page matching the specified criteria.
-     **/
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the first matching link
+     */
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) {
         WebLink[] links = getLinks();
         for (WebLink link : links) {
@@ -1064,7 +1555,14 @@ public class ParsedHTML {
 
     /**
      * Returns all links found in the page matching the specified criteria.
-     **/
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the matching links
+     */
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) {
         ArrayList matches = new ArrayList<>();
         WebLink[] links = getLinks();
@@ -1078,7 +1576,12 @@ public class ParsedHTML {
 
     /**
      * Returns the image found in the page with the specified name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the image with name
+     */
     public WebImage getImageWithName(String name) {
         WebImage[] images = getImages();
         for (WebImage image : images) {
@@ -1091,7 +1594,12 @@ public class ParsedHTML {
 
     /**
      * Returns the first image found in the page with the specified src attribute.
-     **/
+     *
+     * @param source
+     *            the source
+     *
+     * @return the image with source
+     */
     public WebImage getImageWithSource(String source) {
         WebImage[] images = getImages();
         for (WebImage image : images) {
@@ -1104,7 +1612,12 @@ public class ParsedHTML {
 
     /**
      * Returns the first image found in the page with the specified alt attribute.
-     **/
+     *
+     * @param altText
+     *            the alt text
+     *
+     * @return the image with alt text
+     */
     public WebImage getImageWithAltText(String altText) {
         WebImage[] images = getImages();
         for (WebImage image : images) {
@@ -1119,8 +1632,13 @@ public class ParsedHTML {
      * Returns the first table in the response which matches the specified predicate and value. Will recurse into any
      * nested tables, as needed.
      *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
      * @return the selected table, or null if none is found
-     **/
+     */
     public WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) {
         return getTableSatisfyingPredicate(getTables(), predicate, criteria);
     }
@@ -1129,8 +1647,13 @@ public class ParsedHTML {
      * Returns the tables in the response which match the specified predicate and value. Will recurse into any nested
      * tables, as needed.
      *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
      * @return the selected tables, or null if none are found
-     **/
+     */
     public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) {
         return getTablesSatisfyingPredicate(getTables(), predicate, criteria);
     }
@@ -1139,8 +1662,11 @@ public class ParsedHTML {
      * Returns the first table in the response which has the specified text as the full text of its first non-blank row
      * and non-blank column. Will recurse into any nested tables, as needed.
      *
+     * @param text
+     *            the text
+     *
      * @return the selected table, or null if none is found
-     **/
+     */
     public WebTable getTableStartingWith(String text) {
         return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL, text);
     }
@@ -1149,8 +1675,11 @@ public class ParsedHTML {
      * Returns the first table in the response which has the specified text as a prefix of the text in its first
      * non-blank row and non-blank column. Will recurse into any nested tables, as needed.
      *
+     * @param text
+     *            the text
+     *
      * @return the selected table, or null if none is found
-     **/
+     */
     public WebTable getTableStartingWithPrefix(String text) {
         return getFirstMatchingTable(WebTable.MATCH_FIRST_NONBLANK_CELL_PREFIX, text);
     }
@@ -1159,8 +1688,11 @@ public class ParsedHTML {
      * Returns the first table in the response which has the specified text as its summary attribute. Will recurse into
      * any nested tables, as needed.
      *
+     * @param summary
+     *            the summary
+     *
      * @return the selected table, or null if none is found
-     **/
+     */
     public WebTable getTableWithSummary(String summary) {
         return getFirstMatchingTable(WebTable.MATCH_SUMMARY, summary);
     }
@@ -1169,15 +1701,20 @@ public class ParsedHTML {
      * Returns the first table in the response which has the specified text as its ID attribute. Will recurse into any
      * nested tables, as needed.
      *
+     * @param ID
+     *            the id
+     *
      * @return the selected table, or null if none is found
-     **/
+     */
     public WebTable getTableWithID(String ID) {
         return getFirstMatchingTable(WebTable.MATCH_ID, ID);
     }
 
     /**
      * Returns a copy of the domain object model associated with this page.
-     **/
+     *
+     * @return the dom
+     */
     public Node getDOM() {
         return getRootNode().cloneNode( /* deep */ true);
     }
@@ -1194,6 +1731,9 @@ public class ParsedHTML {
     /**
      * Specifies the root node for this HTML fragment. It will be either an HTMLDocument or an HTMLElement representing
      * a page fragment.
+     *
+     * @param rootNode
+     *            the new root node
      */
     void setRootNode(Node rootNode) {
         if (_rootNode != null && rootNode != _rootNode) {
@@ -1207,6 +1747,9 @@ public class ParsedHTML {
         clearCaches();
     }
 
+    /**
+     * Clear caches.
+     */
     private void clearCaches() {
         _tables = null;
         _frames = null;
@@ -1216,29 +1759,48 @@ public class ParsedHTML {
 
     /**
      * Returns the base URL for this HTML segment.
-     **/
+     *
+     * @return the base URL
+     */
     URL getBaseURL() {
         return _baseURL;
     }
 
+    /**
+     * Gets the response.
+     *
+     * @return the response
+     */
     WebResponse getResponse() {
         return _response;
     }
 
     /**
      * Returns the domain object model associated with this page, to be used internally.
-     **/
+     *
+     * @return the original DOM
+     */
     Node getOriginalDOM() {
         return getRootNode();
     }
 
+    /**
+     * Gets the element.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the element
+     */
     HTMLElement getElement(Node node) {
         return (HTMLElement) _registry.getRegisteredElement(node);
     }
 
     /**
      * Returns the frames found in the page in the order in which they appear.
-     **/
+     *
+     * @return the frames
+     */
     public WebFrame[] getFrames() {
         if (_frames == null) {
             loadElements();
@@ -1249,6 +1811,11 @@ public class ParsedHTML {
 
     // ---------------------------------- private members --------------------------------
 
+    /**
+     * Gets the root node.
+     *
+     * @return the root node
+     */
     Node getRootNode() {
         if (_rootNode == null) {
             throw new IllegalStateException("The root node has not been specified");
@@ -1258,7 +1825,16 @@ public class ParsedHTML {
 
     /**
      * Returns the table with the specified text in its summary attribute.
-     **/
+     *
+     * @param tables
+     *            the tables
+     * @param predicate
+     *            the predicate
+     * @param value
+     *            the value
+     *
+     * @return the table satisfying predicate
+     */
     private WebTable getTableSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
         for (WebTable table : tables) {
             if (predicate.matchesCriteria(table, value)) {
@@ -1284,7 +1860,16 @@ public class ParsedHTML {
 
     /**
      * Returns the tables which match the specified criteria.
-     **/
+     *
+     * @param tables
+     *            the tables
+     * @param predicate
+     *            the predicate
+     * @param value
+     *            the value
+     *
+     * @return the tables satisfying predicate
+     */
     private WebTable[] getTablesSatisfyingPredicate(WebTable[] tables, HTMLElementPredicate predicate, Object value) {
         ArrayList matches = new ArrayList<>();
         for (WebTable table : tables) {
@@ -1312,18 +1897,37 @@ public class ParsedHTML {
         return null;
     }
 
+    /**
+     * The Class WebIFrame.
+     */
     class WebIFrame extends WebFrame implements ContentConcealer {
 
+        /**
+         * Instantiates a new web I frame.
+         *
+         * @param baseURL
+         *            the base URL
+         * @param frameNode
+         *            the frame node
+         * @param parentFrame
+         *            the parent frame
+         */
         public WebIFrame(URL baseURL, Node frameNode, FrameSelector parentFrame) {
             super(_response, baseURL, frameNode, parentFrame);
         }
     }
 
     /**
-     * NoScript Element
+     * NoScript Element.
      */
     class NoScriptElement extends HTMLElementBase implements ContentConcealer {
 
+        /**
+         * Instantiates a new no script element.
+         *
+         * @param node
+         *            the node
+         */
         public NoScriptElement(Node node) {
             super(node);
         }

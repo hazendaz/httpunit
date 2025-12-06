@@ -40,6 +40,12 @@ import org.junit.jupiter.api.Test;
  */
 class NavigationTest {
 
+    /**
+     * Redirect.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void redirect() throws Exception {
         ServletRunner sr = new ServletRunner();
@@ -53,6 +59,12 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Forward.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void forward() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -68,6 +80,12 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Include.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void include() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -83,6 +101,12 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Forward via http servlet request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void forwardViaHttpServletRequest() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -98,6 +122,12 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * Forward via relative path.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void forwardViaRelativePath() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -113,8 +143,12 @@ class NavigationTest {
         assertEquals(0, response.getNewCookieNames().length, "Returned cookie count");
     }
 
+    /**
+     * The Class OriginServlet.
+     */
     static class OriginServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -125,8 +159,12 @@ class NavigationTest {
 
     }
 
+    /**
+     * The Class FowarderServlet.
+     */
     static class FowarderServlet extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -136,8 +174,12 @@ class NavigationTest {
 
     }
 
+    /**
+     * The Class FowarderServlet2.
+     */
     static class FowarderServlet2 extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -147,8 +189,12 @@ class NavigationTest {
 
     }
 
+    /**
+     * The Class FowarderServlet3.
+     */
     static class FowarderServlet3 extends HttpServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -158,8 +204,15 @@ class NavigationTest {
 
     }
 
+    /**
+     * The Class IncluderServlet.
+     */
     static class IncluderServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The Constant PREFIX. */
         static final String PREFIX = "expecting: ";
 
         @Override
@@ -169,7 +222,12 @@ class NavigationTest {
         }
     }
 
+    /**
+     * The Class TargetServlet.
+     */
     static class TargetServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override

@@ -28,14 +28,17 @@ import java.util.Set;
 import org.w3c.dom.Node;
 
 /**
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLElementBase.
  */
 abstract class HTMLElementBase implements HTMLElement {
 
+    /** The node. */
     private Node _node;
+
+    /** The scriptable. */
     private ScriptingHandler _scriptable;
+
+    /** The supported attributes. */
     private Set _supportedAttributes = new HashSet<>();
 
     @Override
@@ -119,7 +122,7 @@ abstract class HTMLElementBase implements HTMLElement {
     }
 
     /**
-     * construct me from a node
+     * construct me from a node.
      *
      * @param node
      *            - the node to get me from
@@ -175,6 +178,16 @@ abstract class HTMLElementBase implements HTMLElement {
         return _supportedAttributes.contains(name);
     }
 
+    /**
+     * Gets the attribute.
+     *
+     * @param name
+     *            the name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the attribute
+     */
     protected String getAttribute(final String name, String defaultValue) {
         return NodeUtils.getNodeAttribute(getNode(), name, defaultValue);
     }
@@ -184,6 +197,12 @@ abstract class HTMLElementBase implements HTMLElement {
         return _node;
     }
 
+    /**
+     * Support attribute.
+     *
+     * @param name
+     *            the name
+     */
     protected void supportAttribute(String name) {
         _supportedAttributes.add(name);
     }

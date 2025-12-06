@@ -29,19 +29,34 @@ import org.junit.jupiter.api.Test;
 import org.mozilla.javascript.Context;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class DomEventScriptingTest.
  */
 class DomEventScriptingTest extends AbstractHTMLElementTest {
 
+    /** The context. */
     private Context _context;
+
+    /** The Constant NO_ARGS. */
     private static final Object[] NO_ARGS = {};
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _context = Context.enter();
         _context.initStandardObjects(null);
     }
 
+    /**
+     * Tear down.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @AfterEach
     void tearDown() throws Exception {
         Context.exit();
@@ -50,6 +65,9 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
     /**
      * Verifies that the 'onload' event for a body element is initially undefined if no corresponding attribute is
      * defined.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void noOnloadEvent() throws Exception {
@@ -59,6 +77,9 @@ class DomEventScriptingTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the 'onload' event for a body element is initially defined if a corresponding attribute is defined.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void inlineOnloadEvent() throws Exception {

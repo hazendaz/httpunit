@@ -23,16 +23,24 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class URLEncodedString.
  */
 public class URLEncodedString implements ParameterProcessor {
 
+    /** The Constant DEFAULT_BUFFER_SIZE. */
     public static final int DEFAULT_BUFFER_SIZE = 128;
 
+    /** The buffer. */
     private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);
 
+    /** The have parameters. */
     private boolean _haveParameters = false;
 
+    /**
+     * Gets the string.
+     *
+     * @return the string
+     */
     public String getString() {
         return _buffer.toString();
     }
@@ -56,7 +64,14 @@ public class URLEncodedString implements ParameterProcessor {
 
     /**
      * Returns a URL-encoded version of the string.
-     **/
+     *
+     * @param source
+     *            the source
+     * @param characterSet
+     *            the character set
+     *
+     * @return the string
+     */
     private String encode(String source, String characterSet) {
         return URLEncoder.encode(source, Charset.forName(characterSet));
     }

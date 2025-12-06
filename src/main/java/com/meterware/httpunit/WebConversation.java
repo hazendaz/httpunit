@@ -31,14 +31,19 @@ import java.util.Properties;
 /**
  * The context for a series of HTTP requests. This class manages cookies used to maintain session context, computes
  * relative URLs, and generally emulates the browser behavior needed to build an automated test of a web site.
- *
- * @author Russell Gold
  **/
 public class WebConversation extends WebClient {
 
+    /** The proxy host. */
     private String _proxyHost;
+
+    /** The proxy port. */
     private int _proxyPort;
+
+    /** The connect timeout. */
     private int _connectTimeout = -1;
+
+    /** The read timeout. */
     private int _readTimeout = -1;
 
     /**
@@ -104,6 +109,8 @@ public class WebConversation extends WebClient {
     }
 
     /**
+     * Gets the connect timeout.
+     *
      * @return the _connectTimeout -1 means it is not set (the default)
      */
     public int get_connectTimeout() {
@@ -111,7 +118,7 @@ public class WebConversation extends WebClient {
     }
 
     /**
-     * set the connectionTimout -1 means it is not set (the default)
+     * set the connectionTimout -1 means it is not set (the default).
      *
      * @param timeout
      *            the _connectTimeout to set
@@ -121,6 +128,8 @@ public class WebConversation extends WebClient {
     }
 
     /**
+     * Gets the read timeout.
+     *
      * @return the _readTimeout -1 means it is not set (the default)
      */
     public int get_readTimeout() {
@@ -128,6 +137,8 @@ public class WebConversation extends WebClient {
     }
 
     /**
+     * Sets the read timeout.
+     *
      * @param timeout
      *            the _readTimeout to set -1 means it is not set (the default)
      */
@@ -136,13 +147,15 @@ public class WebConversation extends WebClient {
     }
 
     /**
-     * get the Uniform Resource Locator for this request
+     * get the Uniform Resource Locator for this request.
      *
      * @param request
+     *            the request
      *
      * @return the URL
      *
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
     private URL getRequestURL(WebRequest request) throws MalformedURLException {
         DNSListener dnsListener = getClientProperties().getDnsListener();
@@ -164,10 +177,17 @@ public class WebConversation extends WebClient {
     // ---------------------------------- private members --------------------------------
 
     /**
-     * open a connection for the given uniform resource locator
+     * open a connection for the given uniform resource locator.
      *
      * @param url
      *            - the url to use
+     *
+     * @return the URL connection
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private URLConnection openConnection(URL url) throws MalformedURLException, IOException {
         URLConnection connection = url.openConnection();
@@ -179,10 +199,12 @@ public class WebConversation extends WebClient {
     }
 
     /**
-     * send the headers for the given connection based on the given Dictionary of headers
+     * send the headers for the given connection based on the given Dictionary of headers.
      *
      * @param connection
+     *            the connection
      * @param headers
+     *            the headers
      */
     private void sendHeaders(URLConnection connection, Dictionary headers) {
         boolean sendReferer = getClientProperties().isSendReferer();

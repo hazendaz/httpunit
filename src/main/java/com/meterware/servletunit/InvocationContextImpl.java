@@ -49,13 +49,22 @@ import javax.servlet.http.HttpSession;
  **/
 class InvocationContextImpl implements InvocationContext {
 
+    /** The context stack. */
     private Stack _contextStack = new Stack();
+
+    /** The effective URL. */
     private URL _effectiveURL;
 
+    /** The client. */
     private ServletUnitClient _client;
+
+    /** The application. */
     private WebApplication _application;
+
+    /** The frame. */
     private FrameSelector _frame;
 
+    /** The web response. */
     private WebResponse _webResponse;
 
     /**
@@ -176,9 +185,20 @@ class InvocationContextImpl implements InvocationContext {
         getContext().pushFilter(request, response);
     }
 
+    /**
+     * The Class AccessDeniedException.
+     */
     class AccessDeniedException extends HttpException {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new access denied exception.
+         *
+         * @param baseURL
+         *            the base URL
+         */
         public AccessDeniedException(URL baseURL) {
             super(403, "Access Denied", baseURL);
         }
@@ -188,7 +208,25 @@ class InvocationContextImpl implements InvocationContext {
 
     /**
      * Constructs a servlet invocation context for a specified servlet container, request, and cookie headers.
-     **/
+     *
+     * @param client
+     *            the client
+     * @param runner
+     *            the runner
+     * @param frame
+     *            the frame
+     * @param request
+     *            the request
+     * @param clientHeaders
+     *            the client headers
+     * @param messageBody
+     *            the message body
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     InvocationContextImpl(ServletUnitClient client, ServletRunner runner, FrameSelector frame, WebRequest request,
             Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
         _client = client;
@@ -214,6 +252,16 @@ class InvocationContextImpl implements InvocationContext {
                 _application.getServletRequest(_effectiveURL)));
     }
 
+    /**
+     * Compute effective url.
+     *
+     * @param request
+     *            the request
+     * @param requestURL
+     *            the request URL
+     *
+     * @return the url
+     */
     private URL computeEffectiveUrl(HttpServletRequest request, URL requestURL) {
         if (!_application.requiresAuthorization(requestURL) || userIsAuthorized(request, requestURL)) {
             return requestURL;
@@ -232,6 +280,16 @@ class InvocationContextImpl implements InvocationContext {
         return _application.getLoginURL();
     }
 
+    /**
+     * User is authorized.
+     *
+     * @param request
+     *            the request
+     * @param requestURL
+     *            the request URL
+     *
+     * @return true, if successful
+     */
     private boolean userIsAuthorized(HttpServletRequest request, URL requestURL) {
         String[] roles = _application.getPermittedRoles(requestURL);
         for (String role : roles) {
@@ -242,24 +300,56 @@ class InvocationContextImpl implements InvocationContext {
         return false;
     }
 
+    /**
+     * The Class ExecutionContext.
+     */
     static class ExecutionContext {
 
+        /** The response. */
         private HttpServletResponse _response;
+
+        /** The request. */
         private HttpServletRequest _request;
+
+        /** The meta data. */
         private ServletMetaData _metaData;
 
+        /** The filter stack. */
         private Stack _filterStack = new Stack();
 
+        /**
+         * Instantiates a new execution context.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         * @param metaData
+         *            the meta data
+         */
         ExecutionContext(HttpServletRequest request, HttpServletResponse response, ServletMetaData metaData) {
             _request = request;
             _response = response;
             _metaData = metaData;
         }
 
+        /**
+         * Checks if is filter active.
+         *
+         * @return true, if is filter active
+         */
         boolean isFilterActive() {
             return getFilterIndex() < _metaData.getFilters().length;
         }
 
+        /**
+         * Gets the servlet.
+         *
+         * @return the servlet
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         Servlet getServlet() throws ServletException {
             if (isFilterActive()) {
                 throw new IllegalStateException("Current context is a filter - may not request servlet.");
@@ -267,14 +357,32 @@ class InvocationContextImpl implements InvocationContext {
             return _metaData.getServlet();
         }
 
+        /**
+         * Gets the response.
+         *
+         * @return the response
+         */
         HttpServletResponse getResponse() {
             return _filterStack.isEmpty() ? _response : ((FilterContext) _filterStack.lastElement()).getResponse();
         }
 
+        /**
+         * Gets the request.
+         *
+         * @return the request
+         */
         HttpServletRequest getRequest() {
             return _filterStack.isEmpty() ? _request : ((FilterContext) _filterStack.lastElement()).getRequest();
         }
 
+        /**
+         * Gets the filter.
+         *
+         * @return the filter
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         public Filter getFilter() throws ServletException {
             if (!isFilterActive()) {
                 throw new IllegalStateException("Current context is a servlet - may not request filter.");
@@ -282,6 +390,14 @@ class InvocationContextImpl implements InvocationContext {
             return _metaData.getFilters()[getFilterIndex()].getFilter();
         }
 
+        /**
+         * Push filter.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         */
         public void pushFilter(ServletRequest request, ServletResponse response) {
             if (!isFilterActive()) {
                 throw new IllegalStateException("Current context is a servlet - may not push filter.");
@@ -296,37 +412,80 @@ class InvocationContextImpl implements InvocationContext {
             _filterStack.push(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));
         }
 
+        /**
+         * May pop filter.
+         *
+         * @return true, if successful
+         */
         public boolean mayPopFilter() {
             return getFilterIndex() > 0;
         }
 
+        /**
+         * Pop filter.
+         */
         public void popFilter() {
             _filterStack.pop();
         }
 
+        /**
+         * Gets the filter index.
+         *
+         * @return the filter index
+         */
         private int getFilterIndex() {
             return _filterStack.size();
         }
     }
 
+    /**
+     * The Class FilterContext.
+     */
     static class FilterContext {
+
+        /** The request. */
         HttpServletRequest _request;
+
+        /** The response. */
         HttpServletResponse _response;
 
+        /**
+         * Instantiates a new filter context.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         */
         public FilterContext(HttpServletRequest request, HttpServletResponse response) {
             _request = request;
             _response = response;
         }
 
+        /**
+         * Gets the response.
+         *
+         * @return the response
+         */
         public HttpServletResponse getResponse() {
             return _response;
         }
 
+        /**
+         * Gets the request.
+         *
+         * @return the request
+         */
         public HttpServletRequest getRequest() {
             return _request;
         }
     }
 
+    /**
+     * Gets the context.
+     *
+     * @return the context
+     */
     private ExecutionContext getContext() {
         return (ExecutionContext) _contextStack.lastElement();
     }

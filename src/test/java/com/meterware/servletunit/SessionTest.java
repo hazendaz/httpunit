@@ -41,9 +41,18 @@ import org.junit.jupiter.api.Test;
  */
 class SessionTest extends ServletUnitTest {
 
+    /** The context. */
     private ServletUnitContext _context;
+
+    /** The servlet context. */
     private ServletContext _servletContext = new ServletUnitServletContext(null);
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _context = new ServletUnitContext(null, _servletContext, new SessionListenerDispatcher() {
@@ -70,11 +79,23 @@ class SessionTest extends ServletUnitTest {
 
     }
 
+    /**
+     * No initial state.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noInitialState() throws Exception {
         assertNull(_context.getSession("12345"), "Session with incorrect ID");
     }
 
+    /**
+     * Creates the session.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void createSession() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
@@ -85,6 +106,12 @@ class SessionTest extends ServletUnitTest {
         assertEquals(session, _context.getSession(session.getId()), "Different session returned");
     }
 
+    /**
+     * Session state.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionState() throws Exception {
         ServletUnitHttpSession session = _context.newSession();
@@ -103,6 +130,12 @@ class SessionTest extends ServletUnitTest {
 
     }
 
+    /**
+     * Session attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionAttributes() throws Exception {
         assertDoesNotThrow(() -> {
@@ -121,6 +154,12 @@ class SessionTest extends ServletUnitTest {
         });
     }
 
+    /**
+     * Session context.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sessionContext() throws Exception {
         ServletUnitHttpSession session = _context.newSession();

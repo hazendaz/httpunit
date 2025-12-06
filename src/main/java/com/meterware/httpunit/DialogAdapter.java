@@ -20,8 +20,8 @@
 package com.meterware.httpunit;
 
 /**
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
- **/
+ * The Class DialogAdapter.
+ */
 public class DialogAdapter implements DialogResponder {
 
     /**

@@ -31,12 +31,18 @@ import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.WebWindow;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
-@ExtendWith(ExternalResourceSupport.class)
+/**
+ * The Class DocumentScriptingTest.
+ */
 class DocumentScriptingTest extends HttpUnitTest {
 
+    /**
+     * Document title.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentTitle() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>"
@@ -46,6 +52,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("Window title is Amazing!", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Document find forms.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentFindForms() throws Exception {
         defineResource("OnCommand.html",
@@ -65,6 +77,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Document find links.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentFindLinks() throws Exception {
         defineResource("OnCommand.html",
@@ -85,6 +103,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Java script object identity.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptObjectIdentity() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function compareLinks() { "
@@ -97,6 +121,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("they are the same", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Case sensitive names.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void caseSensitiveNames() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<form name='item' action='run'></form>"
@@ -111,6 +141,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/sample.html", wc.popNextAlert(), "link href");
     }
 
+    /**
+     * Link mouse over event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkMouseOverEvent() throws Exception {
         defineResource("OnCommand.html",
@@ -126,6 +162,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("green", form.getParameterValue("color"), "changed parameter value");
     }
 
+    /**
+     * Link click event.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkClickEvent() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>"
@@ -142,9 +184,10 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * test a mouse event on a link
+     * test a mouse event on a link.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void linkMouseDownEvent() throws Exception {
@@ -167,6 +210,7 @@ class DocumentScriptingTest extends HttpUnitTest {
      * server, so that the current response is unchanged.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void hashDestinationOnClickEvent() throws Exception {
@@ -185,9 +229,10 @@ class DocumentScriptingTest extends HttpUnitTest {
     }
 
     /**
-     * check on MouseDownEvent handling
+     * check on MouseDownEvent handling.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void hashDestinationOnMouseDownEvent() throws Exception {
@@ -205,6 +250,12 @@ class DocumentScriptingTest extends HttpUnitTest {
                 "changed parameter value");
     }
 
+    /**
+     * Link properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkProperties() throws Exception {
         defineResource("somewhere.html?with=values", "you made it!");
@@ -222,6 +273,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("you made it!", response.getText(), "New page");
     }
 
+    /**
+     * Link indexes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkIndexes() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function alertLinks() { "
@@ -239,6 +296,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Document find images.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentFindImages() throws Exception {
         defineResource("OnCommand.html",
@@ -262,6 +325,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Image swap.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageSwap() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>" + "<img name='theImage' src='initial.gif'>"
@@ -275,6 +344,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("new.jpg", image.getSource(), "changed image source");
     }
 
+    /**
+     * Write to new document.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void writeToNewDocument() throws Exception {
         defineWebPage("OnCommand",
@@ -291,6 +366,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("", wc.getOpenWindow("empty").getCurrentPage().getText(), "Empty page");
     }
 
+    /**
+     * Sets the document reparse.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setDocumentReparse() throws Exception {
         defineResource("index.html",
@@ -305,6 +386,12 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertEquals("No of forms: 1", wc.popNextAlert(), "JavaScript no of forms");
     }
 
+    /**
+     * Tag property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void tagProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showFormsCount(oDOM){   "
@@ -324,6 +411,16 @@ class DocumentScriptingTest extends HttpUnitTest {
         assertElementTags(wc, "1", "3");
     }
 
+    /**
+     * Assert element tags.
+     *
+     * @param wc
+     *            the wc
+     * @param number
+     *            the number
+     * @param counts
+     *            the counts
+     */
     private void assertElementTags(WebConversation wc, String number, final String counts) {
         assertEquals("form with number " + number + " has " + counts + " inputs", wc.popNextAlert(),
                 "form '" + number + "' message");

@@ -20,13 +20,12 @@
 package com.meterware.servletunit;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
@@ -52,8 +51,15 @@ import javax.servlet.descriptor.JspConfigDescriptor;
  **/
 public class ServletUnitServletContext implements ServletContext {
 
+    /** The log stream. */
     private PrintStream _logStream = System.out;
 
+    /**
+     * Instantiates a new servlet unit servlet context.
+     *
+     * @param application
+     *            the application
+     */
     ServletUnitServletContext(WebApplication application) {
         _application = application;
     }
@@ -120,14 +126,6 @@ public class ServletUnitServletContext implements ServletContext {
     public java.net.URL getResource(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
-            // PATCH proposal [ 1592532 ] Invalid
-            // ServletUnitServletContext#getResource(String path)
-            // by Timo Westkemper
-            // return !resourceFile.exists() ? null : resourceFile.toURL();
-            //
-            // state of code until 2014-02 - before proposal of Aki Yoshida
-            // return resourceFile == null ? null : resourceFile.toURL();
-
             return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();
         } catch (MalformedURLException e) {
             return null;
@@ -147,8 +145,8 @@ public class ServletUnitServletContext implements ServletContext {
     public java.io.InputStream getResourceAsStream(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
-            return resourceFile == null ? null : new FileInputStream(resourceFile);
-        } catch (FileNotFoundException e) {
+            return resourceFile == null ? null : Files.newInputStream(resourceFile.toPath());
+        } catch (IOException e) {
             return null;
         }
     }
@@ -316,6 +314,7 @@ public class ServletUnitServletContext implements ServletContext {
         return _application.getResourceFile(path).getAbsolutePath();
     }
 
+    /** The Constant DEFAULT_SERVER_INFO. */
     public static final String DEFAULT_SERVER_INFO = "ServletUnit test framework";
 
     /**
@@ -403,8 +402,6 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return a Set containing the directory listing, or null if there are no resources in the web application whose
      *         path begins with the supplied path.
-     *
-     * @since HttpUnit 1.3
      */
     @Override
     public Set<String> getResourcePaths(String path) {
@@ -416,8 +413,6 @@ public class ServletUnitServletContext implements ServletContext {
      * descriptor for this web application by the display-name element.
      *
      * @return The name of the web application or null if no name has been declared in the deployment descriptor
-     *
-     * @since HttpUnit 1.3
      */
     @Override
     public String getServletContextName() {
@@ -435,10 +430,24 @@ public class ServletUnitServletContext implements ServletContext {
     // ------------------------------------------- package members
     // ----------------------------------------------------
 
+    /**
+     * Sets the init parameter.
+     *
+     * @param name
+     *            the name
+     * @param initParameter
+     *            the init parameter
+     */
     void setInitParameter(String name, Object initParameter) {
         getContextParams().put(name, initParameter);
     }
 
+    /**
+     * Removes the init parameter.
+     *
+     * @param name
+     *            the name
+     */
     void removeInitParameter(String name) {
         getContextParams().remove(name);
     }
@@ -446,10 +455,17 @@ public class ServletUnitServletContext implements ServletContext {
     // ------------------------------------------- private members
     // ----------------------------------------------------
 
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
 
+    /** The application. */
     private WebApplication _application;
 
+    /**
+     * Gets the context params.
+     *
+     * @return the context params
+     */
     private Hashtable getContextParams() {
         return _application.getContextParameters();
     }

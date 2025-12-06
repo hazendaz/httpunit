@@ -32,14 +32,18 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.html.HTMLDocument;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class DomWindowTest.
  */
 class DomWindowTest extends AbstractHTMLElementTest {
 
+    /** The proxy. */
     private TestWindowProxy _proxy;
 
     /**
      * Verifies that we can obtain a window for a document and then retrieve document for that window.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void documentWindowAccess() throws Exception {
@@ -52,6 +56,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the open method returns a window with an appropriate document.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void windowOpen() throws Exception {
@@ -67,6 +74,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Writes to a document should appear in the window's document write buffer.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void documentWrite() throws Exception {
@@ -78,6 +88,11 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     }
 
+    /**
+     * Creates the main window.
+     *
+     * @return the dom window
+     */
     private DomWindow createMainWindow() {
         DomWindow window = _htmlDocument.getWindow();
         _proxy = new TestWindowProxy(_htmlDocument);
@@ -88,6 +103,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that an alert request is sent to the proxy appropriately.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void alert() throws Exception {
@@ -100,6 +118,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a confirmation request is sent to the proxy and the appropriate answer is returned.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void confirm() throws Exception {
@@ -114,6 +135,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a prompt is sent to the proxy and the appropriate answer is returned.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void prompt() throws Exception {
@@ -128,6 +152,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that writing to and closing a document triggers a replaceText request.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void textReplacement() throws Exception {
@@ -140,6 +167,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that the window can report its URL, which it obtains via its prozy.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void windowUrl() throws Exception {
@@ -156,6 +186,9 @@ class DomWindowTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies simply the existence of some methods not currently implemented. Todo make them do something useful.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void methodExistences() throws Exception {

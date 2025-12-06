@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -47,7 +47,7 @@ public class NewScriptingEngineTests extends AbstractJavaScriptTest {
     /**
      * test jsFunction_createElement() - supplied by Mark Childerson
      * also for bug report [ 1430378 ] createElement not found in JavaScript by Saliya Jinadasa
-     * @since 2008-03-26
+     *
      * @throws Exception on uncaught problem
      */
     public void testCreateElement() throws Exception {

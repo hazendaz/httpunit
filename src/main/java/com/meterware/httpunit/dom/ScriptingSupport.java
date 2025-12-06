@@ -34,6 +34,7 @@ class ScriptingSupport {
     /** A non-null method value to be used to indicate that we have already looked up and failed to find one. **/
     private static final Method NO_SUCH_PROPERTY = ScriptingSupport.class.getDeclaredMethods()[0];
 
+    /** The Constant NO_ARGS. */
     private static final Object[] NO_ARGS = {};
 
     /** map of classes to maps of string to function objects. **/
@@ -45,6 +46,18 @@ class ScriptingSupport {
     /** map of classes to maps of string to setter methods. **/
     private static Hashtable _classSetterMaps = new Hashtable<>();
 
+    /**
+     * Checks for named property.
+     *
+     * @param element
+     *            the element
+     * @param javaPropertyName
+     *            the java property name
+     * @param scriptable
+     *            the scriptable
+     *
+     * @return true, if successful
+     */
     static boolean hasNamedProperty(Object element, String javaPropertyName, Scriptable scriptable) {
         Method getter = getPropertyGetter(element.getClass(), javaPropertyName);
         if (getter != NO_SUCH_PROPERTY) {
@@ -54,6 +67,18 @@ class ScriptingSupport {
         return function != null;
     }
 
+    /**
+     * Gets the named property.
+     *
+     * @param element
+     *            the element
+     * @param javaPropertyName
+     *            the java property name
+     * @param scriptable
+     *            the scriptable
+     *
+     * @return the named property
+     */
     static Object getNamedProperty(Object element, String javaPropertyName, Scriptable scriptable) {
         Method getter = getPropertyGetter(element.getClass(), javaPropertyName);
         if (getter == NO_SUCH_PROPERTY) {
@@ -67,6 +92,18 @@ class ScriptingSupport {
         }
     }
 
+    /**
+     * Gets the function object.
+     *
+     * @param aClass
+     *            the a class
+     * @param methodName
+     *            the method name
+     * @param scriptable
+     *            the scriptable
+     *
+     * @return the function object
+     */
     private static FunctionObject getFunctionObject(Class aClass, String methodName, Scriptable scriptable) {
         Hashtable functionMap = (Hashtable) _classFunctionMaps.get(aClass);
         if (functionMap == null) {
@@ -93,6 +130,16 @@ class ScriptingSupport {
         return null;
     }
 
+    /**
+     * Gets the property getter.
+     *
+     * @param aClass
+     *            the a class
+     * @param propertyName
+     *            the property name
+     *
+     * @return the property getter
+     */
     private static Method getPropertyGetter(Class aClass, String propertyName) {
         Hashtable methodMap = (Hashtable) _classGetterMaps.get(aClass);
         if (methodMap == null) {
@@ -119,6 +166,16 @@ class ScriptingSupport {
         return NO_SUCH_PROPERTY;
     }
 
+    /**
+     * Sets the named property.
+     *
+     * @param element
+     *            the element
+     * @param javaPropertyName
+     *            the java property name
+     * @param value
+     *            the value
+     */
     static void setNamedProperty(AbstractDomComponent element, String javaPropertyName, Object value) {
         Method setter = getPropertySetter(element.getClass(), javaPropertyName, value);
         if (setter == NO_SUCH_PROPERTY) {
@@ -131,6 +188,16 @@ class ScriptingSupport {
         }
     }
 
+    /**
+     * Adjusted for setter.
+     *
+     * @param value
+     *            the value
+     * @param setter
+     *            the setter
+     *
+     * @return the object
+     */
     private static Object adjustedForSetter(Object value, Method setter) {
         if (value == null) {
             return null;
@@ -164,6 +231,18 @@ class ScriptingSupport {
         return value;
     }
 
+    /**
+     * Gets the property setter.
+     *
+     * @param aClass
+     *            the a class
+     * @param propertyName
+     *            the property name
+     * @param value
+     *            the value
+     *
+     * @return the property setter
+     */
     static Method getPropertySetter(Class aClass, String propertyName, Object value) {
         Hashtable methodMap = (Hashtable) _classSetterMaps.get(aClass);
         if (methodMap == null) {
@@ -189,12 +268,14 @@ class ScriptingSupport {
     }
 
     /**
-     * check whether the valueType is convertable to the parameterType
+     * check whether the valueType is convertable to the parameterType.
      *
      * @param valueType
+     *            the value type
      * @param parameterType
+     *            the parameter type
      *
-     * @return
+     * @return true, if is convertable to
      */
     public static boolean isConvertableTo(Class valueType, Class parameterType) {
         if (valueType.equals(parameterType) || parameterType.equals(String.class)
@@ -208,6 +289,14 @@ class ScriptingSupport {
         return valueType.equals(String.class) && parameterType.equals(Boolean.class);
     }
 
+    /**
+     * Checks if is numeric parameter.
+     *
+     * @param parameterType
+     *            the parameter type
+     *
+     * @return true, if is numeric parameter
+     */
     private static boolean isNumericParameter(Class parameterType) {
         if (parameterType.isPrimitive() && !parameterType.equals(boolean.class)) {
             return true;

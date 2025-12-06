@@ -26,36 +26,83 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class EventAwareTestBase.
  */
 class EventAwareTestBase {
 
+    /** The events. */
     private static ArrayList _events;
 
+    /**
+     * Expect event.
+     *
+     * @param eventName
+     *            the event name
+     * @param listenerClass
+     *            the listener class
+     */
     protected static void expectEvent(String eventName, Class listenerClass) {
         _events.add(new EventData(eventName, listenerClass));
     }
 
+    /**
+     * Expect event.
+     *
+     * @param eventName
+     *            the event name
+     * @param listenerClass
+     *            the listener class
+     * @param verifier
+     *            the verifier
+     */
     protected static void expectEvent(String eventName, Class listenerClass, EventVerifier verifier) {
         _events.add(new EventData(eventName, listenerClass, verifier));
     }
 
+    /**
+     * Send event.
+     *
+     * @param eventName
+     *            the event name
+     * @param listener
+     *            the listener
+     * @param eventObject
+     *            the event object
+     */
     protected static void sendEvent(String eventName, Object listener, Object eventObject) {
         assertFalse(_events.isEmpty(), "Unexpected event: " + EventData.toEventString(eventName, listener.getClass()));
         ((EventData) _events.remove(0)).verifyEvent(eventName, listener, eventObject);
     }
 
+    /**
+     * Verify events.
+     */
     protected static void verifyEvents() {
         if (!_events.isEmpty()) {
             fail("Did not receive event " + _events.get(0));
         }
     }
 
+    /**
+     * Clear events.
+     */
     protected static void clearEvents() {
         _events = new ArrayList<>();
     }
 
+    /**
+     * The Interface EventVerifier.
+     */
     interface EventVerifier {
+
+        /**
+         * Verify event.
+         *
+         * @param eventLabel
+         *            the event label
+         * @param eventObject
+         *            the event object
+         */
         void verifyEvent(String eventLabel, Object eventObject);
     }
 

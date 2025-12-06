@@ -21,6 +21,9 @@ package com.meterware.httpunit;
 
 import com.meterware.httpunit.dom.HTMLInputElementImpl;
 
+/**
+ * The Class RadioButtonFormControl.
+ */
 public class RadioButtonFormControl extends BooleanFormControl {
 
     @Override
@@ -28,6 +31,14 @@ public class RadioButtonFormControl extends BooleanFormControl {
         return RADIO_BUTTON_TYPE;
     }
 
+    /**
+     * Instantiates a new radio button form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public RadioButtonFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
     }

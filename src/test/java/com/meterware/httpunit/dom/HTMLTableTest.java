@@ -33,14 +33,25 @@ import org.w3c.dom.html.HTMLTableElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLTableTest.
  */
 class HTMLTableTest extends AbstractHTMLElementTest {
 
+    /** The body. */
     private Element _body;
+
+    /** The main table. */
     private HTMLTableElement _mainTable;
+
+    /** The html main table rows. */
     private HTMLTableRowElement[] _htmlMainTableRows = new HTMLTableRowElement[3];
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _body = _htmlDocument.createElement("body");
@@ -60,6 +71,9 @@ class HTMLTableTest extends AbstractHTMLElementTest {
 
     /**
      * Verify the construction of table nodes with their attributes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void tableNodeCreation() throws Exception {
@@ -81,6 +95,12 @@ class HTMLTableTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Read table.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void readTable() throws Exception {
         HTMLCollection rows = _mainTable.getRows();

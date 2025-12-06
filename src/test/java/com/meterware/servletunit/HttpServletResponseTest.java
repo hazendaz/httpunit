@@ -42,6 +42,12 @@ import org.junit.jupiter.api.Test;
  */
 class HttpServletResponseTest extends ServletUnitTest {
 
+    /**
+     * Default response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -49,6 +55,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("", response.getText(), "Contents");
     }
 
+    /**
+     * Simple response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void simpleResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -66,6 +78,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("text/html; charset=ISO-8859-1", response.getHeaderField("Content-type"), "Content header");
     }
 
+    /**
+     * Encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void encoding() throws Exception {
         String hebrewTitle = "\u05d0\u05d1\u05d2\u05d3";
@@ -82,6 +100,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals(hebrewTitle, response.getTitle(), "Title");
     }
 
+    /**
+     * Locale.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void locale() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -94,6 +118,12 @@ class HttpServletResponseTest extends ServletUnitTest {
 
     }
 
+    /**
+     * Stream response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void streamResponse() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -107,6 +137,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("Sample Page", response.getTitle(), "Title");
     }
 
+    /**
+     * Stream writer after output stream.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void streamWriterAfterOutputStream() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -119,6 +155,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Stream output stream after writer.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void streamOutputStreamAfterWriter() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -130,6 +172,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Sets the buffer size after write.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setBufferSizeAfterWrite() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -144,6 +192,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Sets the buffer size after stream output.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setBufferSizeAfterStreamOutput() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -158,6 +212,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         }
     }
 
+    /**
+     * Reset buffer.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void resetBuffer() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -175,9 +235,10 @@ class HttpServletResponseTest extends ServletUnitTest {
     }
 
     /**
-     * test isComitted flag after flushing buffer
+     * test isComitted flag after flushing buffer.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void updateAfterFlushBuffer() throws Exception {
@@ -188,6 +249,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertTrue(servletResponse.isCommitted(), "Should be committed now");
     }
 
+    /**
+     * Single headers.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -215,6 +282,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("Tue, 09 Dec 1969 12:00:00 GMT", headerValue, "date header is wrong");
     }
 
+    /**
+     * Multiple headers.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multipleHeaders() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();
@@ -239,6 +312,12 @@ class HttpServletResponseTest extends ServletUnitTest {
         assertEquals("monkeyboy", headerList[0], "header is wrong");
     }
 
+    /**
+     * Send redirect.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void sendRedirect() throws Exception {
         ServletUnitHttpResponse servletResponse = new ServletUnitHttpResponse();

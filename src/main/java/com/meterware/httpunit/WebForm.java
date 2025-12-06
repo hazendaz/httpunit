@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
@@ -45,12 +44,13 @@ import org.xml.sax.SAXException;
  * This class represents a form in an HTML page. Users of this class may examine the parameters defined for the form,
  * the structure of the form (as a DOM), or the text of the form. They may also create a {@link WebRequest} to simulate
  * the submission of the form.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class WebForm extends WebRequestSource {
+
+    /** The Constant NO_VALUES. */
     private static final String[] NO_VALUES = {};
 
+    /** The buttons. */
     private Button[] _buttons;
 
     /** The submit buttons in this form. **/
@@ -59,20 +59,34 @@ public class WebForm extends WebRequestSource {
     /** The character set in which the form will be submitted. **/
     private String _characterSet;
 
-    private Vector _buttonVector;
+    /** The button list. */
+    private List<SubmitButton> _buttonVector;
 
+    /** The preset parameters. */
     private FormControl[] _presetParameters;
+
+    /** The presets. */
     private ArrayList _presets;
 
+    /** The registry. */
     private ElementRegistry _registry;
 
     /** Predicate to match a link's name. **/
     public static final HTMLElementPredicate MATCH_NAME;
+
+    /** The dom element. */
     private HTMLFormElement _domElement;
 
     /**
      * Submits this form using the web client from which it was originally obtained.
-     **/
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse submit() throws IOException, SAXException {
         return submit(getDefaultButton());
     }
@@ -81,7 +95,17 @@ public class WebForm extends WebRequestSource {
      * Submits this form using the web client from which it was originally obtained. Will usually return the result of
      * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
      * inhibits the submission, will return the updated contents of the frame containing this form.
-     **/
+     *
+     * @param button
+     *            the button
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse submit(SubmitButton button) throws IOException, SAXException {
         return submit(button, 0, 0);
     }
@@ -91,8 +115,20 @@ public class WebForm extends WebRequestSource {
      * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
      * inhibits the submission, will return the updated contents of the frame containing this form.
      *
-     * @since 1.6
-     **/
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
         if (button == null) {
             throw new IllegalSubmitButtonException("?", "?");
@@ -105,8 +141,13 @@ public class WebForm extends WebRequestSource {
      * Submits this form using the web client from which it was originally obtained, ignoring any buttons defined for
      * the form.
      *
-     * @since 1.6
-     **/
+     * @return the web response
+     *
+     * @throws SAXException
+     *             the SAX exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public WebResponse submitNoButton() throws SAXException, IOException {
         return submit(SubmitButton.createFakeSubmitButton(this /* fake */));
     }
@@ -123,39 +164,80 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Submits the form without also invoking the button's "onclick" event.
+     *
+     * @param button
+     *            the button
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     WebResponse doFormSubmit(SubmitButton button) throws IOException, SAXException {
         return submitRequest(getAttribute("onsubmit"), getRequest(button));
     }
 
+    /**
+     * Do form submit.
+     *
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     WebResponse doFormSubmit(SubmitButton button, int x, int y) throws IOException, SAXException {
         return submitRequest(getAttribute("onsubmit"), getRequest(button, x, y));
     }
 
     /**
      * Returns the method defined for this form.
-     **/
+     *
+     * @return the method
+     */
     public String getMethod() {
         return getAttribute("method", "GET");
     }
 
     /**
      * Returns the action defined for this form.
-     **/
+     *
+     * @return the action
+     */
     public String getAction() {
         return getDestination();
     }
 
     /**
      * Returns true if a parameter with given name exists in this form.
-     **/
+     *
+     * @param soughtName
+     *            the sought name
+     *
+     * @return true, if successful
+     */
     public boolean hasParameterNamed(String soughtName) {
         return getFormParameters().containsKey(soughtName);
     }
 
     /**
-     * Returns true if a parameter starting with a given name exists,
-     **/
+     * Returns true if a parameter starting with a given name exists,.
+     *
+     * @param prefix
+     *            the prefix
+     *
+     * @return true, if successful
+     */
     public boolean hasParameterStartingWithPrefix(String prefix) {
         String[] names = getParameterNames();
         for (String name : names) {
@@ -168,11 +250,13 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Returns an array containing all of the buttons defined for this form.
-     **/
+     *
+     * @return the buttons
+     */
     public Button[] getButtons() {
         if (_buttons == null) {
             FormControl[] controls = getFormControls();
-            ArrayList buttonList = new ArrayList<>();
+            List<FormControl> buttonList = new ArrayList<>();
             for (FormControl control : controls) {
                 if (control instanceof Button) {
                     buttonList.add(control);
@@ -183,6 +267,16 @@ public class WebForm extends WebRequestSource {
         return _buttons;
     }
 
+    /**
+     * Gets the button.
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the button
+     */
     public Button getButton(HTMLElementPredicate predicate, Object criteria) {
         Button[] buttons = getButtons();
         for (Button button : buttons) {
@@ -195,6 +289,11 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Convenience method which returns the button with the specified ID.
+     *
+     * @param buttonID
+     *            the button ID
+     *
+     * @return the button with ID
      */
     public Button getButtonWithID(String buttonID) {
         return getButton(Button.WITH_ID, buttonID);
@@ -202,12 +301,13 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Returns an array containing the submit buttons defined for this form.
-     **/
+     *
+     * @return the submit buttons
+     */
     public SubmitButton[] getSubmitButtons() {
         if (_submitButtons == null) {
-            Vector buttons = getSubmitButtonVector();
-            _submitButtons = new SubmitButton[buttons.size()];
-            buttons.copyInto(_submitButtons);
+            List<SubmitButton> buttons = getSubmitButtonVector();
+            _submitButtons = buttons.toArray(new SubmitButton[buttons.size()]);
         }
         return _submitButtons;
     }
@@ -215,7 +315,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns the submit button defined in this form with the specified name. If more than one such button exists, will
      * return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the submit button
+     */
     public SubmitButton getSubmitButton(String name) {
         SubmitButton[] buttons = getSubmitButtons();
         for (SubmitButton button : buttons) {
@@ -229,7 +334,14 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns the submit button defined in this form with the specified name and value. If more than one such button
      * exists, will return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @return the submit button
+     */
     public SubmitButton getSubmitButton(String name, String value) {
         SubmitButton[] buttons = getSubmitButtons();
         for (SubmitButton button : buttons) {
@@ -243,7 +355,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns the submit button defined in this form with the specified ID. If more than one such button exists, will
      * return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param ID
+     *            the id
+     *
+     * @return the submit button with ID
+     */
     public SubmitButton getSubmitButtonWithID(String ID) {
         SubmitButton[] buttons = getSubmitButtons();
         for (SubmitButton button : buttons) {
@@ -257,7 +374,14 @@ public class WebForm extends WebRequestSource {
     /**
      * Creates and returns a web request which will simulate the submission of this form with a button with the
      * specified name and value.
-     **/
+     *
+     * @param submitButtonName
+     *            the submit button name
+     * @param submitButtonValue
+     *            the submit button value
+     *
+     * @return the request
+     */
     public WebRequest getRequest(String submitButtonName, String submitButtonValue) {
         SubmitButton sb = getSubmitButton(submitButtonName, submitButtonValue);
         if (sb == null) {
@@ -269,7 +393,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Creates and returns a web request which will simulate the submission of this form with a button with the
      * specified name.
-     **/
+     *
+     * @param submitButtonName
+     *            the submit button name
+     *
+     * @return the request
+     */
     public WebRequest getRequest(String submitButtonName) {
         SubmitButton sb = getSubmitButton(submitButtonName);
         if (sb == null) {
@@ -281,7 +410,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Creates and returns a web request which will simulate the submission of this form by pressing the specified
      * button. If the button is null, simulates the pressing of the default button.
-     **/
+     *
+     * @param button
+     *            the button
+     *
+     * @return the request
+     */
     public WebRequest getRequest(SubmitButton button) {
         return getRequest(button, 0, 0);
     }
@@ -296,7 +430,9 @@ public class WebForm extends WebRequestSource {
      *            - the x position
      * @param y
      *            - the y position
-     **/
+     *
+     * @return the request
+     */
     public WebRequest getRequest(SubmitButton button, int x, int y) {
         if (button == null) {
             button = getDefaultButton();
@@ -334,7 +470,12 @@ public class WebForm extends WebRequestSource {
      * Creates and returns a web request which includes the specified button. If no button is specified, will include
      * the default button, if any. No parameter validation will be done on the returned request and no scripts will be
      * run when it is submitted.
-     **/
+     *
+     * @param button
+     *            the button
+     *
+     * @return the web request
+     */
     public WebRequest newUnvalidatedRequest(SubmitButton button) {
         return newUnvalidatedRequest(button, 0, 0);
     }
@@ -343,7 +484,16 @@ public class WebForm extends WebRequestSource {
      * Creates and returns a web request which includes the specified button and position. If no button is specified,
      * will include the default button, if any. No parameter validation will be done on the returned request and no
      * scripts will be run when it is submitted.
-     **/
+     *
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web request
+     */
     public WebRequest newUnvalidatedRequest(SubmitButton button, int x, int y) {
         if (button == null) {
             button = getDefaultButton();
@@ -361,6 +511,11 @@ public class WebForm extends WebRequestSource {
         return new GetMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);
     }
 
+    /**
+     * Gets the scripted submit request.
+     *
+     * @return the scripted submit request
+     */
     private WebRequest getScriptedSubmitRequest() {
         SubmitButton[] buttons = getSubmitButtons();
         for (SubmitButton button : buttons) {
@@ -376,7 +531,12 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Returns the default value of the named parameter. If the parameter does not exist returns null.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter value
+     */
     public String getParameterValue(String name) {
         String[] values = getParameterValues(name);
         return values.length == 0 ? null : values[0];
@@ -384,35 +544,60 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Returns the displayed options defined for the specified parameter name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the options
+     */
     public String[] getOptions(String name) {
         return getParameter(name).getOptions();
     }
 
     /**
      * Returns the option values defined for the specified parameter name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the option values
+     */
     public String[] getOptionValues(String name) {
         return getParameter(name).getOptionValues();
     }
 
     /**
      * Returns true if the named parameter accepts multiple values.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is multi valued parameter
+     */
     public boolean isMultiValuedParameter(String name) {
         return getParameter(name).isMultiValuedParameter();
     }
 
     /**
      * Returns the number of text parameters in this form with the specified name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the num text parameters
+     */
     public int getNumTextParameters(String name) {
         return getParameter(name).getNumTextParameters();
     }
 
     /**
      * Returns true if the named parameter accepts free-form text.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is text parameter
+     */
     public boolean isTextParameter(String name) {
         return getParameter(name).isTextParameter();
     }
@@ -425,6 +610,11 @@ public class WebForm extends WebRequestSource {
         return "multipart/form-data".equalsIgnoreCase(getAttribute("enctype"));
     }
 
+    /**
+     * Gets the scriptable object.
+     *
+     * @return the scriptable object
+     */
     public FormScriptable getScriptableObject() {
         return (FormScriptable) getScriptingHandler();
     }
@@ -438,6 +628,9 @@ public class WebForm extends WebRequestSource {
         }
     }
 
+    /**
+     * Reset controls.
+     */
     private void resetControls() {
         FormControl[] controls = getFormControls();
         for (FormControl control : controls) {
@@ -474,7 +667,7 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public String[] getParameterNames() {
-        ArrayList parameterNames = new ArrayList(getFormParameters().keySet());
+        List parameterNames = new ArrayList(getFormParameters().keySet());
         return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
     }
 
@@ -490,7 +683,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns true if the named parameter is read-only. If more than one control exists with the same name, will return
      * true only if all such controls are read-only.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is read only parameter
+     */
     public boolean isReadOnlyParameter(String name) {
         return getParameter(name).isReadOnlyParameter();
     }
@@ -498,7 +696,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns true if the named parameter is disabled. If more than one control exists with the same name, will return
      * true only if all such controls are read-only.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is disabled parameter
+     */
     public boolean isDisabledParameter(String name) {
         return getParameter(name).isDisabledParameter();
     }
@@ -506,7 +709,12 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns true if the named parameter is hidden. If more than one control exists with the same name, will return
      * true only if all such controls are hidden.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is hidden parameter
+     */
     public boolean isHiddenParameter(String name) {
         return getParameter(name).isHiddenParameter();
     }
@@ -522,6 +730,8 @@ public class WebForm extends WebRequestSource {
     /**
      * Creates and returns a web request based on the current state of this form. No parameter validation will be done
      * and there is no guarantee over the order of parameters transmitted.
+     *
+     * @return the web request
      */
     public WebRequest newUnvalidatedRequest() {
         return newUnvalidatedRequest(null);
@@ -608,7 +818,9 @@ public class WebForm extends WebRequestSource {
      * with the same name in the form.
      *
      * @param name
+     *            the name
      * @param values
+     *            the values
      */
     @Override
     public void setParameter(String name, final String[] values) {
@@ -643,7 +855,10 @@ public class WebForm extends WebRequestSource {
      * Sets the single value of a file upload parameter in this form. A more convenient way to do this than using
      * {@link #setParameter(String,com.meterware.httpunit.protocol.UploadFileSpec[])}
      *
-     * @since 1.6
+     * @param name
+     *            the name
+     * @param file
+     *            the file
      */
     public void setParameter(String name, File file) {
         setParameter(name, new UploadFileSpec[] { new UploadFileSpec(file) });
@@ -657,8 +872,6 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void toggleCheckbox(String name) {
         FormParameter parameter = getParameter(name);
@@ -679,8 +892,6 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void toggleCheckbox(String name, String value) {
         FormParameter parameter = getParameter(name);
@@ -700,8 +911,6 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void setCheckbox(String name, boolean state) {
         FormParameter parameter = getParameter(name);
@@ -724,8 +933,6 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void setCheckbox(String name, String value, boolean state) {
         FormParameter parameter = getParameter(name);
@@ -736,9 +943,15 @@ public class WebForm extends WebRequestSource {
     }
 
     /**
-     * Scriptable implementation for the WebForm
+     * Scriptable implementation for the WebForm.
      */
     public class Scriptable extends HTMLElementScriptable implements NamedDelegate, IdentifiedDelegate, FormScriptable {
+
+        /**
+         * Gets the action.
+         *
+         * @return the action
+         */
         public String getAction() {
             return WebForm.this.getAction();
         }
@@ -749,10 +962,26 @@ public class WebForm extends WebRequestSource {
             _presetParameters = null;
         }
 
+        /**
+         * Submit.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void submit() throws IOException, SAXException {
             submitRequest(getScriptedSubmitRequest());
         }
 
+        /**
+         * Reset.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void reset() throws IOException, SAXException {
             resetControls();
         }
@@ -840,6 +1069,11 @@ public class WebForm extends WebRequestSource {
             }
         }
 
+        /**
+         * Gets the element delegates.
+         *
+         * @return the element delegates
+         */
         public ScriptableDelegate[] getElementDelegates() {
             FormControl[] controls = getFormControls();
             ScriptableDelegate[] result = new ScriptableDelegate[controls.length];
@@ -849,10 +1083,24 @@ public class WebForm extends WebRequestSource {
             return result;
         }
 
+        /**
+         * Gets the elements by tag name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the elements by tag name
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public ScriptableDelegate[] getElementsByTagName(String name) throws SAXException {
             return getDelegates(getHTMLPage().getElementsByTagName(getElement(), name));
         }
 
+        /**
+         * Instantiates a new scriptable.
+         */
         Scriptable() {
             super(WebForm.this);
         }
@@ -863,7 +1111,22 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Contructs a web form given the URL of its source page and the DOM extracted from that page.
-     **/
+     *
+     * @param response
+     *            the response
+     * @param baseURL
+     *            the base URL
+     * @param node
+     *            the node
+     * @param frame
+     *            the frame
+     * @param defaultTarget
+     *            the default target
+     * @param characterSet
+     *            the character set
+     * @param registry
+     *            the registry
+     */
     WebForm(WebResponse response, URL baseURL, Node node, FrameSelector frame, String defaultTarget,
             String characterSet, ElementRegistry registry) {
         super(response, node, baseURL, "action", frame, defaultTarget);
@@ -874,6 +1137,11 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Returns the form control which is part of this form with the specified ID.
+     *
+     * @param id
+     *            the id
+     *
+     * @return the control with ID
      */
     public FormControl getControlWithID(String id) {
         FormControl[] controls = getFormControls();
@@ -888,6 +1156,11 @@ public class WebForm extends WebRequestSource {
     // ---------------------------------- private members
     // --------------------------------
 
+    /**
+     * Gets the default button.
+     *
+     * @return the default button
+     */
     private SubmitButton getDefaultButton() {
         if (getSubmitButtons().length == 1) {
             return getSubmitButtons()[0];
@@ -896,14 +1169,14 @@ public class WebForm extends WebRequestSource {
     }
 
     /**
-     * get the Vector of submit buttons - will always contain at least one button - if the original vector has none a
-     * faked submit button will be added
+     * get the list of submit buttons - will always contain at least one button - if the original list has none a faked
+     * submit button will be added.
      *
-     * @return a Vector with the submit buttons
+     * @return a list with the submit buttons
      */
-    private Vector getSubmitButtonVector() {
+    private List<SubmitButton> getSubmitButtonVector() {
         if (_buttonVector == null) {
-            _buttonVector = new Vector<>();
+            _buttonVector = new ArrayList<>();
             FormControl[] controls = getFormControls();
             for (FormControl control : controls) {
                 if (control instanceof SubmitButton) {
@@ -914,15 +1187,20 @@ public class WebForm extends WebRequestSource {
             }
 
             /**
-             * make sure that there is always at least one submit button if none is in the Vector add a faked one
+             * make sure that there is always at least one submit button if none is in the list add a faked one
              */
             if (_buttonVector.isEmpty()) {
-                _buttonVector.addElement(SubmitButton.createFakeSubmitButton(this));
+                _buttonVector.add(SubmitButton.createFakeSubmitButton(this));
             }
         }
         return _buttonVector;
     }
 
+    /**
+     * Gets the preset parameters.
+     *
+     * @return the preset parameters
+     */
     private FormControl[] getPresetParameters() {
         if (_presetParameters == null) {
             _presets = new ArrayList<>();
@@ -932,13 +1210,23 @@ public class WebForm extends WebRequestSource {
         return _presetParameters;
     }
 
+    /**
+     * New form control.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the form control
+     */
     FormControl newFormControl(Node child) {
         return FormControl.newFormParameter(this, child);
     }
 
     /**
      * Returns an array of form parameter attributes for this form.
-     **/
+     *
+     * @return the form controls
+     */
     private FormControl[] getFormControls() {
         HTMLCollection controlElements = _domElement.getElements();
         FormControl[] controls = new FormControl[controlElements.getLength()];
@@ -948,6 +1236,14 @@ public class WebForm extends WebRequestSource {
         return controls;
     }
 
+    /**
+     * Gets the control for node.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the control for node
+     */
     private FormControl getControlForNode(Node node) {
         if (_registry.hasNode(node)) {
             return (FormControl) _registry.getRegisteredElement(node);
@@ -956,9 +1252,10 @@ public class WebForm extends WebRequestSource {
     }
 
     /**
-     * get the form parameter with the given name
+     * get the form parameter with the given name.
      *
      * @param name
+     *            the name
      *
      * @return the form parameter with this name
      */
@@ -970,6 +1267,8 @@ public class WebForm extends WebRequestSource {
     /**
      * Returns a map of parameter name to form parameter objects. Each form parameter object represents the set of form
      * controls with a particular name. Unnamed parameters are ignored.
+     *
+     * @return the form parameters
      */
     private Map getFormParameters() {
         Map formParameters = new HashMap<>();
@@ -978,6 +1277,14 @@ public class WebForm extends WebRequestSource {
         return formParameters;
     }
 
+    /**
+     * Load form parameters.
+     *
+     * @param formParameters
+     *            the form parameters
+     * @param controls
+     *            the controls
+     */
     private void loadFormParameters(Map formParameters, FormControl[] controls) {
         for (FormControl control : controls) {
             if (control.getName().isEmpty()) {
@@ -1002,17 +1309,20 @@ public class WebForm extends WebRequestSource {
     // NoSuchParameterException =========================================
 
     /**
-     * This exception is thrown on an attempt to set a file parameter to a non file type
-     **/
+     * This exception is thrown on an attempt to set a file parameter to a non file type.
+     */
     class InvalidFileParameterException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /**
-         * construct a new InvalidFileParameterException for the given parameter name and value list
+         * construct a new InvalidFileParameterException for the given parameter name and value list.
          *
          * @param parameterName
+         *            the parameter name
          * @param values
+         *            the values
          */
         InvalidFileParameterException(String parameterName, String[] values) {
             _parameterName = parameterName;
@@ -1034,7 +1344,10 @@ public class WebForm extends WebRequestSource {
                     + "' must have type File but the string values " + valueList.append(" where supplied").toString();
         }
 
+        /** The parameter name. */
         private String _parameterName;
+
+        /** The values. */
         private String[] _values;
     }
 
@@ -1043,8 +1356,15 @@ public class WebForm extends WebRequestSource {
      **/
     class NoSuchParameterException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new no such parameter exception.
+         *
+         * @param parameterName
+         *            the parameter name
+         */
         NoSuchParameterException(String parameterName) {
             _parameterName = parameterName;
         }
@@ -1054,6 +1374,7 @@ public class WebForm extends WebRequestSource {
             return "No parameter named '" + _parameterName + "' is defined in the form";
         }
 
+        /** The parameter name. */
         private String _parameterName;
 
     }
@@ -1067,8 +1388,12 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalUnnamedSubmitButtonException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new illegal unnamed submit button exception.
+         */
         IllegalUnnamedSubmitButtonException() {
         }
 
@@ -1087,13 +1412,28 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalSubmitButtonException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new illegal submit button exception.
+         *
+         * @param button
+         *            the button
+         */
         IllegalSubmitButtonException(SubmitButton button) {
             _name = button.getName();
             _value = button.getValue();
         }
 
+        /**
+         * Instantiates a new illegal submit button exception.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
         IllegalSubmitButtonException(String name, String value) {
             _name = name;
             _value = value;
@@ -1104,7 +1444,10 @@ public class WebForm extends WebRequestSource {
             return "Specified submit button (name=\"" + _name + "\" value=\"" + _value + "\") not part of this form.";
         }
 
+        /** The name. */
         private String _name;
+
+        /** The value. */
         private String _value;
 
     }

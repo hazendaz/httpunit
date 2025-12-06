@@ -27,20 +27,35 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class UncheckedParameterHolder.
+ */
 final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
 
+    /** The Constant NO_VALUES. */
     private static final String[] NO_VALUES = {};
+
+    /** The character set. */
     private final String _characterSet;
 
+    /** The parameters. */
     private Hashtable _parameters = new Hashtable<>();
+
+    /** The submit as mime. */
     private boolean _submitAsMime;
 
+    /**
+     * Instantiates a new unchecked parameter holder.
+     */
     UncheckedParameterHolder() {
         _characterSet = HttpUnitOptions.getDefaultCharacterSet();
     }
 
+    /**
+     * Instantiates a new unchecked parameter holder.
+     *
+     * @param source
+     *            the source
+     */
     UncheckedParameterHolder(WebRequestSource source) {
         _characterSet = source.getCharacterSet();
         _submitAsMime = source.isSubmitAsMime();
@@ -114,6 +129,14 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
         return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);
     }
 
+    /**
+     * Gets the parameter value.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter value
+     */
     String getParameterValue(String name) {
         String[] values = getParameterValues(name);
         return values.length == 0 ? null : values[0];

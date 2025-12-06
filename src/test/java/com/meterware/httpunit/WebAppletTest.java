@@ -35,15 +35,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class WebAppletTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebAppletTest extends HttpUnitTest {
+class WebAppletTest extends HttpUnitTest {
 
+    /**
+     * Delete me.
+     */
     @Test
     void deleteMe() {
         assertDoesNotThrow(() -> {
@@ -51,6 +51,12 @@ public class WebAppletTest extends HttpUnitTest {
         });
     }
 
+    /**
+     * Find applets.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findApplets() throws Exception {
         defineWebPage("start", "<applet code='FirstApplet.class' width=150 height=100></applet>"
@@ -62,6 +68,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals(2, applets.length, "number of applets in page");
     }
 
+    /**
+     * Applet properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void appletProperties() throws Exception {
         defineWebPage("start",
@@ -79,6 +91,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals(100, applet1.getHeight(), "Applet 1 height");
     }
 
+    /**
+     * Read applet parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void readAppletParameters() throws Exception {
         defineWebPage("start", "<applet code='DoIt'>" + "  <param name='color' value='ffff00'>"
@@ -92,6 +110,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertMatchingSet("Parameter names", new String[] { "color", "age" }, applet.getParameterNames());
     }
 
+    /**
+     * Applet class name.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void appletClassName() throws Exception {
         defineWebPage("start",
@@ -105,6 +129,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals("net.ThirdApplet", response.getApplets()[2].getMainClassName(), "Applet 3 classname");
     }
 
+    /**
+     * Applet loading.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void appletLoading() throws Exception {
         defineWebPage("start", "<applet code='" + SimpleApplet.class.getName()
@@ -118,6 +148,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals(SimpleApplet.class.getName(), applet.getClass().getName(), "Applet class");
     }
 
+    /**
+     * Notest applet archive.
+     *
+     * @throws Exception
+     *             the exception
+     */
     public void notestAppletArchive() throws Exception {
         defineWebPage("start", "<applet archive='/lib/xercesImpl.jar,/lib/xmlParserAPIs.jar'" + " code='"
                 + XMLApplet.class.getName() + ".class'" + " codebase=/classes width=100 height=100></applet>");
@@ -131,6 +167,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals(DocumentBuilder.class.getName(), result.getClass().getSuperclass().getName(), "Superclass name");
     }
 
+    /**
+     * Applet parameter access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void appletParameterAccess() throws Exception {
         defineWebPage("start",
@@ -145,6 +187,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals("12", applet.getParameter("age"), "Applet parameter 'age'");
     }
 
+    /**
+     * Applet find from applet.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void appletFindFromApplet() throws Exception {
         defineWebPage("start",
@@ -168,6 +216,12 @@ public class WebAppletTest extends HttpUnitTest {
         assertFalse(applets.hasMoreElements(), "More than two applets enumerated");
     }
 
+    /**
+     * Show document.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void showDocument() throws Exception {
         defineResource("next.html", "You made it!");
@@ -183,9 +237,10 @@ public class WebAppletTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1895501 ] Handling no codebase attribute in APPLET tag by lacton
+     * test for bug report [ 1895501 ] Handling no codebase attribute in APPLET tag by lacton.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void appletWithinADirectory() throws Exception {
@@ -200,19 +255,40 @@ public class WebAppletTest extends HttpUnitTest {
         assertEquals(SimpleApplet.class.getName(), applet.getClass().getName(), "Applet class");
     }
 
+    /**
+     * The Class SimpleApplet.
+     */
     public static class SimpleApplet extends Applet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class SecondApplet.
+     */
     public static class SecondApplet extends SimpleApplet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class XMLApplet.
+     */
     public static class XMLApplet extends Applet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Gets the document builder.
+         *
+         * @return the document builder
+         *
+         * @throws Exception
+         *             the exception
+         */
         public DocumentBuilder getDocumentBuilder() throws Exception {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             return factory.newDocumentBuilder();

@@ -33,15 +33,16 @@ import org.w3c.dom.NodeList;
  * very advanced matching techniques. THREAD: Instances are not thread safe, each thread should create its own instance
  * with a specific xpath. (The same instance can be used for multiple documents, each change in document will result in
  * its internal caches being flushed).
- *
- * @author <a href="mailto:edA-qa@disemia.com">edA-qa mort-ora-y</a>
- * @author <a href="mailto:stephane@mikaty.net">Stephane Mikaty</a>
  */
 public class XPathPredicate implements HTMLElementPredicate {
 
-    /** XPath which dictates matching nodes, from root */
+    /** XPath which dictates matching nodes, from root. */
     private XPathExpression xpath;
+
+    /** The path. */
     private String path;
+
+    /** The Constant DEBUG. */
     // set to true for debugging
     public static final boolean DEBUG = false;
 
@@ -60,10 +61,12 @@ public class XPathPredicate implements HTMLElementPredicate {
     }
 
     /**
-     * debug Output for node structure
+     * debug Output for node structure.
      *
      * @param node
+     *            the node
      * @param indent
+     *            the indent
      */
     private void debugOut(Node node, String indent) {
         System.out.print(indent + node.getNodeName() + ":");

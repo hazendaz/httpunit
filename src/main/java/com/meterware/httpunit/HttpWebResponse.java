@@ -28,30 +28,37 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 /**
  * A response from a web server to an Http request.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 class HttpWebResponse extends WebResponse {
 
+    /** The referer. */
     private String _referer;
 
     /**
      * Constructs a response object from an input stream.
      *
+     * @param client
+     *            the client
      * @param frame
      *            the target window or frame to which the request should be directed
      * @param url
      *            the url from which the response was received
      * @param connection
      *            the URL connection from which the response can be read
-     **/
+     * @param throwExceptionOnError
+     *            the throw exception on error
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     HttpWebResponse(WebConversation client, FrameSelector frame, URL url, URLConnection connection,
             boolean throwExceptionOnError) throws IOException {
         super(client, frame, url);
@@ -71,6 +78,23 @@ class HttpWebResponse extends WebResponse {
         }
     }
 
+    /**
+     * Instantiates a new http web response.
+     *
+     * @param client
+     *            the client
+     * @param frame
+     *            the frame
+     * @param request
+     *            the request
+     * @param connection
+     *            the connection
+     * @param throwExceptionOnError
+     *            the throw exception on error
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     HttpWebResponse(WebConversation client, FrameSelector frame, WebRequest request, URLConnection connection,
             boolean throwExceptionOnError) throws IOException {
         this(client, frame, request.getURL(), connection, throwExceptionOnError);
@@ -79,13 +103,15 @@ class HttpWebResponse extends WebResponse {
     }
 
     /**
-     * get the input stream for the given connection
+     * get the input stream for the given connection.
      *
      * @param connection
+     *            the connection
      *
-     * @return
+     * @return the input stream
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private InputStream getInputStream(URLConnection connection) throws IOException {
         InputStream result = null;
@@ -111,22 +137,24 @@ class HttpWebResponse extends WebResponse {
     }
 
     /**
-     * check whether a response code >=400 was received
+     * check whether a response code >=400 was received.
      *
      * @param connection
+     *            the connection
      *
-     * @return
+     * @return true, if is error response
      */
     private boolean isErrorResponse(URLConnection connection) {
         return _responseCode >= HttpURLConnection.HTTP_BAD_REQUEST;
     }
 
     /**
-     * check whether the response is on the error stream
+     * check whether the response is on the error stream.
      *
      * @param connection
+     *            the connection
      *
-     * @return
+     * @return true, if is response on error stream
      */
     private boolean isResponseOnErrorStream(URLConnection connection) {
         return isErrorResponse(connection) && ((HttpURLConnection) connection).getErrorStream() != null;
@@ -150,13 +178,11 @@ class HttpWebResponse extends WebResponse {
 
     @Override
     public String[] getHeaderFieldNames() {
-        Vector names = new Vector<>();
+        List<String> names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add((String) e.nextElement());
         }
-        String[] result = new String[names.size()];
-        names.copyInto(result);
-        return result;
+        return names.toArray(new String[0]);
     }
 
     /**
@@ -196,30 +222,39 @@ class HttpWebResponse extends WebResponse {
 
     // ------------------------------------- private members -------------------------------------
 
+    /** The Constant FILE_ENCODING. */
     private static final String FILE_ENCODING = Charset.defaultCharset().displayName();
 
+    /** The response code. */
     private int _responseCode = HttpURLConnection.HTTP_OK;
+
+    /** The response message. */
     private String _responseMessage = "OK";
 
     /**
-     * set the responseCode to the given code and message
+     * set the responseCode to the given code and message.
      *
      * @param code
+     *            the code
      * @param message
+     *            the message
      */
     private void setResponseCode(int code, String message) {
         _responseCode = code;
         _responseMessage = message;
     }
 
+    /** The headers. */
     private Hashtable _headers = new Hashtable<>();
 
     /**
-     * read the response Header for the given connection and set the response code and message accordingly
+     * read the response Header for the given connection and set the response code and message accordingly.
      *
      * @param connection
+     *            the connection
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private void readResponseHeader(HttpURLConnection connection) throws IOException {
         if (!needStatusWorkaround()) {
@@ -243,11 +278,24 @@ class HttpWebResponse extends WebResponse {
         }
     }
 
+    /**
+     * Need status workaround.
+     *
+     * @return true, if successful
+     */
     private boolean needStatusWorkaround() {
         final String jdkVersion = System.getProperty("java.version");
         return jdkVersion.startsWith("1.2") || jdkVersion.startsWith("1.3");
     }
 
+    /**
+     * Gets the remaining tokens.
+     *
+     * @param st
+     *            the st
+     *
+     * @return the remaining tokens
+     */
     private String getRemainingTokens(StringTokenizer st) {
         StringBuilder messageBuffer = new StringBuilder(st.hasMoreTokens() ? st.nextToken() : "");
         while (st.hasMoreTokens()) {
@@ -256,6 +304,15 @@ class HttpWebResponse extends WebResponse {
         return messageBuffer.toString();
     }
 
+    /**
+     * Read headers.
+     *
+     * @param connection
+     *            the connection
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void readHeaders(URLConnection connection) throws IOException {
         loadHeaders(connection);
         if (connection instanceof HttpURLConnection) {
@@ -268,6 +325,12 @@ class HttpWebResponse extends WebResponse {
         }
     }
 
+    /**
+     * Load headers.
+     *
+     * @param connection
+     *            the connection
+     */
     private void loadHeaders(URLConnection connection) {
         if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("Header:: " + connection.getHeaderField(0));
@@ -289,6 +352,14 @@ class HttpWebResponse extends WebResponse {
         }
     }
 
+    /**
+     * Adds the header.
+     *
+     * @param key
+     *            the key
+     * @param field
+     *            the field
+     */
     private void addHeader(String key, String field) {
         _headers.put(key, HttpUnitUtils.withNewValue((String[]) _headers.get(key), field));
     }

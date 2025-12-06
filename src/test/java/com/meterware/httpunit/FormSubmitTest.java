@@ -32,23 +32,33 @@ import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A test of the parameter validation functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class FormSubmitTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
     }
 
+    /**
+     * Embedded equals.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void embeddedEquals() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=\"age=x\" value=12>"
@@ -59,6 +69,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/ask?age%3Dx=12", request.getURL().toExternalForm());
     }
 
+    /**
+     * Empty choice submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void emptyChoiceSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -69,6 +85,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/ask?age=12", request.getURL().toExternalForm(), "Empty choice query");
     }
 
+    /**
+     * Form properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formProperties() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -82,6 +104,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals("/tell", form.getAction(), "Form action");
     }
 
+    /**
+     * Submit string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitString() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age>"
@@ -92,6 +120,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/ask?age=23", request.getURL().toExternalForm());
     }
 
+    /**
+     * Submit string with query only relative URL.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitStringWithQueryOnlyRelativeURL() throws Exception {
         defineWebPage("/blah/blah/blah",
@@ -101,6 +135,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/blah/blah/blah.html?recall=true", request.getURL().toExternalForm());
     }
 
+    /**
+     * Submit string after set action.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitStringAfterSetAction() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age>"
@@ -112,6 +152,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/tell?age=23", request.getURL().toExternalForm());
     }
 
+    /**
+     * No name submit string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noNameSubmitString() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text value=dontSend>"
@@ -123,9 +169,10 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     /**
-     * check that submit buttons will be detected
+     * check that submit buttons will be detected.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitButtonDetection() throws Exception {
@@ -142,9 +189,10 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1629836 ] Anchor only form actions are not properly handled by Claude Brisson
+     * test for bug report [ 1629836 ] Anchor only form actions are not properly handled by Claude Brisson.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void anchor() throws Exception {
@@ -159,9 +207,10 @@ class FormSubmitTest extends HttpUnitTest {
 
     /**
      * check that a fake submit button will be added and marked as such test for [ 1159887 ] patch for RFE 1159884 by
-     * Rafal Krzewski
+     * Rafal Krzewski.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void fakeSubmitButtonAddition() throws Exception {
@@ -174,6 +223,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertTrue(buttons[0].isFake(), "the only submit button returned should be a fake");
     }
 
+    /**
+     * Non submit button detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nonSubmitButtonDetection() throws Exception {
         defineWebPage("Default",
@@ -187,9 +242,10 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     /**
-     * test detecting the reset button
+     * test detecting the reset button.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void resetButtonDetection() throws Exception {
@@ -208,9 +264,10 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     /**
-     * test that a disabled submitButton can not be submitted
+     * test that a disabled submitButton can not be submitted.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void disabledSubmitButtonDetection() throws Exception {
@@ -237,6 +294,9 @@ class FormSubmitTest extends HttpUnitTest {
 
     /**
      * test for bug report [2264431] double submit problem version 1.7 would have problem with double submits
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void doubleSubmitProblem() throws Exception {
@@ -265,6 +325,9 @@ class FormSubmitTest extends HttpUnitTest {
 
     /**
      * test self disabling submit Buttons test for bug report [ 1289151 ] Order of events in button.click() is wrong
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void selfDisablingSubmitButton() throws Exception {
@@ -292,9 +355,10 @@ class FormSubmitTest extends HttpUnitTest {
 
     /**
      * test that a disabled Button can be detected by accessing the disabled() function for bug report [ 1124024 ]
-     * Formcontrol and isDisabled should be public by Wolfgang Fahl
+     * Formcontrol and isDisabled should be public by Wolfgang Fahl.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void buttonDisabledFlagAccess() throws Exception {
@@ -309,6 +373,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertTrue(control instanceof Button, control.getClass().getName());
     }
 
+    /**
+     * Button ID detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void buttonIDDetection() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -323,6 +393,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(button, button2, "Submit button");
     }
 
+    /**
+     * Button tag detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void buttonTagDetection() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -333,6 +409,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(2, buttons.length, "num detected submit buttons");
     }
 
+    /**
+     * Image button detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageButtonDetection() throws Exception {
         defineWebPage("Default",
@@ -345,6 +427,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(2, buttons.length, "num detected submit buttons");
     }
 
+    /**
+     * Image button default submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageButtonDefaultSubmit() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -356,6 +444,12 @@ class FormSubmitTest extends HttpUnitTest {
                 "Query");
     }
 
+    /**
+     * Image button no value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageButtonNoValue() throws Exception {
         defineWebPage("Default",
@@ -373,6 +467,7 @@ class FormSubmitTest extends HttpUnitTest {
      * test behaviour of UnnameImageButtons see also WebFormTest.testSubmitFromUnnamedImageButton
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void unnamedImageButtonDefaultSubmit() throws Exception {
@@ -389,6 +484,7 @@ class FormSubmitTest extends HttpUnitTest {
      * test behavoir of positional image buttons see also WebFormTest.testSubmitFromPositionalButton
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void imageButtonPositionalSubmit() throws Exception {
@@ -404,6 +500,12 @@ class FormSubmitTest extends HttpUnitTest {
                 request.getURL().toExternalForm());
     }
 
+    /**
+     * Image button no value positional submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageButtonNoValuePositionalSubmit() throws Exception {
         defineWebPage("Default", "<form method='GET' action='test.jsp'>"
@@ -414,6 +516,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/test.jsp?aButton.x=20&aButton.y=5", request.getURL().toExternalForm());
     }
 
+    /**
+     * Image button no value unchecked positional submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageButtonNoValueUncheckedPositionalSubmit() throws Exception {
         assertDoesNotThrow(() -> {
@@ -426,6 +534,12 @@ class FormSubmitTest extends HttpUnitTest {
         });
     }
 
+    /**
+     * Submit button attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitButtonAttributes() throws Exception {
         defineWebPage("Default", "<form method=GET action = \"/ask\">" + "<Input type=text name=age value=12>"
@@ -438,6 +552,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals("age", buttons[0].getValue(), "submit button value");
     }
 
+    /**
+     * Submit button selection by name.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitButtonSelectionByName() throws Exception {
         defineWebPage("Default",
@@ -454,6 +574,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals("age", button.getValue(), "submit button value");
     }
 
+    /**
+     * Submit button selection by name and value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void submitButtonSelectionByNameAndValue() throws Exception {
         defineWebPage("Default",
@@ -472,6 +598,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals("name", button.getValue(), "submit button value");
     }
 
+    /**
+     * Named button submit string.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void namedButtonSubmitString() throws Exception {
         defineWebPage("Default",
@@ -496,6 +628,12 @@ class FormSubmitTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Unnamed button submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void unnamedButtonSubmit() throws Exception {
         defineWebPage("Default",
@@ -511,6 +649,12 @@ class FormSubmitTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Foreign submit button detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void foreignSubmitButtonDetection() throws Exception {
         defineWebPage("Default",
@@ -545,6 +689,12 @@ class FormSubmitTest extends HttpUnitTest {
         form.getRequest(wrongForm.getSubmitButtons()[0]);
     }
 
+    /**
+     * No action supplied.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noActionSupplied() throws Exception {
         defineWebPage("abc/form", "<form name=\"test\">" + "  <input type=\"text\" name=\"aTextField\">"
@@ -557,6 +707,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/abc/form.html?aTextField=test&apply=Apply", req.getURL().toExternalForm());
     }
 
+    /**
+     * No action supplied when base has params.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noActionSuppliedWhenBaseHasParams() throws Exception {
         defineResource("abc/form?param1=value&param2=value",
@@ -571,6 +727,12 @@ class FormSubmitTest extends HttpUnitTest {
                 req.getURL().toExternalForm());
     }
 
+    /**
+     * No action supplied when base has params set by the form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noActionSuppliedWhenBaseHasParamsSetByTheForm() throws Exception {
         defineResource("abc/form?param1=value&param2=value",
@@ -584,6 +746,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/abc/form?param1=value&param2=test&apply=Apply", req.getURL().toExternalForm());
     }
 
+    /**
+     * Post action parameters after set action.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void postActionParametersAfterSetAction() throws Exception {
         defineWebPage("abc/form",
@@ -599,6 +767,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals(getHostPath() + "/abc/go?size=3&time=now", req.getURL().toExternalForm());
     }
 
+    /**
+     * Post parameter encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void postParameterEncoding() throws Exception {
         defineWebPage("abc/form",
@@ -608,7 +782,7 @@ class FormSubmitTest extends HttpUnitTest {
         defineResource("doit", new PseudoServlet() {
             @Override
             public WebResource getPostResponse() throws IOException {
-                return new WebResource(new String(getBody()));
+                return new WebResource(new String(getBody(), StandardCharsets.UTF_8));
             }
         });
 
@@ -620,6 +794,12 @@ class FormSubmitTest extends HttpUnitTest {
         assertEquals("text_field-name*=a+value&apply=Apply", response.getText(), "posted parameters");
     }
 
+    /**
+     * Mailto action rejected.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void mailtoActionRejected() throws Exception {
         defineWebPage("abc/form",
@@ -639,7 +819,10 @@ class FormSubmitTest extends HttpUnitTest {
     }
 
     /**
-     * test that the enabled/disabled state of a button is accessible
+     * test that the enabled/disabled state of a button is accessible.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void enabledDisabled() throws Exception {
@@ -664,5 +847,6 @@ class FormSubmitTest extends HttpUnitTest {
 
     // ---------------------------------------------- private members ------------------------------------------------
 
+    /** The wc. */
     private WebConversation _wc;
 }

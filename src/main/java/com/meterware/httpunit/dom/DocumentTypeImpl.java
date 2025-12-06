@@ -24,13 +24,14 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class DocumentTypeImpl.
+ */
 public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 
     // ---------------------------------------------- DocumentType methods
     // --------------------------------------------------
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override

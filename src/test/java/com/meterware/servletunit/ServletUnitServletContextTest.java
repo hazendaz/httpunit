@@ -29,10 +29,25 @@ import javax.servlet.ServletContext;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * The Class ServletUnitServletContextTest.
+ */
 class ServletUnitServletContextTest {
+
+    /** The Constant EXISTENT_RESOURCE_PATH. */
     private static final String EXISTENT_RESOURCE_PATH = "src/test/resources/existent.xml";
+
+    /** The Constant NONEXISTENT_RESOURCE_PATH. */
     private static final String NONEXISTENT_RESOURCE_PATH = "src/test/resources/nonexistent.xml";
 
+    /**
+     * Gets the resource.
+     *
+     * @return the resource
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getResource() throws Exception {
         WebApplication webapp = new WebApplication();

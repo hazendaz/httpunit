@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -18,17 +18,19 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package com.meterware.httpunit.dom;
-/********************************************************************************************************************
- * $Id$
- *
- * Copyright (c) 2005, Russell Gold
- *
- *******************************************************************************************************************/
 
 /**
- * @author <a href="mailto:russgold@gmail.com">Russell Gold</a>
+ * The Interface AttributeNameAdjusted.
  */
 public interface AttributeNameAdjusted {
 
+    /**
+     * Gets the java attribute name.
+     *
+     * @param attributeName
+     *            the attribute name
+     *
+     * @return the java attribute name
+     */
     String getJavaAttributeName(String attributeName);
 }

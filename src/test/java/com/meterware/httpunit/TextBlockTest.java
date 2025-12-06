@@ -28,15 +28,18 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class TextBlockTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class TextBlockTest extends HttpUnitTest {
 
+    /**
+     * Paragraph detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void paragraphDetection() throws Exception {
         defineWebPage("SimplePage",
@@ -53,6 +56,12 @@ class TextBlockTest extends HttpUnitTest {
         assertEquals("But it does have three paragraphs", comment.getText(), "Comment paragraph");
     }
 
+    /**
+     * Text conversion.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textConversion() throws Exception {
         defineWebPage("SimplePage", "<p>Here is a line<br>followed by another</p>");
@@ -64,6 +73,12 @@ class TextBlockTest extends HttpUnitTest {
         br.readLine();
     }
 
+    /**
+     * Header detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void headerDetection() throws Exception {
         defineWebPage("SimplePage",
@@ -79,6 +94,12 @@ class TextBlockTest extends HttpUnitTest {
         assertEquals("with some text", response.getNextTextBlock(header1).getText(), "Text under header 1");
     }
 
+    /**
+     * Embedded links.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void embeddedLinks() throws Exception {
         defineWebPage("SimplePage", "<h1>Here is a section</h1>\n"
@@ -96,6 +117,12 @@ class TextBlockTest extends HttpUnitTest {
                 "embedded link url");
     }
 
+    /**
+     * Embedded lists.
+     *
+     * @throws Exception
+     *             the exception
+     */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
     @Test
@@ -122,6 +149,12 @@ class TextBlockTest extends HttpUnitTest {
         assertEquals("Red", unorderedList.getItems()[0].getText(), "First bullet list item");
     }
 
+    /**
+     * Ntest formatting detection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     // TODO JWL 2/19/2023 Test was not annotated and does not work, annotated this and add ignores for now.
     @Disabled
     @Test

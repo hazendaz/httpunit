@@ -33,9 +33,6 @@ import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
  * This class represents a table in an HTML page.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public class WebTable extends HTMLElementBase {
 
@@ -53,11 +50,18 @@ public class WebTable extends HTMLElementBase {
 
     /**
      * Returns the number of rows in the table.
-     **/
+     *
+     * @return the row count
+     */
     public int getRowCount() {
         return getCells().length;
     }
 
+    /**
+     * Gets the cells.
+     *
+     * @return the cells
+     */
     private TableCell[][] getCells() {
         if (_cells == null) {
             readTable();
@@ -68,7 +72,9 @@ public class WebTable extends HTMLElementBase {
 
     /**
      * Returns the number of columns in the table.
-     **/
+     *
+     * @return the column count
+     */
     public int getColumnCount() {
         if (getCells().length == 0) {
             return 0;
@@ -79,9 +85,16 @@ public class WebTable extends HTMLElementBase {
     /**
      * Returns the contents of the specified table cell as text. The row and column numbers are zero-based.
      *
+     * @param row
+     *            the row
+     * @param column
+     *            the column
+     *
+     * @return the cell as text
+     *
      * @throws IndexOutOfBoundsException
      *             if the specified cell numbers are not valid
-     **/
+     */
     public String getCellAsText(int row, int column) {
         TableCell cell = getTableCell(row, column);
         return cell == null ? "" : cell.getText();
@@ -90,18 +103,28 @@ public class WebTable extends HTMLElementBase {
     /**
      * Returns the contents of the specified table cell as text. The row and column numbers are zero-based.
      *
+     * @param row
+     *            the row
+     * @param column
+     *            the column
+     *
+     * @return the table cell
+     *
      * @throws IndexOutOfBoundsException
      *             if the specified cell numbers are not valid
-     **/
+     */
     public TableCell getTableCell(int row, int column) {
         return getCells()[row][column];
     }
 
     /**
-     * Returns the contents of the specified table cell with a given ID
+     * Returns the contents of the specified table cell with a given ID.
+     *
+     * @param id
+     *            the id
      *
      * @return TableCell with given ID or null if ID is not found.
-     **/
+     */
     public TableCell getTableCellWithID(String id) {
         for (int i = 0; i < getRowCount(); i++) {
             for (int j = 0; j < getColumnCount(); j++) {
@@ -207,7 +230,9 @@ public class WebTable extends HTMLElementBase {
 
     /**
      * Returns a rendering of this table with all cells converted to text.
-     **/
+     *
+     * @return the string[][]
+     */
     public String[][] asText() {
         String[][] result = new String[getRowCount()][getColumnCount()];
 
@@ -221,7 +246,9 @@ public class WebTable extends HTMLElementBase {
 
     /**
      * Returns the summary attribute associated with this table.
-     **/
+     *
+     * @return the summary
+     */
     public String getSummary() {
         return NodeUtils.getNodeAttribute(_dom, "summary");
     }
@@ -257,15 +284,43 @@ public class WebTable extends HTMLElementBase {
 
     // ----------------------------------- private members -----------------------------------
 
+    /** The dom. */
     private Element _dom;
+
+    /** The url. */
     private URL _url;
+
+    /** The frame name. */
     private FrameSelector _frameName;
+
+    /** The base target. */
     private String _baseTarget;
+
+    /** The character set. */
     private String _characterSet;
+
+    /** The response. */
     private WebResponse _response;
 
+    /** The cells. */
     private TableCell[][] _cells;
 
+    /**
+     * Instantiates a new web table.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param domTreeRoot
+     *            the dom tree root
+     * @param sourceURL
+     *            the source URL
+     * @param baseTarget
+     *            the base target
+     * @param characterSet
+     *            the character set
+     */
     WebTable(WebResponse response, FrameSelector frame, Node domTreeRoot, URL sourceURL, String baseTarget,
             String characterSet) {
         super(domTreeRoot);
@@ -277,6 +332,9 @@ public class WebTable extends HTMLElementBase {
         _characterSet = characterSet;
     }
 
+    /**
+     * Read table.
+     */
     private void readTable() {
         TableRow[] rows = getRows();
         int[] columnsRequired = new int[rows.length];
@@ -310,6 +368,16 @@ public class WebTable extends HTMLElementBase {
         }
     }
 
+    /**
+     * Place cell.
+     *
+     * @param row
+     *            the row
+     * @param column
+     *            the column
+     * @param cell
+     *            the cell
+     */
     private void placeCell(int row, int column, TableCell cell) {
         while (_cells[row][column] != null) {
             column++;
@@ -317,24 +385,49 @@ public class WebTable extends HTMLElementBase {
         _cells[row][column] = cell;
     }
 
+    /** The rows. */
     private ArrayList _rows = new ArrayList<>();
 
+    /**
+     * Adds the row.
+     *
+     * @param tableRow
+     *            the table row
+     */
     void addRow(TableRow tableRow) {
         _cells = null;
         _rows.add(tableRow);
     }
 
+    /**
+     * New table row.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the table row
+     */
     TableRow newTableRow(HTMLTableRowElement element) {
         return new TableRow(this, element);
     }
 
     /**
      * Returns an array of rows for this table.
+     *
+     * @return the rows
      */
     public TableRow[] getRows() {
         return (TableRow[]) _rows.toArray(new TableRow[_rows.size()]);
     }
 
+    /**
+     * New table cell.
+     *
+     * @param element
+     *            the element
+     *
+     * @return the table cell
+     */
     TableCell newTableCell(HTMLTableCellElement element) {
         return new TableCell(_response, _frameName, element, _url, _baseTarget, _characterSet);
     }

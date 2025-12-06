@@ -30,23 +30,30 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLCollection;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLContainerDelegate.
  */
 class HTMLContainerDelegate {
 
+    /** The iterator mask. */
     private NodeImpl.IteratorMask _iteratorMask = NodeImpl.SKIP_IFRAMES;
 
+    /**
+     * Instantiates a new HTML container delegate.
+     *
+     * @param iteratorMask
+     *            the iterator mask
+     */
     HTMLContainerDelegate(NodeImpl.IteratorMask iteratorMask) {
         _iteratorMask = iteratorMask;
     }
 
     /**
-     * get Links for a given Node
+     * get Links for a given Node.
      *
      * @param rootNode
      *            - an array of forms
      *
-     * @return
+     * @return the links
      */
     HTMLCollection getLinks(NodeImpl rootNode) {
         ArrayList elements = new ArrayList<>();
@@ -64,7 +71,7 @@ class HTMLContainerDelegate {
     }
 
     /**
-     * get forms for a given Node
+     * get forms for a given Node.
      *
      * @param rootNode
      *            - the node to start from
@@ -86,6 +93,14 @@ class HTMLContainerDelegate {
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
+    /**
+     * Gets the anchors.
+     *
+     * @param rootNode
+     *            the root node
+     *
+     * @return the anchors
+     */
     HTMLCollection getAnchors(NodeImpl rootNode) {
         NodeList nodeList = rootNode.getElementsByTagName("A");
         ArrayList elements = new ArrayList<>();
@@ -98,12 +113,28 @@ class HTMLContainerDelegate {
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
+    /**
+     * Gets the images.
+     *
+     * @param rootNode
+     *            the root node
+     *
+     * @return the images
+     */
     HTMLCollection getImages(NodeImpl rootNode) {
         ArrayList elements = new ArrayList<>();
         rootNode.appendElementsWithTags(new String[] { "img" }, elements);
         return HTMLCollectionImpl.createHTMLCollectionImpl(new NodeListImpl(elements));
     }
 
+    /**
+     * Gets the applets.
+     *
+     * @param rootNode
+     *            the root node
+     *
+     * @return the applets
+     */
     HTMLCollection getApplets(NodeImpl rootNode) {
         ArrayList elements = new ArrayList<>();
         rootNode.appendElementsWithTags(new String[] { "applet" }, elements);

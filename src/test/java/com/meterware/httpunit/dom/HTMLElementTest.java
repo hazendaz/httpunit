@@ -53,10 +53,16 @@ import org.w3c.dom.html.HTMLTextAreaElement;
 import org.w3c.dom.html.HTMLTitleElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLElementTest.
  */
 class HTMLElementTest extends AbstractHTMLElementTest {
 
+    /**
+     * Case insensitive tag search.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void caseInsensitiveTagSearch() throws Exception {
         Element element = createElement("body");
@@ -66,6 +72,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertSame(form, nl.item(0), "Found form node");
     }
 
+    /**
+     * Base element defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void baseElementDefaults() throws Exception {
         Element element = createElement("b", new String[0][]);
@@ -81,9 +93,10 @@ class HTMLElementTest extends AbstractHTMLElementTest {
     }
 
     /**
-     * test base element attributes
+     * test base element attributes.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void baseElementAttributes() throws Exception {
@@ -100,6 +113,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("psalm 83", htmlElement.getTitle(), "title");
     }
 
+    /**
+     * Writeable element attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void writeableElementAttributes() throws Exception {
         Element element = createElement("cite", new String[0][]);
@@ -120,6 +139,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("psalm 83", htmlElement.getTitle(), "title");
     }
 
+    /**
+     * Empty form defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void emptyFormDefaults() throws Exception {
         Element element = createElement("form", new String[][] { { "action", "go_here" } });
@@ -138,6 +163,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertNull(form.getTarget(), "default target is not null");
     }
 
+    /**
+     * Form attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formAttributes() throws Exception {
         Element element = createElement("form",
@@ -151,6 +182,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("green", form.getTarget(), "target");
     }
 
+    /**
+     * Writeable form attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void writeableFormAttributes() throws Exception {
         Element element = createElement("form", new String[][] { { "action", "go_here" } });
@@ -171,6 +208,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("green", form.getTarget(), "target");
     }
 
+    /**
+     * Title element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void titleElement() throws Exception {
         Element element = createElement("title");
@@ -192,6 +235,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("what it says now", title.getText(), "revised title");
     }
 
+    /**
+     * Empty title element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void emptyTitleElement() throws Exception {
         Element element = createElement("title");
@@ -210,6 +259,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         assertEquals("what it says now", title.getText(), "revised title");
     }
 
+    /**
+     * Html element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void htmlElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -217,6 +272,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Head element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void headElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -225,6 +286,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Link element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void linkElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -235,6 +302,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Meta element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void metaElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -243,6 +316,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Base element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void baseElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -251,6 +330,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Style elment.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void styleElment() throws Exception {
         assertDoesNotThrow(() -> {
@@ -259,6 +344,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Body element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void bodyElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -267,6 +358,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Option element attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void optionElementAttributes() throws Exception {
         assertDoesNotThrow(() -> {
@@ -275,6 +372,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Select element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void selectElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -284,6 +387,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Input element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inputElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -298,6 +407,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         // XXX blur, focus, select, click
     }
 
+    /**
+     * Button element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void buttonElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -310,6 +425,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         // XXX blur, focus, select, click
     }
 
+    /**
+     * Text area element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void textAreaElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -323,6 +444,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         // XXX blur, focus, select
     }
 
+    /**
+     * Anchor element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void anchorElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -333,6 +460,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Area element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void areaElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -343,6 +476,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Image element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -354,6 +493,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * Paragraph element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void paragraphElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -362,6 +507,12 @@ class HTMLElementTest extends AbstractHTMLElementTest {
         });
     }
 
+    /**
+     * I frame element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void iFrameElement() throws Exception {
         assertDoesNotThrow(() -> {
@@ -375,6 +526,7 @@ class HTMLElementTest extends AbstractHTMLElementTest {
      * codebase attribute in APPLET tag
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void appletElement() throws Exception {

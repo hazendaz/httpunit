@@ -80,8 +80,6 @@ public class NewScriptingTests extends AbstractJavaScriptTest {
      * by Grzegorz Lukasik
      * and bug report [ 1572117 ] ClassFormatError
      * by Walter Meier
-     *
-     * @author Wolfgang Fahl 2008-04-05
      */
     public void testLargeJavaScript() throws Exception {
         // create at least 64 KByte worth of Java script of the form

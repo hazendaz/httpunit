@@ -21,12 +21,10 @@ package com.meterware.httpunit.javascript.events;
 
 /**
  * Event operations may throw an EventException as specified in their method descriptions.
- *
- * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
- *
- * @version $Id$
  */
 public class EventException extends Exception {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
     /**
      * An integer indicating the type of error generated.
@@ -45,6 +43,8 @@ public class EventException extends Exception {
 
     /**
      * An integer indicating the type of error generated.
+     *
+     * @return the code
      */
     public short getCode() {
         return code;

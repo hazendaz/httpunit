@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,18 +23,25 @@ import java.util.Hashtable;
 
 /**
  * Describes a servlet used to handle JSPs.
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  **/
 public interface JSPServletDescriptor {
 
     /**
      * Returns the class name of the JSP servlet.
+     *
+     * @return the class name
      */
     String getClassName();
 
     /**
      * Returns initialization parameters for the JSP servlet, given the specified classpath and working directory.
+     *
+     * @param classPath
+     *            the class path
+     * @param workingDirectory
+     *            the working directory
+     *
+     * @return the initialization parameters
      */
     Hashtable getInitializationParameters(String classPath, String workingDirectory);
 

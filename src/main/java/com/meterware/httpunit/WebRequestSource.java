@@ -32,17 +32,18 @@ import org.xml.sax.SAXException;
 
 /**
  * Base class for objects which can be clicked to generate new web requests.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 public abstract class WebRequestSource extends ParameterHolder implements HTMLElement {
 
+    /** The frame. */
     private FrameSelector _frame;
 
     /**
      * The name of the destination attribute used to create for the request, including anchors and parameters. *
      */
     private String _destinationAttribute;
+
+    /** The scriptable. */
     private ScriptingHandler _scriptable;
 
     /**
@@ -79,6 +80,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the target for this request source.
+     *
+     * @return the target
      */
     public String getTarget() {
         if (getSpecifiedTarget().isEmpty()) {
@@ -90,6 +93,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Returns the name of the frame containing this request source.
      *
+     * @return the page frame
+     *
      * @deprecated as of 1.6, use #getFrame
      */
     @Deprecated
@@ -99,6 +104,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the frame containing this request source.
+     *
+     * @return the frame
      */
     public FrameSelector getFrame() {
         return _frame;
@@ -106,6 +113,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the fragment identifier for this request source, used to identifier an element within an HTML document.
+     *
+     * @return the fragment identifier
      */
     public String getFragmentIdentifier() {
         final int hashIndex = getDestination().indexOf('#');
@@ -117,6 +126,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns a copy of the domain object model subtree associated with this entity.
+     *
+     * @return the DOM subtree
      */
     public Node getDOMSubtree() {
         return _node.cloneNode( /* deep */true);
@@ -124,6 +135,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Creates and returns a web request from this request source.
+     *
+     * @return the request
      */
     public abstract WebRequest getRequest();
 
@@ -141,6 +154,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the URL relative to the current page which will handle the request.
+     *
+     * @return the relative page
      */
     String getRelativePage() {
         final String url = getRelativeURL();
@@ -155,7 +170,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     }
 
     /**
-     * get the relative URL for a weblink change spaces to %20
+     * get the relative URL for a weblink change spaces to %20.
      *
      * @return the relative URL as a string
      */
@@ -181,6 +196,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *            the URL on which to base all releative URL requests
      * @param attribute
      *            the attribute which defines the relative URL to which requests will be directed
+     * @param frame
+     *            the frame
+     * @param defaultTarget
+     *            the default target
      */
     WebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
             String defaultTarget) {
@@ -195,6 +214,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
         _defaultTarget = defaultTarget;
     }
 
+    /**
+     * Gets the base URL.
+     *
+     * @return the base URL
+     */
     protected URL getBaseURL() {
         return _baseURL;
     }
@@ -202,18 +226,26 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * get the Destination made public per FR 2836664 make WebRequestSource.getDestination() public by Dan Lipofsky
      *
-     * @return
+     * @return the destination
      */
     public String getDestination() {
         return getElement().getAttribute(_destinationAttribute);
     }
 
+    /**
+     * Sets the destination.
+     *
+     * @param destination
+     *            the new destination
+     */
     protected void setDestination(String destination) {
         getElement().setAttribute(_destinationAttribute, destination);
     }
 
     /**
      * Returns the actual DOM for this request source, not a copy.
+     *
+     * @return the element
      */
     protected Element getElement() {
         return (Element) _node;
@@ -221,6 +253,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the HTMLPage associated with this request source.
+     *
+     * @return the HTML page
+     *
+     * @throws SAXException
+     *             the SAX exception
      */
     protected HTMLPage getHTMLPage() throws SAXException {
         return _baseResponse.getReceivedPage();
@@ -238,15 +275,19 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     }
 
     /**
-     * submit the given event for the given request
+     * submit the given event for the given request.
      *
      * @param event
+     *            the event
      * @param request
+     *            the request
      *
      * @return the response for the submitted Request
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     protected WebResponse submitRequest(String event, final WebRequest request) throws IOException, SAXException {
         WebResponse response = null;
@@ -291,16 +332,41 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
         return this.getScriptingHandler().handleEvent(eventName);
     }
 
+    /**
+     * Gets the current frame contents.
+     *
+     * @return the current frame contents
+     */
     protected WebResponse getCurrentFrameContents() {
         return getCurrentFrame(getBaseResponse().getWindow(), _frame);
     }
 
+    /**
+     * Gets the current frame.
+     *
+     * @param window
+     *            the window
+     * @param pageFrame
+     *            the page frame
+     *
+     * @return the current frame
+     */
     private WebResponse getCurrentFrame(WebWindow window, FrameSelector pageFrame) {
         return window.hasFrame(pageFrame) ? window.getFrameContents(pageFrame) : window.getCurrentPage();
     }
 
     /**
      * Submits a request to the web client from which this request source was originally obtained.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
         return getDestination().equals("#") ? _baseResponse : _baseResponse.getWindow().sendRequest(request);
@@ -308,6 +374,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Returns the web response containing this request source.
+     *
+     * @return the base response
      */
     protected final WebResponse getBaseResponse() {
         return _baseResponse;
@@ -316,6 +384,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     /**
      * Records a parameter defined by including it in the destination URL. The value can be null, if the parameter name
      * was not specified with an equals sign.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
      */
     abstract protected void addPresetParameter(String name, String value);
 
@@ -386,6 +459,16 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
         return _node.getNodeName();
     }
 
+    /**
+     * Gets the attribute.
+     *
+     * @param name
+     *            the name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the attribute
+     */
     String getAttribute(final String name, String defaultValue) {
         return NodeUtils.getNodeAttribute(_node, name, defaultValue);
     }
@@ -395,7 +478,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * parameter Delimiter for URL parameters bug report [ 1052037 ] Semicolon not supported as URL param delimiter asks
-     * for this to be extended to &;
+     * for this to be extended to &;.
      *
      * @see http://www.w3.org/TR/html4/appendix/notes.html#h-B.2 section B2.2
      */
@@ -415,16 +498,29 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     /** The DOM node representing this entity. * */
     private Node _node;
 
+    /**
+     * Gets the specified target.
+     *
+     * @return the specified target
+     */
     private String getSpecifiedTarget() {
         return getAttribute("target");
     }
 
+    /**
+     * Sets the target attribute.
+     *
+     * @param value
+     *            the new target attribute
+     */
     protected void setTargetAttribute(String value) {
         ((Element) _node).setAttribute("target", value);
     }
 
     /**
-     * Gets all parameters from a URL
+     * Gets all parameters from a URL.
+     *
+     * @return the parameters string
      */
     private String getParametersString() {
         String url = HttpUnitUtils.trimFragment(getDestination());
@@ -443,6 +539,9 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
 
     /**
      * Extracts a parameter of the form <name>[=[<value>]].
+     *
+     * @param param
+     *            the param
      */
     private void stripOneParameter(String param) {
         final int index = param.indexOf("=");
@@ -452,10 +551,23 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
         addPresetParameter(name, value);
     }
 
+    /**
+     * Decode.
+     *
+     * @param string
+     *            the string
+     *
+     * @return the string
+     */
     private String decode(String string) {
         return HttpUnitUtils.decode(string, _baseResponse.getCharacterSet()).trim();
     }
 
+    /**
+     * Gets the empty parameter value.
+     *
+     * @return the empty parameter value
+     */
     abstract protected String getEmptyParameterValue();
 
     /**

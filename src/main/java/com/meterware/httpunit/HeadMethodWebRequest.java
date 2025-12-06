@@ -21,27 +21,6 @@ package com.meterware.httpunit;
 
 import java.net.URL;
 
-/********************************************************************************************************************
- * $Id$
- *
- * Copyright (c) 2002-2008, Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
-
 /**
  * A web request using the HEAD method. This request is used to obtain header information for a resource without
  * necessarily waiting for the data to be computed or transmitted. RFC 2616
@@ -54,13 +33,11 @@ import java.net.URL;
  * used to update a previously cached entity from that resource. If the new field values indicate that the cached entity
  * differs from the current entity (as would be indicated by a change in Content-Length, Content-SHA-256, ETag or
  * Last-Modified), then the cache MUST treat the cache entry as stale.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class HeadMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
-     * initialize me - set method to HEAD
+     * initialize me - set method to HEAD.
      */
     private void init() {
         super.setMethod("HEAD");

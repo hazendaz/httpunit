@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -39,19 +39,30 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class DocumentImpl.
+ */
 public class DocumentImpl extends NodeImpl implements Document {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The document element. */
     protected Element _documentElement;
 
+    /**
+     * Creates the document.
+     *
+     * @return the document impl
+     */
     static DocumentImpl createDocument() {
         DocumentImpl document = new DocumentImpl();
         document.initialize();
         return document;
     }
 
+    /**
+     * Initialize.
+     */
     protected void initialize() {
     }
 
@@ -94,6 +105,12 @@ public class DocumentImpl extends NodeImpl implements Document {
         return _documentElement;
     }
 
+    /**
+     * Sets the document element.
+     *
+     * @param documentElement
+     *            the new document element
+     */
     void setDocumentElement(Element documentElement) {
         if (_documentElement != null) {
             throw new IllegalStateException("A document may have only one root");
@@ -197,10 +214,12 @@ public class DocumentImpl extends NodeImpl implements Document {
     }
 
     /**
-     * import the children
+     * import the children.
      *
      * @param original
+     *            the original
      * @param copy
+     *            the copy
      */
     void importChildren(Node original, Node copy) {
         NodeList children = original.getChildNodes();

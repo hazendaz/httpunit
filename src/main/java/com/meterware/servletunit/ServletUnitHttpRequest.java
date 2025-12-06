@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -37,10 +38,10 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -58,25 +59,60 @@ import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
 /**
- * This class represents a servlet request created from a WebRequest.
- **/
+ * The Class ServletUnitHttpRequest.
+ */
 class ServletUnitHttpRequest implements HttpServletRequest {
 
+    /** The input stream. */
     private ServletInputStreamImpl _inputStream;
-    private Vector _locales;
+
+    /** The locales. */
+    private List _locales;
+
+    /** The protocol. */
     private String _protocol;
+
+    /** The secure. */
     private boolean _secure;
+
+    /** The request context. */
     private RequestContext _requestContext;
+
+    /** The charset. */
     private String _charset;
+
+    /** The got reader. */
     private boolean _gotReader;
+
+    /** The got input stream. */
     private boolean _gotInputStream;
+
+    /** The reader. */
     private BufferedReader _reader;
+
+    /** The server port. */
     private int _serverPort;
+
+    /** The server name. */
     private String _serverName;
 
     /**
      * Constructs a ServletUnitHttpRequest from a WebRequest object.
-     **/
+     *
+     * @param servletRequest
+     *            the servlet request
+     * @param request
+     *            the request
+     * @param context
+     *            the context
+     * @param clientHeaders
+     *            the client headers
+     * @param messageBody
+     *            the message body
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
             Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {
         if (context == null) {
@@ -91,7 +127,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         _headers.addEntries(request.getHeaders());
         setCookiesFromHeader(_headers);
         _messageBody = messageBody;
-        _protocol = request.getURL().getProtocol().toLowerCase();
+        _protocol = request.getURL().getProtocol().toLowerCase(Locale.ENGLISH);
         _secure = _protocol.endsWith("s");
         _serverName = request.getURL().getHost();
         _serverPort = request.getURL().getPort();
@@ -150,9 +186,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         if (_cookies.size() == 0) {
             return null;
         }
-        Cookie[] result = new Cookie[_cookies.size()];
-        _cookies.copyInto(result);
-        return result;
+        return _cookies.toArray(new Cookie[0]);
     }
 
     /**
@@ -372,7 +406,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     }
 
     /**
-     * initialize the inputStream
+     * initialize the inputStream.
      */
     private void initializeInputStream() {
         if (_inputStream == null) {
@@ -485,10 +519,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns the body of the request as a <code>BufferedReader</code> that translates character set encodings.
      *
-     * @since [ 1221537 ] Patch: ServletUnitHttpRequest.getReader not implemented yet
-     *
-     * @author Tim - timmorrow (SourceForge)
-     *
      * @return the reader
      **/
     @Override
@@ -502,7 +532,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             if (encoding == null) {
                 encoding = StandardCharsets.ISO_8859_1.name();
             }
-            _reader = new BufferedReader(new InputStreamReader(_inputStream, encoding));
+            _reader = new BufferedReader(new InputStreamReader(_inputStream, Charset.forName(encoding)));
             _gotReader = true;
         }
         return _reader;
@@ -545,7 +575,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Locale getLocale() {
-        return (Locale) getPreferredLocales().firstElement();
+        return (Locale) getPreferredLocales().get(0);
     }
 
     /**
@@ -556,17 +586,17 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getLocales() {
-        return getPreferredLocales().elements();
+        return Collections.enumeration(getPreferredLocales());
     }
 
     /**
-     * Parses the accept-language header to obtain a vector of preferred locales
+     * Parses the accept-language header to obtain a list of preferred locales.
      *
      * @return the preferred locales, sorted by qvalue
      */
-    private Vector getPreferredLocales() {
+    private List getPreferredLocales() {
         if (_locales == null) {
-            _locales = new Vector<>();
+            _locales = new ArrayList<>();
             String languages = getHeader("accept-language");
             if (languages == null) {
                 _locales.add(Locale.getDefault());
@@ -616,6 +646,16 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * Combined path.
+     *
+     * @param basePath
+     *            the base path
+     * @param relativePath
+     *            the relative path
+     *
+     * @return the string
+     */
     private String combinedPath(String basePath, String relativePath) {
         if (basePath.indexOf('/') < 0) {
             return relativePath;
@@ -658,11 +698,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-        Vector list = new Vector<>();
+        List list = new ArrayList<>();
         if (_headers.containsKey(name)) {
             list.add(_headers.get(name));
         }
-        return list.elements();
+        return Collections.enumeration(list);
     }
 
     /**
@@ -681,8 +721,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the
      * request. For HTTP servlets, parameters are contained in the query string or posted form data.
-     *
-     * @since 1.3
      **/
     @Override
     public Map getParameterMap() {
@@ -692,8 +730,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     /**
      * Overrides the name of the character encoding used in the body of this request. This method must be called prior
      * to reading request parameters or reading input using getReader().
-     *
-     * @since 1.3
      **/
     @Override
     public void setCharacterEncoding(String charset) {
@@ -709,8 +745,6 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * number, and server path, but it does not include query string parameters. Because this method returns a
      * StringBuffer, not a string, you can modify the URL easily, for example, to append query parameters. This method
      * is useful for creating redirect messages and for reporting errors.
-     *
-     * @since 1.3
      */
     @Override
     public StringBuffer getRequestURL() {
@@ -752,23 +786,40 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- package members ----------------------------------------------
 
+    /**
+     * Adds the cookie.
+     *
+     * @param cookie
+     *            the cookie
+     */
     private void addCookie(Cookie cookie) {
-        _cookies.addElement(cookie);
+        _cookies.add(cookie);
         if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {
             _sessionID = cookie.getValue();
         }
     }
 
+    /**
+     * Gets the servlet session.
+     *
+     * @return the servlet session
+     */
     private ServletUnitHttpSession getServletSession() {
         return (ServletUnitHttpSession) getSession();
     }
 
+    /**
+     * Read form authentication.
+     */
     void readFormAuthentication() {
         if (getSession( /* create */ false) != null) {
             recordAuthenticationInfo(getServletSession().getUserName(), getServletSession().getRoles());
         }
     }
 
+    /**
+     * Read basic authentication.
+     */
     void readBasicAuthentication() {
         String authorizationHeader = (String) _headers.get("Authorization");
 
@@ -782,6 +833,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * To array.
+     *
+     * @param roleList
+     *            the role list
+     *
+     * @return the string[]
+     */
     static String[] toArray(String roleList) {
         StringTokenizer st = new StringTokenizer(roleList, ",");
         String[] result = new String[st.countTokens()];
@@ -791,6 +850,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         return result;
     }
 
+    /**
+     * Record authentication info.
+     *
+     * @param userName
+     *            the user name
+     * @param roles
+     *            the roles
+     */
     void recordAuthenticationInfo(String userName, String[] roles) {
         _userName = userName;
         _roles = roles;
@@ -798,25 +865,55 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     // --------------------------------------------- private members ----------------------------------------------
 
-    static final private String LOOPBACK_ADDRESS = "127.0.0.1";
+    /** The Constant LOOPBACK_ADDRESS. */
+    private static final String LOOPBACK_ADDRESS = "127.0.0.1";
 
+    /** The request. */
     private WebRequest _request;
+
+    /** The servlet request. */
     private ServletMetaData _servletRequest;
+
+    /** The headers. */
     private WebClient.HeaderDictionary _headers;
+
+    /** The context. */
     private ServletUnitContext _context;
+
+    /** The session. */
     private ServletUnitHttpSession _session;
+
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
-    private Vector _cookies = new Vector<>();
+
+    /** The cookies. */
+    private List<Cookie> _cookies = new ArrayList<>();
+
+    /** The session ID. */
     private String _sessionID;
+
+    /** The message body. */
     private byte[] _messageBody;
 
+    /** The user name. */
     private String _userName;
+
+    /** The roles. */
     private String[] _roles;
 
+    /**
+     * Throw not implemented yet.
+     */
     private void throwNotImplementedYet() {
         throw new RuntimeException("Not implemented yet");
     }
 
+    /**
+     * Sets the cookies from header.
+     *
+     * @param clientHeaders
+     *            the new cookies from header
+     */
     private void setCookiesFromHeader(Dictionary clientHeaders) {
         String cookieHeader = (String) clientHeaders.get("Cookie");
         if (cookieHeader == null) {
@@ -834,11 +931,23 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
     }
 
+    /**
+     * The Class PrioritizedLocale.
+     */
     static class PrioritizedLocale implements Comparable {
 
+        /** The locale. */
         private Locale _locale;
+
+        /** The priority. */
         private float _priority;
 
+        /**
+         * Instantiates a new prioritized locale.
+         *
+         * @param languageSpec
+         *            the language spec
+         */
         PrioritizedLocale(String languageSpec) {
             int semiIndex = languageSpec.indexOf(';');
             if (semiIndex < 0) {
@@ -850,6 +959,14 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             }
         }
 
+        /**
+         * Parses the locale.
+         *
+         * @param range
+         *            the range
+         *
+         * @return the locale
+         */
         private Locale parseLocale(String range) {
             range = range.trim();
             int dashIndex = range.indexOf('-');
@@ -859,6 +976,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));
         }
 
+        /**
+         * Gets the locale.
+         *
+         * @return the locale
+         */
         public Locale getLocale() {
             return _locale;
         }

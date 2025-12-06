@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -26,24 +26,35 @@ import java.util.List;
 /**
  * Factory for creating HTML parsers. Parser customization properties can be specified but do not necessarily work for
  * every parser type.
- *
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
  **/
 public abstract class HTMLParserFactory {
 
+    /** The listeners. */
     private static List<HTMLParserListener> _listeners = new ArrayList<>();
+
+    /** The jtidy parser. */
     private static HTMLParser _jtidyParser;
+
+    /** The neko parser. */
     private static HTMLParser _nekoParser;
 
+    /** The html parser. */
     private static HTMLParser _htmlParser;
+
+    /** The preserve tag case. */
     private static boolean _preserveTagCase;
+
+    /** The return HTML document. */
     private static boolean _returnHTMLDocument;
+
+    /** The parser warnings enabled. */
     private static boolean _parserWarningsEnabled;
+
+    /** The force upper. */
     // for parsers that support forcing Case
     private static boolean _forceUpper;
+
+    /** The force lower. */
     private static boolean _forceLower;
 
     /**
@@ -81,6 +92,9 @@ public abstract class HTMLParserFactory {
 
     /**
      * Specifies the parser to use.
+     *
+     * @param htmlParser
+     *            the new HTML parser
      */
     public static void setHTMLParser(HTMLParser htmlParser) {
         _htmlParser = htmlParser;
@@ -88,6 +102,8 @@ public abstract class HTMLParserFactory {
 
     /**
      * Returns the current selected parser.
+     *
+     * @return the HTML parser
      */
     public static HTMLParser getHTMLParser() {
         if (_htmlParser == null) {
@@ -105,6 +121,8 @@ public abstract class HTMLParserFactory {
 
     /**
      * Returns true if the current parser will preserve the case of HTML tags and attributes.
+     *
+     * @return true, if is preserve tag case
      */
     public static boolean isPreserveTagCase() {
         return _preserveTagCase && getHTMLParser().supportsPreserveTagCase();
@@ -114,6 +132,9 @@ public abstract class HTMLParserFactory {
      * Specifies whether the parser should preserve the case of HTML tags and attributes. Not every parser can support
      * this capability. Note that enabling this will disable support for the HTMLDocument class. override any previous
      * behaviour configured by calling {@link #setForceUpperCase(boolean)} or {@link #setForceLowerCase(boolean)}
+     *
+     * @param preserveTagCase
+     *            the new preserve tag case
      *
      * @see #setReturnHTMLDocument
      * @see #setForceUpperCase(boolean)
@@ -129,6 +150,8 @@ public abstract class HTMLParserFactory {
 
     /**
      * Returns true if the current parser will return an HTMLDocument object rather than a Document object.
+     *
+     * @return true, if is return HTML document
      */
     public static boolean isReturnHTMLDocument() {
         return _returnHTMLDocument && !isPreserveTagCase() && getHTMLParser().supportsReturnHTMLDocument();
@@ -138,6 +161,9 @@ public abstract class HTMLParserFactory {
      * Specifies whether the parser should return an HTMLDocument object rather than a Document object. Not every parser
      * can support this capability. Note that enabling this will disable preservation of tag case. and/or the forcing of
      * the tag case to upper or lower case.
+     *
+     * @param returnHTMLDocument
+     *            the new return HTML document
      *
      * @see #setPreserveTagCase
      * @see #setForceUpperCase(boolean)
@@ -158,12 +184,12 @@ public abstract class HTMLParserFactory {
      * any previous behaviour configured by enabling {@link #setPreserveTagCase(boolean)} or
      * {@link #setForceLowerCase(boolean)}
      *
+     * @param forceUpper
+     *            boolean indicating whether to enable this functionality
+     *
      * @see #setReturnHTMLDocument
      * @see #setPreserveTagCase(boolean)
      * @see #setForceLowerCase(boolean)
-     *
-     * @param forceUpper
-     *            boolean indicating whether to enable this functionality
      */
     public static void setForceUpperCase(boolean forceUpper) {
         _forceUpper = forceUpper;
@@ -175,7 +201,7 @@ public abstract class HTMLParserFactory {
     }
 
     /**
-     * Return true if the current parser will support forcing the tags and attributes to upper case
+     * Return true if the current parser will support forcing the tags and attributes to upper case.
      *
      * @return boolean flag
      */
@@ -189,12 +215,12 @@ public abstract class HTMLParserFactory {
      * any previous behaviour configured by enabling {@link #setPreserveTagCase(boolean)} or
      * {@link #setForceUpperCase(boolean)}
      *
+     * @param forceLower
+     *            boolean indicating whether to enable this functionality
+     *
      * @see #setReturnHTMLDocument
      * @see #setPreserveTagCase(boolean)
      * @see #setForceUpperCase(boolean)
-     *
-     * @param forceLower
-     *            boolean indicating whether to enable this functionality
      */
     public static void setForceLowerCase(boolean forceLower) {
         _forceLower = forceLower;
@@ -206,7 +232,7 @@ public abstract class HTMLParserFactory {
     }
 
     /**
-     * Return true if the current parser will support forcing the tags and attributes to lower case
+     * Return true if the current parser will support forcing the tags and attributes to lower case.
      *
      * @return boolean flag
      */
@@ -216,28 +242,39 @@ public abstract class HTMLParserFactory {
 
     /**
      * Returns true if parser warnings are enabled.
-     **/
+     *
+     * @return true, if is parser warnings enabled
+     */
     public static boolean isParserWarningsEnabled() {
         return _parserWarningsEnabled && getHTMLParser().supportsParserWarnings();
     }
 
     /**
      * If true, tells the parser to display warning messages. The default is false (warnings are not shown).
-     **/
+     *
+     * @param enabled
+     *            the new parser warnings enabled
+     */
     public static void setParserWarningsEnabled(boolean enabled) {
         _parserWarningsEnabled = enabled;
     }
 
     /**
      * Remove an HTML Parser listener.
-     **/
+     *
+     * @param el
+     *            the el
+     */
     public static void removeHTMLParserListener(HTMLParserListener el) {
         _listeners.remove(el);
     }
 
     /**
      * Add an HTML Parser listener.
-     **/
+     *
+     * @param el
+     *            the el
+     */
     public static void addHTMLParserListener(HTMLParserListener el) {
         _listeners.add(el);
     }
@@ -246,12 +283,24 @@ public abstract class HTMLParserFactory {
     // ------------------------------------------------------
 
     /**
-     * Get the list of Html Error Listeners
-     **/
+     * Get the list of Html Error Listeners.
+     *
+     * @return the HTML parser listeners
+     */
     static List<HTMLParserListener> getHTMLParserListeners() {
         return _listeners;
     }
 
+    /**
+     * Load parser if supported.
+     *
+     * @param testClassName
+     *            the test class name
+     * @param parserClassName
+     *            the parser class name
+     *
+     * @return the HTML parser
+     */
     private static HTMLParser loadParserIfSupported(final String testClassName, final String parserClassName) {
         try {
             Class.forName(testClassName);

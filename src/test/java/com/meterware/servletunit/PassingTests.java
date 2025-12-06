@@ -23,18 +23,27 @@ import org.junit.Ignore;
 
 import junit.framework.TestCase;
 
-/**
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
- */
 // XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
+/**
+ * The Class PassingTests.
+ */
 // nor any IDE
 @Ignore
 public class PassingTests extends TestCase {
 
+    /**
+     * Instantiates a new passing tests.
+     *
+     * @param s
+     *            the s
+     */
     public PassingTests(String s) {
         super(s);
     }
 
+    /**
+     * Test addition.
+     */
     public void testAddition() {
         assertEquals(2, 1 + 1);
     }

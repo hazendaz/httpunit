@@ -36,15 +36,18 @@ import java.io.PrintWriter;
 import java.net.URL;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLParserListenerTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class HTMLParserListenerTest extends HttpUnitTest {
 
+    /**
+     * Bad HTML page.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void badHTMLPage() throws Exception {
         defineResource("BadPage.html",
@@ -66,6 +69,12 @@ class HTMLParserListenerTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Good HTML page.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void goodHTMLPage() throws Exception {
         assertDoesNotThrow(() -> {
@@ -87,6 +96,12 @@ class HTMLParserListenerTest extends HttpUnitTest {
         });
     }
 
+    /**
+     * J tidy print writer parsing.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void jTidyPrintWriterParsing() throws Exception {
         assertDoesNotThrow(() -> {
@@ -101,9 +116,10 @@ class HTMLParserListenerTest extends HttpUnitTest {
     }
 
     /**
-     * test by Dan Lipofsky
+     * test by Dan Lipofsky.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void headMethodWebRequest2() throws Exception {
@@ -145,12 +161,26 @@ class HTMLParserListenerTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * The Class ErrorHandler.
+     */
     static private class ErrorHandler implements HTMLParserListener {
 
+        /** The expect problems. */
         private boolean _expectProblems;
+
+        /** The found problems. */
         private boolean _foundProblems;
+
+        /** The bad URL. */
         private URL _badURL;
 
+        /**
+         * Instantiates a new error handler.
+         *
+         * @param expectProblems
+         *            the expect problems
+         */
         public ErrorHandler(boolean expectProblems) {
             _expectProblems = expectProblems;
         }
@@ -168,10 +198,20 @@ class HTMLParserListenerTest extends HttpUnitTest {
             _badURL = url;
         }
 
+        /**
+         * Gets the bad URL.
+         *
+         * @return the bad URL
+         */
         public URL getBadURL() {
             return _badURL;
         }
 
+        /**
+         * Found problems.
+         *
+         * @return true, if successful
+         */
         public boolean foundProblems() {
             return _foundProblems;
         }

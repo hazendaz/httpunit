@@ -27,11 +27,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLOptionElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLOptionElementImpl.
+ */
 public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The selected. */
     private Boolean _selected;
 
     @Override
@@ -39,43 +42,92 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         return new HTMLOptionElementImpl();
     }
 
+    /**
+     * Gets the default selected.
+     *
+     * @return the default selected
+     */
     @Override
     public boolean getDefaultSelected() {
         return getBooleanAttribute("selected");
     }
 
+    /**
+     * Gets the index.
+     *
+     * @return the index
+     */
     @Override
     public int getIndex() {
         return getSelect().getIndexOf(this);
     }
 
+    /**
+     * Sets the index.
+     *
+     * @param i
+     *            the new index
+     */
     public void setIndex(int i) {
     } // obsolete - required for compatibility with JDK 1.3
 
+    /**
+     * Gets the label.
+     *
+     * @return the label
+     */
     @Override
     public String getLabel() {
         return getAttributeWithNoDefault("label");
     }
 
+    /**
+     * Gets the selected.
+     *
+     * @return the selected
+     */
     @Override
     public boolean getSelected() {
         return _selected != null ? _selected.booleanValue() : getDefaultSelected();
     }
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Override
     public String getText() {
         return asText();
     }
 
+    /**
+     * Sets the default selected.
+     *
+     * @param defaultSelected
+     *            the new default selected
+     */
     @Override
     public void setDefaultSelected(boolean defaultSelected) {
     }
 
+    /**
+     * Sets the label.
+     *
+     * @param label
+     *            the new label
+     */
     @Override
     public void setLabel(String label) {
         setAttribute("label", label);
     }
 
+    /**
+     * Sets the selected.
+     *
+     * @param selected
+     *            the new selected
+     */
     public void setSelected(boolean selected) {
         if (selected && getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {
             getSelect().clearSelected();
@@ -83,6 +135,11 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         _selected = selected ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    /**
+     * Gets the select.
+     *
+     * @return the select
+     */
     private HTMLSelectElementImpl getSelect() {
         Node parent = getParentNode();
         while (parent != null && !"select".equalsIgnoreCase(parent.getNodeName())) {
@@ -91,11 +148,22 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         return (HTMLSelectElementImpl) parent;
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     @Override
     public String getValue() {
         return getAttributeWithNoDefault("value");
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
     @Override
     public void setValue(String value) {
         setAttribute("value", value);
@@ -106,6 +174,19 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         _selected = null;
     }
 
+    /**
+     * Adds the value if selected.
+     *
+     * @param processor
+     *            the processor
+     * @param name
+     *            the name
+     * @param characterSet
+     *            the character set
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void addValueIfSelected(ParameterProcessor processor, String name, String characterSet) throws IOException {
         if (getSelected()) {
             String value = getValue();
@@ -116,6 +197,11 @@ public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElem
         }
     }
 
+    /**
+     * Read displayed value.
+     *
+     * @return the string
+     */
     private String readDisplayedValue() {
         Node nextSibling = getNextSibling();
         while (nextSibling != null && nextSibling.getNodeType() != Node.TEXT_NODE

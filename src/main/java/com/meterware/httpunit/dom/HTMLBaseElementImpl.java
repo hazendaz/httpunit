@@ -22,10 +22,11 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLBaseElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLBaseElementImpl.
+ */
 public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -33,21 +34,43 @@ public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElem
         return new HTMLBaseElementImpl();
     }
 
+    /**
+     * Gets the href.
+     *
+     * @return the href
+     */
     @Override
     public String getHref() {
         return getAttributeWithNoDefault("href");
     }
 
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
     @Override
     public String getTarget() {
         return getAttributeWithNoDefault("target");
     }
 
+    /**
+     * Sets the href.
+     *
+     * @param href
+     *            the new href
+     */
     @Override
     public void setHref(String href) {
         setAttribute("href", href);
     }
 
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
     @Override
     public void setTarget(String target) {
         setAttribute("target", target);

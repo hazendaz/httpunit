@@ -24,29 +24,31 @@ import java.net.URL;
 
 /**
  * This exception is thrown when the desired URL is not found.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpNotFoundException extends HttpException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * construct a HttpNotFoundException (404 Error)
+     * construct a HttpNotFoundException (404 Error).
      *
      * @param responseMessage
+     *            the response message
      * @param baseURL
+     *            the base URL
      */
     public HttpNotFoundException(String responseMessage, URL baseURL) {
         super(HttpURLConnection.HTTP_NOT_FOUND, responseMessage, baseURL);
     }
 
     /**
-     * construct a HttpNotFoundException (404 Error)
+     * construct a HttpNotFoundException (404 Error).
      *
      * @param url
+     *            the url
      * @param t
+     *            the t
      */
     public HttpNotFoundException(URL url, Throwable t) {
         this(t.toString(), url);

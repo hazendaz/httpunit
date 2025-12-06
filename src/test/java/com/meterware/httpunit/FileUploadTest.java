@@ -28,16 +28,18 @@ import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.StringTokenizer;
 
 import javax.activation.DataSource;
@@ -46,15 +48,18 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the file upload simulation capability.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class FileUploadTest extends HttpUnitTest {
 
+    /**
+     * Parameters multipart encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void parametersMultipartEncoding() throws Exception {
         defineResource("ListParams", new MimeEcho());
@@ -71,6 +76,12 @@ class FileUploadTest extends HttpUnitTest {
                 "http://dummy?" + encoding.getText().trim());
     }
 
+    /**
+     * File parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileParameterValidation() throws Exception {
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
@@ -87,9 +98,15 @@ class FileUploadTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Non file parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nonFileParameterValidation() throws Exception {
-        File file = new File("temp.html");
+        Path file = Path.of("temp.html");
 
         defineWebPage("Default", "<form method=POST action = \"ListParams\" enctype=\"multipart/form-data\"> "
                 + "<Input type=text name=message>" + "<Input type=submit name=update value=age>" + "</form>");
@@ -99,15 +116,21 @@ class FileUploadTest extends HttpUnitTest {
         WebRequest formSubmit = simplePage.getForms()[0].getRequest();
 
         try {
-            formSubmit.selectFile("message", file);
+            formSubmit.selectFile("message", file.toFile());
             fail("Should not allow setting of a text parameter to a file value");
         } catch (IllegalRequestParameterException e) {
         }
     }
 
+    /**
+     * Url encoding file parameter validation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void urlEncodingFileParameterValidation() throws Exception {
-        File file = new File("temp.html");
+        Path file = Path.of("temp.html");
 
         defineWebPage("Default", "<form method=POST action = \"ListParams\"> " + "<Input type=file name=message>"
                 + "<Input type=submit name=update value=age>" + "</form>");
@@ -117,16 +140,22 @@ class FileUploadTest extends HttpUnitTest {
         WebRequest formSubmit = simplePage.getForms()[0].getRequest();
 
         try {
-            formSubmit.selectFile("message", file);
+            formSubmit.selectFile("message", file.toFile());
             fail("Should not allow setting of a file parameter in a form which specifies url-encoding");
         } catch (IllegalRequestParameterException e) {
         }
     }
 
+    /**
+     * File multipart encoding.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileMultipartEncoding() throws Exception {
-        File file = new File("temp.txt");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.txt");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("Not much text");
         pw.println("But two lines");
@@ -139,22 +168,23 @@ class FileUploadTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/Default.html");
         WebResponse simplePage = wc.getResponse(request);
         WebRequest formSubmit = simplePage.getForms()[0].getRequest();
-        formSubmit.selectFile("message", file);
+        formSubmit.selectFile("message", file.toFile());
         WebResponse encoding = wc.getResponse(formSubmit);
         assertEquals("text/plain:message.name=temp.txt&message.lines=2&update=age", encoding.getText().trim());
 
-        file.delete();
+        file.toFile().delete();
     }
 
     /**
      * new test for BR 2822957 https://sourceforge.net/tracker/?func=detail&aid=2822957&group_id=6550&atid=106550
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void removeFileParameter() throws Exception {
-        File file = new File("temp.txt");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.txt");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("Not much text");
         pw.println("But two lines");
@@ -166,23 +196,29 @@ class FileUploadTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/Default.html");
         WebResponse simplePage = wc.getResponse(request);
         WebForm formSubmit = simplePage.getForms()[0];
-        formSubmit.setParameter("message", file);
+        formSubmit.setParameter("message", file.toFile());
         formSubmit.removeParameter("message");
 
-        file.delete();
+        file.toFile().delete();
     }
 
+    /**
+     * Multi file submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multiFileSubmit() throws Exception {
-        File file = new File("temp.txt");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.txt");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("Not much text");
         pw.println("But two lines");
         pw.close();
 
-        File file2 = new File("temp2.txt");
-        fw = new FileWriter(file2);
+        Path file2 = Path.of("temp2.txt");
+        fw = Files.newBufferedWriter(file2);
         pw = new PrintWriter(fw);
         pw.println("Even less text on one line");
         pw.close();
@@ -196,28 +232,34 @@ class FileUploadTest extends HttpUnitTest {
         WebRequest request = new GetMethodWebRequest(getHostPath() + "/Default.html");
         WebResponse simplePage = wc.getResponse(request);
         WebRequest formSubmit = simplePage.getForms()[0].getRequest();
-        formSubmit.setParameter("message",
-                new UploadFileSpec[] { new UploadFileSpec(file), new UploadFileSpec(file2, "text/more") });
+        formSubmit.setParameter("message", new UploadFileSpec[] { new UploadFileSpec(file.toFile()),
+                new UploadFileSpec(file2.toFile(), "text/more") });
         WebResponse encoding = wc.getResponse(formSubmit);
         assertEquals(
                 "text/plain:message.name=temp.txt&message.lines=2&text/more:message.name=temp2.txt&message.lines=1&update=age",
                 encoding.getText().trim());
 
-        file.delete();
-        file2.delete();
+        file.toFile().delete();
+        file2.toFile().delete();
     }
 
+    /**
+     * Illegal multi file submit.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void illegalMultiFileSubmit() throws Exception {
-        File file = new File("temp.txt");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.txt");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("Not much text");
         pw.println("But two lines");
         pw.close();
 
-        File file2 = new File("temp2.txt");
-        fw = new FileWriter(file2);
+        Path file2 = Path.of("temp2.txt");
+        fw = Files.newBufferedWriter(file2);
         pw = new PrintWriter(fw);
         pw.println("Even less text on one line");
         pw.close();
@@ -230,16 +272,22 @@ class FileUploadTest extends HttpUnitTest {
         WebResponse simplePage = wc.getResponse(request);
         WebRequest formSubmit = simplePage.getForms()[0].getRequest();
         try {
-            formSubmit.setParameter("message",
-                    new UploadFileSpec[] { new UploadFileSpec(file), new UploadFileSpec(file2, "text/more") });
+            formSubmit.setParameter("message", new UploadFileSpec[] { new UploadFileSpec(file.toFile()),
+                    new UploadFileSpec(file2.toFile(), "text/more") });
             fail("Permitted two files on a single file parameter");
         } catch (IllegalRequestParameterException e) {
         }
 
-        file.delete();
-        file2.delete();
+        file.toFile().delete();
+        file2.toFile().delete();
     }
 
+    /**
+     * Input stream as file.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inputStreamAsFile() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
@@ -257,6 +305,12 @@ class FileUploadTest extends HttpUnitTest {
         assertEquals("text/plain:message.name=temp.txt&message.lines=2&update=age", encoding.getText().trim());
     }
 
+    /**
+     * File upload without form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void fileUploadWithoutForm() throws Exception {
         ByteArrayInputStream bais = new ByteArrayInputStream(
@@ -272,10 +326,17 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * test the file content type for a given file
+     * test the file content type for a given file.
      *
      * @param file
+     *            the file
+     * @param contentType
+     *            the content type
      * @param expected
+     *            the expected
+     *
+     * @throws Exception
+     *             the exception
      */
     protected void doTestFileContentType(File file, String contentType, String expected) throws Exception {
         defineResource("ListParams", new MimeEcho());
@@ -297,29 +358,31 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * create a file from the given byte contents
+     * create a file from the given byte contents.
      *
      * @param name
      *            - the name of the file
      * @param content
      *            - the bytes to use as content
      *
-     * @return
+     * @return the file
      *
      * @throws Exception
+     *             the exception
      */
     private File createFile(String name, byte[] content) throws Exception {
-        File file = new File(name);
-        FileOutputStream fos = new FileOutputStream(file);
+        Path file = Path.of(name);
+        OutputStream fos = Files.newOutputStream(file);
         fos.write(content, 0, content.length);
         fos.close();
-        return file;
+        return file.toFile();
     }
 
     /**
      * test the file content type for several file types e.g. a gif image modified for patch 1415415
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void fileContentType() throws Exception {
@@ -349,6 +412,7 @@ class FileUploadTest extends HttpUnitTest {
      * test the file content type for some ".new" file
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void specifiedFileContentType() throws Exception {
@@ -357,9 +421,10 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * test submitting a file by Martin Burchell, Aptivate for BR 2034998
+     * test submitting a file by Martin Burchell, Aptivate for BR 2034998.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void submitFile() throws Exception {
@@ -373,17 +438,17 @@ class FileUploadTest extends HttpUnitTest {
         WebForm form = simplePage.getForms()[0];
         assertNotNull(form);
 
-        File file = new File("temp.txt");
-        FileWriter fw = new FileWriter(file);
+        Path file = Path.of("temp.txt");
+        BufferedWriter fw = Files.newBufferedWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         pw.println("Not much text");
         pw.println("But two lines");
         pw.close();
 
-        form.setParameter("message", new UploadFileSpec[] { new UploadFileSpec(file) });
+        form.setParameter("message", new UploadFileSpec[] { new UploadFileSpec(file.toFile()) });
         form.submit();
 
-        file.delete();
+        file.toFile().delete();
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,17 +22,42 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLCollection;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Interface HTMLContainerElement.
  */
 public interface HTMLContainerElement {
 
+    /**
+     * Gets the links.
+     *
+     * @return the links
+     */
     HTMLCollection getLinks();
 
+    /**
+     * Gets the images.
+     *
+     * @return the images
+     */
     HTMLCollection getImages();
 
+    /**
+     * Gets the applets.
+     *
+     * @return the applets
+     */
     HTMLCollection getApplets();
 
+    /**
+     * Gets the forms.
+     *
+     * @return the forms
+     */
     HTMLCollection getForms();
 
+    /**
+     * Gets the anchors.
+     *
+     * @return the anchors
+     */
     HTMLCollection getAnchors();
 }

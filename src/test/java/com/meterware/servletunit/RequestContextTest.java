@@ -51,13 +51,15 @@ import javax.servlet.http.Part;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
+ * The Class RequestContextTest.
  */
-
 class RequestContextTest extends HttpUnitTest {
 
     /**
      * Verify parsing of a query string.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void queryStringParsing() throws Exception {
@@ -69,6 +71,9 @@ class RequestContextTest extends HttpUnitTest {
 
     /**
      * Verify override of parent request parameters.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void parameterOverride() throws Exception {
@@ -83,6 +88,9 @@ class RequestContextTest extends HttpUnitTest {
 
     /**
      * Verify parsing of message body parameters.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void postParameterParsing() throws Exception {
@@ -95,6 +103,9 @@ class RequestContextTest extends HttpUnitTest {
 
     /**
      * Verify parsing of message body parameters using a specified character encoding.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void encodedParameterParsing() throws Exception {
@@ -108,10 +119,20 @@ class RequestContextTest extends HttpUnitTest {
         assertEquals(hebrewValue, ((String[]) rc.getParameterMap().get("param1"))[0], "param1 value");
     }
 
+    /**
+     * The Class DummyHttpServletRequest.
+     */
     class DummyHttpServletRequest implements HttpServletRequest {
 
+        /** The request context. */
         private RequestContext _requestContext;
 
+        /**
+         * Instantiates a new dummy http servlet request.
+         *
+         * @param requestURL
+         *            the request URL
+         */
         public DummyHttpServletRequest(URL requestURL) {
             _requestContext = new RequestContext(requestURL);
         }

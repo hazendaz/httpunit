@@ -40,18 +40,37 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class NodeTest.
  */
 class NodeTest {
 
+    /** The document. */
     private DocumentImpl _document;
+
+    /** The element. */
     private Element _element;
+
+    /** The foo 1. */
     private Element _foo1;
+
+    /** The foo 2. */
     private Element _foo2;
+
+    /** The bar 1. */
     private Element _bar1;
+
+    /** The bar 2. */
     private Element _bar2;
+
+    /** The text. */
     private Text _text;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
@@ -71,6 +90,9 @@ class NodeTest {
 
     /**
      * Verifies that we can create a document and verify its type.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void documentCreation() throws Exception {
@@ -85,6 +107,9 @@ class NodeTest {
 
     /**
      * Verifies that we can create an element with a given name and verify its type.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void elementCreation() throws Exception {
@@ -100,6 +125,9 @@ class NodeTest {
 
     /**
      * Verifies that we can create a text node and verify its type.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void textCreation() throws Exception {
@@ -116,6 +144,9 @@ class NodeTest {
 
     /**
      * Verifies that we can create a document type node and verify its type.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled
@@ -134,6 +165,9 @@ class NodeTest {
 
     /**
      * Verifies that node accessors work for empty documents.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void emptyDocument() throws Exception {
@@ -149,6 +183,9 @@ class NodeTest {
 
     /**
      * Verifies that we can add children to an element (or document) and find them.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void addNodeChildren() throws Exception {
@@ -165,6 +202,9 @@ class NodeTest {
 
     /**
      * Verifies that we can add children to an element or document and find them.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void elementChildrenByTagName() throws Exception {
@@ -182,6 +222,9 @@ class NodeTest {
 
     /**
      * Verifies that only children of a particular document may be added to its children.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void nodeCreatedByOtherDocument() throws Exception {
@@ -197,7 +240,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that a document can have only one 'document element'
+     * Verifies that a document can have only one 'document element'.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void uniqueDocumentElement() throws Exception {
@@ -210,7 +256,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that text nodes cannot have children
+     * Verifies that text nodes cannot have children.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void noChildrenForTextNodes() throws Exception {
@@ -224,7 +273,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that a node or one of its ancestors may not be added as its child
+     * Verifies that a node or one of its ancestors may not be added as its child.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void rejectAddSelfOrAncestorAsChild() throws Exception {
@@ -244,6 +296,9 @@ class NodeTest {
 
     /**
      * Verifies that we can insert a child node at a specific position.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void insertChild() throws Exception {
@@ -257,6 +312,9 @@ class NodeTest {
     /**
      * Verifies that we cannot insert a child at a target by specifying a node which is not already a child of that
      * target.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void insertChildWithBadPredecessor() throws Exception {
@@ -274,6 +332,9 @@ class NodeTest {
 
     /**
      * Verifies that we can remove a child node from the document.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void removeChildFromEnd() throws Exception {
@@ -281,12 +342,24 @@ class NodeTest {
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[] { _bar1, _text });
     }
 
+    /**
+     * Removes the child from beginning.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void removeChildFromBeginning() throws Exception {
         _foo1.removeChild(_bar1);
         verifyNodeList("foo1 child", _foo1.getChildNodes(), new Node[] { _text, _foo2 });
     }
 
+    /**
+     * Removes the child from middle.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void removeChildFromMiddle() throws Exception {
         _foo1.removeChild(_text);
@@ -295,6 +368,9 @@ class NodeTest {
 
     /**
      * Verifies that an exception is thrown if we try to remove a node which is not a child.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void removeChildFromWrongParent() throws Exception {
@@ -307,7 +383,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that we can replace children (including those already elsewhere in the tree)
+     * Verifies that we can replace children (including those already elsewhere in the tree).
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void replaceChild() throws Exception {
@@ -318,7 +397,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that we can clone nodes
+     * Verifies that we can clone nodes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void cloneNode() throws Exception {
@@ -337,7 +419,10 @@ class NodeTest {
     }
 
     /**
-     * Verifies that we can iterate through nodes in order
+     * Verifies that we can iterate through nodes in order.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void preOrderIterator() throws Exception {
@@ -352,6 +437,9 @@ class NodeTest {
 
     /**
      * Verifies that we can iterate through nodes in order, starting from a specific node.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void preOrderIteratorFromANode() throws Exception {
@@ -366,6 +454,9 @@ class NodeTest {
 
     /**
      * Verifies that we can iterate through nodes in order, starting after a specific node.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void preOrderIteratorAfterANode() throws Exception {
@@ -380,6 +471,9 @@ class NodeTest {
 
     /**
      * Verifies that we can iterate through nodes in order, starting after a specific node.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void preOrderIteratorWithinNode() throws Exception {
@@ -395,6 +489,9 @@ class NodeTest {
 
     /**
      * Verifies that we can iterate through nodes in order skipping a specified subtree.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void preOrderIteratorWithMask() throws Exception {
@@ -407,6 +504,16 @@ class NodeTest {
         assertFalse(each.hasNext(), "Iterator should have terminated after " + expectedNodes.length + " nodes");
     }
 
+    /**
+     * Verify node list.
+     *
+     * @param comment
+     *            the comment
+     * @param nl
+     *            the nl
+     * @param expectedNodes
+     *            the expected nodes
+     */
     private void verifyNodeList(String comment, NodeList nl, Node[] expectedNodes) {
         assertNotNull(nl, "No " + comment + " node list returned");
         assertEquals(expectedNodes.length, nl.getLength(), "Number of " + comment + " nodes found");

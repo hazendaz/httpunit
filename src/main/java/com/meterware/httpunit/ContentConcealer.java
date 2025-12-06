@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,8 +21,6 @@ package com.meterware.httpunit;
 
 /**
  * This is a marker interface implemented by HTMLElement classes which hide their content.
- *
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
  **/
 interface ContentConcealer {
 

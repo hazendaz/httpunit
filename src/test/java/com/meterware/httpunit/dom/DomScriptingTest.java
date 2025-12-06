@@ -35,17 +35,29 @@ import org.w3c.dom.html.HTMLBodyElement;
 
 /**
  * Tests basic scripting via the DOM.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 class DomScriptingTest extends AbstractHTMLElementTest {
 
+    /**
+     * Gets the document.
+     *
+     * @return the document
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getDocument() throws Exception {
         Element element = createElement("body");
         assertEquals(_htmlDocument, ((Scriptable) element).get("document", null), "Returned document");
     }
 
+    /**
+     * Document get title.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentGetTitle() throws Exception {
         _htmlDocument.setTitle("something");
@@ -55,6 +67,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertEquals("something", evaluateExpression(body, "document.title"), "title");
     }
 
+    /**
+     * Document put title.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentPutTitle() throws Exception {
         _htmlDocument.put("title", _htmlDocument, "right here");
@@ -68,6 +86,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     // todo test document.write, document.writeln - window must override getDocumentWriteBuffer,
     // discardDocumentWriteBuffer(?)
 
+    /**
+     * Element put title.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void elementPutTitle() throws Exception {
         HTMLBodyElement body = (HTMLBodyElement) createElement("body");
@@ -80,6 +104,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertEquals("new value", body.getTitle(), "title after script");
     }
 
+    /**
+     * Body attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void bodyAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
@@ -91,6 +121,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertEquals("blue", body.getId(), "revised foreground color");
     }
 
+    /**
+     * Numeric attributes.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void numericAttributes() throws Exception {
         HTMLBodyElement body = addBodyElement();
@@ -104,12 +140,23 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertEquals(6, anchor.getTabIndex(), "revised tab index");
     }
 
+    /**
+     * Adds the body element.
+     *
+     * @return the HTML body element
+     */
     private HTMLBodyElement addBodyElement() {
         HTMLBodyElement body = (HTMLBodyElement) createElement("body");
         _htmlDocument.setBody(body);
         return body;
     }
 
+    /**
+     * Creates the element.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void createElement() throws Exception {
         Object node = evaluateExpression(_htmlDocument, "createElement( 'a' )");
@@ -117,6 +164,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertTrue(node instanceof HTMLAnchorElement, "Node is not an anchor element");
     }
 
+    /**
+     * Document links collection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void documentLinksCollection() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
@@ -135,6 +188,16 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertEquals("http://localhost/red.html", evaluateExpression(_htmlDocument, "links.red.href"), "red link href");
     }
 
+    /**
+     * Append link.
+     *
+     * @param body
+     *            the body
+     * @param id
+     *            the id
+     * @param href
+     *            the href
+     */
     private void appendLink(HTMLBodyElement body, String id, String href) {
         HTMLAnchorElement anchor1 = (HTMLAnchorElement) createElement("a");
         anchor1.setId(id);
@@ -142,6 +205,12 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         body.appendChild(anchor1);
     }
 
+    /**
+     * Convertable.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void convertable() throws Exception {
         assertConvertable(String.class, String.class);
@@ -152,11 +221,29 @@ class DomScriptingTest extends AbstractHTMLElementTest {
         assertConvertable(Byte.class, int.class);
     }
 
+    /**
+     * Assert convertable.
+     *
+     * @param valueType
+     *            the value type
+     * @param parameterType
+     *            the parameter type
+     */
     private void assertConvertable(Class valueType, Class parameterType) {
         assertTrue(ScriptingSupport.isConvertableTo(valueType, parameterType),
                 valueType.getName() + " should be convertable to " + parameterType.getName());
     }
 
+    /**
+     * Evaluate expression.
+     *
+     * @param node
+     *            the node
+     * @param expression
+     *            the expression
+     *
+     * @return the object
+     */
     private Object evaluateExpression(Node node, String expression) {
         try {
             Context context = Context.enter();

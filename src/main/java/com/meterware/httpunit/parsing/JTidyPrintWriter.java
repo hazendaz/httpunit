@@ -30,9 +30,6 @@ import java.util.StringTokenizer;
 /**
  * Basic "parser" for the JTidy error output. Will get the line and column number as well as the message. It assumes
  * that an error or warning is to be logged once println() has been called or if a string starts with "line"
- *
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- * @author <a href="mailto:proyal@managingpartners.com">Peter Royal</a>
  **/
 class JTidyPrintWriter extends PrintWriter {
     /**
@@ -41,6 +38,12 @@ class JTidyPrintWriter extends PrintWriter {
      */
     private static final NumberFormat INTEGER_FORMAT = DecimalFormat.getNumberInstance();
 
+    /**
+     * Instantiates a new j tidy print writer.
+     *
+     * @param pageURL
+     *            the page URL
+     */
     JTidyPrintWriter(URL pageURL) {
         super(System.out);
         _url = pageURL;
@@ -118,6 +121,14 @@ class JTidyPrintWriter extends PrintWriter {
         }
     }
 
+    /**
+     * Parses the integer.
+     *
+     * @param integer
+     *            the integer
+     *
+     * @return the int
+     */
     private int parseInteger(String integer) {
         try {
             return INTEGER_FORMAT.parse(integer).intValue();
@@ -190,11 +201,22 @@ class JTidyPrintWriter extends PrintWriter {
     // ----------------------------------------------- private members
     // ------------------------------------------------------
 
+    /** The line. */
     private int _line = -1;
+
+    /** The column. */
     private int _column = -1;
+
+    /** The msg. */
     private String _msg = "";
+
+    /** The error. */
     private boolean _error = false;
+
+    /** The logged. */
     private boolean _logged = false;
+
+    /** The url. */
     private URL _url;
 
     /**
@@ -213,6 +235,16 @@ class JTidyPrintWriter extends PrintWriter {
         _msg = "";
     }
 
+    /**
+     * Report error.
+     *
+     * @param msg
+     *            the msg
+     * @param line
+     *            the line
+     * @param column
+     *            the column
+     */
     private void reportError(String msg, int line, int column) {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {
@@ -220,6 +252,16 @@ class JTidyPrintWriter extends PrintWriter {
         }
     }
 
+    /**
+     * Report warning.
+     *
+     * @param msg
+     *            the msg
+     * @param line
+     *            the line
+     * @param column
+     *            the column
+     */
     private void reportWarning(String msg, int line, int column) {
         List<HTMLParserListener> listeners = HTMLParserFactory.getHTMLParserListeners();
         for (HTMLParserListener listener : listeners) {

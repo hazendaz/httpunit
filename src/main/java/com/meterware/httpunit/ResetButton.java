@@ -23,8 +23,6 @@ import com.meterware.httpunit.dom.HTMLControl;
 
 /**
  * Represents a form 'reset' button.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class ResetButton extends Button {
 
@@ -33,6 +31,14 @@ public class ResetButton extends Button {
         return RESET_BUTTON_TYPE;
     }
 
+    /**
+     * Instantiates a new reset button.
+     *
+     * @param form
+     *            the form
+     * @param control
+     *            the control
+     */
     ResetButton(WebForm form, HTMLControl control) {
         super(form, control);
     }

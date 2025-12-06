@@ -23,20 +23,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * Tests to ensure the proper handling of the target attribute.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class RequestTargetTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
     }
 
+    /**
+     * Default link target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\">simple link</a>.");
@@ -50,6 +59,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals(WebRequest.TOP_FRAME, link.getTarget(), "default link target");
     }
 
+    /**
+     * Explicit link target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void explicitLinkTarget() throws Exception {
         defineWebPage("Initial", "Here is a <a href=\"SimpleLink.html\" target=\"subframe\">simple link</a>.");
@@ -59,6 +74,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", link.getRequest().getTarget(), "request target");
     }
 
+    /**
+     * Inherited link target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inheritedLinkTarget() throws Exception {
         defineResource("Start.html", "<HTML><HEAD><TITLE>Initial</TITLE></HEAD>" + "<FRAMESET cols=\"50%,50%\">"
@@ -77,6 +98,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("blue", link.getTarget(), "inherited link target");
     }
 
+    /**
+     * Inherited link target in table.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inheritedLinkTargetInTable() throws Exception {
         defineResource("Start.html",
@@ -99,6 +126,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", link.getTarget(), "inherited link target");
     }
 
+    /**
+     * Default form target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void defaultFormTarget() throws Exception {
         defineWebPage("Initial",
@@ -112,6 +145,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals(WebRequest.TOP_FRAME, form.getTarget(), "default form target");
     }
 
+    /**
+     * Explicit post form target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void explicitPostFormTarget() throws Exception {
         defineWebPage("Initial",
@@ -124,6 +163,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", form.getRequest().getTarget(), "request target");
     }
 
+    /**
+     * Explicit get form target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void explicitGetFormTarget() throws Exception {
         defineWebPage("Initial",
@@ -136,6 +181,12 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", form.getRequest().getTarget(), "request target");
     }
 
+    /**
+     * Inherited form target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void inheritedFormTarget() throws Exception {
         defineResource("Start.html",
@@ -158,5 +209,6 @@ class RequestTargetTest extends HttpUnitTest {
         assertEquals("subframe", form.getTarget(), "inherited form target");
     }
 
+    /** The wc. */
     private WebConversation _wc;
 }

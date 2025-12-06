@@ -24,12 +24,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class TextImpl.
+ */
 public class TextImpl extends CharacterDataImpl implements Text {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the text.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     *
+     * @return the text impl
+     */
     static TextImpl createText(DocumentImpl ownerDocument, String data) {
         TextImpl text = new TextImpl();
         text.initialize(ownerDocument, data);
@@ -66,6 +77,16 @@ public class TextImpl extends CharacterDataImpl implements Text {
         return null;
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param text
+     *            the text
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, Text text) {
         return document.createTextNode(text.getData());
     }

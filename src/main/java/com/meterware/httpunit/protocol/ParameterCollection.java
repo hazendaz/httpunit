@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -22,12 +22,18 @@ package com.meterware.httpunit.protocol;
 import java.io.IOException;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Interface ParameterCollection.
  */
 public interface ParameterCollection {
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
-     **/
+     *
+     * @param processor
+     *            the processor
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void recordParameters(ParameterProcessor processor) throws IOException;
 }

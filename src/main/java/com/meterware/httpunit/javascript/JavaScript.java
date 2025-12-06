@@ -45,6 +45,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,23 +59,51 @@ import org.xml.sax.SAXException;
 
 /**
  * This class is the Rhino-compatible implementation of the JavaScript DOM objects.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public class JavaScript {
 
+    /** The throw exceptions on error. */
     private static boolean _throwExceptionsOnError = true;
 
+    /**
+     * Checks if is throw exceptions on error.
+     *
+     * @return true, if is throw exceptions on error
+     */
     public static boolean isThrowExceptionsOnError() {
         return _throwExceptionsOnError;
     }
 
+    /**
+     * Sets the throw exceptions on error.
+     *
+     * @param throwExceptionsOnError
+     *            the new throw exceptions on error
+     */
     public static void setThrowExceptionsOnError(boolean throwExceptionsOnError) {
         _throwExceptionsOnError = throwExceptionsOnError;
     }
 
     /**
      * Initiates JavaScript execution for the specified web response.
+     *
+     * @param response
+     *            the response
+     *
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InstantiationException
+     *             the instantiation exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     * @throws EvaluatorException
+     *             the evaluator exception
+     * @throws EvaluatorException
+     *             the evaluator exception
+     * @throws SAXException
+     *             the SAX exception
+     * @throws JavaScriptException
+     *             the java script exception
      */
     public static void run(WebResponse response) throws IllegalAccessException, InstantiationException,
             InvocationTargetException, EvaluatorException, EvaluatorException, SAXException, JavaScriptException {
@@ -94,6 +123,24 @@ public class JavaScript {
 
     /**
      * Runs the onload event for the specified web response.
+     *
+     * @param response
+     *            the response
+     *
+     * @throws EvaluatorException
+     *             the evaluator exception
+     * @throws EvaluatorException
+     *             the evaluator exception
+     * @throws InstantiationException
+     *             the instantiation exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     * @throws JavaScriptException
+     *             the java script exception
+     * @throws SAXException
+     *             the SAX exception
      */
     public static void load(WebResponse response) throws EvaluatorException, InstantiationException,
             IllegalAccessException, InvocationTargetException, JavaScriptException, SAXException, EvaluatorException {
@@ -103,6 +150,21 @@ public class JavaScript {
         response.getScriptableObject().load();
     }
 
+    /**
+     * Inits the HTML objects.
+     *
+     * @param scope
+     *            the scope
+     *
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InstantiationException
+     *             the instantiation exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     * @throws EvaluatorException
+     *             the evaluator exception
+     */
     private static void initHTMLObjects(Scriptable scope)
             throws IllegalAccessException, InstantiationException, InvocationTargetException, EvaluatorException {
         ScriptableObject.defineClass(scope, Window.class);
@@ -123,18 +185,39 @@ public class JavaScript {
     }
 
     /**
-     * abstract Engine for JavaScript
+     * abstract Engine for JavaScript.
      */
     abstract static class JavaScriptEngine extends ScriptingEngineImpl implements EventTarget {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The scriptable. */
         protected ScriptableDelegate _scriptable;
+
+        /** The parent. */
         protected JavaScriptEngine _parent;
+
+        /** The event listeners. */
         protected Map _eventListeners = new HashMap<>(); // Map<String,Set<EventListener>>
+
+        /** The event capture listeners. */
         protected Map _eventCaptureListeners = new HashMap<>(); // Map<String,Set<EventListener>>
 
         /**
-         * initialize JavaScript for the given ScriptEngine
+         * initialize JavaScript for the given ScriptEngine.
+         *
+         * @param parent
+         *            the parent
+         * @param scriptable
+         *            the scriptable
+         *
+         * @throws SAXException
+         *             the SAX exception
+         * @throws JavaScriptException
+         *             the java script exception
+         * @throws EvaluatorException
+         *             the evaluator exception
          *
          * @parent - the Script Engine to use
          *
@@ -150,10 +233,20 @@ public class JavaScript {
             }
         }
 
+        /**
+         * Gets the name.
+         *
+         * @return the name
+         */
         String getName() {
             return _scriptable instanceof NamedDelegate ? ((NamedDelegate) _scriptable).getName() : "";
         }
 
+        /**
+         * Gets the id.
+         *
+         * @return the id
+         */
         String getID() {
             return _scriptable instanceof IdentifiedDelegate ? ((IdentifiedDelegate) _scriptable).getID() : "";
         }
@@ -163,8 +256,9 @@ public class JavaScript {
          * if it's assigned by calling doEvent for the script
          *
          * @param eventName
+         *            the event name
          *
-         * @return
+         * @return true, if successful
          */
         @Override
         public boolean handleEvent(String eventName) {
@@ -203,6 +297,14 @@ public class JavaScript {
             return convertIfNeeded(_scriptable.get(i));
         }
 
+        /**
+         * Convert if needed.
+         *
+         * @param property
+         *            the property
+         *
+         * @return the object
+         */
         private Object convertIfNeeded(final Object property) {
             if (property == null) {
                 return NOT_FOUND;
@@ -217,6 +319,14 @@ public class JavaScript {
             return toScriptable((ScriptableDelegate) property);
         }
 
+        /**
+         * To scriptable.
+         *
+         * @param list
+         *            the list
+         *
+         * @return the object
+         */
         private Object toScriptable(ScriptableDelegate[] list) {
             Object[] delegates = new Object[list.length];
             for (int i = 0; i < delegates.length; i++) {
@@ -253,13 +363,26 @@ public class JavaScript {
         public void clearCaches() {
         }
 
+        /**
+         * To string if not undefined.
+         *
+         * @param object
+         *            the object
+         *
+         * @return the string
+         */
         protected static String toStringIfNotUndefined(Object object) {
             return object == null || Undefined.instance.equals(object) ? null : object.toString();
         }
 
         /**
          * Converts a scriptable delegate obtained from a subobject into the appropriate Rhino-compatible Scriptable.
-         **/
+         *
+         * @param delegate
+         *            the delegate
+         *
+         * @return the object
+         */
         final Object toScriptable(ScriptableDelegate delegate) {
             if (delegate == null) {
                 return NOT_FOUND;
@@ -280,16 +403,13 @@ public class JavaScript {
         }
 
         /**
-         * get the classname of the given ScriptableDelegate
+         * get the classname of the given ScriptableDelegate.
          *
          * @param delegate
          *            - the object to get the class name for
          *
          * @return - the simple local class name for the delegate e.g. Window, Document, Form, Link, Image, Options,
          *         Option, Control, HTMLElement
-         *
-         * @throws an
-         *             IllegalArgumentException if the delegate is not known
          */
         private String getScriptableClassName(ScriptableDelegate delegate) {
             if (delegate instanceof WebResponse.Scriptable) {
@@ -323,6 +443,14 @@ public class JavaScript {
             throw new IllegalArgumentException("Unknown ScriptableDelegate class: " + delegate.getClass());
         }
 
+        /**
+         * To element array.
+         *
+         * @param scriptables
+         *            the scriptables
+         *
+         * @return the element array
+         */
         protected ElementArray toElementArray(ScriptingHandler[] scriptables) {
             JavaScriptEngine[] elements = new JavaScriptEngine[scriptables.length];
             for (int i = 0; i < elements.length; i++) {
@@ -387,15 +515,26 @@ public class JavaScript {
     }
 
     /**
-     * Window functions
+     * Window functions.
      */
     static public class Window extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The document. */
         private Document _document;
+
+        /** The navigator. */
         private Navigator _navigator;
+
+        /** The location. */
         private Location _location;
+
+        /** The screen. */
         private Screen _screen;
+
+        /** The frames. */
         private ElementArray _frames;
 
         @Override
@@ -403,14 +542,29 @@ public class JavaScript {
             return "Window";
         }
 
+        /**
+         * Js get window.
+         *
+         * @return the window
+         */
         public Window jsGet_window() {
             return this;
         }
 
+        /**
+         * Js get self.
+         *
+         * @return the window
+         */
         public Window jsGet_self() {
             return this;
         }
 
+        /**
+         * Js get document.
+         *
+         * @return the document
+         */
         public Document jsGet_document() {
             if (_document == null) {
                 _document = (Document) toScriptable(getDelegate().getDocument());
@@ -418,6 +572,18 @@ public class JavaScript {
             return _document;
         }
 
+        /**
+         * Js get frames.
+         *
+         * @return the scriptable
+         *
+         * @throws SAXException
+         *             the SAX exception
+         * @throws JavaScriptException
+         *             the java script exception
+         * @throws EvaluatorException
+         *             the evaluator exception
+         */
         public Scriptable jsGet_frames() throws SAXException, JavaScriptException, EvaluatorException {
             if (_frames == null) {
                 WebResponse.Scriptable[] scriptables = getDelegate().getFrames();
@@ -431,22 +597,59 @@ public class JavaScript {
             return _frames;
         }
 
+        /**
+         * Js get navigator.
+         *
+         * @return the navigator
+         */
         public Navigator jsGet_navigator() {
             return _navigator;
         }
 
+        /**
+         * Js get screen.
+         *
+         * @return the screen
+         */
         public Screen jsGet_screen() {
             return _screen;
         }
 
+        /**
+         * Js get location.
+         *
+         * @return the location
+         */
         public Location jsGet_location() {
             return _location;
         }
 
+        /**
+         * Js set location.
+         *
+         * @param relativeURL
+         *            the relative URL
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void jsSet_location(String relativeURL) throws IOException, SAXException {
             setLocation(relativeURL);
         }
 
+        /**
+         * Sets the location.
+         *
+         * @param relativeURL
+         *            the new location
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         void setLocation(String relativeURL) throws IOException, SAXException {
             getDelegate().setLocation(relativeURL);
         }
@@ -474,7 +677,7 @@ public class JavaScript {
         }
 
         /**
-         * javascript alert handling
+         * javascript alert handling.
          *
          * @param message
          *            - the alert message
@@ -484,45 +687,118 @@ public class JavaScript {
         }
 
         /**
-         * javascript built in function "toLowerCase"
+         * javascript built in function "toLowerCase".
          *
          * @param s
+         *            the s
+         *
+         * @return the string
          */
         public String jsFunction_toLowerCase(String s) {
-            return s.toLowerCase();
+            return s.toLowerCase(Locale.ENGLISH);
         }
 
+        /**
+         * Js function confirm.
+         *
+         * @param message
+         *            the message
+         *
+         * @return true, if successful
+         */
         public boolean jsFunction_confirm(String message) {
             return getDelegate().getConfirmationResponse(message);
         }
 
+        /**
+         * Js function prompt.
+         *
+         * @param message
+         *            the message
+         * @param defaultResponse
+         *            the default response
+         *
+         * @return the string
+         */
         public String jsFunction_prompt(String message, String defaultResponse) {
             return getDelegate().getUserResponse(message, defaultResponse);
         }
 
+        /**
+         * Js function move to.
+         *
+         * @param x
+         *            the x
+         * @param y
+         *            the y
+         */
         public void jsFunction_moveTo(int x, int y) {
         }
 
+        /**
+         * Js function scroll to.
+         *
+         * @param x
+         *            the x
+         * @param y
+         *            the y
+         */
         public void jsFunction_scrollTo(int x, int y) {
         }
 
+        /**
+         * Js function focus.
+         */
         public void jsFunction_focus() {
         }
 
+        /**
+         * Js function set timeout.
+         */
         public void jsFunction_setTimeout() {
         }
 
+        /**
+         * Js function close.
+         */
         public void jsFunction_close() {
             getDelegate().closeWindow();
         }
 
+        /**
+         * Js function open.
+         *
+         * @param url
+         *            the url
+         * @param name
+         *            the name
+         * @param features
+         *            the features
+         * @param replace
+         *            the replace
+         *
+         * @return the window
+         *
+         * @throws JavaScriptException
+         *             the java script exception
+         * @throws EvaluatorException
+         *             the evaluator exception
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public Window jsFunction_open(Object url, String name, String features, boolean replace)
                 throws JavaScriptException, EvaluatorException, IOException, SAXException {
             WebResponse.Scriptable delegate = getDelegate().open(toStringIfNotUndefined(url), name, features, replace);
             return delegate == null ? null : (Window) toScriptable(delegate);
         }
 
-        /** The global "event" object is not supported, so return null (instead of causing '"event" is not defined') */
+        /**
+         * The global "event" object is not supported, so return null (instead of causing '"event" is not defined').
+         *
+         * @return the location
+         */
         public Location jsGet_event() {
             return null;
         }
@@ -544,21 +820,37 @@ public class JavaScript {
             jsGet_document().clearWriteBuffer();
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         private WebResponse.Scriptable getDelegate() {
             return (WebResponse.Scriptable) _scriptable;
         }
     }
 
     /**
-     * Document script handling
+     * Document script handling.
      */
     static public class Document extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The forms. */
         private ElementArray _forms;
+
+        /** The links. */
         private ElementArray _links;
+
+        /** The images. */
         private ElementArray _images;
+
+        /** The write buffer. */
         private StringBuilder _writeBuffer;
+
+        /** The mime type. */
         private String _mimeType;
 
         @Override
@@ -571,10 +863,26 @@ public class JavaScript {
             _forms = _links = _images = null;
         }
 
+        /**
+         * Js get title.
+         *
+         * @return the string
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public String jsGet_title() throws SAXException {
             return getDelegate().getTitle();
         }
 
+        /**
+         * Js get images.
+         *
+         * @return the scriptable
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public Scriptable jsGet_images() throws SAXException {
             if (_images == null) {
                 _images = toElementArray(getDelegate().getImages());
@@ -582,6 +890,14 @@ public class JavaScript {
             return _images;
         }
 
+        /**
+         * Js get links.
+         *
+         * @return the scriptable
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public Scriptable jsGet_links() throws SAXException {
             if (_links == null) {
                 _links = toElementArray(getDelegate().getLinks());
@@ -589,6 +905,14 @@ public class JavaScript {
             return _links;
         }
 
+        /**
+         * Js get forms.
+         *
+         * @return the scriptable
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public Scriptable jsGet_forms() throws SAXException {
             if (_forms == null) {
                 _forms = toElementArray(getDelegate().getForms());
@@ -596,23 +920,63 @@ public class JavaScript {
             return _forms;
         }
 
+        /**
+         * Js function get element by id.
+         *
+         * @param id
+         *            the id
+         *
+         * @return the object
+         */
         public Object jsFunction_getElementById(String id) {
             ScriptableDelegate elementWithID = getDelegate().getElementWithID(id);
             return elementWithID == null ? null : toScriptable(elementWithID);
         }
 
+        /**
+         * Js function get elements by name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the object
+         */
         public Object jsFunction_getElementsByName(String name) {
             return toElementArray(getDelegate().getElementsByName(name));
         }
 
+        /**
+         * Js function get elements by tag name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the object
+         */
         public Object jsFunction_getElementsByTagName(String name) {
             return toElementArray(getDelegate().getElementsByTagName(name));
         }
 
+        /**
+         * Js get location.
+         *
+         * @return the object
+         */
         public Object jsGet_location() {
             return _parent == null ? NOT_FOUND : getWindow().jsGet_location();
         }
 
+        /**
+         * Js set location.
+         *
+         * @param urlString
+         *            the url string
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void jsSet_location(String urlString) throws IOException, SAXException {
             if (urlString.startsWith("color")) {
                 return;
@@ -620,10 +984,21 @@ public class JavaScript {
             getWindow().setLocation(urlString);
         }
 
+        /**
+         * Js get cookie.
+         *
+         * @return the string
+         */
         public String jsGet_cookie() {
             return getDelegate().getCookie();
         }
 
+        /**
+         * Js set cookie.
+         *
+         * @param cookieSpec
+         *            the cookie spec
+         */
         public void jsSet_cookie(String cookieSpec) {
             final int equalsIndex = cookieSpec.indexOf('=');
             if (equalsIndex < 0) {
@@ -638,28 +1013,59 @@ public class JavaScript {
             getDelegate().setCookie(name, value);
         }
 
+        /**
+         * Gets the window.
+         *
+         * @return the window
+         */
         private Window getWindow() {
             return (Window) _parent;
         }
 
+        /**
+         * Js function open.
+         *
+         * @param mimeType
+         *            the mime type
+         */
         public void jsFunction_open(Object mimeType) {
             _mimeType = toStringIfNotUndefined(mimeType);
         }
 
+        /**
+         * Js function close.
+         */
         public void jsFunction_close() {
             if (getDelegate().replaceText(getWriteBuffer().toString(), _mimeType == null ? "text/html" : _mimeType)) {
                 getWriteBuffer().setLength(0);
             }
         }
 
+        /**
+         * Js function write.
+         *
+         * @param string
+         *            the string
+         */
         public void jsFunction_write(String string) {
             getWriteBuffer().append(string);
         }
 
+        /**
+         * Js function writeln.
+         *
+         * @param string
+         *            the string
+         */
         public void jsFunction_writeln(String string) {
             getWriteBuffer().append(string).append((char) 0x0D).append((char) 0x0A);
         }
 
+        /**
+         * Gets the write buffer.
+         *
+         * @return the write buffer
+         */
         protected StringBuilder getWriteBuffer() {
             if (_writeBuffer == null) {
                 _writeBuffer = new StringBuilder();
@@ -667,10 +1073,18 @@ public class JavaScript {
             return _writeBuffer;
         }
 
+        /**
+         * Clear write buffer.
+         */
         protected void clearWriteBuffer() {
             _writeBuffer = null;
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         private HTMLPage.Scriptable getDelegate() {
             return (HTMLPage.Scriptable) _scriptable;
         }
@@ -695,10 +1109,18 @@ public class JavaScript {
 
     }
 
+    /**
+     * The Class Location.
+     */
     static public class Location extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The url. */
         private URL _url;
+
+        /** The window. */
         private Window _window;
 
         @Override
@@ -706,43 +1128,114 @@ public class JavaScript {
             return "Location";
         }
 
+        /**
+         * Initialize.
+         *
+         * @param window
+         *            the window
+         * @param url
+         *            the url
+         */
         void initialize(Window window, URL url) {
             _window = window;
             _url = url;
         }
 
+        /**
+         * Js function replace.
+         *
+         * @param urlString
+         *            the url string
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void jsFunction_replace(String urlString) throws IOException, SAXException {
             _window.setLocation(urlString);
         }
 
+        /**
+         * Js get href.
+         *
+         * @return the string
+         */
         public String jsGet_href() {
             return toString();
         }
 
+        /**
+         * Js set href.
+         *
+         * @param urlString
+         *            the url string
+         *
+         * @throws SAXException
+         *             the SAX exception
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         public void jsSet_href(String urlString) throws SAXException, IOException {
             _window.setLocation(urlString);
         }
 
+        /**
+         * Js get protocol.
+         *
+         * @return the string
+         */
         public String jsGet_protocol() {
             return _url.getProtocol() + ':';
         }
 
+        /**
+         * Js get host.
+         *
+         * @return the string
+         */
         public String jsGet_host() {
             return _url.getHost() + ':' + _url.getPort();
         }
 
+        /**
+         * Js get hostname.
+         *
+         * @return the string
+         */
         public String jsGet_hostname() {
             return _url.getHost();
         }
 
+        /**
+         * Js get port.
+         *
+         * @return the string
+         */
         public String jsGet_port() {
             return String.valueOf(_url.getPort());
         }
 
+        /**
+         * Js get pathname.
+         *
+         * @return the string
+         */
         public String jsGet_pathname() {
             return _url.getPath();
         }
 
+        /**
+         * Js set pathname.
+         *
+         * @param newPath
+         *            the new path
+         *
+         * @throws SAXException
+         *             the SAX exception
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         public void jsSet_pathname(String newPath) throws SAXException, IOException {
             if (!newPath.startsWith("/")) {
                 newPath = '/' + newPath;
@@ -751,10 +1244,26 @@ public class JavaScript {
             _window.setLocation(newURL.toExternalForm());
         }
 
+        /**
+         * Js get search.
+         *
+         * @return the string
+         */
         public String jsGet_search() {
             return '?' + _url.getQuery();
         }
 
+        /**
+         * Js set search.
+         *
+         * @param newSearch
+         *            the new search
+         *
+         * @throws SAXException
+         *             the SAX exception
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         public void jsSet_search(String newSearch) throws SAXException, IOException {
             if (!newSearch.startsWith("?")) {
                 newSearch = '?' + newSearch;
@@ -779,10 +1288,18 @@ public class JavaScript {
 
     }
 
+    /**
+     * The Class Style.
+     */
     static public class Style extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The display. */
         private String _display = "inline";
+
+        /** The visibility. */
         private String _visibility = "visible";
 
         @Override
@@ -790,26 +1307,54 @@ public class JavaScript {
             return "Style";
         }
 
+        /**
+         * Js get display.
+         *
+         * @return the string
+         */
         public String jsGet_display() {
             return _display;
         }
 
+        /**
+         * Js set display.
+         *
+         * @param display
+         *            the display
+         */
         public void jsSet_display(String display) {
             _display = display;
         }
 
+        /**
+         * Js get visibility.
+         *
+         * @return the string
+         */
         public String jsGet_visibility() {
             return _visibility;
         }
 
+        /**
+         * Js set visibility.
+         *
+         * @param visibility
+         *            the visibility
+         */
         public void jsSet_visibility(String visibility) {
             _visibility = visibility;
         }
     }
 
+    /**
+     * The Class Navigator.
+     */
     static public class Navigator extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The client properties. */
         private ClientProperties _clientProperties;
 
         @Override
@@ -817,45 +1362,98 @@ public class JavaScript {
             return "Navigator";
         }
 
+        /**
+         * Sets the client properties.
+         *
+         * @param clientProperties
+         *            the new client properties
+         */
         void setClientProperties(ClientProperties clientProperties) {
             _clientProperties = clientProperties;
         }
 
+        /**
+         * Js get app name.
+         *
+         * @return the string
+         */
         public String jsGet_appName() {
             return _clientProperties.getApplicationName();
         }
 
+        /**
+         * Js get app code name.
+         *
+         * @return the string
+         */
         public String jsGet_appCodeName() {
             return _clientProperties.getApplicationCodeName();
         }
 
+        /**
+         * Js get app version.
+         *
+         * @return the string
+         */
         public String jsGet_appVersion() {
             return _clientProperties.getApplicationVersion();
         }
 
+        /**
+         * Js get user agent.
+         *
+         * @return the string
+         */
         public String jsGet_userAgent() {
             return _clientProperties.getUserAgent();
         }
 
+        /**
+         * Js get platform.
+         *
+         * @return the string
+         */
         public String jsGet_platform() {
             return _clientProperties.getPlatform();
         }
 
+        /**
+         * Js get plugins.
+         *
+         * @return the object[]
+         */
         public Object[] jsGet_plugins() {
             return new Object[0];
         }
 
+        /**
+         * Js function java enabled.
+         *
+         * @return true, if successful
+         */
         public boolean jsFunction_javaEnabled() {
             return false; // no support is provided for applets at present
         }
 
     }
 
+    /**
+     * The Class Screen.
+     */
     static public class Screen extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The client properties. */
         private ClientProperties _clientProperties;
 
+        /**
+         * Sets the client properties.
+         *
+         * @param clientProperties
+         *            the new client properties
+         */
         void setClientProperties(ClientProperties clientProperties) {
             _clientProperties = clientProperties;
         }
@@ -865,21 +1463,45 @@ public class JavaScript {
             return "Screen";
         }
 
+        /**
+         * Js get avail width.
+         *
+         * @return the int
+         */
         public int jsGet_availWidth() {
             return _clientProperties.getAvailableScreenWidth();
         }
 
+        /**
+         * Js get avail height.
+         *
+         * @return the int
+         */
         public int jsGet_availHeight() {
             return _clientProperties.getAvailHeight();
         }
 
     }
 
+    /**
+     * The Class ElementArray.
+     */
     static public class ElementArray extends ScriptableObject {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The contents. */
         private JavaScriptEngine[] _contents = new HTMLElement[0];
 
+        /**
+         * New element array.
+         *
+         * @param parent
+         *            the parent
+         *
+         * @return the element array
+         */
         static ElementArray newElementArray(Scriptable parent) {
             try {
                 return (ElementArray) Context.getCurrentContext().newObject(parent, "ElementArray");
@@ -888,13 +1510,27 @@ public class JavaScript {
             }
         }
 
+        /**
+         * Instantiates a new element array.
+         */
         public ElementArray() {
         }
 
+        /**
+         * Initialize.
+         *
+         * @param contents
+         *            the contents
+         */
         void initialize(JavaScriptEngine[] contents) {
             _contents = contents;
         }
 
+        /**
+         * Js get length.
+         *
+         * @return the int
+         */
         public int jsGet_length() {
             return _contents.length;
         }
@@ -927,18 +1563,28 @@ public class JavaScript {
             return super.get(name, scriptable);
         }
 
+        /**
+         * Gets the contents.
+         *
+         * @return the contents
+         */
         protected JavaScriptEngine[] getContents() {
             return _contents;
         }
     }
 
     /**
-     * HTML Element support for JavaScript
+     * HTML Element support for JavaScript.
      */
     static public class HTMLElement extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The style. */
         private Style _style;
+
+        /** The document. */
         private Document _document;
 
         @Override
@@ -946,20 +1592,31 @@ public class JavaScript {
             return "HTMLElement";
         }
 
+        /**
+         * Js get document.
+         *
+         * @return the document
+         */
         public Document jsGet_document() {
             return _document;
         }
 
+        /**
+         * Js get style.
+         *
+         * @return the style
+         */
         public Style jsGet_style() {
             return _style;
         }
 
         /**
-         * arbitrary attribute access
+         * arbitrary attribute access.
          *
          * @param attributeName
+         *            the attribute name
          *
-         * @return
+         * @return the object
          */
         public Object jsFunction_getAttribute(String attributeName) {
             return _scriptable.get(attributeName);
@@ -975,8 +1632,12 @@ public class JavaScript {
 
     }
 
+    /**
+     * The Class Image.
+     */
     static public class Image extends HTMLElement {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -985,8 +1646,12 @@ public class JavaScript {
         }
     }
 
+    /**
+     * The Class Link.
+     */
     static public class Link extends HTMLElement {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -1001,11 +1666,14 @@ public class JavaScript {
     }
 
     /**
-     * Form functions
+     * Form functions.
      */
     static public class Form extends HTMLElement {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The controls. */
         private ElementArray _controls;
 
         @Override
@@ -1013,27 +1681,54 @@ public class JavaScript {
             return "Form";
         }
 
+        /**
+         * Js get name.
+         *
+         * @return the string
+         */
         public String jsGet_name() {
             return getDelegate().getName();
         }
 
         /**
-         * @since FR [ 2163079 ] make form.name property mutable by Peter De Bruycker
+         * Js set name.
          *
          * @param name
+         *            the name
          */
         public void jsSet_name(String name) {
             getDelegate().set("name", name);
         }
 
+        /**
+         * Js get action.
+         *
+         * @return the string
+         */
         public String jsGet_action() {
             return getDelegate().getAction();
         }
 
+        /**
+         * Js set action.
+         *
+         * @param action
+         *            the action
+         */
         public void jsSet_action(String action) {
             getDelegate().setAction(action);
         }
 
+        /**
+         * Js get elements.
+         *
+         * @return the scriptable
+         *
+         * @throws EvaluatorException
+         *             the evaluator exception
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         public Scriptable jsGet_elements() throws EvaluatorException, JavaScriptException {
             if (_controls == null) {
                 initializeControls();
@@ -1041,18 +1736,53 @@ public class JavaScript {
             return _controls;
         }
 
+        /**
+         * Js function get elements by tag name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the object
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public Object jsFunction_getElementsByTagName(String name) throws SAXException {
             return toElementArray(getDelegate().getElementsByTagName(name));
         }
 
+        /**
+         * Js function submit.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void jsFunction_submit() throws IOException, SAXException {
             getDelegate().submit();
         }
 
+        /**
+         * Js function reset.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void jsFunction_reset() throws IOException, SAXException {
             getDelegate().reset();
         }
 
+        /**
+         * Initialize controls.
+         *
+         * @throws EvaluatorException
+         *             the evaluator exception
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         private void initializeControls() throws EvaluatorException, JavaScriptException {
             ScriptableDelegate[] scriptables = getDelegate().getElementDelegates();
             Control[] controls = new Control[scriptables.length];
@@ -1063,6 +1793,11 @@ public class JavaScript {
             _controls.initialize(controls);
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         private WebForm.Scriptable getDelegate() {
             return (WebForm.Scriptable) _scriptable;
         }
@@ -1070,11 +1805,14 @@ public class JavaScript {
     }
 
     /**
-     * Javascript support for any control
+     * Javascript support for any control.
      */
     static public class Control extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The form. */
         private Form _form;
 
         @Override
@@ -1082,46 +1820,97 @@ public class JavaScript {
             return "Control";
         }
 
+        /**
+         * Js get form.
+         *
+         * @return the form
+         */
         public Form jsGet_form() {
             return _form;
         }
 
+        /**
+         * Js function focus.
+         */
         public void jsFunction_focus() {
         }
 
+        /**
+         * Js function select.
+         */
         public void jsFunction_select() {
         }
 
         /**
-         * click via javascript
+         * click via javascript.
          *
          * @throws IOException
+         *             Signals that an I/O exception has occurred.
          * @throws SAXException
+         *             the SAX exception
          */
         public void jsFunction_click() throws IOException, SAXException {
             getDelegate().click();
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         private Input getDelegate() {
             return (Input) _scriptable;
         }
 
-        /** Support getting value of arbitrary attribute */
+        /**
+         * Support getting value of arbitrary attribute.
+         *
+         * @param attributeName
+         *            the attribute name
+         *
+         * @return the object
+         *
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         public Object jsFunction_getAttribute(String attributeName) throws JavaScriptException {
             return getDelegate().get(attributeName);
         }
 
-        /** Support getting value of arbitrary attribute */
+        /**
+         * Support getting value of arbitrary attribute.
+         *
+         * @param attributeName
+         *            the attribute name
+         * @param value
+         *            the value
+         *
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         public void jsFunction_setAttribute(String attributeName, Object value) throws JavaScriptException {
             getDelegate().setAttribute(attributeName, value);
         }
 
-        /** Support getting value of arbitrary attribute */
+        /**
+         * Support getting value of arbitrary attribute.
+         *
+         * @param attributeName
+         *            the attribute name
+         *
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         public void jsFunction_removeAttribute(String attributeName) throws JavaScriptException {
             getDelegate().removeAttribute(attributeName);
         }
 
-        /** Allow calling onchange() from within a JavaScript function */
+        /**
+         * Allow calling onchange() from within a JavaScript function.
+         *
+         * @throws JavaScriptException
+         *             the java script exception
+         */
         public void jsFunction_onchange() throws JavaScriptException {
             Input myInput = this.getDelegate();
             myInput.sendOnChangeEvent();
@@ -1138,8 +1927,12 @@ public class JavaScript {
 
     }
 
+    /**
+     * The Class Options.
+     */
     static public class Options extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -1147,10 +1940,21 @@ public class JavaScript {
             return "Options";
         }
 
+        /**
+         * Js get length.
+         *
+         * @return the int
+         */
         public int jsGet_length() {
             return getDelegate().getLength();
         }
 
+        /**
+         * Js set length.
+         *
+         * @param length
+         *            the length
+         */
         public void jsSet_length(int length) {
             getDelegate().setLength(length);
         }
@@ -1168,14 +1972,23 @@ public class JavaScript {
             }
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         private SelectionOptions getDelegate() {
             return (SelectionOptions) _scriptable;
         }
 
     }
 
+    /**
+     * The Class Option.
+     */
     static public class Option extends JavaScriptEngine {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -1183,43 +1996,103 @@ public class JavaScript {
             return "Option";
         }
 
+        /**
+         * Js constructor.
+         *
+         * @param text
+         *            the text
+         * @param value
+         *            the value
+         * @param defaultSelected
+         *            the default selected
+         * @param selected
+         *            the selected
+         */
         public void jsConstructor(String text, String value, boolean defaultSelected, boolean selected) {
             _scriptable = WebResponse.newDelegate("Option");
             getDelegate().initialize(text, value, defaultSelected, selected);
         }
 
+        /**
+         * Js get index.
+         *
+         * @return the int
+         */
         public int jsGet_index() {
             return getDelegate().getIndex();
         }
 
+        /**
+         * Js get text.
+         *
+         * @return the string
+         */
         public String jsGet_text() {
             return getDelegate().getText();
         }
 
+        /**
+         * Js set text.
+         *
+         * @param text
+         *            the text
+         */
         public void jsSet_text(String text) {
             getDelegate().setText(text);
         }
 
+        /**
+         * Js get value.
+         *
+         * @return the string
+         */
         public String jsGet_value() {
             return getDelegate().getValue();
         }
 
+        /**
+         * Js set value.
+         *
+         * @param value
+         *            the value
+         */
         public void jsSet_value(String value) {
             getDelegate().setValue(value);
         }
 
+        /**
+         * Js get selected.
+         *
+         * @return true, if successful
+         */
         public boolean jsGet_selected() {
             return getDelegate().isSelected();
         }
 
+        /**
+         * Js set selected.
+         *
+         * @param selected
+         *            the selected
+         */
         public void jsSet_selected(boolean selected) {
             getDelegate().setSelected(selected);
         }
 
+        /**
+         * Js get default selected.
+         *
+         * @return true, if successful
+         */
         public boolean jsGet_defaultSelected() {
             return getDelegate().isDefaultSelected();
         }
 
+        /**
+         * Gets the delegate.
+         *
+         * @return the delegate
+         */
         SelectionOption getDelegate() {
             return (SelectionOption) _scriptable;
         }

@@ -22,6 +22,7 @@ package com.meterware.httpunit.protocol;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 /**
  * A POST-method message body which is MIME-encoded. This is used when uploading files, and is selected when the enctype
@@ -29,6 +30,12 @@ import java.io.OutputStream;
  **/
 class MimeEncodedMessageBody extends MessageBody {
 
+    /**
+     * Instantiates a new mime encoded message body.
+     *
+     * @param characterSet
+     *            the character set
+     */
     MimeEncodedMessageBody(String characterSet) {
         super(characterSet);
     }
@@ -51,9 +58,20 @@ class MimeEncodedMessageBody extends MessageBody {
         encoding.sendClose();
     }
 
+    /** The Constant BOUNDARY. */
     private static final String BOUNDARY = "--HttpUnit-part0-aSgQ2M";
+
+    /** The Constant CRLF. */
     private static final byte[] CRLF = { 0x0d, 0x0A };
 
+    /**
+     * Encode.
+     *
+     * @param string
+     *            the string
+     *
+     * @return the string
+     */
     private String encode(String string) {
         char[] chars = string.toCharArray();
         StringBuilder sb = new StringBuilder(chars.length + 20);
@@ -67,21 +85,60 @@ class MimeEncodedMessageBody extends MessageBody {
         return sb.toString();
     }
 
+    /**
+     * Write ln.
+     *
+     * @param os
+     *            the os
+     * @param value
+     *            the value
+     * @param encoding
+     *            the encoding
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void writeLn(OutputStream os, String value, String encoding) throws IOException {
-        os.write(value.getBytes(encoding));
+        os.write(value.getBytes(Charset.forName(encoding)));
         os.write(CRLF);
     }
 
+    /**
+     * Write ln.
+     *
+     * @param os
+     *            the os
+     * @param value
+     *            the value
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void writeLn(OutputStream os, String value) throws IOException {
         writeLn(os, value, getCharacterSet());
     }
 
+    /**
+     * The Class MimeEncoding.
+     */
     class MimeEncoding implements ParameterProcessor {
 
+        /**
+         * Instantiates a new mime encoding.
+         *
+         * @param outputStream
+         *            the output stream
+         */
         public MimeEncoding(OutputStream outputStream) {
             _outputStream = outputStream;
         }
 
+        /**
+         * Send close.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         public void sendClose() throws IOException {
             writeLn(_outputStream, "--" + BOUNDARY + "--");
         }
@@ -109,9 +166,20 @@ class MimeEncodedMessageBody extends MessageBody {
             writeLn(_outputStream, fixLineEndings(value), getCharacterSet());
         }
 
+        /** The Constant CR. */
         private static final char CR = 0x0D;
+
+        /** The Constant LF. */
         private static final char LF = 0x0A;
 
+        /**
+         * Fix line endings.
+         *
+         * @param value
+         *            the value
+         *
+         * @return the string
+         */
         private String fixLineEndings(String value) {
             StringBuilder sb = new StringBuilder();
             char[] chars = value.toCharArray();
@@ -146,6 +214,7 @@ class MimeEncodedMessageBody extends MessageBody {
             writeLn(_outputStream, "");
         }
 
+        /** The output stream. */
         private OutputStream _outputStream;
     }
 

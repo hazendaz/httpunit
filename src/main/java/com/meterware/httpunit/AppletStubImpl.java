@@ -23,10 +23,20 @@ import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.URL;
 
+/**
+ * The Class AppletStubImpl.
+ */
 class AppletStubImpl implements AppletStub {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
+    /**
+     * Instantiates a new applet stub impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
     AppletStubImpl(WebApplet webApplet) {
         _webApplet = webApplet;
     }

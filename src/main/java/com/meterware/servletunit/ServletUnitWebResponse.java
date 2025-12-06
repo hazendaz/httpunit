@@ -37,13 +37,20 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Constructs a response object from a servlet response.
      *
+     * @param client
+     *            the client
      * @param frame
      *            the target frame on which the response will be displayed
      * @param url
      *            the url from which the response was received
      * @param response
      *            the response populated by the servlet
-     **/
+     * @param throwExceptionOnError
+     *            the throw exception on error
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response,
             boolean throwExceptionOnError) throws IOException {
         super(client, frame, url);
@@ -60,13 +67,18 @@ class ServletUnitWebResponse extends WebResponse {
     /**
      * Constructs a response object from a servlet response.
      *
+     * @param client
+     *            the client
      * @param frame
      *            the target frame on which the response will be displayed
      * @param url
      *            the url from which the response was received
      * @param response
      *            the response populated by the servlet
-     **/
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response)
             throws IOException {
         this(client, frame, url, response, true);
@@ -113,6 +125,7 @@ class ServletUnitWebResponse extends WebResponse {
 
     // -------------------------------------------- private members ------------------------------------------------
 
+    /** The response. */
     private ServletUnitHttpResponse _response;
 
 }

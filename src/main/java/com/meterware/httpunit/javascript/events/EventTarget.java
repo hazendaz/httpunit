@@ -26,10 +26,6 @@ import org.mozilla.javascript.Scriptable;
  * Therefore, this interface can be obtained by using binding-specific casting methods on an instance of the Node
  * interface. The interface allows registration and removal of EventListeners on an EventTarget and dispatch of events
  * to that EventTarget.
- *
- * @author W3C
- *
- * @version $Id$
  */
 public interface EventTarget extends Scriptable {
     /**

@@ -75,8 +75,8 @@
     </scm>
 
     <issueManagement>
-        <system>Sourceforge</system>
-        <url>http://sourceforge.net/tracker/?group_id=6550&amp;atid=106550</url>
+        <system>GitHub</system>
+        <url>https://github.com/hazendaz/httpunit/issues</url>
     </issueManagement>
     <distributionManagement>
         <site>
@@ -91,6 +91,12 @@
         <java.release.version>17</java.release.version>
         <javadoc.java.release.version>17</javadoc.java.release.version>
         <legacyMode>true</legacyMode>
+
+        <!-- Automatic Module Name -->
+        <module.name>com.meterware.httpunit</module.name>
+
+        <!-- Reproducible Builds -->
+        <project.build.outputTimestamp>1760403923</project.build.outputTimestamp>
     </properties>
 
     <dependencies>
@@ -138,8 +144,8 @@
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-migrationsupport</artifactId>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
             <version>6.0.1</version>
             <exclusions>
                 <exclusion>
@@ -161,7 +167,7 @@
                 <groupId>org.gaul</groupId>
                 <artifactId>modernizer-maven-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <failOnViolations>false</failOnViolations>
                 </configuration>
             </plugin>
         </plugins>

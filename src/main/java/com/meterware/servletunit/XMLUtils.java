@@ -25,14 +25,42 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class XMLUtils.
+ */
 abstract class XMLUtils {
 
+    /**
+     * Gets the child node value.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     *
+     * @return the child node value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getChildNodeValue(Element root, String childNodeName) throws SAXException {
         return getChildNodeValue(root, childNodeName, null);
     }
 
+    /**
+     * Gets the child node value.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the child node value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getChildNodeValue(Element root, String childNodeName, String defaultValue) throws SAXException {
         NodeList nl = root.getElementsByTagName(childNodeName);
         if (nl.getLength() == 1) {
@@ -44,6 +72,17 @@ abstract class XMLUtils {
         return defaultValue;
     }
 
+    /**
+     * Gets the text value.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the text value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getTextValue(Node node) throws SAXException {
         Node textNode = node.getFirstChild();
         if (textNode == null) {
@@ -55,6 +94,16 @@ abstract class XMLUtils {
         return textNode.getNodeValue();
     }
 
+    /**
+     * Checks for child node.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     *
+     * @return true, if successful
+     */
     static boolean hasChildNode(Element root, String childNodeName) {
         NodeList nl = root.getElementsByTagName(childNodeName);
         return nl.getLength() > 0;

@@ -40,6 +40,7 @@ import org.w3c.dom.html.HTMLDocument;
  */
 public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
 
+    /** The Constant logger. */
     private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);
 
     /**
@@ -75,9 +76,10 @@ public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {
     }
 
     /**
-     * load
+     * load.
      *
      * @param response
+     *            the response
      */
     @Override
     public void load(WebResponse response) {

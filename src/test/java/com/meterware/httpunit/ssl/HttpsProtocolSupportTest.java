@@ -32,15 +32,15 @@ import javax.net.ssl.SSLSocketFactory;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the HttpsProtocolSupport
- *
- * @author <a href="mailto:russ@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:wf@bitplan.com">Wolfgang Fahl</a>
+ * Tests the HttpsProtocolSupport.
  */
 class HttpsProtocolSupportTest {
 
     /**
-     * test the available HttpsProtocolProviders are available
+     * test the available HttpsProtocolProviders are available.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void provider() throws Exception {
@@ -54,7 +54,10 @@ class HttpsProtocolSupportTest {
     }
 
     /**
-     * test the available HttpsProtocolProviders
+     * test the available HttpsProtocolProviders.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void providerIBM() throws Exception {
@@ -69,9 +72,10 @@ class HttpsProtocolSupportTest {
     }
 
     /**
-     * test the socket Factory convenience method as proposed by Florian Weimar
+     * test the socket Factory convenience method as proposed by Florian Weimar.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void socketFactory() throws Exception {

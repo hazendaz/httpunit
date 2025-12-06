@@ -23,16 +23,16 @@ import com.meterware.httpunit.scripting.DocumentElement;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLElementScriptable.
+ */
 class HTMLElementScriptable extends ScriptableDelegate implements DocumentElement {
 
-    /**
-     * the element that I am scripting for
-     */
+    /** the element that I am scripting for. */
     private HTMLElement _element;
 
     /**
+     * Gets the element.
+     *
      * @return the _element
      */
     protected HTMLElement get_element() {
@@ -60,9 +60,10 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     }
 
     /**
-     * get the content of the given attribute
+     * get the content of the given attribute.
      *
      * @param attributeName
+     *            the attribute name
      *
      * @return the attribute as a string
      */
@@ -71,19 +72,22 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     }
 
     /**
-     * set the attribute with the given attribute name to the given value
+     * set the attribute with the given attribute name to the given value.
      *
      * @param attributeName
+     *            the attribute name
      * @param value
+     *            the value
      */
     public void setAttribute(String attributeName, Object value) {
         _element.setAttribute(attributeName, value);
     }
 
     /**
-     * remove the given attribute
+     * remove the given attribute.
      *
      * @param attributeName
+     *            the attribute name
      */
     public void removeAttribute(String attributeName) {
         _element.removeAttribute(attributeName);
@@ -92,21 +96,22 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
-        if (eventName.toLowerCase().equals("onclick")) {
+        if (eventName.equalsIgnoreCase("onclick")) {
             handleEvent("onmousedown");
         }
         String eventScript = getAttribute(eventName);
         boolean result = doEventScript(eventScript);
-        if (eventName.toLowerCase().equals("onclick")) {
+        if (eventName.equalsIgnoreCase("onclick")) {
             handleEvent("onmouseup");
         }
         return result;
     }
 
     /**
-     * construct me from a given element
+     * construct me from a given element.
      *
      * @param element
+     *            the element
      */
     public HTMLElementScriptable(HTMLElement element) {
         _element = element;

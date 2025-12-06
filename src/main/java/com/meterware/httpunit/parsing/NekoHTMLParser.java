@@ -29,10 +29,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bw@xmlizer.biz">Bernhard Wagner</a>
- * @author <a href="mailto:Artashes.Aghajanyan@lycos-europe.com">Artashes Aghajanyan</a>
- **/
+ * The Class NekoHTMLParser.
+ */
 class NekoHTMLParser implements HTMLParser {
 
     /**
@@ -79,5 +77,6 @@ class NekoHTMLParser implements HTMLParser {
         return true;
     }
 
+    /** The Constant NBSP. */
     private static final char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
 }

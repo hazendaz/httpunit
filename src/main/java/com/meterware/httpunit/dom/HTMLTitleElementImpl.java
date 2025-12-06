@@ -24,10 +24,11 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTitleElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLTitleElementImpl.
+ */
 public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -35,12 +36,22 @@ public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleEl
         return new HTMLTitleElementImpl();
     }
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Override
     public String getText() {
         Text contentNode = getContentNode();
         return contentNode == null ? "" : contentNode.getData();
     }
 
+    /**
+     * Gets the content node.
+     *
+     * @return the content node
+     */
     private Text getContentNode() {
         NodeList childNodes = getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -51,6 +62,12 @@ public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleEl
         return null;
     }
 
+    /**
+     * Sets the text.
+     *
+     * @param text
+     *            the new text
+     */
     @Override
     public void setText(String text) {
         Text newChild = getOwnerDocument().createTextNode(text);

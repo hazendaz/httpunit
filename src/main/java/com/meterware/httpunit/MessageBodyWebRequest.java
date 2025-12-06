@@ -34,12 +34,20 @@ import java.net.URLConnection;
  **/
 public abstract class MessageBodyWebRequest extends WebRequest {
 
+    /** The body. */
     protected MessageBody _body;
+
+    /** The mime encoded. */
     private boolean _mimeEncoded;
 
     /**
      * Constructs a web request using a specific absolute url string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     * @param mimeEncoded
+     *            the mime encoded
+     */
     protected MessageBodyWebRequest(String urlString, boolean mimeEncoded) {
         super(urlString);
         _mimeEncoded = mimeEncoded;
@@ -47,7 +55,12 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
     /**
      * Constructs a web request using a specific absolute url string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     * @param messageBody
+     *            the message body
+     */
     protected MessageBodyWebRequest(String urlString, MessageBody messageBody) {
         super(urlString);
         _body = messageBody;
@@ -55,7 +68,16 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     * @param mimeEncoded
+     *            the mime encoded
+     */
     protected MessageBodyWebRequest(URL urlBase, String urlString, String target, boolean mimeEncoded) {
         super(urlBase, urlString, target);
         _mimeEncoded = mimeEncoded;
@@ -64,8 +86,17 @@ public abstract class MessageBodyWebRequest extends WebRequest {
     /**
      * Constructs a web request for a form submitted via a button.
      *
-     * @since 1.6
-     **/
+     * @param sourceForm
+     *            the source form
+     * @param parameterHolder
+     *            the parameter holder
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     protected MessageBodyWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x,
             int y) {
         super(sourceForm, parameterHolder, button, x, y);
@@ -75,7 +106,10 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
     /**
      * Constructs a web request for a form submitted via script.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     */
     protected MessageBodyWebRequest(WebForm sourceForm) {
         super(sourceForm, WebRequest.newParameterHolder(sourceForm));
         _mimeEncoded = sourceForm.isSubmitAsMime();
@@ -84,7 +118,9 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
     /**
      * Subclasses may override this method to provide a message body for the request.
-     **/
+     *
+     * @return the message body
+     */
     protected MessageBody getMessageBody() {
         return _body;
     }
@@ -128,6 +164,14 @@ public abstract class MessageBodyWebRequest extends WebRequest {
      **/
     public static class InputStreamMessageBody extends MessageBody {
 
+        /**
+         * Instantiates a new input stream message body.
+         *
+         * @param source
+         *            the source
+         * @param contentType
+         *            the content type
+         */
         public InputStreamMessageBody(InputStream source, String contentType) {
             super(null);
             _source = source;
@@ -136,7 +180,9 @@ public abstract class MessageBodyWebRequest extends WebRequest {
 
         /**
          * Returns the content type of this message body.
-         **/
+         *
+         * @return the content type
+         */
         @Override
         public String getContentType() {
             return _contentType;
@@ -146,7 +192,9 @@ public abstract class MessageBodyWebRequest extends WebRequest {
          * Transmits the body of this request as a sequence of bytes.
          *
          * @param outputStream
+         *            the output stream
          * @param parameters
+         *            the parameters
          *
          * @throws IOException
          *             if the tranmission fails
@@ -167,7 +215,10 @@ public abstract class MessageBodyWebRequest extends WebRequest {
         }
 
         /**
+         * Mark.
+         *
          * @throws IOException
+         *             Signals that an I/O exception has occurred.
          */
         public void mark() throws IOException {
             if (written) {
@@ -182,8 +233,13 @@ public abstract class MessageBodyWebRequest extends WebRequest {
             }
         }
 
+        /** The written. */
         private boolean written = false;
+
+        /** The source. */
         private InputStream _source;
+
+        /** The content type. */
         private String _contentType;
     }
 }

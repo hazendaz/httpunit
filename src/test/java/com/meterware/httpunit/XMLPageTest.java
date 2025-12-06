@@ -27,11 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,9 +39,14 @@ import org.xml.sax.SAXException;
 /**
  * A test for the XML handling functionality.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class XMLPageTest extends HttpUnitTest {
+class XMLPageTest extends HttpUnitTest {
 
+    /**
+     * Xml.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void xml() throws Exception {
         assertDoesNotThrow(() -> {
@@ -57,9 +61,10 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     /**
-     * test case for BR [2373755] by Frank Waldheim deactivated since it is the opposite of 1281655
+     * test case for BR [2373755] by Frank Waldheim deactivated since it is the opposite of 1281655.
      *
      * @throws Exception
+     *             the exception
      */
     @Disabled
     public void testXMLisHTML() throws Exception {
@@ -77,10 +82,12 @@ public class XMLPageTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2946821
+     * test for BR 2946821.
      *
-     * @throws SAXException
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     @Test
     void getDocumentElement() throws IOException, SAXException {
@@ -95,6 +102,12 @@ public class XMLPageTest extends HttpUnitTest {
         assertNotNull(docElement, "There should be a root element");
     }
 
+    /**
+     * Traversal.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void traversal() throws Exception {
         defineResource("SimplePage.xml",
@@ -108,7 +121,7 @@ public class XMLPageTest extends HttpUnitTest {
         pot.perform(new NodeUtils.NodeAction() {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal traversal, Element element) {
-                if (element.getNodeName().toLowerCase().equals("main")) {
+                if (element.getNodeName().equalsIgnoreCase("main")) {
                     traversal.pushContext("x");
                 } else {
                     for (Iterator i = traversal.getContexts(); i.hasNext();) {
@@ -127,7 +140,7 @@ public class XMLPageTest extends HttpUnitTest {
         String expected = "zero|xfirst|xsecond|xxnormal|xxsimple|xafter|end|";
         // new result
         // expected="HTML|HEAD|ZERO|xFIRST|xSECOND|xxNORMAL|xxSIMPLE|xAFTER|END|";
-        String got = sb.toString().toLowerCase();
+        String got = sb.toString().toLowerCase(Locale.ENGLISH);
         assertTrue(got.endsWith(expected), "Traversal result");
     }
 }

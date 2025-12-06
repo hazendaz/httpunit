@@ -26,9 +26,6 @@ import com.meterware.httpunit.parsing.HTMLParserListener;
  * HTML page.
  *
  * @deprecated as of 1.5.2, use HTMLParserListener
- *
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 @Deprecated
 public interface HtmlErrorListener extends HTMLParserListener {

@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.DOMException;
@@ -40,16 +41,31 @@ import org.w3c.dom.html.HTMLHtmlElement;
 import org.w3c.dom.html.HTMLTitleElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLDocumentImpl.
+ */
 public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTMLContainerElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The exemplars. */
     private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
+
+    /** The window. */
     private DomWindow _window;
+
+    /** The write buffer. */
     private StringBuilder _writeBuffer;
+
+    /** The container delegate. */
     private HTMLContainerDelegate _containerDelegate = new HTMLContainerDelegate(SKIP_IFRAMES);
 
+    /**
+     * Sets the i frames enabled.
+     *
+     * @param enabled
+     *            the new i frames enabled
+     */
     public void setIFramesEnabled(boolean enabled) {
         _containerDelegate = new HTMLContainerDelegate(enabled ? SKIP_IFRAMES : null);
     }
@@ -114,12 +130,22 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
     // -------------------------------------------- HTMLDocument methods
     // ----------------------------------------------------
 
+    /**
+     * Gets the title.
+     *
+     * @return the title
+     */
     @Override
     public String getTitle() {
         HTMLTitleElement result = getTitleElement();
         return result == null ? "" : result.getText();
     }
 
+    /**
+     * Gets the title element.
+     *
+     * @return the title element
+     */
     private HTMLTitleElement getTitleElement() {
         HTMLTitleElement result = null;
         NodeList titleNodes = getElementsByTagName("title");
@@ -132,6 +158,11 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return result;
     }
 
+    /**
+     * Gets the head element.
+     *
+     * @return the head element
+     */
     private HTMLHeadElement getHeadElement() {
         NodeList headNodes = getElementsByTagName("head");
         for (int i = 0; i < headNodes.getLength(); i++) {
@@ -146,6 +177,11 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return head;
     }
 
+    /**
+     * Gets the html element.
+     *
+     * @return the html element
+     */
     private HTMLHtmlElement getHtmlElement() {
         NodeList htmlNodes = getElementsByTagName("html");
         for (int i = 0; i < htmlNodes.getLength(); i++) {
@@ -160,6 +196,12 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return html;
     }
 
+    /**
+     * Sets the title.
+     *
+     * @param title
+     *            the new title
+     */
     @Override
     public void setTitle(String title) {
         HTMLTitleElement titleElement = getTitleElement();
@@ -172,21 +214,41 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         }
     }
 
+    /**
+     * Gets the referrer.
+     *
+     * @return the referrer
+     */
     @Override
     public String getReferrer() {
         return null;
     }
 
+    /**
+     * Gets the domain.
+     *
+     * @return the domain
+     */
     @Override
     public String getDomain() {
         return null;
     }
 
+    /**
+     * Gets the url.
+     *
+     * @return the url
+     */
     @Override
     public String getURL() {
         return null;
     }
 
+    /**
+     * Gets the body.
+     *
+     * @return the body
+     */
     @Override
     public HTMLElement getBody() {
         NodeList bodyNodes = getElementsByTagName("body");
@@ -199,24 +261,47 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return null;
     }
 
+    /**
+     * Sets the body.
+     *
+     * @param body
+     *            the new body
+     */
     @Override
     public void setBody(HTMLElement body) {
         getHtmlElement().appendChild(body);
     }
 
+    /**
+     * Gets the cookie.
+     *
+     * @return the cookie
+     */
     @Override
     public String getCookie() {
         return null;
     }
 
+    /**
+     * Sets the cookie.
+     *
+     * @param cookie
+     *            the new cookie
+     */
     @Override
     public void setCookie(String cookie) {
     }
 
+    /**
+     * Open.
+     */
     @Override
     public void open() {
     }
 
+    /**
+     * Close.
+     */
     @Override
     public void close() {
         if (getWindow().replaceText(getWriteBuffer().toString(), getMimeType())) {
@@ -224,20 +309,45 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         }
     }
 
+    /**
+     * Gets the mime type.
+     *
+     * @return the mime type
+     */
     private String getMimeType() {
         return "text/html";
     }
 
+    /**
+     * Write.
+     *
+     * @param text
+     *            the text
+     */
     @Override
     public void write(String text) {
         getWriteBuffer().append(text);
     }
 
+    /**
+     * Writeln.
+     *
+     * @param text
+     *            the text
+     */
     @Override
     public void writeln(String text) {
         getWriteBuffer().append(text).append((char) 0x0d).append((char) 0x0a);
     }
 
+    /**
+     * Gets the elements by name.
+     *
+     * @param elementName
+     *            the element name
+     *
+     * @return the elements by name
+     */
     @Override
     public NodeList getElementsByName(String elementName) {
         ArrayList<HTMLElementImpl> elements = new ArrayList<HTMLElementImpl>();
@@ -284,18 +394,39 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return copy;
     }
 
+    /**
+     * Gets the exemplar.
+     *
+     * @param tagName
+     *            the tag name
+     *
+     * @return the exemplar
+     */
     private static HTMLElementImpl getExemplar(String tagName) {
-        HTMLElementImpl impl = (HTMLElementImpl) _exemplars.get(tagName.toLowerCase());
+        HTMLElementImpl impl = (HTMLElementImpl) _exemplars.get(tagName.toLowerCase(Locale.ENGLISH));
         if (impl == null) {
             impl = new HTMLElementImpl();
         }
         return impl;
     }
 
+    /**
+     * To node case.
+     *
+     * @param nodeName
+     *            the node name
+     *
+     * @return the string
+     */
     String toNodeCase(String nodeName) {
         return nodeName.toUpperCase();
     }
 
+    /**
+     * Gets the container delegate.
+     *
+     * @return the container delegate
+     */
     HTMLContainerDelegate getContainerDelegate() {
         return _containerDelegate;
     }
@@ -328,7 +459,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
     }
 
     /**
-     * get the Window
+     * get the Window.
      *
      * @return the window
      */
@@ -342,6 +473,11 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return _window;
     }
 
+    /**
+     * Gets the write buffer.
+     *
+     * @return the write buffer
+     */
     StringBuilder getWriteBuffer() {
         if (_writeBuffer == null) {
             _writeBuffer = new StringBuilder();
@@ -349,10 +485,18 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
         return _writeBuffer;
     }
 
+    /**
+     * Clear write buffer.
+     */
     public void clearWriteBuffer() {
         _writeBuffer = null;
     }
 
+    /**
+     * Gets the base url.
+     *
+     * @return the base url
+     */
     URL getBaseUrl() {
         NodeList list = getElementsByTagName("base");
         if (list.getLength() == 0) {

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -40,17 +41,17 @@ import org.xml.sax.SAXException;
  **/
 public class HttpUnitUtils {
 
+    /** The Constant DEFAULT_TEXT_BUFFER_SIZE. */
     public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
 
-    /**
-     * set to true to debug Exception handling
-     */
+    /** set to true to debug Exception handling. */
     private static boolean EXCEPTION_DEBUG = true;
 
     /**
-     * handle Exceptions and thowables
+     * handle Exceptions and thowables.
      *
      * @param th
+     *            the th
      */
     public static void handleException(Throwable th) {
         if (EXCEPTION_DEBUG) {
@@ -59,7 +60,7 @@ public class HttpUnitUtils {
     }
 
     /**
-     * are we running in the Eclipse IDE?
+     * are we running in the Eclipse IDE?.
      *
      * @return whether we are running in the Eclipse environment
      */
@@ -96,9 +97,10 @@ public class HttpUnitUtils {
     }
 
     /**
-     * strip the quotes from a value
+     * strip the quotes from a value.
      *
      * @param value
+     *            the value
      *
      * @return the stripped value
      */
@@ -115,14 +117,22 @@ public class HttpUnitUtils {
     /**
      * Returns an interpretation of the specified URL-encoded string, using the ISO-8859-1 character set.
      *
-     * @since 1.6
-     **/
+     * @param byteString
+     *            the byte string
+     *
+     * @return the string
+     */
     public static String decode(String byteString) {
         return decode(byteString, "ISO-8859-1");
     }
 
     /**
      * Returns a string representation of a number, trimming off any trailing decimal zeros.
+     *
+     * @param number
+     *            the number
+     *
+     * @return the string
      */
     static String trimmedValue(Number number) {
         String rawNumber = number.toString();
@@ -147,6 +157,8 @@ public class HttpUnitUtils {
      *
      * @param string
      *            URL safe string to convert into its original form
+     * @param charset
+     *            the charset
      *
      * @return original string
      *
@@ -170,6 +182,9 @@ public class HttpUnitUtils {
      *            array of URL safe characters
      *
      * @return array of original bytes
+     *
+     * @throws IllegalArgumentException
+     *             the illegal argument exception
      */
     private static final byte[] decodeUrl(byte[] pArray) throws IllegalArgumentException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -198,9 +213,10 @@ public class HttpUnitUtils {
     }
 
     /**
-     * parse an InputStream to a string (for debugging)
+     * parse an InputStream to a string (for debugging).
      *
      * @param is
+     *            the is
      *
      * @return the string gotten from the inputString
      */
@@ -225,11 +241,17 @@ public class HttpUnitUtils {
     }
 
     /**
-     * parse the given inputSource with a new Parser
+     * parse the given inputSource with a new Parser.
      *
      * @param inputSource
+     *            the input source
      *
      * @return the document parsed from the input Source
+     *
+     * @throws SAXException
+     *             the SAX exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static Document parse(InputSource inputSource) throws SAXException, IOException {
         DocumentBuilder db = newParser();
@@ -251,11 +273,17 @@ public class HttpUnitUtils {
     }
 
     /**
-     * parse the given inputStream with a new Parser
+     * parse the given inputStream with a new Parser.
      *
      * @param inputStream
+     *            the input stream
      *
      * @return the document parsed from the input Stream
+     *
+     * @throws SAXException
+     *             the SAX exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public static Document parse(InputStream inputStream) throws SAXException, IOException {
         DocumentBuilder db = newParser();
@@ -278,6 +306,11 @@ public class HttpUnitUtils {
 
     /**
      * creates a parser using JAXP API.
+     *
+     * @return the document builder
+     *
+     * @throws SAXException
+     *             the SAX exception
      */
     public static DocumentBuilder newParser() throws SAXException {
         try {
@@ -293,7 +326,14 @@ public class HttpUnitUtils {
 
     /**
      * Returns a string array created by appending a string to an existing array. The existing array may be null.
-     **/
+     *
+     * @param oldValue
+     *            the old value
+     * @param newValue
+     *            the new value
+     *
+     * @return the string[]
+     */
     static String[] withNewValue(String[] oldValue, String newValue) {
         String[] result;
         if (oldValue == null) {
@@ -308,7 +348,14 @@ public class HttpUnitUtils {
 
     /**
      * Returns a string array created by appending an object to an existing array. The existing array may be null.
-     **/
+     *
+     * @param oldValue
+     *            the old value
+     * @param newValue
+     *            the new value
+     *
+     * @return the object[]
+     */
     static Object[] withNewValue(Object[] oldValue, Object newValue) {
         Object[] result;
         if (oldValue == null) {
@@ -324,6 +371,13 @@ public class HttpUnitUtils {
     /**
      * Return true if the first string contains the second. Case sensitivity is according to the setting of
      * HttpUnitOptions.matchesIgnoreCase
+     *
+     * @param string
+     *            the string
+     * @param substring
+     *            the substring
+     *
+     * @return true, if successful
      */
     static boolean contains(String string, String substring) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
@@ -335,6 +389,13 @@ public class HttpUnitUtils {
     /**
      * Return true if the first string starts with the second. Case sensitivity is according to the setting of
      * HttpUnitOptions.matchesIgnoreCase
+     *
+     * @param string
+     *            the string
+     * @param prefix
+     *            the prefix
+     *
+     * @return true, if successful
      */
     static boolean hasPrefix(String string, String prefix) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
@@ -346,6 +407,13 @@ public class HttpUnitUtils {
     /**
      * Return true if the first string equals the second. Case sensitivity is according to the setting of
      * HttpUnitOptions.matchesIgnoreCase
+     *
+     * @param string1
+     *            the string 1
+     * @param string2
+     *            the string 2
+     *
+     * @return true, if successful
      */
     static boolean matches(String string1, String string2) {
         if (HttpUnitOptions.getMatchesIgnoreCase()) {
@@ -355,7 +423,7 @@ public class HttpUnitUtils {
     }
 
     /**
-     * check whether the URL is a java script url
+     * check whether the URL is a java script url.
      *
      * @param urlString
      *            - the string to analyze
@@ -363,11 +431,16 @@ public class HttpUnitUtils {
      * @return - true if this is a javascript url
      */
     static boolean isJavaScriptURL(String urlString) {
-        return urlString.toLowerCase().startsWith("javascript:");
+        return urlString.toLowerCase(Locale.ENGLISH).startsWith("javascript:");
     }
 
     /**
      * Trims whitespace from the ends, and encodes from the middle. Spaces within quotes are respected.
+     *
+     * @param s
+     *            the s
+     *
+     * @return the string
      */
     static String encodeSpaces(String s) {
         s = s.trim();
@@ -397,6 +470,14 @@ public class HttpUnitUtils {
         return sb.toString();
     }
 
+    /**
+     * Replace entities.
+     *
+     * @param string
+     *            the string
+     *
+     * @return the string
+     */
     static String replaceEntities(String string) {
         int i = 0;
         int ampIndex;
@@ -418,6 +499,11 @@ public class HttpUnitUtils {
 
     /**
      * Strips the fragment identifier (if any) from the Url.
+     *
+     * @param rawUrl
+     *            the raw url
+     *
+     * @return the string
      */
     static String trimFragment(String rawUrl) {
         if (isJavaScriptURL(rawUrl)) {
@@ -427,6 +513,9 @@ public class HttpUnitUtils {
         return hashIndex < 0 ? rawUrl : rawUrl.substring(0, hashIndex);
     }
 
+    /**
+     * The Class ClasspathEntityResolver.
+     */
     static class ClasspathEntityResolver implements EntityResolver {
 
         @Override
@@ -454,6 +543,8 @@ public class HttpUnitUtils {
     }
 
     /**
+     * Checks if is exception debug.
+     *
      * @return the eXCEPTION_DEBUG
      */
     protected static boolean isEXCEPTION_DEBUG() {
@@ -461,8 +552,12 @@ public class HttpUnitUtils {
     }
 
     /**
+     * Sets the EXCEPTIO N DEBUG.
+     *
      * @param exception_debug
      *            the eXCEPTION_DEBUG to set
+     *
+     * @return true, if successful
      */
     public static boolean setEXCEPTION_DEBUG(boolean exception_debug) {
         boolean oldExceptionDebug = exception_debug;

@@ -52,6 +52,7 @@ import org.mortbay.jetty.servlet.ServletHolder;
  */
 public class PostTest {
 
+    /** The Constant resourceName. */
     /*
      * Server jetty; protected void setUp() { jetty = new Server(8989); } protected void tearDown() throws Exception {
      * jetty.stop(); }
@@ -59,12 +60,15 @@ public class PostTest {
     static final String resourceName = "test";
 
     /**
-     * check the webresponse
+     * check the webresponse.
      *
      * @param response
+     *            the response
      *
      * @throws SAXException
+     *             the SAX exception
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public void check(WebResponse response) throws SAXException, IOException {
         TestServlet.postCount = 0;
@@ -85,6 +89,12 @@ public class PostTest {
      * wc.getResponse(TestServlet.location+resourceName); check(response); }
      */
 
+    /**
+     * Multiple posts.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multiplePosts() throws Exception {
         TestServlet.location = "http://localhost/";
@@ -102,6 +112,12 @@ public class PostTest {
         }
     }
 
+    /**
+     * Multi part post.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void multiPartPost() throws Exception {
         TestServlet.location = "http://localhost/";
@@ -121,11 +137,17 @@ public class PostTest {
     }
 
     /**
-     * a Servlet that counts the posts being done
+     * a Servlet that counts the posts being done.
      */
     static class TestServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The post count. */
         public static int postCount = 0;
+
+        /** The location. */
         public static String location = null;
 
         @Override

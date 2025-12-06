@@ -38,25 +38,57 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
+/**
+ * The Class PseudoServerTest.
+ */
 class PseudoServerTest {
 
-    private PseudoServerTestSupport support = new PseudoServerTestSupport();
+    /** The Constant support. */
+    @RegisterExtension
+    private static final PseudoServerTestSupport support = new PseudoServerTestSupport();
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         support.setUpServer();
     }
 
+    /**
+     * Tear down http user agent test.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @AfterEach
     void tearDownHttpUserAgentTest() throws Exception {
         support.tearDownServer();
     }
 
+    /**
+     * Gets the host port.
+     *
+     * @return the host port
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private int getHostPort() throws IOException {
         return support.getHostPort();
     }
 
+    /**
+     * Not found status.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void notFoundStatus() throws Exception {
         SocketConnection conn = new SocketConnection("localhost", getHostPort());
@@ -64,6 +96,12 @@ class PseudoServerTest {
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getResponseCode(), "Response code");
     }
 
+    /**
+     * Status specification.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void statusSpecification() throws Exception {
         support.defineResource("error.htm", "Not Modified", 304);
@@ -75,6 +113,11 @@ class PseudoServerTest {
 
     /**
      * This tests simple access to the server without using any client classes.
+     *
+     * @return the via socket
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void getViaSocket() throws Exception {
@@ -99,6 +142,9 @@ class PseudoServerTest {
 
     /**
      * This tests simple access to the server without using any client classes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void badlyFormedMessageViaSocket() throws Exception {
@@ -121,6 +167,9 @@ class PseudoServerTest {
 
     /**
      * This tests simple access to the server without using any client classes.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void proxyGetViaSocket() throws Exception {
@@ -143,6 +192,17 @@ class PseudoServerTest {
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
+    /**
+     * Send HTTP line.
+     *
+     * @param os
+     *            the os
+     * @param line
+     *            the line
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void sendHTTPLine(OutputStream os, final String line) throws IOException {
         os.write(line.getBytes(StandardCharsets.UTF_8));
         os.write(13);
@@ -151,6 +211,9 @@ class PseudoServerTest {
 
     /**
      * This verifies that the PseudoServer detects and echoes its protocol.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void protocolMatching() throws Exception {
@@ -176,6 +239,9 @@ class PseudoServerTest {
 
     /**
      * This verifies that the PseudoServer can be restricted to a HTTP/1.0.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void protocolThrottling() throws Exception {
@@ -200,6 +266,12 @@ class PseudoServerTest {
         assertTrue(result.indexOf("Get this") > 0, "Did not find expected text");
     }
 
+    /**
+     * Pseudo servlet.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void pseudoServlet() throws Exception {
         String resourceName = "tellMe";
@@ -220,6 +292,12 @@ class PseudoServerTest {
         assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
+    /**
+     * Pseudo servlet with GET.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void pseudoServletWithGET() throws Exception {
         String resourceName = "tellMe";
@@ -241,6 +319,12 @@ class PseudoServerTest {
         assertEquals(expectedResponse, new String(response.getBody()), "Response");
     }
 
+    /**
+     * When parameter string contains empty value read later parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void whenParameterStringContainsEmptyValue_readLaterParameters() throws Exception {
         String resourceName = "tellMe";
@@ -266,6 +350,7 @@ class PseudoServerTest {
      * Verifies that it is possible to disable the content-type header.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void disableContentTypeHeader() throws Exception {
@@ -285,6 +370,12 @@ class PseudoServerTest {
         assertNull(response.getHeader("Content-Type"), "Found a content type header");
     }
 
+    /**
+     * Chunked request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void chunkedRequest() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
@@ -305,6 +396,12 @@ class PseudoServerTest {
 
     // need test: respond with HTTP_BAD_REQUEST if header line is bad
 
+    /**
+     * Chunked request followed by another.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void chunkedRequestFollowedByAnother() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
@@ -333,6 +430,12 @@ class PseudoServerTest {
                 "retrieved body");
     }
 
+    /**
+     * Chunked response.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void chunkedResponse() throws Exception {
         support.defineResource("/chunkedServlet", new PseudoServlet() {
@@ -351,6 +454,12 @@ class PseudoServerTest {
         assertNull(response.getHeader("Content-Length"), "No Content-Length header should have been sent");
     }
 
+    /**
+     * Persistent connection.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void persistentConnection() throws Exception {
         support.defineResource("/testServlet", new TestMethodServlet());
@@ -366,8 +475,12 @@ class PseudoServerTest {
         assertEquals("GET", resp3.getHeader("Allow"), "allow header");
     }
 
+    /**
+     * The Class TestMethodServlet.
+     */
     private class TestMethodServlet extends PseudoServlet {
 
+        /** The Constant GET_DATA. */
         private static final String GET_DATA = "This is from the TestMethodServlet - GET";
 
         @Override
@@ -390,6 +503,12 @@ class PseudoServerTest {
         }
     }
 
+    /**
+     * Bad method using pseudo servlet.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void badMethodUsingPseudoServlet() throws Exception {
         String resourceName = "tellMe";
@@ -402,6 +521,12 @@ class PseudoServerTest {
         assertEquals(HttpURLConnection.HTTP_BAD_METHOD, response.getResponseCode(), "Status code returned");
     }
 
+    /**
+     * Classpath directory.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void classpathDirectory() throws Exception {
         assertDoesNotThrow(() -> {
@@ -413,6 +538,12 @@ class PseudoServerTest {
         });
     }
 
+    /**
+     * Pseudo servlet request access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void pseudoServletRequestAccess() throws Exception {
         support.defineResource("/properties", new PseudoServlet() {
@@ -427,6 +558,12 @@ class PseudoServerTest {
         assertEquals("/properties", new String(response.getBody()), "retrieved body");
     }
 
+    /**
+     * Large delayed pseudo servlet request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void largeDelayedPseudoServletRequest() throws Exception {
         assertDoesNotThrow(() -> {
@@ -490,7 +627,7 @@ class PseudoServerTest {
     /**
      * This method generates a long MIME-encoded SOAP request message for use by testLargeDelayedPseudoServletRequest().
      *
-     * @return
+     * @return the string
      */
     private String generateLongMIMEPostData() {
         StringBuilder buf = new StringBuilder();

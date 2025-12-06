@@ -23,12 +23,17 @@ import javax.servlet.Filter;
 import javax.servlet.ServletException;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Interface FilterMetaData.
+ */
 interface FilterMetaData {
 
     /**
      * Returns the filter instance to use.
+     *
+     * @return the filter
+     *
+     * @throws ServletException
+     *             the servlet exception
      */
     Filter getFilter() throws ServletException;
 }

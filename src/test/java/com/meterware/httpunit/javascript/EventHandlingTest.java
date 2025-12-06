@@ -29,30 +29,40 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 import org.xml.sax.SAXException;
 
 /**
- * @author Wolfgang Fahl
+ * The Class EventHandlingTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class EventHandlingTest extends HttpUnitTest {
 
+    /** The wc. */
     private WebConversation _wc;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
     }
 
     /**
-     * add a resource with the given name and title defining the given javaScript and content
+     * add a resource with the given name and title defining the given javaScript and content.
      *
      * @param name
+     *            the name
      * @param title
+     *            the title
+     * @param onLoad
+     *            the on load
      * @param javaScript
+     *            the java script
      * @param content
+     *            the content
      */
     private void addResource(String name, String title, String onLoad, String javaScript, String content) {
         if (onLoad == null) {
@@ -68,24 +78,29 @@ class EventHandlingTest extends HttpUnitTest {
     }
 
     /**
-     * get the response for the resource with the given name
+     * get the response for the resource with the given name.
      *
      * @param name
+     *            the name
      *
      * @return the response
      *
-     * @throws SAXException
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     private WebResponse getResponse(String name) throws IOException, SAXException {
         return _wc.getResponse(getHostPath() + "/" + name + ".html");
     }
 
     /**
-     * test for [ 1163753 ] partial patch for bug 771335 (DOM2 Events support) by Rafael Krzewski
+     * test for [ 1163753 ] partial patch for bug 771335 (DOM2 Events support) by Rafael Krzewski.
      *
-     * @throws SAXException
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     @Test
     void simpleEventHandler() throws IOException, SAXException {

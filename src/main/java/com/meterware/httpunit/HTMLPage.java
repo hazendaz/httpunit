@@ -27,7 +27,8 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,21 +38,38 @@ import org.xml.sax.SAXException;
 
 /**
  * This class represents an HTML page returned from a request.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  **/
 public class HTMLPage extends ParsedHTML {
 
+    /** The scriptable. */
     private Scriptable _scriptable;
 
+    /**
+     * Instantiates a new HTML page.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param characterSet
+     *            the character set
+     */
     HTMLPage(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, String characterSet) {
         super(response, frame, baseURL, baseTarget, null, characterSet);
     }
 
     /**
      * Returns the title of the page.
-     **/
+     *
+     * @return the title
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     public String getTitle() throws SAXException {
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("title");
         if (nl.getLength() == 0 || !nl.item(0).hasChildNodes()) {
@@ -62,12 +80,25 @@ public class HTMLPage extends ParsedHTML {
 
     /**
      * Returns the onLoad event script.
+     *
+     * @return the on load event
+     *
+     * @throws SAXException
+     *             the SAX exception
      */
     public String getOnLoadEvent() throws SAXException {
         Element mainElement = getMainElement((Document) getOriginalDOM());
         return mainElement == null ? "" : mainElement.getAttribute("onload");
     }
 
+    /**
+     * Gets the main element.
+     *
+     * @param document
+     *            the document
+     *
+     * @return the main element
+     */
     private Element getMainElement(Document document) {
         NodeList nl = document.getElementsByTagName("frameset");
         if (nl.getLength() == 0) {
@@ -79,7 +110,12 @@ public class HTMLPage extends ParsedHTML {
     /**
      * Returns the location of the linked stylesheet in the head &lt;code&gt; &lt;link type="text/css" rel="stylesheet"
      * href="/mystyle.css" /&gt; &lt;/code&gt;
-     **/
+     *
+     * @return the external style sheet
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     public String getExternalStyleSheet() throws SAXException {
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("link");
         int length = nl.getLength();
@@ -100,24 +136,29 @@ public class HTMLPage extends ParsedHTML {
      * name="robots" content="index" /&gt; &lt;meta name="robots" content="follow" /&gt; &lt;meta http-equiv="Expires"
      * content="now" /&gt; &lt;/code&gt; this can be used like this &lt;code&gt; getMetaTagContent("name","robots") will
      * return { "index","follow" } getMetaTagContent("http-equiv","Expires") will return { "now" } &lt;/code&gt;
-     **/
+     *
+     * @param attribute
+     *            the attribute
+     * @param attributeValue
+     *            the attribute value
+     *
+     * @return the meta tag content
+     */
     public String[] getMetaTagContent(String attribute, String attributeValue) {
-        Vector matches = new Vector<>();
+        List<String> matches = new ArrayList<>();
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("meta");
         int length = nl.getLength();
 
         for (int i = 0; i < length; i++) {
             if (attributeValue.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), attribute))) {
-                matches.addElement(NodeUtils.getNodeAttribute(nl.item(i), "content"));
+                matches.add(NodeUtils.getNodeAttribute(nl.item(i), "content"));
             }
         }
-        String[] result = new String[matches.size()];
-        matches.copyInto(result);
-        return result;
+        return matches.toArray(new String[0]);
     }
 
     /**
-     * scriptable for HTML Page
+     * scriptable for HTML Page.
      */
 
     public class Scriptable extends ScriptableDelegate {
@@ -143,6 +184,16 @@ public class HTMLPage extends ParsedHTML {
             return getNamedItem(getImages(), propertyName);
         }
 
+        /**
+         * Gets the named item.
+         *
+         * @param items
+         *            the items
+         * @param name
+         *            the name
+         *
+         * @return the named item
+         */
         private NamedDelegate getNamedItem(ScriptingHandler[] items, String name) {
             if (name == null) {
                 return null;
@@ -168,14 +219,32 @@ public class HTMLPage extends ParsedHTML {
             }
         }
 
+        /**
+         * Gets the parent.
+         *
+         * @return the parent
+         */
         public WebResponse.Scriptable getParent() {
             return getResponse().getScriptableObject();
         }
 
+        /**
+         * Gets the title.
+         *
+         * @return the title
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public String getTitle() throws SAXException {
             return HTMLPage.this.getTitle();
         }
 
+        /**
+         * Gets the links.
+         *
+         * @return the links
+         */
         public ScriptingHandler[] getLinks() {
             WebLink[] links = HTMLPage.this.getLinks();
             ScriptingHandler[] result = new WebLink.Scriptable[links.length];
@@ -185,6 +254,11 @@ public class HTMLPage extends ParsedHTML {
             return result;
         }
 
+        /**
+         * Gets the forms.
+         *
+         * @return the forms
+         */
         public ScriptingHandler[] getForms() {
             WebForm[] forms = HTMLPage.this.getForms();
             ScriptingHandler[] result = new ScriptingHandler[forms.length];
@@ -194,6 +268,11 @@ public class HTMLPage extends ParsedHTML {
             return result;
         }
 
+        /**
+         * Gets the images.
+         *
+         * @return the images
+         */
         public ScriptingHandler[] getImages() {
             WebImage[] images = HTMLPage.this.getImages();
             ScriptingHandler[] result = new WebImage.Scriptable[images.length];
@@ -203,39 +282,102 @@ public class HTMLPage extends ParsedHTML {
             return result;
         }
 
+        /**
+         * Instantiates a new scriptable.
+         */
         Scriptable() {
         }
 
+        /**
+         * Replace text.
+         *
+         * @param text
+         *            the text
+         * @param contentType
+         *            the content type
+         *
+         * @return true, if successful
+         */
         public boolean replaceText(String text, String contentType) {
             return getResponse().replaceText(text, contentType);
         }
 
+        /**
+         * Sets the cookie.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
         public void setCookie(String name, String value) {
             getResponse().setCookie(name, value);
         }
 
+        /**
+         * Gets the cookie.
+         *
+         * @return the cookie
+         */
         public String getCookie() {
             return emptyIfNull(getResponse().getCookieHeader());
         }
 
+        /**
+         * Empty if null.
+         *
+         * @param string
+         *            the string
+         *
+         * @return the string
+         */
         private String emptyIfNull(String string) {
             return string == null ? "" : string;
         }
 
+        /**
+         * Gets the element with ID.
+         *
+         * @param id
+         *            the id
+         *
+         * @return the element with ID
+         */
         public ScriptableDelegate getElementWithID(String id) {
             final HTMLElement elementWithID = HTMLPage.this.getElementWithID(id);
             return elementWithID == null ? null : (ScriptableDelegate) elementWithID.getScriptingHandler();
         }
 
+        /**
+         * Gets the elements by name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the elements by name
+         */
         public ScriptableDelegate[] getElementsByName(String name) {
             return getDelegates(HTMLPage.this.getElementsWithName(name));
         }
 
+        /**
+         * Gets the elements by tag name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the elements by tag name
+         */
         public ScriptableDelegate[] getElementsByTagName(String name) {
             return getDelegates(HTMLPage.this.getElementsByTagName(HTMLPage.this.getRootNode(), name));
         }
     }
 
+    /**
+     * Gets the scriptable object.
+     *
+     * @return the scriptable object
+     */
     Scriptable getScriptableObject() {
         if (_scriptable == null) {
             _scriptable = new Scriptable();
@@ -245,13 +387,17 @@ public class HTMLPage extends ParsedHTML {
     }
 
     /**
-     * parse the given test with the given URL
+     * parse the given test with the given URL.
      *
      * @param text
+     *            the text
      * @param pageURL
+     *            the page URL
      *
      * @throws SAXException
+     *             the SAX exception
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public void parse(String text, URL pageURL) throws SAXException, IOException {
         HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {

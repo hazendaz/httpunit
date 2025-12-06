@@ -23,10 +23,11 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLParagraphElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLParagraphElementImpl.
  */
 public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLParagraphElement, HTMLContainerElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -65,11 +66,22 @@ public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLPar
     // ----------------------------------------- HTMLParagraphElement methods
     // -----------------------------------------------
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
         return getAttributeWithNoDefault("align");
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
         setAttribute("align", align);

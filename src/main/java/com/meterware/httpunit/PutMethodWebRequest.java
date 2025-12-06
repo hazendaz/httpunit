@@ -24,11 +24,6 @@ import java.io.InputStream;
 /**
  * A web request using the PUT protocol. The objectives of this class are to suport an HTTP PUT petition so we can test
  * this HTTP requests. <B>Documentation</B> See the HTTP 1.1 [<a href="http://www.w3.org/Protocols/HTTP/">spec</a>]
- *
- * @author Tom Watkins
- * @author Deepa Dihr
- * @author Marcos Tarruella
- * @author Russell Gold
  **/
 public class PutMethodWebRequest extends MessageBodyWebRequest {
 

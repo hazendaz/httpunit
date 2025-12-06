@@ -25,15 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
+ * The Class WebImageTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
-public class WebImageTest extends HttpUnitTest {
+class WebImageTest extends HttpUnitTest {
 
+    /**
+     * Gets the images.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getImages() throws Exception {
         defineResource("GetImagePage.html",
@@ -51,9 +54,10 @@ public class WebImageTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon
+     * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void getImageManyTimes() throws Exception {
@@ -88,11 +92,20 @@ public class WebImageTest extends HttpUnitTest {
         } // for
     }
 
+    /** The Constant MAX_GIFTESTCOUNT. */
     public static final int MAX_GIFTESTCOUNT = 15000;
 
     /**
      * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon and rlindsjo as
-     * responded in the sourceforge tracker by himself
+     * responded in the sourceforge tracker by himself.
+     *
+     * @param wc
+     *            the wc
+     * @param url
+     *            the url
+     *
+     * @throws Exception
+     *             the exception
      */
     public void dotestGetImageManyTimes(WebConversation wc, String url) throws Exception {
         String delim = "";
@@ -121,9 +134,10 @@ public class WebImageTest extends HttpUnitTest {
 
     /**
      * test for bug report [ 1432236 ] Downloading gif images uses up sockets by Sir Runcible Spoon as responded by
-     * himself and rlindsjo
+     * himself and rlindsjo.
      *
      * @throws Exception
+     *             the exception
      */
     public void xtestGetImageManyTimes2() throws Exception {
         WebConversation wc = new WebConversation();
@@ -138,6 +152,12 @@ public class WebImageTest extends HttpUnitTest {
         dotestGetImageManyTimes(wc, "http://localhost/1x1.gif");
     }
 
+    /**
+     * Find image and link.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findImageAndLink() throws Exception {
         defineResource("SimplePage.html",
@@ -161,6 +181,12 @@ public class WebImageTest extends HttpUnitTest {
         assertEquals("somewhere.htm", link.getURLString(), "Link URL");
     }
 
+    /**
+     * Image request.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void imageRequest() throws Exception {
         defineResource("grouped/SimplePage.html",

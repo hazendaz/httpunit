@@ -22,18 +22,37 @@ package com.meterware.servletunit;
 import java.util.ArrayList;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class FilterUrlMap.
+ */
 class FilterUrlMap {
 
+    /** The url patterns. */
     private ArrayList _urlPatterns = new ArrayList<>();
+
+    /** The filters. */
     private ArrayList _filters = new ArrayList<>();
 
+    /**
+     * Put.
+     *
+     * @param urlPattern
+     *            the url pattern
+     * @param metaData
+     *            the meta data
+     */
     void put(String urlPattern, FilterMetaData metaData) {
         _urlPatterns.add(UrlPatternMatcher.newPatternMatcher(urlPattern));
         _filters.add(metaData);
     }
 
+    /**
+     * Gets the matching filters.
+     *
+     * @param resourceName
+     *            the resource name
+     *
+     * @return the matching filters
+     */
     FilterMetaData[] getMatchingFilters(String resourceName) {
         ArrayList matches = new ArrayList<>();
         for (int i = 0; i < _urlPatterns.size(); i++) {

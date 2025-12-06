@@ -35,6 +35,7 @@ import java.net.URLStreamHandler;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Locale;
 
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -44,23 +45,46 @@ import org.xml.sax.SAXException;
  **/
 public abstract class WebRequest {
 
+    /** The Constant REFERER_HEADER_NAME. */
     static final String REFERER_HEADER_NAME = "Referer";
 
+    /** The javascript stream handler. */
     private static URLStreamHandler JAVASCRIPT_STREAM_HANDLER = new JavascriptURLStreamHandler();
+
+    /** The https stream handler. */
     private static URLStreamHandler HTTPS_STREAM_HANDLER = new HttpsURLStreamHandler();
 
+    /** The parameter holder. */
     private final ParameterHolder _parameterHolder;
 
+    /** The url base. */
     private URL _urlBase;
+
+    /** The source frame. */
     private FrameSelector _sourceFrame;
+
+    /** The request target. */
     private String _requestTarget;
+
+    /** The url string. */
     private String _urlString;
+
+    /** The headers. */
     private Hashtable _headers;
+
+    /** The web request source. */
     private WebRequestSource _webRequestSource;
+
+    /** The referring page. */
     private WebResponse _referringPage;
 
+    /** The button. */
     private SubmitButton _button;
+
+    /** The source element. */
     private Element _sourceElement;
+
+    /** The character set. */
     private String _characterSet;
 
     /**
@@ -103,7 +127,7 @@ public abstract class WebRequest {
     }
 
     /**
-     * Creates a new URL, handling the case where the relative URL begins with a '?'
+     * Creates a new URL, handling the case where the relative URL begins with a '?'.
      *
      * @param base
      *            - the URL to start from
@@ -111,12 +135,15 @@ public abstract class WebRequest {
      *            - additional specification string
      *
      * @return the URL
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
      */
     private URL newURL(final URL base, final String spec) throws MalformedURLException {
-        if (spec.toLowerCase().startsWith("javascript:")) {
+        if (spec.toLowerCase(Locale.ENGLISH).startsWith("javascript:")) {
             return new URL("javascript", null, -1, spec.substring("javascript:".length()), JAVASCRIPT_STREAM_HANDLER);
         }
-        if (spec.toLowerCase().startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
+        if (spec.toLowerCase(Locale.ENGLISH).startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
             return new URL("https", null, -1, spec.substring("https:".length()), HTTPS_STREAM_HANDLER);
         }
         if (getURLBase() == null || getURLString().indexOf(':') > 0) {
@@ -128,6 +155,19 @@ public abstract class WebRequest {
         return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
     }
 
+    /**
+     * New combined URL.
+     *
+     * @param base
+     *            the base
+     * @param spec
+     *            the spec
+     *
+     * @return the url
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
         if (base == null) {
             return new URL(getNormalizedURL(spec));
@@ -138,12 +178,28 @@ public abstract class WebRequest {
         return new URL(base, getNormalizedURL(spec));
     }
 
+    /**
+     * Gets the URL directory.
+     *
+     * @param base
+     *            the base
+     *
+     * @return the URL directory
+     */
     private String getURLDirectory(final URL base) {
         String url = base.toExternalForm();
         int i = url.lastIndexOf('/');
         return url.substring(0, i + 1);
     }
 
+    /**
+     * Gets the normalized URL.
+     *
+     * @param url
+     *            the url
+     *
+     * @return the normalized URL
+     */
     private String getNormalizedURL(String url) {
         int questionIndex = url.indexOf('?');
         if (questionIndex < 0) {
@@ -152,6 +208,14 @@ public abstract class WebRequest {
         return getNormalizedPath(url.substring(0, questionIndex)) + url.substring(questionIndex);
     }
 
+    /**
+     * Gets the normalized path.
+     *
+     * @param path
+     *            the path
+     *
+     * @return the normalized path
+     */
     private String getNormalizedPath(String path) {
         if (path.lastIndexOf("//") > path.lastIndexOf("://") + 1) {
             return getNormalizedPath(stripDoubleSlashes(path));
@@ -165,17 +229,41 @@ public abstract class WebRequest {
         return path;
     }
 
+    /**
+     * Strip in place navigation.
+     *
+     * @param url
+     *            the url
+     *
+     * @return the string
+     */
     private String stripInPlaceNavigation(String url) {
         int i = url.lastIndexOf("/./");
         return url.substring(0, i + 1) + url.substring(i + 2);
     }
 
+    /**
+     * Strip up navigation.
+     *
+     * @param url
+     *            the url
+     *
+     * @return the string
+     */
     private String stripUpNavigation(String url) {
         int i = url.indexOf("/..");
         int j = url.lastIndexOf("/", i - 1);
         return url.substring(0, j + 1) + url.substring(i + 3);
     }
 
+    /**
+     * Strip double slashes.
+     *
+     * @param url
+     *            the url
+     *
+     * @return the string
+     */
     private String stripDoubleSlashes(String url) {
         int i = url.lastIndexOf("//");
         return url.substring(0, i) + url.substring(i + 1);
@@ -183,6 +271,8 @@ public abstract class WebRequest {
 
     /**
      * Returns the target for this web request.
+     *
+     * @return the target
      */
     public String getTarget() {
         return _requestTarget;
@@ -190,6 +280,8 @@ public abstract class WebRequest {
 
     /**
      * Returns the frame from which this request originates.
+     *
+     * @return the source frame
      */
     FrameSelector getSourceFrame() {
         return _sourceFrame;
@@ -201,6 +293,8 @@ public abstract class WebRequest {
     protected String method;
 
     /**
+     * Gets the method.
+     *
      * @return the method
      */
     public String getMethod() {
@@ -210,7 +304,9 @@ public abstract class WebRequest {
     /**
      * Returns the query string defined for this request. The query string is sent to the HTTP server as part of the
      * request header. This default implementation returns an empty string.
-     **/
+     *
+     * @return the query string
+     */
     public String getQueryString() {
         return "";
     }
@@ -219,21 +315,36 @@ public abstract class WebRequest {
 
     /**
      * Sets the value of a parameter in a web request.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public void setParameter(String name, String value) {
         _parameterHolder.setParameter(name, value);
     }
 
     /**
      * Sets the multiple values of a parameter in a web request.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param values
+     *            the values
+     */
     public void setParameter(String name, String[] values) {
         _parameterHolder.setParameter(name, values);
     }
 
     /**
      * Sets the multiple values of a file upload parameter in a web request.
-     **/
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param files
+     *            the files
+     */
     public void setParameter(String parameterName, UploadFileSpec[] files) {
         if (!maySelectFile(parameterName)) {
             throw new IllegalNonFileParameterException(parameterName);
@@ -249,9 +360,14 @@ public abstract class WebRequest {
      * value of the button, but also the position of the mouse at the time of the click is submitted with the form. This
      * method allows the caller to override the position selected when this request was created.
      *
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
      * @exception IllegalRequestParameterException
      *                thrown if the request was not created from a form with an image button.
-     **/
+     */
     public void setImageButtonClickPosition(int x, int y) throws IllegalRequestParameterException {
         if (_button == null) {
             throw new IllegalButtonPositionException();
@@ -261,28 +377,54 @@ public abstract class WebRequest {
 
     /**
      * Returns true if the specified parameter is a file field.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is file parameter
+     */
     public boolean isFileParameter(String name) {
         return _parameterHolder.isFileParameter(name);
     }
 
     /**
      * Sets the file for a parameter upload in a web request.
-     **/
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param file
+     *            the file
+     */
     public void selectFile(String parameterName, File file) {
         setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(file) });
     }
 
     /**
      * Sets the file for a parameter upload in a web request.
-     **/
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param file
+     *            the file
+     * @param contentType
+     *            the content type
+     */
     public void selectFile(String parameterName, File file, String contentType) {
         setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(file, contentType) });
     }
 
     /**
      * Sets the file for a parameter upload in a web request.
-     **/
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param fileName
+     *            the file name
+     * @param inputStream
+     *            the input stream
+     * @param contentType
+     *            the content type
+     */
     public void selectFile(String parameterName, String fileName, InputStream inputStream, String contentType) {
         setParameter(parameterName, new UploadFileSpec[] { new UploadFileSpec(fileName, inputStream, contentType) });
     }
@@ -290,8 +432,8 @@ public abstract class WebRequest {
     /**
      * Returns an array of all parameter names defined as part of this web request.
      *
-     * @since 1.3.1
-     **/
+     * @return the request parameter names
+     */
     public String[] getRequestParameterNames() {
         final HashSet<String> names = new HashSet<>();
         ParameterProcessor pp = new ParameterProcessor() {
@@ -318,8 +460,11 @@ public abstract class WebRequest {
     /**
      * Returns the value of a parameter in this web request.
      *
+     * @param name
+     *            the name
+     *
      * @return the value of the named parameter, or empty string if it is not set.
-     **/
+     */
     public String getParameter(String name) {
         String[] values = getParameterValues(name);
         return values.length == 0 ? "" : values[0];
@@ -327,14 +472,22 @@ public abstract class WebRequest {
 
     /**
      * Returns the multiple default values of the named parameter.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter values
+     */
     public String[] getParameterValues(String name) {
         return _parameterHolder.getParameterValues(name);
     }
 
     /**
      * Removes a parameter from this web request.
-     **/
+     *
+     * @param name
+     *            the name
+     */
     public void removeParameter(String name) {
         _parameterHolder.removeParameter(name);
     }
@@ -350,35 +503,71 @@ public abstract class WebRequest {
 
     /**
      * Constructs a web request using an absolute URL string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     */
     protected WebRequest(String urlString) {
         this(null, urlString);
     }
 
     /**
      * Constructs a web request using a base URL and a relative URL string.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     */
     protected WebRequest(URL urlBase, String urlString) {
         this(urlBase, urlString, TOP_FRAME);
     }
 
     /**
      * Constructs a web request using a base request and a relative URL string.
-     **/
+     *
+     * @param baseRequest
+     *            the base request
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     protected WebRequest(WebRequest baseRequest, String urlString, String target) throws MalformedURLException {
         this(baseRequest.getURL(), urlString, target);
     }
 
     /**
      * Constructs a web request using a base URL, a relative URL string, and a target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     protected WebRequest(URL urlBase, String urlString, String target) {
         this(urlBase, urlString, FrameSelector.TOP_FRAME, target);
     }
 
     /**
      * Constructs a web request using a base URL, a relative URL string, and a target.
-     **/
+     *
+     * @param referer
+     *            the referer
+     * @param sourceElement
+     *            the source element
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     protected WebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target) {
         this(urlBase, urlString, referer.getFrame(), target != null ? target : referer.getBaseTarget());
         _sourceElement = sourceElement;
@@ -388,7 +577,16 @@ public abstract class WebRequest {
 
     /**
      * Constructs a web request using a base URL, a relative URL string, and a target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param frame
+     *            the frame
+     * @param target
+     *            the target
+     */
     protected WebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
         this(urlBase, urlString, frame, target, new UncheckedParameterHolder());
     }
@@ -416,6 +614,14 @@ public abstract class WebRequest {
         }
     }
 
+    /**
+     * Instantiates a new web request.
+     *
+     * @param requestSource
+     *            the request source
+     * @param parameterHolder
+     *            the parameter holder
+     */
     protected WebRequest(WebRequestSource requestSource, ParameterHolder parameterHolder) {
         this(requestSource.getBaseURL(), requestSource.getRelativePage(), requestSource.getFrame(),
                 requestSource.getTarget(), parameterHolder);
@@ -423,6 +629,14 @@ public abstract class WebRequest {
         _sourceElement = requestSource.getElement();
     }
 
+    /**
+     * New parameter holder.
+     *
+     * @param requestSource
+     *            the request source
+     *
+     * @return the parameter holder
+     */
     static ParameterHolder newParameterHolder(WebRequestSource requestSource) {
         if (HttpUnitOptions.getParameterValuesValidated()) {
             return requestSource;
@@ -432,17 +646,36 @@ public abstract class WebRequest {
 
     /**
      * Constructs a web request using a base URL, a relative URL string, and a target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param sourceFrame
+     *            the source frame
+     * @param requestTarget
+     *            the request target
+     * @param parameterHolder
+     *            the parameter holder
+     */
     private WebRequest(URL urlBase, String urlString, FrameSelector sourceFrame, String requestTarget,
             ParameterHolder parameterHolder) {
         _urlBase = urlBase;
         _sourceFrame = sourceFrame;
         _requestTarget = requestTarget;
-        _urlString = urlString.toLowerCase().startsWith("http") ? escape(urlString) : urlString;
+        _urlString = urlString.toLowerCase(Locale.ENGLISH).startsWith("http") ? escape(urlString) : urlString;
         _parameterHolder = parameterHolder;
         _characterSet = parameterHolder.getCharacterSet();
     }
 
+    /**
+     * Escape.
+     *
+     * @param urlString
+     *            the url string
+     *
+     * @return the string
+     */
     private static String escape(String urlString) {
         if (urlString.indexOf(' ') < 0) {
             return urlString;
@@ -464,6 +697,11 @@ public abstract class WebRequest {
 
     /**
      * Returns true if selectFile may be called with this parameter.
+     *
+     * @param parameterName
+     *            the parameter name
+     *
+     * @return true, if successful
      */
     protected boolean maySelectFile(String parameterName) {
         return isFileParameter(parameterName);
@@ -471,13 +709,17 @@ public abstract class WebRequest {
 
     /**
      * Returns true if this request is to be MIME-encoded.
-     **/
+     *
+     * @return true, if is mime encoded
+     */
     protected boolean isMimeEncoded() {
         return false;
     }
 
     /**
      * Returns the content type of this request. If null, no content is specified.
+     *
+     * @return the content type
      */
     protected String getContentType() {
         return null;
@@ -485,14 +727,22 @@ public abstract class WebRequest {
 
     /**
      * Returns the character set required for this request.
-     **/
+     *
+     * @return the character set
+     */
     protected final String getCharacterSet() {
         return _characterSet;
     }
 
     /**
      * Performs any additional processing necessary to complete the request.
-     **/
+     *
+     * @param connection
+     *            the connection
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     protected void completeRequest(URLConnection connection) throws IOException {
         if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod(getMethod());
@@ -501,16 +751,32 @@ public abstract class WebRequest {
 
     /**
      * Writes the contents of the message body to the specified stream.
+     *
+     * @param stream
+     *            the stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     protected void writeMessageBody(OutputStream stream) throws IOException {
     }
 
+    /**
+     * Gets the URL base.
+     *
+     * @return the URL base
+     */
     protected final URL getURLBase() {
         return _urlBase;
     }
 
     // ------------------------------------- protected members ---------------------------------------------
 
+    /**
+     * Gets the URL string.
+     *
+     * @return the URL string
+     */
     protected String getURLString() {
         final String queryString = getQueryString();
         if (queryString.isEmpty()) {
@@ -519,6 +785,11 @@ public abstract class WebRequest {
         return _urlString + "?" + queryString;
     }
 
+    /**
+     * Gets the parameter holder.
+     *
+     * @return the parameter holder
+     */
     protected final ParameterHolder getParameterHolder() {
         return _parameterHolder;
     }
@@ -537,6 +808,11 @@ public abstract class WebRequest {
     /** The target indicating the same frame. **/
     static final String SAME_FRAME = "_self";
 
+    /**
+     * Gets the header dictionary.
+     *
+     * @return the header dictionary
+     */
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
             _headers = new Hashtable<>();
@@ -547,10 +823,20 @@ public abstract class WebRequest {
         return _headers;
     }
 
+    /**
+     * Gets the referer.
+     *
+     * @return the referer
+     */
     String getReferer() {
         return _headers == null ? null : (String) _headers.get(REFERER_HEADER_NAME);
     }
 
+    /**
+     * Gets the source scripting handler.
+     *
+     * @return the source scripting handler
+     */
     ScriptingHandler getSourceScriptingHandler() {
         WebRequestSource wrs = _webRequestSource;
         if (wrs != null) {

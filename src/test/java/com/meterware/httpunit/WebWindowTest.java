@@ -29,13 +29,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class WebWindowTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class WebWindowTest extends HttpUnitTest {
 
     /**
@@ -68,6 +65,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals(other, wc.getMainWindow(), "Main window");
     }
 
+    /**
+     * Test unknown target.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testUnknownTarget() throws Exception {
         defineResource("goThere", "You came back!");
@@ -86,6 +89,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You came back!", other.getCurrentPage().getText(), "Updated window contents");
     }
 
+    /**
+     * Test target in another window.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testTargetInAnotherWindow() throws Exception {
         defineWebPage("linker", "<a href='start.html' target='_blank'>start</a>");
@@ -104,6 +113,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You made it!", initialPage.getSubframeContents("somewhere").getText(), "New frame contents");
     }
 
+    /**
+     * Test close only window.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testCloseOnlyWindow() throws Exception {
         defineResource("goHere", "You made it!");
@@ -114,6 +129,12 @@ class WebWindowTest extends HttpUnitTest {
         assertNotNull(wc.getMainWindow(), "No main window was created");
     }
 
+    /**
+     * Test listeners.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testListeners() throws Exception {
         defineResource("goHere", "You made it!");
@@ -151,6 +172,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals(other, closedWindows.get(0), "Window reported closed");
     }
 
+    /**
+     * Test window independence.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testWindowIndependence() throws Exception {
         defineResource("next", "You made it!", "text/plain");
@@ -167,6 +194,12 @@ class WebWindowTest extends HttpUnitTest {
         assertEquals("You made it!", other.getCurrentPage().getText(), "New window contents");
     }
 
+    /**
+     * Test window context.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void testWindowContext() throws Exception {
         defineResource("next", "You made it!");

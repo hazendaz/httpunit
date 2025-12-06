@@ -22,10 +22,11 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLHeadElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLHeadElementImpl.
+ */
 public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -33,11 +34,22 @@ public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElem
         return new HTMLHeadElementImpl();
     }
 
+    /**
+     * Gets the profile.
+     *
+     * @return the profile
+     */
     @Override
     public String getProfile() {
         return getAttributeWithNoDefault("profile");
     }
 
+    /**
+     * Sets the profile.
+     *
+     * @param profile
+     *            the new profile
+     */
     @Override
     public void setProfile(String profile) {
         setAttribute("profile", profile);

@@ -29,17 +29,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class RequestDispatcherImpl.
+ */
 class RequestDispatcherImpl extends RequestContext implements RequestDispatcher {
 
+    /** The servlet meta data. */
     private ServletMetaData _servletMetaData;
 
+    /**
+     * Instantiates a new request dispatcher impl.
+     *
+     * @param application
+     *            the application
+     * @param url
+     *            the url
+     *
+     * @throws ServletException
+     *             the servlet exception
+     */
     RequestDispatcherImpl(WebApplication application, URL url) throws ServletException {
         super(url);
         _servletMetaData = application.getServletRequest(url);
     }
 
+    /**
+     * Gets the servlet meta data.
+     *
+     * @return the servlet meta data
+     */
     public ServletMetaData getServletMetaData() {
         return _servletMetaData;
     }

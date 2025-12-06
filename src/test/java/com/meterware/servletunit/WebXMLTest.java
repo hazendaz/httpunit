@@ -37,11 +37,13 @@ import com.meterware.httpunit.WebResponse;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -59,9 +61,11 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Tests for Web xml access
+ * Tests for Web xml access.
  */
 public class WebXMLTest {
+
+    /** The Constant TEST_TARGET_PATH. */
     private static final String TEST_TARGET_PATH = "target/build";
 
     /**
@@ -69,6 +73,7 @@ public class WebXMLTest {
      * Eclipse environment we'll give advice what to do
      *
      * @throws Exception
+     *             the exception
      */
     // TODO This test is only applicable when using a concrete servlet implementation such as tomcat-servlet-api and
     // thus unnecessary to test in this code base.
@@ -92,6 +97,12 @@ public class WebXMLTest {
         assertTrue(isDtdOnClasspath, msg);
     }
 
+    /**
+     * Basic access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void basicAccess() throws Exception {
 
@@ -107,46 +118,95 @@ public class WebXMLTest {
         assertEquals(SimpleGetServlet.RESPONSE_TEXT, response.getText(), "requested resource");
     }
 
+    /**
+     * Real path.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void realPath() throws Exception {
 
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
-        File webXml = createWebXml(new File(TEST_TARGET_PATH + "/base"), wxs);
+        File webXml = createWebXml(Path.of(TEST_TARGET_PATH + "/base").toFile(), wxs);
 
-        assertRealPath("path with no context", new ServletRunner(webXml), new File("something.txt"), "/something.txt");
+        assertRealPath("path with no context", new ServletRunner(webXml), Path.of("something.txt").toFile(),
+                "/something.txt");
         assertRealPath("path with context", new ServletRunner(webXml, "/testing"),
-                new File(TEST_TARGET_PATH + "/base/something.txt"), "/something.txt");
+                Path.of(TEST_TARGET_PATH + "/base/something.txt").toFile(), "/something.txt");
         // attempt for an assertion a long the line of bug report [ 1113728 ] getRealPath throws
         // IndexOutOfBoundsException on empty string
         // TODO check what was meant by Adrian Baker
         // assertRealPath( "empty path with context", new ServletRunner( webXml, "/testing" ), new File( "" ),
         // "/testing" );
-        assertRealPath("path with no context, no slash", new ServletRunner(webXml), new File("something.txt"),
+        assertRealPath("path with no context, no slash", new ServletRunner(webXml), Path.of("something.txt").toFile(),
                 "something.txt");
         assertRealPath("path with context, no slash", new ServletRunner(webXml, "/testing"),
-                new File(TEST_TARGET_PATH + "/base/something.txt"), "something.txt");
+                Path.of(TEST_TARGET_PATH + "/base/something.txt").toFile(), "something.txt");
     }
 
+    /**
+     * Assert real path.
+     *
+     * @param comment
+     *            the comment
+     * @param sr
+     *            the sr
+     * @param expectedFile
+     *            the expected file
+     * @param relativePath
+     *            the relative path
+     */
     private void assertRealPath(String comment, ServletRunner sr, File expectedFile, String relativePath) {
         String realPath = sr.getSession(true).getServletContext().getRealPath(relativePath);
         assertEquals(expectedFile.getAbsolutePath(), realPath, comment);
     }
 
+    /**
+     * Creates the web xml.
+     *
+     * @param wxs
+     *            the wxs
+     *
+     * @return the file
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private File createWebXml(WebXMLString wxs) throws IOException {
-        return createWebXml(new File(TEST_TARGET_PATH), wxs);
+        return createWebXml(Path.of(TEST_TARGET_PATH).toFile(), wxs);
     }
 
+    /**
+     * Creates the web xml.
+     *
+     * @param parent
+     *            the parent
+     * @param wxs
+     *            the wxs
+     *
+     * @return the file
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private File createWebXml(File parent, WebXMLString wxs) throws IOException {
-        File dir = new File(parent, "META-INF");
-        dir.mkdirs();
-        File webXml = new File(dir, "web.xml");
-        FileOutputStream fos = new FileOutputStream(webXml);
+        Path dir = parent.toPath().resolve("META-INF");
+        dir.toFile().mkdirs();
+        Path webXml = dir.resolve("web.xml");
+        OutputStream fos = Files.newOutputStream(webXml);
         fos.write(wxs.asText().getBytes(StandardCharsets.UTF_8));
         fos.close();
-        return webXml;
+        return webXml.toFile();
     }
 
+    /**
+     * Basic authentication config.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void basicAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -157,6 +217,12 @@ public class WebXMLTest {
         assertEquals("SampleRealm", app.getAuthenticationRealm(), "Realm name");
     }
 
+    /**
+     * Form authentication config.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formAuthenticationConfig() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -169,6 +235,12 @@ public class WebXMLTest {
         assertEquals("/Error", app.getErrorURL().getFile(), "Error path");
     }
 
+    /**
+     * Security constraint.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void securityConstraint() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -188,6 +260,9 @@ public class WebXMLTest {
 
     /**
      * Verifies that the default display name is null.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void defaultContextNameConfiguration() throws Exception {
@@ -200,6 +275,7 @@ public class WebXMLTest {
      * Verifies that a web application can read its display name from the configuration.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void contextNameConfiguration() throws Exception {
@@ -216,6 +292,12 @@ public class WebXMLTest {
         assertEquals("samples", servletContext.getServletContextName(), "Context name");
     }
 
+    /**
+     * Servlet parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void servletParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -234,6 +316,12 @@ public class WebXMLTest {
         assertEquals("12", ((HttpServlet) ic.getServlet()).getInitParameter("age"), "init parameter directly");
     }
 
+    /**
+     * Context parameters.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void contextParameters() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -256,9 +344,10 @@ public class WebXMLTest {
     }
 
     /**
-     * test for Patch [ 1838699 ] setContextParameter in ServletRunner
+     * test for Patch [ 1838699 ] setContextParameter in ServletRunner.
      *
      * @throws Exception
+     *             the exception
      */
     public void xtestSetContextParameter() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -279,23 +368,40 @@ public class WebXMLTest {
     }
 
     /**
-     * create a new document based on the given contents
+     * create a new document based on the given contents.
      *
      * @param contents
+     *            the contents
      *
      * @return the new document
      *
      * @throws SAXException
+     *             the SAX exception
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private Document newDocument(String contents) throws SAXException, IOException {
         return HttpUnitUtils.parse(toInputStream(contents));
     }
 
+    /**
+     * To input stream.
+     *
+     * @param contents
+     *            the contents
+     *
+     * @return the byte array input stream
+     */
     private ByteArrayInputStream toInputStream(String contents) {
         return new ByteArrayInputStream(contents.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * Basic authorization.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void basicAuthorization() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -331,6 +437,12 @@ public class WebXMLTest {
         assertTrue(ic.getRequest().isUserInRole("supervisor"), "User not assigned to 'supervisor' role");
     }
 
+    /**
+     * Form authentication.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void formAuthentication() throws Exception {
         HttpUnitOptions.setLoggingHttpHeaders(true);
@@ -363,6 +475,14 @@ public class WebXMLTest {
         assertTrue(ic.getRequest().isUserInRole("supervisor"), "User not assigned to 'supervisor' role");
     }
 
+    /**
+     * Gets the context path.
+     *
+     * @return the context path
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void getContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -379,6 +499,12 @@ public class WebXMLTest {
         assertEquals("", ic.getRequest().getContextPath());
     }
 
+    /**
+     * Mount context path.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void mountContextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -398,6 +524,12 @@ public class WebXMLTest {
         }
     }
 
+    /**
+     * Servlet mapping.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void servletMapping() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -419,6 +551,25 @@ public class WebXMLTest {
         checkMapping(wc, "http://localhost/something/else", Servlet5.class, "/something/else", null);
     }
 
+    /**
+     * Check mapping.
+     *
+     * @param wc
+     *            the wc
+     * @param url
+     *            the url
+     * @param servletClass
+     *            the servlet class
+     * @param expectedPath
+     *            the expected path
+     * @param expectedInfo
+     *            the expected info
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws ServletException
+     *             the servlet exception
+     */
     private void checkMapping(ServletUnitClient wc, final String url, final Class servletClass,
             final String expectedPath, final String expectedInfo) throws IOException, ServletException {
         InvocationContext ic = wc.newInvocation(url);
@@ -431,6 +582,9 @@ public class WebXMLTest {
     /**
      * Verifies that only those servlets designated will pre-load when the application is initialized. SimpleGetServlet
      * and each of its subclasses adds its classname to the 'initialized' context attribute.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void loadOnStartup() throws Exception {
@@ -451,6 +605,9 @@ public class WebXMLTest {
     /**
      * Verifies that servlets pre-load in the order specified. SimpleGetServlet and each of its subclasses adds its
      * classname to the 'initialized' context attribute.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void loadOrder() throws Exception {
@@ -474,8 +631,15 @@ public class WebXMLTest {
 
     // ===============================================================================================================
 
+    /**
+     * The Class SimpleLogonServlet.
+     */
     static class SimpleLogonServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "<html><body>\r\n"
                 + "<form id='login' action='j_security_check' method='POST'>\r\n" + "  <input name='j_username' />\r\n"
                 + "  <input type='password' name='j_password' />\r\n" + "</form></body></html>";
@@ -491,8 +655,15 @@ public class WebXMLTest {
 
     // ===============================================================================================================
 
+    /**
+     * The Class SimpleErrorServlet.
+     */
     static class SimpleErrorServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "<html><body>Sorry could not login</body></html>";
 
         @Override
@@ -506,8 +677,15 @@ public class WebXMLTest {
 
     // ===============================================================================================================
 
+    /**
+     * The Class SimpleGetServlet.
+     */
     static class SimpleGetServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "the desired content\r\n";
 
         @Override
@@ -522,6 +700,11 @@ public class WebXMLTest {
             servletConfig.getServletContext().setAttribute("initialized", initialized);
         }
 
+        /**
+         * Gets the local name.
+         *
+         * @return the local name
+         */
         private String getLocalName() {
             String className = getClass().getName();
             int dollarIndex = className.indexOf('$');
@@ -540,28 +723,48 @@ public class WebXMLTest {
         }
     }
 
+    /**
+     * The Class Servlet1.
+     */
     static class Servlet1 extends SimpleGetServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class Servlet2.
+     */
     static class Servlet2 extends SimpleGetServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class Servlet3.
+     */
     static class Servlet3 extends SimpleGetServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class Servlet4.
+     */
     static class Servlet4 extends SimpleGetServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * The Class Servlet5.
+     */
     static class Servlet5 extends SimpleGetServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
     }
 

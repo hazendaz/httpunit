@@ -36,15 +36,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class CookieTest.
  */
-public class CookieTest {
+class CookieTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         CookieProperties.reset();
     }
 
+    /**
+     * Simple cookies.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void simpleCookies() throws Exception {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
@@ -63,9 +75,11 @@ public class CookieTest {
     }
 
     /**
-     * test for double quoted cookies suggested by Mario V disabled since it indeed fails - FIXME - we need a patch here
+     * test for double quoted cookies suggested by Mario V disabled since it indeed fails - FIXME - we need a patch
+     * here.
      *
      * @throws Exception
+     *             the exception
      */
     public void xtestDoubleQuoteCookies() throws Exception {
         CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
@@ -76,6 +90,12 @@ public class CookieTest {
                 "cookie 'NewUniversalCookie' value");
     }
 
+    /**
+     * Cookie matching.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void cookieMatching() throws Exception {
         assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")),
@@ -93,6 +113,20 @@ public class CookieTest {
                 "/servlets/sample/data");
     }
 
+    /**
+     * Check matching.
+     *
+     * @param index
+     *            the index
+     * @param success
+     *            the success
+     * @param url
+     *            the url
+     * @param domain
+     *            the domain
+     * @param path
+     *            the path
+     */
     private void checkMatching(int index, boolean success, URL url, String domain, String path) {
         HashMap attributes = new HashMap<>();
         attributes.put("path", path);
@@ -106,9 +140,10 @@ public class CookieTest {
     }
 
     /**
-     * check the CookieAcceptance
+     * check the CookieAcceptance.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void cookieAcceptance() throws Exception {
@@ -126,15 +161,21 @@ public class CookieTest {
     }
 
     /**
-     * check whether the given cookie is accepted
+     * check whether the given cookie is accepted.
      *
      * @param index
+     *            the index
      * @param shouldAccept
+     *            the should accept
      * @param urlString
+     *            the url string
      * @param specifiedDomain
+     *            the specified domain
      * @param specifiedPath
+     *            the specified path
      *
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
 
     private void checkAcceptance(int index, boolean shouldAccept, String urlString, String specifiedDomain,
@@ -156,6 +197,12 @@ public class CookieTest {
         }
     }
 
+    /**
+     * Cookie defaults.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void cookieDefaults() throws Exception {
         checkDefaults(1, "www.meterware.com/servlets/special", ".meterware.com", "/servlets", ".meterware.com",
@@ -164,6 +211,25 @@ public class CookieTest {
                 "/servlets/special");
     }
 
+    /**
+     * Check defaults.
+     *
+     * @param index
+     *            the index
+     * @param urlString
+     *            the url string
+     * @param specifiedDomain
+     *            the specified domain
+     * @param specifiedPath
+     *            the specified path
+     * @param expectedDomain
+     *            the expected domain
+     * @param expectedPath
+     *            the expected path
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private void checkDefaults(int index, String urlString, String specifiedDomain, String specifiedPath,
             String expectedDomain, String expectedPath) throws MalformedURLException {
         CookieJar jar = newJar(urlString, specifiedDomain, specifiedPath);
@@ -173,6 +239,21 @@ public class CookieTest {
         assertEquals(expectedPath, jar.getCookie("name").getPath(), "case " + index + " path");
     }
 
+    /**
+     * New jar.
+     *
+     * @param urlString
+     *            the url string
+     * @param specifiedDomain
+     *            the specified domain
+     * @param specifiedPath
+     *            the specified path
+     *
+     * @return the cookie jar
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private CookieJar newJar(String urlString, String specifiedDomain, String specifiedPath)
             throws MalformedURLException {
         StringBuilder header = new StringBuilder("name=value");
@@ -220,6 +301,12 @@ public class CookieTest {
         }
     }
 
+    /**
+     * Header generation.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void headerGeneration() throws Exception {
         CookieJar jar = new CookieJar();
@@ -239,7 +326,10 @@ public class CookieTest {
     }
 
     /**
+     * Drupal cookie interaction.
+     *
      * @throws Exception
+     *             the exception
      */
     @Test
     void drupalCookieInteraction() throws Exception {
@@ -277,9 +367,10 @@ public class CookieTest {
     }
 
     /**
-     * test for [ 1488617 ] alternate patch for cookie bug #1371204
+     * test for [ 1488617 ] alternate patch for cookie bug #1371204.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void singleUseCookie() throws Exception {
@@ -294,9 +385,10 @@ public class CookieTest {
 
     /**
      * test for bug report [ 1672385 ] HttpOnly cookie looses all cookie info extended according to comment of
-     * 2010-04-22
+     * 2010-04-22.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void httpOnlyCookies() throws Exception {
@@ -311,6 +403,9 @@ public class CookieTest {
     /**
      * test for bug report [ 2076028 ] Cookies are handled incorrectly should also fit duplicate bug report 2871999
      * https://sourceforge.net/tracker/?func=detail&aid=2871999&group_id=6550&atid=106550
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void httpOnlyCookiePath() throws Exception {
@@ -324,20 +419,42 @@ public class CookieTest {
 
     /**
      * test for bug report [ 1533762 ] Valid cookies are rejected by Alexey Bulat TODO enable when working patch is
-     * available
+     * available.
      *
      * @throws Exception
+     *             the exception
      */
     public void xtestCookiesRejection1533762() throws Exception {
         checkAcceptance(1, true, "admin.automation.testing.com.ru", ".admin.automation.testing.com.ru", null);
         checkAcceptance(2, true, "admin.automation.testing.com.ru", ".testing.com.ru", null);
     }
 
+    /**
+     * Check header.
+     *
+     * @param index
+     *            the index
+     * @param jar
+     *            the jar
+     * @param expectedHeader
+     *            the expected header
+     * @param targetURLString
+     *            the target URL string
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private void checkHeader(int index, CookieJar jar, String expectedHeader, String targetURLString)
             throws MalformedURLException {
         assertEquals(expectedHeader, jar.getCookieHeaderField(new URL("http://" + targetURLString)), "header " + index);
     }
 
+    /**
+     * Cookie replacement.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void cookieReplacement() throws Exception {
         CookieJar jar = new CookieJar();
@@ -349,10 +466,29 @@ public class CookieTest {
         checkHeader(1, jar, "first=ready; third=tomorrow", "www.meterware.com/servlets/standard");
     }
 
+    /**
+     * New jar.
+     *
+     * @param urlString
+     *            the url string
+     * @param setCookieHeader
+     *            the set cookie header
+     *
+     * @return the cookie jar
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     private CookieJar newJar(String urlString, String setCookieHeader) throws MalformedURLException {
         return new CookieJar(new TestSource(new URL("http://" + urlString), setCookieHeader));
     }
 
+    /**
+     * Lenient matching.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void lenientMatching() throws Exception {
         CookieProperties.setDomainMatchingStrict(false);
@@ -368,6 +504,12 @@ public class CookieTest {
                 "/servlets/sample/data");
     }
 
+    /**
+     * Rejection callbacks.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void rejectionCallbacks() throws Exception {
         MockListener listener = new MockListener();
@@ -384,16 +526,23 @@ public class CookieTest {
     }
 
     /**
-     * check the cookieListener call Back
+     * check the cookieListener call Back.
      *
      * @param listener
+     *            the listener
      * @param index
+     *            the index
      * @param status
+     *            the status
      * @param urlString
+     *            the url string
      * @param specifiedDomain
+     *            the specified domain
      * @param specifiedPath
+     *            the specified path
      *
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
     private void checkCallback(MockListener listener, int index, int status, String urlString, String specifiedDomain,
             String specifiedPath) throws MalformedURLException {
@@ -410,19 +559,54 @@ public class CookieTest {
         }
     }
 
+    /**
+     * The listener interface for receiving mock events. The class that is interested in processing a mock event
+     * implements this interface, and the object created with that class is registered with a component using the
+     * component's <code>addMockListener</code> method. When the mock event occurs, that object's appropriate method is
+     * invoked.
+     *
+     * @see MockEvent
+     */
     private static class MockListener implements CookieListener {
 
+        /** The reason. */
         private int _reason;
+
+        /** The attribute. */
         private String _attribute;
+
+        /** The cookie name. */
         private String _cookieName;
+
+        /** The rejected. */
         private boolean _rejected;
+
+        /** The cookie num. */
         private int _cookieNum;
 
+        /**
+         * Expect acceptance.
+         *
+         * @param cookieNum
+         *            the cookie num
+         */
         void expectAcceptance(int cookieNum) {
             _cookieNum = cookieNum;
             _reason = -1;
         }
 
+        /**
+         * Expect rejection.
+         *
+         * @param cookieNum
+         *            the cookie num
+         * @param cookieName
+         *            the cookie name
+         * @param reason
+         *            the reason
+         * @param attribute
+         *            the attribute
+         */
         void expectRejection(int cookieNum, String cookieName, int reason, String attribute) {
             _cookieNum = cookieNum;
             _reason = reason;
@@ -431,6 +615,9 @@ public class CookieTest {
             _rejected = false;
         }
 
+        /**
+         * Confirm rejection.
+         */
         void confirmRejection() {
             assertTrue(_rejected, "Cookie " + _cookieNum + " was not logged as rejected");
         }
@@ -449,24 +636,37 @@ public class CookieTest {
     }
 
     /**
-     * create a TestSource for Cookies
+     * create a TestSource for Cookies.
      */
     private static class TestSource implements CookieSource {
 
+        /** The source URL. */
         private URL _sourceURL;
+
+        /** The headers. */
         private String[] _headers;
 
         /**
-         * construct a TestSource form a single header string
+         * construct a TestSource form a single header string.
          *
          * @param sourceURL
+         *            the source URL
          * @param header
+         *            the header
          */
 
         public TestSource(URL sourceURL, String header) {
             this(sourceURL, new String[] { header });
         }
 
+        /**
+         * Instantiates a new test source.
+         *
+         * @param sourceURL
+         *            the source URL
+         * @param headers
+         *            the headers
+         */
         public TestSource(URL sourceURL, String[] headers) {
             _sourceURL = sourceURL;
             _headers = headers;

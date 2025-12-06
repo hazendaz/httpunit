@@ -22,10 +22,11 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLHtmlElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLHtmlElementImpl.
+ */
 public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElement {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -33,11 +34,22 @@ public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElem
         return new HTMLHtmlElementImpl();
     }
 
+    /**
+     * Gets the version.
+     *
+     * @return the version
+     */
     @Override
     public String getVersion() {
         return getAttributeWithNoDefault("version");
     }
 
+    /**
+     * Sets the version.
+     *
+     * @param version
+     *            the new version
+     */
     @Override
     public void setVersion(String version) {
         setAttribute("version", version);

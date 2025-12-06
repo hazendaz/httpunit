@@ -24,6 +24,7 @@ import com.meterware.httpunit.ScriptException;
 import com.meterware.httpunit.scripting.ScriptingEngine;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
@@ -34,25 +35,28 @@ import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Undefined;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class ScriptingEngineImpl.
+ */
 public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** The Constant NO_ARGS. */
     private static final Object[] NO_ARGS = {};
 
+    /** The error messages. */
     private static ArrayList _errorMessages = new ArrayList<>();
 
     /**
-     * clear the list of error Messages
+     * clear the list of error Messages.
      */
     static public void clearErrorMessages() {
         _errorMessages.clear();
     }
 
     /**
-     * access to the list of error Messages that were collected
+     * access to the list of error Messages that were collected.
      *
      * @return the array with error Messages
      */
@@ -61,7 +65,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
     }
 
     /**
-     * handle Exceptions
+     * handle Exceptions.
      *
      * @param e
      *            - the exception to handle
@@ -90,7 +94,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-        return language == null || language.toLowerCase().startsWith("javascript");
+        return language == null || language.toLowerCase(Locale.ENGLISH).startsWith("javascript");
     }
 
     /**
@@ -175,8 +179,9 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
      * it's assigned by calling doEvent for the script
      *
      * @param eventName
+     *            the event name
      *
-     * @return
+     * @return true, if successful
      */
     @Override
     public boolean handleEvent(String eventName) {
@@ -207,14 +212,30 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
     // ------------------------------------------ protected methods
     // ---------------------------------------------------------
 
+    /**
+     * Gets the document write buffer.
+     *
+     * @return the document write buffer
+     */
     protected String getDocumentWriteBuffer() {
         throw new IllegalStateException("may not run runScript() from " + getClass());
     }
 
+    /**
+     * Discard document write buffer.
+     */
     protected void discardDocumentWriteBuffer() {
         throw new IllegalStateException("may not run runScript() from " + getClass());
     }
 
+    /**
+     * Without first line.
+     *
+     * @param script
+     *            the script
+     *
+     * @return the string
+     */
     private String withoutFirstLine(String script) {
         for (int i = 0; i < script.length(); i++) {
             if (isLineTerminator(script.charAt(i))) {
@@ -224,6 +245,14 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
         return "";
     }
 
+    /**
+     * Checks if is line terminator.
+     *
+     * @param c
+     *            the c
+     *
+     * @return true, if is line terminator
+     */
     private boolean isLineTerminator(char c) {
         return c == 0x0A || c == 0x0D;
     }

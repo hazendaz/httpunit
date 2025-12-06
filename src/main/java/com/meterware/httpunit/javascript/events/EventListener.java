@@ -27,10 +27,6 @@ import org.mozilla.javascript.Scriptable;
  * EventListener from its EventTarget after they have completed using the listener. When a Node is copied using the
  * cloneNode method the EventListeners attached to the source Node are not attached to the copied Node. If the user
  * wishes the same EventListeners to be added to the newly created copy the user must add them manually.
- *
- * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
- *
- * @version $Id$
  */
 public interface EventListener extends Scriptable {
     /**

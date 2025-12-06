@@ -24,26 +24,63 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class ProcessingInstructionImpl.
+ */
 public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The target. */
     private String _target;
+
+    /** The data. */
     private String _data;
 
+    /**
+     * Creates the processing impl.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param target
+     *            the target
+     * @param data
+     *            the data
+     *
+     * @return the processing instruction
+     */
     public static ProcessingInstruction createProcessingImpl(DocumentImpl ownerDocument, String target, String data) {
         ProcessingInstructionImpl instruction = new ProcessingInstructionImpl();
         instruction.initialize(ownerDocument, target, data);
         return instruction;
     }
 
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param target
+     *            the target
+     * @param data
+     *            the data
+     */
     private void initialize(DocumentImpl ownerDocument, String target, String data) {
         super.initialize(ownerDocument);
         _target = target;
         _data = data;
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param processingInstruction
+     *            the processing instruction
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, ProcessingInstruction processingInstruction) {
         return createProcessingImpl(document, processingInstruction.getTarget(), processingInstruction.getData());
     }

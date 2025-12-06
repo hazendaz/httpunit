@@ -49,11 +49,19 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class JUnitServletTest.
  */
 class JUnitServletTest {
+
+    /** The runner. */
     private ServletRunner _runner;
 
+    /**
+     * No test class specified.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void noTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
@@ -62,6 +70,12 @@ class JUnitServletTest {
         assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
 
+    /**
+     * Bad test class specified.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void badTestClassSpecified() throws Exception {
         ServletUnitClient client = newClient();
@@ -70,6 +84,12 @@ class JUnitServletTest {
         assertTrue(wr.getText().contains("Cannot run"), "Did not find error message");
     }
 
+    /**
+     * All tests pass.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void allTestsPass() throws Exception {
         ServletUnitClient client = newClient();
@@ -83,6 +103,12 @@ class JUnitServletTest {
         assertEquals("OK", results[0][2], "Status");
     }
 
+    /**
+     * All tests pass text format.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void allTestsPassTextFormat() throws Exception {
         ServletUnitClient client = newClient();
@@ -92,6 +118,12 @@ class JUnitServletTest {
                 "Results (" + wr.getText() + ") should start with '" + expectedStart);
     }
 
+    /**
+     * Some failures.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void someFailures() throws Exception {
         ServletUnitClient client = newClient();
@@ -110,6 +142,12 @@ class JUnitServletTest {
         assertTrue(results[2][1].indexOf('(' + FailingTests.class.getName() + ')') >= 0, "Test class not found");
     }
 
+    /**
+     * Some failures text format.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void someFailuresTextFormat() throws Exception {
         ServletUnitClient client = newClient();
@@ -122,6 +160,12 @@ class JUnitServletTest {
                 "Results (" + wr.getText() + ") should contain: 2 failures");
     }
 
+    /**
+     * Some errors.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void someErrors() throws Exception {
         ServletUnitClient client = newClient();
@@ -139,6 +183,12 @@ class JUnitServletTest {
         assertTrue(results[2][1].indexOf('(' + ErrorTests.class.getName() + ')') >= 0, "Test class not found");
     }
 
+    /**
+     * Some failures XML format.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void someFailuresXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
@@ -158,6 +208,12 @@ class JUnitServletTest {
         verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "failure", false);
     }
 
+    /**
+     * Some errors XML format.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void someErrorsXMLFormat() throws Exception {
         ServletUnitClient client = newClient();
@@ -176,6 +232,18 @@ class JUnitServletTest {
         verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "error", false);
     }
 
+    /**
+     * Verify element with name has failure node.
+     *
+     * @param name
+     *            the name
+     * @param nl
+     *            the nl
+     * @param nodeName
+     *            the node name
+     * @param failed
+     *            the failed
+     */
     private void verifyElementWithNameHasFailureNode(String name, NodeList nl, String nodeName, boolean failed) {
         for (int i = 0; i < nl.getLength(); i++) {
             Element element = (Element) nl.item(i);
@@ -195,6 +263,12 @@ class JUnitServletTest {
         }
     }
 
+    /**
+     * Scripted servlet access.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void scriptedServletAccess() throws Exception {
         WebXMLString wxs = new WebXMLString();
@@ -214,6 +288,11 @@ class JUnitServletTest {
         assertEquals("OK", results[0][2], "Status");
     }
 
+    /**
+     * New client.
+     *
+     * @return the servlet unit client
+     */
     private ServletUnitClient newClient() {
         _runner = new ServletRunner();
         MyFactory._runner = _runner;
@@ -223,8 +302,15 @@ class JUnitServletTest {
 
     // ===============================================================================================================
 
+    /**
+     * The Class SimpleGetServlet.
+     */
     static class SimpleGetServlet extends HttpServlet {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /** The response text. */
         static String RESPONSE_TEXT = "the desired content";
 
         @Override
@@ -236,16 +322,28 @@ class JUnitServletTest {
         }
     }
 
+    /**
+     * The Class TestRunnerServlet.
+     */
     static class TestRunnerServlet extends JUnitServlet {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new test runner servlet.
+         */
         public TestRunnerServlet() {
             super(new MyFactory());
         }
     }
 
+    /**
+     * A factory for creating My objects.
+     */
     protected static class MyFactory implements InvocationContextFactory {
+
+        /** The runner. */
         private static ServletRunner _runner;
 
         @Override

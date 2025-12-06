@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
  **/
 public class SubmitButton extends Button {
 
+    /** The fake. */
     private boolean _fake;
 
     @Override
@@ -40,7 +41,9 @@ public class SubmitButton extends Button {
 
     /**
      * Returns true if this submit button is an image map.
-     **/
+     *
+     * @return true, if is image button
+     */
     public boolean isImageButton() {
         return _isImageButton;
     }
@@ -49,7 +52,15 @@ public class SubmitButton extends Button {
      * Performs the action associated with clicking this button after running any 'onClick' script. For a submit button
      * this typically submits the form.
      *
-     * @since 1.6
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     public void click(int x, int y) throws IOException, SAXException {
         if (!isImageButton()) {
@@ -92,20 +103,50 @@ public class SubmitButton extends Button {
 
     // ------------------------------------------ package members ----------------------------------
 
+    /**
+     * Instantiates a new submit button.
+     *
+     * @param form
+     *            the form
+     * @param control
+     *            the control
+     */
     SubmitButton(WebForm form, HTMLControl control) {
         super(form, control);
         _isImageButton = control.getType().equalsIgnoreCase(IMAGE_BUTTON_TYPE);
     }
 
+    /**
+     * Instantiates a new submit button.
+     *
+     * @param form
+     *            the form
+     */
     SubmitButton(WebForm form) {
         super(form);
         _isImageButton = false;
     }
 
+    /**
+     * Creates the fake submit button.
+     *
+     * @param form
+     *            the form
+     *
+     * @return the submit button
+     */
     static SubmitButton createFakeSubmitButton(WebForm form) {
         return new SubmitButton(form, /* fake */ true);
     }
 
+    /**
+     * Instantiates a new submit button.
+     *
+     * @param form
+     *            the form
+     * @param fake
+     *            the fake
+     */
     private SubmitButton(WebForm form, boolean fake) {
         this(form);
         _fake = fake;
@@ -122,14 +163,23 @@ public class SubmitButton extends Button {
     }
 
     /**
-     * flag that the button was pressed
+     * flag that the button was pressed.
      *
      * @param pressed
+     *            the new pressed
      */
     void setPressed(boolean pressed) {
         _pressed = pressed;
     }
 
+    /**
+     * Sets the location.
+     *
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     void setLocation(int x, int y) {
         _x = x;
         _y = y;
@@ -147,12 +197,12 @@ public class SubmitButton extends Button {
         return isDisabled() || !_pressed ? NO_VALUE : toArray(getValue());
     }
 
-    /**
-     * should we allow unnamed Image Buttons?
-     */
+    /** should we allow unnamed Image Buttons?. */
     private static boolean allowUnnamedImageButton = false;
 
     /**
+     * Checks if is allow unnamed image button.
+     *
      * @return the allowUnnamedImageButton
      */
     public static boolean isAllowUnnamedImageButton() {
@@ -160,6 +210,8 @@ public class SubmitButton extends Button {
     }
 
     /**
+     * Sets the allow unnamed image button.
+     *
      * @param allowUnnamedImageButton
      *            the allowUnnamedImageButton to set
      */
@@ -168,7 +220,7 @@ public class SubmitButton extends Button {
     }
 
     /**
-     * return whether this is a validImageButton
+     * return whether this is a validImageButton.
      *
      * @return true if it is an image Button
      */
@@ -182,7 +234,7 @@ public class SubmitButton extends Button {
     }
 
     /**
-     * return the name of the positionParameter for this button (if this is an image Button)
+     * return the name of the positionParameter for this button (if this is an image Button).
      *
      * @param direction
      *            e.g. "x" or "y"
@@ -226,17 +278,42 @@ public class SubmitButton extends Button {
 
     // ------------------------------------------ private members ----------------------------------
 
+    /** The value. */
     private String[] _value = new String[1];
+
+    /** The is image button. */
     private final boolean _isImageButton;
+
+    /** The pressed. */
     private boolean _pressed;
+
+    /** The x. */
     private int _x;
+
+    /** The y. */
     private int _y;
 
+    /**
+     * To array.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string[]
+     */
     private String[] toArray(String value) {
         _value[0] = value;
         return _value;
     }
 
+    /**
+     * Equals.
+     *
+     * @param button
+     *            the button
+     *
+     * @return true, if successful
+     */
     private boolean equals(SubmitButton button) {
         return getName().equals(button.getName()) && (getName().isEmpty() || getValue().equals(button.getValue()));
     }
@@ -251,8 +328,15 @@ public class SubmitButton extends Button {
      **/
     class DisabledSubmitButtonException extends DisabledButtonException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
+        /**
+         * Instantiates a new disabled submit button exception.
+         *
+         * @param button
+         *            the button
+         */
         DisabledSubmitButtonException(SubmitButton button) {
             super(button);
         }

@@ -26,14 +26,19 @@ import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 /**
- * An implementation of the standard servlet input stream
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
- **/
+ * An implementation of the standard servlet input stream.
+ */
 class ServletInputStreamImpl extends ServletInputStream {
 
+    /** The base stream. */
     private ByteArrayInputStream _baseStream;
 
+    /**
+     * Instantiates a new servlet input stream impl.
+     *
+     * @param messageBody
+     *            the message body
+     */
     public ServletInputStreamImpl(byte[] messageBody) {
         _baseStream = new ByteArrayInputStream(messageBody);
     }

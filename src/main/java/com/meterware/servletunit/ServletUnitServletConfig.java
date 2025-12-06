@@ -30,6 +30,16 @@ import javax.servlet.ServletContext;
  **/
 class ServletUnitServletConfig implements ServletConfig {
 
+    /**
+     * Instantiates a new servlet unit servlet config.
+     *
+     * @param name
+     *            the name
+     * @param application
+     *            the application
+     * @param initParams
+     *            the init params
+     */
     ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {
         _name = name;
         _initParameters = initParams;
@@ -74,10 +84,13 @@ class ServletUnitServletConfig implements ServletConfig {
     // ----------------------------------------------- private members
     // ------------------------------------------------------
 
+    /** The name. */
     private String _name;
 
+    /** The init parameters. */
     private final Hashtable _initParameters;
 
+    /** The context. */
     private final ServletContext _context;
 
 }

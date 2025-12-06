@@ -26,20 +26,22 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Locale;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
  * A unit test of the table handling code.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:bx@bigfoot.com">Benoit Xhenseval</a>
  */
-@ExtendWith(ExternalResourceSupport.class)
 public class HtmlTablesTest extends HttpUnitTest {
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _wc = new WebConversation();
@@ -58,6 +60,12 @@ public class HtmlTablesTest extends HttpUnitTest {
                         + "<tr><td>Green</td><td><a href=\"nowhere\">vert</a></td></tr>" + "</table>");
     }
 
+    /**
+     * Find no tables.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findNoTables() throws Exception {
         defineWebPage("Default", "This has no tables but it does" + "have <a href=\"/other.html\">an active link</A>"
@@ -69,6 +77,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(0, tables.length);
     }
 
+    /**
+     * Find one table.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findOneTable() throws Exception {
         WebTable[] tables = _wc.getResponse(getHostPath() + "/OneTable.html").getTables();
@@ -76,9 +90,10 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * test for patch [ 1117822 ] Patch for purgeEmptyCells() problem by Glen Stampoultzis
+     * test for patch [ 1117822 ] Patch for purgeEmptyCells() problem by Glen Stampoultzis.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void purgeEmptyCells() throws Exception {
@@ -134,9 +149,10 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug report [ 1295782 ] Method purgeEmptyCells Truncates Table by ahansen 2005-09-19 22:47
+     * test for bug report [ 1295782 ] Method purgeEmptyCells Truncates Table by ahansen 2005-09-19 22:47.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void purgeEmptyCells2() throws Exception {
@@ -155,9 +171,10 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * test finding the Table Size
+     * test finding the Table Size.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void findTableSize() throws Exception {
@@ -176,6 +193,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         }
     }
 
+    /**
+     * Find table cell.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void findTableCell() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
@@ -183,6 +206,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("3", table.getCellAsText(4, 2));
     }
 
+    /**
+     * Table as text.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void tableAsText() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
@@ -194,6 +223,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(2, text[0].length, "columns with text");
     }
 
+    /**
+     * Nested table.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void nestedTable() throws Exception {
         defineWebPage("Default",
@@ -216,6 +251,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertTrue(nestedString.indexOf("Blue") >= 0, "Cannot find 'Blue' in string");
     }
 
+    /**
+     * Column span.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void columnSpan() throws Exception {
         WebResponse page = _wc.getResponse(getHostPath() + "/SpanTable.html");
@@ -226,6 +267,7 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertSame(table.getTableCell(0, 0), table.getTableCell(0, 1));
     }
 
+    /** The html for bug 1043368. */
     public static String htmlForBug1043368 = "<HTML>\n" + "<head>\n" + "<title>FormTable Servlet GET</title>\n"
             + "</head>\n<body>\n" + "<FORM METHOD=\"POST\" ACTION=\"/some/action\">\n" + "<TABLE>\n"
             + "   <TR><TD colspan=\"4\">Test Form:</TD></TR>\n\n" + "   <TR>\n" + "       <TD>*Contact Name:</TD>\n"
@@ -235,7 +277,10 @@ public class HtmlTablesTest extends HttpUnitTest {
             + "</TABLE>\n" + "</FORM>";
 
     /**
-     * test for bug report [ 1043368 ] WebTable has wrong number of columns by AutoTest
+     * test for bug report [ 1043368 ] WebTable has wrong number of columns by AutoTest.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void columnNumberInTable() throws Exception {
@@ -248,6 +293,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(4, table.getColumnCount(), "wrong column count");
     }
 
+    /**
+     * Row span.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void rowSpan() throws Exception {
         WebResponse page = _wc.getResponse(getHostPath() + "/SpanTable.html");
@@ -260,6 +311,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertSame(table.getTableCell(1, 1), table.getTableCell(2, 1));
     }
 
+    /**
+     * Missing columns.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void missingColumns() throws Exception {
         defineWebPage("Default",
@@ -275,6 +332,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals(3, table.getColumnCount());
     }
 
+    /**
+     * Inner table seek.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void innerTableSeek() throws Exception {
         defineWebPage("Default",
@@ -317,6 +380,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("White", cells[2][0], "cell at 2,0");
     }
 
+    /**
+     * Span over empty columns.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void spanOverEmptyColumns() throws Exception {
         defineWebPage("Default",
@@ -334,6 +403,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Value", cells[1][1], "cell at 1,1");
     }
 
+    /**
+     * Span over all empty columns.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void spanOverAllEmptyColumns() throws Exception {
         defineWebPage("Default",
@@ -351,6 +426,12 @@ public class HtmlTablesTest extends HttpUnitTest {
         assertEquals("Value", cells[1][1], "cell at 1,1");
     }
 
+    /**
+     * Table in paragraph.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void tableInParagraph() throws Exception {
         defineWebPage("Default", "<p>" + "<table summary=little>" + "<tr><td>a</td><td>b</td><td>Value</td></tr>"
@@ -362,7 +443,10 @@ public class HtmlTablesTest extends HttpUnitTest {
     }
 
     /**
-     * Get a specific cell with a given id in a WebTable
+     * Get a specific cell with a given id in a WebTable.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void cellsWithID() throws Exception {
@@ -392,13 +476,19 @@ public class HtmlTablesTest extends HttpUnitTest {
 
     /**
      * Test that the tag name can be extracted for a cell.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void cellTagName() throws Exception {
         WebTable table = _wc.getResponse(getHostPath() + "/OneTable.html").getTables()[0];
-        assertEquals("TH", table.getTableCell(0, 0).getTagName().toUpperCase(), "Tag name of header cell");
-        assertEquals("TD", table.getTableCell(0, 1).getTagName().toUpperCase(), "Tag name of non-header cell");
+        assertEquals("TH", table.getTableCell(0, 0).getTagName().toUpperCase(Locale.ENGLISH),
+                "Tag name of header cell");
+        assertEquals("TD", table.getTableCell(0, 1).getTagName().toUpperCase(Locale.ENGLISH),
+                "Tag name of non-header cell");
     }
 
+    /** The wc. */
     private WebConversation _wc;
 }

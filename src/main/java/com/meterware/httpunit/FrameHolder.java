@@ -29,8 +29,8 @@ import java.util.List;
 import org.xml.sax.SAXException;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class FrameHolder.
+ */
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
@@ -45,6 +45,12 @@ class FrameHolder {
     /** The topmost frame in this frameholder. **/
     private FrameSelector _topFrame;
 
+    /**
+     * Instantiates a new frame holder.
+     *
+     * @param window
+     *            the window
+     */
     FrameHolder(WebWindow window) {
         _window = window;
         _topFrame = FrameSelector.newTopFrame(window);
@@ -53,10 +59,23 @@ class FrameHolder {
         HttpUnitOptions.getScriptingEngine().associate(blankResponse);
     }
 
+    /**
+     * Gets the top frame.
+     *
+     * @return the top frame
+     */
     FrameSelector getTopFrame() {
         return _topFrame;
     }
 
+    /**
+     * Gets the frame contents.
+     *
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the frame contents
+     */
     WebResponse getFrameContents(FrameSelector targetFrame) {
         if (targetFrame == FrameSelector.TOP_FRAME) {
             targetFrame = getTopFrame();
@@ -68,6 +87,16 @@ class FrameHolder {
         return response;
     }
 
+    /**
+     * Gets the subframe contents.
+     *
+     * @param frame
+     *            the frame
+     * @param subFrameName
+     *            the sub frame name
+     *
+     * @return the subframe contents
+     */
     WebResponse getSubframeContents(FrameSelector frame, String subFrameName) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);
         if (subframes == null) {
@@ -82,23 +111,65 @@ class FrameHolder {
         throw new NoSuchFrameException(subFrameName);
     }
 
+    /**
+     * Gets the parent frame contents.
+     *
+     * @param frame
+     *            the frame
+     *
+     * @return the parent frame contents
+     */
     WebResponse getParentFrameContents(FrameSelector frame) {
         return get(frame.getParent() == null ? _topFrame : frame.getParent());
     }
 
+    /**
+     * Gets the.
+     *
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the web response
+     */
     WebResponse get(FrameSelector targetFrame) {
         return (WebResponse) _contents.get(targetFrame);
     }
 
+    /**
+     * Gets the.
+     *
+     * @param target
+     *            the target
+     *
+     * @return the web response
+     */
     WebResponse get(String target) {
         FrameSelector frame = getFrame(_topFrame, target);
         return frame == null ? null : (WebResponse) _contents.get(frame);
     }
 
+    /**
+     * Gets the frame.
+     *
+     * @param target
+     *            the target
+     *
+     * @return the frame
+     */
     FrameSelector getFrame(String target) {
         return target.equals(_window.getName()) ? _topFrame : getFrame(_topFrame, target);
     }
 
+    /**
+     * Gets the frame.
+     *
+     * @param rootFrame
+     *            the root frame
+     * @param target
+     *            the target
+     *
+     * @return the frame
+     */
     private FrameSelector getFrame(FrameSelector rootFrame, String target) {
         if (target.equalsIgnoreCase(WebRequest.TOP_FRAME)) {
             return _topFrame;
@@ -110,6 +181,16 @@ class FrameHolder {
         return lookupFrame(rootFrame, target);
     }
 
+    /**
+     * Lookup frame.
+     *
+     * @param rootFrame
+     *            the root frame
+     * @param target
+     *            the target
+     *
+     * @return the frame selector
+     */
     private FrameSelector lookupFrame(FrameSelector rootFrame, String target) {
         FrameSelector result = getFromSubframe(rootFrame, target);
         if (result != null) {
@@ -124,6 +205,16 @@ class FrameHolder {
         return null;
     }
 
+    /**
+     * Gets the from subframe.
+     *
+     * @param rootFrame
+     *            the root frame
+     * @param target
+     *            the target
+     *
+     * @return the from subframe
+     */
     private FrameSelector getFromSubframe(FrameSelector rootFrame, String target) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(rootFrame);
         if (subframes == null) {
@@ -144,6 +235,11 @@ class FrameHolder {
         return null;
     }
 
+    /**
+     * Gets the active frame names.
+     *
+     * @return the active frame names
+     */
     List<String> getActiveFrameNames() {
         List<String> result = new ArrayList<>();
         for (Enumeration e = _contents.keys(); e.hasMoreElements();) {
@@ -155,6 +251,11 @@ class FrameHolder {
 
     /**
      * Determines the frame in which the reply to a request will be stored.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the target frame
      */
     FrameSelector getTargetFrame(WebRequest request) {
         if (WebRequest.NEW_WINDOW.equalsIgnoreCase(request.getTarget())) {
@@ -179,6 +280,23 @@ class FrameHolder {
         return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;
     }
 
+    /**
+     * Update frames.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param requestContext
+     *            the request context
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     void updateFrames(WebResponse response, FrameSelector frame, RequestContext requestContext)
             throws MalformedURLException, IOException, SAXException {
         removeSubFrames(frame);
@@ -199,6 +317,12 @@ class FrameHolder {
         }
     }
 
+    /**
+     * Removes the sub frames.
+     *
+     * @param frame
+     *            the frame
+     */
     private void removeSubFrames(FrameSelector frame) {
         FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);
         if (subframes == null) {
@@ -212,6 +336,14 @@ class FrameHolder {
         }
     }
 
+    /**
+     * Creates the sub frames.
+     *
+     * @param frame
+     *            the frame
+     * @param subframes
+     *            the subframes
+     */
     private void createSubFrames(FrameSelector frame, FrameSelector[] subframes) {
         _subframes.put(frame, subframes);
         for (FrameSelector subframe : subframes) {
@@ -222,6 +354,13 @@ class FrameHolder {
     /**
      * Given the qualified name of a frame and the name of a nested frame, returns the qualified name of the nested
      * frame.
+     *
+     * @param parentFrame
+     *            the parent frame
+     * @param relativeName
+     *            the relative name
+     *
+     * @return the frame selector
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
         if (relativeName == null || relativeName.isEmpty()) {

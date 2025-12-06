@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -28,16 +28,38 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class SocketConnection.
+ */
 class SocketConnection {
+
+    /** The socket. */
     private Socket _socket;
+
+    /** The os. */
     private OutputStream _os;
+
+    /** The is. */
     private InputStream _is;
+
+    /** The host. */
     private String _host;
 
+    /** The is chunking. */
     private boolean _isChunking;
 
+    /**
+     * Instantiates a new socket connection.
+     *
+     * @param host
+     *            the host
+     * @param port
+     *            the port
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws UnknownHostException
+     *             the unknown host exception
+     */
     public SocketConnection(String host, int port) throws IOException, UnknownHostException {
         _host = host;
         _socket = new Socket(host, port);
@@ -45,10 +67,29 @@ class SocketConnection {
         _is = new BufferedInputStream(_socket.getInputStream());
     }
 
+    /**
+     * Close.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void close() throws IOException {
         _socket.close();
     }
 
+    /**
+     * Gets the response.
+     *
+     * @param method
+     *            the method
+     * @param path
+     *            the path
+     *
+     * @return the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     SocketResponse getResponse(String method, String path) throws IOException {
         if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
@@ -60,6 +101,21 @@ class SocketConnection {
         return new SocketResponse(_is);
     }
 
+    /**
+     * Gets the response.
+     *
+     * @param method
+     *            the method
+     * @param path
+     *            the path
+     * @param body
+     *            the body
+     *
+     * @return the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     SocketResponse getResponse(String method, String path, String body) throws IOException {
         if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
@@ -73,6 +129,17 @@ class SocketConnection {
         return new SocketResponse(_is);
     }
 
+    /**
+     * Start chunked response.
+     *
+     * @param method
+     *            the method
+     * @param path
+     *            the path
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void startChunkedResponse(String method, String path) throws IOException {
         if (_isChunking) {
             throw new IllegalStateException("May not initiate a new request while chunking.");
@@ -85,6 +152,15 @@ class SocketConnection {
         _isChunking = true;
     }
 
+    /**
+     * Send chunk.
+     *
+     * @param chunk
+     *            the chunk
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public void sendChunk(String chunk) throws IOException {
         if (!_isChunking) {
             throw new IllegalStateException("May not send a chunk when not in mid-request.");
@@ -93,6 +169,14 @@ class SocketConnection {
         sendHTTPLine(chunk);
     }
 
+    /**
+     * Gets the response.
+     *
+     * @return the response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     SocketResponse getResponse() throws IOException {
         if (!_isChunking) {
             throw new IllegalStateException("Not chunking a request.");
@@ -103,27 +187,65 @@ class SocketConnection {
         return new SocketResponse(_is);
     }
 
+    /**
+     * Send HTTP line.
+     *
+     * @param line
+     *            the line
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void sendHTTPLine(final String line) throws IOException {
         _os.write(line.getBytes(StandardCharsets.UTF_8));
         _os.write(13);
         _os.write(10);
     }
 
+    /**
+     * The Class SocketResponse.
+     */
     class SocketResponse extends ReceivedHttpMessage {
 
+        /** The protocol. */
         private String _protocol;
+
+        /** The response code. */
         private int _responseCode;
+
+        /** The message. */
         private String _message;
 
+        /**
+         * Instantiates a new socket response.
+         *
+         * @param inputStream
+         *            the input stream
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         */
         public SocketResponse(InputStream inputStream) throws IOException {
             super(inputStream);
         }
 
+        /**
+         * Append message header.
+         *
+         * @param sb
+         *            the sb
+         */
         @Override
         void appendMessageHeader(StringBuilder sb) {
             sb.append(_protocol).append(' ').append(_responseCode).append(' ').append(_message);
         }
 
+        /**
+         * Interpret message header.
+         *
+         * @param messageHeader
+         *            the message header
+         */
         @Override
         void interpretMessageHeader(String messageHeader) {
             int s1 = messageHeader.indexOf(' ');
@@ -139,6 +261,11 @@ class SocketConnection {
             }
         }
 
+        /**
+         * Gets the response code.
+         *
+         * @return the response code
+         */
         public int getResponseCode() {
             return _responseCode;
         }

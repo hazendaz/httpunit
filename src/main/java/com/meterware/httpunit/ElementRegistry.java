@@ -26,14 +26,20 @@ import java.util.Map;
 import org.w3c.dom.Node;
 
 /**
- * @author <a href="mailto:russgold@httpunit,org">Russell Gold</a>
+ * The Class ElementRegistry.
  */
 class ElementRegistry {
 
+    /** The map. */
     private Map _map = new HashMap<>();
 
     /**
      * Registers an HttpUnit element for a node.
+     *
+     * @param node
+     *            the node
+     * @param htmlElement
+     *            the html element
      *
      * @return the registered element
      */
@@ -44,15 +50,33 @@ class ElementRegistry {
 
     /**
      * Returns the HttpUnit element associated with the specified DOM element, if any.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the registered element
      */
     Object getRegisteredElement(Node node) {
         return _map.get(node);
     }
 
+    /**
+     * Iterator.
+     *
+     * @return the iterator
+     */
     Iterator iterator() {
         return _map.values().iterator();
     }
 
+    /**
+     * Checks for node.
+     *
+     * @param node
+     *            the node
+     *
+     * @return true, if successful
+     */
     boolean hasNode(Node node) {
         return _map.containsKey(node);
     }

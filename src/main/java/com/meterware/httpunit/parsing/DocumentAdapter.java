@@ -26,12 +26,15 @@ import java.io.IOException;
 import org.w3c.dom.html.HTMLDocument;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Interface DocumentAdapter.
+ */
 public interface DocumentAdapter {
 
     /**
      * Records the root (Document) node.
+     *
+     * @param document
+     *            the new document
      */
     void setDocument(HTMLDocument document);
 
@@ -43,13 +46,15 @@ public interface DocumentAdapter {
      *
      * @return the contents of the script.
      *
-     * @throws java.io.IOException
-     *             if there is a problem retrieving the script
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     String getIncludedScript(String srcAttribute) throws IOException;
 
     /**
-     * Returns the Scriptable object associated with the document
+     * Returns the Scriptable object associated with the document.
+     *
+     * @return the scripting handler
      */
     ScriptingHandler getScriptingHandler();
 }

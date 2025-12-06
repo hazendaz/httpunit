@@ -39,15 +39,28 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class AttributesTest.
  */
 class AttributesTest {
 
+    /** The document. */
     private DocumentImpl _document;
+
+    /** The element. */
     private Element _element;
+
+    /** The height attribute. */
     private Attr _heightAttribute;
+
+    /** The weight attribute. */
     private Attr _weightAttribute;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         _document = DocumentImpl.createDocument();
@@ -58,6 +71,9 @@ class AttributesTest {
 
     /**
      * Verifies that we can create an attributes node and verify it.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void attributeCreation() throws Exception {
@@ -81,6 +97,9 @@ class AttributesTest {
 
     /**
      * Verifies that we can set unique attribute nodes on an element and retrieve and remove them.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void simpleAttrNodeAssignment() throws Exception {
@@ -107,6 +126,9 @@ class AttributesTest {
 
     /**
      * Verifies that we cannot remove attribute nodes that are not defined.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void illegalAttributeNodeRemoval() throws Exception {
@@ -121,6 +143,9 @@ class AttributesTest {
 
     /**
      * Verifies that setting an attribute node removes any older matching attribute node.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void setReplacementAttributeNode() throws Exception {
@@ -136,6 +161,9 @@ class AttributesTest {
 
     /**
      * Verifies that an undefined attribute is returned as an empty string.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void emptyAttribute() throws Exception {
@@ -144,6 +172,9 @@ class AttributesTest {
 
     /**
      * Verifies that we can set and get attributes by value.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void simpleAttributes() throws Exception {
@@ -159,19 +190,45 @@ class AttributesTest {
         assertFalse(_element.hasAttribute("height"), "Height attribute should be gone now");
     }
 
+    /**
+     * The Class NVPair.
+     */
     static class NVPair {
+
+        /** The name. */
         private String _name;
+
+        /** The value. */
         private String _value;
 
+        /**
+         * Instantiates a new NV pair.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
         public NVPair(String name, String value) {
             _name = name;
             _value = value;
         }
 
+        /**
+         * Gets the name.
+         *
+         * @return the name
+         */
         public String getName() {
             return _name;
         }
 
+        /**
+         * Instantiates a new NV pair.
+         *
+         * @param attrNode
+         *            the attr node
+         */
         public NVPair(Attr attrNode) {
             this(attrNode.getName(), attrNode.getValue());
         }
@@ -186,11 +243,27 @@ class AttributesTest {
             return getClass().equals(obj.getClass()) && equals((NVPair) obj);
         }
 
+        /**
+         * Equals.
+         *
+         * @param obj
+         *            the obj
+         *
+         * @return true, if successful
+         */
         private boolean equals(NVPair obj) {
             return _name.equals(obj._name) && _value.equals(obj._value);
         }
     }
 
+    /**
+     * Assert attributes in map.
+     *
+     * @param attributes
+     *            the attributes
+     * @param expectedAttributes
+     *            the expected attributes
+     */
     private void assertAttributesInMap(NamedNodeMap attributes, NVPair[] expectedAttributes) {
         assertEquals(expectedAttributes.length, attributes.getLength(), "Number of known attribute nodes");
 
@@ -210,6 +283,11 @@ class AttributesTest {
 
     /**
      * Confirms that the map contains the expected attributes.
+     *
+     * @param attributes
+     *            the attributes
+     * @param expectedAttributes
+     *            the expected attributes
      */
     private void assertAttributesInMap(NamedNodeMap attributes, Attr[] expectedAttributes) {
         assertEquals(expectedAttributes.length, attributes.getLength(), "Number of known attribute nodes");

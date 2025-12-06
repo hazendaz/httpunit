@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -27,10 +27,6 @@ import org.w3c.dom.Node;
 
 /**
  * An interface which defines the common properties for an HTML element, which can correspond to any HTML tag.
- *
- * @since 1.5.2
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 // TODO activate the extends Element as
 // in http://www.w3.org/TR/REC-DOM-Level-1/java-language-binding.html
@@ -39,81 +35,110 @@ public interface HTMLElement extends ScriptingEventHandler {
 
     /**
      * Returns the ID associated with this element. IDs are unique throughout the HTML document.
-     **/
+     *
+     * @return the id
+     */
     String getID();
 
     /**
      * Returns the class associated with this element.
-     **/
+     *
+     * @return the class name
+     */
     String getClassName();
 
     /**
      * Returns the name associated with this element.
-     **/
+     *
+     * @return the name
+     */
     String getName();
 
     /**
      * Returns the title associated with this element.
-     **/
+     *
+     * @return the title
+     */
     String getTitle();
 
     /**
      * Returns the value of the attribute of this element with the specified name. Returns the empty string if no such
      * attribute exists.
      *
-     * @since 1.6
+     * @param name
+     *            the name
+     *
+     * @return the attribute
      */
     String getAttribute(String name);
 
     /**
      * Set the value of the attribute of this element with the specified name.
      *
-     * @since 1.7
+     * @param name
+     *            the name
+     * @param value
+     *            the value
      */
     void setAttribute(String name, Object value);
 
     /**
      * Remove the attribute of this element with the specified name.
      *
-     * @since 1.7
+     * @param name
+     *            the name
      */
     void removeAttribute(String name);
 
     /**
      * Returns true if this element may have an attribute with the specified name.
      *
-     * @since 1.6
+     * @param name
+     *            the name
+     *
+     * @return true, if is supported attribute
      */
     boolean isSupportedAttribute(String name);
 
     /**
      * Returns the delegate which supports scripting this element.
+     *
+     * @return the scripting handler
      */
     ScriptingHandler getScriptingHandler();
 
     /**
      * Returns the contents of this element, converted to a string.
      *
-     * @since 1.6
+     * @return the text
      */
     String getText();
 
     /**
      * Returns the tag name of this node.
      *
-     * @since 1.6.1
+     * @return the tag name
      */
     String getTagName();
 
+    /**
+     * New scriptable.
+     *
+     * @return the scriptable delegate
+     */
     ScriptableDelegate newScriptable();
 
     /**
      * Returns the scriptable delegate which can provide the scriptable delegate for this element.
+     *
+     * @return the parent delegate
      */
     ScriptableDelegate getParentDelegate();
 
     /**
      * Returns the DOM node underlying this element.
+     *
+     * @return the node
      */
     Node getNode();
 }

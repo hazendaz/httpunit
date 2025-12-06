@@ -28,20 +28,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A collection of HTTP cookies, which can interact with cookie and set-cookie header values.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author <a href="mailto:drew.varner@oracle.com">Drew Varner</a>
  **/
 public class CookieJar {
 
+    /** The Constant DEFAULT_HEADER_SIZE. */
     private static final int DEFAULT_HEADER_SIZE = 80;
 
+    /** The cookies. */
     private ArrayList _cookies = new ArrayList<>();
+
+    /** The global cookies. */
     private ArrayList _globalCookies = new ArrayList<>();
+
+    /** The press. */
     private CookiePress _press;
 
     /**
@@ -59,6 +63,9 @@ public class CookieJar {
      * popular browsers. Specifically, it allows cookie values to contain commas, which the Netscape standard does not
      * allow for, but which is required by some servers.
      * </p>
+     *
+     * @param source
+     *            the source
      */
     public CookieJar(CookieSource source) {
         _press = new CookiePress(source.getURL());
@@ -67,7 +74,7 @@ public class CookieJar {
     }
 
     /**
-     * find the cookies in the given Header String array
+     * find the cookies in the given Header String array.
      *
      * @param cookieHeader
      *            - the strings to look for cookies
@@ -92,8 +99,13 @@ public class CookieJar {
      * Defines a cookie to be sent to the server on every request. This bypasses the normal mechanism by which only
      * certain cookies are sent based on their host and path.
      *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
      * @deprecated as of 1.6, use #putCookie
-     **/
+     */
     @Deprecated
     public void addCookie(String name, String value) {
         _globalCookies.add(new Cookie(name, value));
@@ -104,8 +116,11 @@ public class CookieJar {
      * certain cookies are sent based on their host and path. Values of null will result in the cookie being removed.
      * Any other value will leave the cookie unchanged expect for the value.
      *
-     * @since 1.6
-     **/
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public void putCookie(String name, String value) {
         boolean foundCookie = false;
         for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {
@@ -142,6 +157,15 @@ public class CookieJar {
      * Define a non-global cookie. This cookie can be overwritten by subsequent cookie definitions in http headers. This
      * cookie definition requires a domain and path. If a global cookie is defined with the same name, this cookie is
      * not added.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     * @param domain
+     *            the domain
+     * @param path
+     *            the path
      */
     public void putSingleUseCookie(String name, String value, String domain, String path) {
         for (Iterator iterator = _globalCookies.iterator(); iterator.hasNext();) {
@@ -163,7 +187,9 @@ public class CookieJar {
 
     /**
      * Returns the name of all the active cookies in this cookie jar.
-     **/
+     *
+     * @return the cookie names
+     */
     public String[] getCookieNames() {
         final int numGlobalCookies = _globalCookies.size();
         String[] names = new String[_cookies.size() + numGlobalCookies];
@@ -178,6 +204,8 @@ public class CookieJar {
 
     /**
      * Returns a collection containing all of the cookies in this jar.
+     *
+     * @return the cookies
      */
     public Collection getCookies() {
         final Collection collection = (Collection) _cookies.clone();
@@ -200,7 +228,12 @@ public class CookieJar {
 
     /**
      * Returns the value of the specified cookie.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the cookie
+     */
     public Cookie getCookie(String name) {
         if (name == null) {
             throw new IllegalArgumentException("getCookieValue: no name specified");
@@ -223,7 +256,12 @@ public class CookieJar {
     /**
      * Returns the value of the cookie header to be sent to the specified URL. Will return null if no compatible cookie
      * is defined.
-     **/
+     *
+     * @param targetURL
+     *            the target URL
+     *
+     * @return the cookie header field
+     */
     public String getCookieHeaderField(URL targetURL) {
         if (_cookies.isEmpty() && _globalCookies.isEmpty()) {
             return null;
@@ -257,7 +295,10 @@ public class CookieJar {
     /**
      * Updates the cookies maintained in this cookie jar with those in another cookie jar. Any duplicate cookies in the
      * new jar will replace those in this jar.
-     **/
+     *
+     * @param newJar
+     *            the new jar
+     */
     public void updateCookies(CookieJar newJar) {
         for (Iterator i = newJar._cookies.iterator(); i.hasNext();) {
             addUniqueCookie((Cookie) i.next());
@@ -266,6 +307,9 @@ public class CookieJar {
 
     /**
      * Add the cookie to this jar, replacing any previous matching cookie.
+     *
+     * @param cookie
+     *            the cookie
      */
     void addUniqueCookie(Cookie cookie) {
         _cookies.remove(cookie);
@@ -281,12 +325,14 @@ public class CookieJar {
     }
 
     /**
-     * compare the two domains given for "cookie-equality"
+     * compare the two domains given for "cookie-equality".
      *
      * @param domain
+     *            the domain
      * @param newDomain
+     *            the new domain
      *
-     * @return
+     * @return true, if successful
      */
     private boolean compareDomain(String domain, String newDomain) {
         if (domain.charAt(0) == '.' && newDomain.endsWith(domain)
@@ -298,7 +344,7 @@ public class CookieJar {
     }
 
     /**
-     * base class for the cookie recipies - there are two different implementations of this
+     * base class for the cookie recipies - there are two different implementations of this.
      */
     abstract class CookieRecipe {
 
@@ -309,12 +355,15 @@ public class CookieJar {
          * have a name/value pair. Add them to the cookie press, which will decide if it is a cookie name or an
          * attribute name. b. if the token is a reserved word, flush the cookie press and continue. c. otherwise, add
          * the token to the cookie press, passing along the last character of the previous token.
+         *
+         * @param cookieHeader
+         *            the cookie header
          */
         void findCookies(String cookieHeader) {
-            Vector tokens = getCookieTokens(cookieHeader);
+            List tokens = getCookieTokens(cookieHeader);
 
             for (int i = tokens.size() - 1; i >= 0; i--) {
-                String token = (String) tokens.elementAt(i);
+                String token = (String) tokens.get(i);
 
                 int equalsIndex = getEqualsIndex(token);
                 if (equalsIndex != -1) {
@@ -322,11 +371,19 @@ public class CookieJar {
                 } else if (isCookieReservedWord(token)) {
                     _press.clear();
                 } else {
-                    _press.addToken(token, lastCharOf(i == 0 ? "" : (String) tokens.elementAt(i - 1)));
+                    _press.addToken(token, lastCharOf(i == 0 ? "" : (String) tokens.get(i - 1)));
                 }
             }
         }
 
+        /**
+         * Last char of.
+         *
+         * @param string
+         *            the string
+         *
+         * @return the char
+         */
         private char lastCharOf(String string) {
             return string.isEmpty() ? ' ' : string.charAt(string.length() - 1);
         }
@@ -334,6 +391,11 @@ public class CookieJar {
         /**
          * Returns the index (if any) of the equals sign separating a cookie name from the its value. Equals signs at
          * the end of the token are ignored in this calculation, since they may be part of a Base64-encoded value.
+         *
+         * @param token
+         *            the token
+         *
+         * @return the equals index
          */
         private int getEqualsIndex(String token) {
             if (!token.endsWith("==")) {
@@ -343,18 +405,18 @@ public class CookieJar {
         }
 
         /**
-         * Tokenizes a cookie header and returns the tokens in a <code>Vector</code>. handles the broken syntax for
+         * Tokenizes a cookie header and returns the tokens in a <code>List</code>. handles the broken syntax for
          * expires= fields ...
          *
          * @param cookieHeader
          *            - the header to read
          *
-         * @return a Vector of cookieTokens as name=value pairs
+         * @return a List of cookieTokens as name=value pairs
          **/
-        private Vector getCookieTokens(String cookieHeader) {
+        private List getCookieTokens(String cookieHeader) {
             StringReader sr = new StringReader(cookieHeader);
             StreamTokenizer st = new StreamTokenizer(sr);
-            Vector tokens = new Vector<>();
+            List tokens = new ArrayList<>();
 
             // clear syntax tables of the StreamTokenizer
             st.resetSyntax();
@@ -380,11 +442,12 @@ public class CookieJar {
                 while (st.nextToken() != StreamTokenizer.TT_EOF) {
                     String tokenContent = st.sval;
                     // fix expires comma delimiter token problem
-                    if (tokenContent.toLowerCase().startsWith("expires=") && st.nextToken() != StreamTokenizer.TT_EOF) {
+                    if (tokenContent.toLowerCase(Locale.ENGLISH).startsWith("expires=")
+                            && st.nextToken() != StreamTokenizer.TT_EOF) {
                         tokenContent += "," + st.sval;
                     } // if // if
                     tokenContent = tokenContent.trim();
-                    tokens.addElement(tokenContent);
+                    tokens.add(tokenContent);
                 }
             } catch (IOException ioe) {
                 // this will never happen with a StringReader
@@ -393,33 +456,55 @@ public class CookieJar {
             return tokens;
         }
 
+        /**
+         * Checks if is cookie attribute.
+         *
+         * @param stringLowercase
+         *            the string lowercase
+         *
+         * @return true, if is cookie attribute
+         */
         abstract protected boolean isCookieAttribute(String stringLowercase);
 
+        /**
+         * Checks if is cookie reserved word.
+         *
+         * @param token
+         *            the token
+         *
+         * @return true, if is cookie reserved word
+         */
         abstract protected boolean isCookieReservedWord(String token);
 
     }
 
     /**
-     * cookie Factory - creates cookies for URL s
+     * cookie Factory - creates cookies for URL s.
      */
     class CookiePress {
 
+        /** The value. */
         // the current value
         private StringBuilder _value = new StringBuilder();
+
+        /** The attributes. */
         private HashMap _attributes = new HashMap<>();
+
+        /** The source URL. */
         private URL _sourceURL;
 
         /**
-         * create a cookie press for the given URL
+         * create a cookie press for the given URL.
          *
          * @param sourceURL
+         *            the source URL
          */
         public CookiePress(URL sourceURL) {
             _sourceURL = sourceURL;
         }
 
         /**
-         * clear the attributes and the cookie value
+         * clear the attributes and the cookie value.
          */
         void clear() {
             _value.setLength(0);
@@ -427,10 +512,12 @@ public class CookieJar {
         }
 
         /**
-         * add the token content
+         * add the token content.
          *
          * @param token
+         *            the token
          * @param lastChar
+         *            the last char
          */
         void addToken(String token, char lastChar) {
             _value.insert(0, token);
@@ -440,7 +527,7 @@ public class CookieJar {
         }
 
         /**
-         * add from a token
+         * add from a token.
          *
          * @param recipe
          *            - the recipe to use
@@ -454,8 +541,8 @@ public class CookieJar {
             final String value = token.substring(equalsIndex + 1).trim();
             _value.insert(0, value);
             final String fvalue = _value.toString();
-            if (recipe.isCookieAttribute(name.toLowerCase())) {
-                _attributes.put(name.toLowerCase(), value);
+            if (recipe.isCookieAttribute(name.toLowerCase(Locale.ENGLISH))) {
+                _attributes.put(name.toLowerCase(Locale.ENGLISH), value);
             } else {
                 addCookieIfValid(new Cookie(name, fvalue, _attributes));
                 _attributes.clear();
@@ -464,9 +551,10 @@ public class CookieJar {
         }
 
         /**
-         * add the given cookie if it is valid
+         * add the given cookie if it is valid.
          *
          * @param cookie
+         *            the cookie
          */
         private void addCookieIfValid(Cookie cookie) {
             if (acceptCookie(cookie)) {
@@ -475,11 +563,12 @@ public class CookieJar {
         }
 
         /**
-         * accept the given cookie
+         * accept the given cookie.
          *
          * @param cookie
+         *            the cookie
          *
-         * @return
+         * @return true, if successful
          */
         private boolean acceptCookie(Cookie cookie) {
             if (cookie.getPath() == null) {
@@ -506,11 +595,29 @@ public class CookieJar {
             return true;
         }
 
+        /**
+         * Gets the parent path.
+         *
+         * @param path
+         *            the path
+         *
+         * @return the parent path
+         */
         private String getParentPath(String path) {
             int rightmostSlashIndex = path.lastIndexOf('/');
             return rightmostSlashIndex < 0 ? "/" : path.substring(0, rightmostSlashIndex);
         }
 
+        /**
+         * Gets the path attribute status.
+         *
+         * @param pathAttribute
+         *            the path attribute
+         * @param sourcePath
+         *            the source path
+         *
+         * @return the path attribute status
+         */
         private int getPathAttributeStatus(String pathAttribute, String sourcePath) {
             if (!CookieProperties.isPathMatchingStrict() || sourcePath.isEmpty()
                     || sourcePath.startsWith(pathAttribute)) {
@@ -520,15 +627,16 @@ public class CookieJar {
         }
 
         /**
-         * get the domainAttribute Status for the given cookie with the given sourceHost
-         *
-         * @see http://wp.netscape.com/newsref/std/cookie_spec.html
+         * get the domainAttribute Status for the given cookie with the given sourceHost.
          *
          * @param cookie
          *            - the cookie to use
          * @param sourceHost
+         *            the source host
          *
-         * @return
+         * @return the domain attribute status
+         *
+         * @see http://wp.netscape.com/newsref/std/cookie_spec.html
          */
         private int getDomainAttributeStatus(Cookie cookie, String sourceHost) {
             String domainAttribute = cookie.getDomain();
@@ -557,6 +665,18 @@ public class CookieJar {
             return CookieListener.ACCEPTED;
         }
 
+        /**
+         * Report cookie rejected.
+         *
+         * @param reason
+         *            the reason
+         * @param attribute
+         *            the attribute
+         * @param source
+         *            the source
+         *
+         * @return true, if successful
+         */
         private boolean reportCookieRejected(int reason, String attribute, String source) {
             CookieProperties.reportCookieRejected(reason, attribute, source);
             return false;

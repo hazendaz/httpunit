@@ -25,22 +25,32 @@ import junit.framework.TestCase;
 
 /**
  * This test is run by the junit servlet only.
- *
- * @author <a href="mailto:russgold@acm.org">Russell Gold</a>
  */
 // XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
 // nor any IDE
 @Ignore
 public class ErrorTests extends TestCase {
 
+    /**
+     * Instantiates a new error tests.
+     *
+     * @param s
+     *            the s
+     */
     public ErrorTests(String s) {
         super(s);
     }
 
+    /**
+     * Test addition.
+     */
     public void testAddition() {
         throw new RuntimeException("Got a problem?");
     }
 
+    /**
+     * Test multiplication.
+     */
     public void testMultiplication() {
         assertEquals(4, 2 * 2);
     }

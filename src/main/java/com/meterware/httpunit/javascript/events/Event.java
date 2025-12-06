@@ -22,13 +22,12 @@ package com.meterware.httpunit.javascript.events;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
- * @author <a href="mailto:rafal@caltha.pl">Rafal Krzewski</a>
- *
- * @version $Id$
+ * The Class Event.
  */
 public abstract class Event extends ScriptableObject {
     // -- Scriptable interface ------------------------------------------------------------------
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** JavaScript class name. */
@@ -86,6 +85,8 @@ public abstract class Event extends ScriptableObject {
 
     /**
      * The name of the event (case-insensitive). The name must be an XML name.
+     *
+     * @return the string
      */
     public String jsGet_type() {
         return type;
@@ -94,6 +95,8 @@ public abstract class Event extends ScriptableObject {
     /**
      * Used to indicate whether or not an event is a bubbling event. If the event can bubble the value is true, else the
      * value is false.
+     *
+     * @return true, if successful
      */
     public boolean jsGet_bubbles() {
         return bubbles;
@@ -104,6 +107,8 @@ public abstract class Event extends ScriptableObject {
      * that some systems may not provide this information the value of timeStamp may be not available for all events.
      * When not available, a value of 0 will be returned. Examples of epoch time are the time of the system start or
      * 0:0:0 UTC 1st January 1970.
+     *
+     * @return true, if successful
      */
     public boolean jsGet_cancelable() {
         return cancelable;
@@ -114,6 +119,8 @@ public abstract class Event extends ScriptableObject {
      * that some systems may not provide this information the value of timeStamp may be not available for all events.
      * When not available, a value of 0 will be returned. Examples of epoch time are the time of the system start or
      * 0:0:0 UTC 1st January 1970.
+     *
+     * @return the long
      */
     public long jsGet_timeStamp() {
         return timeStamp;
@@ -121,17 +128,23 @@ public abstract class Event extends ScriptableObject {
 
     /**
      * Used to indicate the EventTarget to which the event was originally dispatched.
+     *
+     * @return the event target
      */
     public abstract EventTarget jsGet_target();
 
     /**
      * Used to indicate the EventTarget whose EventListeners are currently being processed. This is particularly useful
      * during capturing and bubbling.
+     *
+     * @return the event target
      */
     public abstract EventTarget jsGet_currentTarget();
 
     /**
      * Used to indicate which phase of event flow is currently being evaluated.
+     *
+     * @return the short
      */
     public abstract short jsGet_eventPhase();
 

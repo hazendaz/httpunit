@@ -21,8 +21,6 @@ package com.meterware.httpunit.cookies;
 
 /**
  * An interface for classes which can listen for cookies being rejected and the reason.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  */
 public interface CookieListener {
 
@@ -43,7 +41,14 @@ public interface CookieListener {
 
     /**
      * Invoked when a cookie is rejected by HttpUnit.
-     **/
+     *
+     * @param cookieName
+     *            the cookie name
+     * @param reason
+     *            the reason
+     * @param attribute
+     *            the attribute
+     */
     void cookieRejected(String cookieName, int reason, String attribute);
 
 }

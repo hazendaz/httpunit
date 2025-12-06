@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -21,15 +21,18 @@ package com.meterware.httpunit;
 
 /**
  * A listener for DNS Requests. Users may implement this interface to bypass the normal DNS lookup.
- *
- * @author <a href="russgold@httpunit.org">Russell Gold</a>
- **/
+ */
 public interface DNSListener {
 
     /**
      * Returns the IP address as a string for the specified host name. Note: no validation is done to verify that the
      * returned value is an actual IP address or that the passed host name was not an IP address.
-     **/
+     *
+     * @param hostName
+     *            the host name
+     *
+     * @return the ip address
+     */
     String getIpAddress(String hostName);
 
 }

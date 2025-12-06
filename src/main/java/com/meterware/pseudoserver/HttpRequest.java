@@ -28,16 +28,30 @@ import java.util.StringTokenizer;
 
 /**
  * Represents a single HTTP request, extracted from the input stream.
- *
- * @since 1.6
  */
 public class HttpRequest extends ReceivedHttpMessage {
 
+    /** The protocol. */
     private String _protocol;
+
+    /** The command. */
     private String _command;
+
+    /** The uri. */
     private String _uri;
+
+    /** The parameters. */
     private Hashtable _parameters;
 
+    /**
+     * Instantiates a new http request.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     HttpRequest(InputStream inputStream) throws IOException {
         super(inputStream);
     }
@@ -57,6 +71,8 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     /**
      * Returns the command associated with this request.
+     *
+     * @return the command
      */
     public String getCommand() {
         return _command;
@@ -64,6 +80,8 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     /**
      * Returns the URI specified in the message header for this request.
+     *
+     * @return the uri
      */
     public String getURI() {
         return _uri;
@@ -71,6 +89,8 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     /**
      * Returns the protocol string specified in the message header for this request.
+     *
+     * @return the protocol
      */
     public String getProtocol() {
         return _protocol;
@@ -78,7 +98,12 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     /**
      * Returns the parameter with the specified name. If no such parameter exists, will return null.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter
+     */
     public String[] getParameter(String name) {
         if (_parameters == null) {
             if (_command.equalsIgnoreCase("GET") || _command.equalsIgnoreCase("HEAD")) {
@@ -90,10 +115,23 @@ public class HttpRequest extends ReceivedHttpMessage {
         return (String[]) _parameters.get(name);
     }
 
+    /**
+     * Gets the parameter string.
+     *
+     * @param uri
+     *            the uri
+     *
+     * @return the parameter string
+     */
     private String getParameterString(String uri) {
         return uri.indexOf('?') < 0 ? "" : uri.substring(uri.indexOf('?') + 1);
     }
 
+    /**
+     * Wants keep alive.
+     *
+     * @return true, if successful
+     */
     boolean wantsKeepAlive() {
         if ("Keep-alive".equalsIgnoreCase(getConnectionHeader())) {
             return true;
@@ -104,6 +142,14 @@ public class HttpRequest extends ReceivedHttpMessage {
         return false;
     }
 
+    /**
+     * Read parameters.
+     *
+     * @param content
+     *            the content
+     *
+     * @return the hashtable
+     */
     private Hashtable readParameters(String content) {
         Hashtable parameters = new Hashtable<>();
         if (content == null || content.trim().isEmpty()) {
@@ -118,6 +164,16 @@ public class HttpRequest extends ReceivedHttpMessage {
         return parameters;
     }
 
+    /**
+     * Adds the parameter.
+     *
+     * @param parameters
+     *            the parameters
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     private void addParameter(Hashtable parameters, String name, String value) {
         String[] oldValues = (String[]) parameters.get(name);
         if (oldValues == null) {
@@ -130,6 +186,11 @@ public class HttpRequest extends ReceivedHttpMessage {
         }
     }
 
+    /**
+     * Gets the connection header.
+     *
+     * @return the connection header
+     */
     private String getConnectionHeader() {
         return getHeader("Connection");
     }

@@ -33,12 +33,19 @@ import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
+ * The Class HTMLFormSubmitTest.
  */
 class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
+    /** The form. */
     private HTMLFormElement _form;
 
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @BeforeEach
     void setUp() throws Exception {
         TestWindowProxy windowProxy = new TestWindowProxy(_htmlDocument);
@@ -56,6 +63,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that submitting a simple form works.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitFromForm() throws Exception {
@@ -68,6 +78,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that submitting a simple form from a button selects that button only.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitFromButton() throws Exception {
@@ -82,6 +95,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that characters in parameter names will be appropriately encoded.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void embeddedEquals() throws Exception {
@@ -93,6 +109,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that an empty "select" element does not transmit any parameter values.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void emptyChoiceSubmit() throws Exception {
@@ -105,6 +124,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a select will send a value taken from the "value" attribute.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitUsingSelectOptionAttributes() throws Exception {
@@ -120,6 +142,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a select will send a value taken from the text nodes following the option tags.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitUsingSelectOptionLabels() throws Exception {
@@ -137,6 +162,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that a radio button will send its value on submit.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitRadioButtons() throws Exception {
@@ -150,6 +178,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that checkboxes will send their values on submit.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void submitCheckboxes() throws Exception {
@@ -163,6 +194,9 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
 
     /**
      * Verifies that forms with the POST method send their data in the message body.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     @Disabled
@@ -176,6 +210,14 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
                 TestWindowProxy.popProxyCall(), "Expected response");
     }
 
+    /**
+     * Adds the select.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the HTML select element
+     */
     private HTMLSelectElement addSelect(String name) {
         HTMLSelectElement select = (HTMLSelectElement) _htmlDocument.createElement("select");
         _form.appendChild(select);
@@ -183,6 +225,18 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         return select;
     }
 
+    /**
+     * Adds the option.
+     *
+     * @param select
+     *            the select
+     * @param value
+     *            the value
+     * @param label
+     *            the label
+     *
+     * @return the HTML option element
+     */
     private HTMLOptionElement addOption(HTMLSelectElement select, String value, String label) {
         HTMLOptionElement option = (HTMLOptionElement) _htmlDocument.createElement("option");
         select.appendChild(option);
@@ -195,6 +249,16 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         return option;
     }
 
+    /**
+     * Adds the input.
+     *
+     * @param type
+     *            the type
+     * @param name
+     *            the name
+     *
+     * @return the HTML input element
+     */
     private HTMLInputElement addInput(String type, String name) {
         HTMLInputElement element = (HTMLInputElement) _htmlDocument.createElement("input");
         element.setAttribute("type", type);
@@ -203,6 +267,18 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
         return element;
     }
 
+    /**
+     * Adds the input.
+     *
+     * @param type
+     *            the type
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @return the HTML input element
+     */
     private HTMLInputElement addInput(String type, String name, String value) {
         HTMLInputElement element = addInput(type, name);
         element.setValue(value);

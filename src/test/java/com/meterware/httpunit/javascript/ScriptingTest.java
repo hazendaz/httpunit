@@ -45,16 +45,18 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.migrationsupport.rules.ExternalResourceSupport;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- * @author Wolfgang Fahl - for compiling patches from the Source Forge web site 2008-03
+ * The Class ScriptingTest.
  */
-@ExtendWith(ExternalResourceSupport.class)
 class ScriptingTest extends AbstractJavaScriptTest {
 
+    /**
+     * Java script URL with value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptURLWithValue() throws Exception {
         defineResource("OnCommand.html",
@@ -66,6 +68,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("javascript:\"You made it!\"", wc.getCurrentPage().getURL().toExternalForm(), "New URL");
     }
 
+    /**
+     * Java script URL with no value.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptURLWithNoValue() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body>"
@@ -79,6 +87,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals(getHostPath() + "/OnCommand.html", myPage.getURL().toExternalForm(), "Returned page URL");
     }
 
+    /**
+     * Initial java script URL.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void initialJavaScriptURL() throws Exception {
         WebConversation wc = new WebConversation();
@@ -88,6 +102,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Hi there!", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Java script URL with variables.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptURLWithVariables() throws Exception {
         defineResource("OnCommand.html",
@@ -101,6 +121,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Our winner is... George of the Jungle", wc.getCurrentPage().getText(), "New page");
     }
 
+    /**
+     * Java script URL with question mark.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptURLWithQuestionMark() throws Exception {
         defineResource("/appname/HandleAction/report?type=C", "You made it!");
@@ -116,9 +142,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for bug report [ 1508516 ] Javascript method: "undefined" is not supported
+     * test for bug report [ 1508516 ] Javascript method: "undefined" is not supported.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void undefined() throws Exception {
@@ -128,9 +155,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for bug report [ 1153066 ] Eternal loop while processing javascript by Serguei Khramtchenko 2005-02-27
+     * test for bug report [ 1153066 ] Eternal loop while processing javascript by Serguei Khramtchenko 2005-02-27.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void avoidEndlessLoop() throws Exception {
@@ -140,9 +168,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test javascript call to an included function
+     * test javascript call to an included function.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptURLWithIncludedFunction() throws Exception {
@@ -157,6 +186,9 @@ class ScriptingTest extends AbstractJavaScriptTest {
 
     /**
      * test javascript call to built-in functions e.g. toLowerCase
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptWitBuiltInFunctions() throws Exception {
@@ -169,9 +201,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test javascript call to an included function
+     * test javascript call to an included function.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptURLWithIncludedFunction2() throws Exception {
@@ -188,9 +221,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test Detection of Javascript files that can not be found behaviour pointed out by Dan Lipofsky
-     *
-     * @throws Exception
+     * test Detection of Javascript files that can not be found behaviour pointed out by Dan Lipofsky.
      */
     @Test
     void badJavascriptFile() {
@@ -245,6 +276,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         HttpUnitUtils.setEXCEPTION_DEBUG(oldDebug);
     }
 
+    /**
+     * Java script URL in new window.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javaScriptURLInNewWindow() throws Exception {
         defineWebPage("OnCommand", "<input type='button' id='nowindow' onClick='alert(\"hi\")'></input>\n"
@@ -259,6 +296,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("hi", wc.popNextAlert(), "Alert message 2");
     }
 
+    /**
+     * Single command on load.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void singleCommandOnLoad() throws Exception {
         defineResource("OnCommand.html", "<html><head></head>" + "<body onLoad='alert(\"Ouch!\")'></body>");
@@ -273,6 +316,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * test for bug report [ 1161922 ] setting window.onload has no effect by Kent Tong
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void windowOnload() throws Exception {
@@ -290,9 +334,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * check that setExceptionsThrownOnScriptError can be set to false by trying onLoad with an undefined function
+     * check that setExceptionsThrownOnScriptError can be set to false by trying onLoad with an undefined function.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void onLoadErrorBypass() throws Exception {
@@ -308,7 +353,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for bug[ 1055450 ] Error loading included script aborts entire request by Renaud Waldura
+     * test for bug[ 1055450 ] Error loading included script aborts entire request by Renaud Waldura.
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void includeErrorBypass() throws Exception {
@@ -343,6 +391,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertTrue(message.indexOf("is not defined") > 0, "is not defined should be found");
     }
 
+    /**
+     * Confirmation dialog.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void confirmationDialog() throws Exception {
         defineWebPage("OnCommand", "<a href='NextPage' id='go' onClick='return confirm( \"go on?\" );'>");
@@ -364,6 +418,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Got the next page!", wc.getCurrentPage().getText(), "Page after confirmation");
     }
 
+    /**
+     * Prompt dialog.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void promptDialog() throws Exception {
         defineWebPage("OnCommand",
@@ -387,6 +447,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Got the next page!", wc.getCurrentPage().getText(), "Page after confirmation");
     }
 
+    /**
+     * Function call on load.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void functionCallOnLoad() throws Exception {
         defineResource("OnCommand.html",
@@ -399,6 +465,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Comment.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void comment() throws Exception {
         assertDoesNotThrow(() -> {
@@ -410,6 +482,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         });
     }
 
+    /**
+     * Included function.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void includedFunction() throws Exception {
         defineResource("saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
@@ -420,6 +498,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Included function with base tag.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void includedFunctionWithBaseTag() throws Exception {
         defineResource("scripts/saycheese.js", "function sayCheese() { alert( \"Cheese!\" ); }");
@@ -432,6 +516,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Cheese!", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Window open.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void windowOpen() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
@@ -468,6 +558,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("window is closed", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Window open with empty name.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void windowOpenWithEmptyName() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
@@ -504,6 +600,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("window is closed", wc.popNextAlert(), "Alert message");
     }
 
+    /**
+     * Window open with self.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void windowOpenWithSelf() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
@@ -533,6 +635,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals(1, wc.getOpenWindows().length, "Number of open windows");
     }
 
+    /**
+     * Javascript URL with fragment.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void javascriptURLWithFragment() throws Exception {
         defineResource("Target.txt", "You made it!", "text/plain");
@@ -561,6 +669,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("You made it!", openedWindow.getCurrentPage().getText(), "New window message");
     }
 
+    /**
+     * Window open no contents.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void windowOpenNoContents() throws Exception {
         defineResource("OnCommand.html", "<html><head><title>Amazing!</title></head>" + "<body>"
@@ -587,6 +701,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals(openedWindow, wc.getOpenWindow("sample"), "Window by name");
     }
 
+    /**
+     * Window reopen.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void windowReopen() throws Exception {
         defineResource("Target.html", "You made it!");
@@ -618,6 +738,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
                 "Changed window message");
     }
 
+    /**
+     * Opened window properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void openedWindowProperties() throws Exception {
         defineResource("Target.html",
@@ -638,6 +764,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("opener name=main", wc.popNextAlert(), "2nd alert");
     }
 
+    /**
+     * Frame properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void frameProperties() throws Exception {
         HttpUnitOptions.setExceptionsThrownOnScriptError(false);
@@ -674,6 +806,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("indexed frame=red", wc.popNextAlert(), "7th alert");
     }
 
+    /**
+     * Location property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void locationProperty() throws Exception {
         defineResource("Target.html", "You made it!");
@@ -714,6 +852,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("You made it!", wc.getCurrentPage().getText(), "5th page");
     }
 
+    /**
+     * Location property on load.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void locationPropertyOnLoad() throws Exception {
         defineResource("Target.html", "You made it!");
@@ -727,6 +871,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("You made it!", response.getText(), "returned page");
     }
 
+    /**
+     * Location readable subproperties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void locationReadableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
@@ -748,6 +898,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("search is ?point=center", wc.popNextAlert(), "Alert message 6");
     }
 
+    /**
+     * Location writeable subproperties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void locationWriteableSubproperties() throws Exception {
         defineResource("Target.html", "You made it!");
@@ -769,6 +925,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("You found it!", wc.getCurrentPage().getText(), "3rd page");
     }
 
+    /**
+     * Script disabled.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void scriptDisabled() throws Exception {
         HttpUnitOptions.setScriptingEnabled(false);
@@ -787,6 +949,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("Should get here", wc.getCurrentPage().getText(), "Expected result");
     }
 
+    /**
+     * Navigator object.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void navigatorObject() throws Exception {
         defineResource("OnCommand.html", "<html><head><script language='JavaScript'>" + "function viewProperties() { \n"
@@ -812,6 +980,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Screen object.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void screenObject() throws Exception {
         defineResource("OnCommand.html",
@@ -826,6 +1000,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Style property.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void styleProperty() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>" + "function showDisplay( id ) {"
@@ -851,9 +1031,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for Patch proposal 1653410 Date: 2008-01-08 15:49
+     * Sets the attribute.
      *
-     * @author Mattias Jiderhamn (mattias78)
+     * @throws Exception
+     *             the exception
      */
     @Test
     void setAttribute() throws Exception {
@@ -891,6 +1072,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * TypeError: Cannot find function onChange. (httpunit#6) after patch
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void callOnChange() throws Exception {
@@ -912,9 +1094,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for window event part of Patch proposal 1653410
+     * test for window event part of Patch proposal 1653410.
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void windowEvent() throws Exception {
@@ -935,6 +1118,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         // assertEquals( "Alert message 1", "hi", wc.popNextAlert() );
     }
 
+    /**
+     * Tag name node name properties.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void tagNameNodeNameProperties() throws Exception {
         defineResource("start.html", "<html><head><script language='JavaScript'>\n" + "function showTagName(id) {\n"
@@ -951,6 +1140,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("element id=div_id, tagName=DIV, nodeName=DIV", wc.popNextAlert());
     }
 
+    /**
+     * Read no cookie.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void readNoCookie() throws Exception {
         defineResource("OnCommand.html",
@@ -963,6 +1158,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Simple set cookie.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void simpleSetCookie() throws Exception {
         defineResource("OnCommand.html",
@@ -972,6 +1173,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertEquals("red", wc.getCookieValue("color"), "Cookie 'color'");
     }
 
+    /**
+     * Sets the cookie to null.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void setCookieToNull() throws Exception {
         assertDoesNotThrow(() -> {
@@ -981,6 +1188,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         });
     }
 
+    /**
+     * Read cookies.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void readCookies() throws Exception {
         defineResource("OnCommand.html",
@@ -995,6 +1208,12 @@ class ScriptingTest extends AbstractJavaScriptTest {
         assertNull(wc.getNextAlert(), "Alert should have been removed");
     }
 
+    /**
+     * Button without form.
+     *
+     * @throws Exception
+     *             the exception
+     */
     @Test
     void buttonWithoutForm() throws Exception {
         defineWebPage("OnCommand", "<button id='mybutton' onclick='alert( \"I heard you!\" )'>"
@@ -1009,9 +1228,10 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test the trick for detecting java script enabled
+     * test the trick for detecting java script enabled.
      *
      * @throws Exception
+     *             the exception
      */
     // TODO JWL 6/26/2021 Nekohtml patch is against 'body' not the 'header' so issue was never fixed.
     @Disabled
@@ -1034,6 +1254,9 @@ class ScriptingTest extends AbstractJavaScriptTest {
 
     /**
      * https://sourceforge.net/forum/forum.php?thread_id=1808696&forum_id=20294 by kauffman81
+     *
+     * @throws Exception
+     *             the exception
      */
     @Test
     void javaScriptConfirmPopUp() throws Exception {
@@ -1072,6 +1295,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * test for function in external javascript https://sourceforge.net/forum/forum.php?thread_id=1406498&forum_id=20294
      *
      * @throws Exception
+     *             the exception
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled
@@ -1098,6 +1322,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * com.meterware.httpunit.javascript.ScriptingEngineImpl.handleScriptException(ScriptingEngineImpl.java:61)
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void fillSelect() throws Exception {
@@ -1124,6 +1349,7 @@ class ScriptingTest extends AbstractJavaScriptTest {
      * property: length
      *
      * @throws Exception
+     *             the exception
      */
     @Test
     void modifySelectLength() throws Exception {

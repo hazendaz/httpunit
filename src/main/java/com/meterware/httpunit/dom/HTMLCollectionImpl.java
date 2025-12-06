@@ -27,19 +27,36 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class HTMLCollectionImpl.
+ */
 public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The list. */
     private NodeList _list;
 
+    /**
+     * Creates the HTML collection impl.
+     *
+     * @param list
+     *            the list
+     *
+     * @return the HTML collection impl
+     */
     public static HTMLCollectionImpl createHTMLCollectionImpl(NodeList list) {
         HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();
         htmlCollection.initialize(list);
         return htmlCollection;
     }
 
+    /**
+     * Initialize.
+     *
+     * @param list
+     *            the list
+     */
     private void initialize(NodeList list) {
         _list = list;
     }
@@ -47,16 +64,37 @@ public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollecti
     // ------------------------------------------ HTMLCollection methods
     // --------------------------------------------------
 
+    /**
+     * Gets the length.
+     *
+     * @return the length
+     */
     @Override
     public int getLength() {
         return _list.getLength();
     }
 
+    /**
+     * Item.
+     *
+     * @param index
+     *            the index
+     *
+     * @return the node
+     */
     @Override
     public Node item(int index) {
         return _list.item(index);
     }
 
+    /**
+     * Named item.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the node
+     */
     @Override
     public Node namedItem(String name) {
         if (name == null) {

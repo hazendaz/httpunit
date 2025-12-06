@@ -23,16 +23,13 @@ import com.meterware.httpunit.HTMLElement;
 
 /**
  * An interface for objects which will be accessible via scripting.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public abstract class ScriptableDelegate implements ScriptingHandler {
 
+    /** The script engine. */
     private ScriptingEngine _scriptEngine;
 
-    /**
-     * a dummy ScriptingEngine implementation
-     */
+    /** a dummy ScriptingEngine implementation. */
     public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {
         @Override
         public boolean supportsScriptLanguage(String language) {
@@ -149,14 +146,24 @@ public abstract class ScriptableDelegate implements ScriptingHandler {
 
     /**
      * Returns the value of the named property. Will return null if the property does not exist.
-     **/
+     *
+     * @param propertyName
+     *            the property name
+     *
+     * @return the object
+     */
     public Object get(String propertyName) {
         return null;
     }
 
     /**
      * Returns the value of the index property. Will return null if the property does not exist.
-     **/
+     *
+     * @param index
+     *            the index
+     *
+     * @return the object
+     */
     public Object get(int index) {
         return null;
     }
@@ -164,26 +171,55 @@ public abstract class ScriptableDelegate implements ScriptingHandler {
     /**
      * Sets the value of the named property. Will throw a runtime exception if the property does not exist or cannot
      * accept the specified value.
-     **/
+     *
+     * @param propertyName
+     *            the property name
+     * @param value
+     *            the value
+     */
     public void set(String propertyName, Object value) {
         throw new RuntimeException("No such property: " + propertyName);
     }
 
     /**
      * Specifies the scripting engine to be used.
+     *
+     * @param scriptEngine
+     *            the new script engine
      */
     public void setScriptEngine(ScriptingEngine scriptEngine) {
         _scriptEngine = scriptEngine;
     }
 
+    /**
+     * Gets the script engine.
+     *
+     * @return the script engine
+     */
     public ScriptingEngine getScriptEngine() {
         return _scriptEngine != null ? _scriptEngine : NULL_SCRIPT_ENGINE;
     }
 
+    /**
+     * Gets the script engine.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the script engine
+     */
     public ScriptingEngine getScriptEngine(ScriptableDelegate child) {
         return getScriptEngine().newScriptingEngine(child);
     }
 
+    /**
+     * Gets the delegates.
+     *
+     * @param elements
+     *            the elements
+     *
+     * @return the delegates
+     */
     protected ScriptableDelegate[] getDelegates(final HTMLElement[] elements) {
         ScriptableDelegate[] result = new ScriptableDelegate[elements.length];
         for (int i = 0; i < elements.length; i++) {

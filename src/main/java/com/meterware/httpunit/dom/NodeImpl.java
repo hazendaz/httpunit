@@ -22,6 +22,7 @@ package com.meterware.httpunit.dom;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -33,20 +34,40 @@ import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
- **/
+ * The Class NodeImpl.
+ */
 public abstract class NodeImpl extends AbstractDomComponent implements Node {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The owner document. */
     private DocumentImpl _ownerDocument;
+
+    /** The parent node. */
     private NodeImpl _parentNode;
+
+    /** The first child. */
     private NodeImpl _firstChild;
+
+    /** The next sibling. */
     private NodeImpl _nextSibling;
+
+    /** The previous sibling. */
     private NodeImpl _previousSibling;
+
+    /** The user data. */
     private Hashtable _userData = new Hashtable<>();
 
+    /** The skip iframes. */
     static IteratorMask SKIP_IFRAMES = subtreeRoot -> subtreeRoot instanceof HTMLIFrameElement;
 
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     */
     protected void initialize(DocumentImpl ownerDocument) {
         if (_ownerDocument != null) {
             throw new IllegalStateException("NodeImpl already initialized");
@@ -136,6 +157,12 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         return newChildNode;
     }
 
+    /**
+     * Removes the from tree.
+     *
+     * @param childNode
+     *            the child node
+     */
     private void removeFromTree(NodeImpl childNode) {
         if (childNode._parentNode != null) {
             if (childNode._previousSibling != null) {
@@ -180,6 +207,14 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         return newChild;
     }
 
+    /**
+     * Gets the child if permitted.
+     *
+     * @param proposedChild
+     *            the proposed child
+     *
+     * @return the child if permitted
+     */
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
         if (!(proposedChild instanceof NodeImpl)) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
@@ -198,6 +233,12 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         return childNode;
     }
 
+    /**
+     * Sets the next sibling.
+     *
+     * @param sibling
+     *            the new next sibling
+     */
     private void setNextSibling(NodeImpl sibling) {
         _nextSibling = sibling;
         if (sibling != null) {
@@ -314,13 +355,29 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
     // ----------------------------------------- implementation internals
     // ---------------------------------------------------
 
+    /**
+     * Gets the elements by tag name.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the elements by tag name
+     */
     public NodeList getElementsByTagName(String name) {
-        ArrayList matchingElements = new ArrayList<>();
+        List matchingElements = new ArrayList<>();
         appendElementsWithTag(name, matchingElements);
         return new NodeListImpl(matchingElements);
     }
 
-    private void appendElementsWithTag(String name, ArrayList matchingElements) {
+    /**
+     * Append elements with tag.
+     *
+     * @param name
+     *            the name
+     * @param matchingElements
+     *            the matching elements
+     */
+    private void appendElementsWithTag(String name, List matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != ELEMENT_NODE) {
                 continue;
@@ -332,13 +389,29 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         }
     }
 
+    /**
+     * Gets the elements by tag names.
+     *
+     * @param names
+     *            the names
+     *
+     * @return the elements by tag names
+     */
     protected NodeList getElementsByTagNames(String[] names) {
-        ArrayList matchingElements = new ArrayList<>();
+        List matchingElements = new ArrayList<>();
         appendElementsWithTags(names, matchingElements);
         return new NodeListImpl(matchingElements);
     }
 
-    void appendElementsWithTags(String[] names, ArrayList matchingElements) {
+    /**
+     * Append elements with tags.
+     *
+     * @param names
+     *            the names
+     * @param matchingElements
+     *            the matching elements
+     */
+    void appendElementsWithTags(String[] names, List matchingElements) {
         for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
             if (child.getNodeType() != ELEMENT_NODE) {
                 continue;
@@ -353,12 +426,23 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         }
     }
 
+    /**
+     * As text.
+     *
+     * @return the string
+     */
     String asText() {
         StringBuilder sb = new StringBuilder();
         appendContents(sb);
         return sb.toString();
     }
 
+    /**
+     * Append contents.
+     *
+     * @param sb
+     *            the sb
+     */
     void appendContents(StringBuilder sb) {
         NodeList nl = getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
@@ -366,20 +450,40 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         }
     }
 
+    /**
+     * Pre order iterator.
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIterator() {
         return new PreOrderIterator(this);
     }
 
+    /**
+     * Pre order iterator.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIterator(IteratorMask mask) {
         return new PreOrderIterator(this, mask);
     }
 
+    /**
+     * Pre order iterator after node.
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIteratorAfterNode() {
         return new PreOrderIterator(PreOrderIterator.nextNode(this));
     }
 
     /**
-     * @return
+     * Pre order iterator within node.
+     *
+     * @return the iterator
      */
     public Iterator preOrderIteratorWithinNode() {
         PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this));
@@ -387,12 +491,28 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         return result;
     }
 
+    /**
+     * Pre order iterator within node.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIteratorWithinNode(IteratorMask mask) {
         PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this), mask);
         result.setDoNotLeaveNode(this);
         return result;
     }
 
+    /**
+     * Pre order iterator after node.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIteratorAfterNode(IteratorMask mask) {
         return new PreOrderIterator(PreOrderIterator.nextNode(this), mask);
     }
@@ -406,45 +526,62 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
     }
 
     /**
-     * allow masking of the iteration
+     * allow masking of the iteration.
      */
     interface IteratorMask {
+
+        /**
+         * Skip subtree.
+         *
+         * @param subtreeRoot
+         *            the subtree root
+         *
+         * @return true, if successful
+         */
         // skip a given subtree
         boolean skipSubtree(Node subtreeRoot);
     }
 
     /**
-     * iterator for Nodetrees that can be influenced with an Iterator mask to skip specific parts
+     * iterator for Nodetrees that can be influenced with an Iterator mask to skip specific parts.
      */
     static class PreOrderIterator implements Iterator {
+
+        /** The next node. */
         private NodeImpl _nextNode;
+
+        /** The mask. */
         private IteratorMask _mask;
+
+        /** The do not leave node. */
         private NodeImpl _doNotLeaveNode = null;
 
         /**
-         * get the limit node
+         * get the limit node.
          *
-         * @return
+         * @return the do not leave node
          */
         public NodeImpl getDoNotLeaveNode() {
             return _doNotLeaveNode;
         }
 
         /**
-         * limit the PreOrderIterator not to leave the given node
+         * limit the PreOrderIterator not to leave the given node.
          *
          * @param doNotLeaveNode
+         *            the new do not leave node
          */
         public void setDoNotLeaveNode(NodeImpl doNotLeaveNode) {
             _doNotLeaveNode = doNotLeaveNode;
         }
 
         /**
-         * check whether the node is a child of the doNotLeaveNode (if one is set)
+         * check whether the node is a child of the doNotLeaveNode (if one is set).
          *
          * @param node
+         *            the node
          *
-         * @return
+         * @return true, if is child
          */
         private boolean isChild(Node node) {
             if (node == null) {
@@ -464,19 +601,22 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
         }
 
         /**
-         * create a PreOrderIterator starting at a given currentNode
+         * create a PreOrderIterator starting at a given currentNode.
          *
          * @param currentNode
+         *            the current node
          */
         PreOrderIterator(NodeImpl currentNode) {
             _nextNode = currentNode;
         }
 
         /**
-         * create a PreOrderIterator starting at a given currentNode and setting the iterator mask to the given mask
+         * create a PreOrderIterator starting at a given currentNode and setting the iterator mask to the given mask.
          *
          * @param currentNode
+         *            the current node
          * @param mask
+         *            the mask
          */
         PreOrderIterator(NodeImpl currentNode, IteratorMask mask) {
             this(currentNode);
@@ -513,6 +653,14 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
             throw new java.lang.UnsupportedOperationException();
         }
 
+        /**
+         * Next node.
+         *
+         * @param node
+         *            the node
+         *
+         * @return the node impl
+         */
         static NodeImpl nextNode(NodeImpl node) {
             if (node._firstChild != null) {
                 return node._firstChild;
@@ -520,6 +668,14 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
             return nextSubtree(node);
         }
 
+        /**
+         * Next subtree.
+         *
+         * @param node
+         *            the node
+         *
+         * @return the node impl
+         */
         private static NodeImpl nextSubtree(NodeImpl node) {
             if (node._nextSibling != null) {
                 return node._nextSibling;

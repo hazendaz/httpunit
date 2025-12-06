@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,19 +23,24 @@ import java.net.URL;
 
 /**
  * This interface represents a source from which to parse out cookies.
- *
- * @author <a href="mailto:russgold@httpunit.org">Russell Gold</a>
  **/
 public interface CookieSource {
 
     /**
      * Returns the URL which invoked this response.
-     **/
+     *
+     * @return the url
+     */
     URL getURL();
 
     /**
      * Returns the values for the specified header field. If no such field is defined, will return an empty array.
-     **/
+     *
+     * @param fieldName
+     *            the field name
+     *
+     * @return the header fields
+     */
     String[] getHeaderFields(String fieldName);
 
 }

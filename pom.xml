@@ -75,8 +75,8 @@
     </scm>
 
     <issueManagement>
-        <system>Sourceforge</system>
-        <url>http://sourceforge.net/tracker/?group_id=6550&amp;atid=106550</url>
+        <system>GitHub</system>
+        <url>https://github.com/hazendaz/httpunit/issues</url>
     </issueManagement>
     <distributionManagement>
         <site>

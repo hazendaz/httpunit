@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.Locale;
 
 /**
  * A collection of HTTP cookies, which can interact with cookie and set-cookie header values.
@@ -441,7 +442,8 @@ public class CookieJar {
                 while (st.nextToken() != StreamTokenizer.TT_EOF) {
                     String tokenContent = st.sval;
                     // fix expires comma delimiter token problem
-                    if (tokenContent.toLowerCase().startsWith("expires=") && st.nextToken() != StreamTokenizer.TT_EOF) {
+                    if (tokenContent.toLowerCase(Locale.ENGLISH).startsWith("expires=")
+                            && st.nextToken() != StreamTokenizer.TT_EOF) {
                         tokenContent += "," + st.sval;
                     } // if // if
                     tokenContent = tokenContent.trim();
@@ -539,8 +541,8 @@ public class CookieJar {
             final String value = token.substring(equalsIndex + 1).trim();
             _value.insert(0, value);
             final String fvalue = _value.toString();
-            if (recipe.isCookieAttribute(name.toLowerCase())) {
-                _attributes.put(name.toLowerCase(), value);
+            if (recipe.isCookieAttribute(name.toLowerCase(Locale.ENGLISH))) {
+                _attributes.put(name.toLowerCase(Locale.ENGLISH), value);
             } else {
                 addCookieIfValid(new Cookie(name, fvalue, _attributes));
                 _attributes.clear();

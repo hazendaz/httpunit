@@ -178,12 +178,13 @@ public class NodeUtils {
         NodeAction action = new NodeAction() {
             @Override
             public boolean processElement(PreOrderTraversal traversal, Element node) {
-                String nodeName = node.getNodeName().toLowerCase();
-                if (nodeName.equals("p") || nodeName.equals("br") || nodeName.equalsIgnoreCase("tr")) {
+                String nodeName = node.getNodeName();
+                if (nodeName.equalsIgnoreCase("p") || nodeName.equalsIgnoreCase("br")
+                        || nodeName.equalsIgnoreCase("tr")) {
                     sb.append("\n");
-                } else if (nodeName.equals("td") || nodeName.equalsIgnoreCase("th")) {
+                } else if (nodeName.equalsIgnoreCase("td") || nodeName.equalsIgnoreCase("th")) {
                     sb.append(" | ");
-                } else if (nodeName.equals("img") && HttpUnitOptions.getImagesTreatedAsAltText()) {
+                } else if (nodeName.equalsIgnoreCase("img") && HttpUnitOptions.getImagesTreatedAsAltText()) {
                     sb.append(getNodeAttribute(node, "alt"));
                 }
                 return true;

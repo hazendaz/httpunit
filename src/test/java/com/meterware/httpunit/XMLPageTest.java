@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -125,7 +126,7 @@ public class XMLPageTest extends HttpUnitTest {
         pot.perform(new NodeUtils.NodeAction() {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal traversal, Element element) {
-                if (element.getNodeName().toLowerCase().equals("main")) {
+                if (element.getNodeName().equalsIgnoreCase("main")) {
                     traversal.pushContext("x");
                 } else {
                     for (Iterator i = traversal.getContexts(); i.hasNext();) {
@@ -144,7 +145,7 @@ public class XMLPageTest extends HttpUnitTest {
         String expected = "zero|xfirst|xsecond|xxnormal|xxsimple|xafter|end|";
         // new result
         // expected="HTML|HEAD|ZERO|xFIRST|xSECOND|xxNORMAL|xxSIMPLE|xAFTER|END|";
-        String got = sb.toString().toLowerCase();
+        String got = sb.toString().toLowerCase(Locale.ENGLISH);
         assertTrue(got.endsWith(expected), "Traversal result");
     }
 }

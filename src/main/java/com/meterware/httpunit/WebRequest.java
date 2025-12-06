@@ -35,6 +35,7 @@ import java.net.URLStreamHandler;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Locale;
 
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -139,10 +140,10 @@ public abstract class WebRequest {
      *             the malformed URL exception
      */
     private URL newURL(final URL base, final String spec) throws MalformedURLException {
-        if (spec.toLowerCase().startsWith("javascript:")) {
+        if (spec.toLowerCase(Locale.ENGLISH).startsWith("javascript:")) {
             return new URL("javascript", null, -1, spec.substring("javascript:".length()), JAVASCRIPT_STREAM_HANDLER);
         }
-        if (spec.toLowerCase().startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
+        if (spec.toLowerCase(Locale.ENGLISH).startsWith("https:") && !HttpsProtocolSupport.hasHttpsSupport()) {
             return new URL("https", null, -1, spec.substring("https:".length()), HTTPS_STREAM_HANDLER);
         }
         if (getURLBase() == null || getURLString().indexOf(':') > 0) {
@@ -662,7 +663,7 @@ public abstract class WebRequest {
         _urlBase = urlBase;
         _sourceFrame = sourceFrame;
         _requestTarget = requestTarget;
-        _urlString = urlString.toLowerCase().startsWith("http") ? escape(urlString) : urlString;
+        _urlString = urlString.toLowerCase(Locale.ENGLISH).startsWith("http") ? escape(urlString) : urlString;
         _parameterHolder = parameterHolder;
         _characterSet = parameterHolder.getCharacterSet();
     }

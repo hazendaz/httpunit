@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -430,7 +431,7 @@ public class HttpUnitUtils {
      * @return - true if this is a javascript url
      */
     static boolean isJavaScriptURL(String urlString) {
-        return urlString.toLowerCase().startsWith("javascript:");
+        return urlString.toLowerCase(Locale.ENGLISH).startsWith("javascript:");
     }
 
     /**

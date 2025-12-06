@@ -24,6 +24,7 @@ import com.meterware.httpunit.ScriptException;
 import com.meterware.httpunit.scripting.ScriptingEngine;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
@@ -93,7 +94,7 @@ public abstract class ScriptingEngineImpl extends ScriptableObject implements Sc
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-        return language == null || language.toLowerCase().startsWith("javascript");
+        return language == null || language.toLowerCase(Locale.ENGLISH).startsWith("javascript");
     }
 
     /**

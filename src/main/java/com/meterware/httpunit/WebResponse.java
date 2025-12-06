@@ -46,6 +46,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 
 import org.w3c.dom.Document;
@@ -1912,11 +1913,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
             String token = nextToken();
             while (!token.isEmpty()) {
                 if (token.equals("=") && !attribute.isEmpty()) {
-                    getAttributes().put(attribute.toLowerCase(), nextToken());
+                    getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), nextToken());
                     attribute = "";
                 } else {
                     if (!attribute.isEmpty()) {
-                        getAttributes().put(attribute.toLowerCase(), "");
+                        getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), "");
                     }
                     attribute = token;
                 }

@@ -22,6 +22,7 @@ package com.meterware.httpunit.dom;
 import com.meterware.httpunit.protocol.ParameterProcessor;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -339,7 +340,7 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
     public void setAttribute(String name, String value) throws DOMException {
         super.setAttribute(name, value);
         if (name.equalsIgnoreCase("type")) {
-            selectBehavior(getType().toLowerCase());
+            selectBehavior(getType().toLowerCase(Locale.ENGLISH));
         }
     }
 
@@ -406,7 +407,7 @@ public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElemen
      */
     private TypeSpecificBehavior getBehavior() {
         if (_behavior == null) {
-            selectBehavior(getType().toLowerCase());
+            selectBehavior(getType().toLowerCase(Locale.ENGLISH));
         }
         return _behavior;
     }

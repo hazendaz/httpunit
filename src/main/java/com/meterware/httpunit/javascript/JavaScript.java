@@ -45,6 +45,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -693,7 +694,7 @@ public class JavaScript {
          * @return the string
          */
         public String jsFunction_toLowerCase(String s) {
-            return s.toLowerCase();
+            return s.toLowerCase(Locale.ENGLISH);
         }
 
         /**

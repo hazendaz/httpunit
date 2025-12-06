@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
@@ -1207,7 +1208,7 @@ public class ParsedHTML {
         NodeUtils.NodeAction action = new NodeUtils.NodeAction() {
             @Override
             public boolean processElement(NodeUtils.PreOrderTraversal pot, Element element) {
-                HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase());
+                HTMLElementFactory factory = getHTMLElementFactory(element.getNodeName().toLowerCase(Locale.ENGLISH));
                 if (factory == null || !factory.isRecognized(getClientProperties())
                         || pot.getClosestContext(ContentConcealer.class) != null) {
                     return true;

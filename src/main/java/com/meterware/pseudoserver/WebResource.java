@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Vector;
 
 /**
@@ -115,17 +116,18 @@ public class WebResource {
      */
     public void addHeader(String header) {
         _headers.addElement(header);
-        if (header.toLowerCase().startsWith("content-type")) {
+        if (header.toLowerCase(Locale.ENGLISH).startsWith("content-type")) {
             _hasExplicitContentTypeHeader = true;
         }
-        if (header.toLowerCase().startsWith("content-length")) {
+        if (header.toLowerCase(Locale.ENGLISH).startsWith("content-length")) {
             _hasExplicitContentLengthHeader = true;
         }
-        if (header.trim().toLowerCase().startsWith("connection") && header.trim().toLowerCase().endsWith("close")) {
+        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith("connection")
+                && header.trim().toLowerCase(Locale.ENGLISH).endsWith("close")) {
             _closesConnection = true;
         }
-        if (header.trim().toLowerCase().startsWith("transfer-encoding")
-                && header.trim().toLowerCase().endsWith("chunked")) {
+        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith("transfer-encoding")
+                && header.trim().toLowerCase(Locale.ENGLISH).endsWith("chunked")) {
             _isChunked = true;
         }
     }

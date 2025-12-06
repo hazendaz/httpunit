@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.mozilla.javascript.Scriptable;
 import org.w3c.dom.DOMException;
@@ -402,7 +403,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
      * @return the exemplar
      */
     private static HTMLElementImpl getExemplar(String tagName) {
-        HTMLElementImpl impl = (HTMLElementImpl) _exemplars.get(tagName.toLowerCase());
+        HTMLElementImpl impl = (HTMLElementImpl) _exemplars.get(tagName.toLowerCase(Locale.ENGLISH));
         if (impl == null) {
             impl = new HTMLElementImpl();
         }

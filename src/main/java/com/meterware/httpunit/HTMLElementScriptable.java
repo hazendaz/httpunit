@@ -96,12 +96,12 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
-        if (eventName.toLowerCase().equals("onclick")) {
+        if (eventName.equalsIgnoreCase("onclick")) {
             handleEvent("onmousedown");
         }
         String eventScript = getAttribute(eventName);
         boolean result = doEventScript(eventScript);
-        if (eventName.toLowerCase().equals("onclick")) {
+        if (eventName.equalsIgnoreCase("onclick")) {
             handleEvent("onmouseup");
         }
         return result;

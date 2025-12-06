@@ -127,7 +127,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         _headers.addEntries(request.getHeaders());
         setCookiesFromHeader(_headers);
         _messageBody = messageBody;
-        _protocol = request.getURL().getProtocol().toLowerCase();
+        _protocol = request.getURL().getProtocol().toLowerCase(Locale.ENGLISH);
         _secure = _protocol.endsWith("s");
         _serverName = request.getURL().getHost();
         _serverPort = request.getURL().getPort();

@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
 
@@ -1224,7 +1225,7 @@ public class WebClientTest extends HttpUnitTest {
             if (header == null) {
                 return false;
             }
-            return header.toLowerCase().indexOf("gzip") >= 0;
+            return header.toLowerCase(Locale.ENGLISH).indexOf("gzip") >= 0;
         }
 
         /**

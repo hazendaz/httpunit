@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -516,9 +517,9 @@ class WebApplication implements SessionListenerDispatcher {
     File getResourceFile(String path) {
         String relativePath = path.startsWith("/") ? path.substring(1) : path;
         if (_contextDir == null) {
-            return new File(relativePath);
+            return Path.of(relativePath).toFile();
         }
-        return new File(_contextDir, relativePath);
+        return _contextDir.toPath().resolve(relativePath).toFile();
     }
 
     /**

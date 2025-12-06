@@ -24,13 +24,12 @@ import jakarta.servlet.ServletRegistration.Dynamic;
 import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Hashtable;
@@ -117,14 +116,6 @@ public class ServletUnitServletContext implements ServletContext {
     public java.net.URL getResource(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
-            // PATCH proposal [ 1592532 ] Invalid
-            // ServletUnitServletContext#getResource(String path)
-            // by Timo Westkemper
-            // return !resourceFile.exists() ? null : resourceFile.toURL();
-            //
-            // state of code until 2014-02 - before proposal of Aki Yoshida
-            // return resourceFile == null ? null : resourceFile.toURL();
-
             return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();
         } catch (MalformedURLException e) {
             return null;
@@ -144,8 +135,8 @@ public class ServletUnitServletContext implements ServletContext {
     public java.io.InputStream getResourceAsStream(String path) {
         try {
             File resourceFile = _application.getResourceFile(path);
-            return resourceFile == null ? null : new FileInputStream(resourceFile);
-        } catch (FileNotFoundException e) {
+            return resourceFile == null ? null : Files.newInputStream(resourceFile.toPath());
+        } catch (IOException e) {
             return null;
         }
     }

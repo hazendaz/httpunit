@@ -22,8 +22,6 @@ package com.meterware.pseudoserver;
 import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -35,6 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -623,8 +623,8 @@ public class PseudoServer {
                     while (st.hasMoreTokens()) {
                         String file = st.nextToken();
                         if (file.endsWith(resourceName)) {
-                            File f = new File(file);
-                            return new WebResource(new FileInputStream(f), "application/zip", 200);
+                            Path f = Path.of(file);
+                            return new WebResource(Files.newInputStream(f), "application/zip", 200);
                         }
                     }
                 }

@@ -20,9 +20,9 @@
 package com.meterware.httpunit.protocol;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 /**
  * A description of a file to be uploaded as part of a form submission.
@@ -79,12 +79,12 @@ public class UploadFileSpec {
      */
     public InputStream getInputStream() throws IOException {
         if (_inputStream == null) {
-            _inputStream = new FileInputStream(_file);
+            _inputStream = Files.newInputStream(_file.toPath());
         }
         try {
             _inputStream.available();
         } catch (IOException ex) {
-            _inputStream = new FileInputStream(_file);
+            _inputStream = Files.newInputStream(_file.toPath());
         }
         return _inputStream;
     }

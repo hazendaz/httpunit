@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -90,7 +91,7 @@ public class ServletRunner {
      */
     @Deprecated
     public ServletRunner(String webXMLFileSpec, String contextPath) throws IOException, SAXException {
-        this(new File(webXMLFileSpec), contextPath);
+        this(Path.of(webXMLFileSpec).toFile(), contextPath);
     }
 
     /**

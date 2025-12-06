@@ -21,7 +21,8 @@ package com.meterware.servletunit;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A base class for servlet unit tests.
@@ -41,21 +42,21 @@ public abstract class ServletUnitTest {
      *            the found
      */
     protected void assertMatchingSet(String comment, Object[] expected, Object[] found) {
-        Vector expectedItems = new Vector<>();
-        Vector foundItems = new Vector<>();
+        List expectedItems = new ArrayList<>();
+        List foundItems = new ArrayList<>();
 
         for (Object element : expected) {
-            expectedItems.addElement(element);
+            expectedItems.add(element);
         }
         for (Object element : found) {
-            foundItems.addElement(element);
+            foundItems.add(element);
         }
 
         for (Object element : expected) {
             if (!foundItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                foundItems.removeElement(element);
+                foundItems.remove(element);
             }
         }
 
@@ -63,7 +64,7 @@ public abstract class ServletUnitTest {
             if (!expectedItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                expectedItems.removeElement(element);
+                expectedItems.remove(element);
             }
         }
 

@@ -36,11 +36,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 /**
  * A basic simulated web-server for testing user agents without a web server.
@@ -704,7 +705,7 @@ class HttpResponseStream {
     }
 
     void addHeader(String header) {
-        _headers.addElement(header);
+        _headers.add(header);
     }
 
     void write(String contents, String charset) throws IOException {
@@ -731,7 +732,7 @@ class HttpResponseStream {
     private void flushHeaders() {
         if (!_headersWritten) {
             sendResponse(_responseCode, _responseText);
-            for (Enumeration e = _headers.elements(); e.hasMoreElements();) {
+            for (Enumeration e = Collections.enumeration(_headers); e.hasMoreElements();) {
                 sendLine((String) e.nextElement());
             }
             sendText(CRLF);
@@ -756,7 +757,7 @@ class HttpResponseStream {
     private OutputStream _stream;
     private PrintWriter _pw;
 
-    private Vector _headers = new Vector<>();
+    private List _headers = new ArrayList<>();
     private String _protocol = "HTTP/1.0";
     private int _responseCode = HttpURLConnection.HTTP_OK;
     private String _responseText = "OK";

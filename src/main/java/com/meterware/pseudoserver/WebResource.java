@@ -27,8 +27,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
 
 /**
  * A resource to be returned from the simulated server.
@@ -69,7 +70,7 @@ public class WebResource {
     private boolean _hasExplicitContentLengthHeader;
 
     /** The headers. */
-    private Vector _headers = new Vector<>();
+    private List<String> _headers = new ArrayList<>();
 
     /** The is chunked. */
     private boolean _isChunked;
@@ -115,7 +116,7 @@ public class WebResource {
      *            the header
      */
     public void addHeader(String header) {
-        _headers.addElement(header);
+        _headers.add(header);
         if (header.toLowerCase(Locale.ENGLISH).startsWith("content-type")) {
             _hasExplicitContentTypeHeader = true;
         }
@@ -233,16 +234,14 @@ public class WebResource {
      * @return the headers
      */
     String[] getHeaders() {
-        final Vector effectiveHeaders = (Vector) _headers.clone();
+        final List<String> effectiveHeaders = new ArrayList<>(_headers);
         if (!_hasExplicitContentTypeHeader) {
             effectiveHeaders.add(getContentTypeHeader());
         }
         if (_stream == null && !_hasExplicitContentLengthHeader && !isChunked()) {
             effectiveHeaders.add(getContentLengthHeader());
         }
-        String[] headers = new String[effectiveHeaders.size()];
-        effectiveHeaders.copyInto(headers);
-        return headers;
+        return effectiveHeaders.toArray(new String[0]);
     }
 
     /**

@@ -28,10 +28,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 /**
  * A response from a web server to an Http request.
@@ -177,13 +178,11 @@ class HttpWebResponse extends WebResponse {
 
     @Override
     public String[] getHeaderFieldNames() {
-        Vector names = new Vector<>();
+        List<String> names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add((String) e.nextElement());
         }
-        String[] result = new String[names.size()];
-        names.copyInto(result);
-        return result;
+        return names.toArray(new String[0]);
     }
 
     /**

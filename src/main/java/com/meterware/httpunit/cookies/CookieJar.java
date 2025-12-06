@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -360,10 +360,10 @@ public class CookieJar {
          *            the cookie header
          */
         void findCookies(String cookieHeader) {
-            Vector tokens = getCookieTokens(cookieHeader);
+            List tokens = getCookieTokens(cookieHeader);
 
             for (int i = tokens.size() - 1; i >= 0; i--) {
-                String token = (String) tokens.elementAt(i);
+                String token = (String) tokens.get(i);
 
                 int equalsIndex = getEqualsIndex(token);
                 if (equalsIndex != -1) {
@@ -371,7 +371,7 @@ public class CookieJar {
                 } else if (isCookieReservedWord(token)) {
                     _press.clear();
                 } else {
-                    _press.addToken(token, lastCharOf(i == 0 ? "" : (String) tokens.elementAt(i - 1)));
+                    _press.addToken(token, lastCharOf(i == 0 ? "" : (String) tokens.get(i - 1)));
                 }
             }
         }
@@ -405,18 +405,18 @@ public class CookieJar {
         }
 
         /**
-         * Tokenizes a cookie header and returns the tokens in a <code>Vector</code>. handles the broken syntax for
+         * Tokenizes a cookie header and returns the tokens in a <code>List</code>. handles the broken syntax for
          * expires= fields ...
          *
          * @param cookieHeader
          *            - the header to read
          *
-         * @return a Vector of cookieTokens as name=value pairs
+         * @return a List of cookieTokens as name=value pairs
          **/
-        private Vector getCookieTokens(String cookieHeader) {
+        private List getCookieTokens(String cookieHeader) {
             StringReader sr = new StringReader(cookieHeader);
             StreamTokenizer st = new StreamTokenizer(sr);
-            Vector tokens = new Vector<>();
+            List tokens = new ArrayList<>();
 
             // clear syntax tables of the StreamTokenizer
             st.resetSyntax();
@@ -447,7 +447,7 @@ public class CookieJar {
                         tokenContent += "," + st.sval;
                     } // if // if
                     tokenContent = tokenContent.trim();
-                    tokens.addElement(tokenContent);
+                    tokens.add(tokenContent);
                 }
             } catch (IOException ioe) {
                 // this will never happen with a StringReader

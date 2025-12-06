@@ -28,8 +28,8 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 /**
  * A collection of global options to control HttpUnit's behavior.
@@ -479,7 +479,7 @@ public abstract class HttpUnitOptions {
      * @deprecated as of 1.5.2, removed with no replacement
      */
     @Deprecated
-    public static Vector getHtmlErrorListeners() {
+    public static List getHtmlErrorListeners() {
         return null;
     }
 

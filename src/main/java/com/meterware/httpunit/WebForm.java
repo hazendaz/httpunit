@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
@@ -60,8 +59,8 @@ public class WebForm extends WebRequestSource {
     /** The character set in which the form will be submitted. **/
     private String _characterSet;
 
-    /** The button vector. */
-    private Vector _buttonVector;
+    /** The button list. */
+    private List<SubmitButton> _buttonVector;
 
     /** The preset parameters. */
     private FormControl[] _presetParameters;
@@ -257,7 +256,7 @@ public class WebForm extends WebRequestSource {
     public Button[] getButtons() {
         if (_buttons == null) {
             FormControl[] controls = getFormControls();
-            ArrayList buttonList = new ArrayList<>();
+            List<FormControl> buttonList = new ArrayList<>();
             for (FormControl control : controls) {
                 if (control instanceof Button) {
                     buttonList.add(control);
@@ -307,9 +306,8 @@ public class WebForm extends WebRequestSource {
      */
     public SubmitButton[] getSubmitButtons() {
         if (_submitButtons == null) {
-            Vector buttons = getSubmitButtonVector();
-            _submitButtons = new SubmitButton[buttons.size()];
-            buttons.copyInto(_submitButtons);
+            List<SubmitButton> buttons = getSubmitButtonVector();
+            _submitButtons = buttons.toArray(new SubmitButton[buttons.size()]);
         }
         return _submitButtons;
     }
@@ -669,7 +667,7 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public String[] getParameterNames() {
-        ArrayList parameterNames = new ArrayList(getFormParameters().keySet());
+        List parameterNames = new ArrayList(getFormParameters().keySet());
         return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
     }
 
@@ -1169,14 +1167,14 @@ public class WebForm extends WebRequestSource {
     }
 
     /**
-     * get the Vector of submit buttons - will always contain at least one button - if the original vector has none a
-     * faked submit button will be added.
+     * get the list of submit buttons - will always contain at least one button - if the original list has none a faked
+     * submit button will be added.
      *
-     * @return a Vector with the submit buttons
+     * @return a list with the submit buttons
      */
-    private Vector getSubmitButtonVector() {
+    private List<SubmitButton> getSubmitButtonVector() {
         if (_buttonVector == null) {
-            _buttonVector = new Vector<>();
+            _buttonVector = new ArrayList<>();
             FormControl[] controls = getFormControls();
             for (FormControl control : controls) {
                 if (control instanceof SubmitButton) {
@@ -1187,10 +1185,10 @@ public class WebForm extends WebRequestSource {
             }
 
             /**
-             * make sure that there is always at least one submit button if none is in the Vector add a faked one
+             * make sure that there is always at least one submit button if none is in the list add a faked one
              */
             if (_buttonVector.isEmpty()) {
-                _buttonVector.addElement(SubmitButton.createFakeSubmitButton(this));
+                _buttonVector.add(SubmitButton.createFakeSubmitButton(this));
             }
         }
         return _buttonVector;

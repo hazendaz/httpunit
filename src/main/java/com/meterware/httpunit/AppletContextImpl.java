@@ -26,9 +26,11 @@ import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * The Class AppletContextImpl.
@@ -112,7 +114,7 @@ class AppletContextImpl implements AppletContext {
     @Override
     public Enumeration getApplets() {
         WebApplet[] webApplets = _webApplet.getAppletsInPage();
-        Vector v = new Vector<>();
+        List v = new ArrayList<>();
         try {
             for (WebApplet webApplet : webApplets) {
                 v.add(webApplet.getApplet());
@@ -121,7 +123,7 @@ class AppletContextImpl implements AppletContext {
             e.printStackTrace();
             throw new RuntimeException(e.toString());
         }
-        return v.elements();
+        return Collections.enumeration(v);
     }
 
     /**

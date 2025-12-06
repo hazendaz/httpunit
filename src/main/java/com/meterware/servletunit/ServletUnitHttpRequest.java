@@ -53,10 +53,10 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 /**
  * The Class ServletUnitHttpRequest.
@@ -67,7 +67,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private ServletInputStreamImpl _inputStream;
 
     /** The locales. */
-    private Vector _locales;
+    private List _locales;
 
     /** The protocol. */
     private String _protocol;
@@ -186,9 +186,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         if (_cookies.size() == 0) {
             return null;
         }
-        Cookie[] result = new Cookie[_cookies.size()];
-        _cookies.copyInto(result);
-        return result;
+        return _cookies.toArray(new Cookie[0]);
     }
 
     /**
@@ -557,7 +555,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Locale getLocale() {
-        return (Locale) getPreferredLocales().firstElement();
+        return (Locale) getPreferredLocales().get(0);
     }
 
     /**
@@ -568,17 +566,17 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getLocales() {
-        return getPreferredLocales().elements();
+        return Collections.enumeration(getPreferredLocales());
     }
 
     /**
-     * Parses the accept-language header to obtain a vector of preferred locales.
+     * Parses the accept-language header to obtain a list of preferred locales.
      *
      * @return the preferred locales, sorted by qvalue
      */
-    private Vector getPreferredLocales() {
+    private List getPreferredLocales() {
         if (_locales == null) {
-            _locales = new Vector<>();
+            _locales = new ArrayList<>();
             String languages = getHeader("accept-language");
             if (languages == null) {
                 _locales.add(Locale.getDefault());
@@ -680,11 +678,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-        Vector list = new Vector<>();
+        List list = new ArrayList<>();
         if (_headers.containsKey(name)) {
             list.add(_headers.get(name));
         }
-        return list.elements();
+        return Collections.enumeration(list);
     }
 
     /**
@@ -775,7 +773,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *            the cookie
      */
     private void addCookie(Cookie cookie) {
-        _cookies.addElement(cookie);
+        _cookies.add(cookie);
         if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {
             _sessionID = cookie.getValue();
         }
@@ -848,7 +846,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     // --------------------------------------------- private members ----------------------------------------------
 
     /** The Constant LOOPBACK_ADDRESS. */
-    static final private String LOOPBACK_ADDRESS = "127.0.0.1";
+    private static final String LOOPBACK_ADDRESS = "127.0.0.1";
 
     /** The request. */
     private WebRequest _request;
@@ -869,7 +867,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private Hashtable _attributes = new Hashtable<>();
 
     /** The cookies. */
-    private Vector _cookies = new Vector<>();
+    private List<Cookie> _cookies = new ArrayList<>();
 
     /** The session ID. */
     private String _sessionID;

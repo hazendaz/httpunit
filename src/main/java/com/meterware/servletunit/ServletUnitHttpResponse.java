@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.Vector;
 
 /**
  * The Class ServletUnitHttpResponse.
@@ -69,7 +68,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      */
     @Override
     public void addCookie(Cookie cookie) {
-        _cookies.addElement(cookie);
+        _cookies.add(cookie);
     }
 
     /**
@@ -491,13 +490,11 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector<>();
+        List<String> names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add((String) e.nextElement());
         }
-        String[] result = new String[names.size()];
-        names.copyInto(result);
-        return result;
+        return names.toArray(new String[0]);
     }
 
     /**
@@ -603,7 +600,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private boolean _headersComplete;
 
     /** The cookies. */
-    private Vector _cookies = new Vector<>();
+    private List<Cookie> _cookies = new ArrayList<>();
 
     /**
      * Complete headers.
@@ -629,7 +626,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Enumeration e = _cookies.elements(); e.hasMoreElements();) {
+        for (Enumeration e = Collections.enumeration(_cookies); e.hasMoreElements();) {
             Cookie cookie = (Cookie) e.nextElement();
             sb.append(cookie.getName()).append('=').append(cookie.getValue());
             if (cookie.getPath() != null) {
@@ -684,9 +681,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         if (!_headersComplete) {
             completeHeaders();
         }
-        Vector names = new Vector<>();
+        List names = new ArrayList<>();
         for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
-            names.addElement(e.nextElement());
+            names.add(e.nextElement());
         }
         return names;
     }

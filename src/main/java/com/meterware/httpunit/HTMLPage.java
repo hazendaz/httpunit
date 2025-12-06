@@ -27,7 +27,8 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -144,18 +145,16 @@ public class HTMLPage extends ParsedHTML {
      * @return the meta tag content
      */
     public String[] getMetaTagContent(String attribute, String attributeValue) {
-        Vector matches = new Vector<>();
+        List<String> matches = new ArrayList<>();
         NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName("meta");
         int length = nl.getLength();
 
         for (int i = 0; i < length; i++) {
             if (attributeValue.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), attribute))) {
-                matches.addElement(NodeUtils.getNodeAttribute(nl.item(i), "content"));
+                matches.add(NodeUtils.getNodeAttribute(nl.item(i), "content"));
             }
         }
-        String[] result = new String[matches.size()];
-        matches.copyInto(result);
-        return result;
+        return matches.toArray(new String[0]);
     }
 
     /**

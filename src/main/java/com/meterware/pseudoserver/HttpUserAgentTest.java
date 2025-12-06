@@ -23,9 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -268,9 +270,9 @@ public class HttpUserAgentTest {
      *            the found
      */
     protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
-        Vector foundItems = new Vector<>();
+        List foundItems = new ArrayList<>();
         while (found.hasMoreElements()) {
-            foundItems.addElement(found.nextElement());
+            foundItems.add(found.nextElement());
         }
 
         assertMatchingSet(comment, expected, foundItems);
@@ -286,21 +288,21 @@ public class HttpUserAgentTest {
      * @param foundItems
      *            the found items
      */
-    private void assertMatchingSet(String comment, Object[] expected, Vector foundItems) {
-        Vector expectedItems = new Vector<>();
+    private void assertMatchingSet(String comment, Object[] expected, List foundItems) {
+        List expectedItems = new ArrayList<>();
         for (Object element : expected) {
-            expectedItems.addElement(element);
+            expectedItems.add(element);
         }
         for (Object element : expected) {
             if (!foundItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but missing " + element);
             } else {
-                foundItems.removeElement(element);
+                foundItems.remove(element);
             }
         }
 
         if (!foundItems.isEmpty()) {
-            fail(comment + ": expected " + asText(expected) + " but found superfluous" + foundItems.firstElement());
+            fail(comment + ": expected " + asText(expected) + " but found superfluous" + foundItems);
         }
     }
 
@@ -315,22 +317,22 @@ public class HttpUserAgentTest {
      *            the found
      */
     public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
-        Vector foundItems = new Vector<>();
+        List foundItems = new ArrayList<>();
         for (Object element : found) {
-            foundItems.addElement(element);
+            foundItems.add(element);
         }
 
-        Vector expectedItems = new Vector<>();
+        List expectedItems = new ArrayList<>();
 
         for (Object element : expected) {
-            expectedItems.addElement(element);
+            expectedItems.add(element);
         }
 
         for (Object element : expected) {
             if (!foundItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                foundItems.removeElement(element);
+                foundItems.remove(element);
             }
         }
 
@@ -338,7 +340,7 @@ public class HttpUserAgentTest {
             if (!expectedItems.contains(element)) {
                 fail(comment + ": expected " + asText(expected) + " but found " + asText(found));
             } else {
-                expectedItems.removeElement(element);
+                expectedItems.remove(element);
             }
         }
 
@@ -405,7 +407,7 @@ public class HttpUserAgentTest {
 
             StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), "&");
             while (st.hasMoreTokens()) {
-                _parameters.addElement(st.nextToken());
+                _parameters.add(st.nextToken());
             }
         }
 
@@ -431,7 +433,7 @@ public class HttpUserAgentTest {
         private String _fullString;
 
         /** The parameters. */
-        private Vector _parameters = new Vector<>();
+        private List _parameters = new ArrayList<>();
 
         /**
          * Equals.
@@ -445,7 +447,7 @@ public class HttpUserAgentTest {
             if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {
                 return false;
             }
-            for (Enumeration e = o._parameters.elements(); e.hasMoreElements();) {
+            for (Enumeration e = Collections.enumeration(o._parameters); e.hasMoreElements();) {
                 if (!_parameters.contains(e.nextElement())) {
                     return false;
                 }

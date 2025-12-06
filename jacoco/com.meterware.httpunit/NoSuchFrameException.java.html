@@ -18,43 +18,31 @@
  * DEALINGS IN THE SOFTWARE.
  */
 package com.meterware.httpunit;
-/********************************************************************************************************************
- * $Id$
- *
- * Copyright (c) 2002, Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- *
- *******************************************************************************************************************/
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@acm.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class NoSuchFrameException.
+ */
 class NoSuchFrameException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L49">    NoSuchFrameException(String frameName) {</span>
-<span class="fc" id="L50">        _frameName = frameName;</span>
-<span class="fc" id="L51">    }</span>
+    /**
+     * Instantiates a new no such frame exception.
+     *
+     * @param frameName
+     *            the frame name
+     */
+<span class="fc" id="L36">    NoSuchFrameException(String frameName) {</span>
+<span class="fc" id="L37">        _frameName = frameName;</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L55">        return &quot;No frame named &quot; + _frameName + &quot; is currently active&quot;;</span>
+<span class="nc" id="L42">        return &quot;No frame named &quot; + _frameName + &quot; is currently active&quot;;</span>
     }
 
+    /** The frame name. */
     private String _frameName;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

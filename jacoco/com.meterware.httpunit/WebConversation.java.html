@@ -31,21 +31,26 @@ import java.util.Properties;
 /**
  * The context for a series of HTTP requests. This class manages cookies used to maintain session context, computes
  * relative URLs, and generally emulates the browser behavior needed to build an automated test of a web site.
- *
- * @author Russell Gold
  **/
 public class WebConversation extends WebClient {
 
+    /** The proxy host. */
     private String _proxyHost;
+
+    /** The proxy port. */
     private int _proxyPort;
-<span class="fc" id="L41">    private int _connectTimeout = -1;</span>
-<span class="fc" id="L42">    private int _readTimeout = -1;</span>
+
+    /** The connect timeout. */
+<span class="fc" id="L44">    private int _connectTimeout = -1;</span>
+
+    /** The read timeout. */
+<span class="fc" id="L47">    private int _readTimeout = -1;</span>
 
     /**
      * Creates a new web conversation.
      **/
-<span class="fc" id="L47">    public WebConversation() {</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L52">    public WebConversation() {</span>
+<span class="fc" id="L53">    }</span>
 
     // ---------------------------------- protected members --------------------------------
 
@@ -55,39 +60,39 @@ public class WebConversation extends WebClient {
     @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
             throws MalformedURLException, IOException {
-<span class="fc" id="L58">        Properties savedProperties = (Properties) System.getProperties().clone();</span>
+<span class="fc" id="L63">        Properties savedProperties = (Properties) System.getProperties().clone();</span>
         try {
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (_proxyHost != null) {</span>
-<span class="fc" id="L61">                System.setProperty(&quot;proxyHost&quot;, _proxyHost);</span>
-<span class="fc" id="L62">                System.setProperty(&quot;proxyPort&quot;, Integer.toString(_proxyPort));</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">            if (_proxyHost != null) {</span>
+<span class="fc" id="L66">                System.setProperty(&quot;proxyHost&quot;, _proxyHost);</span>
+<span class="fc" id="L67">                System.setProperty(&quot;proxyPort&quot;, Integer.toString(_proxyPort));</span>
             }
-<span class="fc" id="L64">            URLConnection connection = openConnection(getRequestURL(request));</span>
+<span class="fc" id="L69">            URLConnection connection = openConnection(getRequestURL(request));</span>
             // [ 1518901 ] enable http connect and read timeouts (needs JDK 1.5)
             // comment the next two line if you do not need this and have JDK &lt;1.5
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">            if (_connectTimeout &gt;= 0) {</span>
-<span class="nc" id="L68">                connection.setConnectTimeout(_connectTimeout);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (_connectTimeout &gt;= 0) {</span>
+<span class="nc" id="L73">                connection.setConnectTimeout(_connectTimeout);</span>
             }
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if (_readTimeout &gt;= 0) {</span>
-<span class="nc" id="L71">                connection.setReadTimeout(_readTimeout);</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">            if (_readTimeout &gt;= 0) {</span>
+<span class="nc" id="L76">                connection.setReadTimeout(_readTimeout);</span>
             }
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L74">                String urlString = request.getURLString();</span>
-<span class="nc" id="L75">                System.out.println(&quot;\nConnecting to &quot; + request.getURL().getHost());</span>
-<span class="nc" id="L76">                System.out.println(&quot;Sending:: &quot; + request.getMethod() + &quot; &quot; + urlString);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L79">                String urlString = request.getURLString();</span>
+<span class="nc" id="L80">                System.out.println(&quot;\nConnecting to &quot; + request.getURL().getHost());</span>
+<span class="nc" id="L81">                System.out.println(&quot;Sending:: &quot; + request.getMethod() + &quot; &quot; + urlString);</span>
             }
-<span class="fc" id="L78">            sendHeaders(connection, getHeaderFields(request.getURL()));</span>
-<span class="fc" id="L79">            sendHeaders(connection, request.getHeaderDictionary());</span>
-<span class="fc" id="L80">            request.completeRequest(connection);</span>
-<span class="fc" id="L81">            return new HttpWebResponse(this, targetFrame, request, connection, getExceptionsThrownOnErrorStatus());</span>
+<span class="fc" id="L83">            sendHeaders(connection, getHeaderFields(request.getURL()));</span>
+<span class="fc" id="L84">            sendHeaders(connection, request.getHeaderDictionary());</span>
+<span class="fc" id="L85">            request.completeRequest(connection);</span>
+<span class="fc" id="L86">            return new HttpWebResponse(this, targetFrame, request, connection, getExceptionsThrownOnErrorStatus());</span>
         } finally {
-<span class="fc" id="L83">            System.setProperties(savedProperties);</span>
+<span class="fc" id="L88">            System.setProperties(savedProperties);</span>
         }
     }
 
     @Override
     public void clearProxyServer() {
-<span class="fc" id="L89">        _proxyHost = null;</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L94">        _proxyHost = null;</span>
+<span class="fc" id="L95">    }</span>
 
     /**
      * set the proxy server to the given proxyHost with the given proxy Port
@@ -99,108 +104,125 @@ public class WebConversation extends WebClient {
      */
     @Override
     public void setProxyServer(String proxyHost, int proxyPort) {
-<span class="fc" id="L102">        _proxyHost = proxyHost;</span>
-<span class="fc" id="L103">        _proxyPort = proxyPort;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L107">        _proxyHost = proxyHost;</span>
+<span class="fc" id="L108">        _proxyPort = proxyPort;</span>
+<span class="fc" id="L109">    }</span>
 
     /**
+     * Gets the connect timeout.
+     *
      * @return the _connectTimeout -1 means it is not set (the default)
      */
     public int get_connectTimeout() {
-<span class="nc" id="L110">        return _connectTimeout;</span>
+<span class="nc" id="L117">        return _connectTimeout;</span>
     }
 
     /**
-     * set the connectionTimout -1 means it is not set (the default)
+     * set the connectionTimout -1 means it is not set (the default).
      *
      * @param timeout
      *            the _connectTimeout to set
      */
     public void set_connectTimeout(int timeout) {
-<span class="nc" id="L120">        _connectTimeout = timeout;</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L127">        _connectTimeout = timeout;</span>
+<span class="nc" id="L128">    }</span>
 
     /**
+     * Gets the read timeout.
+     *
      * @return the _readTimeout -1 means it is not set (the default)
      */
     public int get_readTimeout() {
-<span class="nc" id="L127">        return _readTimeout;</span>
+<span class="nc" id="L136">        return _readTimeout;</span>
     }
 
     /**
+     * Sets the read timeout.
+     *
      * @param timeout
      *            the _readTimeout to set -1 means it is not set (the default)
      */
     public void set_readTimeout(int timeout) {
-<span class="nc" id="L135">        _readTimeout = timeout;</span>
-<span class="nc" id="L136">    }</span>
+<span class="nc" id="L146">        _readTimeout = timeout;</span>
+<span class="nc" id="L147">    }</span>
 
     /**
-     * get the Uniform Resource Locator for this request
+     * get the Uniform Resource Locator for this request.
      *
      * @param request
+     *            the request
      *
      * @return the URL
      *
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
     private URL getRequestURL(WebRequest request) throws MalformedURLException {
-<span class="fc" id="L148">        DNSListener dnsListener = getClientProperties().getDnsListener();</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (dnsListener == null) {</span>
-<span class="fc" id="L150">            return request.getURL();</span>
+<span class="fc" id="L161">        DNSListener dnsListener = getClientProperties().getDnsListener();</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if (dnsListener == null) {</span>
+<span class="fc" id="L163">            return request.getURL();</span>
         }
 
-<span class="nc" id="L153">        String hostName = request.getURL().getHost();</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">        String portPortion = request.getURL().getPort() == -1 ? &quot;&quot; : &quot;:&quot; + request.getURL().getPort();</span>
-<span class="nc" id="L155">        setHeaderField(&quot;Host&quot;, hostName + portPortion);</span>
-<span class="nc" id="L156">        String actualHost = dnsListener.getIpAddress(hostName);</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L158">            System.out.println(&quot;Rerouting request to :: &quot; + actualHost);</span>
+<span class="nc" id="L166">        String hostName = request.getURL().getHost();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        String portPortion = request.getURL().getPort() == -1 ? &quot;&quot; : &quot;:&quot; + request.getURL().getPort();</span>
+<span class="nc" id="L168">        setHeaderField(&quot;Host&quot;, hostName + portPortion);</span>
+<span class="nc" id="L169">        String actualHost = dnsListener.getIpAddress(hostName);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L171">            System.out.println(&quot;Rerouting request to :: &quot; + actualHost);</span>
         }
-<span class="nc" id="L160">        return new URL(request.getURL().getProtocol(), actualHost, request.getURL().getPort(),</span>
-<span class="nc" id="L161">                request.getURL().getFile());</span>
+<span class="nc" id="L173">        return new URL(request.getURL().getProtocol(), actualHost, request.getURL().getPort(),</span>
+<span class="nc" id="L174">                request.getURL().getFile());</span>
     }
 
     // ---------------------------------- private members --------------------------------
 
     /**
-     * open a connection for the given uniform resource locator
+     * open a connection for the given uniform resource locator.
      *
      * @param url
      *            - the url to use
+     *
+     * @return the URL connection
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private URLConnection openConnection(URL url) throws MalformedURLException, IOException {
-<span class="fc" id="L173">        URLConnection connection = url.openConnection();</span>
-<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (connection instanceof HttpURLConnection) {</span>
-<span class="fc" id="L175">            ((HttpURLConnection) connection).setInstanceFollowRedirects(false);</span>
+<span class="fc" id="L193">        URLConnection connection = url.openConnection();</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (connection instanceof HttpURLConnection) {</span>
+<span class="fc" id="L195">            ((HttpURLConnection) connection).setInstanceFollowRedirects(false);</span>
         }
-<span class="fc" id="L177">        connection.setUseCaches(false);</span>
-<span class="fc" id="L178">        return connection;</span>
+<span class="fc" id="L197">        connection.setUseCaches(false);</span>
+<span class="fc" id="L198">        return connection;</span>
     }
 
     /**
-     * send the headers for the given connection based on the given Dictionary of headers
+     * send the headers for the given connection based on the given Dictionary of headers.
      *
      * @param connection
+     *            the connection
      * @param headers
+     *            the headers
      */
     private void sendHeaders(URLConnection connection, Dictionary headers) {
-<span class="fc" id="L188">        boolean sendReferer = getClientProperties().isSendReferer();</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (Enumeration e = headers.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L190">            String key = (String) e.nextElement();</span>
-<span class="fc bfc" id="L191" title="All 4 branches covered.">            if (sendReferer || !&quot;referer&quot;.equalsIgnoreCase(key)) {</span>
-<span class="fc" id="L192">                connection.setRequestProperty(key, (String) headers.get(key));</span>
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">                if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc bnc" id="L194" title="All 4 branches missed.">                    if (key.equalsIgnoreCase(&quot;authorization&quot;) || key.equalsIgnoreCase(&quot;proxy-authorization&quot;)) {</span>
-<span class="nc" id="L195">                        System.out.println(&quot;Sending:: &quot; + key + &quot;: &quot; + headers.get(key));</span>
+<span class="fc" id="L210">        boolean sendReferer = getClientProperties().isSendReferer();</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        for (Enumeration e = headers.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L212">            String key = (String) e.nextElement();</span>
+<span class="fc bfc" id="L213" title="All 4 branches covered.">            if (sendReferer || !&quot;referer&quot;.equalsIgnoreCase(key)) {</span>
+<span class="fc" id="L214">                connection.setRequestProperty(key, (String) headers.get(key));</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">                if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">                    if (key.equalsIgnoreCase(&quot;authorization&quot;) || key.equalsIgnoreCase(&quot;proxy-authorization&quot;)) {</span>
+<span class="nc" id="L217">                        System.out.println(&quot;Sending:: &quot; + key + &quot;: &quot; + headers.get(key));</span>
                     } else {
-<span class="nc" id="L197">                        System.out.println(&quot;Sending:: &quot; + key + &quot;: &quot; + connection.getRequestProperty(key));</span>
+<span class="nc" id="L219">                        System.out.println(&quot;Sending:: &quot; + key + &quot;: &quot; + connection.getRequestProperty(key));</span>
                     }
                 }
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">            } else if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L201">                System.out.println(&quot;Blocked sending referer:: &quot; + connection.getRequestProperty(key));</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">            } else if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L223">                System.out.println(&quot;Blocked sending referer:: &quot; + connection.getRequestProperty(key));</span>
             }
-<span class="fc" id="L203">        } // for</span>
-<span class="fc" id="L204">    }</span>
+<span class="fc" id="L225">        } // for</span>
+<span class="fc" id="L226">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

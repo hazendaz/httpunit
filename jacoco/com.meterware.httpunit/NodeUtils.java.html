@@ -36,31 +36,32 @@ import org.w3c.dom.NodeList;
 <span class="nc" id="L36">public class NodeUtils {</span>
 
     /**
-     * get the attribute with the given name from the given node as an int value
+     * get the attribute with the given name from the given node as an int value.
      *
      * @param node
      *            - the node to look in
      * @param attributeName
      *            - the attribute's name to look for
      * @param defaultValue
+     *            the default value
      *
      * @return - the value - defaultValue as default
      */
     public static int getAttributeValue(Node node, String attributeName, int defaultValue) {
-<span class="fc" id="L50">        NamedNodeMap nnm = node.getAttributes();</span>
-<span class="fc" id="L51">        Node attribute = nnm.getNamedItem(attributeName);</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (attribute == null) {</span>
-<span class="fc" id="L53">            return defaultValue;</span>
+<span class="fc" id="L51">        NamedNodeMap nnm = node.getAttributes();</span>
+<span class="fc" id="L52">        Node attribute = nnm.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (attribute == null) {</span>
+<span class="fc" id="L54">            return defaultValue;</span>
         }
         try {
-<span class="fc" id="L56">            return Integer.parseInt(attribute.getNodeValue());</span>
-<span class="nc" id="L57">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L58">            return defaultValue;</span>
+<span class="fc" id="L57">            return Integer.parseInt(attribute.getNodeValue());</span>
+<span class="nc" id="L58">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L59">            return defaultValue;</span>
         }
     }
 
     /**
-     * get the attribute with the given name from the given node
+     * get the attribute with the given name from the given node.
      *
      * @param node
      *            - the node to look in
@@ -70,55 +71,59 @@ import org.w3c.dom.NodeList;
      * @return - the value - &quot;&quot; as default
      */
     public static String getNodeAttribute(Node node, String attributeName) {
-<span class="fc" id="L73">        return getNodeAttribute(node, attributeName, &quot;&quot;);</span>
+<span class="fc" id="L74">        return getNodeAttribute(node, attributeName, &quot;&quot;);</span>
     }
 
     /**
-     * get the attribute with the given name from the given node
+     * get the attribute with the given name from the given node.
      *
      * @param node
      *            - the node to look in
      * @param attributeName
      *            - the attribute's name to look for
      * @param defaultValue
+     *            the default value
      *
      * @return - the value - defaultValue as default
      */
     public static String getNodeAttribute(Node node, String attributeName, String defaultValue) {
-<span class="fc" id="L88">        NamedNodeMap attributes = node.getAttributes();</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (attributes == null) {</span>
-<span class="fc" id="L90">            return defaultValue;</span>
+<span class="fc" id="L90">        NamedNodeMap attributes = node.getAttributes();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (attributes == null) {</span>
+<span class="fc" id="L92">            return defaultValue;</span>
         }
 
-<span class="fc" id="L93">        Node attribute = attributes.getNamedItem(attributeName);</span>
-<span class="fc bfc" id="L94" title="All 2 branches covered.">        return attribute == null ? defaultValue : attribute.getNodeValue();</span>
+<span class="fc" id="L95">        Node attribute = attributes.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        return attribute == null ? defaultValue : attribute.getNodeValue();</span>
     }
 
     /**
-     * set the attribute with the given attribute to the given value in the given node
+     * set the attribute with the given attribute to the given value in the given node.
      *
      * @param node
+     *            the node
      * @param attributeName
      *            - the attribute's name to look for
      * @param value
      *            - the value to set
      */
     static void setNodeAttribute(Node node, String attributeName, String value) {
-<span class="fc" id="L107">        ((Element) node).setAttributeNS(null, attributeName, value);</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L110">        ((Element) node).setAttributeNS(null, attributeName, value);</span>
+<span class="fc" id="L111">    }</span>
 
     /**
-     * remove the given attribute from the given node based on the attribute's name
+     * remove the given attribute from the given node based on the attribute's name.
      *
      * @param node
+     *            the node
      * @param attributeName
+     *            the attribute name
      */
     static void removeNodeAttribute(Node node, String attributeName) {
-<span class="nc" id="L117">        ((Element) node).removeAttribute(attributeName);</span>
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L122">        ((Element) node).removeAttribute(attributeName);</span>
+<span class="nc" id="L123">    }</span>
 
     /**
-     * check whether the given Attribute in the Node is Present
+     * check whether the given Attribute in the Node is Present.
      *
      * @param node
      *            - the node to check
@@ -128,152 +133,244 @@ import org.w3c.dom.NodeList;
      * @return true if the attribute is present
      */
     public static boolean isNodeAttributePresent(Node node, final String attributeName) {
-<span class="fc bfc" id="L131" title="All 2 branches covered.">        return node.getAttributes().getNamedItem(attributeName) != null;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        return node.getAttributes().getNamedItem(attributeName) != null;</span>
     }
 
     /**
-     * common Node action methods
+     * common Node action methods.
      */
     interface NodeAction {
+
         /**
          * Does appropriate processing on specified element. Will return false if the subtree below the element should
          * be skipped.
+         *
+         * @param traversal
+         *            the traversal
+         * @param element
+         *            the element
+         *
+         * @return true, if successful
          */
         boolean processElement(PreOrderTraversal traversal, Element element);
 
         /**
          * Processes a text node.
+         *
+         * @param traversal
+         *            the traversal
+         * @param textNode
+         *            the text node
          */
         void processTextNode(PreOrderTraversal traversal, Node textNode);
     }
 
     /**
      * Converts the DOM trees rooted at the specified nodes to text, ignoring any HTML tags.
-     **/
+     *
+     * @param rootNodes
+     *            the root nodes
+     *
+     * @return the string
+     */
     public static String asText(NodeList rootNodes) {
-<span class="fc" id="L154">        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="fc" id="L155">        NodeAction action = new NodeAction() {</span>
+<span class="fc" id="L177">        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L178">        NodeAction action = new NodeAction() {</span>
             @Override
             public boolean processElement(PreOrderTraversal traversal, Element node) {
-<span class="fc" id="L158">                String nodeName = node.getNodeName().toLowerCase();</span>
-<span class="pc bpc" id="L159" title="1 of 6 branches missed.">                if (nodeName.equals(&quot;p&quot;) || nodeName.equals(&quot;br&quot;) || nodeName.equalsIgnoreCase(&quot;tr&quot;)) {</span>
-<span class="fc" id="L160">                    sb.append(&quot;\n&quot;);</span>
-<span class="pc bpc" id="L161" title="1 of 4 branches missed.">                } else if (nodeName.equals(&quot;td&quot;) || nodeName.equalsIgnoreCase(&quot;th&quot;)) {</span>
-<span class="fc" id="L162">                    sb.append(&quot; | &quot;);</span>
-<span class="fc bfc" id="L163" title="All 4 branches covered.">                } else if (nodeName.equals(&quot;img&quot;) &amp;&amp; HttpUnitOptions.getImagesTreatedAsAltText()) {</span>
-<span class="fc" id="L164">                    sb.append(getNodeAttribute(node, &quot;alt&quot;));</span>
+<span class="fc" id="L181">                String nodeName = node.getNodeName();</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">                if (nodeName.equalsIgnoreCase(&quot;p&quot;) || nodeName.equalsIgnoreCase(&quot;br&quot;)</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">                        || nodeName.equalsIgnoreCase(&quot;tr&quot;)) {</span>
+<span class="fc" id="L184">                    sb.append(&quot;\n&quot;);</span>
+<span class="pc bpc" id="L185" title="1 of 4 branches missed.">                } else if (nodeName.equalsIgnoreCase(&quot;td&quot;) || nodeName.equalsIgnoreCase(&quot;th&quot;)) {</span>
+<span class="fc" id="L186">                    sb.append(&quot; | &quot;);</span>
+<span class="fc bfc" id="L187" title="All 4 branches covered.">                } else if (nodeName.equalsIgnoreCase(&quot;img&quot;) &amp;&amp; HttpUnitOptions.getImagesTreatedAsAltText()) {</span>
+<span class="fc" id="L188">                    sb.append(getNodeAttribute(node, &quot;alt&quot;));</span>
                 }
-<span class="fc" id="L166">                return true;</span>
+<span class="fc" id="L190">                return true;</span>
             }
 
             @Override
             public void processTextNode(PreOrderTraversal traversal, Node textNode) {
-<span class="fc" id="L171">                sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));</span>
-<span class="fc" id="L172">            }</span>
+<span class="fc" id="L195">                sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));</span>
+<span class="fc" id="L196">            }</span>
         };
-<span class="fc" id="L174">        new PreOrderTraversal(rootNodes).perform(action);</span>
-<span class="fc" id="L175">        return sb.toString();</span>
+<span class="fc" id="L198">        new PreOrderTraversal(rootNodes).perform(action);</span>
+<span class="fc" id="L199">        return sb.toString();</span>
     }
 
+    /**
+     * The Class PreOrderTraversal.
+     */
     static class PreOrderTraversal {
 
-<span class="fc" id="L180">        private Stack _pendingNodes = new Stack();</span>
-<span class="fc" id="L181">        private Stack _traversalContext = new Stack();</span>
-<span class="fc" id="L182">        private static final Object POP_CONTEXT = new Object();</span>
+        /** The pending nodes. */
+<span class="fc" id="L208">        private Stack _pendingNodes = new Stack();</span>
 
-<span class="fc" id="L184">        public PreOrderTraversal(NodeList rootNodes) {</span>
-<span class="fc" id="L185">            pushNodeList(rootNodes);</span>
-<span class="fc" id="L186">        }</span>
+        /** The traversal context. */
+<span class="fc" id="L211">        private Stack _traversalContext = new Stack();</span>
 
-<span class="fc" id="L188">        public PreOrderTraversal(Node rootNode) {</span>
-<span class="fc" id="L189">            pushNodeList(rootNode.getLastChild());</span>
-<span class="fc" id="L190">        }</span>
+        /** The Constant POP_CONTEXT. */
+<span class="fc" id="L214">        private static final Object POP_CONTEXT = new Object();</span>
 
+        /**
+         * Instantiates a new pre order traversal.
+         *
+         * @param rootNodes
+         *            the root nodes
+         */
+<span class="fc" id="L222">        public PreOrderTraversal(NodeList rootNodes) {</span>
+<span class="fc" id="L223">            pushNodeList(rootNodes);</span>
+<span class="fc" id="L224">        }</span>
+
+        /**
+         * Instantiates a new pre order traversal.
+         *
+         * @param rootNode
+         *            the root node
+         */
+<span class="fc" id="L232">        public PreOrderTraversal(Node rootNode) {</span>
+<span class="fc" id="L233">            pushNodeList(rootNode.getLastChild());</span>
+<span class="fc" id="L234">        }</span>
+
+        /**
+         * Push base context.
+         *
+         * @param context
+         *            the context
+         */
         public void pushBaseContext(Object context) {
-<span class="fc" id="L193">            _traversalContext.push(context);</span>
-<span class="fc" id="L194">        }</span>
+<span class="fc" id="L243">            _traversalContext.push(context);</span>
+<span class="fc" id="L244">        }</span>
 
+        /**
+         * Push context.
+         *
+         * @param context
+         *            the context
+         */
         public void pushContext(Object context) {
-<span class="fc" id="L197">            _traversalContext.push(context);</span>
-<span class="fc" id="L198">            _pendingNodes.push(POP_CONTEXT);</span>
-<span class="fc" id="L199">        }</span>
+<span class="fc" id="L253">            _traversalContext.push(context);</span>
+<span class="fc" id="L254">            _pendingNodes.push(POP_CONTEXT);</span>
+<span class="fc" id="L255">        }</span>
 
+        /**
+         * Gets the contexts.
+         *
+         * @return the contexts
+         */
         public Iterator getContexts() {
-<span class="fc" id="L202">            Stack stack = _traversalContext;</span>
-<span class="fc" id="L203">            return getTopDownIterator(stack);</span>
+<span class="fc" id="L263">            Stack stack = _traversalContext;</span>
+<span class="fc" id="L264">            return getTopDownIterator(stack);</span>
         }
 
+        /**
+         * Gets the root context.
+         *
+         * @return the root context
+         */
         public Object getRootContext() {
-<span class="nc" id="L207">            return _traversalContext.firstElement();</span>
+<span class="nc" id="L273">            return _traversalContext.firstElement();</span>
         }
 
+        /**
+         * Gets the top down iterator.
+         *
+         * @param stack
+         *            the stack
+         *
+         * @return the top down iterator
+         */
         private Iterator getTopDownIterator(final Stack stack) {
-<span class="fc" id="L211">            return new Iterator() {</span>
-<span class="fc" id="L212">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
+<span class="fc" id="L285">            return new Iterator() {</span>
+<span class="fc" id="L286">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
 
                 @Override
                 public boolean hasNext() {
-<span class="fc" id="L216">                    return _forwardIterator.hasPrevious();</span>
+<span class="fc" id="L290">                    return _forwardIterator.hasPrevious();</span>
                 }
 
                 @Override
                 public Object next() {
-<span class="fc" id="L221">                    return _forwardIterator.previous();</span>
+<span class="fc" id="L295">                    return _forwardIterator.previous();</span>
                 }
 
                 @Override
                 public void remove() {
-<span class="nc" id="L226">                    _forwardIterator.remove();</span>
-<span class="nc" id="L227">                }</span>
+<span class="nc" id="L300">                    _forwardIterator.remove();</span>
+<span class="nc" id="L301">                }</span>
             };
         }
 
         /**
          * Returns the most recently pushed context which implements the specified class. Will return null if no
          * matching context is found.
+         *
+         * @param matchingClass
+         *            the matching class
+         *
+         * @return the closest context
          */
         public Object getClosestContext(Class matchingClass) {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L237">                Object o = _traversalContext.elementAt(i);</span>
-<span class="fc bfc" id="L238" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
-<span class="fc" id="L239">                    return o;</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L316">                Object o = _traversalContext.elementAt(i);</span>
+<span class="fc bfc" id="L317" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
+<span class="fc" id="L318">                    return o;</span>
                 }
             }
-<span class="fc" id="L242">            return null;</span>
+<span class="fc" id="L321">            return null;</span>
         }
 
+        /**
+         * Perform.
+         *
+         * @param action
+         *            the action
+         */
         public void perform(NodeAction action) {
-<span class="fc bfc" id="L246" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
-<span class="fc" id="L247">                final Object object = _pendingNodes.pop();</span>
-<span class="fc bfc" id="L248" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
-<span class="fc" id="L249">                    _traversalContext.pop();</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
+<span class="fc" id="L332">                final Object object = _pendingNodes.pop();</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
+<span class="fc" id="L334">                    _traversalContext.pop();</span>
                 } else {
-<span class="fc" id="L251">                    Node node = (Node) object;</span>
-<span class="fc bfc" id="L252" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="fc" id="L253">                        action.processTextNode(this, node);</span>
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L255">                        continue;</span>
+<span class="fc" id="L336">                    Node node = (Node) object;</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L338">                        action.processTextNode(this, node);</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L340">                        continue;</span>
                     } else {
-<span class="fc" id="L257">                        action.processElement(this, (Element) node);</span>
+<span class="fc" id="L342">                        action.processElement(this, (Element) node);</span>
                     }
-<span class="fc" id="L259">                    pushNodeList(node.getLastChild());</span>
+<span class="fc" id="L344">                    pushNodeList(node.getLastChild());</span>
                 }
-<span class="fc" id="L261">            }</span>
-<span class="fc" id="L262">        }</span>
+<span class="fc" id="L346">            }</span>
+<span class="fc" id="L347">        }</span>
 
+        /**
+         * Push node list.
+         *
+         * @param nl
+         *            the nl
+         */
         private void pushNodeList(NodeList nl) {
-<span class="pc bpc" id="L265" title="1 of 2 branches missed.">            if (nl != null) {</span>
-<span class="fc bfc" id="L266" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L267">                    _pendingNodes.push(nl.item(i));</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">            if (nl != null) {</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L358">                    _pendingNodes.push(nl.item(i));</span>
                 }
             }
-<span class="fc" id="L270">        }</span>
+<span class="fc" id="L361">        }</span>
 
+        /**
+         * Push node list.
+         *
+         * @param lastChild
+         *            the last child
+         */
         private void pushNodeList(Node lastChild) {
-<span class="fc bfc" id="L273" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
-<span class="fc" id="L274">                _pendingNodes.push(node);</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
+<span class="fc" id="L371">                _pendingNodes.push(node);</span>
             }
-<span class="fc" id="L276">        }</span>
+<span class="fc" id="L373">        }</span>
     }
 
 }

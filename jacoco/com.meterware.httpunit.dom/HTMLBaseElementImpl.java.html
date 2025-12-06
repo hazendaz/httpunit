@@ -22,35 +22,58 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLBaseElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLBaseElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLBaseElementImpl extends HTMLElementImpl implements HTMLBaseElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLBaseElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLBaseElementImpl();</span>
     }
 
+    /**
+     * Gets the href.
+     *
+     * @return the href
+     */
     @Override
     public String getHref() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
     }
 
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
     @Override
     public String getTarget() {
-<span class="fc" id="L43">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
     }
 
+    /**
+     * Sets the href.
+     *
+     * @param href
+     *            the new href
+     */
     @Override
     public void setHref(String href) {
-<span class="fc" id="L48">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L65">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L66">    }</span>
 
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
     @Override
     public void setTarget(String target) {
-<span class="fc" id="L53">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L76">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L77">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

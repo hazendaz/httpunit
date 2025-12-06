@@ -40,7 +40,8 @@ import org.w3c.dom.html.HTMLDocument;
  */
 <span class="nc" id="L41">public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {</span>
 
-<span class="nc" id="L43">    private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);</span>
+    /** The Constant logger. */
+<span class="nc" id="L44">    private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);</span>
 
     /**
      * check whether this ScriptingEngineFactory is enabled
@@ -48,11 +49,11 @@ import org.w3c.dom.html.HTMLDocument;
     @Override
     public boolean isEnabled() {
         try {
-<span class="nc" id="L51">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
-<span class="nc" id="L52">            return true;</span>
-<span class="nc" id="L53">        } catch (Exception e) {</span>
-<span class="nc" id="L54">            logger.warn(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
-<span class="nc" id="L55">            return false;</span>
+<span class="nc" id="L52">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
+<span class="nc" id="L53">            return true;</span>
+<span class="nc" id="L54">        } catch (Exception e) {</span>
+<span class="nc" id="L55">            logger.warn(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
+<span class="nc" id="L56">            return false;</span>
         }
     }
 
@@ -72,41 +73,42 @@ import org.w3c.dom.html.HTMLDocument;
             HttpUnitUtils.handleException(e);
             throw new RuntimeException(e.toString());
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L76">    }</span>
 
     /**
-     * load
+     * load.
      *
      * @param response
+     *            the response
      */
     @Override
     public void load(WebResponse response) {
-<span class="nc" id="L84">        Function onLoadEvent = null;</span>
+<span class="nc" id="L86">        Function onLoadEvent = null;</span>
         try {
-<span class="nc" id="L86">            Context context = Context.enter();</span>
-<span class="nc" id="L87">            context.initStandardObjects(null);</span>
+<span class="nc" id="L88">            Context context = Context.enter();</span>
+<span class="nc" id="L89">            context.initStandardObjects(null);</span>
 
-<span class="nc" id="L89">            HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (!(htmlDocument instanceof HTMLDocumentImpl)) {</span>
-<span class="nc" id="L91">                return;</span>
+<span class="nc" id="L91">            HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (!(htmlDocument instanceof HTMLDocumentImpl)) {</span>
+<span class="nc" id="L93">                return;</span>
             }
 
-<span class="nc" id="L94">            HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (body == null) {</span>
-<span class="nc" id="L96">                return;</span>
+<span class="nc" id="L96">            HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (body == null) {</span>
+<span class="nc" id="L98">                return;</span>
             }
-<span class="nc" id="L98">            onLoadEvent = body.getOnloadEvent();</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (onLoadEvent == null) {</span>
-<span class="nc" id="L100">                return;</span>
+<span class="nc" id="L100">            onLoadEvent = body.getOnloadEvent();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (onLoadEvent == null) {</span>
+<span class="nc" id="L102">                return;</span>
             }
-<span class="nc" id="L102">            onLoadEvent.call(context, body, body, new Object[0]);</span>
-<span class="nc" id="L103">        } catch (JavaScriptException | EcmaError ee) {</span>
+<span class="nc" id="L104">            onLoadEvent.call(context, body, body, new Object[0]);</span>
+<span class="nc" id="L105">        } catch (JavaScriptException | EcmaError ee) {</span>
             // throw ee;
-<span class="nc" id="L105">            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());</span>
+<span class="nc" id="L107">            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());</span>
         } finally {
-<span class="nc" id="L107">            Context.exit();</span>
+<span class="nc" id="L109">            Context.exit();</span>
         }
-<span class="nc" id="L109">    }</span>
+<span class="nc" id="L111">    }</span>
 
     /**
      * setter for the throwExceptions flag
@@ -116,8 +118,8 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public void setThrowExceptionsOnError(boolean throwExceptions) {
-<span class="nc" id="L119">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L121">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
+<span class="nc" id="L122">    }</span>
 
     /**
      * getter for the throwExceptions flag
@@ -126,27 +128,27 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public boolean isThrowExceptionsOnError() {
-<span class="nc" id="L129">        return JavaScript.isThrowExceptionsOnError();</span>
+<span class="nc" id="L131">        return JavaScript.isThrowExceptionsOnError();</span>
     }
 
     @Override
     public String[] getErrorMessages() {
-<span class="nc" id="L134">        return ScriptingEngineImpl.getErrorMessages();</span>
+<span class="nc" id="L136">        return ScriptingEngineImpl.getErrorMessages();</span>
     }
 
     @Override
     public void clearErrorMessages() {
-<span class="nc" id="L139">        ScriptingEngineImpl.clearErrorMessages();</span>
-<span class="nc" id="L140">    }</span>
+<span class="nc" id="L141">        ScriptingEngineImpl.clearErrorMessages();</span>
+<span class="nc" id="L142">    }</span>
 
     @Override
     public ScriptingHandler createHandler(HTMLElement elementBase) {
-<span class="nc" id="L144">        return (ScriptingHandler) elementBase.getNode();</span>
+<span class="nc" id="L146">        return (ScriptingHandler) elementBase.getNode();</span>
     }
 
     @Override
     public ScriptingHandler createHandler(WebResponse response) {
-<span class="nc" id="L149">        return response.createDomScriptingHandler();</span>
+<span class="nc" id="L151">        return response.createDomScriptingHandler();</span>
     }
 
     /**
@@ -159,7 +161,7 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public void handleScriptException(Exception e, String badScript) {
-<span class="nc" id="L162">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
-<span class="nc" id="L163">    }</span>
+<span class="nc" id="L164">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
+<span class="nc" id="L165">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

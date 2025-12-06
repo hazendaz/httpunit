@@ -39,205 +39,316 @@ import org.xml.sax.SAXException;
 
 /**
  * Represents a control in an HTML form.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public abstract class FormControl extends HTMLElementBase {
 
-<span class="fc" id="L47">    static final String[] NO_VALUE = {};</span>
+    /** The Constant NO_VALUE. */
+<span class="fc" id="L46">    static final String[] NO_VALUE = {};</span>
 
+    /** The form. */
     private final WebForm _form;
+
+    /** The control. */
     private HTMLControl _control;
 
+    /** The Constant UNDEFINED_TYPE. */
     public static final String UNDEFINED_TYPE = &quot;undefined&quot;;
+
+    /** The Constant BUTTON_TYPE. */
     public static final String BUTTON_TYPE = &quot;button&quot;;
+
+    /** The Constant RESET_BUTTON_TYPE. */
     public static final String RESET_BUTTON_TYPE = &quot;reset&quot;;
+
+    /** The Constant SUBMIT_BUTTON_TYPE. */
     public static final String SUBMIT_BUTTON_TYPE = &quot;submit&quot;;
+
+    /** The Constant IMAGE_BUTTON_TYPE. */
     public static final String IMAGE_BUTTON_TYPE = &quot;image&quot;;
+
+    /** The Constant RADIO_BUTTON_TYPE. */
     public static final String RADIO_BUTTON_TYPE = &quot;radio&quot;;
+
+    /** The Constant CHECKBOX_TYPE. */
     public static final String CHECKBOX_TYPE = &quot;checkbox&quot;;
+
+    /** The Constant TEXT_TYPE. */
     public static final String TEXT_TYPE = &quot;text&quot;;
+
+    /** The Constant PASSWORD_TYPE. */
     public static final String PASSWORD_TYPE = &quot;password&quot;;
+
+    /** The Constant HIDDEN_TYPE. */
     public static final String HIDDEN_TYPE = &quot;hidden&quot;;
+
+    /** The Constant TEXTAREA_TYPE. */
     public static final String TEXTAREA_TYPE = &quot;textarea&quot;;
+
+    /** The Constant FILE_TYPE. */
     public static final String FILE_TYPE = &quot;file&quot;;
+
+    /** The Constant SINGLE_TYPE. */
     public static final String SINGLE_TYPE = &quot;select-one&quot;;
+
+    /** The Constant MULTIPLE_TYPE. */
     public static final String MULTIPLE_TYPE = &quot;select-multiple&quot;;
 
     /**
      * Return the type of the control, as seen from JavaScript.
+     *
+     * @return the type
      */
     public abstract String getType();
 
+    /**
+     * New selection option.
+     *
+     * @return the scriptable delegate
+     */
     static ScriptableDelegate newSelectionOption() {
-<span class="fc" id="L73">        return new SelectionFormControl.Option();</span>
-    }
-
-    FormControl(WebForm form) {
-<span class="fc" id="L77">        this(form, newEmptyControlElement(form));</span>
-<span class="fc" id="L78">    }</span>
-
-    private static HTMLControl newEmptyControlElement(WebForm form) {
-<span class="fc" id="L81">        return (HTMLControl) form.getElement().getOwnerDocument().createElement(&quot;input&quot;);</span>
+<span class="fc" id="L109">        return new SelectionFormControl.Option();</span>
     }
 
     /**
-     * initialize the given form control from a Webform and a HTMLControl
+     * Instantiates a new form control.
      *
      * @param form
+     *            the form
+     */
+    FormControl(WebForm form) {
+<span class="fc" id="L119">        this(form, newEmptyControlElement(form));</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * New empty control element.
+     *
+     * @param form
+     *            the form
+     *
+     * @return the HTML control
+     */
+    private static HTMLControl newEmptyControlElement(WebForm form) {
+<span class="fc" id="L131">        return (HTMLControl) form.getElement().getOwnerDocument().createElement(&quot;input&quot;);</span>
+    }
+
+    /**
+     * initialize the given form control from a Webform and a HTMLControl.
+     *
+     * @param form
+     *            the form
      * @param control
+     *            the control
      */
     protected FormControl(WebForm form, HTMLControl control) {
-<span class="fc" id="L91">        super(control);</span>
-<span class="fc" id="L92">        _control = control;</span>
-<span class="fc" id="L93">        _form = form;</span>
-<span class="fc" id="L94">        supportAttribute(&quot;tabindex&quot;);</span>
-<span class="fc" id="L95">        supportAttribute(&quot;disabled&quot;);</span>
+<span class="fc" id="L143">        super(control);</span>
+<span class="fc" id="L144">        _control = control;</span>
+<span class="fc" id="L145">        _form = form;</span>
+<span class="fc" id="L146">        supportAttribute(&quot;tabindex&quot;);</span>
+<span class="fc" id="L147">        supportAttribute(&quot;disabled&quot;);</span>
         // Add all custom attributes
-<span class="fc" id="L97">        Set customAttributes = HttpUnitOptions.getCustomAttributes();</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (customAttributes != null) {</span>
-<span class="fc bfc" id="L99" title="All 2 branches covered.">            for (Iterator iter = customAttributes.iterator(); iter.hasNext();) {</span>
-<span class="fc" id="L100">                supportAttribute((String) iter.next());</span>
+<span class="fc" id="L149">        Set customAttributes = HttpUnitOptions.getCustomAttributes();</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (customAttributes != null) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            for (Iterator iter = customAttributes.iterator(); iter.hasNext();) {</span>
+<span class="fc" id="L152">                supportAttribute((String) iter.next());</span>
             }
         }
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
      * control is 'successful'.
-     **/
+     *
+     * @return the values
+     */
     protected abstract String[] getValues();
 
     /**
      * Returns either a single delegate object or potentially an array of delegates as needed, given the form control.
      * This default implementation returns the scriptable delegate for the control.
+     *
+     * @return the delegate
      */
     Object getDelegate() {
-<span class="fc" id="L116">        return getScriptingHandler();</span>
+<span class="fc" id="L172">        return getScriptingHandler();</span>
     }
 
+    /**
+     * Gets the form.
+     *
+     * @return the form
+     */
     protected final WebForm getForm() {
-<span class="fc" id="L120">        return _form;</span>
+<span class="fc" id="L181">        return _form;</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc" id="L125">        return (ScriptableDelegate) getForm().getScriptingHandler();</span>
+<span class="fc" id="L186">        return (ScriptableDelegate) getForm().getScriptingHandler();</span>
     }
 
     /**
      * Returns the values permitted in this control. Does not apply to text or file controls.
-     **/
+     *
+     * @return the option values
+     */
     public String[] getOptionValues() {
-<span class="nc" id="L132">        return NO_VALUE;</span>
+<span class="nc" id="L195">        return NO_VALUE;</span>
     }
 
     /**
      * Returns the list of values displayed by this control, if any.
-     **/
+     *
+     * @return the displayed options
+     */
     protected String[] getDisplayedOptions() {
-<span class="nc" id="L139">        return NO_VALUE;</span>
+<span class="nc" id="L204">        return NO_VALUE;</span>
     }
 
     /**
      * Returns true if this control is read-only.
-     **/
+     *
+     * @return true, if is read only
+     */
     protected boolean isReadOnly() {
-<span class="fc bfc" id="L146" title="All 4 branches covered.">        return isDisabled() || _control.getReadOnly();</span>
+<span class="fc bfc" id="L213" title="All 4 branches covered.">        return isDisabled() || _control.getReadOnly();</span>
     }
 
     /**
      * Returns true if this control is hidden.
-     **/
+     *
+     * @return true, if is hidden
+     */
     public boolean isHidden() {
-<span class="fc" id="L153">        return false;</span>
+<span class="fc" id="L222">        return false;</span>
     }
 
+    /**
+     * Sets the disabled.
+     *
+     * @param disabled
+     *            the new disabled
+     */
     void setDisabled(boolean disabled) {
-<span class="fc" id="L157">        _control.setDisabled(disabled);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L232">        _control.setDisabled(disabled);</span>
+<span class="fc" id="L233">    }</span>
 
     /**
      * Returns true if this control is disabled, meaning that it will not send a value to the server as part of a
      * request.
-     **/
+     *
+     * @return true, if is disabled
+     */
     public boolean isDisabled() {
-<span class="fc" id="L165">        return _control.getDisabled();</span>
+<span class="fc" id="L242">        return _control.getDisabled();</span>
     }
 
     /**
      * Returns true if this control accepts free-form text.
-     **/
+     *
+     * @return true, if is text control
+     */
     boolean isTextControl() {
-<span class="nc" id="L172">        return false;</span>
+<span class="nc" id="L251">        return false;</span>
     }
 
     /**
      * Returns true if only one control of this kind with this name can have a value. This is true for radio buttons.
-     **/
+     *
+     * @return true, if is exclusive
+     */
     boolean isExclusive() {
-<span class="fc" id="L179">        return false;</span>
+<span class="fc" id="L260">        return false;</span>
     }
 
     /**
      * Returns true if a single control can have multiple values.
-     **/
+     *
+     * @return true, if is multi valued
+     */
     protected boolean isMultiValued() {
-<span class="nc" id="L186">        return false;</span>
+<span class="nc" id="L269">        return false;</span>
     }
 
     /**
      * Returns true if this control accepts a file for upload.
-     **/
+     *
+     * @return true, if is file parameter
+     */
     boolean isFileParameter() {
-<span class="fc" id="L193">        return false;</span>
+<span class="fc" id="L278">        return false;</span>
     }
 
+    /**
+     * Adds the values.
+     *
+     * @param processor
+     *            the processor
+     * @param characterSet
+     *            the character set
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     protected abstract void addValues(ParameterProcessor processor, String characterSet) throws IOException;
 
     /**
      * Remove any required values for this control from the list, throwing an exception if they are missing.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     void claimRequiredValues(List values) {
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L301">    }</span>
 
     /**
      * Sets this control to the next compatible value from the list, removing it from the list.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     void claimValue(List values) {
-<span class="fc" id="L208">    }</span>
+<span class="fc" id="L310">    }</span>
 
     /**
      * Sets this control to the next compatible value from the list, removing it from the list.
-     **/
+     *
+     * @param values
+     *            the values
+     */
     protected void claimUniqueValue(List values) {
-<span class="fc" id="L214">    }</span>
+<span class="fc" id="L319">    }</span>
 
     /**
      * Specifies a file to be uploaded via this control.
-     **/
+     *
+     * @param files
+     *            the files
+     */
     void claimUploadSpecification(List files) {
-<span class="nc" id="L220">    }</span>
+<span class="nc" id="L328">    }</span>
 
     /**
      * Resets this control to its initial value.
      **/
     protected void reset() {
-<span class="fc" id="L226">        _control.reset();</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L334">        _control.reset();</span>
+<span class="fc" id="L335">    }</span>
 
     /**
      * Toggles the value of this control.
      */
     public void toggle() {
-<span class="fc" id="L233">        throw new FormParameter.IllegalCheckboxParameterException(getName(), &quot;toggleCheckbox&quot;);</span>
+<span class="fc" id="L341">        throw new FormParameter.IllegalCheckboxParameterException(getName(), &quot;toggleCheckbox&quot;);</span>
     }
 
     /**
      * Sets the state of this boolean control.
+     *
+     * @param state
+     *            the new state
      */
     public void setState(boolean state) {
-<span class="nc" id="L240">        throw new FormParameter.IllegalCheckboxParameterException(getName(), &quot;setCheckbox&quot;);</span>
+<span class="nc" id="L351">        throw new FormParameter.IllegalCheckboxParameterException(getName(), &quot;setCheckbox&quot;);</span>
     }
 
     /**
@@ -247,14 +358,16 @@ public abstract class FormControl extends HTMLElementBase {
      */
     @Deprecated
     protected void sendOnChangeEvent() {
-<span class="fc" id="L250">        doOnChangeEvent();</span>
-<span class="fc" id="L251">    }</span>
+<span class="fc" id="L361">        doOnChangeEvent();</span>
+<span class="fc" id="L362">    }</span>
 
     /**
      * Performs the 'onchange' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnChangeEvent() {
-<span class="fc" id="L257">        return handleEvent(&quot;onchange&quot;);</span>
+<span class="fc" id="L370">        return handleEvent(&quot;onchange&quot;);</span>
     }
 
     /**
@@ -264,14 +377,16 @@ public abstract class FormControl extends HTMLElementBase {
      */
     @Deprecated
     protected void sendOnClickEvent() {
-<span class="fc" id="L267">        doOnClickEvent();</span>
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L380">        doOnClickEvent();</span>
+<span class="fc" id="L381">    }</span>
 
     /**
      * Performs the 'onClick' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnClickEvent() {
-<span class="fc" id="L274">        return handleEvent(&quot;onclick&quot;);</span>
+<span class="fc" id="L389">        return handleEvent(&quot;onclick&quot;);</span>
     }
 
     /**
@@ -281,14 +396,16 @@ public abstract class FormControl extends HTMLElementBase {
      */
     @Deprecated
     protected void sendOnMouseUpEvent() {
-<span class="nc" id="L284">        doOnMouseUpEvent();</span>
-<span class="nc" id="L285">    }</span>
+<span class="nc" id="L399">        doOnMouseUpEvent();</span>
+<span class="nc" id="L400">    }</span>
 
     /**
      * Performs the 'onMouseUp' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnMouseUpEvent() {
-<span class="nc" id="L291">        return handleEvent(&quot;onmouseup&quot;);</span>
+<span class="nc" id="L408">        return handleEvent(&quot;onmouseup&quot;);</span>
     }
 
     /**
@@ -298,14 +415,16 @@ public abstract class FormControl extends HTMLElementBase {
      */
     @Deprecated
     protected void sendOnMouseDownEvent() {
-<span class="nc" id="L301">        doOnMouseDownEvent();</span>
-<span class="nc" id="L302">    }</span>
+<span class="nc" id="L418">        doOnMouseDownEvent();</span>
+<span class="nc" id="L419">    }</span>
 
     /**
      * Performs the 'onMouseDown' event defined for this control.
+     *
+     * @return true, if successful
      */
     protected boolean doOnMouseDownEvent() {
-<span class="nc" id="L308">        return handleEvent(&quot;onmousedown&quot;);</span>
+<span class="nc" id="L427">        return handleEvent(&quot;onmousedown&quot;);</span>
     }
 
     /**
@@ -314,39 +433,54 @@ public abstract class FormControl extends HTMLElementBase {
      */
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="nc" id="L317">        return new Scriptable();</span>
+<span class="nc" id="L436">        return new Scriptable();</span>
     }
 
     /**
      * Returns the value of this control in the form. If no value is specified, defaults to the empty string.
-     **/
+     *
+     * @return the value attribute
+     */
     protected String getValueAttribute() {
-<span class="nc" id="L324">        return &quot;&quot;;</span>
+<span class="nc" id="L445">        return &quot;&quot;;</span>
     }
 
     /**
      * Sets the value of this control in the form.
+     *
+     * @param value
+     *            the new value attribute
      */
     protected void setValueAttribute(String value) {
-<span class="nc" id="L331">    }</span>
+<span class="nc" id="L455">    }</span>
 
     /**
      * Removes the specified required value from the list of values, throwing an exception if it is missing.
-     **/
+     *
+     * @param values
+     *            the values
+     * @param value
+     *            the value
+     */
     protected final void claimValueIsRequired(List values, final String value) {
-<span class="fc bfc" id="L337" title="All 2 branches covered.">        if (!values.contains(value)) {</span>
-<span class="fc" id="L338">            throw new MissingParameterValueException(getName(), value,</span>
-<span class="fc" id="L339">                    (String[]) values.toArray(new String[values.size()]));</span>
+<span class="fc bfc" id="L466" title="All 2 branches covered.">        if (!values.contains(value)) {</span>
+<span class="fc" id="L467">            throw new MissingParameterValueException(getName(), value,</span>
+<span class="fc" id="L468">                    (String[]) values.toArray(new String[values.size()]));</span>
         }
-<span class="fc" id="L341">        values.remove(value);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L470">        values.remove(value);</span>
+<span class="fc" id="L471">    }</span>
 
+    /**
+     * Gets the control element tags.
+     *
+     * @return the control element tags
+     */
     static String[] getControlElementTags() {
-<span class="fc" id="L345">        return new String[] { &quot;textarea&quot;, &quot;select&quot;, &quot;button&quot;, &quot;input&quot; };</span>
+<span class="fc" id="L479">        return new String[] { &quot;textarea&quot;, &quot;select&quot;, &quot;button&quot;, &quot;input&quot; };</span>
     }
 
     /**
-     * return the FormControl for the given parameter node in a form
+     * return the FormControl for the given parameter node in a form.
      *
      * @param form
      *            - the form in which the parameter is defined
@@ -356,67 +490,75 @@ public abstract class FormControl extends HTMLElementBase {
      * @return the form control
      */
     static FormControl newFormParameter(WebForm form, Node node) {
-<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L360">            return null;</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">        if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L494">            return null;</span>
         }
-<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;textarea&quot;)) {</span>
-<span class="fc" id="L363">            return new TextAreaFormControl(form, (HTMLTextAreaElementImpl) node);</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;textarea&quot;)) {</span>
+<span class="fc" id="L497">            return new TextAreaFormControl(form, (HTMLTextAreaElementImpl) node);</span>
         }
-<span class="fc bfc" id="L365" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;select&quot;)) {</span>
-<span class="fc" id="L366">            return new SelectionFormControl(form, (HTMLSelectElementImpl) node);</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;select&quot;)) {</span>
+<span class="fc" id="L500">            return new SelectionFormControl(form, (HTMLSelectElementImpl) node);</span>
         }
-<span class="fc bfc" id="L368" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;button&quot;)) {</span>
-<span class="fc" id="L369">            HTMLControl control = (HTMLControl) node;</span>
-<span class="fc" id="L370">            final String type = control.getType();</span>
-<span class="fc bfc" id="L371" title="All 2 branches covered.">            if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE)) {</span>
-<span class="fc" id="L372">                return new SubmitButton(form, control);</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">        if (node.getNodeName().equalsIgnoreCase(&quot;button&quot;)) {</span>
+<span class="fc" id="L503">            HTMLControl control = (HTMLControl) node;</span>
+<span class="fc" id="L504">            final String type = control.getType();</span>
+<span class="fc bfc" id="L505" title="All 2 branches covered.">            if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE)) {</span>
+<span class="fc" id="L506">                return new SubmitButton(form, control);</span>
             }
-<span class="fc bfc" id="L374" title="All 2 branches covered.">            if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {</span>
-<span class="fc" id="L375">                return new ResetButton(form, control);</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">            if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {</span>
+<span class="fc" id="L509">                return new ResetButton(form, control);</span>
             }
-<span class="fc" id="L377">            return new Button(form, control);</span>
+<span class="fc" id="L511">            return new Button(form, control);</span>
         }
-<span class="pc bpc" id="L379" title="1 of 2 branches missed.">        if (!node.getNodeName().equalsIgnoreCase(&quot;input&quot;)) {</span>
-<span class="nc" id="L380">            return null;</span>
+<span class="pc bpc" id="L513" title="1 of 2 branches missed.">        if (!node.getNodeName().equalsIgnoreCase(&quot;input&quot;)) {</span>
+<span class="nc" id="L514">            return null;</span>
         }
-<span class="fc" id="L382">        HTMLInputElementImpl element = (HTMLInputElementImpl) node;</span>
-<span class="fc" id="L383">        final String type = element.getType();</span>
-<span class="fc bfc" id="L384" title="All 2 branches covered.">        if (type.equalsIgnoreCase(TEXT_TYPE)) {</span>
-<span class="fc" id="L385">            return new TextFieldFormControl(form, element);</span>
+<span class="fc" id="L516">        HTMLInputElementImpl element = (HTMLInputElementImpl) node;</span>
+<span class="fc" id="L517">        final String type = element.getType();</span>
+<span class="fc bfc" id="L518" title="All 2 branches covered.">        if (type.equalsIgnoreCase(TEXT_TYPE)) {</span>
+<span class="fc" id="L519">            return new TextFieldFormControl(form, element);</span>
         }
-<span class="fc bfc" id="L387" title="All 2 branches covered.">        if (type.equalsIgnoreCase(PASSWORD_TYPE)) {</span>
-<span class="fc" id="L388">            return new PasswordFieldFormControl(form, element);</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">        if (type.equalsIgnoreCase(PASSWORD_TYPE)) {</span>
+<span class="fc" id="L522">            return new PasswordFieldFormControl(form, element);</span>
         }
-<span class="fc bfc" id="L390" title="All 2 branches covered.">        if (type.equalsIgnoreCase(HIDDEN_TYPE)) {</span>
-<span class="fc" id="L391">            return new HiddenFieldFormControl(form, element);</span>
+<span class="fc bfc" id="L524" title="All 2 branches covered.">        if (type.equalsIgnoreCase(HIDDEN_TYPE)) {</span>
+<span class="fc" id="L525">            return new HiddenFieldFormControl(form, element);</span>
         }
-<span class="fc bfc" id="L393" title="All 2 branches covered.">        if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {</span>
-<span class="fc" id="L394">            return new RadioButtonFormControl(form, element);</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">        if (type.equalsIgnoreCase(RADIO_BUTTON_TYPE)) {</span>
+<span class="fc" id="L528">            return new RadioButtonFormControl(form, element);</span>
         }
-<span class="fc bfc" id="L396" title="All 2 branches covered.">        if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {</span>
-<span class="fc" id="L397">            return new CheckboxFormControl(form, element);</span>
+<span class="fc bfc" id="L530" title="All 2 branches covered.">        if (type.equalsIgnoreCase(CHECKBOX_TYPE)) {</span>
+<span class="fc" id="L531">            return new CheckboxFormControl(form, element);</span>
         }
-<span class="fc bfc" id="L399" title="All 4 branches covered.">        if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {</span>
-<span class="fc" id="L400">            return new SubmitButton(form, element);</span>
+<span class="fc bfc" id="L533" title="All 4 branches covered.">        if (type.equalsIgnoreCase(SUBMIT_BUTTON_TYPE) || type.equalsIgnoreCase(IMAGE_BUTTON_TYPE)) {</span>
+<span class="fc" id="L534">            return new SubmitButton(form, element);</span>
         }
-<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (type.equalsIgnoreCase(BUTTON_TYPE)) {</span>
-<span class="fc" id="L403">            return new Button(form, (HTMLControl) node);</span>
+<span class="fc bfc" id="L536" title="All 2 branches covered.">        if (type.equalsIgnoreCase(BUTTON_TYPE)) {</span>
+<span class="fc" id="L537">            return new Button(form, (HTMLControl) node);</span>
         }
-<span class="fc bfc" id="L405" title="All 2 branches covered.">        if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {</span>
-<span class="fc" id="L406">            return new ResetButton(form, (HTMLControl) node);</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">        if (type.equalsIgnoreCase(RESET_BUTTON_TYPE)) {</span>
+<span class="fc" id="L540">            return new ResetButton(form, (HTMLControl) node);</span>
         }
-<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (type.equalsIgnoreCase(FILE_TYPE)) {</span>
-<span class="fc" id="L409">            return new FileSubmitFormControl(form, element);</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">        if (type.equalsIgnoreCase(FILE_TYPE)) {</span>
+<span class="fc" id="L543">            return new FileSubmitFormControl(form, element);</span>
         }
-<span class="fc" id="L411">        return new TextFieldFormControl(form, element);</span>
-    }
-
-    protected String emptyIfNull(String value) {
-<span class="fc bfc" id="L415" title="All 2 branches covered.">        return value == null ? &quot;&quot; : value;</span>
+<span class="fc" id="L545">        return new TextFieldFormControl(form, element);</span>
     }
 
     /**
-     * implementation of Scriptable input elements
+     * Empty if null.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
+    protected String emptyIfNull(String value) {
+<span class="fc bfc" id="L557" title="All 2 branches covered.">        return value == null ? &quot;&quot; : value;</span>
+    }
+
+    /**
+     * implementation of Scriptable input elements.
      */
     public class Scriptable extends HTMLElementScriptable implements Input {
 
@@ -427,7 +569,7 @@ public abstract class FormControl extends HTMLElementBase {
          */
         @Override
         public String getName() {
-<span class="fc" id="L430">            return FormControl.this.getName();</span>
+<span class="fc" id="L572">            return FormControl.this.getName();</span>
         }
 
         /**
@@ -437,15 +579,15 @@ public abstract class FormControl extends HTMLElementBase {
          */
         @Override
         public String getID() {
-<span class="fc" id="L440">            return FormControl.this.getID();</span>
+<span class="fc" id="L582">            return FormControl.this.getID();</span>
         }
 
         /**
-         * construct a Scriptable
+         * construct a Scriptable.
          */
-<span class="fc" id="L446">        public Scriptable() {</span>
-<span class="fc" id="L447">            super(FormControl.this);</span>
-<span class="fc" id="L448">        }</span>
+<span class="fc" id="L588">        public Scriptable() {</span>
+<span class="fc" id="L589">            super(FormControl.this);</span>
+<span class="fc" id="L590">        }</span>
 
         /**
          * get the given property
@@ -455,13 +597,13 @@ public abstract class FormControl extends HTMLElementBase {
          */
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L458" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;name&quot;)) {</span>
-<span class="fc" id="L459">                return FormControl.this.getName();</span>
+<span class="fc bfc" id="L600" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;name&quot;)) {</span>
+<span class="fc" id="L601">                return FormControl.this.getName();</span>
             }
-<span class="fc bfc" id="L461" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;type&quot;)) {</span>
-<span class="fc" id="L462">                return FormControl.this.getType();</span>
+<span class="fc bfc" id="L603" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;type&quot;)) {</span>
+<span class="fc" id="L604">                return FormControl.this.getType();</span>
             }
-<span class="fc" id="L464">            return super.get(propertyName);</span>
+<span class="fc" id="L606">            return super.get(propertyName);</span>
         }
 
         /**
@@ -474,14 +616,14 @@ public abstract class FormControl extends HTMLElementBase {
          */
         @Override
         public void set(String propertyName, Object value) {
-<span class="fc bfc" id="L477" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
-<span class="fc" id="L478">                setValueAttribute(value.toString());</span>
-<span class="pc bpc" id="L479" title="1 of 2 branches missed.">            } else if (propertyName.equalsIgnoreCase(&quot;disabled&quot;)) {</span>
-<span class="pc bpc" id="L480" title="1 of 4 branches missed.">                setDisabled(value instanceof Boolean &amp;&amp; ((Boolean) value).booleanValue());</span>
+<span class="fc bfc" id="L619" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
+<span class="fc" id="L620">                setValueAttribute(value.toString());</span>
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">            } else if (propertyName.equalsIgnoreCase(&quot;disabled&quot;)) {</span>
+<span class="pc bpc" id="L622" title="1 of 4 branches missed.">                setDisabled(value instanceof Boolean &amp;&amp; ((Boolean) value).booleanValue());</span>
             } else {
-<span class="nc" id="L482">                super.set(propertyName, value);</span>
+<span class="nc" id="L624">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L484">        }</span>
+<span class="fc" id="L626">        }</span>
 
         /**
          * set the given attribute to the given value
@@ -494,9 +636,9 @@ public abstract class FormControl extends HTMLElementBase {
         @Override
         public void setAttribute(String attributeName, Object value) {
             // Value set by JavaScript, make sure attribute is supported
-<span class="fc" id="L497">            supportAttribute(attributeName);</span>
-<span class="fc" id="L498">            super.setAttribute(attributeName, value);</span>
-<span class="fc" id="L499">        }</span>
+<span class="fc" id="L639">            supportAttribute(attributeName);</span>
+<span class="fc" id="L640">            super.setAttribute(attributeName, value);</span>
+<span class="fc" id="L641">        }</span>
 
         /**
          * allow calling click for this control
@@ -505,26 +647,26 @@ public abstract class FormControl extends HTMLElementBase {
         public void click() throws IOException, SAXException {
             // TODO check whether the empty body of this method was correct
             // call onclick event handler
-<span class="nc" id="L508">            HTMLElement element = this.get_element();</span>
-<span class="nc bnc" id="L509" title="All 2 branches missed.">            if (element instanceof FormControl) {</span>
-<span class="nc" id="L510">                FormControl control = (FormControl) element;</span>
-<span class="nc" id="L511">                control.sendOnClickEvent();</span>
+<span class="nc" id="L650">            HTMLElement element = this.get_element();</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">            if (element instanceof FormControl) {</span>
+<span class="nc" id="L652">                FormControl control = (FormControl) element;</span>
+<span class="nc" id="L653">                control.sendOnClickEvent();</span>
             }
-<span class="nc" id="L513">        }</span>
+<span class="nc" id="L655">        }</span>
 
         /**
-         * simulate blur
+         * simulate blur.
          */
         public void blur() {
-<span class="nc" id="L519">            handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L520">        }</span>
+<span class="nc" id="L661">            handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L662">        }</span>
 
         /**
-         * simulate focus;
+         * simulate focus;.
          */
         public void focus() {
-<span class="nc" id="L526">            handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L527">        }</span>
+<span class="nc" id="L668">            handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L669">        }</span>
 
         /**
          * allow firing a sendOnChangeEvent
@@ -534,12 +676,12 @@ public abstract class FormControl extends HTMLElementBase {
             // TODO check why the test for this does not work although
             // the javascript function call is done in the corresponding testcase
             // testCallOnChange()
-<span class="fc" id="L537">            HTMLElement element = this.get_element();</span>
-<span class="pc bpc" id="L538" title="1 of 2 branches missed.">            if (element instanceof FormControl) {</span>
-<span class="fc" id="L539">                FormControl control = (FormControl) element;</span>
-<span class="fc" id="L540">                control.sendOnChangeEvent();</span>
+<span class="fc" id="L679">            HTMLElement element = this.get_element();</span>
+<span class="pc bpc" id="L680" title="1 of 2 branches missed.">            if (element instanceof FormControl) {</span>
+<span class="fc" id="L681">                FormControl control = (FormControl) element;</span>
+<span class="fc" id="L682">                control.sendOnChangeEvent();</span>
             }
-<span class="fc" id="L542">        }</span>
+<span class="fc" id="L684">        }</span>
 
     }
 
@@ -553,70 +695,76 @@ abstract class BooleanFormControl extends FormControl {
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L556">        return new Scriptable();</span>
+<span class="fc" id="L698">        return new Scriptable();</span>
     }
 
-<span class="fc" id="L559">    class Scriptable extends FormControl.Scriptable {</span>
+<span class="fc" id="L701">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L563" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
-<span class="fc" id="L564">                return getQueryValue();</span>
+<span class="fc bfc" id="L705" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
+<span class="fc" id="L706">                return getQueryValue();</span>
             }
-<span class="fc bfc" id="L566" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;checked&quot;)) {</span>
-<span class="fc bfc" id="L567" title="All 2 branches covered.">                return isChecked() ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;checked&quot;)) {</span>
+<span class="fc bfc" id="L709" title="All 2 branches covered.">                return isChecked() ? Boolean.TRUE : Boolean.FALSE;</span>
             }
-<span class="fc bfc" id="L569" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;defaultchecked&quot;)) {</span>
-<span class="fc bfc" id="L570" title="All 2 branches covered.">                return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc bfc" id="L711" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;defaultchecked&quot;)) {</span>
+<span class="fc bfc" id="L712" title="All 2 branches covered.">                return _element.getDefaultChecked() ? Boolean.TRUE : Boolean.FALSE;</span>
             }
-<span class="fc" id="L572">            return super.get(propertyName);</span>
+<span class="fc" id="L714">            return super.get(propertyName);</span>
         }
 
         @Override
         public void set(String propertyName, Object value) {
-<span class="fc bfc" id="L577" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;checked&quot;)) {</span>
-<span class="pc bpc" id="L578" title="1 of 4 branches missed.">                setChecked(value instanceof Boolean &amp;&amp; ((Boolean) value).booleanValue());</span>
+<span class="fc bfc" id="L719" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;checked&quot;)) {</span>
+<span class="pc bpc" id="L720" title="1 of 4 branches missed.">                setChecked(value instanceof Boolean &amp;&amp; ((Boolean) value).booleanValue());</span>
             } else {
-<span class="fc" id="L580">                super.set(propertyName, value);</span>
+<span class="fc" id="L722">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L582">        }</span>
+<span class="fc" id="L724">        }</span>
     }
 
     public BooleanFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L586">        super(form, element);</span>
-<span class="fc" id="L587">        _element = element;</span>
-<span class="fc" id="L588">        _displayedValue = new String[] { readDisplayedValue(element) };</span>
-<span class="fc" id="L589">    }</span>
+<span class="fc" id="L728">        super(form, element);</span>
+<span class="fc" id="L729">        _element = element;</span>
+<span class="fc" id="L730">        _displayedValue = new String[] { readDisplayedValue(element) };</span>
+<span class="fc" id="L731">    }</span>
 
     private String readDisplayedValue(Node node) {
-<span class="fc" id="L592">        Node nextSibling = node.getNextSibling();</span>
-<span class="fc bfc" id="L593" title="All 4 branches covered.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
-<span class="pc bpc" id="L594" title="1 of 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L595">            nextSibling = nextSibling.getNextSibling();</span>
+<span class="fc" id="L734">        Node nextSibling = node.getNextSibling();</span>
+<span class="fc bfc" id="L735" title="All 4 branches covered.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
+<span class="pc bpc" id="L736" title="1 of 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L737">            nextSibling = nextSibling.getNextSibling();</span>
         }
-<span class="fc bfc" id="L597" title="All 4 branches covered.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
-<span class="fc" id="L598">            return &quot;&quot;;</span>
+<span class="fc bfc" id="L739" title="All 4 branches covered.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="fc" id="L740">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L600">        return nextSibling.getNodeValue();</span>
+<span class="fc" id="L742">        return nextSibling.getNodeValue();</span>
     }
 
     boolean isChecked() {
-<span class="fc" id="L604">        return _element.getChecked();</span>
+<span class="fc" id="L746">        return _element.getChecked();</span>
     }
 
     @Override
     protected String getValueAttribute() {
-<span class="fc" id="L609">        return emptyIfNull(_element.getValue());</span>
+<span class="fc" id="L751">        return emptyIfNull(_element.getValue());</span>
     }
 
     @Override
     protected void setValueAttribute(String value) {
-<span class="fc" id="L614">        _element.setValue(value);</span>
-<span class="fc" id="L615">    }</span>
+<span class="fc" id="L756">        _element.setValue(value);</span>
+<span class="fc" id="L757">    }</span>
 
+    /**
+     * Sets the checked.
+     *
+     * @param checked
+     *            the new checked
+     */
     public void setChecked(boolean checked) {
-<span class="fc" id="L618">        _element.setChecked(checked);</span>
-<span class="fc" id="L619">    }</span>
+<span class="fc" id="L766">        _element.setChecked(checked);</span>
+<span class="fc" id="L767">    }</span>
 
     /**
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
@@ -624,7 +772,7 @@ abstract class BooleanFormControl extends FormControl {
      **/
     @Override
     public String[] getValues() {
-<span class="fc bfc" id="L627" title="All 2 branches covered.">        return isChecked() ? toArray(getQueryValue()) : NO_VALUE;</span>
+<span class="fc bfc" id="L775" title="All 2 branches covered.">        return isChecked() ? toArray(getQueryValue()) : NO_VALUE;</span>
     }
 
     /**
@@ -632,39 +780,44 @@ abstract class BooleanFormControl extends FormControl {
      **/
     @Override
     public String[] getOptionValues() {
-<span class="fc bfc" id="L635" title="All 4 branches covered.">        return isReadOnly() &amp;&amp; !isChecked() ? NO_VALUE : toArray(getQueryValue());</span>
+<span class="fc bfc" id="L783" title="All 4 branches covered.">        return isReadOnly() &amp;&amp; !isChecked() ? NO_VALUE : toArray(getQueryValue());</span>
     }
 
     @Override
     protected String[] getDisplayedOptions() {
-<span class="fc" id="L640">        return _displayedValue;</span>
+<span class="fc" id="L788">        return _displayedValue;</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc bfc" id="L645" title="All 4 branches covered.">        if (isChecked() &amp;&amp; !isDisabled()) {</span>
-<span class="fc" id="L646">            processor.addParameter(getName(), getQueryValue(), characterSet);</span>
+<span class="fc bfc" id="L793" title="All 4 branches covered.">        if (isChecked() &amp;&amp; !isDisabled()) {</span>
+<span class="fc" id="L794">            processor.addParameter(getName(), getQueryValue(), characterSet);</span>
         }
-<span class="fc" id="L648">    }</span>
+<span class="fc" id="L796">    }</span>
 
     /**
      * Remove any required values for this control from the list, throwing an exception if they are missing.
      **/
     @Override
     void claimRequiredValues(List values) {
-<span class="fc bfc" id="L655" title="All 2 branches covered.">        if (isValueRequired()) {</span>
-<span class="fc" id="L656">            claimValueIsRequired(values, getQueryValue());</span>
+<span class="fc bfc" id="L803" title="All 2 branches covered.">        if (isValueRequired()) {</span>
+<span class="fc" id="L804">            claimValueIsRequired(values, getQueryValue());</span>
         }
-<span class="fc" id="L658">    }</span>
+<span class="fc" id="L806">    }</span>
 
+    /**
+     * Checks if is value required.
+     *
+     * @return true, if is value required
+     */
     protected boolean isValueRequired() {
-<span class="fc bfc" id="L661" title="All 4 branches covered.">        return isReadOnly() &amp;&amp; isChecked();</span>
+<span class="fc bfc" id="L814" title="All 4 branches covered.">        return isReadOnly() &amp;&amp; isChecked();</span>
     }
 
     abstract String getQueryValue();
 
     private String[] toArray(String value) {
-<span class="fc" id="L667">        return new String[] { value };</span>
+<span class="fc" id="L820">        return new String[] { value };</span>
     }
 }
 
@@ -672,28 +825,28 @@ class CheckboxFormControl extends BooleanFormControl {
 
     @Override
     public String getType() {
-<span class="fc" id="L675">        return CHECKBOX_TYPE;</span>
+<span class="fc" id="L828">        return CHECKBOX_TYPE;</span>
     }
 
     public CheckboxFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L679">        super(form, element);</span>
-<span class="fc" id="L680">    }</span>
+<span class="fc" id="L832">        super(form, element);</span>
+<span class="fc" id="L833">    }</span>
 
     @Override
     protected void claimUniqueValue(List values) {
-<span class="fc bfc" id="L684" title="All 2 branches covered.">        if (isValueRequired()) {</span>
-<span class="fc" id="L685">            return;</span>
+<span class="fc bfc" id="L837" title="All 2 branches covered.">        if (isValueRequired()) {</span>
+<span class="fc" id="L838">            return;</span>
         }
-<span class="fc" id="L687">        setState(values.contains(getQueryValue()));</span>
-<span class="fc bfc" id="L688" title="All 2 branches covered.">        if (isChecked()) {</span>
-<span class="fc" id="L689">            values.remove(getQueryValue());</span>
+<span class="fc" id="L840">        setState(values.contains(getQueryValue()));</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">        if (isChecked()) {</span>
+<span class="fc" id="L842">            values.remove(getQueryValue());</span>
         }
-<span class="fc" id="L691">    }</span>
+<span class="fc" id="L844">    }</span>
 
     @Override
     String getQueryValue() {
-<span class="fc" id="L695">        final String value = getValueAttribute();</span>
-<span class="fc bfc" id="L696" title="All 2 branches covered.">        return value.isEmpty() ? &quot;on&quot; : value;</span>
+<span class="fc" id="L848">        final String value = getValueAttribute();</span>
+<span class="fc bfc" id="L849" title="All 2 branches covered.">        return value.isEmpty() ? &quot;on&quot; : value;</span>
     }
 
     /**
@@ -701,27 +854,27 @@ class CheckboxFormControl extends BooleanFormControl {
      */
     @Override
     public void toggle() {
-<span class="pc bpc" id="L704" title="1 of 2 branches missed.">        setState(!isChecked());</span>
-<span class="fc" id="L705">    }</span>
+<span class="pc bpc" id="L857" title="1 of 2 branches missed.">        setState(!isChecked());</span>
+<span class="fc" id="L858">    }</span>
 
     /**
      * Sets the state of this boolean control. Triggers the 'onclick' event if the state has changed.
      */
     @Override
     public void setState(boolean state) {
-<span class="fc" id="L712">        boolean wasChecked = isChecked();</span>
-<span class="fc" id="L713">        setChecked(state);</span>
-<span class="fc bfc" id="L714" title="All 2 branches covered.">        if (isChecked() != wasChecked) {</span>
-<span class="fc" id="L715">            sendOnClickEvent();</span>
+<span class="fc" id="L865">        boolean wasChecked = isChecked();</span>
+<span class="fc" id="L866">        setChecked(state);</span>
+<span class="fc bfc" id="L867" title="All 2 branches covered.">        if (isChecked() != wasChecked) {</span>
+<span class="fc" id="L868">            sendOnClickEvent();</span>
         }
-<span class="fc" id="L717">    }</span>
+<span class="fc" id="L870">    }</span>
 }
 
 abstract class TextFormControl extends FormControl {
 
     public TextFormControl(WebForm form, HTMLControl control) {
-<span class="fc" id="L723">        super(form, control);</span>
-<span class="fc" id="L724">    }</span>
+<span class="fc" id="L876">        super(form, control);</span>
+<span class="fc" id="L877">    }</span>
 
     /**
      * Returns the current value(s) associated with this control. These values will be transmitted to the server if the
@@ -729,7 +882,7 @@ abstract class TextFormControl extends FormControl {
      **/
     @Override
     public String[] getValues() {
-<span class="fc" id="L732">        return new String[] { getValue() };</span>
+<span class="fc" id="L885">        return new String[] { getValue() };</span>
     }
 
     abstract protected String getDefaultValue();
@@ -743,20 +896,20 @@ abstract class TextFormControl extends FormControl {
      **/
     @Override
     public boolean isTextControl() {
-<span class="fc" id="L746">        return true;</span>
+<span class="fc" id="L899">        return true;</span>
     }
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L751">        return new Scriptable();</span>
+<span class="fc" id="L904">        return new Scriptable();</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc bfc" id="L756" title="All 4 branches covered.">        if (!isDisabled() &amp;&amp; getName().length() &gt; 0) {</span>
-<span class="fc" id="L757">            processor.addParameter(getName(), getValues()[0], characterSet);</span>
+<span class="fc bfc" id="L909" title="All 4 branches covered.">        if (!isDisabled() &amp;&amp; getName().length() &gt; 0) {</span>
+<span class="fc" id="L910">            processor.addParameter(getName(), getValues()[0], characterSet);</span>
         }
-<span class="fc" id="L759">    }</span>
+<span class="fc" id="L912">    }</span>
 
     /**
      * claim values and fire onChange Event if a change occured
@@ -766,60 +919,60 @@ abstract class TextFormControl extends FormControl {
      */
     @Override
     void claimValue(List values) {
-<span class="fc bfc" id="L769" title="All 2 branches covered.">        if (isReadOnly()) {</span>
-<span class="fc" id="L770">            return;</span>
+<span class="fc bfc" id="L922" title="All 2 branches covered.">        if (isReadOnly()) {</span>
+<span class="fc" id="L923">            return;</span>
         }
 
-<span class="fc" id="L773">        String oldValue = getValue();</span>
-<span class="fc bfc" id="L774" title="All 2 branches covered.">        if (values.isEmpty()) {</span>
-<span class="fc" id="L775">            setValue(&quot;&quot;);</span>
+<span class="fc" id="L926">        String oldValue = getValue();</span>
+<span class="fc bfc" id="L927" title="All 2 branches covered.">        if (values.isEmpty()) {</span>
+<span class="fc" id="L928">            setValue(&quot;&quot;);</span>
         } else {
-<span class="fc" id="L777">            setValue((String) values.get(0));</span>
-<span class="fc" id="L778">            values.remove(0);</span>
+<span class="fc" id="L930">            setValue((String) values.get(0));</span>
+<span class="fc" id="L931">            values.remove(0);</span>
         }
-<span class="pc bpc" id="L780" title="3 of 4 branches missed.">        boolean same = oldValue == null &amp;&amp; getValue() == null;</span>
-<span class="pc bpc" id="L781" title="1 of 2 branches missed.">        if (oldValue != null) {</span>
-<span class="fc" id="L782">            same = oldValue.equals(getValue());</span>
+<span class="pc bpc" id="L933" title="3 of 4 branches missed.">        boolean same = oldValue == null &amp;&amp; getValue() == null;</span>
+<span class="pc bpc" id="L934" title="1 of 2 branches missed.">        if (oldValue != null) {</span>
+<span class="fc" id="L935">            same = oldValue.equals(getValue());</span>
         }
-<span class="fc bfc" id="L784" title="All 2 branches covered.">        if (!same) {</span>
-<span class="fc" id="L785">            sendOnChangeEvent();</span>
+<span class="fc bfc" id="L937" title="All 2 branches covered.">        if (!same) {</span>
+<span class="fc" id="L938">            sendOnChangeEvent();</span>
         }
-<span class="fc" id="L787">    }</span>
+<span class="fc" id="L940">    }</span>
 
     @Override
     void claimRequiredValues(List values) {
-<span class="fc bfc" id="L791" title="All 2 branches covered.">        if (isReadOnly()) {</span>
-<span class="fc" id="L792">            claimValueIsRequired(values);</span>
+<span class="fc bfc" id="L944" title="All 2 branches covered.">        if (isReadOnly()) {</span>
+<span class="fc" id="L945">            claimValueIsRequired(values);</span>
         }
-<span class="fc" id="L794">    }</span>
+<span class="fc" id="L947">    }</span>
 
     protected void claimValueIsRequired(List values) {
-<span class="fc" id="L797">        claimValueIsRequired(values, getDefaultValue());</span>
-<span class="fc" id="L798">    }</span>
+<span class="fc" id="L950">        claimValueIsRequired(values, getDefaultValue());</span>
+<span class="fc" id="L951">    }</span>
 
-<span class="fc" id="L800">    class Scriptable extends FormControl.Scriptable {</span>
+<span class="fc" id="L953">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L804" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
-<span class="fc" id="L805">                return getValue();</span>
+<span class="fc bfc" id="L957" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
+<span class="fc" id="L958">                return getValue();</span>
             }
-<span class="fc bfc" id="L807" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;defaultValue&quot;)) {</span>
-<span class="fc" id="L808">                return getDefaultValue();</span>
+<span class="fc bfc" id="L960" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;defaultValue&quot;)) {</span>
+<span class="fc" id="L961">                return getDefaultValue();</span>
             }
-<span class="fc" id="L810">            return super.get(propertyName);</span>
+<span class="fc" id="L963">            return super.get(propertyName);</span>
         }
 
         @Override
         public void set(String propertyName, Object value) {
-<span class="pc bpc" id="L815" title="1 of 2 branches missed.">            if (!propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
-<span class="nc" id="L816">                super.set(propertyName, value);</span>
-<span class="fc bfc" id="L817" title="All 2 branches covered.">            } else if (value instanceof Number) {</span>
-<span class="fc" id="L818">                setValue(HttpUnitUtils.trimmedValue((Number) value));</span>
+<span class="pc bpc" id="L968" title="1 of 2 branches missed.">            if (!propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
+<span class="nc" id="L969">                super.set(propertyName, value);</span>
+<span class="fc bfc" id="L970" title="All 2 branches covered.">            } else if (value instanceof Number) {</span>
+<span class="fc" id="L971">                setValue(HttpUnitUtils.trimmedValue((Number) value));</span>
             } else {
-<span class="fc bfc" id="L820" title="All 2 branches covered.">                setValue(value == null ? null : value.toString());</span>
+<span class="fc bfc" id="L973" title="All 2 branches covered.">                setValue(value == null ? null : value.toString());</span>
             }
-<span class="fc" id="L822">        }</span>
+<span class="fc" id="L975">        }</span>
     }
 }
 
@@ -829,41 +982,41 @@ class TextFieldFormControl extends TextFormControl {
 
     @Override
     public String getType() {
-<span class="fc" id="L832">        return TEXT_TYPE;</span>
+<span class="fc" id="L985">        return TEXT_TYPE;</span>
     }
 
     public TextFieldFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L836">        super(form, element);</span>
-<span class="fc" id="L837">        _element = element;</span>
-<span class="fc" id="L838">        supportAttribute(&quot;maxlength&quot;);</span>
-<span class="fc" id="L839">    }</span>
+<span class="fc" id="L989">        super(form, element);</span>
+<span class="fc" id="L990">        _element = element;</span>
+<span class="fc" id="L991">        supportAttribute(&quot;maxlength&quot;);</span>
+<span class="fc" id="L992">    }</span>
 
     @Override
     protected String getDefaultValue() {
-<span class="fc" id="L843">        return _element.getDefaultValue();</span>
+<span class="fc" id="L996">        return _element.getDefaultValue();</span>
     }
 
     @Override
     protected String getValue() {
-<span class="fc" id="L848">        return emptyIfNull(_element.getValue());</span>
+<span class="fc" id="L1001">        return emptyIfNull(_element.getValue());</span>
     }
 
     @Override
     protected void setValue(String value) {
-<span class="fc" id="L853">        _element.setValue(value);</span>
-<span class="fc" id="L854">    }</span>
+<span class="fc" id="L1006">        _element.setValue(value);</span>
+<span class="fc" id="L1007">    }</span>
 }
 
 class PasswordFieldFormControl extends TextFieldFormControl {
 
     @Override
     public String getType() {
-<span class="fc" id="L861">        return PASSWORD_TYPE;</span>
+<span class="fc" id="L1014">        return PASSWORD_TYPE;</span>
     }
 
     public PasswordFieldFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L865">        super(form, element);</span>
-<span class="fc" id="L866">    }</span>
+<span class="fc" id="L1018">        super(form, element);</span>
+<span class="fc" id="L1019">    }</span>
 }
 
 /**
@@ -873,25 +1026,25 @@ class HiddenFieldFormControl extends TextFieldFormControl {
 
     @Override
     public String getType() {
-<span class="fc" id="L876">        return HIDDEN_TYPE;</span>
+<span class="fc" id="L1029">        return HIDDEN_TYPE;</span>
     }
 
     public HiddenFieldFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L880">        super(form, element);</span>
-<span class="fc" id="L881">    }</span>
+<span class="fc" id="L1033">        super(form, element);</span>
+<span class="fc" id="L1034">    }</span>
 
     @Override
     void claimRequiredValues(List values) {
-<span class="fc" id="L885">        claimValueIsRequired(values);</span>
-<span class="fc" id="L886">    }</span>
+<span class="fc" id="L1038">        claimValueIsRequired(values);</span>
+<span class="fc" id="L1039">    }</span>
 
     @Override
     void claimValue(List values) {
-<span class="fc" id="L890">    }</span>
+<span class="fc" id="L1043">    }</span>
 
     @Override
     public boolean isHidden() {
-<span class="fc" id="L894">        return true;</span>
+<span class="fc" id="L1047">        return true;</span>
     }
 }
 
@@ -900,29 +1053,29 @@ class TextAreaFormControl extends TextFormControl {
     private HTMLTextAreaElementImpl _element;
 
     public TextAreaFormControl(WebForm form, HTMLTextAreaElementImpl element) {
-<span class="fc" id="L903">        super(form, element);</span>
-<span class="fc" id="L904">        _element = element;</span>
-<span class="fc" id="L905">    }</span>
+<span class="fc" id="L1056">        super(form, element);</span>
+<span class="fc" id="L1057">        _element = element;</span>
+<span class="fc" id="L1058">    }</span>
 
     @Override
     public String getType() {
-<span class="fc" id="L909">        return TEXTAREA_TYPE;</span>
+<span class="fc" id="L1062">        return TEXTAREA_TYPE;</span>
     }
 
     @Override
     protected String getDefaultValue() {
-<span class="fc" id="L914">        return _element.getDefaultValue();</span>
+<span class="fc" id="L1067">        return _element.getDefaultValue();</span>
     }
 
     @Override
     protected String getValue() {
-<span class="fc" id="L919">        return _element.getValue();</span>
+<span class="fc" id="L1072">        return _element.getValue();</span>
     }
 
     @Override
     protected void setValue(String value) {
-<span class="fc" id="L924">        _element.setValue(value);</span>
-<span class="fc" id="L925">    }</span>
+<span class="fc" id="L1077">        _element.setValue(value);</span>
+<span class="fc" id="L1078">    }</span>
 
 }
 
@@ -938,38 +1091,38 @@ class FileSubmitFormControl extends FormControl {
      */
     @Override
     public String getType() {
-<span class="fc" id="L941">        return FILE_TYPE;</span>
+<span class="fc" id="L1094">        return FILE_TYPE;</span>
     }
 
     private UploadFileSpec _fileToUpload;
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L948">        return new Scriptable();</span>
+<span class="fc" id="L1101">        return new Scriptable();</span>
     }
 
-<span class="fc" id="L951">    class Scriptable extends FormControl.Scriptable {</span>
+<span class="fc" id="L1104">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L955" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
-<span class="fc" id="L956">                return getSelectedName();</span>
+<span class="fc bfc" id="L1108" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;value&quot;)) {</span>
+<span class="fc" id="L1109">                return getSelectedName();</span>
             }
-<span class="fc" id="L958">            return super.get(propertyName);</span>
+<span class="fc" id="L1111">            return super.get(propertyName);</span>
         }
 
     }
 
     public FileSubmitFormControl(WebForm form, HTMLInputElementImpl node) {
-<span class="fc" id="L964">        super(form, node);</span>
-<span class="fc" id="L965">    }</span>
+<span class="fc" id="L1117">        super(form, node);</span>
+<span class="fc" id="L1118">    }</span>
 
     /**
      * Returns true if this control accepts a file for upload.
      **/
     @Override
     public boolean isFileParameter() {
-<span class="fc" id="L972">        return true;</span>
+<span class="fc" id="L1125">        return true;</span>
     }
 
     /**
@@ -977,11 +1130,11 @@ class FileSubmitFormControl extends FormControl {
      */
     @Override
     public String[] getValues() {
-<span class="fc" id="L980">        return new String[] { getSelectedName() };</span>
+<span class="fc" id="L1133">        return new String[] { getSelectedName() };</span>
     }
 
     private String getSelectedName() {
-<span class="fc bfc" id="L984" title="All 2 branches covered.">        return _fileToUpload == null ? &quot;&quot; : _fileToUpload.getFileName();</span>
+<span class="fc bfc" id="L1137" title="All 2 branches covered.">        return _fileToUpload == null ? &quot;&quot; : _fileToUpload.getFileName();</span>
     }
 
     /**
@@ -989,20 +1142,20 @@ class FileSubmitFormControl extends FormControl {
      **/
     @Override
     void claimUploadSpecification(List files) {
-<span class="fc bfc" id="L992" title="All 2 branches covered.">        if (files.isEmpty()) {</span>
-<span class="fc" id="L993">            _fileToUpload = null;</span>
+<span class="fc bfc" id="L1145" title="All 2 branches covered.">        if (files.isEmpty()) {</span>
+<span class="fc" id="L1146">            _fileToUpload = null;</span>
         } else {
-<span class="fc" id="L995">            _fileToUpload = (UploadFileSpec) files.get(0);</span>
-<span class="fc" id="L996">            files.remove(0);</span>
+<span class="fc" id="L1148">            _fileToUpload = (UploadFileSpec) files.get(0);</span>
+<span class="fc" id="L1149">            files.remove(0);</span>
         }
-<span class="fc" id="L998">    }</span>
+<span class="fc" id="L1151">    }</span>
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="pc bpc" id="L1002" title="2 of 4 branches missed.">        if (!isDisabled() &amp;&amp; _fileToUpload != null) {</span>
-<span class="fc" id="L1003">            processor.addFile(getName(), _fileToUpload);</span>
+<span class="pc bpc" id="L1155" title="2 of 4 branches missed.">        if (!isDisabled() &amp;&amp; _fileToUpload != null) {</span>
+<span class="fc" id="L1156">            processor.addFile(getName(), _fileToUpload);</span>
         }
-<span class="fc" id="L1005">    }</span>
+<span class="fc" id="L1158">    }</span>
 }
 
 // ============================= exception class MissingParameterValueException ======================================
@@ -1014,25 +1167,25 @@ class MissingParameterValueException extends IllegalRequestParameterException {
 
     private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1017">    MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {</span>
-<span class="fc" id="L1018">        _parameterName = parameterName;</span>
-<span class="fc" id="L1019">        _missingValue = missingValue;</span>
-<span class="fc" id="L1020">        _proposedValues = proposed;</span>
-<span class="fc" id="L1021">    }</span>
+<span class="fc" id="L1170">    MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {</span>
+<span class="fc" id="L1171">        _parameterName = parameterName;</span>
+<span class="fc" id="L1172">        _missingValue = missingValue;</span>
+<span class="fc" id="L1173">        _proposedValues = proposed;</span>
+<span class="fc" id="L1174">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L1025">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="nc" id="L1026">        sb.append(&quot;Parameter '&quot;).append(_parameterName).append(&quot;' must have the value '&quot;);</span>
-<span class="nc" id="L1027">        sb.append(_missingValue).append(&quot;'. Attempted to set it to: { &quot;);</span>
-<span class="nc bnc" id="L1028" title="All 2 branches missed.">        for (int i = 0; i &lt; _proposedValues.length; i++) {</span>
-<span class="nc bnc" id="L1029" title="All 2 branches missed.">            if (i != 0) {</span>
-<span class="nc" id="L1030">                sb.append(&quot;, &quot;);</span>
+<span class="nc" id="L1178">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="nc" id="L1179">        sb.append(&quot;Parameter '&quot;).append(_parameterName).append(&quot;' must have the value '&quot;);</span>
+<span class="nc" id="L1180">        sb.append(_missingValue).append(&quot;'. Attempted to set it to: { &quot;);</span>
+<span class="nc bnc" id="L1181" title="All 2 branches missed.">        for (int i = 0; i &lt; _proposedValues.length; i++) {</span>
+<span class="nc bnc" id="L1182" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L1183">                sb.append(&quot;, &quot;);</span>
             }
-<span class="nc" id="L1032">            sb.append(_proposedValues[i]);</span>
+<span class="nc" id="L1185">            sb.append(_proposedValues[i]);</span>
         }
-<span class="nc" id="L1034">        sb.append(&quot; }&quot;);</span>
-<span class="nc" id="L1035">        return sb.toString();</span>
+<span class="nc" id="L1187">        sb.append(&quot; }&quot;);</span>
+<span class="nc" id="L1188">        return sb.toString();</span>
     }
 
     private String _parameterName;

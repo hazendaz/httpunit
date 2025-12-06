@@ -27,185 +27,372 @@ import org.w3c.dom.html.HTMLTableElement;
 import org.w3c.dom.html.HTMLTableSectionElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLTableElementImpl.
  */
 <span class="fc" id="L32">public class HTMLTableElementImpl extends HTMLElementImpl implements HTMLTableElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L38">        return new HTMLTableElementImpl();</span>
+<span class="fc" id="L39">        return new HTMLTableElementImpl();</span>
     }
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L43">        return getAttributeWithDefault(&quot;align&quot;, &quot;center&quot;);</span>
+<span class="fc" id="L49">        return getAttributeWithDefault(&quot;align&quot;, &quot;center&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L48">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L60">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L61">    }</span>
 
+    /**
+     * Gets the bg color.
+     *
+     * @return the bg color
+     */
     @Override
     public String getBgColor() {
-<span class="fc" id="L53">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+<span class="fc" id="L70">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
     }
 
+    /**
+     * Sets the bg color.
+     *
+     * @param bgColor
+     *            the new bg color
+     */
     @Override
     public void setBgColor(String bgColor) {
-<span class="fc" id="L58">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L81">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L82">    }</span>
 
+    /**
+     * Gets the border.
+     *
+     * @return the border
+     */
     @Override
     public String getBorder() {
-<span class="fc" id="L63">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
+<span class="fc" id="L91">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
     }
 
+    /**
+     * Sets the border.
+     *
+     * @param border
+     *            the new border
+     */
     @Override
     public void setBorder(String border) {
-<span class="fc" id="L68">        setAttribute(&quot;border&quot;, border);</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L102">        setAttribute(&quot;border&quot;, border);</span>
+<span class="fc" id="L103">    }</span>
 
+    /**
+     * Gets the cell padding.
+     *
+     * @return the cell padding
+     */
     @Override
     public String getCellPadding() {
-<span class="fc" id="L73">        return getAttributeWithNoDefault(&quot;cellpadding&quot;);</span>
+<span class="fc" id="L112">        return getAttributeWithNoDefault(&quot;cellpadding&quot;);</span>
     }
 
+    /**
+     * Sets the cell padding.
+     *
+     * @param cellPadding
+     *            the new cell padding
+     */
     @Override
     public void setCellPadding(String cellPadding) {
-<span class="fc" id="L78">        setAttribute(&quot;cellpadding&quot;, cellPadding);</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L123">        setAttribute(&quot;cellpadding&quot;, cellPadding);</span>
+<span class="fc" id="L124">    }</span>
 
+    /**
+     * Gets the cell spacing.
+     *
+     * @return the cell spacing
+     */
     @Override
     public String getCellSpacing() {
-<span class="fc" id="L83">        return getAttributeWithNoDefault(&quot;cellspacing&quot;);</span>
+<span class="fc" id="L133">        return getAttributeWithNoDefault(&quot;cellspacing&quot;);</span>
     }
 
+    /**
+     * Sets the cell spacing.
+     *
+     * @param cellSpacing
+     *            the new cell spacing
+     */
     @Override
     public void setCellSpacing(String cellSpacing) {
-<span class="fc" id="L88">        setAttribute(&quot;cellspacing&quot;, cellSpacing);</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L144">        setAttribute(&quot;cellspacing&quot;, cellSpacing);</span>
+<span class="fc" id="L145">    }</span>
 
+    /**
+     * Gets the frame.
+     *
+     * @return the frame
+     */
     @Override
     public String getFrame() {
-<span class="fc" id="L93">        return getAttributeWithDefault(&quot;frame&quot;, &quot;void&quot;);</span>
+<span class="fc" id="L154">        return getAttributeWithDefault(&quot;frame&quot;, &quot;void&quot;);</span>
     }
 
+    /**
+     * Sets the frame.
+     *
+     * @param frame
+     *            the new frame
+     */
     @Override
     public void setFrame(String frame) {
-<span class="fc" id="L98">        setAttribute(&quot;frame&quot;, frame);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L165">        setAttribute(&quot;frame&quot;, frame);</span>
+<span class="fc" id="L166">    }</span>
 
+    /**
+     * Gets the rules.
+     *
+     * @return the rules
+     */
     @Override
     public String getRules() {
-<span class="fc" id="L103">        return getAttributeWithDefault(&quot;rules&quot;, &quot;none&quot;);</span>
+<span class="fc" id="L175">        return getAttributeWithDefault(&quot;rules&quot;, &quot;none&quot;);</span>
     }
 
+    /**
+     * Sets the rules.
+     *
+     * @param rules
+     *            the new rules
+     */
     @Override
     public void setRules(String rules) {
-<span class="fc" id="L108">        setAttribute(&quot;rules&quot;, rules);</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L186">        setAttribute(&quot;rules&quot;, rules);</span>
+<span class="fc" id="L187">    }</span>
 
+    /**
+     * Gets the summary.
+     *
+     * @return the summary
+     */
     @Override
     public String getSummary() {
-<span class="fc" id="L113">        return getAttributeWithNoDefault(&quot;summary&quot;);</span>
+<span class="fc" id="L196">        return getAttributeWithNoDefault(&quot;summary&quot;);</span>
     }
 
+    /**
+     * Sets the summary.
+     *
+     * @param summary
+     *            the new summary
+     */
     @Override
     public void setSummary(String summary) {
-<span class="fc" id="L118">        setAttribute(&quot;summary&quot;, summary);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L207">        setAttribute(&quot;summary&quot;, summary);</span>
+<span class="fc" id="L208">    }</span>
 
+    /**
+     * Gets the width.
+     *
+     * @return the width
+     */
     @Override
     public String getWidth() {
-<span class="fc" id="L123">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+<span class="fc" id="L217">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
     }
 
+    /**
+     * Sets the width.
+     *
+     * @param width
+     *            the new width
+     */
     @Override
     public void setWidth(String width) {
-<span class="fc" id="L128">        setAttribute(&quot;width&quot;, width);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L228">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L229">    }</span>
 
+    /**
+     * Creates the caption.
+     *
+     * @return the HTML element
+     */
     @Override
     public HTMLElement createCaption() {
-<span class="nc" id="L133">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L238">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Creates the T foot.
+     *
+     * @return the HTML element
+     */
     @Override
     public HTMLElement createTFoot() {
-<span class="nc" id="L138">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L248">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Creates the T head.
+     *
+     * @return the HTML element
+     */
     @Override
     public HTMLElement createTHead() {
-<span class="nc" id="L143">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L258">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Delete caption.
+     */
     @Override
     public void deleteCaption() {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L149">    }</span>
+<span class="nc" id="L267">    }</span>
 
+    /**
+     * Delete row.
+     *
+     * @param index
+     *            the index
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public void deleteRow(int index) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L154">    }</span>
+<span class="nc" id="L281">    }</span>
 
+    /**
+     * Delete T foot.
+     */
     @Override
     public void deleteTFoot() {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L159">    }</span>
+<span class="nc" id="L289">    }</span>
 
+    /**
+     * Delete T head.
+     */
     @Override
     public void deleteTHead() {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L164">    }</span>
+<span class="nc" id="L297">    }</span>
 
+    /**
+     * Gets the caption.
+     *
+     * @return the caption
+     */
     @Override
     public HTMLTableCaptionElement getCaption() {
-<span class="nc" id="L168">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L306">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Gets the rows.
+     *
+     * @return the rows
+     */
     @Override
     public HTMLCollection getRows() {
-<span class="fc" id="L173">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagName(&quot;tr&quot;));</span>
+<span class="fc" id="L316">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagName(&quot;tr&quot;));</span>
     }
 
+    /**
+     * Gets the t bodies.
+     *
+     * @return the t bodies
+     */
     @Override
     public HTMLCollection getTBodies() {
-<span class="nc" id="L178">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L326">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Gets the t foot.
+     *
+     * @return the t foot
+     */
     @Override
     public HTMLTableSectionElement getTFoot() {
-<span class="nc" id="L183">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L336">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Gets the t head.
+     *
+     * @return the t head
+     */
     @Override
     public HTMLTableSectionElement getTHead() {
-<span class="nc" id="L188">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L346">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Insert row.
+     *
+     * @param index
+     *            the index
+     *
+     * @return the HTML element
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public HTMLElement insertRow(int index) throws DOMException {
-<span class="nc" id="L193">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L362">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the caption.
+     *
+     * @param caption
+     *            the new caption
+     */
     @Override
     public void setCaption(HTMLTableCaptionElement caption) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L199">    }</span>
+<span class="nc" id="L374">    }</span>
 
+    /**
+     * Sets the t foot.
+     *
+     * @param tFoot
+     *            the new t foot
+     */
     @Override
     public void setTFoot(HTMLTableSectionElement tFoot) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L204">    }</span>
+<span class="nc" id="L385">    }</span>
 
+    /**
+     * Sets the t head.
+     *
+     * @param tHead
+     *            the new t head
+     */
     @Override
     public void setTHead(HTMLTableSectionElement tHead) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L209">    }</span>
+<span class="nc" id="L396">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

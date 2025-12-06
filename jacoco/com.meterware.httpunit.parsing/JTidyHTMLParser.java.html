@@ -34,8 +34,8 @@ import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class JTidyHTMLParser.
+ */
 <span class="fc" id="L39">class JTidyHTMLParser implements HTMLParser {</span>
 
     @Override
@@ -78,26 +78,28 @@ import org.xml.sax.SAXException;
 <span class="nc" id="L78">        return true;</span>
     }
 
+    /** The Constant NBSP. */
     private static final char NBSP = (char) 160; // non-breaking space, defined by JTidy
 
     /**
-     * get the parser of the given url
+     * get the parser of the given url.
      *
      * @param url
+     *            the url
      *
      * @return the parser
      */
     private static Tidy getParser(URL url) {
-<span class="nc" id="L91">        Tidy tidy = new Tidy();</span>
+<span class="nc" id="L93">        Tidy tidy = new Tidy();</span>
         // BR 2880636 httpunit 1.7 does not work with latest Tidy release r918
         // tidy.setCharEncoding( org.w3c.tidy.Configuration.UTF8 );
-<span class="nc" id="L94">        tidy.setInputEncoding(&quot;UTF8&quot;);</span>
-<span class="nc" id="L95">        tidy.setQuiet(true);</span>
-<span class="nc" id="L96">        tidy.setShowWarnings(HTMLParserFactory.isParserWarningsEnabled());</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (!HTMLParserFactory.getHTMLParserListeners().isEmpty()) {</span>
-<span class="nc" id="L98">            tidy.setErrout(new JTidyPrintWriter(url));</span>
+<span class="nc" id="L96">        tidy.setInputEncoding(&quot;UTF8&quot;);</span>
+<span class="nc" id="L97">        tidy.setQuiet(true);</span>
+<span class="nc" id="L98">        tidy.setShowWarnings(HTMLParserFactory.isParserWarningsEnabled());</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (!HTMLParserFactory.getHTMLParserListeners().isEmpty()) {</span>
+<span class="nc" id="L100">            tidy.setErrout(new JTidyPrintWriter(url));</span>
         }
-<span class="nc" id="L100">        return tidy;</span>
+<span class="nc" id="L102">        return tidy;</span>
     }
 
 }

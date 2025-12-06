@@ -22,40 +22,63 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLButtonElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLButtonElementImpl.
  */
 <span class="fc" id="L27">public class HTMLButtonElementImpl extends HTMLControl implements HTMLButtonElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLButtonElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLButtonElementImpl();</span>
     }
 
+    /**
+     * Gets the access key.
+     *
+     * @return the access key
+     */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
     }
 
+    /**
+     * Sets the access key.
+     *
+     * @param accessKey
+     *            the new access key
+     */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L43">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L55">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L56">    }</span>
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     @Override
     public String getValue() {
-<span class="fc" id="L48">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
+<span class="fc" id="L65">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
     @Override
     public void setValue(String value) {
-<span class="fc" id="L53">        setAttribute(&quot;value&quot;, value);</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L76">        setAttribute(&quot;value&quot;, value);</span>
+<span class="fc" id="L77">    }</span>
 
     @Override
     public String getType() {
-<span class="fc" id="L58">        return getAttributeWithDefault(&quot;type&quot;, &quot;submit&quot;);</span>
+<span class="fc" id="L81">        return getAttributeWithDefault(&quot;type&quot;, &quot;submit&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

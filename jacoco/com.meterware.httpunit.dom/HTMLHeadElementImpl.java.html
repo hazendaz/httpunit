@@ -22,26 +22,38 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLHeadElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLHeadElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLHeadElementImpl extends HTMLElementImpl implements HTMLHeadElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLHeadElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLHeadElementImpl();</span>
     }
 
+    /**
+     * Gets the profile.
+     *
+     * @return the profile
+     */
     @Override
     public String getProfile() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;profile&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;profile&quot;);</span>
     }
 
+    /**
+     * Sets the profile.
+     *
+     * @param profile
+     *            the new profile
+     */
     @Override
     public void setProfile(String profile) {
-<span class="fc" id="L43">        setAttribute(&quot;profile&quot;, profile);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L55">        setAttribute(&quot;profile&quot;, profile);</span>
+<span class="fc" id="L56">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -22,45 +22,79 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLStyleElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLStyleElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLStyleElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLStyleElementImpl();</span>
     }
 
+    /**
+     * Gets the disabled.
+     *
+     * @return the disabled
+     */
     @Override
     public boolean getDisabled() {
-<span class="fc" id="L38">        return getBooleanAttribute(&quot;disabled&quot;);</span>
+<span class="fc" id="L44">        return getBooleanAttribute(&quot;disabled&quot;);</span>
     }
 
+    /**
+     * Gets the media.
+     *
+     * @return the media
+     */
     @Override
     public String getMedia() {
-<span class="fc" id="L43">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
+<span class="fc" id="L54">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
     @Override
     public String getType() {
-<span class="fc" id="L48">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
+<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
     }
 
+    /**
+     * Sets the disabled.
+     *
+     * @param disabled
+     *            the new disabled
+     */
     @Override
     public void setDisabled(boolean disabled) {
-<span class="fc" id="L53">        setAttribute(&quot;disabled&quot;, disabled);</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L75">        setAttribute(&quot;disabled&quot;, disabled);</span>
+<span class="fc" id="L76">    }</span>
 
+    /**
+     * Sets the media.
+     *
+     * @param media
+     *            the new media
+     */
     @Override
     public void setMedia(String media) {
-<span class="fc" id="L58">        setAttribute(&quot;media&quot;, media);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L86">        setAttribute(&quot;media&quot;, media);</span>
+<span class="fc" id="L87">    }</span>
 
+    /**
+     * Sets the type.
+     *
+     * @param type
+     *            the new type
+     */
     @Override
     public void setType(String type) {
-<span class="fc" id="L63">        setAttribute(&quot;type&quot;, type);</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L97">        setAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L98">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

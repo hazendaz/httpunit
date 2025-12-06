@@ -24,32 +24,33 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an internal error is found on the server.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpInternalErrorException extends HttpException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * construct an internal http error form an url
+     * construct an internal http error form an url.
      *
      * @param url
+     *            the url
      */
     public HttpInternalErrorException(URL url) {
-<span class="nc" id="L41">        super(HttpURLConnection.HTTP_INTERNAL_ERROR, &quot;Internal Error&quot;, url);</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L40">        super(HttpURLConnection.HTTP_INTERNAL_ERROR, &quot;Internal Error&quot;, url);</span>
+<span class="nc" id="L41">    }</span>
 
     /**
-     * construct an internal HTTP Error from a URL and a throwable
+     * construct an internal HTTP Error from a URL and a throwable.
      *
      * @param url
+     *            the url
      * @param t
+     *            the t
      */
     public HttpInternalErrorException(URL url, Throwable t) {
-<span class="nc" id="L51">        super(HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString(), url, t);</span>
-<span class="nc" id="L52">    }</span>
+<span class="nc" id="L52">        super(HttpURLConnection.HTTP_INTERNAL_ERROR, t.toString(), url, t);</span>
+<span class="nc" id="L53">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

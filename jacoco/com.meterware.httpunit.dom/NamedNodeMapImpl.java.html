@@ -26,56 +26,65 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class NamedNodeMapImpl.
+ */
 public class NamedNodeMapImpl implements NamedNodeMap {
 
+    /** The items. */
     private Hashtable _items;
+
+    /** The item array. */
     private Node[] _itemArray;
 
-<span class="fc" id="L36">    NamedNodeMapImpl(Hashtable items) {</span>
-<span class="fc" id="L37">        _items = (Hashtable) items.clone();</span>
-<span class="fc" id="L38">        _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);</span>
-<span class="fc" id="L39">    }</span>
+    /**
+     * Instantiates a new named node map impl.
+     *
+     * @param items
+     *            the items
+     */
+<span class="fc" id="L45">    NamedNodeMapImpl(Hashtable items) {</span>
+<span class="fc" id="L46">        _items = (Hashtable) items.clone();</span>
+<span class="fc" id="L47">        _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);</span>
+<span class="fc" id="L48">    }</span>
 
     @Override
     public Node getNamedItem(String name) {
-<span class="fc" id="L43">        return (Node) _items.get(name);</span>
+<span class="fc" id="L52">        return (Node) _items.get(name);</span>
     }
 
     @Override
     public Node setNamedItem(Node arg) throws DOMException {
-<span class="nc" id="L48">        return null;</span>
+<span class="nc" id="L57">        return null;</span>
     }
 
     @Override
     public Node removeNamedItem(String name) throws DOMException {
-<span class="nc" id="L53">        return null;</span>
+<span class="nc" id="L62">        return null;</span>
     }
 
     @Override
     public Node item(int index) {
-<span class="fc" id="L58">        return _itemArray[index];</span>
+<span class="fc" id="L67">        return _itemArray[index];</span>
     }
 
     @Override
     public int getLength() {
-<span class="fc" id="L63">        return _items.size();</span>
+<span class="fc" id="L72">        return _items.size();</span>
     }
 
     @Override
     public Node getNamedItemNS(String namespaceURI, String localName) {
-<span class="nc" id="L68">        return null;</span>
+<span class="nc" id="L77">        return null;</span>
     }
 
     @Override
     public Node setNamedItemNS(Node arg) throws DOMException {
-<span class="nc" id="L73">        return null;</span>
+<span class="nc" id="L82">        return null;</span>
     }
 
     @Override
     public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
-<span class="nc" id="L78">        return null;</span>
+<span class="nc" id="L87">        return null;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

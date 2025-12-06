@@ -21,115 +21,229 @@ package com.meterware.pseudoserver;
 
 import java.io.IOException;
 
-import org.junit.rules.ExternalResource;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * helper class for JUnit Tests of httpunit
+ * helper class for JUnit Tests of httpunit.
  */
-<span class="fc" id="L29">public class PseudoServerTestSupport extends ExternalResource {</span>
+<span class="fc" id="L31">public class PseudoServerTestSupport implements BeforeEachCallback, AfterEachCallback {</span>
+
+    /** The host path. */
     private String _hostPath;
+
+    /** The server. */
     private PseudoServer _server;
 
     @Override
-    public void before() throws Throwable {
-<span class="fc" id="L35">        setUpServer();</span>
-<span class="fc" id="L36">    }</span>
+    public void beforeEach(ExtensionContext context) throws Exception {
+<span class="fc" id="L41">        setUpServer();</span>
+<span class="fc" id="L42">    }</span>
 
     @Override
-    public void after() {
-<span class="fc" id="L40">        tearDownServer();</span>
-<span class="fc" id="L41">    }</span>
+    public void afterEach(ExtensionContext context) {
+<span class="fc" id="L46">        tearDownServer();</span>
+<span class="fc" id="L47">    }</span>
 
+    /**
+     * Sets the up server.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public void setUpServer() throws IOException {
-<span class="fc" id="L44">        _server = new PseudoServer();</span>
-<span class="fc" id="L45">        _hostPath = &quot;http://localhost:&quot; + _server.getConnectedPort();</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L56">        _server = new PseudoServer();</span>
+<span class="fc" id="L57">        _hostPath = &quot;http://localhost:&quot; + _server.getConnectedPort();</span>
+<span class="fc" id="L58">    }</span>
 
+    /**
+     * Tear down server.
+     */
     public void tearDownServer() {
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (_server != null) {</span>
-<span class="fc" id="L50">            _server.shutDown();</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (_server != null) {</span>
+<span class="fc" id="L65">            _server.shutDown();</span>
         }
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L67">    }</span>
 
+    /**
+     * Map to classpath.
+     *
+     * @param directory
+     *            the directory
+     */
     public void mapToClasspath(String directory) {
-<span class="fc" id="L55">        _server.mapToClasspath(directory);</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L76">        _server.mapToClasspath(directory);</span>
+<span class="fc" id="L77">    }</span>
 
+    /**
+     * Define resource.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param servlet
+     *            the servlet
+     */
     public void defineResource(String resourceName, PseudoServlet servlet) {
-<span class="fc" id="L59">        _server.setResource(resourceName, servlet);</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L88">        _server.setResource(resourceName, servlet);</span>
+<span class="fc" id="L89">    }</span>
 
+    /**
+     * Define resource.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param value
+     *            the value
+     */
     public void defineResource(String resourceName, String value) {
-<span class="fc" id="L63">        _server.setResource(resourceName, value);</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L100">        _server.setResource(resourceName, value);</span>
+<span class="fc" id="L101">    }</span>
 
+    /**
+     * Define resource.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param value
+     *            the value
+     * @param contentType
+     *            the content type
+     */
     public void defineResource(String resourceName, byte[] value, String contentType) {
-<span class="fc" id="L67">        _server.setResource(resourceName, value, contentType);</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L114">        _server.setResource(resourceName, value, contentType);</span>
+<span class="fc" id="L115">    }</span>
 
+    /**
+     * Define resource.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param value
+     *            the value
+     * @param statusCode
+     *            the status code
+     */
     public void defineResource(String resourceName, String value, int statusCode) {
-<span class="fc" id="L71">        _server.setErrorResource(resourceName, statusCode, value);</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L128">        _server.setErrorResource(resourceName, statusCode, value);</span>
+<span class="fc" id="L129">    }</span>
 
+    /**
+     * Define resource.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param value
+     *            the value
+     * @param contentType
+     *            the content type
+     */
     public void defineResource(String resourceName, String value, String contentType) {
-<span class="fc" id="L75">        _server.setResource(resourceName, value, contentType);</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L142">        _server.setResource(resourceName, value, contentType);</span>
+<span class="fc" id="L143">    }</span>
 
+    /**
+     * Adds the resource header.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param header
+     *            the header
+     */
     public void addResourceHeader(String resourceName, String header) {
-<span class="fc" id="L79">        _server.addResourceHeader(resourceName, header);</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L154">        _server.addResourceHeader(resourceName, header);</span>
+<span class="fc" id="L155">    }</span>
 
+    /**
+     * Sets the resource char set.
+     *
+     * @param resourceName
+     *            the resource name
+     * @param setName
+     *            the set name
+     * @param reportCharSet
+     *            the report char set
+     */
     public void setResourceCharSet(String resourceName, String setName, boolean reportCharSet) {
-<span class="fc" id="L83">        _server.setCharacterSet(resourceName, setName);</span>
-<span class="fc" id="L84">        _server.setSendCharacterSet(resourceName, reportCharSet);</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L168">        _server.setCharacterSet(resourceName, setName);</span>
+<span class="fc" id="L169">        _server.setSendCharacterSet(resourceName, reportCharSet);</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
-     * the page use the given xml names space if it is not null
+     * the page use the given xml names space if it is not null.
      *
      * @param xmlns
+     *            the xmlns
      * @param pageName
+     *            the page name
      * @param body
+     *            the body
      */
     public void defineWebPage(String xmlns, String pageName, String body) {
-<span class="fc" id="L96">        String preamble = &quot;&quot;;</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (xmlns == null) {</span>
-<span class="fc" id="L98">            xmlns = &quot;&quot;;</span>
+<span class="fc" id="L184">        String preamble = &quot;&quot;;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (xmlns == null) {</span>
+<span class="fc" id="L186">            xmlns = &quot;&quot;;</span>
         } else {
-<span class="fc" id="L100">            preamble = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</span>
-<span class="fc" id="L101">            preamble += &quot;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Transitional//EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\&quot;&gt;\n&quot;;</span>
-<span class="fc" id="L102">            xmlns = &quot; xmlns=\&quot;&quot; + xmlns + &quot;\&quot;&quot;;</span>
+<span class="fc" id="L188">            preamble = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n&quot;;</span>
+<span class="fc" id="L189">            preamble += &quot;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Transitional//EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\&quot;&gt;\n&quot;;</span>
+<span class="fc" id="L190">            xmlns = &quot; xmlns=\&quot;&quot; + xmlns + &quot;\&quot;&quot;;</span>
         }
-<span class="fc" id="L104">        defineResource(pageName + &quot;.html&quot;, preamble + &quot;&lt;html&quot; + xmlns + &quot;&gt;\n&lt;head&gt;&lt;title&gt;&quot; + pageName</span>
+<span class="fc" id="L192">        defineResource(pageName + &quot;.html&quot;, preamble + &quot;&lt;html&quot; + xmlns + &quot;&gt;\n&lt;head&gt;&lt;title&gt;&quot; + pageName</span>
                 + &quot;&lt;/title&gt;&lt;/head&gt;\n&quot; + &quot;&lt;body&gt;\n&quot; + body + &quot;\n&lt;/body&gt;\n&lt;/html&gt;&quot;);
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
-     * the page
+     * the page.
      *
      * @param pageName
+     *            the page name
      * @param body
+     *            the body
      */
     public void defineWebPage(String pageName, String body) {
-<span class="fc" id="L116">        defineWebPage(null, pageName, body);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L206">        defineWebPage(null, pageName, body);</span>
+<span class="fc" id="L207">    }</span>
 
+    /**
+     * Gets the server.
+     *
+     * @return the server
+     */
     public PseudoServer getServer() {
-<span class="fc" id="L120">        return _server;</span>
+<span class="fc" id="L215">        return _server;</span>
     }
 
+    /**
+     * Sets the server debug.
+     *
+     * @param enabled
+     *            the new server debug
+     */
     public void setServerDebug(boolean enabled) {
-<span class="nc" id="L124">        _server.setDebug(enabled);</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L225">        _server.setDebug(enabled);</span>
+<span class="nc" id="L226">    }</span>
 
+    /**
+     * Gets the host path.
+     *
+     * @return the host path
+     */
     public String getHostPath() {
-<span class="fc" id="L128">        return _hostPath;</span>
+<span class="fc" id="L234">        return _hostPath;</span>
     }
 
+    /**
+     * Gets the host port.
+     *
+     * @return the host port
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public int getHostPort() throws IOException {
-<span class="fc" id="L132">        return _server.getConnectedPort();</span>
+<span class="fc" id="L246">        return _server.getConnectedPort();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

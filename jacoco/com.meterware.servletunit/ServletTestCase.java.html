@@ -23,17 +23,17 @@ import junit.framework.TestCase;
 
 /**
  * A base class for test cases to be run via {@link JUnitServlet JUnitServlet}.
- *
- * @author &lt;a href=&quot;mailto:russgold@acm.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public abstract class ServletTestCase extends TestCase {
 
+    /** The invocation context factory. */
     private static InvocationContextFactory _invocationContextFactory;
 
     /**
-     * construct a ServletTestCase with the given name
+     * construct a ServletTestCase with the given name.
      *
      * @param name
+     *            the name
      */
     protected ServletTestCase(String name) {
 <span class="fc" id="L39">        super(name);</span>
@@ -41,27 +41,30 @@ public abstract class ServletTestCase extends TestCase {
 
     /**
      * Returns a client object which can access the servlet context in which this test is running.
+     *
+     * @return the servlet unit client
      */
     protected final ServletUnitClient newClient() {
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
-<span class="nc" id="L47">            throw new RuntimeException(</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
+<span class="nc" id="L49">            throw new RuntimeException(</span>
                     &quot;ServletTestCase.newClient called before setInvocationContextFactory was called&quot;);
         }
-<span class="fc" id="L50">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
+<span class="fc" id="L52">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
     }
 
     /**
-     * set the invocation context factory to be used
+     * set the invocation context factory to be used.
      *
      * @param invocationContextFactory
+     *            the new invocation context factory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
-<span class="nc" id="L60">            throw new RuntimeException(</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
+<span class="nc" id="L63">            throw new RuntimeException(</span>
                     &quot;setInvocationContextFactory called with null invocationContextFactory parameter&quot;);
         }
-<span class="fc" id="L63">        _invocationContextFactory = invocationContextFactory;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L66">        _invocationContextFactory = invocationContextFactory;</span>
+<span class="fc" id="L67">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

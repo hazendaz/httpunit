@@ -25,39 +25,88 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class XMLUtils.
+ */
 <span class="nc" id="L30">abstract class XMLUtils {</span>
 
+    /**
+     * Gets the child node value.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     *
+     * @return the child node value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getChildNodeValue(Element root, String childNodeName) throws SAXException {
-<span class="fc" id="L33">        return getChildNodeValue(root, childNodeName, null);</span>
+<span class="fc" id="L46">        return getChildNodeValue(root, childNodeName, null);</span>
     }
 
+    /**
+     * Gets the child node value.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the child node value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getChildNodeValue(Element root, String childNodeName, String defaultValue) throws SAXException {
-<span class="fc" id="L37">        NodeList nl = root.getElementsByTagName(childNodeName);</span>
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (nl.getLength() == 1) {</span>
-<span class="fc" id="L39">            return getTextValue(nl.item(0)).trim();</span>
+<span class="fc" id="L65">        NodeList nl = root.getElementsByTagName(childNodeName);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (nl.getLength() == 1) {</span>
+<span class="fc" id="L67">            return getTextValue(nl.item(0)).trim();</span>
         }
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (defaultValue == null) {</span>
-<span class="nc" id="L42">            throw new SAXException(&quot;Node &lt;&quot; + root.getNodeName() + &quot;&gt; has no child named &lt;&quot; + childNodeName + &quot;&gt;&quot;);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (defaultValue == null) {</span>
+<span class="nc" id="L70">            throw new SAXException(&quot;Node &lt;&quot; + root.getNodeName() + &quot;&gt; has no child named &lt;&quot; + childNodeName + &quot;&gt;&quot;);</span>
         }
-<span class="fc" id="L44">        return defaultValue;</span>
+<span class="fc" id="L72">        return defaultValue;</span>
     }
 
+    /**
+     * Gets the text value.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the text value
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     static String getTextValue(Node node) throws SAXException {
-<span class="fc" id="L48">        Node textNode = node.getFirstChild();</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (textNode == null) {</span>
-<span class="fc" id="L50">            return &quot;&quot;;</span>
+<span class="fc" id="L87">        Node textNode = node.getFirstChild();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (textNode == null) {</span>
+<span class="fc" id="L89">            return &quot;&quot;;</span>
         }
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (textNode.getNodeType() != Node.TEXT_NODE) {</span>
-<span class="nc" id="L53">            throw new SAXException(&quot;No text value found for &lt;&quot; + node.getNodeName() + &quot;&gt; node&quot;);</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (textNode.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="nc" id="L92">            throw new SAXException(&quot;No text value found for &lt;&quot; + node.getNodeName() + &quot;&gt; node&quot;);</span>
         }
-<span class="fc" id="L55">        return textNode.getNodeValue();</span>
+<span class="fc" id="L94">        return textNode.getNodeValue();</span>
     }
 
+    /**
+     * Checks for child node.
+     *
+     * @param root
+     *            the root
+     * @param childNodeName
+     *            the child node name
+     *
+     * @return true, if successful
+     */
     static boolean hasChildNode(Element root, String childNodeName) {
-<span class="fc" id="L59">        NodeList nl = root.getElementsByTagName(childNodeName);</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        return nl.getLength() &gt; 0;</span>
+<span class="fc" id="L108">        NodeList nl = root.getElementsByTagName(childNodeName);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        return nl.getLength() &gt; 0;</span>
     }
 
 }

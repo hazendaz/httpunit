@@ -21,28 +21,39 @@ package com.meterware.httpunit;
 
 import com.meterware.httpunit.dom.HTMLInputElementImpl;
 
+/**
+ * The Class RadioButtonFormControl.
+ */
 public class RadioButtonFormControl extends BooleanFormControl {
 
     @Override
     public String getType() {
-<span class="fc" id="L28">        return RADIO_BUTTON_TYPE;</span>
+<span class="fc" id="L31">        return RADIO_BUTTON_TYPE;</span>
     }
 
+    /**
+     * Instantiates a new radio button form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public RadioButtonFormControl(WebForm form, HTMLInputElementImpl element) {
-<span class="fc" id="L32">        super(form, element);</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L43">        super(form, element);</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Returns true if only one control of this kind can have a value.
      **/
     @Override
     public boolean isExclusive() {
-<span class="fc" id="L40">        return true;</span>
+<span class="fc" id="L51">        return true;</span>
     }
 
     @Override
     public String getQueryValue() {
-<span class="fc" id="L45">        return getValueAttribute();</span>
+<span class="fc" id="L56">        return getValueAttribute();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

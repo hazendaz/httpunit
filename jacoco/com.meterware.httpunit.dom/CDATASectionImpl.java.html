@@ -23,30 +23,51 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Node;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class CDATASectionImpl.
+ */
 <span class="fc" id="L28">public class CDATASectionImpl extends TextImpl implements CDATASection {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the CDATA section.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     *
+     * @return the CDATA section
+     */
     public static CDATASection createCDATASection(DocumentImpl ownerDocument, String data) {
-<span class="fc" id="L33">        CDATASectionImpl cdataSection = new CDATASectionImpl();</span>
-<span class="fc" id="L34">        cdataSection.initialize(ownerDocument, data);</span>
-<span class="fc" id="L35">        return cdataSection;</span>
+<span class="fc" id="L44">        CDATASectionImpl cdataSection = new CDATASectionImpl();</span>
+<span class="fc" id="L45">        cdataSection.initialize(ownerDocument, data);</span>
+<span class="fc" id="L46">        return cdataSection;</span>
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param cdataSection
+     *            the cdata section
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, CDATASection cdataSection) {
-<span class="fc" id="L39">        return document.createCDATASection(cdataSection.getData());</span>
+<span class="fc" id="L60">        return document.createCDATASection(cdataSection.getData());</span>
     }
 
     @Override
     public String getNodeName() {
-<span class="fc" id="L44">        return &quot;#cdata-section&quot;;</span>
+<span class="fc" id="L65">        return &quot;#cdata-section&quot;;</span>
     }
 
     @Override
     public short getNodeType() {
-<span class="fc" id="L49">        return CDATA_SECTION_NODE;</span>
+<span class="fc" id="L70">        return CDATA_SECTION_NODE;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

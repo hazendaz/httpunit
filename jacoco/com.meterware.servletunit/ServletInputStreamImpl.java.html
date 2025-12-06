@@ -19,47 +19,52 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-
 /**
- * An implementation of the standard servlet input stream
- *
- * @author &lt;a href=&quot;mailto:russgold@acm.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * An implementation of the standard servlet input stream.
+ */
 class ServletInputStreamImpl extends ServletInputStream {
 
+    /** The base stream. */
     private ByteArrayInputStream _baseStream;
 
-<span class="fc" id="L37">    public ServletInputStreamImpl(byte[] messageBody) {</span>
-<span class="fc" id="L38">        _baseStream = new ByteArrayInputStream(messageBody);</span>
-<span class="fc" id="L39">    }</span>
+    /**
+     * Instantiates a new servlet input stream impl.
+     *
+     * @param messageBody
+     *            the message body
+     */
+<span class="fc" id="L42">    public ServletInputStreamImpl(byte[] messageBody) {</span>
+<span class="fc" id="L43">        _baseStream = new ByteArrayInputStream(messageBody);</span>
+<span class="fc" id="L44">    }</span>
 
     @Override
     public int read() throws IOException {
-<span class="fc" id="L43">        return _baseStream.read();</span>
+<span class="fc" id="L48">        return _baseStream.read();</span>
     }
 
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-<span class="nc" id="L49">        return false;</span>
+<span class="nc" id="L54">        return false;</span>
     }
 
     @Override
     public boolean isReady() {
         // TODO Auto-generated method stub
-<span class="nc" id="L55">        return false;</span>
+<span class="nc" id="L60">        return false;</span>
     }
 
     @Override
     public void setReadListener(ReadListener readListener) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L67">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

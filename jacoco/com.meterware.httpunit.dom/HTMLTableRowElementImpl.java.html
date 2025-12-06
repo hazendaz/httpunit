@@ -25,116 +25,225 @@ import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLTableRowElementImpl.
  */
 <span class="fc" id="L30">public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement, AttributeNameAdjusted {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L36">        return new HTMLTableRowElementImpl();</span>
+<span class="fc" id="L37">        return new HTMLTableRowElementImpl();</span>
     }
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L41">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L47">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L46">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L58">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L59">    }</span>
 
+    /**
+     * Gets the bg color.
+     *
+     * @return the bg color
+     */
     @Override
     public String getBgColor() {
-<span class="fc" id="L51">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+<span class="fc" id="L68">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
     }
 
+    /**
+     * Sets the bg color.
+     *
+     * @param bgColor
+     *            the new bg color
+     */
     @Override
     public void setBgColor(String bgColor) {
-<span class="fc" id="L56">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L79">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L80">    }</span>
 
+    /**
+     * Gets the ch.
+     *
+     * @return the ch
+     */
     @Override
     public String getCh() {
-<span class="fc" id="L61">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
+<span class="fc" id="L89">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
     }
 
+    /**
+     * Sets the ch.
+     *
+     * @param ch
+     *            the new ch
+     */
     @Override
     public void setCh(String ch) {
-<span class="fc" id="L66">        setAttribute(&quot;char&quot;, ch);</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L100">        setAttribute(&quot;char&quot;, ch);</span>
+<span class="fc" id="L101">    }</span>
 
+    /**
+     * Gets the ch off.
+     *
+     * @return the ch off
+     */
     @Override
     public String getChOff() {
-<span class="fc" id="L71">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
+<span class="fc" id="L110">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
     }
 
+    /**
+     * Sets the ch off.
+     *
+     * @param chOff
+     *            the new ch off
+     */
     @Override
     public void setChOff(String chOff) {
-<span class="fc" id="L76">        setAttribute(&quot;charoff&quot;, chOff);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L121">        setAttribute(&quot;charoff&quot;, chOff);</span>
+<span class="fc" id="L122">    }</span>
 
+    /**
+     * Gets the v align.
+     *
+     * @return the v align
+     */
     @Override
     public String getVAlign() {
-<span class="fc" id="L81">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
+<span class="fc" id="L131">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
     }
 
+    /**
+     * Sets the v align.
+     *
+     * @param vAlign
+     *            the new v align
+     */
     @Override
     public void setVAlign(String vAlign) {
-<span class="fc" id="L86">        setAttribute(&quot;valign&quot;, vAlign);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L142">        setAttribute(&quot;valign&quot;, vAlign);</span>
+<span class="fc" id="L143">    }</span>
 
+    /**
+     * Delete cell.
+     *
+     * @param index
+     *            the index
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public void deleteCell(int index) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L157">    }</span>
 
+    /**
+     * Gets the cells.
+     *
+     * @return the cells
+     */
     @Override
     public HTMLCollection getCells() {
-<span class="fc" id="L96">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { &quot;td&quot;, &quot;th &quot; }));</span>
+<span class="fc" id="L166">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { &quot;td&quot;, &quot;th &quot; }));</span>
     }
 
+    /**
+     * Gets the row index.
+     *
+     * @return the row index
+     */
     @Override
     public int getRowIndex() {
-<span class="nc" id="L101">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L176">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Gets the section row index.
+     *
+     * @return the section row index
+     */
     @Override
     public int getSectionRowIndex() {
-<span class="nc" id="L106">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L186">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Insert cell.
+     *
+     * @param index
+     *            the index
+     *
+     * @return the HTML element
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public HTMLElement insertCell(int index) throws DOMException {
-<span class="nc" id="L111">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L202">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getJavaAttributeName(String attributeName) {
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
-<span class="fc" id="L117">            return &quot;ch&quot;;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
+<span class="fc" id="L208">            return &quot;ch&quot;;</span>
         }
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
-<span class="fc" id="L120">            return &quot;choff&quot;;</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
+<span class="fc" id="L211">            return &quot;choff&quot;;</span>
         }
-<span class="fc" id="L122">        return attributeName;</span>
+<span class="fc" id="L213">        return attributeName;</span>
     }
 
+    /**
+     * Sets the row index.
+     *
+     * @param rowIndex
+     *            the new row index
+     */
     public void setRowIndex(int rowIndex) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L225">    }</span>
 
+    /**
+     * Sets the section row index.
+     *
+     * @param sectionRowIndex
+     *            the new section row index
+     */
     public void setSectionRowIndex(int sectionRowIndex) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L133">    }</span>
+<span class="nc" id="L236">    }</span>
 
+    /**
+     * Sets the cells.
+     *
+     * @param cells
+     *            the new cells
+     */
     public void setCells(HTMLCollection cells) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L138">    }</span>
+<span class="nc" id="L247">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

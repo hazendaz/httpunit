@@ -25,23 +25,17 @@ import com.meterware.httpunit.HttpException;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Dictionary;
 import java.util.Stack;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * This class represents the context in which a specific servlet request is being made. It contains the objects needed
@@ -49,13 +43,22 @@ import javax.servlet.http.HttpSession;
  **/
 class InvocationContextImpl implements InvocationContext {
 
-<span class="fc" id="L52">    private Stack _contextStack = new Stack();</span>
+    /** The context stack. */
+<span class="fc" id="L47">    private Stack _contextStack = new Stack();</span>
+
+    /** The effective URL. */
     private URL _effectiveURL;
 
+    /** The client. */
     private ServletUnitClient _client;
+
+    /** The application. */
     private WebApplication _application;
+
+    /** The frame. */
     private FrameSelector _frame;
 
+    /** The web response. */
     private WebResponse _webResponse;
 
     /**
@@ -63,7 +66,7 @@ class InvocationContextImpl implements InvocationContext {
      **/
     @Override
     public HttpServletRequest getRequest() {
-<span class="fc" id="L66">        return getContext().getRequest();</span>
+<span class="fc" id="L69">        return getContext().getRequest();</span>
     }
 
     /**
@@ -71,7 +74,7 @@ class InvocationContextImpl implements InvocationContext {
      **/
     @Override
     public HttpServletResponse getResponse() {
-<span class="fc" id="L74">        return getContext().getResponse();</span>
+<span class="fc" id="L77">        return getContext().getResponse();</span>
     }
 
     /**
@@ -79,19 +82,19 @@ class InvocationContextImpl implements InvocationContext {
      */
     @Override
     public void service() throws ServletException, IOException {
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (isFilterActive()) {</span>
-<span class="fc" id="L83">            getFilter().doFilter(getRequest(), getResponse(), getFilterChain());</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (isFilterActive()) {</span>
+<span class="fc" id="L86">            getFilter().doFilter(getRequest(), getResponse(), getFilterChain());</span>
         } else {
-<span class="fc" id="L85">            getServlet().service(getRequest(), getResponse());</span>
+<span class="fc" id="L88">            getServlet().service(getRequest(), getResponse());</span>
         }
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L90">    }</span>
 
     /**
      * Returns the selected servlet, initialized to provide access to sessions and servlet context information.
      **/
     @Override
     public Servlet getServlet() throws ServletException {
-<span class="fc" id="L94">        return getContext().getServlet();</span>
+<span class="fc" id="L97">        return getContext().getServlet();</span>
     }
 
     /**
@@ -100,235 +103,385 @@ class InvocationContextImpl implements InvocationContext {
      **/
     @Override
     public WebResponse getServletResponse() throws IOException {
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (_contextStack.size() != 1) {</span>
-<span class="nc" id="L104">            throw new IllegalStateException(&quot;Have not returned from all request dispatchers&quot;);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (_contextStack.size() != 1) {</span>
+<span class="nc" id="L107">            throw new IllegalStateException(&quot;Have not returned from all request dispatchers&quot;);</span>
         }
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (_webResponse == null) {</span>
-<span class="fc" id="L107">            HttpSession session = getRequest().getSession( /* create */ false);</span>
-<span class="fc bfc" id="L108" title="All 4 branches covered.">            if (session != null &amp;&amp; session.isNew()) {</span>
-<span class="fc" id="L109">                Cookie cookie = new Cookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
-<span class="fc" id="L110">                cookie.setPath(_application.getContextPath());</span>
-<span class="fc" id="L111">                getResponse().addCookie(cookie);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (_webResponse == null) {</span>
+<span class="fc" id="L110">            HttpSession session = getRequest().getSession( /* create */ false);</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (session != null &amp;&amp; session.isNew()) {</span>
+<span class="fc" id="L112">                Cookie cookie = new Cookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
+<span class="fc" id="L113">                cookie.setPath(_application.getContextPath());</span>
+<span class="fc" id="L114">                getResponse().addCookie(cookie);</span>
             }
-<span class="fc" id="L113">            _webResponse = new ServletUnitWebResponse(_client, _frame, _effectiveURL, getResponse(),</span>
-<span class="fc" id="L114">                    _client.getExceptionsThrownOnErrorStatus());</span>
+<span class="fc" id="L116">            _webResponse = new ServletUnitWebResponse(_client, _frame, _effectiveURL, getResponse(),</span>
+<span class="fc" id="L117">                    _client.getExceptionsThrownOnErrorStatus());</span>
         }
-<span class="fc" id="L116">        return _webResponse;</span>
+<span class="fc" id="L119">        return _webResponse;</span>
     }
 
     @Override
     public FrameSelector getFrame() {
-<span class="fc" id="L121">        return _frame;</span>
+<span class="fc" id="L124">        return _frame;</span>
     }
 
     @Override
     public void pushIncludeRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (isFilterActive()) {</span>
-<span class="nc" id="L128">            throw new IllegalStateException(&quot;May not push an include request when no servlet is active&quot;);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if (isFilterActive()) {</span>
+<span class="nc" id="L131">            throw new IllegalStateException(&quot;May not push an include request when no servlet is active&quot;);</span>
         }
-<span class="fc" id="L130">        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createIncludeRequestWrapper(request, rd),</span>
-<span class="fc" id="L131">                response, ((RequestDispatcherImpl) rd).getServletMetaData()));</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L133">        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createIncludeRequestWrapper(request, rd),</span>
+<span class="fc" id="L134">                response, ((RequestDispatcherImpl) rd).getServletMetaData()));</span>
+<span class="fc" id="L135">    }</span>
 
     @Override
     public void pushForwardRequest(RequestDispatcher rd, HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (isFilterActive()) {</span>
-<span class="nc" id="L138">            throw new IllegalStateException(&quot;May not push a forward request when no servlet is active&quot;);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (isFilterActive()) {</span>
+<span class="nc" id="L141">            throw new IllegalStateException(&quot;May not push a forward request when no servlet is active&quot;);</span>
         }
-<span class="fc" id="L140">        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createForwardRequestWrapper(request, rd),</span>
-<span class="fc" id="L141">                response, ((RequestDispatcherImpl) rd).getServletMetaData()));</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L143">        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createForwardRequestWrapper(request, rd),</span>
+<span class="fc" id="L144">                response, ((RequestDispatcherImpl) rd).getServletMetaData()));</span>
+<span class="fc" id="L145">    }</span>
 
     @Override
     public void popRequest() {
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (getContext().mayPopFilter()) {</span>
-<span class="fc" id="L147">            getContext().popFilter();</span>
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        } else if (_contextStack.size() == 1) {</span>
-<span class="nc" id="L149">            throw new IllegalStateException(&quot;May not pop the initial request&quot;);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (getContext().mayPopFilter()) {</span>
+<span class="fc" id="L150">            getContext().popFilter();</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        } else if (_contextStack.size() == 1) {</span>
+<span class="nc" id="L152">            throw new IllegalStateException(&quot;May not pop the initial request&quot;);</span>
         } else {
-<span class="fc" id="L151">            _contextStack.pop();</span>
+<span class="fc" id="L154">            _contextStack.pop();</span>
         }
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L156">    }</span>
 
     @Override
     public boolean isFilterActive() {
-<span class="fc" id="L157">        return getContext().isFilterActive();</span>
+<span class="fc" id="L160">        return getContext().isFilterActive();</span>
     }
 
     @Override
     public Filter getFilter() throws ServletException {
-<span class="fc" id="L162">        return getContext().getFilter();</span>
+<span class="fc" id="L165">        return getContext().getFilter();</span>
     }
 
     @Override
     public FilterChain getFilterChain() {
-<span class="fc" id="L167">        return (servletRequest, servletResponse) -&gt; {</span>
-<span class="fc" id="L168">            pushFilter(servletRequest, servletResponse);</span>
-<span class="fc" id="L169">            service();</span>
-<span class="fc" id="L170">            popRequest();</span>
-<span class="fc" id="L171">        };</span>
+<span class="fc" id="L170">        return (servletRequest, servletResponse) -&gt; {</span>
+<span class="fc" id="L171">            pushFilter(servletRequest, servletResponse);</span>
+<span class="fc" id="L172">            service();</span>
+<span class="fc" id="L173">            popRequest();</span>
+<span class="fc" id="L174">        };</span>
     }
 
     @Override
     public void pushFilter(ServletRequest request, ServletResponse response) {
-<span class="fc" id="L176">        getContext().pushFilter(request, response);</span>
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L179">        getContext().pushFilter(request, response);</span>
+<span class="fc" id="L180">    }</span>
 
+    /**
+     * The Class AccessDeniedException.
+     */
     class AccessDeniedException extends HttpException {
+
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L182">        public AccessDeniedException(URL baseURL) {</span>
-<span class="fc" id="L183">            super(403, &quot;Access Denied&quot;, baseURL);</span>
-<span class="fc" id="L184">        }</span>
+        /**
+         * Instantiates a new access denied exception.
+         *
+         * @param baseURL
+         *            the base URL
+         */
+<span class="fc" id="L196">        public AccessDeniedException(URL baseURL) {</span>
+<span class="fc" id="L197">            super(403, &quot;Access Denied&quot;, baseURL);</span>
+<span class="fc" id="L198">        }</span>
     }
 
     // ------------------------------ package methods ---------------------------------------
 
     /**
      * Constructs a servlet invocation context for a specified servlet container, request, and cookie headers.
-     **/
+     *
+     * @param client
+     *            the client
+     * @param runner
+     *            the runner
+     * @param frame
+     *            the frame
+     * @param request
+     *            the request
+     * @param clientHeaders
+     *            the client headers
+     * @param messageBody
+     *            the message body
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     InvocationContextImpl(ServletUnitClient client, ServletRunner runner, FrameSelector frame, WebRequest request,
-<span class="fc" id="L193">            Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {</span>
-<span class="fc" id="L194">        _client = client;</span>
-<span class="fc" id="L195">        _application = runner.getApplication();</span>
-<span class="fc" id="L196">        _frame = frame;</span>
+<span class="fc" id="L225">            Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {</span>
+<span class="fc" id="L226">        _client = client;</span>
+<span class="fc" id="L227">        _application = runner.getApplication();</span>
+<span class="fc" id="L228">        _frame = frame;</span>
 
-<span class="fc" id="L198">        URL requestURL = request.getURL();</span>
-<span class="fc" id="L199">        final ServletUnitHttpRequest suhr = new ServletUnitHttpRequest(_application.getServletRequest(requestURL),</span>
-<span class="fc" id="L200">                request, runner.getContext(), clientHeaders, messageBody);</span>
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (_application.usesBasicAuthentication()) {</span>
-<span class="fc" id="L202">            suhr.readBasicAuthentication();</span>
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        } else if (_application.usesFormAuthentication()) {</span>
-<span class="fc" id="L204">            suhr.readFormAuthentication();</span>
+<span class="fc" id="L230">        URL requestURL = request.getURL();</span>
+<span class="fc" id="L231">        final ServletUnitHttpRequest suhr = new ServletUnitHttpRequest(_application.getServletRequest(requestURL),</span>
+<span class="fc" id="L232">                request, runner.getContext(), clientHeaders, messageBody);</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (_application.usesBasicAuthentication()) {</span>
+<span class="fc" id="L234">            suhr.readBasicAuthentication();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        } else if (_application.usesFormAuthentication()) {</span>
+<span class="fc" id="L236">            suhr.readFormAuthentication();</span>
         }
 
-<span class="fc" id="L207">        HttpSession session = suhr.getSession( /* create */ false);</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (session != null) {</span>
-<span class="fc" id="L209">            ((ServletUnitHttpSession) session).access();</span>
+<span class="fc" id="L239">        HttpSession session = suhr.getSession( /* create */ false);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (session != null) {</span>
+<span class="fc" id="L241">            ((ServletUnitHttpSession) session).access();</span>
         }
 
-<span class="fc" id="L212">        _effectiveURL = computeEffectiveUrl(suhr, requestURL);</span>
-<span class="fc" id="L213">        _contextStack.push(new ExecutionContext(suhr, new ServletUnitHttpResponse(),</span>
-<span class="fc" id="L214">                _application.getServletRequest(_effectiveURL)));</span>
-<span class="fc" id="L215">    }</span>
+<span class="fc" id="L244">        _effectiveURL = computeEffectiveUrl(suhr, requestURL);</span>
+<span class="fc" id="L245">        _contextStack.push(new ExecutionContext(suhr, new ServletUnitHttpResponse(),</span>
+<span class="fc" id="L246">                _application.getServletRequest(_effectiveURL)));</span>
+<span class="fc" id="L247">    }</span>
 
+    /**
+     * Compute effective url.
+     *
+     * @param request
+     *            the request
+     * @param requestURL
+     *            the request URL
+     *
+     * @return the url
+     */
     private URL computeEffectiveUrl(HttpServletRequest request, URL requestURL) {
-<span class="fc bfc" id="L218" title="All 4 branches covered.">        if (!_application.requiresAuthorization(requestURL) || userIsAuthorized(request, requestURL)) {</span>
-<span class="fc" id="L219">            return requestURL;</span>
+<span class="fc bfc" id="L260" title="All 4 branches covered.">        if (!_application.requiresAuthorization(requestURL) || userIsAuthorized(request, requestURL)) {</span>
+<span class="fc" id="L261">            return requestURL;</span>
         }
-<span class="fc bfc" id="L221" title="All 2 branches covered.">        if (request.getRemoteUser() != null) {</span>
-<span class="fc" id="L222">            throw new AccessDeniedException(requestURL);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        if (request.getRemoteUser() != null) {</span>
+<span class="fc" id="L264">            throw new AccessDeniedException(requestURL);</span>
         }
-<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (_application.usesBasicAuthentication()) {</span>
-<span class="fc" id="L225">            throw AuthorizationRequiredException</span>
-<span class="fc" id="L226">                    .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (_application.usesBasicAuthentication()) {</span>
+<span class="fc" id="L267">            throw AuthorizationRequiredException</span>
+<span class="fc" id="L268">                    .createBasicAuthenticationRequiredException(_application.getAuthenticationRealm());</span>
         }
-<span class="pc bpc" id="L228" title="1 of 2 branches missed.">        if (!_application.usesFormAuthentication()) {</span>
-<span class="nc" id="L229">            throw new IllegalStateException(&quot;Authorization required but no authentication method defined&quot;);</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">        if (!_application.usesFormAuthentication()) {</span>
+<span class="nc" id="L271">            throw new IllegalStateException(&quot;Authorization required but no authentication method defined&quot;);</span>
         }
-<span class="fc" id="L231">        ((ServletUnitHttpSession) request.getSession()).setOriginalURL(requestURL);</span>
-<span class="fc" id="L232">        return _application.getLoginURL();</span>
+<span class="fc" id="L273">        ((ServletUnitHttpSession) request.getSession()).setOriginalURL(requestURL);</span>
+<span class="fc" id="L274">        return _application.getLoginURL();</span>
     }
 
+    /**
+     * User is authorized.
+     *
+     * @param request
+     *            the request
+     * @param requestURL
+     *            the request URL
+     *
+     * @return true, if successful
+     */
     private boolean userIsAuthorized(HttpServletRequest request, URL requestURL) {
-<span class="fc" id="L236">        String[] roles = _application.getPermittedRoles(requestURL);</span>
-<span class="fc bfc" id="L237" title="All 2 branches covered.">        for (String role : roles) {</span>
-<span class="fc bfc" id="L238" title="All 2 branches covered.">            if (request.isUserInRole(role)) {</span>
-<span class="fc" id="L239">                return true;</span>
+<span class="fc" id="L288">        String[] roles = _application.getPermittedRoles(requestURL);</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        for (String role : roles) {</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            if (request.isUserInRole(role)) {</span>
+<span class="fc" id="L291">                return true;</span>
             }
         }
-<span class="fc" id="L242">        return false;</span>
+<span class="fc" id="L294">        return false;</span>
     }
 
+    /**
+     * The Class ExecutionContext.
+     */
     static class ExecutionContext {
 
+        /** The response. */
         private HttpServletResponse _response;
+
+        /** The request. */
         private HttpServletRequest _request;
+
+        /** The meta data. */
         private ServletMetaData _metaData;
 
-<span class="fc" id="L251">        private Stack _filterStack = new Stack();</span>
+        /** The filter stack. */
+<span class="fc" id="L312">        private Stack _filterStack = new Stack();</span>
 
-<span class="fc" id="L253">        ExecutionContext(HttpServletRequest request, HttpServletResponse response, ServletMetaData metaData) {</span>
-<span class="fc" id="L254">            _request = request;</span>
-<span class="fc" id="L255">            _response = response;</span>
-<span class="fc" id="L256">            _metaData = metaData;</span>
-<span class="fc" id="L257">        }</span>
+        /**
+         * Instantiates a new execution context.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         * @param metaData
+         *            the meta data
+         */
+<span class="fc" id="L324">        ExecutionContext(HttpServletRequest request, HttpServletResponse response, ServletMetaData metaData) {</span>
+<span class="fc" id="L325">            _request = request;</span>
+<span class="fc" id="L326">            _response = response;</span>
+<span class="fc" id="L327">            _metaData = metaData;</span>
+<span class="fc" id="L328">        }</span>
 
+        /**
+         * Checks if is filter active.
+         *
+         * @return true, if is filter active
+         */
         boolean isFilterActive() {
-<span class="fc bfc" id="L260" title="All 2 branches covered.">            return getFilterIndex() &lt; _metaData.getFilters().length;</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">            return getFilterIndex() &lt; _metaData.getFilters().length;</span>
         }
 
+        /**
+         * Gets the servlet.
+         *
+         * @return the servlet
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         Servlet getServlet() throws ServletException {
-<span class="pc bpc" id="L264" title="1 of 2 branches missed.">            if (isFilterActive()) {</span>
-<span class="nc" id="L265">                throw new IllegalStateException(&quot;Current context is a filter - may not request servlet.&quot;);</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">            if (isFilterActive()) {</span>
+<span class="nc" id="L349">                throw new IllegalStateException(&quot;Current context is a filter - may not request servlet.&quot;);</span>
             }
-<span class="fc" id="L267">            return _metaData.getServlet();</span>
+<span class="fc" id="L351">            return _metaData.getServlet();</span>
         }
 
+        /**
+         * Gets the response.
+         *
+         * @return the response
+         */
         HttpServletResponse getResponse() {
-<span class="fc bfc" id="L271" title="All 2 branches covered.">            return _filterStack.isEmpty() ? _response : ((FilterContext) _filterStack.lastElement()).getResponse();</span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">            return _filterStack.isEmpty() ? _response : ((FilterContext) _filterStack.lastElement()).getResponse();</span>
         }
 
+        /**
+         * Gets the request.
+         *
+         * @return the request
+         */
         HttpServletRequest getRequest() {
-<span class="fc bfc" id="L275" title="All 2 branches covered.">            return _filterStack.isEmpty() ? _request : ((FilterContext) _filterStack.lastElement()).getRequest();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">            return _filterStack.isEmpty() ? _request : ((FilterContext) _filterStack.lastElement()).getRequest();</span>
         }
 
+        /**
+         * Gets the filter.
+         *
+         * @return the filter
+         *
+         * @throws ServletException
+         *             the servlet exception
+         */
         public Filter getFilter() throws ServletException {
-<span class="pc bpc" id="L279" title="1 of 2 branches missed.">            if (!isFilterActive()) {</span>
-<span class="nc" id="L280">                throw new IllegalStateException(&quot;Current context is a servlet - may not request filter.&quot;);</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">            if (!isFilterActive()) {</span>
+<span class="nc" id="L382">                throw new IllegalStateException(&quot;Current context is a servlet - may not request filter.&quot;);</span>
             }
-<span class="fc" id="L282">            return _metaData.getFilters()[getFilterIndex()].getFilter();</span>
+<span class="fc" id="L384">            return _metaData.getFilters()[getFilterIndex()].getFilter();</span>
         }
 
+        /**
+         * Push filter.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         */
         public void pushFilter(ServletRequest request, ServletResponse response) {
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">            if (!isFilterActive()) {</span>
-<span class="nc" id="L287">                throw new IllegalStateException(&quot;Current context is a servlet - may not push filter.&quot;);</span>
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">            if (!isFilterActive()) {</span>
+<span class="nc" id="L397">                throw new IllegalStateException(&quot;Current context is a servlet - may not push filter.&quot;);</span>
             }
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">            if (!(request instanceof HttpServletRequest)) {</span>
-<span class="nc" id="L290">                throw new IllegalArgumentException(&quot;HttpUnit does not support non-HTTP request wrappers&quot;);</span>
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">            if (!(request instanceof HttpServletRequest)) {</span>
+<span class="nc" id="L400">                throw new IllegalArgumentException(&quot;HttpUnit does not support non-HTTP request wrappers&quot;);</span>
             }
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">            if (!(response instanceof HttpServletResponse)) {</span>
-<span class="nc" id="L293">                throw new IllegalArgumentException(&quot;HttpUnit does not support non-HTTP response wrappers&quot;);</span>
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">            if (!(response instanceof HttpServletResponse)) {</span>
+<span class="nc" id="L403">                throw new IllegalArgumentException(&quot;HttpUnit does not support non-HTTP response wrappers&quot;);</span>
             }
 
-<span class="fc" id="L296">            _filterStack.push(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));</span>
-<span class="fc" id="L297">        }</span>
+<span class="fc" id="L406">            _filterStack.push(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));</span>
+<span class="fc" id="L407">        }</span>
 
+        /**
+         * May pop filter.
+         *
+         * @return true, if successful
+         */
         public boolean mayPopFilter() {
-<span class="fc bfc" id="L300" title="All 2 branches covered.">            return getFilterIndex() &gt; 0;</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">            return getFilterIndex() &gt; 0;</span>
         }
 
+        /**
+         * Pop filter.
+         */
         public void popFilter() {
-<span class="fc" id="L304">            _filterStack.pop();</span>
-<span class="fc" id="L305">        }</span>
+<span class="fc" id="L422">            _filterStack.pop();</span>
+<span class="fc" id="L423">        }</span>
 
+        /**
+         * Gets the filter index.
+         *
+         * @return the filter index
+         */
         private int getFilterIndex() {
-<span class="fc" id="L308">            return _filterStack.size();</span>
+<span class="fc" id="L431">            return _filterStack.size();</span>
         }
     }
 
+    /**
+     * The Class FilterContext.
+     */
     static class FilterContext {
+
+        /** The request. */
         HttpServletRequest _request;
+
+        /** The response. */
         HttpServletResponse _response;
 
-<span class="fc" id="L316">        public FilterContext(HttpServletRequest request, HttpServletResponse response) {</span>
-<span class="fc" id="L317">            _request = request;</span>
-<span class="fc" id="L318">            _response = response;</span>
-<span class="fc" id="L319">        }</span>
+        /**
+         * Instantiates a new filter context.
+         *
+         * @param request
+         *            the request
+         * @param response
+         *            the response
+         */
+<span class="fc" id="L454">        public FilterContext(HttpServletRequest request, HttpServletResponse response) {</span>
+<span class="fc" id="L455">            _request = request;</span>
+<span class="fc" id="L456">            _response = response;</span>
+<span class="fc" id="L457">        }</span>
 
+        /**
+         * Gets the response.
+         *
+         * @return the response
+         */
         public HttpServletResponse getResponse() {
-<span class="fc" id="L322">            return _response;</span>
+<span class="fc" id="L465">            return _response;</span>
         }
 
+        /**
+         * Gets the request.
+         *
+         * @return the request
+         */
         public HttpServletRequest getRequest() {
-<span class="fc" id="L326">            return _request;</span>
+<span class="fc" id="L474">            return _request;</span>
         }
     }
 
+    /**
+     * Gets the context.
+     *
+     * @return the context
+     */
     private ExecutionContext getContext() {
-<span class="fc" id="L331">        return (ExecutionContext) _contextStack.lastElement();</span>
+<span class="fc" id="L484">        return (ExecutionContext) _contextStack.lastElement();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

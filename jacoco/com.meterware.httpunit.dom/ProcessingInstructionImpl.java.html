@@ -24,63 +24,100 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class ProcessingInstructionImpl.
+ */
 <span class="fc" id="L29">public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The target. */
     private String _target;
+
+    /** The data. */
     private String _data;
 
+    /**
+     * Creates the processing impl.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param target
+     *            the target
+     * @param data
+     *            the data
+     *
+     * @return the processing instruction
+     */
     public static ProcessingInstruction createProcessingImpl(DocumentImpl ownerDocument, String target, String data) {
-<span class="fc" id="L36">        ProcessingInstructionImpl instruction = new ProcessingInstructionImpl();</span>
-<span class="fc" id="L37">        instruction.initialize(ownerDocument, target, data);</span>
-<span class="fc" id="L38">        return instruction;</span>
+<span class="fc" id="L53">        ProcessingInstructionImpl instruction = new ProcessingInstructionImpl();</span>
+<span class="fc" id="L54">        instruction.initialize(ownerDocument, target, data);</span>
+<span class="fc" id="L55">        return instruction;</span>
     }
 
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param target
+     *            the target
+     * @param data
+     *            the data
+     */
     private void initialize(DocumentImpl ownerDocument, String target, String data) {
-<span class="fc" id="L42">        super.initialize(ownerDocument);</span>
-<span class="fc" id="L43">        _target = target;</span>
-<span class="fc" id="L44">        _data = data;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L69">        super.initialize(ownerDocument);</span>
+<span class="fc" id="L70">        _target = target;</span>
+<span class="fc" id="L71">        _data = data;</span>
+<span class="fc" id="L72">    }</span>
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param processingInstruction
+     *            the processing instruction
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, ProcessingInstruction processingInstruction) {
-<span class="fc" id="L48">        return createProcessingImpl(document, processingInstruction.getTarget(), processingInstruction.getData());</span>
+<span class="fc" id="L85">        return createProcessingImpl(document, processingInstruction.getTarget(), processingInstruction.getData());</span>
     }
 
     @Override
     public String getNodeName() {
-<span class="fc" id="L53">        return _target;</span>
+<span class="fc" id="L90">        return _target;</span>
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-<span class="fc" id="L58">        return _data;</span>
+<span class="fc" id="L95">        return _data;</span>
     }
 
     @Override
     public void setNodeValue(String string) throws DOMException {
-<span class="nc" id="L63">        setData(string);</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L100">        setData(string);</span>
+<span class="nc" id="L101">    }</span>
 
     @Override
     public short getNodeType() {
-<span class="fc" id="L68">        return PROCESSING_INSTRUCTION_NODE;</span>
+<span class="fc" id="L105">        return PROCESSING_INSTRUCTION_NODE;</span>
     }
 
     @Override
     public String getTarget() {
-<span class="fc" id="L73">        return _target;</span>
+<span class="fc" id="L110">        return _target;</span>
     }
 
     @Override
     public String getData() {
-<span class="fc" id="L78">        return _data;</span>
+<span class="fc" id="L115">        return _data;</span>
     }
 
     @Override
     public void setData(String string) throws DOMException {
-<span class="nc" id="L83">        _data = string;</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L120">        _data = string;</span>
+<span class="nc" id="L121">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

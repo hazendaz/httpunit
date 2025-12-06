@@ -27,87 +27,142 @@ import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class AttrImpl.
+ */
 <span class="fc" id="L32">public class AttrImpl extends NodeImpl implements Attr {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The name. */
     private String _name;
-<span class="fc" id="L36">    private String _value = &quot;&quot;;</span>
-<span class="fc" id="L37">    private boolean _specified = false;</span>
+
+    /** The value. */
+<span class="fc" id="L41">    private String _value = &quot;&quot;;</span>
+
+    /** The specified. */
+<span class="fc" id="L44">    private boolean _specified = false;</span>
+
+    /** The owner element. */
     private Element _ownerElement;
 
+    /**
+     * Creates the attribute.
+     *
+     * @param owner
+     *            the owner
+     * @param name
+     *            the name
+     *
+     * @return the attr impl
+     */
     static AttrImpl createAttribute(DocumentImpl owner, String name) {
-<span class="fc" id="L41">        AttrImpl attribute = new AttrImpl();</span>
-<span class="fc" id="L42">        attribute.initialize(owner, name);</span>
-<span class="fc" id="L43">        return attribute;</span>
+<span class="fc" id="L60">        AttrImpl attribute = new AttrImpl();</span>
+<span class="fc" id="L61">        attribute.initialize(owner, name);</span>
+<span class="fc" id="L62">        return attribute;</span>
     }
 
+    /**
+     * Creates the attribute.
+     *
+     * @param owner
+     *            the owner
+     * @param namespaceURI
+     *            the namespace URI
+     * @param qualifiedName
+     *            the qualified name
+     *
+     * @return the attr
+     */
     public static Attr createAttribute(DocumentImpl owner, String namespaceURI, String qualifiedName) {
-<span class="fc" id="L47">        AttrImpl attribute = new AttrImpl();</span>
-<span class="fc" id="L48">        attribute.initialize(owner, qualifiedName);</span>
-<span class="fc" id="L49">        return attribute;</span>
+<span class="fc" id="L78">        AttrImpl attribute = new AttrImpl();</span>
+<span class="fc" id="L79">        attribute.initialize(owner, qualifiedName);</span>
+<span class="fc" id="L80">        return attribute;</span>
     }
 
+    /**
+     * Initialize.
+     *
+     * @param owner
+     *            the owner
+     * @param name
+     *            the name
+     */
     protected void initialize(DocumentImpl owner, String name) {
-<span class="fc" id="L53">        super.initialize(owner);</span>
-<span class="fc" id="L54">        _name = name;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L92">        super.initialize(owner);</span>
+<span class="fc" id="L93">        _name = name;</span>
+<span class="fc" id="L94">    }</span>
 
     @Override
     public String getNodeName() {
-<span class="fc" id="L59">        return getName();</span>
+<span class="fc" id="L98">        return getName();</span>
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-<span class="fc" id="L64">        return getValue();</span>
+<span class="fc" id="L103">        return getValue();</span>
     }
 
     @Override
     public void setNodeValue(String nodeValue) throws DOMException {
-<span class="fc" id="L69">        setValue(nodeValue);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L108">        setValue(nodeValue);</span>
+<span class="fc" id="L109">    }</span>
 
     @Override
     public short getNodeType() {
-<span class="fc" id="L74">        return ATTRIBUTE_NODE;</span>
+<span class="fc" id="L113">        return ATTRIBUTE_NODE;</span>
     }
 
     @Override
     public String getName() {
-<span class="fc" id="L79">        return _name;</span>
+<span class="fc" id="L118">        return _name;</span>
     }
 
     @Override
     public boolean getSpecified() {
-<span class="fc" id="L84">        return _specified;</span>
+<span class="fc" id="L123">        return _specified;</span>
     }
 
     @Override
     public String getValue() {
-<span class="fc" id="L89">        return _value;</span>
+<span class="fc" id="L128">        return _value;</span>
     }
 
     @Override
     public void setValue(String value) throws DOMException {
-<span class="fc" id="L94">        _value = value;</span>
-<span class="fc" id="L95">        _specified = true;</span>
-<span class="fc" id="L96">    }</span>
+<span class="fc" id="L133">        _value = value;</span>
+<span class="fc" id="L134">        _specified = true;</span>
+<span class="fc" id="L135">    }</span>
 
     @Override
     public Element getOwnerElement() {
-<span class="fc" id="L100">        return _ownerElement;</span>
+<span class="fc" id="L139">        return _ownerElement;</span>
     }
 
+    /**
+     * Sets the owner element.
+     *
+     * @param ownerElement
+     *            the new owner element
+     */
     void setOwnerElement(Element ownerElement) {
-<span class="fc" id="L104">        _ownerElement = ownerElement;</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L149">        _ownerElement = ownerElement;</span>
+<span class="fc" id="L150">    }</span>
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param attr
+     *            the attr
+     *
+     * @return the node
+     */
     public static Node importNode(Document document, Attr attr) {
-<span class="fc" id="L108">        Attr attribute = document.createAttributeNS(attr.getNamespaceURI(), attr.getName());</span>
-<span class="fc" id="L109">        attribute.setValue(attr.getValue());</span>
-<span class="fc" id="L110">        return attribute;</span>
+<span class="fc" id="L163">        Attr attribute = document.createAttributeNS(attr.getNamespaceURI(), attr.getName());</span>
+<span class="fc" id="L164">        attribute.setValue(attr.getValue());</span>
+<span class="fc" id="L165">        return attribute;</span>
     }
 
     // ------------------------------------- DOM level 3 methods
@@ -115,12 +170,12 @@ import org.w3c.dom.TypeInfo;
 
     @Override
     public TypeInfo getSchemaTypeInfo() {
-<span class="nc" id="L118">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L173">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public boolean isId() {
-<span class="nc" id="L123">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L178">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -19,45 +19,60 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class FilterConfigImpl.
+ */
 class FilterConfigImpl implements FilterConfig {
 
+    /** The name. */
     private String _name;
+
+    /** The servlet context. */
     private ServletContext _servletContext;
+
+    /** The init params. */
     private Hashtable _initParams;
 
-<span class="fc" id="L37">    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {</span>
-<span class="fc" id="L38">        _name = name;</span>
-<span class="fc" id="L39">        _servletContext = servletContext;</span>
-<span class="fc" id="L40">        _initParams = initParams;</span>
-<span class="fc" id="L41">    }</span>
+    /**
+     * Instantiates a new filter config impl.
+     *
+     * @param name
+     *            the name
+     * @param servletContext
+     *            the servlet context
+     * @param initParams
+     *            the init params
+     */
+<span class="fc" id="L52">    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {</span>
+<span class="fc" id="L53">        _name = name;</span>
+<span class="fc" id="L54">        _servletContext = servletContext;</span>
+<span class="fc" id="L55">        _initParams = initParams;</span>
+<span class="fc" id="L56">    }</span>
 
     @Override
     public String getFilterName() {
-<span class="fc" id="L45">        return _name;</span>
+<span class="fc" id="L60">        return _name;</span>
     }
 
     @Override
     public ServletContext getServletContext() {
-<span class="fc" id="L50">        return _servletContext;</span>
+<span class="fc" id="L65">        return _servletContext;</span>
     }
 
     @Override
     public String getInitParameter(String s) {
-<span class="fc" id="L55">        return (String) _initParams.get(s);</span>
+<span class="fc" id="L70">        return (String) _initParams.get(s);</span>
     }
 
     @Override
     public Enumeration getInitParameterNames() {
-<span class="fc" id="L60">        return _initParams.keys();</span>
+<span class="fc" id="L75">        return _initParams.keys();</span>
     }
 
 }

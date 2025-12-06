@@ -21,13 +21,13 @@ package com.meterware.httpunit;
 
 /**
  * A class which represents the properties of a web client.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class ClientProperties {
 
     /**
      * Returns the current defaults for newly created web clients.
+     *
+     * @return the default properties
      */
     public static ClientProperties getDefaultProperties() {
 <span class="fc" id="L33">        return _defaultProperties;</span>
@@ -35,192 +35,314 @@ public class ClientProperties {
 
     /**
      * Specifies the ID information for a client.
+     *
+     * @param applicationName
+     *            the application name
+     * @param applicationCodeName
+     *            the application code name
+     * @param applicationVersion
+     *            the application version
      */
     public void setApplicationID(String applicationName, String applicationCodeName, String applicationVersion) {
-<span class="fc" id="L40">        _applicationCodeName = applicationCodeName;</span>
-<span class="fc" id="L41">        _applicationName = applicationName;</span>
-<span class="fc" id="L42">        _applicationVersion = applicationVersion;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L47">        _applicationCodeName = applicationCodeName;</span>
+<span class="fc" id="L48">        _applicationName = applicationName;</span>
+<span class="fc" id="L49">        _applicationVersion = applicationVersion;</span>
+<span class="fc" id="L50">    }</span>
 
+    /**
+     * Gets the application code name.
+     *
+     * @return the application code name
+     */
     public String getApplicationCodeName() {
-<span class="fc" id="L46">        return _applicationCodeName;</span>
+<span class="fc" id="L58">        return _applicationCodeName;</span>
     }
 
+    /**
+     * Sets the application code name.
+     *
+     * @param applicationCodeName
+     *            the new application code name
+     */
     public void setApplicationCodeName(String applicationCodeName) {
-<span class="nc" id="L50">        _applicationCodeName = applicationCodeName;</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L68">        _applicationCodeName = applicationCodeName;</span>
+<span class="nc" id="L69">    }</span>
 
+    /**
+     * Gets the application name.
+     *
+     * @return the application name
+     */
     public String getApplicationName() {
-<span class="fc" id="L54">        return _applicationName;</span>
+<span class="fc" id="L77">        return _applicationName;</span>
     }
 
+    /**
+     * Sets the application name.
+     *
+     * @param applicationName
+     *            the new application name
+     */
     public void setApplicationName(String applicationName) {
-<span class="nc" id="L58">        _applicationName = applicationName;</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L87">        _applicationName = applicationName;</span>
+<span class="nc" id="L88">    }</span>
 
+    /**
+     * Gets the application version.
+     *
+     * @return the application version
+     */
     public String getApplicationVersion() {
-<span class="fc" id="L62">        return _applicationVersion;</span>
+<span class="fc" id="L96">        return _applicationVersion;</span>
     }
 
+    /**
+     * Sets the application version.
+     *
+     * @param applicationVersion
+     *            the new application version
+     */
     public void setApplicationVersion(String applicationVersion) {
-<span class="nc" id="L66">        _applicationVersion = applicationVersion;</span>
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L106">        _applicationVersion = applicationVersion;</span>
+<span class="nc" id="L107">    }</span>
 
     /**
      * Returns the user agent identification. Unless this has been set explicitly, it will default to the application
      * code name followed by a slash and the application version.
+     *
+     * @return the user agent
      */
     public String getUserAgent() {
-<span class="fc bfc" id="L74" title="All 2 branches covered.">        return _userAgent != null ? _userAgent : _applicationCodeName + '/' + _applicationVersion;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        return _userAgent != null ? _userAgent : _applicationCodeName + '/' + _applicationVersion;</span>
     }
 
+    /**
+     * Sets the user agent.
+     *
+     * @param userAgent
+     *            the new user agent
+     */
     public void setUserAgent(String userAgent) {
-<span class="fc" id="L78">        _userAgent = userAgent;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L126">        _userAgent = userAgent;</span>
+<span class="fc" id="L127">    }</span>
 
+    /**
+     * Gets the platform.
+     *
+     * @return the platform
+     */
     public String getPlatform() {
-<span class="fc" id="L82">        return _platform;</span>
+<span class="fc" id="L135">        return _platform;</span>
     }
 
+    /**
+     * Sets the platform.
+     *
+     * @param platform
+     *            the new platform
+     */
     public void setPlatform(String platform) {
-<span class="fc" id="L86">        _platform = platform;</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L145">        _platform = platform;</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * A shortcut for setting both availableScreenWidth and availableScreenHeight at one time.
+     *
+     * @param width
+     *            the width
+     * @param height
+     *            the height
      */
     public void setAvailableScreenSize(int width, int height) {
-<span class="fc" id="L93">        _availWidth = width;</span>
-<span class="fc" id="L94">        _availHeight = height;</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L157">        _availWidth = width;</span>
+<span class="fc" id="L158">        _availHeight = height;</span>
+<span class="fc" id="L159">    }</span>
 
+    /**
+     * Gets the available screen width.
+     *
+     * @return the available screen width
+     */
     public int getAvailableScreenWidth() {
-<span class="fc" id="L98">        return _availWidth;</span>
+<span class="fc" id="L167">        return _availWidth;</span>
     }
 
+    /**
+     * Sets the available screen width.
+     *
+     * @param availWidth
+     *            the new available screen width
+     */
     public void setAvailableScreenWidth(int availWidth) {
-<span class="nc" id="L102">        _availWidth = availWidth;</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L177">        _availWidth = availWidth;</span>
+<span class="nc" id="L178">    }</span>
 
+    /**
+     * Gets the avail height.
+     *
+     * @return the avail height
+     */
     public int getAvailHeight() {
-<span class="fc" id="L106">        return _availHeight;</span>
+<span class="fc" id="L186">        return _availHeight;</span>
     }
 
+    /**
+     * Sets the avail height.
+     *
+     * @param availHeight
+     *            the new avail height
+     */
     public void setAvailHeight(int availHeight) {
-<span class="nc" id="L110">        _availHeight = availHeight;</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L196">        _availHeight = availHeight;</span>
+<span class="nc" id="L197">    }</span>
 
     /**
      * Returns true if the client should accept and transmit cookies. The default is to accept them.
+     *
+     * @return true, if is accept cookies
      */
     public boolean isAcceptCookies() {
-<span class="fc" id="L117">        return _acceptCookies;</span>
+<span class="fc" id="L205">        return _acceptCookies;</span>
     }
 
     /**
      * Specifies whether the client should accept and send cookies.
+     *
+     * @param acceptCookies
+     *            the new accept cookies
      */
     public void setAcceptCookies(boolean acceptCookies) {
-<span class="fc" id="L124">        _acceptCookies = acceptCookies;</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L215">        _acceptCookies = acceptCookies;</span>
+<span class="fc" id="L216">    }</span>
 
     /**
      * Returns true if the client will accept GZIP encoding of responses. The default is to accept GZIP encoding.
-     **/
+     *
+     * @return true, if is accept gzip
+     */
     public boolean isAcceptGzip() {
-<span class="fc" id="L131">        return _acceptGzip;</span>
+<span class="fc" id="L224">        return _acceptGzip;</span>
     }
 
     /**
      * Specifies whether the client will accept GZIP encoded responses. The default is true.
+     *
+     * @param acceptGzip
+     *            the new accept gzip
      */
     public void setAcceptGzip(boolean acceptGzip) {
-<span class="fc" id="L138">        _acceptGzip = acceptGzip;</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L234">        _acceptGzip = acceptGzip;</span>
+<span class="fc" id="L235">    }</span>
 
     /**
-     * get Maximum number of redirect requests
+     * get Maximum number of redirect requests.
      *
      * @return it
      */
     public int getMaxRedirects() {
-<span class="fc" id="L147">        return _maxRedirects;</span>
+<span class="fc" id="L243">        return _maxRedirects;</span>
     }
 
     /**
-     * set the maximum number of redirects
+     * set the maximum number of redirects.
      *
      * @param maxRedirects
+     *            the new max redirects
      */
     public void setMaxRedirects(int maxRedirects) {
-<span class="fc" id="L156">        _maxRedirects = maxRedirects;</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L253">        _maxRedirects = maxRedirects;</span>
+<span class="fc" id="L254">    }</span>
 
     /**
      * Returns true if the client should automatically follow page redirect requests (status 3xx). By default, this is
      * true.
-     **/
+     *
+     * @return true, if is auto redirect
+     */
     public boolean isAutoRedirect() {
-<span class="fc" id="L164">        return _autoRedirect;</span>
+<span class="fc" id="L263">        return _autoRedirect;</span>
     }
 
     /**
      * Determines whether the client should automatically follow page redirect requests (status 3xx). By default, this
      * is true in order to simulate normal browser operation.
-     **/
+     *
+     * @param autoRedirect
+     *            the new auto redirect
+     */
     public void setAutoRedirect(boolean autoRedirect) {
-<span class="fc" id="L172">        _autoRedirect = autoRedirect;</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L274">        _autoRedirect = autoRedirect;</span>
+<span class="fc" id="L275">    }</span>
 
     /**
      * Returns true if the client should automatically follow page refresh requests. By default, this is false, so that
      * programs can verify the redirect page presented to users before the browser switches to the new page.
-     **/
+     *
+     * @return true, if is auto refresh
+     */
     public boolean isAutoRefresh() {
-<span class="fc" id="L180">        return _autoRefresh;</span>
+<span class="fc" id="L284">        return _autoRefresh;</span>
     }
 
     /**
      * Specifies whether the client should automatically follow page refresh requests. By default, this is false, so
      * that programs can verify the redirect page presented to users before the browser switches to the new page.
      * Setting this to true can cause an infinite loop on pages that refresh themselves.
-     **/
+     *
+     * @param autoRefresh
+     *            the new auto refresh
+     */
     public void setAutoRefresh(boolean autoRefresh) {
-<span class="fc" id="L189">        _autoRefresh = autoRefresh;</span>
-<span class="fc" id="L190">    }</span>
-
-    public boolean isIframeSupported() {
-<span class="fc" id="L193">        return _iframeSupported;</span>
-    }
-
-    public void setIframeSupported(boolean iframeSupported) {
-<span class="nc" id="L197">        _iframeSupported = iframeSupported;</span>
-<span class="nc" id="L198">    }</span>
+<span class="fc" id="L296">        _autoRefresh = autoRefresh;</span>
+<span class="fc" id="L297">    }</span>
 
     /**
-     * @deprecated since 1.8 see BR 2595566 - name of getter is a typo
+     * Checks if is iframe supported.
+     *
+     * @return true, if is iframe supported
+     */
+    public boolean isIframeSupported() {
+<span class="fc" id="L305">        return _iframeSupported;</span>
+    }
+
+    /**
+     * Sets the iframe supported.
+     *
+     * @param iframeSupported
+     *            the new iframe supported
+     */
+    public void setIframeSupported(boolean iframeSupported) {
+<span class="nc" id="L315">        _iframeSupported = iframeSupported;</span>
+<span class="nc" id="L316">    }</span>
+
+    /**
+     * Gets the override context type.
+     *
+     * @return the overriding content type
      *
      * @see getOverrideContentType
      *
-     * @return the overriding content type
+     * @deprecated since 1.8 see BR 2595566 - name of getter is a typo
      */
     @Deprecated
     public String getOverrideContextType() {
-<span class="nc" id="L209">        return getOverrideContentType();</span>
+<span class="nc" id="L329">        return getOverrideContentType();</span>
     }
 
     /**
-     * @deprecated since 1.8 see BR 2595566 - name of setter is a typo
+     * Sets the override context type.
      *
      * @param overrideContentType
      *            the content type
      *
      * @see setOverrideContentType
+     *
+     * @deprecated since 1.8 see BR 2595566 - name of setter is a typo
      */
     @Deprecated
     public void setOverrideContextType(String overrideContentType) {
-<span class="fc" id="L222">        setOverrideContentType(overrideContentType);</span>
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L344">        setOverrideContentType(overrideContentType);</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Returns the content type (if any) to use instead of the one specified by the server. Defaults to null.
@@ -228,7 +350,7 @@ public class ClientProperties {
      * @return the overriding content type, or null if none is specified.
      */
     public String getOverrideContentType() {
-<span class="fc" id="L231">        return _overrideContentType;</span>
+<span class="fc" id="L353">        return _overrideContentType;</span>
     }
 
     /**
@@ -239,8 +361,8 @@ public class ClientProperties {
      *            the new override to apply to context types.
      */
     public void setOverrideContentType(String overrideContentType) {
-<span class="fc" id="L242">        _overrideContentType = overrideContentType;</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L364">        _overrideContentType = overrideContentType;</span>
+<span class="fc" id="L365">    }</span>
 
     /**
      * Specifies a listener for DNS requests from the client.
@@ -249,8 +371,8 @@ public class ClientProperties {
      *            the new listener.
      */
     public void setDnsListener(DNSListener dnsListener) {
-<span class="nc" id="L252">        _dnsListener = dnsListener;</span>
-<span class="nc" id="L253">    }</span>
+<span class="nc" id="L374">        _dnsListener = dnsListener;</span>
+<span class="nc" id="L375">    }</span>
 
     /**
      * Returns the listener for DNS requests to be used by the client.
@@ -258,79 +380,116 @@ public class ClientProperties {
      * @return the currently specified DNS listener, or null if none is specified.
      */
     DNSListener getDnsListener() {
-<span class="fc" id="L261">        return _dnsListener;</span>
+<span class="fc" id="L383">        return _dnsListener;</span>
     }
 
     /**
+     * Checks if is send referer.
+     *
      * @return the whether Referer information should be stripped from the header
      */
     public boolean isSendReferer() {
-<span class="fc" id="L268">        return _sendReferer;</span>
+<span class="fc" id="L392">        return _sendReferer;</span>
     }
 
     /**
-     * set whether Referer information should be stripped
+     * set whether Referer information should be stripped.
      *
      * @param referer
      *            the _sendReferer to set
      */
     public void setSendReferer(boolean referer) {
-<span class="fc" id="L278">        _sendReferer = referer;</span>
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L402">        _sendReferer = referer;</span>
+<span class="fc" id="L403">    }</span>
 
+    /**
+     * Clone properties.
+     *
+     * @return the client properties
+     */
     ClientProperties cloneProperties() {
-<span class="fc" id="L282">        return new ClientProperties(this);</span>
+<span class="fc" id="L411">        return new ClientProperties(this);</span>
     }
 
-<span class="fc" id="L285">    private String _applicationCodeName = &quot;httpunit&quot;;</span>
-<span class="fc" id="L286">    private String _applicationName = &quot;HttpUnit&quot;;</span>
-<span class="fc" id="L287">    private String _applicationVersion = &quot;1.5&quot;;</span>
+    /** The application code name. */
+<span class="fc" id="L415">    private String _applicationCodeName = &quot;httpunit&quot;;</span>
+
+    /** The application name. */
+<span class="fc" id="L418">    private String _applicationName = &quot;HttpUnit&quot;;</span>
+
+    /** The application version. */
+<span class="fc" id="L421">    private String _applicationVersion = &quot;1.5&quot;;</span>
+
+    /** The user agent. */
     private String _userAgent;
-<span class="fc" id="L289">    private String _platform = &quot;Java&quot;;</span>
-<span class="fc" id="L290">    private String _overrideContentType = null;</span>
-<span class="fc" id="L291">    private int _availWidth = 800;</span>
-<span class="fc" id="L292">    private int _availHeight = 600;</span>
-<span class="fc" id="L293">    private int _maxRedirects = 5;</span>
 
-<span class="fc" id="L295">    private boolean _iframeSupported = true;</span>
-<span class="fc" id="L296">    private boolean _acceptCookies = true;</span>
-<span class="fc" id="L297">    private boolean _acceptGzip = true;</span>
-<span class="fc" id="L298">    private boolean _autoRedirect = true;</span>
-<span class="fc" id="L299">    private boolean _autoRefresh = false;</span>
+    /** The platform. */
+<span class="fc" id="L427">    private String _platform = &quot;Java&quot;;</span>
 
+    /** The override content type. */
+<span class="fc" id="L430">    private String _overrideContentType = null;</span>
+
+    /** The avail width. */
+<span class="fc" id="L433">    private int _availWidth = 800;</span>
+
+    /** The avail height. */
+<span class="fc" id="L436">    private int _availHeight = 600;</span>
+
+    /** The max redirects. */
+<span class="fc" id="L439">    private int _maxRedirects = 5;</span>
+
+    /** The iframe supported. */
+<span class="fc" id="L442">    private boolean _iframeSupported = true;</span>
+
+    /** The accept cookies. */
+<span class="fc" id="L445">    private boolean _acceptCookies = true;</span>
+
+    /** The accept gzip. */
+<span class="fc" id="L448">    private boolean _acceptGzip = true;</span>
+
+    /** The auto redirect. */
+<span class="fc" id="L451">    private boolean _autoRedirect = true;</span>
+
+    /** The auto refresh. */
+<span class="fc" id="L454">    private boolean _autoRefresh = false;</span>
+
+    /** The dns listener. */
     private DNSListener _dnsListener;
+
+    /** The send referer. */
     private boolean _sendReferer;
 
-<span class="fc" id="L304">    private static ClientProperties _defaultProperties = new ClientProperties();</span>
+    /** The default properties. */
+<span class="fc" id="L463">    private static ClientProperties _defaultProperties = new ClientProperties();</span>
 
     /**
-     * default Constructor
+     * default Constructor.
      */
-<span class="fc" id="L309">    private ClientProperties() {</span>
-<span class="fc" id="L310">        _sendReferer = true;</span>
-<span class="fc" id="L311">    }</span>
+<span class="fc" id="L468">    private ClientProperties() {</span>
+<span class="fc" id="L469">        _sendReferer = true;</span>
+<span class="fc" id="L470">    }</span>
 
     /**
-     * copy constructor
+     * copy constructor.
      *
      * @param source
      *            - the ClientProperties to copy from
      */
-<span class="fc" id="L319">    private ClientProperties(ClientProperties source) {</span>
-<span class="fc" id="L320">        _applicationCodeName = source._applicationCodeName;</span>
-<span class="fc" id="L321">        _applicationName = source._applicationName;</span>
-<span class="fc" id="L322">        _applicationVersion = source._applicationVersion;</span>
-<span class="fc" id="L323">        _userAgent = source._userAgent;</span>
-<span class="fc" id="L324">        _platform = source._platform;</span>
-<span class="fc" id="L325">        _overrideContentType = source._overrideContentType;</span>
-<span class="fc" id="L326">        _iframeSupported = source._iframeSupported;</span>
-<span class="fc" id="L327">        _acceptCookies = source._acceptCookies;</span>
-<span class="fc" id="L328">        _acceptGzip = source._acceptGzip;</span>
-<span class="fc" id="L329">        _autoRedirect = source._autoRedirect;</span>
-<span class="fc" id="L330">        _autoRefresh = source._autoRefresh;</span>
-<span class="fc" id="L331">        _sendReferer = source._sendReferer;</span>
-<span class="fc" id="L332">        _maxRedirects = source._maxRedirects;</span>
-<span class="fc" id="L333">    }</span>
+<span class="fc" id="L478">    private ClientProperties(ClientProperties source) {</span>
+<span class="fc" id="L479">        _applicationCodeName = source._applicationCodeName;</span>
+<span class="fc" id="L480">        _applicationName = source._applicationName;</span>
+<span class="fc" id="L481">        _applicationVersion = source._applicationVersion;</span>
+<span class="fc" id="L482">        _userAgent = source._userAgent;</span>
+<span class="fc" id="L483">        _platform = source._platform;</span>
+<span class="fc" id="L484">        _overrideContentType = source._overrideContentType;</span>
+<span class="fc" id="L485">        _iframeSupported = source._iframeSupported;</span>
+<span class="fc" id="L486">        _acceptCookies = source._acceptCookies;</span>
+<span class="fc" id="L487">        _acceptGzip = source._acceptGzip;</span>
+<span class="fc" id="L488">        _autoRedirect = source._autoRedirect;</span>
+<span class="fc" id="L489">        _autoRefresh = source._autoRefresh;</span>
+<span class="fc" id="L490">        _sendReferer = source._sendReferer;</span>
+<span class="fc" id="L491">        _maxRedirects = source._maxRedirects;</span>
+<span class="fc" id="L492">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -33,9 +33,6 @@ import org.xml.sax.SAXException;
 /**
  * This class represents a link in an HTML page. Users of this class may examine the structure of the link (as a DOM),
  * or create a {@link WebRequest} to simulate clicking on the link.
- *
- * @author Russell Gold russgold@httpunit.org
- * @author Benoit Xhenseval benoit.xhenseval@avondi.com
  **/
 public class WebLink extends FixedURLWebRequestSource {
 
@@ -56,86 +53,106 @@ public class WebLink extends FixedURLWebRequestSource {
 
     /**
      * Returns the URL referenced by this link. This may be a relative URL. It will not include any fragment identifier.
-     **/
+     *
+     * @return the URL string
+     */
     public String getURLString() {
-<span class="fc" id="L61">        return getRelativeURL();</span>
+<span class="fc" id="L60">        return getRelativeURL();</span>
     }
 
     /**
      * Returns the text value of this link.
-     *
-     * @since 1.6
      **/
     @Override
     public String getText() {
-<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (getElement().getNodeName().equalsIgnoreCase(&quot;area&quot;)) {</span>
-<span class="fc" id="L72">            return getAttribute(&quot;alt&quot;);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (getElement().getNodeName().equalsIgnoreCase(&quot;area&quot;)) {</span>
+<span class="fc" id="L69">            return getAttribute(&quot;alt&quot;);</span>
         }
-<span class="fc" id="L74">        return super.getText();</span>
+<span class="fc" id="L71">        return super.getText();</span>
     }
 
     /**
      * Returns the text value of this link.
      *
+     * @return the string
+     *
      * @deprecated as of 1.6, use #getText instead
-     **/
+     */
     @Deprecated
     public String asText() {
-<span class="nc" id="L84">        return getText();</span>
+<span class="nc" id="L83">        return getText();</span>
     }
 
     /**
      * Submits a request as though the user had clicked on this link. Will also fire the 'onClick', 'onMouseDown' and
      * 'onMouseUp' event if defined. Returns the updated contents of the frame containing the link. Note that if the
      * click updates a different frame, that frame will not be returned by this method.
-     **/
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse click() throws IOException, SAXException {
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (handleEvent(&quot;onclick&quot;)) {</span>
-<span class="fc" id="L94">            ((HTMLElementImpl) getNode()).doClickAction();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (handleEvent(&quot;onclick&quot;)) {</span>
+<span class="fc" id="L100">            ((HTMLElementImpl) getNode()).doClickAction();</span>
         }
-<span class="fc" id="L96">        return getCurrentFrameContents();</span>
+<span class="fc" id="L102">        return getCurrentFrameContents();</span>
     }
 
     /**
      * Simulates moving the mouse over the link. Will fire the 'onMouseOver' event if defined.
      **/
     public void mouseOver() {
-<span class="fc" id="L103">        handleEvent(&quot;onmouseover&quot;);</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L109">        handleEvent(&quot;onmouseover&quot;);</span>
+<span class="fc" id="L110">    }</span>
 
+    /**
+     * The Class Scriptable.
+     */
     public class Scriptable extends HTMLElementScriptable implements NamedDelegate {
 
-<span class="fc" id="L108">        public Scriptable() {</span>
-<span class="fc" id="L109">            super(WebLink.this);</span>
-<span class="fc" id="L110">        }</span>
+        /**
+         * Instantiates a new scriptable.
+         */
+<span class="fc" id="L120">        public Scriptable() {</span>
+<span class="fc" id="L121">            super(WebLink.this);</span>
+<span class="fc" id="L122">        }</span>
 
         @Override
         public String getName() {
-<span class="fc bfc" id="L114" title="All 2 branches covered.">            return WebLink.this.getID().length() != 0 ? WebLink.this.getID() : WebLink.this.getName();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            return WebLink.this.getID().length() != 0 ? WebLink.this.getID() : WebLink.this.getName();</span>
         }
 
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;href&quot;)) {</span>
-<span class="fc" id="L120">                return getReference().toExternalForm();</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;href&quot;)) {</span>
+<span class="fc" id="L132">                return getReference().toExternalForm();</span>
             }
-<span class="fc" id="L122">            return super.get(propertyName);</span>
+<span class="fc" id="L134">            return super.get(propertyName);</span>
         }
 
         @Override
         public void set(String propertyName, Object value) {
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;href&quot;)) {</span>
-<span class="fc" id="L128">                setDestination((String) value);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;href&quot;)) {</span>
+<span class="fc" id="L140">                setDestination((String) value);</span>
             } else {
-<span class="nc" id="L130">                super.set(propertyName, value);</span>
+<span class="nc" id="L142">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L132">        }</span>
+<span class="fc" id="L144">        }</span>
 
+        /**
+         * Gets the reference.
+         *
+         * @return the reference
+         */
         private URL getReference() {
             try {
-<span class="fc" id="L136">                return getRequest().getURL();</span>
-<span class="nc" id="L137">            } catch (MalformedURLException e) {</span>
-<span class="nc" id="L138">                return WebLink.this.getBaseURL();</span>
+<span class="fc" id="L153">                return getRequest().getURL();</span>
+<span class="nc" id="L154">            } catch (MalformedURLException e) {</span>
+<span class="nc" id="L155">                return WebLink.this.getBaseURL();</span>
             }
         }
     }
@@ -145,7 +162,7 @@ public class WebLink extends FixedURLWebRequestSource {
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L148">        return new Scriptable();</span>
+<span class="fc" id="L165">        return new Scriptable();</span>
     }
 
     // --------------------------------------------------- package members
@@ -153,28 +170,41 @@ public class WebLink extends FixedURLWebRequestSource {
 
     /**
      * Contructs a web link given the URL of its source page and the DOM extracted from that page.
-     **/
+     *
+     * @param response
+     *            the response
+     * @param baseURL
+     *            the base URL
+     * @param node
+     *            the node
+     * @param sourceFrame
+     *            the source frame
+     * @param defaultTarget
+     *            the default target
+     * @param characterSet
+     *            the character set
+     */
     WebLink(WebResponse response, URL baseURL, Node node, FrameSelector sourceFrame, String defaultTarget,
             String characterSet) {
-<span class="fc" id="L159">        super(response, node, baseURL, &quot;href&quot;, sourceFrame, defaultTarget, characterSet);</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L189">        super(response, node, baseURL, &quot;href&quot;, sourceFrame, defaultTarget, characterSet);</span>
+<span class="fc" id="L190">    }</span>
 
     static {
-<span class="fc" id="L163">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),</span>
+<span class="fc" id="L193">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),</span>
                 (String) criteria);
 
-<span class="pc" id="L166">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(),</span>
+<span class="pc" id="L196">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(),</span>
                 (String) criteria);
 
-<span class="fc" id="L169">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(),</span>
+<span class="fc" id="L199">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(),</span>
                 (String) criteria);
 
-<span class="pc" id="L172">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
+<span class="pc" id="L202">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
 
-<span class="fc" id="L174">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(),</span>
+<span class="fc" id="L204">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(),</span>
                 (String) criteria);
 
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L207">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

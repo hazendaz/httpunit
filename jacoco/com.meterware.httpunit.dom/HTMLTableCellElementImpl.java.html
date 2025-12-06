@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTableCellElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTableCellElementImpl.java</span></div><h1>HTMLTableCellElementImpl.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2024 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -23,16 +23,17 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLTableCellElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLTableCellElementImpl.
  */
 <span class="fc" id="L28">public class HTMLTableCellElementImpl extends HTMLElementImpl</span>
         implements HTMLTableCellElement, HTMLContainerElement, AttributeNameAdjusted {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L35">        return new HTMLTableCellElementImpl();</span>
+<span class="fc" id="L36">        return new HTMLTableCellElementImpl();</span>
     }
 
     // ------------------------------------------ HTMLContainerElement methods
@@ -40,192 +41,357 @@ import org.w3c.dom.html.HTMLTableCellElement;
 
     @Override
     public HTMLCollection getLinks() {
-<span class="fc" id="L43">        return getHtmlDocument().getContainerDelegate().getLinks(this);</span>
+<span class="fc" id="L44">        return getHtmlDocument().getContainerDelegate().getLinks(this);</span>
     }
 
     @Override
     public HTMLCollection getImages() {
-<span class="nc" id="L48">        return getHtmlDocument().getContainerDelegate().getImages(this);</span>
+<span class="nc" id="L49">        return getHtmlDocument().getContainerDelegate().getImages(this);</span>
     }
 
     @Override
     public HTMLCollection getApplets() {
-<span class="nc" id="L53">        return getHtmlDocument().getContainerDelegate().getApplets(this);</span>
+<span class="nc" id="L54">        return getHtmlDocument().getContainerDelegate().getApplets(this);</span>
     }
 
     @Override
     public HTMLCollection getForms() {
-<span class="nc" id="L58">        return getHtmlDocument().getContainerDelegate().getForms(this);</span>
+<span class="nc" id="L59">        return getHtmlDocument().getContainerDelegate().getForms(this);</span>
     }
 
     @Override
     public HTMLCollection getAnchors() {
-<span class="nc" id="L63">        return getHtmlDocument().getContainerDelegate().getAnchors(this);</span>
+<span class="nc" id="L64">        return getHtmlDocument().getContainerDelegate().getAnchors(this);</span>
     }
 
     // -------------------------------------------- HTMLTableCellElement methods
     // --------------------------------------------
 
+    /**
+     * Gets the abbr.
+     *
+     * @return the abbr
+     */
     @Override
     public String getAbbr() {
-<span class="fc" id="L71">        return getAttributeWithNoDefault(&quot;abbr&quot;);</span>
+<span class="fc" id="L77">        return getAttributeWithNoDefault(&quot;abbr&quot;);</span>
     }
 
+    /**
+     * Sets the abbr.
+     *
+     * @param abbr
+     *            the new abbr
+     */
     @Override
     public void setAbbr(String abbr) {
-<span class="fc" id="L76">        setAttribute(&quot;abbr&quot;, abbr);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L88">        setAttribute(&quot;abbr&quot;, abbr);</span>
+<span class="fc" id="L89">    }</span>
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L81">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L98">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L86">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L109">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L110">    }</span>
 
+    /**
+     * Gets the axis.
+     *
+     * @return the axis
+     */
     @Override
     public String getAxis() {
-<span class="fc" id="L91">        return getAttributeWithNoDefault(&quot;axis&quot;);</span>
+<span class="fc" id="L119">        return getAttributeWithNoDefault(&quot;axis&quot;);</span>
     }
 
+    /**
+     * Sets the axis.
+     *
+     * @param axis
+     *            the new axis
+     */
     @Override
     public void setAxis(String axis) {
-<span class="fc" id="L96">        setAttribute(&quot;axis&quot;, axis);</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L130">        setAttribute(&quot;axis&quot;, axis);</span>
+<span class="fc" id="L131">    }</span>
 
+    /**
+     * Gets the bg color.
+     *
+     * @return the bg color
+     */
     @Override
     public String getBgColor() {
-<span class="fc" id="L101">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+<span class="fc" id="L140">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
     }
 
+    /**
+     * Sets the bg color.
+     *
+     * @param bgColor
+     *            the new bg color
+     */
     @Override
     public void setBgColor(String bgColor) {
-<span class="fc" id="L106">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
-<span class="fc" id="L107">    }</span>
-
-    @Override
-    public int getCellIndex() {
-<span class="nc" id="L111">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
-    }
-
-    @Override
-    public String getCh() {
-<span class="fc" id="L116">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
-    }
-
-    @Override
-    public void setCh(String ch) {
-<span class="fc" id="L121">        setAttribute(&quot;char&quot;, ch);</span>
-<span class="fc" id="L122">    }</span>
-
-    @Override
-    public String getChOff() {
-<span class="fc" id="L126">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
-    }
-
-    @Override
-    public void setChOff(String chOff) {
-<span class="fc" id="L131">        setAttribute(&quot;charoff&quot;, chOff);</span>
-<span class="fc" id="L132">    }</span>
-
-    @Override
-    public int getColSpan() {
-<span class="fc" id="L136">        return getIntegerAttribute(&quot;colspan&quot;, 1);</span>
-    }
-
-    @Override
-    public void setColSpan(int colSpan) {
-<span class="fc" id="L141">        setAttribute(&quot;colspan&quot;, colSpan);</span>
-<span class="fc" id="L142">    }</span>
-
-    @Override
-    public String getHeaders() {
-<span class="fc" id="L146">        return getAttributeWithNoDefault(&quot;headers&quot;);</span>
-    }
-
-    @Override
-    public void setHeaders(String headers) {
-<span class="fc" id="L151">        setAttribute(&quot;headers&quot;, headers);</span>
+<span class="fc" id="L151">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
 <span class="fc" id="L152">    }</span>
 
+    /**
+     * Gets the cell index.
+     *
+     * @return the cell index
+     */
+    @Override
+    public int getCellIndex() {
+<span class="nc" id="L161">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+    }
+
+    /**
+     * Gets the ch.
+     *
+     * @return the ch
+     */
+    @Override
+    public String getCh() {
+<span class="fc" id="L171">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
+    }
+
+    /**
+     * Sets the ch.
+     *
+     * @param ch
+     *            the new ch
+     */
+    @Override
+    public void setCh(String ch) {
+<span class="fc" id="L182">        setAttribute(&quot;char&quot;, ch);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Gets the ch off.
+     *
+     * @return the ch off
+     */
+    @Override
+    public String getChOff() {
+<span class="fc" id="L192">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
+    }
+
+    /**
+     * Sets the ch off.
+     *
+     * @param chOff
+     *            the new ch off
+     */
+    @Override
+    public void setChOff(String chOff) {
+<span class="fc" id="L203">        setAttribute(&quot;charoff&quot;, chOff);</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * Gets the col span.
+     *
+     * @return the col span
+     */
+    @Override
+    public int getColSpan() {
+<span class="fc" id="L213">        return getIntegerAttribute(&quot;colspan&quot;, 1);</span>
+    }
+
+    /**
+     * Sets the col span.
+     *
+     * @param colSpan
+     *            the new col span
+     */
+    @Override
+    public void setColSpan(int colSpan) {
+<span class="fc" id="L224">        setAttribute(&quot;colspan&quot;, colSpan);</span>
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Gets the headers.
+     *
+     * @return the headers
+     */
+    @Override
+    public String getHeaders() {
+<span class="fc" id="L234">        return getAttributeWithNoDefault(&quot;headers&quot;);</span>
+    }
+
+    /**
+     * Sets the headers.
+     *
+     * @param headers
+     *            the new headers
+     */
+    @Override
+    public void setHeaders(String headers) {
+<span class="fc" id="L245">        setAttribute(&quot;headers&quot;, headers);</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Gets the height.
+     *
+     * @return the height
+     */
     @Override
     public String getHeight() {
-<span class="fc" id="L156">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
+<span class="fc" id="L255">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
     }
 
+    /**
+     * Sets the height.
+     *
+     * @param height
+     *            the new height
+     */
     @Override
     public void setHeight(String height) {
-<span class="fc" id="L161">        setAttribute(&quot;height&quot;, height);</span>
-<span class="fc" id="L162">    }</span>
+<span class="fc" id="L266">        setAttribute(&quot;height&quot;, height);</span>
+<span class="fc" id="L267">    }</span>
 
+    /**
+     * Gets the no wrap.
+     *
+     * @return the no wrap
+     */
     @Override
     public boolean getNoWrap() {
-<span class="fc" id="L166">        return getBooleanAttribute(&quot;nowrap&quot;);</span>
+<span class="fc" id="L276">        return getBooleanAttribute(&quot;nowrap&quot;);</span>
     }
 
+    /**
+     * Sets the no wrap.
+     *
+     * @param noWrap
+     *            the new no wrap
+     */
     @Override
     public void setNoWrap(boolean noWrap) {
-<span class="fc" id="L171">        setAttribute(&quot;nowrap&quot;, noWrap);</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L287">        setAttribute(&quot;nowrap&quot;, noWrap);</span>
+<span class="fc" id="L288">    }</span>
 
+    /**
+     * Gets the row span.
+     *
+     * @return the row span
+     */
     @Override
     public int getRowSpan() {
-<span class="fc" id="L176">        return getIntegerAttribute(&quot;rowspan&quot;, 1);</span>
+<span class="fc" id="L297">        return getIntegerAttribute(&quot;rowspan&quot;, 1);</span>
     }
 
+    /**
+     * Sets the row span.
+     *
+     * @param rowSpan
+     *            the new row span
+     */
     @Override
     public void setRowSpan(int rowSpan) {
-<span class="fc" id="L181">        setAttribute(&quot;rowspan&quot;, rowSpan);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L308">        setAttribute(&quot;rowspan&quot;, rowSpan);</span>
+<span class="fc" id="L309">    }</span>
 
+    /**
+     * Gets the scope.
+     *
+     * @return the scope
+     */
     @Override
     public String getScope() {
-<span class="fc" id="L186">        return getAttributeWithNoDefault(&quot;scope&quot;);</span>
+<span class="fc" id="L318">        return getAttributeWithNoDefault(&quot;scope&quot;);</span>
     }
 
+    /**
+     * Sets the scope.
+     *
+     * @param scope
+     *            the new scope
+     */
     @Override
     public void setScope(String scope) {
-<span class="fc" id="L191">        setAttribute(&quot;scope&quot;, scope);</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L329">        setAttribute(&quot;scope&quot;, scope);</span>
+<span class="fc" id="L330">    }</span>
 
+    /**
+     * Gets the v align.
+     *
+     * @return the v align
+     */
     @Override
     public String getVAlign() {
-<span class="fc" id="L196">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
+<span class="fc" id="L339">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
     }
 
+    /**
+     * Sets the v align.
+     *
+     * @param vAlign
+     *            the new v align
+     */
     @Override
     public void setVAlign(String vAlign) {
-<span class="fc" id="L201">        setAttribute(&quot;valign&quot;, vAlign);</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L350">        setAttribute(&quot;valign&quot;, vAlign);</span>
+<span class="fc" id="L351">    }</span>
 
+    /**
+     * Gets the width.
+     *
+     * @return the width
+     */
     @Override
     public String getWidth() {
-<span class="fc" id="L206">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+<span class="fc" id="L360">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
     }
 
+    /**
+     * Sets the width.
+     *
+     * @param width
+     *            the new width
+     */
     @Override
     public void setWidth(String width) {
-<span class="fc" id="L211">        setAttribute(&quot;width&quot;, width);</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L371">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L372">    }</span>
 
     @Override
     public String getJavaAttributeName(String attributeName) {
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
-<span class="fc" id="L217">            return &quot;ch&quot;;</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
+<span class="fc" id="L377">            return &quot;ch&quot;;</span>
         }
-<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
-<span class="fc" id="L220">            return &quot;choff&quot;;</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
+<span class="fc" id="L380">            return &quot;choff&quot;;</span>
         }
-<span class="fc" id="L222">        return attributeName;</span>
+<span class="fc" id="L382">        return attributeName;</span>
     }
 
+    /**
+     * Sets the cell index.
+     *
+     * @param cellIndex
+     *            the new cell index
+     */
     public void setCellIndex(int cellIndex) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L228">    }</span>
+<span class="nc" id="L394">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

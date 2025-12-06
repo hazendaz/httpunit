@@ -23,13 +23,14 @@ import java.net.URL;
 
 /**
  * Class used to indicate when a request to a resource resulted in an HTTP redirect response that lead to a recursive
- * loop of redirections
- *
- * @author &lt;a href=&quot;mailto:james.abley@gmail.com&quot;&gt;James Abley &lt;/a&gt;
+ * loop of redirections.
  */
 public class RecursiveRedirectionException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The url. */
     private URL url;
 
     /**
@@ -42,9 +43,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public RecursiveRedirectionException(URL url, Throwable cause) {
-<span class="nc" id="L45">        super(cause);</span>
-<span class="nc" id="L46">        this.url = url;</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L46">        super(cause);</span>
+<span class="nc" id="L47">        this.url = url;</span>
+<span class="nc" id="L48">    }</span>
 
     /**
      * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL and detail message.
@@ -56,9 +57,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
      */
     public RecursiveRedirectionException(URL url, String message) {
-<span class="fc" id="L59">        super(message);</span>
-<span class="fc" id="L60">        this.url = url;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L60">        super(message);</span>
+<span class="fc" id="L61">        this.url = url;</span>
+<span class="fc" id="L62">    }</span>
 
     /**
      * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL, detail message and cause.
@@ -73,9 +74,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public RecursiveRedirectionException(URL url, String message, Throwable cause) {
-<span class="nc" id="L76">        super(message, cause);</span>
-<span class="nc" id="L77">        this.url = url;</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L77">        super(message, cause);</span>
+<span class="nc" id="L78">        this.url = url;</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Returns the URL that caused this exception to be thrown.
@@ -83,7 +84,7 @@ public class RecursiveRedirectionException extends RuntimeException {
      * @return the &lt;code&gt;URL&lt;/code&gt; that gave rise to this Exception
      */
     public URL getURL() {
-<span class="nc" id="L86">        return url;</span>
+<span class="nc" id="L87">        return url;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

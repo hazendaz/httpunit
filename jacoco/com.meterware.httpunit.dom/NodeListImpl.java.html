@@ -27,46 +27,55 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class NodeListImpl.
+ */
 public class NodeListImpl extends ScriptableObject implements NodeList {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The list. */
     private List _list;
 
-<span class="fc" id="L37">    public NodeListImpl(List list) {</span>
-<span class="fc" id="L38">        _list = list;</span>
-<span class="fc" id="L39">    }</span>
+    /**
+     * Instantiates a new node list impl.
+     *
+     * @param list
+     *            the list
+     */
+<span class="fc" id="L46">    public NodeListImpl(List list) {</span>
+<span class="fc" id="L47">        _list = list;</span>
+<span class="fc" id="L48">    }</span>
 
     @Override
     public Node item(int index) {
-<span class="fc" id="L43">        return (Node) _list.get(index);</span>
+<span class="fc" id="L52">        return (Node) _list.get(index);</span>
     }
 
     @Override
     public int getLength() {
-<span class="fc" id="L48">        return _list.size();</span>
+<span class="fc" id="L57">        return _list.size();</span>
     }
 
     @Override
     public String getClassName() {
-<span class="nc" id="L53">        return NodeListImpl.class.getName();</span>
+<span class="nc" id="L62">        return NodeListImpl.class.getName();</span>
     }
 
     @Override
     public Object get(String name, Scriptable start) {
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (&quot;length&quot;.equals(name)) {</span>
-<span class="nc" id="L59">            return Integer.valueOf(getLength());</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (&quot;length&quot;.equals(name)) {</span>
+<span class="nc" id="L68">            return Integer.valueOf(getLength());</span>
         }
-<span class="nc" id="L61">        return NOT_FOUND;</span>
+<span class="nc" id="L70">        return NOT_FOUND;</span>
     }
 
     @Override
     public Object get(int index, Scriptable start) {
-<span class="nc bnc" id="L66" title="All 4 branches missed.">        if (index &lt; 0 || index &gt;= getLength()) {</span>
-<span class="nc" id="L67">            return NOT_FOUND;</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">        if (index &lt; 0 || index &gt;= getLength()) {</span>
+<span class="nc" id="L76">            return NOT_FOUND;</span>
         }
-<span class="nc" id="L69">        return item(index);</span>
+<span class="nc" id="L78">        return item(index);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

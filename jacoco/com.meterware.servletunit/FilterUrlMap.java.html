@@ -22,43 +22,62 @@ package com.meterware.servletunit;
 import java.util.ArrayList;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class FilterUrlMap.
+ */
 <span class="fc" id="L27">class FilterUrlMap {</span>
 
-<span class="fc" id="L29">    private ArrayList _urlPatterns = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L30">    private ArrayList _filters = new ArrayList&lt;&gt;();</span>
+    /** The url patterns. */
+<span class="fc" id="L30">    private ArrayList _urlPatterns = new ArrayList&lt;&gt;();</span>
 
+    /** The filters. */
+<span class="fc" id="L33">    private ArrayList _filters = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Put.
+     *
+     * @param urlPattern
+     *            the url pattern
+     * @param metaData
+     *            the meta data
+     */
     void put(String urlPattern, FilterMetaData metaData) {
-<span class="fc" id="L33">        _urlPatterns.add(UrlPatternMatcher.newPatternMatcher(urlPattern));</span>
-<span class="fc" id="L34">        _filters.add(metaData);</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L44">        _urlPatterns.add(UrlPatternMatcher.newPatternMatcher(urlPattern));</span>
+<span class="fc" id="L45">        _filters.add(metaData);</span>
+<span class="fc" id="L46">    }</span>
 
+    /**
+     * Gets the matching filters.
+     *
+     * @param resourceName
+     *            the resource name
+     *
+     * @return the matching filters
+     */
     FilterMetaData[] getMatchingFilters(String resourceName) {
-<span class="fc" id="L38">        ArrayList matches = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (int i = 0; i &lt; _urlPatterns.size(); i++) {</span>
-<span class="fc" id="L40">            UrlPatternMatcher urlPattern = (UrlPatternMatcher) _urlPatterns.get(i);</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">            if (urlPattern.matchesResourceName(resourceName)) {</span>
-<span class="fc" id="L42">                matches.add(_filters.get(i));</span>
+<span class="fc" id="L57">        ArrayList matches = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (int i = 0; i &lt; _urlPatterns.size(); i++) {</span>
+<span class="fc" id="L59">            UrlPatternMatcher urlPattern = (UrlPatternMatcher) _urlPatterns.get(i);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (urlPattern.matchesResourceName(resourceName)) {</span>
+<span class="fc" id="L61">                matches.add(_filters.get(i));</span>
             }
         }
-<span class="fc" id="L45">        return (FilterMetaData[]) matches.toArray(new FilterMetaData[matches.size()]);</span>
+<span class="fc" id="L64">        return (FilterMetaData[]) matches.toArray(new FilterMetaData[matches.size()]);</span>
     }
 
 }
 
-<span class="fc" id="L50">abstract class UrlPatternMatcher {</span>
+<span class="fc" id="L69">abstract class UrlPatternMatcher {</span>
 
-<span class="fc" id="L52">    static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(), new PathMappingUrlPatternMatcher() };</span>
+<span class="fc" id="L71">    static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(), new PathMappingUrlPatternMatcher() };</span>
 
     static UrlPatternMatcher newPatternMatcher(String pattern) {
-<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (UrlPatternMatcher _template : _templates) {</span>
-<span class="fc" id="L56">            UrlPatternMatcher matcher = _template.create(pattern);</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (matcher != null) {</span>
-<span class="fc" id="L58">                return matcher;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (UrlPatternMatcher _template : _templates) {</span>
+<span class="fc" id="L75">            UrlPatternMatcher matcher = _template.create(pattern);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            if (matcher != null) {</span>
+<span class="fc" id="L77">                return matcher;</span>
             }
         }
-<span class="fc" id="L61">        return new ExactUrlPatternMatcher(pattern);</span>
+<span class="fc" id="L80">        return new ExactUrlPatternMatcher(pattern);</span>
     }
 
     /**
@@ -75,39 +94,39 @@ import java.util.ArrayList;
 class ExactUrlPatternMatcher extends UrlPatternMatcher {
     private String _pattern;
 
-<span class="fc" id="L78">    public ExactUrlPatternMatcher(String pattern) {</span>
-<span class="fc" id="L79">        _pattern = pattern;</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L97">    public ExactUrlPatternMatcher(String pattern) {</span>
+<span class="fc" id="L98">        _pattern = pattern;</span>
+<span class="fc" id="L99">    }</span>
 
     @Override
     UrlPatternMatcher create(String pattern) {
-<span class="nc" id="L84">        return new ExactUrlPatternMatcher(pattern);</span>
+<span class="nc" id="L103">        return new ExactUrlPatternMatcher(pattern);</span>
     }
 
     @Override
     boolean matchesResourceName(String resourceName) {
-<span class="fc" id="L89">        return _pattern.equals(resourceName);</span>
+<span class="fc" id="L108">        return _pattern.equals(resourceName);</span>
     }
 }
 
 class ExtensionUrlPatternMatcher extends UrlPatternMatcher {
     private String _suffix;
 
-<span class="fc" id="L96">    ExtensionUrlPatternMatcher() {</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L115">    ExtensionUrlPatternMatcher() {</span>
+<span class="fc" id="L116">    }</span>
 
-<span class="fc" id="L99">    ExtensionUrlPatternMatcher(String suffix) {</span>
-<span class="fc" id="L100">        _suffix = suffix;</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L118">    ExtensionUrlPatternMatcher(String suffix) {</span>
+<span class="fc" id="L119">        _suffix = suffix;</span>
+<span class="fc" id="L120">    }</span>
 
     @Override
     UrlPatternMatcher create(String pattern) {
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        return !pattern.startsWith(&quot;*.&quot;) ? null : new ExtensionUrlPatternMatcher(pattern.substring(1));</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return !pattern.startsWith(&quot;*.&quot;) ? null : new ExtensionUrlPatternMatcher(pattern.substring(1));</span>
     }
 
     @Override
     boolean matchesResourceName(String resourceName) {
-<span class="fc" id="L110">        return resourceName.endsWith(_suffix);</span>
+<span class="fc" id="L129">        return resourceName.endsWith(_suffix);</span>
     }
 }
 
@@ -115,27 +134,27 @@ class PathMappingUrlPatternMatcher extends UrlPatternMatcher {
     private String _exactPath;
     private String _prefix;
 
-<span class="fc" id="L118">    PathMappingUrlPatternMatcher() {</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L137">    PathMappingUrlPatternMatcher() {</span>
+<span class="fc" id="L138">    }</span>
 
-<span class="fc" id="L121">    PathMappingUrlPatternMatcher(String exactPath) {</span>
-<span class="fc" id="L122">        _exactPath = exactPath;</span>
-<span class="fc" id="L123">        _prefix = exactPath + '/';</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L140">    PathMappingUrlPatternMatcher(String exactPath) {</span>
+<span class="fc" id="L141">        _exactPath = exactPath;</span>
+<span class="fc" id="L142">        _prefix = exactPath + '/';</span>
+<span class="fc" id="L143">    }</span>
 
     @Override
     UrlPatternMatcher create(String pattern) {
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        return !handlesPattern(pattern) ? null</span>
-<span class="fc" id="L129">                : new PathMappingUrlPatternMatcher(pattern.substring(0, pattern.length() - 2));</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        return !handlesPattern(pattern) ? null</span>
+<span class="fc" id="L148">                : new PathMappingUrlPatternMatcher(pattern.substring(0, pattern.length() - 2));</span>
     }
 
     private boolean handlesPattern(String pattern) {
-<span class="pc bpc" id="L133" title="1 of 4 branches missed.">        return pattern.startsWith(&quot;/&quot;) &amp;&amp; pattern.endsWith(&quot;/*&quot;);</span>
+<span class="pc bpc" id="L152" title="1 of 4 branches missed.">        return pattern.startsWith(&quot;/&quot;) &amp;&amp; pattern.endsWith(&quot;/*&quot;);</span>
     }
 
     @Override
     boolean matchesResourceName(String resourceName) {
-<span class="fc bfc" id="L138" title="All 4 branches covered.">        return resourceName.startsWith(_prefix) || resourceName.equals(_exactPath);</span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">        return resourceName.startsWith(_prefix) || resourceName.equals(_exactPath);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

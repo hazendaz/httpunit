@@ -22,128 +22,247 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLAppletElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@gmail.com&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLAppletElementImpl.
  */
 <span class="fc" id="L27">public class HTMLAppletElementImpl extends HTMLElementImpl implements HTMLAppletElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLAppletElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLAppletElementImpl();</span>
     }
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L43">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L55">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L56">    }</span>
 
+    /**
+     * Gets the alt.
+     *
+     * @return the alt
+     */
     @Override
     public String getAlt() {
-<span class="nc" id="L48">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L65">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the alt.
+     *
+     * @param alt
+     *            the new alt
+     */
     @Override
     public void setAlt(String alt) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L77">    }</span>
 
+    /**
+     * Gets the archive.
+     *
+     * @return the archive
+     */
     @Override
     public String getArchive() {
-<span class="nc" id="L58">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L86">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the archive.
+     *
+     * @param archive
+     *            the new archive
+     */
     @Override
     public void setArchive(String archive) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L64">    }</span>
-
-    @Override
-    public String getCode() {
-<span class="fc" id="L68">        return getAttributeWithNoDefault(&quot;code&quot;);</span>
-    }
-
-    @Override
-    public void setCode(String code) {
-<span class="fc" id="L73">        setAttribute(&quot;code&quot;, code);</span>
-<span class="fc" id="L74">    }</span>
+<span class="nc" id="L98">    }</span>
 
     /**
-     * get the codebase of this applet modified for bug report [ 1895501 ] Handling no codebase attribute in APPLET tag
+     * Gets the code.
+     *
+     * @return the code
+     */
+    @Override
+    public String getCode() {
+<span class="fc" id="L107">        return getAttributeWithNoDefault(&quot;code&quot;);</span>
+    }
+
+    /**
+     * Sets the code.
+     *
+     * @param code
+     *            the new code
+     */
+    @Override
+    public void setCode(String code) {
+<span class="fc" id="L118">        setAttribute(&quot;code&quot;, code);</span>
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * get the codebase of this applet modified for bug report [ 1895501 ] Handling no codebase attribute in APPLET tag.
+     *
+     * @return the code base
      */
     @Override
     public String getCodeBase() {
-<span class="fc" id="L81">        return getAttributeWithDefault(&quot;codebase&quot;, &quot;.&quot;);</span>
+<span class="fc" id="L128">        return getAttributeWithDefault(&quot;codebase&quot;, &quot;.&quot;);</span>
     }
 
+    /**
+     * Sets the code base.
+     *
+     * @param codeBase
+     *            the new code base
+     */
     @Override
     public void setCodeBase(String codeBase) {
-<span class="fc" id="L86">        setAttribute(&quot;codebase&quot;, codeBase);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L139">        setAttribute(&quot;codebase&quot;, codeBase);</span>
+<span class="fc" id="L140">    }</span>
 
+    /**
+     * Gets the height.
+     *
+     * @return the height
+     */
     @Override
     public String getHeight() {
-<span class="nc" id="L91">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L149">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the height.
+     *
+     * @param height
+     *            the new height
+     */
     @Override
     public void setHeight(String height) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L161">    }</span>
 
+    /**
+     * Gets the hspace.
+     *
+     * @return the hspace
+     */
     @Override
     public String getHspace() {
-<span class="nc" id="L101">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L170">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the hspace.
+     *
+     * @param hspace
+     *            the new hspace
+     */
     @Override
     public void setHspace(String hspace) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L182">    }</span>
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Override
     public String getName() {
-<span class="nc" id="L111">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L191">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
     @Override
     public void setName(String name) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L203">    }</span>
 
+    /**
+     * Gets the object.
+     *
+     * @return the object
+     */
     @Override
     public String getObject() {
-<span class="nc" id="L121">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L212">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the object.
+     *
+     * @param object
+     *            the new object
+     */
     @Override
     public void setObject(String object) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L127">    }</span>
+<span class="nc" id="L224">    }</span>
 
+    /**
+     * Gets the vspace.
+     *
+     * @return the vspace
+     */
     @Override
     public String getVspace() {
-<span class="nc" id="L131">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L233">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the vspace.
+     *
+     * @param vspace
+     *            the new vspace
+     */
     @Override
     public void setVspace(String vspace) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L245">    }</span>
 
+    /**
+     * Gets the width.
+     *
+     * @return the width
+     */
     @Override
     public String getWidth() {
-<span class="nc" id="L141">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L254">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
+    /**
+     * Sets the width.
+     *
+     * @param width
+     *            the new width
+     */
     @Override
     public void setWidth(String width) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L266">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

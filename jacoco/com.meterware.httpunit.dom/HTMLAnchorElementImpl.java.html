@@ -25,172 +25,305 @@ import java.net.URL;
 import org.w3c.dom.html.HTMLAnchorElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLAnchorElementImpl.
+ */
 <span class="fc" id="L30">public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L36">        return new HTMLAnchorElementImpl();</span>
+<span class="fc" id="L37">        return new HTMLAnchorElementImpl();</span>
     }
-
-    @Override
-    public String getCharset() {
-<span class="fc" id="L41">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
-    }
-
-    @Override
-    public String getHref() {
-<span class="fc" id="L46">        String relativeLocation = getAttributeWithNoDefault(&quot;href&quot;);</span>
-<span class="fc bfc" id="L47" title="All 4 branches covered.">        if (relativeLocation.indexOf(':') &gt; 0 || relativeLocation.equals(&quot;#&quot;)) {</span>
-<span class="fc" id="L48">            return relativeLocation;</span>
-        }
-        try {
-<span class="fc" id="L51">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();</span>
-<span class="nc" id="L52">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L53">            return e.toString();</span>
-        }
-    }
-
-    @Override
-    public String getHreflang() {
-<span class="fc" id="L59">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
-    }
-
-    @Override
-    public String getRel() {
-<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
-    }
-
-    @Override
-    public String getRev() {
-<span class="fc" id="L69">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
-    }
-
-    @Override
-    public String getTarget() {
-<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
-    }
-
-    @Override
-    public String getType() {
-<span class="fc" id="L79">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
-    }
-
-    @Override
-    public void setCharset(String charset) {
-<span class="fc" id="L84">        setAttribute(&quot;charset&quot;, charset);</span>
-<span class="fc" id="L85">    }</span>
-
-    @Override
-    public void setHref(String href) {
-<span class="fc" id="L89">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L90">    }</span>
-
-    @Override
-    public void setHreflang(String hreflang) {
-<span class="fc" id="L94">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
-<span class="fc" id="L95">    }</span>
-
-    @Override
-    public void setRel(String rel) {
-<span class="fc" id="L99">        setAttribute(&quot;rel&quot;, rel);</span>
-<span class="fc" id="L100">    }</span>
-
-    @Override
-    public void setRev(String rev) {
-<span class="fc" id="L104">        setAttribute(&quot;rev&quot;, rev);</span>
-<span class="fc" id="L105">    }</span>
-
-    @Override
-    public void setTarget(String target) {
-<span class="fc" id="L109">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L110">    }</span>
-
-    @Override
-    public void setType(String type) {
-<span class="fc" id="L114">        setAttribute(&quot;type&quot;, type);</span>
-<span class="fc" id="L115">    }</span>
 
     /**
-     * simulate blur
+     * Gets the charset.
+     *
+     * @return the charset
+     */
+    @Override
+    public String getCharset() {
+<span class="fc" id="L47">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
+    }
+
+    /**
+     * Gets the href.
+     *
+     * @return the href
+     */
+    @Override
+    public String getHref() {
+<span class="fc" id="L57">        String relativeLocation = getAttributeWithNoDefault(&quot;href&quot;);</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (relativeLocation.indexOf(':') &gt; 0 || relativeLocation.equals(&quot;#&quot;)) {</span>
+<span class="fc" id="L59">            return relativeLocation;</span>
+        }
+        try {
+<span class="fc" id="L62">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();</span>
+<span class="nc" id="L63">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L64">            return e.toString();</span>
+        }
+    }
+
+    /**
+     * Gets the hreflang.
+     *
+     * @return the hreflang
+     */
+    @Override
+    public String getHreflang() {
+<span class="fc" id="L75">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
+    }
+
+    /**
+     * Gets the rel.
+     *
+     * @return the rel
+     */
+    @Override
+    public String getRel() {
+<span class="fc" id="L85">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
+    }
+
+    /**
+     * Gets the rev.
+     *
+     * @return the rev
+     */
+    @Override
+    public String getRev() {
+<span class="fc" id="L95">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
+    }
+
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
+    @Override
+    public String getTarget() {
+<span class="fc" id="L105">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+    }
+
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    @Override
+    public String getType() {
+<span class="fc" id="L115">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
+    }
+
+    /**
+     * Sets the charset.
+     *
+     * @param charset
+     *            the new charset
+     */
+    @Override
+    public void setCharset(String charset) {
+<span class="fc" id="L126">        setAttribute(&quot;charset&quot;, charset);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Sets the href.
+     *
+     * @param href
+     *            the new href
+     */
+    @Override
+    public void setHref(String href) {
+<span class="fc" id="L137">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Sets the hreflang.
+     *
+     * @param hreflang
+     *            the new hreflang
+     */
+    @Override
+    public void setHreflang(String hreflang) {
+<span class="fc" id="L148">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
+<span class="fc" id="L149">    }</span>
+
+    /**
+     * Sets the rel.
+     *
+     * @param rel
+     *            the new rel
+     */
+    @Override
+    public void setRel(String rel) {
+<span class="fc" id="L159">        setAttribute(&quot;rel&quot;, rel);</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Sets the rev.
+     *
+     * @param rev
+     *            the new rev
+     */
+    @Override
+    public void setRev(String rev) {
+<span class="fc" id="L170">        setAttribute(&quot;rev&quot;, rev);</span>
+<span class="fc" id="L171">    }</span>
+
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
+    @Override
+    public void setTarget(String target) {
+<span class="fc" id="L181">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Sets the type.
+     *
+     * @param type
+     *            the new type
+     */
+    @Override
+    public void setType(String type) {
+<span class="fc" id="L192">        setAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * simulate blur.
      */
     @Override
     public void blur() {
-<span class="nc" id="L122">        handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L123">    }</span>
+<span class="nc" id="L200">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L201">    }</span>
 
     /**
-     * simulate focus;
+     * simulate focus;.
      */
     @Override
     public void focus() {
-<span class="nc" id="L130">        handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L131">    }</span>
+<span class="nc" id="L208">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L209">    }</span>
 
+    /**
+     * Gets the access key.
+     *
+     * @return the access key
+     */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L135">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+<span class="fc" id="L218">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
     }
 
+    /**
+     * Gets the coords.
+     *
+     * @return the coords
+     */
     @Override
     public String getCoords() {
-<span class="nc" id="L140">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
+<span class="nc" id="L228">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Override
     public String getName() {
-<span class="fc" id="L145">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L238">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
+    /**
+     * Gets the shape.
+     *
+     * @return the shape
+     */
     @Override
     public String getShape() {
-<span class="nc" id="L150">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
+<span class="nc" id="L248">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
     }
 
+    /**
+     * Gets the tab index.
+     *
+     * @return the tab index
+     */
     @Override
     public int getTabIndex() {
-<span class="fc" id="L155">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
+<span class="fc" id="L258">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
     }
 
+    /**
+     * Sets the access key.
+     *
+     * @param accessKey
+     *            the new access key
+     */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L160">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L269">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L270">    }</span>
 
+    /**
+     * Sets the coords.
+     *
+     * @param coords
+     *            the new coords
+     */
     @Override
     public void setCoords(String coords) {
-<span class="nc" id="L165">        setAttribute(&quot;coords&quot;, coords);</span>
-<span class="nc" id="L166">    }</span>
+<span class="nc" id="L280">        setAttribute(&quot;coords&quot;, coords);</span>
+<span class="nc" id="L281">    }</span>
 
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
     @Override
     public void setName(String name) {
-<span class="fc" id="L170">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L291">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L292">    }</span>
 
+    /**
+     * Sets the shape.
+     *
+     * @param shape
+     *            the new shape
+     */
     @Override
     public void setShape(String shape) {
-<span class="nc" id="L175">        setAttribute(&quot;shape&quot;, shape);</span>
-<span class="nc" id="L176">    }</span>
+<span class="nc" id="L302">        setAttribute(&quot;shape&quot;, shape);</span>
+<span class="nc" id="L303">    }</span>
 
+    /**
+     * Sets the tab index.
+     *
+     * @param tabIndex
+     *            the new tab index
+     */
     @Override
     public void setTabIndex(int tabIndex) {
-<span class="fc" id="L180">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L313">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
+<span class="fc" id="L314">    }</span>
 
     @Override
     public void doClickAction() {
-<span class="pc bpc" id="L185" title="1 of 4 branches missed.">        if (null == getHref() || getHref().startsWith(&quot;#&quot;)) {</span>
-<span class="fc" id="L186">            return;</span>
+<span class="pc bpc" id="L318" title="1 of 4 branches missed.">        if (null == getHref() || getHref().startsWith(&quot;#&quot;)) {</span>
+<span class="fc" id="L319">            return;</span>
         }
         try {
-<span class="fc" id="L189">            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, &quot;GET&quot;, getHref(), getTarget(),</span>
+<span class="fc" id="L322">            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, &quot;GET&quot;, getHref(), getTarget(),</span>
                     new byte[0]);
-<span class="fc" id="L191">        } catch (Exception e) {</span>
-<span class="fc" id="L192">            throw new RuntimeException(&quot;Error clicking link: &quot; + e);</span>
-<span class="fc" id="L193">        }</span>
-<span class="fc" id="L194">    }</span>
+<span class="fc" id="L324">        } catch (Exception e) {</span>
+<span class="fc" id="L325">            throw new RuntimeException(&quot;Error clicking link: &quot; + e);</span>
+<span class="fc" id="L326">        }</span>
+<span class="fc" id="L327">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

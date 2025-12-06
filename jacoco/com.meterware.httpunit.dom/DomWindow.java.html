@@ -29,48 +29,83 @@ import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXException;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class DomWindow.
  */
 public class DomWindow extends AbstractDomComponent implements Scriptable {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The proxy. */
     private DomWindowProxy _proxy;
+
+    /** The document. */
     private HTMLDocumentImpl _document;
 
     /**
-     * construct me from a document
+     * construct me from a document.
      *
      * @param document
+     *            the document
      */
-<span class="fc" id="L45">    public DomWindow(HTMLDocumentImpl document) {</span>
-<span class="fc" id="L46">        _document = document;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L51">    public DomWindow(HTMLDocumentImpl document) {</span>
+<span class="fc" id="L52">        _document = document;</span>
+<span class="fc" id="L53">    }</span>
 
-<span class="nc" id="L49">    public DomWindow(DomWindowProxy implementation) {</span>
-<span class="nc" id="L50">        _proxy = implementation;</span>
-<span class="nc" id="L51">    }</span>
+    /**
+     * Instantiates a new dom window.
+     *
+     * @param implementation
+     *            the implementation
+     */
+<span class="nc" id="L61">    public DomWindow(DomWindowProxy implementation) {</span>
+<span class="nc" id="L62">        _proxy = implementation;</span>
+<span class="nc" id="L63">    }</span>
 
+    /**
+     * Sets the proxy.
+     *
+     * @param proxy
+     *            the new proxy
+     */
     public void setProxy(DomWindowProxy proxy) {
-<span class="fc" id="L54">        _proxy = proxy;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L72">        _proxy = proxy;</span>
+<span class="fc" id="L73">    }</span>
 
+    /**
+     * Gets the window.
+     *
+     * @return the window
+     */
     public DomWindow getWindow() {
-<span class="fc" id="L58">        return this;</span>
+<span class="fc" id="L81">        return this;</span>
     }
 
+    /**
+     * Gets the self.
+     *
+     * @return the self
+     */
     public DomWindow getSelf() {
-<span class="fc" id="L62">        return this;</span>
+<span class="fc" id="L90">        return this;</span>
     }
 
+    /**
+     * Gets the document.
+     *
+     * @return the document
+     */
     public HTMLDocument getDocument() {
-<span class="fc" id="L66">        return _document;</span>
+<span class="fc" id="L99">        return _document;</span>
     }
 
     /**
      * Returns the document associated with this window. Uses the same name as that used by elements in the DOM.
+     *
+     * @return the owner document
      */
     public HTMLDocument getOwnerDocument() {
-<span class="nc" id="L73">        return _document;</span>
+<span class="nc" id="L108">        return _document;</span>
     }
 
     /**
@@ -89,20 +124,20 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      */
     public DomWindow open(String urlString, String name, String features, boolean replace) {
         try {
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">            if (_proxy == null) {</span>
-<span class="nc" id="L93">                throw new RuntimeException(&quot;DomWindow.open failed for '&quot; + name + &quot;' _proxy is null&quot;);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">            if (_proxy == null) {</span>
+<span class="nc" id="L128">                throw new RuntimeException(&quot;DomWindow.open failed for '&quot; + name + &quot;' _proxy is null&quot;);</span>
             }
 
-<span class="fc" id="L96">            DomWindowProxy newWindow = _proxy.openNewWindow(name, urlString);</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            if (newWindow == null) {</span>
+<span class="fc" id="L131">            DomWindowProxy newWindow = _proxy.openNewWindow(name, urlString);</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            if (newWindow == null) {</span>
                 // throw new RuntimeException(&quot;DomWindow.open failed for '&quot;+name+&quot;','&quot;+urlString+&quot;' openNewWindow
                 // returned null&quot;);
-<span class="nc" id="L100">                return null;</span>
+<span class="nc" id="L135">                return null;</span>
             }
-<span class="fc" id="L102">            ScriptingHandler result = newWindow.getScriptingHandler();</span>
-<span class="fc" id="L103">            return (DomWindow) result;</span>
-<span class="nc" id="L104">        } catch (IOException | SAXException e) {</span>
-<span class="nc" id="L105">            return null;</span>
+<span class="fc" id="L137">            ScriptingHandler result = newWindow.getScriptingHandler();</span>
+<span class="fc" id="L138">            return (DomWindow) result;</span>
+<span class="nc" id="L139">        } catch (IOException | SAXException e) {</span>
+<span class="nc" id="L140">            return null;</span>
         }
     }
 
@@ -110,8 +145,8 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      * Closes the current window. Has no effect if this &quot;window&quot; is actually a nested frame.
      */
     public void close() {
-<span class="fc" id="L113">        _proxy.close();</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L148">        _proxy.close();</span>
+<span class="fc" id="L149">    }</span>
 
     /**
      * Displays an alert box with the specified message.
@@ -120,8 +155,8 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      *            the message to display
      */
     public void alert(String message) {
-<span class="fc" id="L123">        _proxy.alert(message);</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L158">        _proxy.alert(message);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Displays a prompt, asking for a yes or no answer and returns the answer.
@@ -132,7 +167,7 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      * @return true if the user answered 'yes'
      */
     public boolean confirm(String prompt) {
-<span class="fc" id="L135">        return _proxy.confirm(prompt);</span>
+<span class="fc" id="L170">        return _proxy.confirm(prompt);</span>
     }
 
     /**
@@ -146,42 +181,101 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      * @return the reply selected by the user.
      */
     public String prompt(String message, String defaultResponse) {
-<span class="fc" id="L149">        return _proxy.prompt(message, defaultResponse);</span>
+<span class="fc" id="L184">        return _proxy.prompt(message, defaultResponse);</span>
     }
 
+    /**
+     * Sets the timeout.
+     *
+     * @param timeout
+     *            the new timeout
+     */
     public void setTimeout(int timeout) {
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L194">    }</span>
 
+    /**
+     * Focus.
+     */
     public void focus() {
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L200">    }</span>
 
+    /**
+     * Move to.
+     *
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     public void moveTo(int x, int y) {
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L211">    }</span>
 
+    /**
+     * Scroll to.
+     *
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     public void scrollTo(int x, int y) {
-<span class="fc" id="L162">    }</span>
+<span class="fc" id="L222">    }</span>
 
     @Override
     protected String getDocumentWriteBuffer() {
-<span class="fc" id="L166">        return _document.getWriteBuffer().toString();</span>
+<span class="fc" id="L226">        return _document.getWriteBuffer().toString();</span>
     }
 
     @Override
     protected void discardDocumentWriteBuffer() {
-<span class="fc" id="L171">        _document.clearWriteBuffer();</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L231">        _document.clearWriteBuffer();</span>
+<span class="fc" id="L232">    }</span>
 
+    /**
+     * Replace text.
+     *
+     * @param string
+     *            the string
+     * @param mimeType
+     *            the mime type
+     *
+     * @return true, if successful
+     */
     boolean replaceText(String string, String mimeType) {
-<span class="fc" id="L175">        return _proxy.replaceText(string, mimeType);</span>
+<span class="fc" id="L245">        return _proxy.replaceText(string, mimeType);</span>
     }
 
+    /**
+     * Gets the url.
+     *
+     * @return the url
+     */
     URL getUrl() {
-<span class="fc" id="L179">        return _proxy.getURL();</span>
+<span class="fc" id="L254">        return _proxy.getURL();</span>
     }
 
+    /**
+     * Submit request.
+     *
+     * @param sourceElement
+     *            the source element
+     * @param method
+     *            the method
+     * @param location
+     *            the location
+     * @param target
+     *            the target
+     * @param requestBody
+     *            the request body
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     void submitRequest(HTMLElementImpl sourceElement, String method, String location, String target, byte[] requestBody)
             throws IOException, SAXException {
-<span class="fc" id="L184">        _proxy.submitRequest(sourceElement, method, location, target, null);</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L278">        _proxy.submitRequest(sourceElement, method, location, target, null);</span>
+<span class="fc" id="L279">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

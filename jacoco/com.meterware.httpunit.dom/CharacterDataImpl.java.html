@@ -23,56 +23,67 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class CharacterDataImpl.
+ */
 <span class="fc" id="L28">public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The data. */
     private String _data;
 
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     */
     protected void initialize(DocumentImpl ownerDocument, String data) {
-<span class="fc" id="L34">        super.initialize(ownerDocument);</span>
-<span class="fc" id="L35">        _data = data;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L45">        super.initialize(ownerDocument);</span>
+<span class="fc" id="L46">        _data = data;</span>
+<span class="fc" id="L47">    }</span>
 
     @Override
     public String getData() throws DOMException {
-<span class="fc" id="L40">        return _data;</span>
+<span class="fc" id="L51">        return _data;</span>
     }
 
     @Override
     public void setData(String data) throws DOMException {
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (data == null) {</span>
-<span class="fc" id="L46">            data = &quot;&quot;;</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L57">            data = &quot;&quot;;</span>
         }
-<span class="fc" id="L48">        _data = data;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L59">        _data = data;</span>
+<span class="fc" id="L60">    }</span>
 
     @Override
     public int getLength() {
-<span class="fc" id="L53">        return _data.length();</span>
+<span class="fc" id="L64">        return _data.length();</span>
     }
 
     @Override
     public String substringData(int offset, int count) throws DOMException {
-<span class="nc" id="L58">        return null;</span>
+<span class="nc" id="L69">        return null;</span>
     }
 
     @Override
     public void appendData(String arg) throws DOMException {
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L74">    }</span>
 
     @Override
     public void insertData(int offset, String arg) throws DOMException {
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L78">    }</span>
 
     @Override
     public void deleteData(int offset, int count) throws DOMException {
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L82">    }</span>
 
     @Override
     public void replaceData(int offset, int count, String arg) throws DOMException {
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L86">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

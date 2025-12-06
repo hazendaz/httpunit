@@ -22,144 +22,288 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLImageElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLImageElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLImageElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLImageElementImpl();</span>
     }
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
+    /**
+     * Gets the alt.
+     *
+     * @return the alt
+     */
     @Override
     public String getAlt() {
-<span class="fc" id="L43">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
     }
 
+    /**
+     * Gets the border.
+     *
+     * @return the border
+     */
     @Override
     public String getBorder() {
-<span class="fc" id="L48">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
+<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
     }
 
+    /**
+     * Gets the height.
+     *
+     * @return the height
+     */
     @Override
     public String getHeight() {
-<span class="fc" id="L53">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
+<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
     }
 
+    /**
+     * Gets the hspace.
+     *
+     * @return the hspace
+     */
     @Override
     public String getHspace() {
-<span class="fc" id="L58">        return getAttributeWithNoDefault(&quot;hspace&quot;);</span>
+<span class="fc" id="L84">        return getAttributeWithNoDefault(&quot;hspace&quot;);</span>
     }
 
+    /**
+     * Gets the checks if is map.
+     *
+     * @return the checks if is map
+     */
     @Override
     public boolean getIsMap() {
-<span class="fc" id="L63">        return getBooleanAttribute(&quot;ismap&quot;);</span>
+<span class="fc" id="L94">        return getBooleanAttribute(&quot;ismap&quot;);</span>
     }
 
+    /**
+     * Gets the long desc.
+     *
+     * @return the long desc
+     */
     @Override
     public String getLongDesc() {
-<span class="fc" id="L68">        return getAttributeWithNoDefault(&quot;longdesc&quot;);</span>
+<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;longdesc&quot;);</span>
     }
 
+    /**
+     * Gets the low src.
+     *
+     * @return the low src
+     */
     @Override
     public String getLowSrc() {
-<span class="nc" id="L73">        return null;</span>
+<span class="nc" id="L114">        return null;</span>
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Override
     public String getName() {
-<span class="fc" id="L78">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L124">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
+    /**
+     * Gets the src.
+     *
+     * @return the src
+     */
     @Override
     public String getSrc() {
-<span class="fc" id="L83">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+<span class="fc" id="L134">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
     }
 
+    /**
+     * Gets the use map.
+     *
+     * @return the use map
+     */
     @Override
     public String getUseMap() {
-<span class="fc" id="L88">        return getAttributeWithNoDefault(&quot;usemap&quot;);</span>
+<span class="fc" id="L144">        return getAttributeWithNoDefault(&quot;usemap&quot;);</span>
     }
 
+    /**
+     * Gets the vspace.
+     *
+     * @return the vspace
+     */
     @Override
     public String getVspace() {
-<span class="fc" id="L93">        return getAttributeWithNoDefault(&quot;vspace&quot;);</span>
+<span class="fc" id="L154">        return getAttributeWithNoDefault(&quot;vspace&quot;);</span>
     }
 
+    /**
+     * Gets the width.
+     *
+     * @return the width
+     */
     @Override
     public String getWidth() {
-<span class="fc" id="L98">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+<span class="fc" id="L164">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L103">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L175">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L176">    }</span>
 
+    /**
+     * Sets the alt.
+     *
+     * @param alt
+     *            the new alt
+     */
     @Override
     public void setAlt(String alt) {
-<span class="fc" id="L108">        setAttribute(&quot;alt&quot;, alt);</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L186">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L187">    }</span>
 
+    /**
+     * Sets the border.
+     *
+     * @param border
+     *            the new border
+     */
     @Override
     public void setBorder(String border) {
-<span class="fc" id="L113">        setAttribute(&quot;border&quot;, border);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L197">        setAttribute(&quot;border&quot;, border);</span>
+<span class="fc" id="L198">    }</span>
 
+    /**
+     * Sets the height.
+     *
+     * @param height
+     *            the new height
+     */
     @Override
     public void setHeight(String height) {
-<span class="fc" id="L118">        setAttribute(&quot;height&quot;, height);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L208">        setAttribute(&quot;height&quot;, height);</span>
+<span class="fc" id="L209">    }</span>
 
+    /**
+     * Sets the hspace.
+     *
+     * @param hspace
+     *            the new hspace
+     */
     @Override
     public void setHspace(String hspace) {
-<span class="fc" id="L123">        setAttribute(&quot;hspace&quot;, hspace);</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L219">        setAttribute(&quot;hspace&quot;, hspace);</span>
+<span class="fc" id="L220">    }</span>
 
+    /**
+     * Sets the checks if is map.
+     *
+     * @param isMap
+     *            the new checks if is map
+     */
     @Override
     public void setIsMap(boolean isMap) {
-<span class="fc" id="L128">        setAttribute(&quot;ismap&quot;, isMap);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L230">        setAttribute(&quot;ismap&quot;, isMap);</span>
+<span class="fc" id="L231">    }</span>
 
+    /**
+     * Sets the long desc.
+     *
+     * @param longDesc
+     *            the new long desc
+     */
     @Override
     public void setLongDesc(String longDesc) {
-<span class="fc" id="L133">        setAttribute(&quot;longdesc&quot;, longDesc);</span>
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L241">        setAttribute(&quot;longdesc&quot;, longDesc);</span>
+<span class="fc" id="L242">    }</span>
 
+    /**
+     * Sets the low src.
+     *
+     * @param lowSrc
+     *            the new low src
+     */
     @Override
     public void setLowSrc(String lowSrc) {
-<span class="nc" id="L138">    }</span>
+<span class="nc" id="L252">    }</span>
 
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
     @Override
     public void setName(String name) {
-<span class="fc" id="L142">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L262">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L263">    }</span>
 
+    /**
+     * Sets the src.
+     *
+     * @param src
+     *            the new src
+     */
     @Override
     public void setSrc(String src) {
-<span class="fc" id="L147">        setAttribute(&quot;src&quot;, src);</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc" id="L273">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L274">    }</span>
 
+    /**
+     * Sets the use map.
+     *
+     * @param useMap
+     *            the new use map
+     */
     @Override
     public void setUseMap(String useMap) {
-<span class="fc" id="L152">        setAttribute(&quot;usemap&quot;, useMap);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L284">        setAttribute(&quot;usemap&quot;, useMap);</span>
+<span class="fc" id="L285">    }</span>
 
+    /**
+     * Sets the vspace.
+     *
+     * @param vspace
+     *            the new vspace
+     */
     @Override
     public void setVspace(String vspace) {
-<span class="fc" id="L157">        setAttribute(&quot;vspace&quot;, vspace);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L295">        setAttribute(&quot;vspace&quot;, vspace);</span>
+<span class="fc" id="L296">    }</span>
 
+    /**
+     * Sets the width.
+     *
+     * @param width
+     *            the new width
+     */
     @Override
     public void setWidth(String width) {
-<span class="fc" id="L162">        setAttribute(&quot;width&quot;, width);</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L306">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L307">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -26,20 +26,29 @@ import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class AppletContextImpl.
+ */
 class AppletContextImpl implements AppletContext {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
-<span class="fc" id="L40">    AppletContextImpl(WebApplet webApplet) {</span>
-<span class="fc" id="L41">        _webApplet = webApplet;</span>
-<span class="fc" id="L42">    }</span>
+    /**
+     * Instantiates a new applet context impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
+<span class="fc" id="L49">    AppletContextImpl(WebApplet webApplet) {</span>
+<span class="fc" id="L50">        _webApplet = webApplet;</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * Creates an audio clip.
@@ -51,7 +60,7 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public AudioClip getAudioClip(URL url) {
-<span class="nc" id="L54">        return null;</span>
+<span class="nc" id="L63">        return null;</span>
     }
 
     /**
@@ -71,7 +80,7 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public Image getImage(URL url) {
-<span class="nc" id="L74">        return null;</span>
+<span class="nc" id="L83">        return null;</span>
     }
 
     /**
@@ -86,15 +95,15 @@ class AppletContextImpl implements AppletContext {
     @Override
     public Applet getApplet(String name) {
         try {
-<span class="fc" id="L89">            WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">            for (WebApplet webApplet : webApplets) {</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (webApplet.getName().equals(name)) {</span>
-<span class="fc" id="L92">                    return webApplet.getApplet();</span>
+<span class="fc" id="L98">            WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            for (WebApplet webApplet : webApplets) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                if (webApplet.getName().equals(name)) {</span>
+<span class="fc" id="L101">                    return webApplet.getApplet();</span>
                 }
             }
-<span class="nc" id="L95">        } catch (Exception e) {</span>
-<span class="nc" id="L96">        }</span>
-<span class="nc" id="L97">        return null;</span>
+<span class="nc" id="L104">        } catch (Exception e) {</span>
+<span class="nc" id="L105">        }</span>
+<span class="nc" id="L106">        return null;</span>
     }
 
     /**
@@ -104,17 +113,17 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public Enumeration getApplets() {
-<span class="fc" id="L107">        WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
-<span class="fc" id="L108">        Vector v = new Vector&lt;&gt;();</span>
+<span class="fc" id="L116">        WebApplet[] webApplets = _webApplet.getAppletsInPage();</span>
+<span class="fc" id="L117">        List v = new ArrayList&lt;&gt;();</span>
         try {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">            for (WebApplet webApplet : webApplets) {</span>
-<span class="fc" id="L111">                v.add(webApplet.getApplet());</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            for (WebApplet webApplet : webApplets) {</span>
+<span class="fc" id="L120">                v.add(webApplet.getApplet());</span>
             }
-<span class="nc" id="L113">        } catch (Exception e) {</span>
-<span class="nc" id="L114">            e.printStackTrace();</span>
-<span class="nc" id="L115">            throw new RuntimeException(e.toString());</span>
-<span class="fc" id="L116">        }</span>
-<span class="fc" id="L117">        return v.elements();</span>
+<span class="nc" id="L122">        } catch (Exception e) {</span>
+<span class="nc" id="L123">            e.printStackTrace();</span>
+<span class="nc" id="L124">            throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L125">        }</span>
+<span class="fc" id="L126">        return Collections.enumeration(v);</span>
     }
 
     /**
@@ -126,8 +135,8 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public void showDocument(URL url) {
-<span class="fc" id="L129">        showDocument(url, _webApplet.getBaseTarget());</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L138">        showDocument(url, _webApplet.getBaseTarget());</span>
+<span class="fc" id="L139">    }</span>
 
     /**
      * Requests that the browser or applet viewer show the Web page indicated by the &lt;code&gt;url&lt;/code&gt; argument. The
@@ -170,8 +179,8 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public void showDocument(URL url, String target) {
-<span class="fc" id="L173">        _webApplet.sendRequest(url, target);</span>
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L182">        _webApplet.sendRequest(url, target);</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Requests that the argument string be displayed in the &quot;status window&quot;. Many browsers and applet viewers provide
@@ -182,7 +191,7 @@ class AppletContextImpl implements AppletContext {
      */
     @Override
     public void showStatus(String status) {
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L194">    }</span>
 
     /**
      * Returns the stream to which specified key is associated within this applet context. Returns &lt;tt&gt;null&lt;/tt&gt; if the
@@ -196,12 +205,10 @@ class AppletContextImpl implements AppletContext {
      *
      * @param key
      *            key whose associated stream is to be returned.
-     *
-     * @since JDK1.4
      */
     @Override
     public InputStream getStream(String key) {
-<span class="nc" id="L204">        return null;</span>
+<span class="nc" id="L211">        return null;</span>
     }
 
     /**
@@ -212,12 +219,10 @@ class AppletContextImpl implements AppletContext {
      * &lt;p&gt;
      *
      * @return an Iterator of all the names of the streams in this applet context.
-     *
-     * @since JDK1.4
      */
     @Override
     public Iterator getStreamKeys() {
-<span class="nc" id="L220">        return null;</span>
+<span class="nc" id="L225">        return null;</span>
     }
 
     /**
@@ -237,11 +242,9 @@ class AppletContextImpl implements AppletContext {
      * @throws &lt;code&gt;IOException&lt;/code&gt;
      *            if the stream size exceeds a certain size limit. Size limit is decided by the implementor of this
      *            interface.
-     *
-     * @since JDK1.4
      */
     @Override
     public void setStream(String key, InputStream stream) throws IOException {
-<span class="nc" id="L245">    }</span>
+<span class="nc" id="L248">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

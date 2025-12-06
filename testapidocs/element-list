@@ -1,5 +1,4 @@
 com.meterware.httpunit
-com.meterware.httpunit.cookies
 com.meterware.httpunit.dom
 com.meterware.httpunit.javascript
 com.meterware.httpunit.parsing

@@ -22,13 +22,12 @@ package com.meterware.httpunit.javascript.events;
 import org.mozilla.javascript.ScriptableObject;
 
 /**
- * @author &lt;a href=&quot;mailto:rafal@caltha.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
- *
- * @version $Id$
+ * The Class Event.
  */
-<span class="nc" id="L29">public abstract class Event extends ScriptableObject {</span>
+<span class="nc" id="L27">public abstract class Event extends ScriptableObject {</span>
     // -- Scriptable interface ------------------------------------------------------------------
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** JavaScript class name. */
@@ -39,7 +38,7 @@ import org.mozilla.javascript.ScriptableObject;
      */
     @Override
     public String getClassName() {
-<span class="nc" id="L42">        return JS_CLASS_NAME;</span>
+<span class="nc" id="L41">        return JS_CLASS_NAME;</span>
     }
 
     // -- DOM2 Events specification -------------------------------------------------------------
@@ -86,17 +85,21 @@ import org.mozilla.javascript.ScriptableObject;
 
     /**
      * The name of the event (case-insensitive). The name must be an XML name.
+     *
+     * @return the string
      */
     public String jsGet_type() {
-<span class="nc" id="L91">        return type;</span>
+<span class="nc" id="L92">        return type;</span>
     }
 
     /**
      * Used to indicate whether or not an event is a bubbling event. If the event can bubble the value is true, else the
      * value is false.
+     *
+     * @return true, if successful
      */
     public boolean jsGet_bubbles() {
-<span class="nc" id="L99">        return bubbles;</span>
+<span class="nc" id="L102">        return bubbles;</span>
     }
 
     /**
@@ -104,9 +107,11 @@ import org.mozilla.javascript.ScriptableObject;
      * that some systems may not provide this information the value of timeStamp may be not available for all events.
      * When not available, a value of 0 will be returned. Examples of epoch time are the time of the system start or
      * 0:0:0 UTC 1st January 1970.
+     *
+     * @return true, if successful
      */
     public boolean jsGet_cancelable() {
-<span class="nc" id="L109">        return cancelable;</span>
+<span class="nc" id="L114">        return cancelable;</span>
     }
 
     /**
@@ -114,24 +119,32 @@ import org.mozilla.javascript.ScriptableObject;
      * that some systems may not provide this information the value of timeStamp may be not available for all events.
      * When not available, a value of 0 will be returned. Examples of epoch time are the time of the system start or
      * 0:0:0 UTC 1st January 1970.
+     *
+     * @return the long
      */
     public long jsGet_timeStamp() {
-<span class="nc" id="L119">        return timeStamp;</span>
+<span class="nc" id="L126">        return timeStamp;</span>
     }
 
     /**
      * Used to indicate the EventTarget to which the event was originally dispatched.
+     *
+     * @return the event target
      */
     public abstract EventTarget jsGet_target();
 
     /**
      * Used to indicate the EventTarget whose EventListeners are currently being processed. This is particularly useful
      * during capturing and bubbling.
+     *
+     * @return the event target
      */
     public abstract EventTarget jsGet_currentTarget();
 
     /**
      * Used to indicate which phase of event flow is currently being evaluated.
+     *
+     * @return the short
      */
     public abstract short jsGet_eventPhase();
 
@@ -172,9 +185,9 @@ import org.mozilla.javascript.ScriptableObject;
      *            Specifies whether or not the event's default action can be prevented.
      */
     public void jsFunction_initEvent(String eventTypeArg, boolean canBubbleArg, boolean cancelableArg) {
-<span class="nc" id="L175">        type = eventTypeArg;</span>
-<span class="nc" id="L176">        bubbles = canBubbleArg;</span>
-<span class="nc" id="L177">        cancelable = cancelableArg;</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L188">        type = eventTypeArg;</span>
+<span class="nc" id="L189">        bubbles = canBubbleArg;</span>
+<span class="nc" id="L190">        cancelable = cancelableArg;</span>
+<span class="nc" id="L191">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

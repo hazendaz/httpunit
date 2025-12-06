@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeleteMethodWebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">DeleteMethodWebRequest.java</span></div><h1>DeleteMethodWebRequest.java</h1><pre class="source lang-java linenums">/*
  * MIT License
  *
- * Copyright 2011-2023 Russell Gold
+ * Copyright 2011-2025 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
 public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
-     * initialize me - set method to DELETE
+     * initialize me - set method to DELETE.
      */
     private void init() {
 <span class="fc" id="L44">        super.setMethod(&quot;DELETE&quot;);</span>
@@ -46,77 +46,136 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
 
     /**
      * Constructs a web request using a specific absolute url string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     */
     public DeleteMethodWebRequest(String urlString) {
-<span class="fc" id="L51">        super(urlString);</span>
-<span class="fc" id="L52">        init();</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L54">        super(urlString);</span>
+<span class="fc" id="L55">        init();</span>
+<span class="fc" id="L56">    }</span>
 
     /**
      * Constructs a web request using a base URL and a relative url string.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     */
     public DeleteMethodWebRequest(URL urlBase, String urlString) {
-<span class="nc" id="L59">        super(urlBase, urlString);</span>
-<span class="nc" id="L60">        init();</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L67">        super(urlBase, urlString);</span>
+<span class="nc" id="L68">        init();</span>
+<span class="nc" id="L69">    }</span>
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     public DeleteMethodWebRequest(URL urlBase, String urlString, String target) {
-<span class="nc" id="L67">        super(urlBase, urlString, target);</span>
-<span class="nc" id="L68">        init();</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L82">        super(urlBase, urlString, target);</span>
+<span class="nc" id="L83">        init();</span>
+<span class="nc" id="L84">    }</span>
 
     // --------------------------------------- package members ---------------------------------------------
 
     /**
      * Constructs a web request for a form submitted from JavaScript.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     */
     DeleteMethodWebRequest(WebForm sourceForm) {
-<span class="nc" id="L77">        super(sourceForm);</span>
-<span class="nc" id="L78">        init();</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L95">        super(sourceForm);</span>
+<span class="nc" id="L96">        init();</span>
+<span class="nc" id="L97">    }</span>
 
     /**
      * Constructs a web request for a link or image.
-     **/
+     *
+     * @param source
+     *            the source
+     */
     DeleteMethodWebRequest(FixedURLWebRequestSource source) {
-<span class="nc" id="L85">        super(source);</span>
-<span class="nc" id="L86">        init();</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L106">        super(source);</span>
+<span class="nc" id="L107">        init();</span>
+<span class="nc" id="L108">    }</span>
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param referer
+     *            the referer
+     * @param sourceElement
+     *            the source element
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     DeleteMethodWebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target) {
-<span class="nc" id="L93">        super(referer, sourceElement, urlBase, urlString, target);</span>
-<span class="nc" id="L94">        init();</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L125">        super(referer, sourceElement, urlBase, urlString, target);</span>
+<span class="nc" id="L126">        init();</span>
+<span class="nc" id="L127">    }</span>
 
     /**
      * Constructs an initial web request for a frame.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param frame
+     *            the frame
+     */
     DeleteMethodWebRequest(URL urlBase, String urlString, FrameSelector frame) {
-<span class="nc" id="L101">        super(urlBase, urlString, frame);</span>
-<span class="nc" id="L102">        init();</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L140">        super(urlBase, urlString, frame);</span>
+<span class="nc" id="L141">        init();</span>
+<span class="nc" id="L142">    }</span>
 
     /**
      * Constructs a web request for a javascript open call.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param frame
+     *            the frame
+     * @param target
+     *            the target
+     */
     DeleteMethodWebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
-<span class="nc" id="L109">        super(urlBase, urlString, frame, target);</span>
-<span class="nc" id="L110">        init();</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L157">        super(urlBase, urlString, frame, target);</span>
+<span class="nc" id="L158">        init();</span>
+<span class="nc" id="L159">    }</span>
 
     /**
      * Constructs a web request for a form.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     * @param parameterHolder
+     *            the parameter holder
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     DeleteMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
-<span class="nc" id="L117">        super(sourceForm, parameterHolder, button, x, y);</span>
-<span class="nc" id="L118">        init();</span>
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L176">        super(sourceForm, parameterHolder, button, x, y);</span>
+<span class="nc" id="L177">        init();</span>
+<span class="nc" id="L178">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

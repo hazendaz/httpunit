@@ -28,14 +28,13 @@ import org.w3c.dom.Node;
 
 /**
  * Represents a block-level element such as a paragraph or table cell, which can contain other elements.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- *
- * @since 1.6
  */
 public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HTMLElement {
 
+    /** The scriptable. */
     private ScriptingHandler _scriptable;
+
+    /** The node. */
     private Node _node;
 
     /**
@@ -43,16 +42,16 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getText() {
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (_node == null) {</span>
-<span class="nc" id="L47">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (_node == null) {</span>
+<span class="nc" id="L46">            return &quot;&quot;;</span>
         }
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="fc" id="L50">            return _node.getNodeValue().trim();</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L49">            return _node.getNodeValue().trim();</span>
         }
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
-<span class="nc" id="L53">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
+<span class="nc" id="L52">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L55">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
+<span class="fc" id="L54">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
     }
 
     /**
@@ -60,7 +59,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getTagName() {
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        return _node == null ? &quot;p&quot; : _node.getNodeName();</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        return _node == null ? &quot;p&quot; : _node.getNodeName();</span>
     }
 
     // -------------------------------- HTMLElement methods
@@ -71,7 +70,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getID() {
-<span class="fc" id="L74">        return getAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L73">        return getAttribute(&quot;id&quot;);</span>
     }
 
     /**
@@ -79,7 +78,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getClassName() {
-<span class="fc" id="L82">        return getAttribute(&quot;class&quot;);</span>
+<span class="fc" id="L81">        return getAttribute(&quot;class&quot;);</span>
     }
 
     /**
@@ -87,7 +86,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getName() {
-<span class="fc" id="L90">        return getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L89">        return getAttribute(&quot;name&quot;);</span>
     }
 
     /**
@@ -95,7 +94,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getTitle() {
-<span class="fc" id="L98">        return getAttribute(&quot;title&quot;);</span>
+<span class="fc" id="L97">        return getAttribute(&quot;title&quot;);</span>
     }
 
     /**
@@ -103,10 +102,10 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public ScriptingHandler getScriptingHandler() {
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (_scriptable == null) {</span>
-<span class="fc" id="L107">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (_scriptable == null) {</span>
+<span class="fc" id="L106">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
         }
-<span class="fc" id="L109">        return _scriptable;</span>
+<span class="fc" id="L108">        return _scriptable;</span>
     }
 
     /**
@@ -120,7 +119,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L123">        return doEventScript(eventScript);</span>
+<span class="nc" id="L122">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -133,22 +132,22 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="nc" id="L136">        return this.getScriptingHandler().doEventScript(eventScript);</span>
+<span class="nc" id="L135">        return this.getScriptingHandler().doEventScript(eventScript);</span>
     }
 
     @Override
     public boolean handleEvent(String eventName) {
-<span class="nc" id="L141">        return this.getScriptingHandler().handleEvent(eventName);</span>
+<span class="nc" id="L140">        return this.getScriptingHandler().handleEvent(eventName);</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc" id="L146">        return getResponse().getDocumentScriptable();</span>
+<span class="fc" id="L145">        return getResponse().getDocumentScriptable();</span>
     }
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L151">        return new HTMLElementScriptable(this);</span>
+<span class="fc" id="L150">        return new HTMLElementScriptable(this);</span>
     }
 
     /**
@@ -159,7 +158,7 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public String getAttribute(final String name) {
-<span class="fc" id="L162">        return NodeUtils.getNodeAttribute(_node, name);</span>
+<span class="fc" id="L161">        return NodeUtils.getNodeAttribute(_node, name);</span>
     }
 
     /**
@@ -172,8 +171,8 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public void setAttribute(final String name, final Object value) {
-<span class="nc bnc" id="L175" title="All 2 branches missed.">        NodeUtils.setNodeAttribute(_node, name, value == null ? null : value.toString());</span>
-<span class="nc" id="L176">    }</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        NodeUtils.setNodeAttribute(_node, name, value == null ? null : value.toString());</span>
+<span class="nc" id="L175">    }</span>
 
     /**
      * remove the attribute with the given name
@@ -183,20 +182,20 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
      */
     @Override
     public void removeAttribute(final String name) {
-<span class="nc" id="L186">        NodeUtils.removeNodeAttribute(_node, name);</span>
-<span class="nc" id="L187">    }</span>
+<span class="nc" id="L185">        NodeUtils.removeNodeAttribute(_node, name);</span>
+<span class="nc" id="L186">    }</span>
 
     /**
      * Returns true if this element may have an attribute with the specified name.
      */
     @Override
     public boolean isSupportedAttribute(String name) {
-<span class="nc" id="L194">        return false;</span>
+<span class="nc" id="L193">        return false;</span>
     }
 
     @Override
     public Node getNode() {
-<span class="nc" id="L199">        return _node;</span>
+<span class="nc" id="L198">        return _node;</span>
     }
 
     // ----------------------------------------------- Object methods
@@ -204,29 +203,65 @@ public abstract class BlockElement extends ParsedHTML implements HTMLSegment, HT
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L207" title="2 of 4 branches missed.">        return getClass().equals(obj.getClass()) &amp;&amp; equals((BlockElement) obj);</span>
+<span class="pc bpc" id="L206" title="2 of 4 branches missed.">        return getClass().equals(obj.getClass()) &amp;&amp; equals((BlockElement) obj);</span>
     }
 
+    /**
+     * Equals.
+     *
+     * @param block
+     *            the block
+     *
+     * @return true, if successful
+     */
     private boolean equals(BlockElement block) {
-<span class="fc" id="L211">        return _node.equals(block._node);</span>
+<span class="fc" id="L218">        return _node.equals(block._node);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L216">        return _node.hashCode();</span>
+<span class="fc" id="L223">        return _node.hashCode();</span>
     }
 
     // ------------------------------------- protected members
     // --------------------------------------------------------------
 
+    /**
+     * Instantiates a new block element.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param rootNode
+     *            the root node
+     * @param characterSet
+     *            the character set
+     */
     protected BlockElement(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {
-<span class="fc" id="L224">        super(response, frame, baseURL, baseTarget, rootNode, characterSet);</span>
-<span class="fc" id="L225">        _node = rootNode;</span>
-<span class="fc" id="L226">    }</span>
+<span class="fc" id="L247">        super(response, frame, baseURL, baseTarget, rootNode, characterSet);</span>
+<span class="fc" id="L248">        _node = rootNode;</span>
+<span class="fc" id="L249">    }</span>
 
+    /**
+     * Gets the attribute value.
+     *
+     * @param node
+     *            the node
+     * @param attributeName
+     *            the attribute name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the attribute value
+     */
     protected int getAttributeValue(Node node, String attributeName, int defaultValue) {
-<span class="nc" id="L229">        return NodeUtils.getAttributeValue(node, attributeName, defaultValue);</span>
+<span class="nc" id="L264">        return NodeUtils.getAttributeValue(node, attributeName, defaultValue);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

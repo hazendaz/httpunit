@@ -28,34 +28,37 @@ import java.util.Set;
 import org.w3c.dom.Node;
 
 /**
- * @since 1.5.2
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLElementBase.
  */
 abstract class HTMLElementBase implements HTMLElement {
 
+    /** The node. */
     private Node _node;
+
+    /** The scriptable. */
     private ScriptingHandler _scriptable;
-<span class="fc" id="L39">    private Set _supportedAttributes = new HashSet&lt;&gt;();</span>
+
+    /** The supported attributes. */
+<span class="fc" id="L42">    private Set _supportedAttributes = new HashSet&lt;&gt;();</span>
 
     @Override
     public String getID() {
-<span class="fc" id="L43">        return getAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L46">        return getAttribute(&quot;id&quot;);</span>
     }
 
     @Override
     public String getClassName() {
-<span class="fc" id="L48">        return getAttribute(&quot;class&quot;);</span>
+<span class="fc" id="L51">        return getAttribute(&quot;class&quot;);</span>
     }
 
     @Override
     public String getTitle() {
-<span class="fc" id="L53">        return getAttribute(&quot;title&quot;);</span>
+<span class="fc" id="L56">        return getAttribute(&quot;title&quot;);</span>
     }
 
     @Override
     public String getName() {
-<span class="fc" id="L58">        return getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L61">        return getAttribute(&quot;name&quot;);</span>
     }
 
     /**
@@ -63,10 +66,10 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public ScriptingHandler getScriptingHandler() {
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (_scriptable == null) {</span>
-<span class="fc" id="L67">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (_scriptable == null) {</span>
+<span class="fc" id="L70">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
         }
-<span class="fc" id="L69">        return _scriptable;</span>
+<span class="fc" id="L72">        return _scriptable;</span>
     }
 
     /**
@@ -80,7 +83,7 @@ abstract class HTMLElementBase implements HTMLElement {
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L83">        return doEventScript(eventScript);</span>
+<span class="nc" id="L86">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -88,12 +91,12 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="nc" id="L91">        return this.getScriptingHandler().doEventScript(eventScript);</span>
+<span class="nc" id="L94">        return this.getScriptingHandler().doEventScript(eventScript);</span>
     }
 
     @Override
     public boolean handleEvent(String eventName) {
-<span class="fc" id="L96">        return this.getScriptingHandler().handleEvent(eventName);</span>
+<span class="fc" id="L99">        return this.getScriptingHandler().handleEvent(eventName);</span>
     }
 
     /**
@@ -101,37 +104,37 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public String getText() {
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (_node == null) {</span>
-<span class="nc" id="L105">            return &quot;&quot;;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (_node == null) {</span>
+<span class="nc" id="L108">            return &quot;&quot;;</span>
         }
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="nc" id="L108">            return _node.getNodeValue().trim();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="nc" id="L111">            return _node.getNodeValue().trim();</span>
         }
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
-<span class="nc" id="L111">            return &quot;&quot;;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
+<span class="nc" id="L114">            return &quot;&quot;;</span>
         }
-<span class="nc" id="L113">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
+<span class="nc" id="L116">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
     }
 
     @Override
     public String getTagName() {
-<span class="fc" id="L118">        return _node.getNodeName();</span>
+<span class="fc" id="L121">        return _node.getNodeName();</span>
     }
 
     /**
-     * construct me from a node
+     * construct me from a node.
      *
      * @param node
      *            - the node to get me from
      */
-<span class="fc" id="L127">    protected HTMLElementBase(Node node) {</span>
-<span class="fc" id="L128">        _node = node;</span>
+<span class="fc" id="L130">    protected HTMLElementBase(Node node) {</span>
+<span class="fc" id="L131">        _node = node;</span>
         // default attributes every html element can have
-<span class="fc" id="L130">        supportAttribute(&quot;id&quot;);</span>
-<span class="fc" id="L131">        supportAttribute(&quot;class&quot;);</span>
-<span class="fc" id="L132">        supportAttribute(&quot;title&quot;);</span>
-<span class="fc" id="L133">        supportAttribute(&quot;name&quot;);</span>
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L133">        supportAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L134">        supportAttribute(&quot;class&quot;);</span>
+<span class="fc" id="L135">        supportAttribute(&quot;title&quot;);</span>
+<span class="fc" id="L136">        supportAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * get the Attribute with the given name - by delegating to NodeUtils
@@ -143,7 +146,7 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public String getAttribute(final String name) {
-<span class="fc" id="L146">        return NodeUtils.getNodeAttribute(getNode(), name);</span>
+<span class="fc" id="L149">        return NodeUtils.getNodeAttribute(getNode(), name);</span>
     }
 
     /**
@@ -156,8 +159,8 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public void setAttribute(final String name, final Object value) {
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());</span>
-<span class="fc" id="L160">    }</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * remove the Attribute with the given name - by delegating to NodeUtils
@@ -167,26 +170,42 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public void removeAttribute(final String name) {
-<span class="nc" id="L170">        NodeUtils.removeNodeAttribute(getNode(), name);</span>
-<span class="nc" id="L171">    }</span>
+<span class="nc" id="L173">        NodeUtils.removeNodeAttribute(getNode(), name);</span>
+<span class="nc" id="L174">    }</span>
 
     @Override
     public boolean isSupportedAttribute(String name) {
-<span class="fc" id="L175">        return _supportedAttributes.contains(name);</span>
+<span class="fc" id="L178">        return _supportedAttributes.contains(name);</span>
     }
 
+    /**
+     * Gets the attribute.
+     *
+     * @param name
+     *            the name
+     * @param defaultValue
+     *            the default value
+     *
+     * @return the attribute
+     */
     protected String getAttribute(final String name, String defaultValue) {
-<span class="nc" id="L179">        return NodeUtils.getNodeAttribute(getNode(), name, defaultValue);</span>
+<span class="nc" id="L192">        return NodeUtils.getNodeAttribute(getNode(), name, defaultValue);</span>
     }
 
     @Override
     public Node getNode() {
-<span class="fc" id="L184">        return _node;</span>
+<span class="fc" id="L197">        return _node;</span>
     }
 
+    /**
+     * Support attribute.
+     *
+     * @param name
+     *            the name
+     */
     protected void supportAttribute(String name) {
-<span class="fc" id="L188">        _supportedAttributes.add(name);</span>
-<span class="fc" id="L189">    }</span>
+<span class="fc" id="L207">        _supportedAttributes.add(name);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Creates and returns a scriptable object for this control. Subclasses should override this if they use a different
@@ -194,7 +213,7 @@ abstract class HTMLElementBase implements HTMLElement {
      */
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L197">        return new HTMLElementScriptable(this);</span>
+<span class="fc" id="L216">        return new HTMLElementScriptable(this);</span>
     }
 
 }

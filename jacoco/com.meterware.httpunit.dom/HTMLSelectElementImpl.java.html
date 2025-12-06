@@ -30,150 +30,242 @@ import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLSelectElementImpl.
+ */
 <span class="fc" id="L35">public class HTMLSelectElementImpl extends HTMLControl implements HTMLSelectElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The Constant TYPE_SELECT_ONE. */
     public static final String TYPE_SELECT_ONE = &quot;select-one&quot;;
+
+    /** The Constant TYPE_SELECT_MULTIPLE. */
     public static final String TYPE_SELECT_MULTIPLE = &quot;select-multiple&quot;;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L43">        return new HTMLSelectElementImpl();</span>
+<span class="fc" id="L48">        return new HTMLSelectElementImpl();</span>
     }
 
+    /**
+     * Adds the.
+     *
+     * @param element
+     *            the element
+     * @param before
+     *            the before
+     *
+     * @throws DOMException
+     *             the DOM exception
+     */
     @Override
     public void add(HTMLElement element, HTMLElement before) throws DOMException {
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L64">    }</span>
 
     /**
-     * simulate blur
+     * simulate blur.
      */
     @Override
     public void blur() {
-<span class="nc" id="L55">        handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L71">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L72">    }</span>
 
     /**
-     * simulate focus;
+     * simulate focus;.
      */
     @Override
     public void focus() {
-<span class="nc" id="L63">        handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L79">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L80">    }</span>
 
     @Override
     public String getType() {
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        return isMultiSelect() ? TYPE_SELECT_MULTIPLE : TYPE_SELECT_ONE;</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        return isMultiSelect() ? TYPE_SELECT_MULTIPLE : TYPE_SELECT_ONE;</span>
     }
 
+    /**
+     * Checks if is multi select.
+     *
+     * @return true, if is multi select
+     */
     private boolean isMultiSelect() {
-<span class="fc bfc" id="L72" title="All 4 branches covered.">        return getMultiple() &amp;&amp; getSize() &gt; 1;</span>
+<span class="fc bfc" id="L93" title="All 4 branches covered.">        return getMultiple() &amp;&amp; getSize() &gt; 1;</span>
     }
 
+    /**
+     * Gets the length.
+     *
+     * @return the length
+     */
     @Override
     public int getLength() {
-<span class="fc" id="L77">        return getOptions().getLength();</span>
+<span class="fc" id="L103">        return getOptions().getLength();</span>
     }
 
+    /**
+     * Gets the multiple.
+     *
+     * @return the multiple
+     */
     @Override
     public boolean getMultiple() {
-<span class="fc" id="L82">        return getBooleanAttribute(&quot;multiple&quot;);</span>
+<span class="fc" id="L113">        return getBooleanAttribute(&quot;multiple&quot;);</span>
     }
 
+    /**
+     * Gets the options.
+     *
+     * @return the options
+     */
     @Override
     public HTMLCollection getOptions() {
-<span class="fc" id="L87">        return HTMLCollectionImpl</span>
-<span class="fc" id="L88">                .createHTMLCollectionImpl(getElementsByTagName(getHtmlDocument().toNodeCase(&quot;option&quot;)));</span>
+<span class="fc" id="L123">        return HTMLCollectionImpl</span>
+<span class="fc" id="L124">                .createHTMLCollectionImpl(getElementsByTagName(getHtmlDocument().toNodeCase(&quot;option&quot;)));</span>
     }
 
+    /**
+     * Gets the selected index.
+     *
+     * @return the selected index
+     */
     @Override
     public int getSelectedIndex() {
-<span class="fc" id="L93">        HTMLCollection options = getOptions();</span>
-<span class="fc bfc" id="L94" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">            if (((HTMLOptionElement) options.item(i)).getSelected()) {</span>
-<span class="fc" id="L96">                return i;</span>
+<span class="fc" id="L134">        HTMLCollection options = getOptions();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (((HTMLOptionElement) options.item(i)).getSelected()) {</span>
+<span class="fc" id="L137">                return i;</span>
             }
         }
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        return isMultiSelect() ? -1 : 0;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        return isMultiSelect() ? -1 : 0;</span>
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     @Override
     public String getValue() {
-<span class="fc" id="L104">        HTMLCollection options = getOptions();</span>
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc" id="L106">            HTMLOptionElement optionElement = (HTMLOptionElement) options.item(i);</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (optionElement.getSelected()) {</span>
-<span class="fc" id="L108">                return optionElement.getValue();</span>
+<span class="fc" id="L150">        HTMLCollection options = getOptions();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc" id="L152">            HTMLOptionElement optionElement = (HTMLOptionElement) options.item(i);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (optionElement.getSelected()) {</span>
+<span class="fc" id="L154">                return optionElement.getValue();</span>
             }
         }
-<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        return isMultiSelect() || options.getLength() == 0 ? null : ((HTMLOptionElement) options.item(0)).getValue();</span>
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">        return isMultiSelect() || options.getLength() == 0 ? null : ((HTMLOptionElement) options.item(0)).getValue();</span>
     }
 
+    /**
+     * Gets the size.
+     *
+     * @return the size
+     */
     @Override
     public int getSize() {
-<span class="fc" id="L116">        return getIntegerAttribute(&quot;size&quot;);</span>
+<span class="fc" id="L167">        return getIntegerAttribute(&quot;size&quot;);</span>
     }
 
+    /**
+     * Removes the.
+     *
+     * @param index
+     *            the index
+     */
     @Override
     public void remove(int index) {
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L178">    }</span>
 
+    /**
+     * Sets the multiple.
+     *
+     * @param multiple
+     *            the new multiple
+     */
     @Override
     public void setMultiple(boolean multiple) {
-<span class="fc" id="L125">        setAttribute(&quot;multiple&quot;, multiple);</span>
-<span class="fc" id="L126">    }</span>
+<span class="fc" id="L188">        setAttribute(&quot;multiple&quot;, multiple);</span>
+<span class="fc" id="L189">    }</span>
 
+    /**
+     * Sets the selected index.
+     *
+     * @param selectedIndex
+     *            the new selected index
+     */
     @Override
     public void setSelectedIndex(int selectedIndex) {
-<span class="fc" id="L130">        HTMLCollection options = getOptions();</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc" id="L132">            HTMLOptionElementImpl optionElement = (HTMLOptionElementImpl) options.item(i);</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">            optionElement.setSelected(i == selectedIndex);</span>
+<span class="fc" id="L199">        HTMLCollection options = getOptions();</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc" id="L201">            HTMLOptionElementImpl optionElement = (HTMLOptionElementImpl) options.item(i);</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">            optionElement.setSelected(i == selectedIndex);</span>
         }
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L204">    }</span>
 
+    /**
+     * Sets the size.
+     *
+     * @param size
+     *            the new size
+     */
     @Override
     public void setSize(int size) {
-<span class="fc" id="L139">        setAttribute(&quot;size&quot;, size);</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L214">        setAttribute(&quot;size&quot;, size);</span>
+<span class="fc" id="L215">    }</span>
 
+    /**
+     * Gets the index of.
+     *
+     * @param option
+     *            the option
+     *
+     * @return the index of
+     */
     int getIndexOf(HTMLOptionElementImpl option) {
-<span class="fc" id="L143">        HTMLCollection options = getOptions();</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (options.item(i) == option) {</span>
-<span class="fc" id="L146">                return i;</span>
+<span class="fc" id="L226">        HTMLCollection options = getOptions();</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">            if (options.item(i) == option) {</span>
+<span class="fc" id="L229">                return i;</span>
             }
         }
-<span class="nc" id="L149">        throw new IllegalStateException(&quot;option is not part of this select&quot;);</span>
+<span class="nc" id="L232">        throw new IllegalStateException(&quot;option is not part of this select&quot;);</span>
     }
 
+    /**
+     * Clear selected.
+     */
     void clearSelected() {
-<span class="fc" id="L153">        setSelectedIndex(-1);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L239">        setSelectedIndex(-1);</span>
+<span class="fc" id="L240">    }</span>
 
     @Override
     void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L158">        HTMLCollection options = getOptions();</span>
-<span class="fc" id="L159">        String name = getName();</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc" id="L161">            ((HTMLOptionElementImpl) options.item(i)).addValueIfSelected(processor, name, characterSet);</span>
+<span class="fc" id="L244">        HTMLCollection options = getOptions();</span>
+<span class="fc" id="L245">        String name = getName();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc" id="L247">            ((HTMLOptionElementImpl) options.item(i)).addValueIfSelected(processor, name, characterSet);</span>
         }
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L249">    }</span>
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
     @Override
     public void setValue(String value) {
-<span class="nc" id="L167">        setAttribute(&quot;value&quot;, value);</span>
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L259">        setAttribute(&quot;value&quot;, value);</span>
+<span class="nc" id="L260">    }</span>
 
     @Override
     public void reset() {
-<span class="fc" id="L172">        HTMLCollection options = getOptions();</span>
-<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
-<span class="fc" id="L174">            HTMLControl optionElement = (HTMLControl) options.item(i);</span>
-<span class="fc" id="L175">            optionElement.reset();</span>
+<span class="fc" id="L264">        HTMLCollection options = getOptions();</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        for (int i = 0; i &lt; options.getLength(); i++) {</span>
+<span class="fc" id="L266">            HTMLControl optionElement = (HTMLControl) options.item(i);</span>
+<span class="fc" id="L267">            optionElement.reset();</span>
         }
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L269">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

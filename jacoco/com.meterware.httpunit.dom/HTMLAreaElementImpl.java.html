@@ -25,100 +25,189 @@ import java.net.URL;
 import org.w3c.dom.html.HTMLAreaElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLAreaElementImpl.
+ */
 <span class="fc" id="L30">public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L36">        return new HTMLAreaElementImpl();</span>
+<span class="fc" id="L37">        return new HTMLAreaElementImpl();</span>
     }
 
+    /**
+     * Gets the href.
+     *
+     * @return the href
+     */
     @Override
     public String getHref() {
         try {
-<span class="nc" id="L42">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl(),</span>
-<span class="nc" id="L43">                    getAttributeWithNoDefault(&quot;href&quot;)).toExternalForm();</span>
-<span class="nc" id="L44">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L45">            return e.toString();</span>
+<span class="nc" id="L48">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl(),</span>
+<span class="nc" id="L49">                    getAttributeWithNoDefault(&quot;href&quot;)).toExternalForm();</span>
+<span class="nc" id="L50">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L51">            return e.toString();</span>
         }
     }
 
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
     @Override
     public String getTarget() {
-<span class="fc" id="L51">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+<span class="fc" id="L62">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
     }
 
+    /**
+     * Sets the href.
+     *
+     * @param href
+     *            the new href
+     */
     @Override
     public void setHref(String href) {
-<span class="fc" id="L56">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L73">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L74">    }</span>
 
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
     @Override
     public void setTarget(String target) {
-<span class="fc" id="L61">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L84">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L85">    }</span>
 
+    /**
+     * Gets the access key.
+     *
+     * @return the access key
+     */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L66">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+<span class="fc" id="L94">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
     }
 
+    /**
+     * Gets the coords.
+     *
+     * @return the coords
+     */
     @Override
     public String getCoords() {
-<span class="fc" id="L71">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
+<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
     }
 
+    /**
+     * Gets the shape.
+     *
+     * @return the shape
+     */
     @Override
     public String getShape() {
-<span class="fc" id="L76">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
+<span class="fc" id="L114">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
     }
 
+    /**
+     * Gets the tab index.
+     *
+     * @return the tab index
+     */
     @Override
     public int getTabIndex() {
-<span class="fc" id="L81">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
+<span class="fc" id="L124">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
     }
 
+    /**
+     * Sets the access key.
+     *
+     * @param accessKey
+     *            the new access key
+     */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L86">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L135">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L136">    }</span>
 
+    /**
+     * Sets the coords.
+     *
+     * @param coords
+     *            the new coords
+     */
     @Override
     public void setCoords(String coords) {
-<span class="fc" id="L91">        setAttribute(&quot;coords&quot;, coords);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L146">        setAttribute(&quot;coords&quot;, coords);</span>
+<span class="fc" id="L147">    }</span>
 
+    /**
+     * Sets the shape.
+     *
+     * @param shape
+     *            the new shape
+     */
     @Override
     public void setShape(String shape) {
-<span class="fc" id="L96">        setAttribute(&quot;shape&quot;, shape);</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L157">        setAttribute(&quot;shape&quot;, shape);</span>
+<span class="fc" id="L158">    }</span>
 
+    /**
+     * Sets the tab index.
+     *
+     * @param tabIndex
+     *            the new tab index
+     */
     @Override
     public void setTabIndex(int tabIndex) {
-<span class="fc" id="L101">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L168">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
+<span class="fc" id="L169">    }</span>
 
+    /**
+     * Gets the alt.
+     *
+     * @return the alt
+     */
     @Override
     public String getAlt() {
-<span class="fc" id="L106">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+<span class="fc" id="L178">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
     }
 
+    /**
+     * Gets the no href.
+     *
+     * @return the no href
+     */
     @Override
     public boolean getNoHref() {
-<span class="fc" id="L111">        return getBooleanAttribute(&quot;nohref&quot;);</span>
+<span class="fc" id="L188">        return getBooleanAttribute(&quot;nohref&quot;);</span>
     }
 
+    /**
+     * Sets the alt.
+     *
+     * @param alt
+     *            the new alt
+     */
     @Override
     public void setAlt(String alt) {
-<span class="fc" id="L116">        setAttribute(&quot;alt&quot;, alt);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L199">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L200">    }</span>
 
+    /**
+     * Sets the no href.
+     *
+     * @param noHref
+     *            the new no href
+     */
     @Override
     public void setNoHref(boolean noHref) {
-<span class="fc" id="L121">        setAttribute(&quot;nohref&quot;, noHref);</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L210">        setAttribute(&quot;nohref&quot;, noHref);</span>
+<span class="fc" id="L211">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

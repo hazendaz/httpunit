@@ -30,47 +30,92 @@ import org.w3c.dom.Node;
  **/
 class WebFrame extends HTMLElementBase {
 
+    /** The selector. */
     private FrameSelector _selector;
 
+    /** The response. */
     private WebResponse _response;
+
+    /** The element. */
     private Node _element;
 
+    /** The base URL. */
     private URL _baseURL;
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc" id="L42">        return _response.getDocumentScriptable();</span>
+<span class="fc" id="L47">        return _response.getDocumentScriptable();</span>
     }
 
     // ---------------------------------------- package methods -----------------------------------------
 
+    /**
+     * Instantiates a new web frame.
+     *
+     * @param response
+     *            the response
+     * @param baseURL
+     *            the base URL
+     * @param frameNode
+     *            the frame node
+     * @param parentFrame
+     *            the parent frame
+     */
     WebFrame(WebResponse response, URL baseURL, Node frameNode, FrameSelector parentFrame) {
-<span class="fc" id="L48">        super(frameNode);</span>
-<span class="fc" id="L49">        _response = response;</span>
-<span class="fc" id="L50">        _element = frameNode;</span>
-<span class="fc" id="L51">        _baseURL = baseURL;</span>
-<span class="fc" id="L52">        _selector = getFrameSelector(parentFrame);</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L65">        super(frameNode);</span>
+<span class="fc" id="L66">        _response = response;</span>
+<span class="fc" id="L67">        _element = frameNode;</span>
+<span class="fc" id="L68">        _baseURL = baseURL;</span>
+<span class="fc" id="L69">        _selector = getFrameSelector(parentFrame);</span>
+<span class="fc" id="L70">    }</span>
 
+    /**
+     * Gets the frame name.
+     *
+     * @return the frame name
+     */
     String getFrameName() {
-<span class="fc" id="L56">        return _selector.getName();</span>
+<span class="fc" id="L78">        return _selector.getName();</span>
     }
 
+    /**
+     * Gets the selector.
+     *
+     * @return the selector
+     */
     FrameSelector getSelector() {
-<span class="fc" id="L60">        return _selector;</span>
+<span class="fc" id="L87">        return _selector;</span>
     }
 
+    /**
+     * Gets the frame selector.
+     *
+     * @param parentFrame
+     *            the parent frame
+     *
+     * @return the frame selector
+     */
     private FrameSelector getFrameSelector(FrameSelector parentFrame) {
-<span class="fc" id="L64">        return FrameHolder.newNestedFrame(parentFrame, super.getName());</span>
+<span class="fc" id="L99">        return FrameHolder.newNestedFrame(parentFrame, super.getName());</span>
     }
 
+    /**
+     * Gets the initial request.
+     *
+     * @return the initial request
+     */
     WebRequest getInitialRequest() {
-<span class="fc" id="L68">        return new GetMethodWebRequest(_baseURL,</span>
-<span class="fc" id="L69">                HttpUnitUtils.trimFragment(NodeUtils.getNodeAttribute(_element, &quot;src&quot;)), _selector);</span>
+<span class="fc" id="L108">        return new GetMethodWebRequest(_baseURL,</span>
+<span class="fc" id="L109">                HttpUnitUtils.trimFragment(NodeUtils.getNodeAttribute(_element, &quot;src&quot;)), _selector);</span>
     }
 
+    /**
+     * Checks for initial request.
+     *
+     * @return true, if successful
+     */
     boolean hasInitialRequest() {
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        return NodeUtils.getNodeAttribute(_element, &quot;src&quot;).length() &gt; 0;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        return NodeUtils.getNodeAttribute(_element, &quot;src&quot;).length() &gt; 0;</span>
     }
 
 }

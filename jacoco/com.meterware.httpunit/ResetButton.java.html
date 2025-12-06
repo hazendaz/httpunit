@@ -23,26 +23,32 @@ import com.meterware.httpunit.dom.HTMLControl;
 
 /**
  * Represents a form 'reset' button.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class ResetButton extends Button {
 
     @Override
     public String getType() {
-<span class="fc" id="L33">        return RESET_BUTTON_TYPE;</span>
+<span class="fc" id="L31">        return RESET_BUTTON_TYPE;</span>
     }
 
+    /**
+     * Instantiates a new reset button.
+     *
+     * @param form
+     *            the form
+     * @param control
+     *            the control
+     */
     ResetButton(WebForm form, HTMLControl control) {
-<span class="fc" id="L37">        super(form, control);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L43">        super(form, control);</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * overridden button action
      */
     @Override
     protected void doButtonAction(int x, int y) {
-<span class="fc" id="L45">        getForm().reset();</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L51">        getForm().reset();</span>
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -31,121 +31,173 @@ import org.xml.sax.SAXException;
 
 /**
  * A button in a form.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class Button extends FormControl {
 
+    /** The Constant WITH_ID. */
     public static final HTMLElementPredicate WITH_ID;
+
+    /** The Constant WITH_LABEL. */
     public static final HTMLElementPredicate WITH_LABEL;
 
+    /** The base response. */
     private WebResponse _baseResponse;
+
+    /** The was enabled. */
     // remember the last verifyEnabled result
-<span class="fc" id="L44">    private boolean _wasEnabled = true;</span>
+<span class="fc" id="L48">    private boolean _wasEnabled = true;</span>
 
     @Override
     public String getType() {
-<span class="fc" id="L48">        return BUTTON_TYPE;</span>
+<span class="fc" id="L52">        return BUTTON_TYPE;</span>
     }
 
+    /**
+     * Instantiates a new button.
+     *
+     * @param form
+     *            the form
+     */
     Button(WebForm form) {
-<span class="fc" id="L52">        super(form);</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L62">        super(form);</span>
+<span class="fc" id="L63">    }</span>
 
     /**
      * construct a button from the given html control and assign the event handlers for onclick, onmousedown and
-     * onmouseup
+     * onmouseup.
      *
      * @param form
+     *            the form
      * @param control
+     *            the control
      */
     Button(WebForm form, HTMLControl control) {
-<span class="fc" id="L63">        super(form, control);</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L75">        super(form, control);</span>
+<span class="fc" id="L76">    }</span>
 
+    /**
+     * Instantiates a new button.
+     *
+     * @param response
+     *            the response
+     * @param control
+     *            the control
+     */
     Button(WebResponse response, HTMLControl control) {
-<span class="fc" id="L67">        super(null, control);</span>
-<span class="fc" id="L68">        _baseResponse = response;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L87">        super(null, control);</span>
+<span class="fc" id="L88">        _baseResponse = response;</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Returns the value associated with this button.
-     **/
+     *
+     * @return the value
+     */
     public String getValue() {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        return emptyIfNull(getNode() instanceof HTMLInputElementImpl ? ((HTMLInputElementImpl) getNode()).getValue()</span>
-<span class="fc" id="L76">                : ((HTMLButtonElementImpl) getNode()).getValue());</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        return emptyIfNull(getNode() instanceof HTMLInputElementImpl ? ((HTMLInputElementImpl) getNode()).getValue()</span>
+<span class="fc" id="L98">                : ((HTMLButtonElementImpl) getNode()).getValue());</span>
     }
 
     /**
-     * the onClickSequence for this button
+     * the onClickSequence for this button.
+     *
+     * @param x
+     *            the x
+     * @param y
+     *            the y
      *
      * @return true if the even was handled
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     protected boolean doOnClickSequence(int x, int y) throws IOException, SAXException {
-<span class="fc" id="L85">        verifyButtonEnabled();</span>
-<span class="fc" id="L86">        boolean result = doOnClickEvent();</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (result) {</span>
-<span class="fc" id="L88">            doButtonAction(x, y);</span>
+<span class="fc" id="L117">        verifyButtonEnabled();</span>
+<span class="fc" id="L118">        boolean result = doOnClickEvent();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (result) {</span>
+<span class="fc" id="L120">            doButtonAction(x, y);</span>
         }
-<span class="fc" id="L90">        this.rememberEnableState();</span>
-<span class="fc" id="L91">        return result;</span>
+<span class="fc" id="L122">        this.rememberEnableState();</span>
+<span class="fc" id="L123">        return result;</span>
     }
 
     /**
      * Performs the action associated with clicking this button after running any 'onClick' script. For a submit button
      * this typically submits the form.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     public void click() throws IOException, SAXException {
-<span class="fc" id="L99">        doOnClickSequence(0, 0);</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L136">        doOnClickSequence(0, 0);</span>
+<span class="fc" id="L137">    }</span>
 
+    /**
+     * Was enabled.
+     *
+     * @return true, if successful
+     */
     boolean wasEnabled() {
-<span class="fc" id="L103">        return _wasEnabled;</span>
+<span class="fc" id="L145">        return _wasEnabled;</span>
     }
 
     /**
-     * remember wether the button was enabled
+     * remember wether the button was enabled.
      */
     public void rememberEnableState() {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        _wasEnabled = !isDisabled();</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        _wasEnabled = !isDisabled();</span>
+<span class="fc" id="L153">    }</span>
 
     /**
-     * verifyButtonEnabled
+     * verifyButtonEnabled.
      */
     protected void verifyButtonEnabled() {
-<span class="fc" id="L117">        rememberEnableState();</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (isDisabled()) {</span>
-<span class="nc" id="L119">            throwDisabledException();</span>
+<span class="fc" id="L159">        rememberEnableState();</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (isDisabled()) {</span>
+<span class="nc" id="L161">            throwDisabledException();</span>
         }
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L163">    }</span>
 
     /**
-     * throw an exception that I'm disbled
+     * throw an exception that I'm disbled.
      */
     public void throwDisabledException() {
-<span class="fc" id="L127">        throw new DisabledButtonException(this);</span>
+<span class="fc" id="L169">        throw new DisabledButtonException(this);</span>
     }
 
     /**
-     * This exception is thrown on an attempt to click on a button disabled button
-     **/
+     * This exception is thrown on an attempt to click on a button disabled button.
+     */
     class DisabledButtonException extends IllegalStateException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L137">        DisabledButtonException(Button button) {</span>
-<span class="fc" id="L138">            _name = button.getName();</span>
-<span class="fc" id="L139">            _value = button.getValue();</span>
-<span class="fc" id="L140">        }</span>
+        /**
+         * Instantiates a new disabled button exception.
+         *
+         * @param button
+         *            the button
+         */
+<span class="fc" id="L186">        DisabledButtonException(Button button) {</span>
+<span class="fc" id="L187">            _name = button.getName();</span>
+<span class="fc" id="L188">            _value = button.getValue();</span>
+<span class="fc" id="L189">        }</span>
 
         @Override
         public String getMessage() {
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().isEmpty() ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().isEmpty() ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
                     + &quot; is disabled and may not be clicked.&quot;;
         }
 
+        /** The name. */
         protected String _name;
+
+        /** The value. */
         protected String _value;
 
     }
@@ -155,7 +207,7 @@ public class Button extends FormControl {
      **/
     @Override
     public boolean isDisabled() {
-<span class="fc" id="L158">        return super.isDisabled();</span>
+<span class="fc" id="L210">        return super.isDisabled();</span>
     }
 
     /**
@@ -167,60 +219,67 @@ public class Button extends FormControl {
      *            - the y coordinate
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     protected void doButtonAction(int x, int y) throws IOException, SAXException {
         // pseudo - abstract
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Perform the normal action of this button. delegate to the x-y version
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws SAXException
+     *             the SAX exception
      */
     protected void doButtonAction() throws IOException, SAXException {
-<span class="fc" id="L183">        doButtonAction(0, 0);</span>
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L239">        doButtonAction(0, 0);</span>
+<span class="fc" id="L240">    }</span>
 
     // -------------------------------------------------- FormControl methods
     // -----------------------------------------------
 
     @Override
     protected String[] getValues() {
-<span class="nc" id="L191">        return new String[0];</span>
+<span class="nc" id="L247">        return new String[0];</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L252">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L200">        return new Scriptable();</span>
+<span class="fc" id="L256">        return new Scriptable();</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (getForm() != null) {</span>
-<span class="fc" id="L206">            return super.getParentDelegate();</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (getForm() != null) {</span>
+<span class="fc" id="L262">            return super.getParentDelegate();</span>
         }
-<span class="fc" id="L208">        return _baseResponse.getDocumentScriptable();</span>
+<span class="fc" id="L264">        return _baseResponse.getDocumentScriptable();</span>
     }
 
-<span class="fc" id="L211">    class Scriptable extends FormControl.Scriptable {</span>
+    /**
+     * The Class Scriptable.
+     */
+<span class="fc" id="L270">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public void click() throws IOException, SAXException {
-<span class="fc" id="L215">            doButtonAction();</span>
-<span class="fc" id="L216">        }</span>
+<span class="fc" id="L274">            doButtonAction();</span>
+<span class="fc" id="L275">        }</span>
     }
 
     static {
-<span class="fc" id="L220">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
+<span class="fc" id="L279">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
 
-<span class="pc" id="L222">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
+<span class="pc" id="L281">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
 
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L283">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

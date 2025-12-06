@@ -27,46 +27,61 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class UncheckedParameterHolder.
+ */
 final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
 
-<span class="fc" id="L34">    private static final String[] NO_VALUES = {};</span>
+    /** The Constant NO_VALUES. */
+<span class="fc" id="L35">    private static final String[] NO_VALUES = {};</span>
+
+    /** The character set. */
     private final String _characterSet;
 
-<span class="fc" id="L37">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
+    /** The parameters. */
+<span class="fc" id="L41">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
+
+    /** The submit as mime. */
     private boolean _submitAsMime;
 
-<span class="fc" id="L40">    UncheckedParameterHolder() {</span>
-<span class="fc" id="L41">        _characterSet = HttpUnitOptions.getDefaultCharacterSet();</span>
-<span class="fc" id="L42">    }</span>
+    /**
+     * Instantiates a new unchecked parameter holder.
+     */
+<span class="fc" id="L49">    UncheckedParameterHolder() {</span>
+<span class="fc" id="L50">        _characterSet = HttpUnitOptions.getDefaultCharacterSet();</span>
+<span class="fc" id="L51">    }</span>
 
-<span class="fc" id="L44">    UncheckedParameterHolder(WebRequestSource source) {</span>
-<span class="fc" id="L45">        _characterSet = source.getCharacterSet();</span>
-<span class="fc" id="L46">        _submitAsMime = source.isSubmitAsMime();</span>
+    /**
+     * Instantiates a new unchecked parameter holder.
+     *
+     * @param source
+     *            the source
+     */
+<span class="fc" id="L59">    UncheckedParameterHolder(WebRequestSource source) {</span>
+<span class="fc" id="L60">        _characterSet = source.getCharacterSet();</span>
+<span class="fc" id="L61">        _submitAsMime = source.isSubmitAsMime();</span>
 
         try {
-<span class="fc" id="L49">            source.recordPredefinedParameters(this);</span>
-<span class="fc" id="L50">            source.recordParameters(this);</span>
-<span class="nc" id="L51">        } catch (IOException e) {</span>
-<span class="nc" id="L52">            throw new RuntimeException(&quot;This should never happen&quot;);</span>
-<span class="fc" id="L53">        }</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L64">            source.recordPredefinedParameters(this);</span>
+<span class="fc" id="L65">            source.recordParameters(this);</span>
+<span class="nc" id="L66">        } catch (IOException e) {</span>
+<span class="nc" id="L67">            throw new RuntimeException(&quot;This should never happen&quot;);</span>
+<span class="fc" id="L68">        }</span>
+<span class="fc" id="L69">    }</span>
 
     // ----------------------------------- ParameterProcessor methods
     // -------------------------------------------------------
 
     @Override
     public void addParameter(String name, String value, String characterSet) throws IOException {
-<span class="fc" id="L61">        Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="fc" id="L62">        _parameters.put(name, HttpUnitUtils.withNewValue(values, value));</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L76">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc" id="L77">        _parameters.put(name, HttpUnitUtils.withNewValue(values, value));</span>
+<span class="fc" id="L78">    }</span>
 
     @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
-<span class="fc" id="L67">        Object[] values = (Object[]) _parameters.get(parameterName);</span>
-<span class="fc" id="L68">        _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L82">        Object[] values = (Object[]) _parameters.get(parameterName);</span>
+<span class="fc" id="L83">        _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));</span>
+<span class="fc" id="L84">    }</span>
 
     // ----------------------------------- ParameterHolder methods
     // ----------------------------------------------------------
@@ -76,97 +91,105 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      **/
     @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (imageButton.isValidImageButton()) {</span>
-<span class="fc" id="L80">            setParameter(imageButton.positionParameterName(&quot;x&quot;), Integer.toString(x));</span>
-<span class="fc" id="L81">            setParameter(imageButton.positionParameterName(&quot;y&quot;), Integer.toString(y));</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (imageButton.isValidImageButton()) {</span>
+<span class="fc" id="L95">            setParameter(imageButton.positionParameterName(&quot;x&quot;), Integer.toString(x));</span>
+<span class="fc" id="L96">            setParameter(imageButton.positionParameterName(&quot;y&quot;), Integer.toString(y));</span>
         }
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * Does nothing, since unchecked requests treat all parameters the same.
      **/
     @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L97">        Enumeration e = _parameters.keys();</span>
+<span class="fc" id="L112">        Enumeration e = _parameters.keys();</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        while (e.hasMoreElements()) {</span>
-<span class="fc" id="L100">            String name = (String) e.nextElement();</span>
-<span class="fc" id="L101">            Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">            for (Object value : values) {</span>
-<span class="fc bfc" id="L103" title="All 4 branches covered.">                if (value instanceof String || value == null) {</span>
-<span class="fc" id="L104">                    processor.addParameter(name, (String) value, _characterSet);</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">                } else if (value instanceof UploadFileSpec) {</span>
-<span class="fc" id="L106">                    processor.addFile(name, (UploadFileSpec) value);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        while (e.hasMoreElements()) {</span>
+<span class="fc" id="L115">            String name = (String) e.nextElement();</span>
+<span class="fc" id="L116">            Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            for (Object value : values) {</span>
+<span class="fc bfc" id="L118" title="All 4 branches covered.">                if (value instanceof String || value == null) {</span>
+<span class="fc" id="L119">                    processor.addParameter(name, (String) value, _characterSet);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                } else if (value instanceof UploadFileSpec) {</span>
+<span class="fc" id="L121">                    processor.addFile(name, (UploadFileSpec) value);</span>
                 }
             }
-<span class="fc" id="L109">        }</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L124">        }</span>
+<span class="fc" id="L125">    }</span>
 
     @Override
     String[] getParameterNames() {
-<span class="nc" id="L114">        return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);</span>
+<span class="nc" id="L129">        return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);</span>
     }
 
+    /**
+     * Gets the parameter value.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter value
+     */
     String getParameterValue(String name) {
-<span class="nc" id="L118">        String[] values = getParameterValues(name);</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">        return values.length == 0 ? null : values[0];</span>
+<span class="nc" id="L141">        String[] values = getParameterValues(name);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        return values.length == 0 ? null : values[0];</span>
     }
 
     @Override
     String[] getParameterValues(String name) {
-<span class="fc" id="L124">        Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (values == null) {</span>
-<span class="nc" id="L126">            return NO_VALUES;</span>
+<span class="fc" id="L147">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (values == null) {</span>
+<span class="nc" id="L149">            return NO_VALUES;</span>
         }
 
-<span class="fc" id="L129">        String[] result = new String[values.length];</span>
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            result[i] = values[i] instanceof UploadFileSpec ? ((UploadFileSpec) values[i]).getFileName()</span>
-<span class="fc" id="L132">                    : values[i].toString();</span>
+<span class="fc" id="L152">        String[] result = new String[values.length];</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">            result[i] = values[i] instanceof UploadFileSpec ? ((UploadFileSpec) values[i]).getFileName()</span>
+<span class="fc" id="L155">                    : values[i].toString();</span>
         }
-<span class="fc" id="L134">        return result;</span>
+<span class="fc" id="L157">        return result;</span>
     }
 
     @Override
     void removeParameter(String name) {
-<span class="nc" id="L139">        _parameters.remove(name);</span>
-<span class="nc" id="L140">    }</span>
+<span class="nc" id="L162">        _parameters.remove(name);</span>
+<span class="nc" id="L163">    }</span>
 
     @Override
     void setParameter(String name, String value) {
-<span class="fc" id="L144">        _parameters.put(name, new Object[] { value });</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L167">        _parameters.put(name, new Object[] { value });</span>
+<span class="fc" id="L168">    }</span>
 
     @Override
     void setParameter(String name, String[] values) {
-<span class="fc" id="L149">        _parameters.put(name, values);</span>
-<span class="fc" id="L150">    }</span>
+<span class="fc" id="L172">        _parameters.put(name, values);</span>
+<span class="fc" id="L173">    }</span>
 
     @Override
     void setParameter(String name, UploadFileSpec[] files) {
-<span class="fc" id="L154">        _parameters.put(name, files);</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L177">        _parameters.put(name, files);</span>
+<span class="fc" id="L178">    }</span>
 
     @Override
     boolean isFileParameter(String name) {
-<span class="fc" id="L159">        return true;</span>
+<span class="fc" id="L182">        return true;</span>
     }
 
     @Override
     String getCharacterSet() {
-<span class="fc" id="L164">        return _characterSet;</span>
+<span class="fc" id="L187">        return _characterSet;</span>
     }
 
     @Override
     boolean isSubmitAsMime() {
-<span class="fc" id="L169">        return _submitAsMime;</span>
+<span class="fc" id="L192">        return _submitAsMime;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

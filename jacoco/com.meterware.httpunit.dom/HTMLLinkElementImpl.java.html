@@ -22,106 +22,206 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLLinkElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLLinkElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLLinkElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLLinkElementImpl();</span>
     }
 
+    /**
+     * Gets the charset.
+     *
+     * @return the charset
+     */
     @Override
     public String getCharset() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
     }
 
+    /**
+     * Gets the disabled.
+     *
+     * @return the disabled
+     */
     @Override
     public boolean getDisabled() {
-<span class="fc" id="L43">        return getBooleanAttribute(&quot;disabled&quot;);</span>
+<span class="fc" id="L54">        return getBooleanAttribute(&quot;disabled&quot;);</span>
     }
 
+    /**
+     * Gets the href.
+     *
+     * @return the href
+     */
     @Override
     public String getHref() {
-<span class="fc" id="L48">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
+<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
     }
 
+    /**
+     * Gets the hreflang.
+     *
+     * @return the hreflang
+     */
     @Override
     public String getHreflang() {
-<span class="fc" id="L53">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
+<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
     }
 
+    /**
+     * Gets the media.
+     *
+     * @return the media
+     */
     @Override
     public String getMedia() {
-<span class="fc" id="L58">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
+<span class="fc" id="L84">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
     }
 
+    /**
+     * Gets the rel.
+     *
+     * @return the rel
+     */
     @Override
     public String getRel() {
-<span class="fc" id="L63">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
+<span class="fc" id="L94">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
     }
 
+    /**
+     * Gets the rev.
+     *
+     * @return the rev
+     */
     @Override
     public String getRev() {
-<span class="fc" id="L68">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
+<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
     }
 
+    /**
+     * Gets the target.
+     *
+     * @return the target
+     */
     @Override
     public String getTarget() {
-<span class="fc" id="L73">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+<span class="fc" id="L114">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
     }
 
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
     @Override
     public String getType() {
-<span class="fc" id="L78">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
+<span class="fc" id="L124">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
     }
 
+    /**
+     * Sets the charset.
+     *
+     * @param charset
+     *            the new charset
+     */
     @Override
     public void setCharset(String charset) {
-<span class="fc" id="L83">        setAttribute(&quot;charset&quot;, charset);</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L135">        setAttribute(&quot;charset&quot;, charset);</span>
+<span class="fc" id="L136">    }</span>
 
+    /**
+     * Sets the disabled.
+     *
+     * @param disabled
+     *            the new disabled
+     */
     @Override
     public void setDisabled(boolean disabled) {
-<span class="fc" id="L88">        setAttribute(&quot;disabled&quot;, disabled);</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L146">        setAttribute(&quot;disabled&quot;, disabled);</span>
+<span class="fc" id="L147">    }</span>
 
+    /**
+     * Sets the href.
+     *
+     * @param href
+     *            the new href
+     */
     @Override
     public void setHref(String href) {
-<span class="fc" id="L93">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L157">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L158">    }</span>
 
+    /**
+     * Sets the hreflang.
+     *
+     * @param hreflang
+     *            the new hreflang
+     */
     @Override
     public void setHreflang(String hreflang) {
-<span class="fc" id="L98">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L168">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
+<span class="fc" id="L169">    }</span>
 
+    /**
+     * Sets the media.
+     *
+     * @param media
+     *            the new media
+     */
     @Override
     public void setMedia(String media) {
-<span class="fc" id="L103">        setAttribute(&quot;media&quot;, media);</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L179">        setAttribute(&quot;media&quot;, media);</span>
+<span class="fc" id="L180">    }</span>
 
+    /**
+     * Sets the rel.
+     *
+     * @param rel
+     *            the new rel
+     */
     @Override
     public void setRel(String rel) {
-<span class="fc" id="L108">        setAttribute(&quot;rel&quot;, rel);</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L190">        setAttribute(&quot;rel&quot;, rel);</span>
+<span class="fc" id="L191">    }</span>
 
+    /**
+     * Sets the rev.
+     *
+     * @param rev
+     *            the new rev
+     */
     @Override
     public void setRev(String rev) {
-<span class="fc" id="L113">        setAttribute(&quot;rev&quot;, rev);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L201">        setAttribute(&quot;rev&quot;, rev);</span>
+<span class="fc" id="L202">    }</span>
 
+    /**
+     * Sets the target.
+     *
+     * @param target
+     *            the new target
+     */
     @Override
     public void setTarget(String target) {
-<span class="fc" id="L118">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L212">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L213">    }</span>
 
+    /**
+     * Sets the type.
+     *
+     * @param type
+     *            the new type
+     */
     @Override
     public void setType(String type) {
-<span class="fc" id="L123">        setAttribute(&quot;type&quot;, type);</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L223">        setAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L224">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

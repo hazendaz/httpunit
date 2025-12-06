@@ -22,6 +22,7 @@ package com.meterware.httpunit.dom;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -33,29 +34,49 @@ import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html.HTMLIFrameElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
-<span class="fc" id="L38">public abstract class NodeImpl extends AbstractDomComponent implements Node {</span>
+ * The Class NodeImpl.
+ */
+<span class="fc" id="L39">public abstract class NodeImpl extends AbstractDomComponent implements Node {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The owner document. */
     private DocumentImpl _ownerDocument;
+
+    /** The parent node. */
     private NodeImpl _parentNode;
+
+    /** The first child. */
     private NodeImpl _firstChild;
+
+    /** The next sibling. */
     private NodeImpl _nextSibling;
+
+    /** The previous sibling. */
     private NodeImpl _previousSibling;
-<span class="fc" id="L46">    private Hashtable _userData = new Hashtable&lt;&gt;();</span>
 
-<span class="fc" id="L48">    static IteratorMask SKIP_IFRAMES = subtreeRoot -&gt; subtreeRoot instanceof HTMLIFrameElement;</span>
+    /** The user data. */
+<span class="fc" id="L60">    private Hashtable _userData = new Hashtable&lt;&gt;();</span>
 
+    /** The skip iframes. */
+<span class="fc" id="L63">    static IteratorMask SKIP_IFRAMES = subtreeRoot -&gt; subtreeRoot instanceof HTMLIFrameElement;</span>
+
+    /**
+     * Initialize.
+     *
+     * @param ownerDocument
+     *            the owner document
+     */
     protected void initialize(DocumentImpl ownerDocument) {
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (_ownerDocument != null) {</span>
-<span class="nc" id="L52">            throw new IllegalStateException(&quot;NodeImpl already initialized&quot;);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (_ownerDocument != null) {</span>
+<span class="nc" id="L73">            throw new IllegalStateException(&quot;NodeImpl already initialized&quot;);</span>
         }
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (ownerDocument == null) {</span>
-<span class="nc" id="L55">            throw new IllegalArgumentException(&quot;No owner document specified&quot;);</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (ownerDocument == null) {</span>
+<span class="nc" id="L76">            throw new IllegalArgumentException(&quot;No owner document specified&quot;);</span>
         }
-<span class="fc" id="L57">        _ownerDocument = ownerDocument;</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L78">        _ownerDocument = ownerDocument;</span>
+<span class="fc" id="L79">    }</span>
 
     // ------------------------------------------ ScriptableObject methods
     // --------------------------------------------------
@@ -68,184 +89,204 @@ import org.w3c.dom.html.HTMLIFrameElement;
 
     @Override
     public Node getParentNode() {
-<span class="fc" id="L71">        return _parentNode;</span>
+<span class="fc" id="L92">        return _parentNode;</span>
     }
 
     @Override
     public NodeList getChildNodes() {
-<span class="fc" id="L76">        ArrayList list = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {</span>
-<span class="fc" id="L78">            list.add(child);</span>
+<span class="fc" id="L97">        ArrayList list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (NodeImpl child = _firstChild; child != null; child = child._nextSibling) {</span>
+<span class="fc" id="L99">            list.add(child);</span>
         }
-<span class="fc" id="L80">        return new NodeListImpl(list);</span>
+<span class="fc" id="L101">        return new NodeListImpl(list);</span>
     }
 
     @Override
     public Node getFirstChild() {
-<span class="fc" id="L85">        return _firstChild;</span>
+<span class="fc" id="L106">        return _firstChild;</span>
     }
 
     @Override
     public Node getLastChild() {
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (_firstChild == null) {</span>
-<span class="fc" id="L91">            return null;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (_firstChild == null) {</span>
+<span class="fc" id="L112">            return null;</span>
         }
 
-<span class="fc" id="L94">        Node child = _firstChild;</span>
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        while (child.getNextSibling() != null) {</span>
-<span class="fc" id="L96">            child = child.getNextSibling();</span>
+<span class="fc" id="L115">        Node child = _firstChild;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        while (child.getNextSibling() != null) {</span>
+<span class="fc" id="L117">            child = child.getNextSibling();</span>
         }
-<span class="fc" id="L98">        return child;</span>
+<span class="fc" id="L119">        return child;</span>
     }
 
     @Override
     public Node getPreviousSibling() {
-<span class="fc" id="L103">        return _previousSibling;</span>
+<span class="fc" id="L124">        return _previousSibling;</span>
     }
 
     @Override
     public Node getNextSibling() {
-<span class="fc" id="L108">        return _nextSibling;</span>
+<span class="fc" id="L129">        return _nextSibling;</span>
     }
 
     @Override
     public NamedNodeMap getAttributes() {
-<span class="fc" id="L113">        return null;</span>
+<span class="fc" id="L134">        return null;</span>
     }
 
     @Override
     public Document getOwnerDocument() {
-<span class="fc" id="L118">        return _ownerDocument;</span>
+<span class="fc" id="L139">        return _ownerDocument;</span>
     }
 
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-<span class="fc" id="L123">        NodeImpl refChildNode = (NodeImpl) refChild;</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (refChildNode.getParentNode() != this) {</span>
-<span class="fc" id="L125">            throw new DOMException(DOMException.NOT_FOUND_ERR, &quot;Must specify an existing child as the reference&quot;);</span>
+<span class="fc" id="L144">        NodeImpl refChildNode = (NodeImpl) refChild;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (refChildNode.getParentNode() != this) {</span>
+<span class="fc" id="L146">            throw new DOMException(DOMException.NOT_FOUND_ERR, &quot;Must specify an existing child as the reference&quot;);</span>
         }
-<span class="fc" id="L127">        NodeImpl newChildNode = getChildIfPermitted(newChild);</span>
-<span class="fc" id="L128">        removeFromTree(newChildNode);</span>
-<span class="fc" id="L129">        newChildNode._parentNode = this;</span>
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (refChildNode._previousSibling == null) {</span>
-<span class="fc" id="L131">            _firstChild = newChildNode;</span>
+<span class="fc" id="L148">        NodeImpl newChildNode = getChildIfPermitted(newChild);</span>
+<span class="fc" id="L149">        removeFromTree(newChildNode);</span>
+<span class="fc" id="L150">        newChildNode._parentNode = this;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (refChildNode._previousSibling == null) {</span>
+<span class="fc" id="L152">            _firstChild = newChildNode;</span>
         } else {
-<span class="fc" id="L133">            refChildNode._previousSibling.setNextSibling(newChildNode);</span>
+<span class="fc" id="L154">            refChildNode._previousSibling.setNextSibling(newChildNode);</span>
         }
-<span class="fc" id="L135">        newChildNode.setNextSibling(refChildNode);</span>
-<span class="fc" id="L136">        return newChildNode;</span>
+<span class="fc" id="L156">        newChildNode.setNextSibling(refChildNode);</span>
+<span class="fc" id="L157">        return newChildNode;</span>
     }
 
+    /**
+     * Removes the from tree.
+     *
+     * @param childNode
+     *            the child node
+     */
     private void removeFromTree(NodeImpl childNode) {
-<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (childNode._parentNode != null) {</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (childNode._previousSibling != null) {</span>
-<span class="fc" id="L142">                childNode._previousSibling.setNextSibling(childNode._nextSibling);</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (childNode._parentNode != null) {</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (childNode._previousSibling != null) {</span>
+<span class="fc" id="L169">                childNode._previousSibling.setNextSibling(childNode._nextSibling);</span>
             } else {
-<span class="fc" id="L144">                childNode._parentNode._firstChild = childNode._nextSibling;</span>
-<span class="fc" id="L145">                childNode._nextSibling._previousSibling = null;</span>
+<span class="fc" id="L171">                childNode._parentNode._firstChild = childNode._nextSibling;</span>
+<span class="fc" id="L172">                childNode._nextSibling._previousSibling = null;</span>
             }
-<span class="fc" id="L147">            childNode._parentNode = null;</span>
+<span class="fc" id="L174">            childNode._parentNode = null;</span>
         }
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L176">    }</span>
 
     @Override
     public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-<span class="fc" id="L153">        insertBefore(newChild, oldChild);</span>
-<span class="fc" id="L154">        return removeChild(oldChild);</span>
+<span class="fc" id="L180">        insertBefore(newChild, oldChild);</span>
+<span class="fc" id="L181">        return removeChild(oldChild);</span>
     }
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (oldChild.getParentNode() != this) {</span>
-<span class="fc" id="L160">            throw new DOMException(DOMException.NOT_FOUND_ERR, &quot;May only remove a node from its own parent&quot;);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        if (oldChild.getParentNode() != this) {</span>
+<span class="fc" id="L187">            throw new DOMException(DOMException.NOT_FOUND_ERR, &quot;May only remove a node from its own parent&quot;);</span>
         }
-<span class="fc" id="L162">        removeFromTree((NodeImpl) oldChild);</span>
-<span class="fc" id="L163">        return oldChild;</span>
+<span class="fc" id="L189">        removeFromTree((NodeImpl) oldChild);</span>
+<span class="fc" id="L190">        return oldChild;</span>
     }
 
     @Override
     public Node appendChild(Node newChild) throws DOMException {
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (newChild == null) {</span>
-<span class="nc" id="L169">            throw new IllegalArgumentException(&quot;child to append may not be null&quot;);</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (newChild == null) {</span>
+<span class="nc" id="L196">            throw new IllegalArgumentException(&quot;child to append may not be null&quot;);</span>
         }
 
-<span class="fc" id="L172">        NodeImpl childNode = getChildIfPermitted(newChild);</span>
-<span class="fc" id="L173">        removeFromTree(childNode);</span>
-<span class="fc" id="L174">        childNode._parentNode = this;</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (_firstChild == null) {</span>
-<span class="fc" id="L176">            _firstChild = childNode;</span>
+<span class="fc" id="L199">        NodeImpl childNode = getChildIfPermitted(newChild);</span>
+<span class="fc" id="L200">        removeFromTree(childNode);</span>
+<span class="fc" id="L201">        childNode._parentNode = this;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (_firstChild == null) {</span>
+<span class="fc" id="L203">            _firstChild = childNode;</span>
         } else {
-<span class="fc" id="L178">            ((NodeImpl) getLastChild()).setNextSibling(childNode);</span>
+<span class="fc" id="L205">            ((NodeImpl) getLastChild()).setNextSibling(childNode);</span>
         }
-<span class="fc" id="L180">        return newChild;</span>
+<span class="fc" id="L207">        return newChild;</span>
     }
 
+    /**
+     * Gets the child if permitted.
+     *
+     * @param proposedChild
+     *            the proposed child
+     *
+     * @return the child if permitted
+     */
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        if (!(proposedChild instanceof NodeImpl)) {</span>
-<span class="nc" id="L185">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (!(proposedChild instanceof NodeImpl)) {</span>
+<span class="nc" id="L220">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,</span>
                     &quot;Specified node is from a different DOM implementation&quot;);
         }
-<span class="fc" id="L188">        NodeImpl childNode = (NodeImpl) proposedChild;</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (getOwnerDocument() != childNode._ownerDocument) {</span>
-<span class="fc" id="L190">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, &quot;Specified node is from a different document&quot;);</span>
+<span class="fc" id="L223">        NodeImpl childNode = (NodeImpl) proposedChild;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (getOwnerDocument() != childNode._ownerDocument) {</span>
+<span class="fc" id="L225">            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, &quot;Specified node is from a different document&quot;);</span>
         }
-<span class="fc bfc" id="L192" title="All 2 branches covered.">        for (Node parent = this; parent != null; parent = parent.getParentNode()) {</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">            if (proposedChild == parent) {</span>
-<span class="fc" id="L194">                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;May not add node as its own descendant&quot;);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        for (Node parent = this; parent != null; parent = parent.getParentNode()) {</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">            if (proposedChild == parent) {</span>
+<span class="fc" id="L229">                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;May not add node as its own descendant&quot;);</span>
             }
         }
 
-<span class="fc" id="L198">        return childNode;</span>
+<span class="fc" id="L233">        return childNode;</span>
     }
 
+    /**
+     * Sets the next sibling.
+     *
+     * @param sibling
+     *            the new next sibling
+     */
     private void setNextSibling(NodeImpl sibling) {
-<span class="fc" id="L202">        _nextSibling = sibling;</span>
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (sibling != null) {</span>
-<span class="fc" id="L204">            sibling._previousSibling = this;</span>
+<span class="fc" id="L243">        _nextSibling = sibling;</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        if (sibling != null) {</span>
+<span class="fc" id="L245">            sibling._previousSibling = this;</span>
         }
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L247">    }</span>
 
     @Override
     public boolean hasChildNodes() {
-<span class="fc bfc" id="L210" title="All 2 branches covered.">        return _firstChild != null;</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        return _firstChild != null;</span>
     }
 
     @Override
     public Node cloneNode(boolean deep) {
-<span class="fc" id="L215">        return getOwnerDocument().importNode(this, deep);</span>
+<span class="fc" id="L256">        return getOwnerDocument().importNode(this, deep);</span>
     }
 
     @Override
     public void normalize() {
-<span class="nc" id="L220">    }</span>
+<span class="nc" id="L261">    }</span>
 
     @Override
     public boolean isSupported(String feature, String version) {
-<span class="nc" id="L224">        return false;</span>
+<span class="nc" id="L265">        return false;</span>
     }
 
     @Override
     public String getNamespaceURI() {
-<span class="fc" id="L229">        return null;</span>
+<span class="fc" id="L270">        return null;</span>
     }
 
     @Override
     public String getPrefix() {
-<span class="nc" id="L234">        return null;</span>
+<span class="nc" id="L275">        return null;</span>
     }
 
     @Override
     public void setPrefix(String prefix) throws DOMException {
-<span class="nc" id="L239">    }</span>
+<span class="nc" id="L280">    }</span>
 
     @Override
     public String getLocalName() {
-<span class="fc" id="L243">        return null;</span>
+<span class="fc" id="L284">        return null;</span>
     }
 
     @Override
     public boolean hasAttributes() {
-<span class="nc" id="L248">        return false;</span>
+<span class="nc" id="L289">        return false;</span>
     }
 
     // ------------------------------------ DOM level 3 methods
@@ -253,242 +294,341 @@ import org.w3c.dom.html.HTMLIFrameElement;
 
     @Override
     public Object setUserData(String key, Object data, UserDataHandler handler) {
-<span class="nc" id="L256">        return _userData.put(key, data);</span>
+<span class="nc" id="L297">        return _userData.put(key, data);</span>
     }
 
     @Override
     public Object getUserData(String key) {
-<span class="nc" id="L261">        return _userData.get(key);</span>
+<span class="nc" id="L302">        return _userData.get(key);</span>
     }
 
     @Override
     public Object getFeature(String feature, String version) {
-<span class="nc" id="L266">        return null;</span>
+<span class="nc" id="L307">        return null;</span>
     }
 
     @Override
     public boolean isEqualNode(Node arg) {
-<span class="nc" id="L271">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L312">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String lookupNamespaceURI(String prefix) {
-<span class="nc" id="L276">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L317">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getBaseURI() {
-<span class="nc" id="L281">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L322">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public short compareDocumentPosition(Node other) throws DOMException {
-<span class="nc" id="L286">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L327">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getTextContent() throws DOMException {
-<span class="nc" id="L291">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L332">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public void setTextContent(String textContent) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L297">    }</span>
+<span class="nc" id="L338">    }</span>
 
     @Override
     public boolean isSameNode(Node other) {
-<span class="fc bfc" id="L301" title="All 2 branches covered.">        return this == other;</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        return this == other;</span>
     }
 
     @Override
     public String lookupPrefix(String namespaceURI) {
-<span class="nc" id="L306">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L347">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public boolean isDefaultNamespace(String namespaceURI) {
-<span class="nc" id="L311">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L352">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     // ----------------------------------------- implementation internals
     // ---------------------------------------------------
 
+    /**
+     * Gets the elements by tag name.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the elements by tag name
+     */
     public NodeList getElementsByTagName(String name) {
-<span class="fc" id="L318">        ArrayList matchingElements = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L319">        appendElementsWithTag(name, matchingElements);</span>
-<span class="fc" id="L320">        return new NodeListImpl(matchingElements);</span>
-    }
-
-    private void appendElementsWithTag(String name, ArrayList matchingElements) {
-<span class="fc bfc" id="L324" title="All 2 branches covered.">        for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {</span>
-<span class="fc bfc" id="L325" title="All 2 branches covered.">            if (child.getNodeType() != ELEMENT_NODE) {</span>
-<span class="fc" id="L326">                continue;</span>
-            }
-<span class="fc bfc" id="L328" title="All 4 branches covered.">            if (name.equals(&quot;*&quot;) || ((Element) child).getTagName().equalsIgnoreCase(name)) {</span>
-<span class="fc" id="L329">                matchingElements.add(child);</span>
-            }
-<span class="fc" id="L331">            ((NodeImpl) child).appendElementsWithTag(name, matchingElements);</span>
-        }
-<span class="fc" id="L333">    }</span>
-
-    protected NodeList getElementsByTagNames(String[] names) {
-<span class="fc" id="L336">        ArrayList matchingElements = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L337">        appendElementsWithTags(names, matchingElements);</span>
-<span class="fc" id="L338">        return new NodeListImpl(matchingElements);</span>
-    }
-
-    void appendElementsWithTags(String[] names, ArrayList matchingElements) {
-<span class="fc bfc" id="L342" title="All 2 branches covered.">        for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {</span>
-<span class="fc bfc" id="L343" title="All 2 branches covered.">            if (child.getNodeType() != ELEMENT_NODE) {</span>
-<span class="fc" id="L344">                continue;</span>
-            }
-<span class="fc" id="L346">            String tagName = ((Element) child).getTagName();</span>
-<span class="fc bfc" id="L347" title="All 2 branches covered.">            for (String name : names) {</span>
-<span class="fc bfc" id="L348" title="All 2 branches covered.">                if (tagName.equalsIgnoreCase(name)) {</span>
-<span class="fc" id="L349">                    matchingElements.add(child);</span>
-                }
-            }
-<span class="fc" id="L352">            ((NodeImpl) child).appendElementsWithTags(names, matchingElements);</span>
-        }
-<span class="fc" id="L354">    }</span>
-
-    String asText() {
-<span class="fc" id="L357">        StringBuilder sb = new StringBuilder();</span>
-<span class="fc" id="L358">        appendContents(sb);</span>
-<span class="fc" id="L359">        return sb.toString();</span>
-    }
-
-    void appendContents(StringBuilder sb) {
-<span class="fc" id="L363">        NodeList nl = getChildNodes();</span>
-<span class="fc bfc" id="L364" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L365">            ((NodeImpl) nl.item(i)).appendContents(sb);</span>
-        }
-<span class="fc" id="L367">    }</span>
-
-    public Iterator preOrderIterator() {
-<span class="fc" id="L370">        return new PreOrderIterator(this);</span>
-    }
-
-    public Iterator preOrderIterator(IteratorMask mask) {
-<span class="fc" id="L374">        return new PreOrderIterator(this, mask);</span>
-    }
-
-    public Iterator preOrderIteratorAfterNode() {
-<span class="fc" id="L378">        return new PreOrderIterator(PreOrderIterator.nextNode(this));</span>
+<span class="fc" id="L367">        List matchingElements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L368">        appendElementsWithTag(name, matchingElements);</span>
+<span class="fc" id="L369">        return new NodeListImpl(matchingElements);</span>
     }
 
     /**
-     * @return
+     * Append elements with tag.
+     *
+     * @param name
+     *            the name
+     * @param matchingElements
+     *            the matching elements
+     */
+    private void appendElementsWithTag(String name, List matchingElements) {
+<span class="fc bfc" id="L381" title="All 2 branches covered.">        for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">            if (child.getNodeType() != ELEMENT_NODE) {</span>
+<span class="fc" id="L383">                continue;</span>
+            }
+<span class="fc bfc" id="L385" title="All 4 branches covered.">            if (name.equals(&quot;*&quot;) || ((Element) child).getTagName().equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L386">                matchingElements.add(child);</span>
+            }
+<span class="fc" id="L388">            ((NodeImpl) child).appendElementsWithTag(name, matchingElements);</span>
+        }
+<span class="fc" id="L390">    }</span>
+
+    /**
+     * Gets the elements by tag names.
+     *
+     * @param names
+     *            the names
+     *
+     * @return the elements by tag names
+     */
+    protected NodeList getElementsByTagNames(String[] names) {
+<span class="fc" id="L401">        List matchingElements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L402">        appendElementsWithTags(names, matchingElements);</span>
+<span class="fc" id="L403">        return new NodeListImpl(matchingElements);</span>
+    }
+
+    /**
+     * Append elements with tags.
+     *
+     * @param names
+     *            the names
+     * @param matchingElements
+     *            the matching elements
+     */
+    void appendElementsWithTags(String[] names, List matchingElements) {
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">            if (child.getNodeType() != ELEMENT_NODE) {</span>
+<span class="fc" id="L417">                continue;</span>
+            }
+<span class="fc" id="L419">            String tagName = ((Element) child).getTagName();</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            for (String name : names) {</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">                if (tagName.equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L422">                    matchingElements.add(child);</span>
+                }
+            }
+<span class="fc" id="L425">            ((NodeImpl) child).appendElementsWithTags(names, matchingElements);</span>
+        }
+<span class="fc" id="L427">    }</span>
+
+    /**
+     * As text.
+     *
+     * @return the string
+     */
+    String asText() {
+<span class="fc" id="L435">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L436">        appendContents(sb);</span>
+<span class="fc" id="L437">        return sb.toString();</span>
+    }
+
+    /**
+     * Append contents.
+     *
+     * @param sb
+     *            the sb
+     */
+    void appendContents(StringBuilder sb) {
+<span class="fc" id="L447">        NodeList nl = getChildNodes();</span>
+<span class="fc bfc" id="L448" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L449">            ((NodeImpl) nl.item(i)).appendContents(sb);</span>
+        }
+<span class="fc" id="L451">    }</span>
+
+    /**
+     * Pre order iterator.
+     *
+     * @return the iterator
+     */
+    public Iterator preOrderIterator() {
+<span class="fc" id="L459">        return new PreOrderIterator(this);</span>
+    }
+
+    /**
+     * Pre order iterator.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
+    public Iterator preOrderIterator(IteratorMask mask) {
+<span class="fc" id="L471">        return new PreOrderIterator(this, mask);</span>
+    }
+
+    /**
+     * Pre order iterator after node.
+     *
+     * @return the iterator
+     */
+    public Iterator preOrderIteratorAfterNode() {
+<span class="fc" id="L480">        return new PreOrderIterator(PreOrderIterator.nextNode(this));</span>
+    }
+
+    /**
+     * Pre order iterator within node.
+     *
+     * @return the iterator
      */
     public Iterator preOrderIteratorWithinNode() {
-<span class="fc" id="L385">        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this));</span>
-<span class="fc" id="L386">        result.setDoNotLeaveNode(this);</span>
-<span class="fc" id="L387">        return result;</span>
+<span class="fc" id="L489">        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this));</span>
+<span class="fc" id="L490">        result.setDoNotLeaveNode(this);</span>
+<span class="fc" id="L491">        return result;</span>
     }
 
+    /**
+     * Pre order iterator within node.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIteratorWithinNode(IteratorMask mask) {
-<span class="fc" id="L391">        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this), mask);</span>
-<span class="fc" id="L392">        result.setDoNotLeaveNode(this);</span>
-<span class="fc" id="L393">        return result;</span>
+<span class="fc" id="L503">        PreOrderIterator result = new PreOrderIterator(PreOrderIterator.nextNode(this), mask);</span>
+<span class="fc" id="L504">        result.setDoNotLeaveNode(this);</span>
+<span class="fc" id="L505">        return result;</span>
     }
 
+    /**
+     * Pre order iterator after node.
+     *
+     * @param mask
+     *            the mask
+     *
+     * @return the iterator
+     */
     public Iterator preOrderIteratorAfterNode(IteratorMask mask) {
-<span class="nc" id="L397">        return new PreOrderIterator(PreOrderIterator.nextNode(this), mask);</span>
+<span class="nc" id="L517">        return new PreOrderIterator(PreOrderIterator.nextNode(this), mask);</span>
     }
 
     @Override
     protected String getJavaPropertyName(String propertyName) {
-<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (propertyName.equals(&quot;document&quot;)) {</span>
-<span class="fc" id="L403">            return &quot;ownerDocument&quot;;</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">        if (propertyName.equals(&quot;document&quot;)) {</span>
+<span class="fc" id="L523">            return &quot;ownerDocument&quot;;</span>
         }
-<span class="fc" id="L405">        return propertyName;</span>
+<span class="fc" id="L525">        return propertyName;</span>
     }
 
     /**
-     * allow masking of the iteration
+     * allow masking of the iteration.
      */
     interface IteratorMask {
+
+        /**
+         * Skip subtree.
+         *
+         * @param subtreeRoot
+         *            the subtree root
+         *
+         * @return true, if successful
+         */
         // skip a given subtree
         boolean skipSubtree(Node subtreeRoot);
     }
 
     /**
-     * iterator for Nodetrees that can be influenced with an Iterator mask to skip specific parts
+     * iterator for Nodetrees that can be influenced with an Iterator mask to skip specific parts.
      */
     static class PreOrderIterator implements Iterator {
+
+        /** The next node. */
         private NodeImpl _nextNode;
+
+        /** The mask. */
         private IteratorMask _mask;
-<span class="fc" id="L422">        private NodeImpl _doNotLeaveNode = null;</span>
+
+        /** The do not leave node. */
+<span class="fc" id="L557">        private NodeImpl _doNotLeaveNode = null;</span>
 
         /**
-         * get the limit node
+         * get the limit node.
          *
-         * @return
+         * @return the do not leave node
          */
         public NodeImpl getDoNotLeaveNode() {
-<span class="nc" id="L430">            return _doNotLeaveNode;</span>
+<span class="nc" id="L565">            return _doNotLeaveNode;</span>
         }
 
         /**
-         * limit the PreOrderIterator not to leave the given node
+         * limit the PreOrderIterator not to leave the given node.
          *
          * @param doNotLeaveNode
+         *            the new do not leave node
          */
         public void setDoNotLeaveNode(NodeImpl doNotLeaveNode) {
-<span class="fc" id="L439">            _doNotLeaveNode = doNotLeaveNode;</span>
-<span class="fc" id="L440">        }</span>
+<span class="fc" id="L575">            _doNotLeaveNode = doNotLeaveNode;</span>
+<span class="fc" id="L576">        }</span>
 
         /**
-         * check whether the node is a child of the doNotLeaveNode (if one is set)
+         * check whether the node is a child of the doNotLeaveNode (if one is set).
          *
          * @param node
+         *            the node
          *
-         * @return
+         * @return true, if is child
          */
         private boolean isChild(Node node) {
-<span class="fc bfc" id="L450" title="All 2 branches covered.">            if (node == null) {</span>
-<span class="fc" id="L451">                return false;</span>
+<span class="fc bfc" id="L587" title="All 2 branches covered.">            if (node == null) {</span>
+<span class="fc" id="L588">                return false;</span>
             }
-<span class="fc bfc" id="L453" title="All 2 branches covered.">            if (_doNotLeaveNode == null) {</span>
-<span class="fc" id="L454">                return true;</span>
+<span class="fc bfc" id="L590" title="All 2 branches covered.">            if (_doNotLeaveNode == null) {</span>
+<span class="fc" id="L591">                return true;</span>
             }
-<span class="fc" id="L456">            Node parent = node.getParentNode();</span>
-<span class="fc bfc" id="L457" title="All 2 branches covered.">            if (parent == null) {</span>
-<span class="fc" id="L458">                return false;</span>
+<span class="fc" id="L593">            Node parent = node.getParentNode();</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">            if (parent == null) {</span>
+<span class="fc" id="L595">                return false;</span>
             }
-<span class="fc bfc" id="L460" title="All 2 branches covered.">            if (parent.isSameNode(_doNotLeaveNode)) {</span>
-<span class="fc" id="L461">                return true;</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">            if (parent.isSameNode(_doNotLeaveNode)) {</span>
+<span class="fc" id="L598">                return true;</span>
             }
-<span class="fc" id="L463">            return isChild(parent);</span>
+<span class="fc" id="L600">            return isChild(parent);</span>
         }
 
         /**
-         * create a PreOrderIterator starting at a given currentNode
+         * create a PreOrderIterator starting at a given currentNode.
          *
          * @param currentNode
+         *            the current node
          */
-<span class="fc" id="L471">        PreOrderIterator(NodeImpl currentNode) {</span>
-<span class="fc" id="L472">            _nextNode = currentNode;</span>
-<span class="fc" id="L473">        }</span>
+<span class="fc" id="L609">        PreOrderIterator(NodeImpl currentNode) {</span>
+<span class="fc" id="L610">            _nextNode = currentNode;</span>
+<span class="fc" id="L611">        }</span>
 
         /**
-         * create a PreOrderIterator starting at a given currentNode and setting the iterator mask to the given mask
+         * create a PreOrderIterator starting at a given currentNode and setting the iterator mask to the given mask.
          *
          * @param currentNode
+         *            the current node
          * @param mask
+         *            the mask
          */
         PreOrderIterator(NodeImpl currentNode, IteratorMask mask) {
-<span class="fc" id="L482">            this(currentNode);</span>
-<span class="fc" id="L483">            _mask = mask;</span>
-<span class="fc" id="L484">        }</span>
+<span class="fc" id="L622">            this(currentNode);</span>
+<span class="fc" id="L623">            _mask = mask;</span>
+<span class="fc" id="L624">        }</span>
 
         /**
          * is there still a next node?
          */
         @Override
         public boolean hasNext() {
-<span class="fc bfc" id="L491" title="All 2 branches covered.">            return null != _nextNode;</span>
+<span class="fc bfc" id="L631" title="All 2 branches covered.">            return null != _nextNode;</span>
         }
 
         /**
@@ -496,41 +636,57 @@ import org.w3c.dom.html.HTMLIFrameElement;
          */
         @Override
         public Object next() {
-<span class="fc" id="L499">            NodeImpl currentNode = _nextNode;</span>
-<span class="fc" id="L500">            _nextNode = nextNode(_nextNode);</span>
-<span class="fc bfc" id="L501" title="All 6 branches covered.">            while (_mask != null &amp;&amp; _nextNode != null &amp;&amp; _mask.skipSubtree(_nextNode)) {</span>
-<span class="fc" id="L502">                _nextNode = nextSubtree(_nextNode);</span>
+<span class="fc" id="L639">            NodeImpl currentNode = _nextNode;</span>
+<span class="fc" id="L640">            _nextNode = nextNode(_nextNode);</span>
+<span class="fc bfc" id="L641" title="All 6 branches covered.">            while (_mask != null &amp;&amp; _nextNode != null &amp;&amp; _mask.skipSubtree(_nextNode)) {</span>
+<span class="fc" id="L642">                _nextNode = nextSubtree(_nextNode);</span>
             }
             // check that we fit the doNotLeaveNode condition in case there is one
-<span class="fc bfc" id="L505" title="All 2 branches covered.">            if (!isChild(_nextNode)) {</span>
-<span class="fc" id="L506">                _nextNode = null;</span>
+<span class="fc bfc" id="L645" title="All 2 branches covered.">            if (!isChild(_nextNode)) {</span>
+<span class="fc" id="L646">                _nextNode = null;</span>
             }
-<span class="fc" id="L508">            return currentNode;</span>
+<span class="fc" id="L648">            return currentNode;</span>
         }
 
         @Override
         public void remove() {
-<span class="nc" id="L513">            throw new java.lang.UnsupportedOperationException();</span>
+<span class="nc" id="L653">            throw new java.lang.UnsupportedOperationException();</span>
         }
 
+        /**
+         * Next node.
+         *
+         * @param node
+         *            the node
+         *
+         * @return the node impl
+         */
         static NodeImpl nextNode(NodeImpl node) {
-<span class="fc bfc" id="L517" title="All 2 branches covered.">            if (node._firstChild != null) {</span>
-<span class="fc" id="L518">                return node._firstChild;</span>
+<span class="fc bfc" id="L665" title="All 2 branches covered.">            if (node._firstChild != null) {</span>
+<span class="fc" id="L666">                return node._firstChild;</span>
             }
-<span class="fc" id="L520">            return nextSubtree(node);</span>
+<span class="fc" id="L668">            return nextSubtree(node);</span>
         }
 
+        /**
+         * Next subtree.
+         *
+         * @param node
+         *            the node
+         *
+         * @return the node impl
+         */
         private static NodeImpl nextSubtree(NodeImpl node) {
-<span class="fc bfc" id="L524" title="All 2 branches covered.">            if (node._nextSibling != null) {</span>
-<span class="fc" id="L525">                return node._nextSibling;</span>
+<span class="fc bfc" id="L680" title="All 2 branches covered.">            if (node._nextSibling != null) {</span>
+<span class="fc" id="L681">                return node._nextSibling;</span>
             }
-<span class="fc bfc" id="L527" title="All 2 branches covered.">            while (node._parentNode != null) {</span>
-<span class="fc" id="L528">                node = node._parentNode;</span>
-<span class="fc bfc" id="L529" title="All 2 branches covered.">                if (node._nextSibling != null) {</span>
-<span class="fc" id="L530">                    return node._nextSibling;</span>
+<span class="fc bfc" id="L683" title="All 2 branches covered.">            while (node._parentNode != null) {</span>
+<span class="fc" id="L684">                node = node._parentNode;</span>
+<span class="fc bfc" id="L685" title="All 2 branches covered.">                if (node._nextSibling != null) {</span>
+<span class="fc" id="L686">                    return node._nextSibling;</span>
                 }
             }
-<span class="fc" id="L533">            return null;</span>
+<span class="fc" id="L689">            return null;</span>
         }
     }
 

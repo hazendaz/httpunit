@@ -19,42 +19,59 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.net.URL;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class RequestDispatcherImpl.
+ */
 class RequestDispatcherImpl extends RequestContext implements RequestDispatcher {
 
+    /** The servlet meta data. */
     private ServletMetaData _servletMetaData;
 
+    /**
+     * Instantiates a new request dispatcher impl.
+     *
+     * @param application
+     *            the application
+     * @param url
+     *            the url
+     *
+     * @throws ServletException
+     *             the servlet exception
+     */
     RequestDispatcherImpl(WebApplication application, URL url) throws ServletException {
-<span class="fc" id="L39">        super(url);</span>
-<span class="fc" id="L40">        _servletMetaData = application.getServletRequest(url);</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L51">        super(url);</span>
+<span class="fc" id="L52">        _servletMetaData = application.getServletRequest(url);</span>
+<span class="fc" id="L53">    }</span>
 
+    /**
+     * Gets the servlet meta data.
+     *
+     * @return the servlet meta data
+     */
     public ServletMetaData getServletMetaData() {
-<span class="fc" id="L44">        return _servletMetaData;</span>
+<span class="fc" id="L61">        return _servletMetaData;</span>
     }
 
     @Override
     public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-<span class="fc" id="L49">        response.reset();</span>
-<span class="fc" id="L50">        _servletMetaData.getServlet().service(</span>
-<span class="fc" id="L51">                DispatchedRequestWrapper.createForwardRequestWrapper((HttpServletRequest) request, this), response);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L66">        response.reset();</span>
+<span class="fc" id="L67">        _servletMetaData.getServlet().service(</span>
+<span class="fc" id="L68">                DispatchedRequestWrapper.createForwardRequestWrapper((HttpServletRequest) request, this), response);</span>
+<span class="fc" id="L69">    }</span>
 
     @Override
     public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-<span class="fc" id="L56">        _servletMetaData.getServlet().service(</span>
-<span class="fc" id="L57">                DispatchedRequestWrapper.createIncludeRequestWrapper((HttpServletRequest) request, this), response);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L73">        _servletMetaData.getServlet().service(</span>
+<span class="fc" id="L74">                DispatchedRequestWrapper.createIncludeRequestWrapper((HttpServletRequest) request, this), response);</span>
+<span class="fc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -26,53 +26,82 @@ import org.w3c.dom.Node;
 
 /**
  * A class which represents a block of text in a web page. Experimental.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- *
- * @since 1.6
  **/
 public class TextBlock extends BlockElement {
 
-<span class="fc" id="L36">    private ArrayList _lists = new ArrayList&lt;&gt;();</span>
+    /** The lists. */
+<span class="fc" id="L33">    private ArrayList _lists = new ArrayList&lt;&gt;();</span>
     /** Predicate to match part or all of a block's class attribute. **/
     public static final HTMLElementPredicate MATCH_CLASS;
     /** Predicate to match the tag associated with a block (case insensitive). **/
     public static final HTMLElementPredicate MATCH_TAG;
 
+    /**
+     * Instantiates a new text block.
+     *
+     * @param response
+     *            the response
+     * @param frame
+     *            the frame
+     * @param baseURL
+     *            the base URL
+     * @param baseTarget
+     *            the base target
+     * @param rootNode
+     *            the root node
+     * @param characterSet
+     *            the character set
+     */
     public TextBlock(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, Node rootNode,
             String characterSet) {
-<span class="fc" id="L44">        super(response, frame, baseURL, baseTarget, rootNode, characterSet);</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L57">        super(response, frame, baseURL, baseTarget, rootNode, characterSet);</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * Returns any lists embedded in this text block.
+     *
+     * @return the lists
      */
     public WebList[] getLists() {
-<span class="nc" id="L51">        return (WebList[]) _lists.toArray(new WebList[_lists.size()]);</span>
+<span class="nc" id="L66">        return (WebList[]) _lists.toArray(new WebList[_lists.size()]);</span>
     }
 
+    /**
+     * Adds the list.
+     *
+     * @param webList
+     *            the web list
+     */
     void addList(WebList webList) {
-<span class="nc" id="L55">        _lists.add(webList);</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L76">        _lists.add(webList);</span>
+<span class="nc" id="L77">    }</span>
 
+    /**
+     * Gets the formats.
+     *
+     * @param characterPosition
+     *            the character position
+     *
+     * @return the formats
+     */
     String[] getFormats(int characterPosition) {
-<span class="nc" id="L59">        return null;</span>
+<span class="nc" id="L88">        return null;</span>
     }
 
     static {
-<span class="fc" id="L63">        MATCH_CLASS = (htmlElement, criteria) -&gt; {</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (criteria == null) {</span>
-<span class="nc" id="L65">                criteria = &quot;&quot;;</span>
+<span class="fc" id="L92">        MATCH_CLASS = (htmlElement, criteria) -&gt; {</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (criteria == null) {</span>
+<span class="nc" id="L94">                criteria = &quot;&quot;;</span>
             }
-<span class="fc" id="L67">            return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase(criteria.toString());</span>
+<span class="fc" id="L96">            return ((BlockElement) htmlElement).getClassName().equalsIgnoreCase(criteria.toString());</span>
         };
 
-<span class="fc" id="L70">        MATCH_TAG = (htmlElement, criteria) -&gt; {</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">            if (criteria == null) {</span>
-<span class="nc" id="L72">                criteria = &quot;&quot;;</span>
+<span class="fc" id="L99">        MATCH_TAG = (htmlElement, criteria) -&gt; {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (criteria == null) {</span>
+<span class="nc" id="L101">                criteria = &quot;&quot;;</span>
             }
-<span class="fc" id="L74">            return criteria.toString().equalsIgnoreCase(((BlockElement) htmlElement).getTagName());</span>
+<span class="fc" id="L103">            return criteria.toString().equalsIgnoreCase(((BlockElement) htmlElement).getTagName());</span>
         };
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L105">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -26,54 +26,70 @@ import com.meterware.httpunit.scripting.ScriptingEngine;
 import org.mozilla.javascript.Scriptable;
 
 /**
- * @author &lt;a href=&quot;mailto:mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class AbstractDomComponent.
  */
 <span class="fc" id="L31">public abstract class AbstractDomComponent extends ScriptingEngineImpl implements Scriptable {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The anonymous function num. */
     private static int _anonymousFunctionNum;
 
     @Override
     public String getClassName() {
-<span class="nc" id="L38">        return getClass().getName();</span>
+<span class="nc" id="L41">        return getClass().getName();</span>
     }
 
     @Override
     public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
-<span class="nc" id="L43">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L46">        throw new UnsupportedOperationException();</span>
     }
 
     @Override
     public void clearCaches() {
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L51">    }</span>
 
     @Override
     public boolean has(String name, Scriptable start) {
-<span class="pc bpc" id="L52" title="1 of 4 branches missed.">        return super.has(name, start) || ScriptingSupport.hasNamedProperty(this, getJavaPropertyName(name), start);</span>
+<span class="pc bpc" id="L55" title="1 of 4 branches missed.">        return super.has(name, start) || ScriptingSupport.hasNamedProperty(this, getJavaPropertyName(name), start);</span>
     }
 
     @Override
     public Object get(String propertyName, Scriptable scriptable) {
-<span class="fc" id="L57">        Object result = super.get(propertyName, scriptable);</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
-<span class="nc" id="L59">            return result;</span>
+<span class="fc" id="L60">        Object result = super.get(propertyName, scriptable);</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
+<span class="nc" id="L62">            return result;</span>
         }
 
-<span class="fc" id="L62">        return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);</span>
+<span class="fc" id="L65">        return ScriptingSupport.getNamedProperty(this, getJavaPropertyName(propertyName), scriptable);</span>
     }
 
+    /**
+     * Gets the java property name.
+     *
+     * @param propertyName
+     *            the property name
+     *
+     * @return the java property name
+     */
     protected String getJavaPropertyName(String propertyName) {
-<span class="nc" id="L66">        return propertyName;</span>
+<span class="nc" id="L77">        return propertyName;</span>
     }
 
     @Override
     public void put(String propertyName, Scriptable initialObject, Object value) {
-<span class="fc" id="L71">        super.put(propertyName, initialObject, value);</span>
-<span class="fc" id="L72">        ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L82">        super.put(propertyName, initialObject, value);</span>
+<span class="fc" id="L83">        ScriptingSupport.setNamedProperty(this, getJavaPropertyName(propertyName), value);</span>
+<span class="fc" id="L84">    }</span>
 
+    /**
+     * Creates the anonymous function name.
+     *
+     * @return the string
+     */
     protected static String createAnonymousFunctionName() {
-<span class="fc" id="L76">        return &quot;anon_&quot; + (++_anonymousFunctionNum);</span>
+<span class="fc" id="L92">        return &quot;anon_&quot; + ++_anonymousFunctionNum;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -30,37 +30,40 @@ import java.util.TimeZone;
 
 /**
  * An HTTP client-side cookie.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class Cookie {
 
+    /** The name. */
     private String _name;
 
+    /** The value. */
     private String _value;
 
+    /** The path. */
     private String _path;
 
+    /** The domain. */
     private String _domain;
 
+    /** The expired time. */
     private long _expiredTime;
 
     /**
+     * Gets the expired time.
+     *
      * @return the _expiredTime in milliseconds
      */
     public long getExpiredTime() {
-<span class="fc" id="L52">        return _expiredTime;</span>
+<span class="fc" id="L57">        return _expiredTime;</span>
     }
 
-    /**
-     * DateFormat to be used to format original Netscape cookies
-     */
-<span class="fc" id="L58">    private static final DateFormat originalCookieFormat = new SimpleDateFormat(&quot;EEE,dd-MMM-yyyy HH:mm:ss z&quot;,</span>
+    /** DateFormat to be used to format original Netscape cookies. */
+<span class="fc" id="L61">    private static final DateFormat originalCookieFormat = new SimpleDateFormat(&quot;EEE,dd-MMM-yyyy HH:mm:ss z&quot;,</span>
             Locale.US);
 
     static {
-<span class="fc" id="L62">        originalCookieFormat.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;));</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L65">        originalCookieFormat.setTimeZone(TimeZone.getTimeZone(&quot;GMT&quot;));</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Constructs a cookie w/o any domain or path restrictions.
@@ -70,24 +73,28 @@ public class Cookie {
      * @param value
      *            - the value of the cookie
      */
-<span class="fc" id="L73">    Cookie(String name, String value) {</span>
-<span class="fc" id="L74">        _name = name;</span>
-<span class="fc" id="L75">        _value = value;</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L76">    Cookie(String name, String value) {</span>
+<span class="fc" id="L77">        _name = name;</span>
+<span class="fc" id="L78">        _value = value;</span>
+<span class="fc" id="L79">    }</span>
 
     /**
-     * construct a cookie with domain and path restrictions
+     * construct a cookie with domain and path restrictions.
      *
      * @param name
+     *            the name
      * @param value
+     *            the value
      * @param domain
+     *            the domain
      * @param path
+     *            the path
      */
     Cookie(String name, String value, String domain, String path) {
-<span class="fc" id="L87">        this(name, value);</span>
-<span class="fc" id="L88">        _path = path;</span>
-<span class="fc" id="L89">        _domain = domain;</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L94">        this(name, value);</span>
+<span class="fc" id="L95">        _path = path;</span>
+<span class="fc" id="L96">        _domain = domain;</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Constructs a cookie w/o any domain or path restrictions.
@@ -100,24 +107,24 @@ public class Cookie {
      *            - a map of attributes for the cookie
      */
     Cookie(String name, String value, Map attributes) {
-<span class="fc" id="L103">        this(name, value);</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        for (Iterator iterator = attributes.keySet().iterator(); iterator.hasNext();) {</span>
-<span class="fc" id="L105">            String key = (String) iterator.next();</span>
-<span class="fc" id="L106">            String attributeValue = (String) attributes.get(key);</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (key.equalsIgnoreCase(&quot;path&quot;)) {</span>
-<span class="fc" id="L108">                _path = attributeValue;</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">            } else if (key.equalsIgnoreCase(&quot;domain&quot;)) {</span>
-<span class="fc" id="L110">                _domain = attributeValue;</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            } else if (key.equalsIgnoreCase(&quot;max-age&quot;)) {</span>
-<span class="fc" id="L112">                _expiredTime = System.currentTimeMillis() + getAgeInMsec(attributeValue);</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            } else if (key.equalsIgnoreCase(&quot;expires&quot;)) {</span>
-<span class="fc" id="L114">                _expiredTime = getAgeInMsecFromDate(attributeValue);</span>
+<span class="fc" id="L110">        this(name, value);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        for (Iterator iterator = attributes.keySet().iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L112">            String key = (String) iterator.next();</span>
+<span class="fc" id="L113">            String attributeValue = (String) attributes.get(key);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            if (key.equalsIgnoreCase(&quot;path&quot;)) {</span>
+<span class="fc" id="L115">                _path = attributeValue;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            } else if (key.equalsIgnoreCase(&quot;domain&quot;)) {</span>
+<span class="fc" id="L117">                _domain = attributeValue;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            } else if (key.equalsIgnoreCase(&quot;max-age&quot;)) {</span>
+<span class="fc" id="L119">                _expiredTime = System.currentTimeMillis() + getAgeInMsec(attributeValue);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">            } else if (key.equalsIgnoreCase(&quot;expires&quot;)) {</span>
+<span class="fc" id="L121">                _expiredTime = getAgeInMsecFromDate(attributeValue);</span>
             }
-<span class="fc" id="L116">        }</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L123">        }</span>
+<span class="fc" id="L124">    }</span>
 
     /**
-     * get the age of the cookie in Milliseconds from a string representaiton in seconds
+     * get the age of the cookie in Milliseconds from a string representaiton in seconds.
      *
      * @param maxAgeValue
      *            - the string with the age in seconds
@@ -126,14 +133,14 @@ public class Cookie {
      */
     private int getAgeInMsec(String maxAgeValue) {
         try {
-<span class="fc" id="L129">            return 1000 * Integer.parseInt(maxAgeValue);</span>
-<span class="nc" id="L130">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L131">            return 0;</span>
+<span class="fc" id="L136">            return 1000 * Integer.parseInt(maxAgeValue);</span>
+<span class="nc" id="L137">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L138">            return 0;</span>
         }
     }
 
     /**
-     * return the age of a cookie in milliesconds from a string formatted date value
+     * return the age of a cookie in milliesconds from a string formatted date value.
      *
      * @param dateValue
      *            - the string to parse
@@ -143,94 +150,135 @@ public class Cookie {
     private long getAgeInMsecFromDate(String dateValue) {
         try {
             // SimpleDateFormat isn't thread-safe
-<span class="fc" id="L146">            synchronized (originalCookieFormat) {</span>
-<span class="fc" id="L147">                return originalCookieFormat.parse(dateValue).getTime();</span>
+<span class="fc" id="L153">            synchronized (originalCookieFormat) {</span>
+<span class="fc" id="L154">                return originalCookieFormat.parse(dateValue).getTime();</span>
             }
-<span class="fc" id="L149">        } catch (ParseException e) {</span>
-<span class="fc" id="L150">            return 0;</span>
+<span class="fc" id="L156">        } catch (ParseException e) {</span>
+<span class="fc" id="L157">            return 0;</span>
         }
     }
 
     /**
      * Returns the name of this cookie.
+     *
+     * @return the name
      */
     public String getName() {
-<span class="fc" id="L158">        return _name;</span>
+<span class="fc" id="L167">        return _name;</span>
     }
 
     /**
      * Returns the value associated with this cookie.
+     *
+     * @return the value
      */
     public String getValue() {
-<span class="fc" id="L165">        return _value;</span>
+<span class="fc" id="L176">        return _value;</span>
     }
 
     /**
      * Sets the value associated with this cookie.
+     *
+     * @param value
+     *            the new value
      */
     public void setValue(String value) {
-<span class="fc" id="L172">        _value = value;</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L186">        _value = value;</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Returns the path to which this cookie is restricted.
+     *
+     * @return the path
      */
     public String getPath() {
-<span class="fc" id="L179">        return _path;</span>
+<span class="fc" id="L195">        return _path;</span>
     }
 
     /**
      * Returns the domain to which this cookie may be sent.
+     *
+     * @return the domain
      */
     public String getDomain() {
-<span class="fc" id="L186">        return _domain;</span>
+<span class="fc" id="L204">        return _domain;</span>
     }
 
+    /**
+     * Sets the path.
+     *
+     * @param path
+     *            the new path
+     */
     void setPath(String path) {
-<span class="fc" id="L190">        _path = path;</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L214">        _path = path;</span>
+<span class="fc" id="L215">    }</span>
 
+    /**
+     * Sets the domain.
+     *
+     * @param domain
+     *            the new domain
+     */
     void setDomain(String domain) {
-<span class="fc" id="L194">        _domain = domain;</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L224">        _domain = domain;</span>
+<span class="fc" id="L225">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L199">        int hashCode = _name.hashCode();</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (_domain != null) {</span>
-<span class="nc" id="L201">            hashCode ^= _domain.hashCode();</span>
+<span class="nc" id="L229">        int hashCode = _name.hashCode();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (_domain != null) {</span>
+<span class="nc" id="L231">            hashCode ^= _domain.hashCode();</span>
         }
-<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (_path != null) {</span>
-<span class="nc" id="L204">            hashCode ^= _path.hashCode();</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (_path != null) {</span>
+<span class="nc" id="L234">            hashCode ^= _path.hashCode();</span>
         }
-<span class="nc" id="L206">        return hashCode;</span>
+<span class="nc" id="L236">        return hashCode;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L211" title="1 of 4 branches missed.">        return obj.getClass() == getClass() &amp;&amp; equals((Cookie) obj);</span>
-    }
-
-    private boolean equals(Cookie other) {
-<span class="fc bfc" id="L215" title="All 4 branches covered.">        return _name.equalsIgnoreCase(other._name) &amp;&amp; equalProperties(getDomain(), other.getDomain())</span>
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">                &amp;&amp; equalProperties(getPath(), other.getPath());</span>
-    }
-
-    private boolean equalProperties(String first, String second) {
-<span class="pc bpc" id="L220" title="1 of 6 branches missed.">        return first == second || first != null &amp;&amp; first.equals(second);</span>
+<span class="pc bpc" id="L241" title="1 of 4 branches missed.">        return obj.getClass() == getClass() &amp;&amp; equals((Cookie) obj);</span>
     }
 
     /**
-     * check whether the cookie is expired
+     * Equals.
+     *
+     * @param other
+     *            the other
+     *
+     * @return true, if successful
+     */
+    private boolean equals(Cookie other) {
+<span class="fc bfc" id="L253" title="All 4 branches covered.">        return _name.equalsIgnoreCase(other._name) &amp;&amp; equalProperties(getDomain(), other.getDomain())</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">                &amp;&amp; equalProperties(getPath(), other.getPath());</span>
+    }
+
+    /**
+     * Equal properties.
+     *
+     * @param first
+     *            the first
+     * @param second
+     *            the second
+     *
+     * @return true, if successful
+     */
+    private boolean equalProperties(String first, String second) {
+<span class="pc bpc" id="L268" title="1 of 6 branches missed.">        return first == second || first != null &amp;&amp; first.equals(second);</span>
+    }
+
+    /**
+     * check whether the cookie is expired.
      *
      * @return true if the _expiredTime is higher than the current System time
      */
     public boolean isExpired() {
-<span class="fc bfc" id="L229" title="All 4 branches covered.">        return _expiredTime != 0 &amp;&amp; _expiredTime &lt;= System.currentTimeMillis();</span>
+<span class="fc bfc" id="L277" title="All 4 branches covered.">        return _expiredTime != 0 &amp;&amp; _expiredTime &lt;= System.currentTimeMillis();</span>
     }
 
     /**
-     * may this cookie be sent to the given url?
+     * may this cookie be sent to the given url?.
      *
      * @param url
      *            - the unform resource locator to check
@@ -238,38 +286,42 @@ public class Cookie {
      * @return true if the cookie is not expired and the path is accepted if a domain is set
      */
     public boolean mayBeSentTo(URL url) {
-<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (getDomain() == null) {</span>
-<span class="fc" id="L242">            return true;</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        if (getDomain() == null) {</span>
+<span class="fc" id="L290">            return true;</span>
         }
-<span class="fc bfc" id="L244" title="All 2 branches covered.">        if (isExpired()) {</span>
-<span class="fc" id="L245">            return false;</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (isExpired()) {</span>
+<span class="fc" id="L293">            return false;</span>
         }
 
-<span class="fc bfc" id="L248" title="All 4 branches covered.">        return acceptHost(getDomain(), url.getHost()) &amp;&amp; acceptPath(getPath(), url.getPath());</span>
+<span class="fc bfc" id="L296" title="All 4 branches covered.">        return acceptHost(getDomain(), url.getHost()) &amp;&amp; acceptPath(getPath(), url.getPath());</span>
     }
 
     /**
-     * accept path for the given hostpath
+     * accept path for the given hostpath.
      *
      * @param pathPattern
+     *            the path pattern
      * @param hostPath
+     *            the host path
      *
      * @return true - either if PathMatching is not strict or the hostpath starts with the given path pattern
      */
     private boolean acceptPath(String pathPattern, String hostPath) {
-<span class="fc bfc" id="L260" title="All 4 branches covered.">        return !CookieProperties.isPathMatchingStrict() || hostPath.startsWith(pathPattern);</span>
+<span class="fc bfc" id="L310" title="All 4 branches covered.">        return !CookieProperties.isPathMatchingStrict() || hostPath.startsWith(pathPattern);</span>
     }
 
     /**
-     * accept host if the given hostName fits to the given hostPattern
+     * accept host if the given hostName fits to the given hostPattern.
      *
      * @param hostPattern
+     *            the host pattern
      * @param hostName
+     *            the host name
      *
      * @return true if there is a fit
      */
     private static boolean acceptHost(String hostPattern, String hostName) {
-<span class="fc bfc" id="L272" title="All 6 branches covered.">        return hostPattern.equalsIgnoreCase(hostName) || hostPattern.startsWith(&quot;.&quot;) &amp;&amp; hostName.endsWith(hostPattern);</span>
+<span class="fc bfc" id="L324" title="All 6 branches covered.">        return hostPattern.equalsIgnoreCase(hostName) || hostPattern.startsWith(&quot;.&quot;) &amp;&amp; hostName.endsWith(hostPattern);</span>
     }
 
 }

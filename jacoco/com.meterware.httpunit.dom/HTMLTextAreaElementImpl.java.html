@@ -24,107 +24,168 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTextAreaElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLTextAreaElementImpl.
+ */
 <span class="fc" id="L29">public class HTMLTextAreaElementImpl extends HTMLControl implements HTMLTextAreaElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The value. */
     private String _value;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L36">        return new HTMLTextAreaElementImpl();</span>
+<span class="fc" id="L39">        return new HTMLTextAreaElementImpl();</span>
     }
 
     /**
-     * simulate blur
+     * simulate blur.
      */
     @Override
     public void blur() {
-<span class="nc" id="L44">        handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L47">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L48">    }</span>
 
     /**
-     * simulate focus;
+     * simulate focus;.
      */
     @Override
     public void focus() {
-<span class="nc" id="L52">        handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L55">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L56">    }</span>
 
+    /**
+     * Gets the access key.
+     *
+     * @return the access key
+     */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L57">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+<span class="fc" id="L65">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
     }
 
+    /**
+     * Gets the cols.
+     *
+     * @return the cols
+     */
     @Override
     public int getCols() {
-<span class="fc" id="L62">        return getIntegerAttribute(&quot;cols&quot;);</span>
+<span class="fc" id="L75">        return getIntegerAttribute(&quot;cols&quot;);</span>
     }
 
+    /**
+     * Gets the default value.
+     *
+     * @return the default value
+     */
     @Override
     public String getDefaultValue() {
-<span class="fc" id="L67">        Node node = getFirstChild();</span>
+<span class="fc" id="L85">        Node node = getFirstChild();</span>
 
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (node == null) {</span>
-<span class="fc" id="L70">            return &quot;&quot;;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (node == null) {</span>
+<span class="fc" id="L88">            return &quot;&quot;;</span>
         }
 
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (node.getNodeType() != Node.TEXT_NODE) {</span>
-<span class="nc" id="L74">            return null;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (node.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="nc" id="L92">            return null;</span>
         }
 
-<span class="fc" id="L77">        return node.getNodeValue();</span>
+<span class="fc" id="L95">        return node.getNodeValue();</span>
     }
 
+    /**
+     * Gets the rows.
+     *
+     * @return the rows
+     */
     @Override
     public int getRows() {
-<span class="fc" id="L82">        return getIntegerAttribute(&quot;rows&quot;);</span>
+<span class="fc" id="L105">        return getIntegerAttribute(&quot;rows&quot;);</span>
     }
 
+    /**
+     * Select.
+     */
     @Override
     public void select() {
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L113">    }</span>
 
+    /**
+     * Sets the access key.
+     *
+     * @param accessKey
+     *            the new access key
+     */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L91">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L123">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L124">    }</span>
 
+    /**
+     * Sets the cols.
+     *
+     * @param cols
+     *            the new cols
+     */
     @Override
     public void setCols(int cols) {
-<span class="fc" id="L96">        setAttribute(&quot;cols&quot;, cols);</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L134">        setAttribute(&quot;cols&quot;, cols);</span>
+<span class="fc" id="L135">    }</span>
 
+    /**
+     * Sets the default value.
+     *
+     * @param defaultValue
+     *            the new default value
+     */
     @Override
     public void setDefaultValue(String defaultValue) {
-<span class="fc" id="L101">        Text textNode = getOwnerDocument().createTextNode(defaultValue);</span>
-<span class="fc" id="L102">        Node child = getFirstChild();</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (child == null) {</span>
-<span class="fc" id="L104">            appendChild(textNode);</span>
+<span class="fc" id="L145">        Text textNode = getOwnerDocument().createTextNode(defaultValue);</span>
+<span class="fc" id="L146">        Node child = getFirstChild();</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (child == null) {</span>
+<span class="fc" id="L148">            appendChild(textNode);</span>
         } else {
-<span class="nc" id="L106">            replaceChild(textNode, child);</span>
+<span class="nc" id="L150">            replaceChild(textNode, child);</span>
         }
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L152">    }</span>
 
+    /**
+     * Sets the rows.
+     *
+     * @param rows
+     *            the new rows
+     */
     @Override
     public void setRows(int rows) {
-<span class="fc" id="L112">        setAttribute(&quot;rows&quot;, rows);</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L162">        setAttribute(&quot;rows&quot;, rows);</span>
+<span class="fc" id="L163">    }</span>
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     @Override
     public String getValue() {
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        return _value != null ? _value : getDefaultValue();</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        return _value != null ? _value : getDefaultValue();</span>
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
     @Override
     public void setValue(String value) {
-<span class="fc" id="L122">        _value = value;</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L183">        _value = value;</span>
+<span class="fc" id="L184">    }</span>
 
     @Override
     public void reset() {
-<span class="fc" id="L127">        _value = null;</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L188">        _value = null;</span>
+<span class="fc" id="L189">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

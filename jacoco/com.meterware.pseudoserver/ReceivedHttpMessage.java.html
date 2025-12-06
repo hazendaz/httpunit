@@ -29,145 +29,269 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class ReceivedHttpMessage.
+ */
 abstract class ReceivedHttpMessage {
 
+    /** The Constant CR. */
     private static final int CR = 13;
+
+    /** The Constant LF. */
     private static final int LF = 10;
+
+    /** The reader. */
     private Reader _reader;
-<span class="fc" id="L39">    private Hashtable _headers = new Hashtable&lt;&gt;();</span>
+
+    /** The headers. */
+<span class="fc" id="L46">    private Hashtable _headers = new Hashtable&lt;&gt;();</span>
+
+    /** The request body. */
     private byte[] _requestBody;
 
-<span class="fc" id="L42">    ReceivedHttpMessage(InputStream inputStream) throws IOException {</span>
-<span class="fc" id="L43">        interpretMessageHeader(readHeaderLine(inputStream));</span>
-<span class="fc" id="L44">        readHeaders(inputStream);</span>
-<span class="fc" id="L45">        readMessageBody(inputStream);</span>
-<span class="fc" id="L46">    }</span>
+    /**
+     * Instantiates a new received http message.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+<span class="fc" id="L60">    ReceivedHttpMessage(InputStream inputStream) throws IOException {</span>
+<span class="fc" id="L61">        interpretMessageHeader(readHeaderLine(inputStream));</span>
+<span class="fc" id="L62">        readHeaders(inputStream);</span>
+<span class="fc" id="L63">        readMessageBody(inputStream);</span>
+<span class="fc" id="L64">    }</span>
 
     @Override
     public String toString() {
-<span class="fc" id="L50">        StringBuilder sb = new StringBuilder(getClassName()).append(&quot;[ &quot;);</span>
-<span class="fc" id="L51">        appendMessageHeader(sb);</span>
-<span class="fc" id="L52">        sb.append(&quot;\n&quot;);</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L54">            Object key = e.nextElement();</span>
-<span class="fc" id="L55">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)]&quot;);</span>
-<span class="fc" id="L58">        return sb.toString();</span>
+<span class="fc" id="L68">        StringBuilder sb = new StringBuilder(getClassName()).append(&quot;[ &quot;);</span>
+<span class="fc" id="L69">        appendMessageHeader(sb);</span>
+<span class="fc" id="L70">        sb.append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L72">            Object key = e.nextElement();</span>
+<span class="fc" id="L73">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)]&quot;);</span>
+<span class="fc" id="L76">        return sb.toString();</span>
     }
 
+    /**
+     * Read header line.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @return the string
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private String readHeaderLine(InputStream inputStream) throws IOException {
-<span class="fc" id="L62">        return new String(readDelimitedChunk(inputStream));</span>
+<span class="fc" id="L91">        return new String(readDelimitedChunk(inputStream));</span>
     }
 
+    /**
+     * Read delimited chunk.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @return the byte[]
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private byte[] readDelimitedChunk(InputStream inputStream) throws IOException {
-<span class="fc" id="L66">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
-<span class="fc" id="L67">        int b = inputStream.read();</span>
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        while (b != CR) {</span>
-<span class="fc" id="L69">            baos.write(b);</span>
-<span class="fc" id="L70">            b = inputStream.read();</span>
+<span class="fc" id="L106">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L107">        int b = inputStream.read();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        while (b != CR) {</span>
+<span class="fc" id="L109">            baos.write(b);</span>
+<span class="fc" id="L110">            b = inputStream.read();</span>
         }
 
-<span class="fc" id="L73">        b = inputStream.read();</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (b != LF) {</span>
-<span class="nc" id="L75">            throw new IOException(&quot;Bad header line termination: &quot; + b);</span>
+<span class="fc" id="L113">        b = inputStream.read();</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (b != LF) {</span>
+<span class="nc" id="L115">            throw new IOException(&quot;Bad header line termination: &quot; + b);</span>
         }
-<span class="fc" id="L77">        return baos.toByteArray();</span>
+<span class="fc" id="L117">        return baos.toByteArray();</span>
     }
 
+    /**
+     * Append contents.
+     *
+     * @param sb
+     *            the sb
+     */
     void appendContents(StringBuilder sb) {
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="nc" id="L82">            Object key = e.nextElement();</span>
-<span class="nc" id="L83">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
-<span class="nc" id="L84">        }</span>
-<span class="nc" id="L85">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)&quot;);</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L128">            Object key = e.nextElement();</span>
+<span class="nc" id="L129">            sb.append(&quot;      &quot;).append(key).append(&quot;: &quot;).append(_headers.get(key)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L130">        }</span>
+<span class="nc" id="L131">        sb.append(&quot;   body contains &quot;).append(getBody().length).append(&quot; byte(s)&quot;);</span>
+<span class="nc" id="L132">    }</span>
 
+    /**
+     * Gets the reader.
+     *
+     * @return the reader
+     */
     Reader getReader() {
-<span class="nc" id="L89">        return _reader;</span>
+<span class="nc" id="L140">        return _reader;</span>
     }
 
+    /**
+     * Gets the header.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the header
+     */
     String getHeader(String name) {
-<span class="fc" id="L93">        return (String) _headers.get(name.toUpperCase());</span>
+<span class="fc" id="L152">        return (String) _headers.get(name.toUpperCase());</span>
     }
 
+    /**
+     * Gets the body.
+     *
+     * @return the body
+     */
     byte[] getBody() {
-<span class="fc" id="L97">        return _requestBody;</span>
+<span class="fc" id="L161">        return _requestBody;</span>
     }
 
+    /**
+     * Read message body.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void readMessageBody(InputStream inputStream) throws IOException {
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (&quot;chunked&quot;.equalsIgnoreCase(getHeader(&quot;Transfer-Encoding&quot;))) {</span>
-<span class="fc" id="L102">            ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">            while (getNextChunkLength(inputStream) &gt; 0) {</span>
-<span class="fc" id="L104">                baos.write(readDelimitedChunk(inputStream));</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (&quot;chunked&quot;.equalsIgnoreCase(getHeader(&quot;Transfer-Encoding&quot;))) {</span>
+<span class="fc" id="L175">            ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            while (getNextChunkLength(inputStream) &gt; 0) {</span>
+<span class="fc" id="L177">                baos.write(readDelimitedChunk(inputStream));</span>
             }
-<span class="fc" id="L106">            flushChunkTrailer(inputStream);</span>
-<span class="fc" id="L107">            _requestBody = baos.toByteArray();</span>
-<span class="fc" id="L108">        } else {</span>
-<span class="fc" id="L109">            int totalExpected = getContentLength();</span>
-<span class="fc" id="L110">            ByteArrayOutputStream baos = new ByteArrayOutputStream(totalExpected);</span>
-<span class="fc" id="L111">            byte[] buffer = new byte[1024];</span>
-<span class="fc" id="L112">            int total = 0;</span>
-<span class="fc" id="L113">            int count = -1;</span>
-<span class="pc bpc" id="L114" title="1 of 4 branches missed.">            while (total &lt; totalExpected &amp;&amp; (count = inputStream.read(buffer)) != -1) {</span>
-<span class="fc" id="L115">                baos.write(buffer, 0, count);</span>
-<span class="fc" id="L116">                total += count;</span>
+<span class="fc" id="L179">            flushChunkTrailer(inputStream);</span>
+<span class="fc" id="L180">            _requestBody = baos.toByteArray();</span>
+<span class="fc" id="L181">        } else {</span>
+<span class="fc" id="L182">            int totalExpected = getContentLength();</span>
+<span class="fc" id="L183">            ByteArrayOutputStream baos = new ByteArrayOutputStream(totalExpected);</span>
+<span class="fc" id="L184">            byte[] buffer = new byte[1024];</span>
+<span class="fc" id="L185">            int total = 0;</span>
+<span class="fc" id="L186">            int count = -1;</span>
+<span class="pc bpc" id="L187" title="1 of 4 branches missed.">            while (total &lt; totalExpected &amp;&amp; (count = inputStream.read(buffer)) != -1) {</span>
+<span class="fc" id="L188">                baos.write(buffer, 0, count);</span>
+<span class="fc" id="L189">                total += count;</span>
             }
-<span class="fc" id="L118">            baos.flush();</span>
-<span class="fc" id="L119">            _requestBody = baos.toByteArray();</span>
+<span class="fc" id="L191">            baos.flush();</span>
+<span class="fc" id="L192">            _requestBody = baos.toByteArray();</span>
         }
-<span class="fc" id="L121">        _reader = new InputStreamReader(new ByteArrayInputStream(_requestBody));</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L194">        _reader = new InputStreamReader(new ByteArrayInputStream(_requestBody));</span>
+<span class="fc" id="L195">    }</span>
 
+    /**
+     * Flush chunk trailer.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void flushChunkTrailer(InputStream inputStream) throws IOException {
         byte[] line;
         do {
-<span class="fc" id="L127">            line = readDelimitedChunk(inputStream);</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        } while (line.length &gt; 0);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L209">            line = readDelimitedChunk(inputStream);</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        } while (line.length &gt; 0);</span>
+<span class="fc" id="L211">    }</span>
 
+    /**
+     * Gets the next chunk length.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @return the next chunk length
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private int getNextChunkLength(InputStream inputStream) throws IOException {
         try {
-<span class="fc" id="L133">            return Integer.parseInt(readHeaderLine(inputStream), 16);</span>
-<span class="nc" id="L134">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L135">            throw new IOException(&quot;Unabled to read chunk length: &quot; + e);</span>
+<span class="fc" id="L226">            return Integer.parseInt(readHeaderLine(inputStream), 16);</span>
+<span class="nc" id="L227">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L228">            throw new IOException(&quot;Unabled to read chunk length: &quot; + e);</span>
         }
     }
 
+    /**
+     * Gets the content length.
+     *
+     * @return the content length
+     */
     private int getContentLength() {
         try {
-<span class="fc" id="L141">            return Integer.parseInt(getHeader(&quot;Content-Length&quot;));</span>
-<span class="fc" id="L142">        } catch (NumberFormatException e) {</span>
-<span class="fc" id="L143">            return 0;</span>
+<span class="fc" id="L239">            return Integer.parseInt(getHeader(&quot;Content-Length&quot;));</span>
+<span class="fc" id="L240">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L241">            return 0;</span>
         }
     }
 
+    /**
+     * Read headers.
+     *
+     * @param inputStream
+     *            the input stream
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void readHeaders(InputStream inputStream) throws IOException {
-<span class="fc" id="L148">        String lastHeader = null;</span>
+<span class="fc" id="L255">        String lastHeader = null;</span>
 
-<span class="fc" id="L150">        String header = readHeaderLine(inputStream);</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        while (header.length() &gt; 0) {</span>
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">            if (header.charAt(0) &lt;= ' ') {</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (lastHeader == null) {</span>
-<span class="nc" id="L154">                    continue;</span>
+<span class="fc" id="L257">        String header = readHeaderLine(inputStream);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        while (header.length() &gt; 0) {</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">            if (header.charAt(0) &lt;= ' ') {</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                if (lastHeader == null) {</span>
+<span class="nc" id="L261">                    continue;</span>
                 }
-<span class="nc" id="L156">                _headers.put(lastHeader, _headers.get(lastHeader) + header.trim());</span>
+<span class="nc" id="L263">                _headers.put(lastHeader, _headers.get(lastHeader) + header.trim());</span>
             } else {
-<span class="fc" id="L158">                lastHeader = header.substring(0, header.indexOf(':')).toUpperCase();</span>
-<span class="fc" id="L159">                _headers.put(lastHeader, header.substring(header.indexOf(':') + 1).trim());</span>
+<span class="fc" id="L265">                lastHeader = header.substring(0, header.indexOf(':')).toUpperCase();</span>
+<span class="fc" id="L266">                _headers.put(lastHeader, header.substring(header.indexOf(':') + 1).trim());</span>
             }
-<span class="fc" id="L161">            header = readHeaderLine(inputStream);</span>
+<span class="fc" id="L268">            header = readHeaderLine(inputStream);</span>
         }
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L270">    }</span>
 
+    /**
+     * Gets the class name.
+     *
+     * @return the class name
+     */
     private String getClassName() {
-<span class="fc" id="L166">        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1);</span>
+<span class="fc" id="L278">        return getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1);</span>
     }
 
+    /**
+     * Append message header.
+     *
+     * @param sb
+     *            the sb
+     */
     abstract void appendMessageHeader(StringBuilder sb);
 
+    /**
+     * Interpret message header.
+     *
+     * @param messageHeader
+     *            the message header
+     */
     abstract void interpretMessageHeader(String messageHeader);
 
 }

@@ -24,73 +24,94 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class TextImpl.
+ */
 <span class="fc" id="L29">public class TextImpl extends CharacterDataImpl implements Text {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the text.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     *
+     * @return the text impl
+     */
     static TextImpl createText(DocumentImpl ownerDocument, String data) {
-<span class="fc" id="L34">        TextImpl text = new TextImpl();</span>
-<span class="fc" id="L35">        text.initialize(ownerDocument, data);</span>
-<span class="fc" id="L36">        return text;</span>
+<span class="fc" id="L45">        TextImpl text = new TextImpl();</span>
+<span class="fc" id="L46">        text.initialize(ownerDocument, data);</span>
+<span class="fc" id="L47">        return text;</span>
     }
 
     @Override
     public String getNodeName() {
-<span class="fc" id="L41">        return &quot;#text&quot;;</span>
+<span class="fc" id="L52">        return &quot;#text&quot;;</span>
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-<span class="fc" id="L46">        return getData();</span>
+<span class="fc" id="L57">        return getData();</span>
     }
 
     @Override
     public void setNodeValue(String nodeValue) throws DOMException {
-<span class="fc" id="L51">        setData(nodeValue);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L62">        setData(nodeValue);</span>
+<span class="fc" id="L63">    }</span>
 
     @Override
     public short getNodeType() {
-<span class="fc" id="L56">        return TEXT_NODE;</span>
+<span class="fc" id="L67">        return TEXT_NODE;</span>
     }
 
     @Override
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
-<span class="fc" id="L61">        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;Text nodes may not have children&quot;);</span>
+<span class="fc" id="L72">        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;Text nodes may not have children&quot;);</span>
     }
 
     @Override
     public Text splitText(int offset) throws DOMException {
-<span class="nc" id="L66">        return null;</span>
+<span class="nc" id="L77">        return null;</span>
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param text
+     *            the text
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, Text text) {
-<span class="fc" id="L70">        return document.createTextNode(text.getData());</span>
+<span class="fc" id="L91">        return document.createTextNode(text.getData());</span>
     }
 
     @Override
     void appendContents(StringBuilder sb) {
-<span class="fc" id="L75">        sb.append(getData());</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L96">        sb.append(getData());</span>
+<span class="fc" id="L97">    }</span>
 
     // ------------------------------------- DOM level 3 methods
     // ------------------------------------------------------------
 
     @Override
     public boolean isElementContentWhitespace() {
-<span class="nc" id="L83">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L104">        return false; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getWholeText() {
-<span class="nc" id="L88">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L109">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public Text replaceWholeText(String content) throws DOMException {
-<span class="nc" id="L93">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L114">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

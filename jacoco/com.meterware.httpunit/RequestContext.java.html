@@ -26,22 +26,33 @@ import org.xml.sax.SAXException;
 
 /**
  * The context for a request which could have subrequests.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
-<span class="fc" id="L32">class RequestContext {</span>
+<span class="fc" id="L30">class RequestContext {</span>
 
-<span class="fc" id="L34">    private ArrayList _newResponses = new ArrayList&lt;&gt;();</span>
+    /** The new responses. */
+<span class="fc" id="L33">    private ArrayList _newResponses = new ArrayList&lt;&gt;();</span>
 
+    /**
+     * Adds the new response.
+     *
+     * @param response
+     *            the response
+     */
     void addNewResponse(WebResponse response) {
-<span class="fc" id="L37">        _newResponses.add(response);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L42">        _newResponses.add(response);</span>
+<span class="fc" id="L43">    }</span>
 
+    /**
+     * Run scripts.
+     *
+     * @throws SAXException
+     *             the SAX exception
+     */
     void runScripts() throws SAXException {
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        for (Iterator iterator = _newResponses.iterator(); iterator.hasNext();) {</span>
-<span class="fc" id="L42">            WebResponse response = (WebResponse) iterator.next();</span>
-<span class="fc" id="L43">            HttpUnitOptions.getScriptingEngine().load(response);</span>
-<span class="fc" id="L44">        }</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (Iterator iterator = _newResponses.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L53">            WebResponse response = (WebResponse) iterator.next();</span>
+<span class="fc" id="L54">            HttpUnitOptions.getScriptingEngine().load(response);</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

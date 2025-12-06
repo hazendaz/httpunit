@@ -23,15 +23,16 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLParagraphElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class HTMLParagraphElementImpl.
  */
 <span class="fc" id="L28">public class HTMLParagraphElementImpl extends HTMLElementImpl implements HTMLParagraphElement, HTMLContainerElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L34">        return new HTMLParagraphElementImpl();</span>
+<span class="fc" id="L35">        return new HTMLParagraphElementImpl();</span>
     }
 
     // ------------------------------------------ HTMLContainerElement methods
@@ -39,41 +40,52 @@ import org.w3c.dom.html.HTMLParagraphElement;
 
     @Override
     public HTMLCollection getLinks() {
-<span class="fc" id="L42">        return getHtmlDocument().getContainerDelegate().getLinks(this);</span>
+<span class="fc" id="L43">        return getHtmlDocument().getContainerDelegate().getLinks(this);</span>
     }
 
     @Override
     public HTMLCollection getImages() {
-<span class="nc" id="L47">        return getHtmlDocument().getContainerDelegate().getImages(this);</span>
+<span class="nc" id="L48">        return getHtmlDocument().getContainerDelegate().getImages(this);</span>
     }
 
     @Override
     public HTMLCollection getApplets() {
-<span class="nc" id="L52">        return getHtmlDocument().getContainerDelegate().getApplets(this);</span>
+<span class="nc" id="L53">        return getHtmlDocument().getContainerDelegate().getApplets(this);</span>
     }
 
     @Override
     public HTMLCollection getForms() {
-<span class="nc" id="L57">        return getHtmlDocument().getContainerDelegate().getForms(this);</span>
+<span class="nc" id="L58">        return getHtmlDocument().getContainerDelegate().getForms(this);</span>
     }
 
     @Override
     public HTMLCollection getAnchors() {
-<span class="nc" id="L62">        return getHtmlDocument().getContainerDelegate().getAnchors(this);</span>
+<span class="nc" id="L63">        return getHtmlDocument().getContainerDelegate().getAnchors(this);</span>
     }
 
     // ----------------------------------------- HTMLParagraphElement methods
     // -----------------------------------------------
 
+    /**
+     * Gets the align.
+     *
+     * @return the align
+     */
     @Override
     public String getAlign() {
-<span class="fc" id="L70">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L76">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
+    /**
+     * Sets the align.
+     *
+     * @param align
+     *            the new align
+     */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L75">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L87">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L88">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

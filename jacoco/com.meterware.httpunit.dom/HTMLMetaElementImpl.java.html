@@ -22,55 +22,100 @@ package com.meterware.httpunit.dom;
 import org.w3c.dom.html.HTMLMetaElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLMetaElementImpl.
+ */
 <span class="fc" id="L27">public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L33">        return new HTMLMetaElementImpl();</span>
+<span class="fc" id="L34">        return new HTMLMetaElementImpl();</span>
     }
 
+    /**
+     * Gets the content.
+     *
+     * @return the content
+     */
     @Override
     public String getContent() {
-<span class="fc" id="L38">        return getAttributeWithNoDefault(&quot;content&quot;);</span>
+<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;content&quot;);</span>
     }
 
+    /**
+     * Gets the http equiv.
+     *
+     * @return the http equiv
+     */
     @Override
     public String getHttpEquiv() {
-<span class="fc" id="L43">        return getAttributeWithNoDefault(&quot;http-equiv&quot;);</span>
+<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;http-equiv&quot;);</span>
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Override
     public String getName() {
-<span class="fc" id="L48">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
+    /**
+     * Gets the scheme.
+     *
+     * @return the scheme
+     */
     @Override
     public String getScheme() {
-<span class="fc" id="L53">        return getAttributeWithNoDefault(&quot;scheme&quot;);</span>
+<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;scheme&quot;);</span>
     }
 
+    /**
+     * Sets the content.
+     *
+     * @param content
+     *            the new content
+     */
     @Override
     public void setContent(String content) {
-<span class="fc" id="L58">        setAttribute(&quot;content&quot;, content);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L85">        setAttribute(&quot;content&quot;, content);</span>
+<span class="fc" id="L86">    }</span>
 
+    /**
+     * Sets the http equiv.
+     *
+     * @param httpEquiv
+     *            the new http equiv
+     */
     @Override
     public void setHttpEquiv(String httpEquiv) {
-<span class="fc" id="L63">        setAttribute(&quot;http-equiv&quot;, httpEquiv);</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L96">        setAttribute(&quot;http-equiv&quot;, httpEquiv);</span>
+<span class="fc" id="L97">    }</span>
 
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
     @Override
     public void setName(String name) {
-<span class="fc" id="L68">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L107">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L108">    }</span>
 
+    /**
+     * Sets the scheme.
+     *
+     * @param scheme
+     *            the new scheme
+     */
     @Override
     public void setScheme(String scheme) {
-<span class="fc" id="L73">        setAttribute(&quot;scheme&quot;, scheme);</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L118">        setAttribute(&quot;scheme&quot;, scheme);</span>
+<span class="fc" id="L119">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

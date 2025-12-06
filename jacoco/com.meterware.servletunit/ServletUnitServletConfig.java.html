@@ -19,22 +19,32 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 
 /**
  * This class acts as a test environment for servlets.
  **/
 class ServletUnitServletConfig implements ServletConfig {
 
-<span class="fc" id="L33">    ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {</span>
-<span class="fc" id="L34">        _name = name;</span>
-<span class="fc" id="L35">        _initParameters = initParams;</span>
-<span class="fc" id="L36">        _context = application.getServletContext();</span>
-<span class="fc" id="L37">    }</span>
+    /**
+     * Instantiates a new servlet unit servlet config.
+     *
+     * @param name
+     *            the name
+     * @param application
+     *            the application
+     * @param initParams
+     *            the init params
+     */
+<span class="fc" id="L43">    ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {</span>
+<span class="fc" id="L44">        _name = name;</span>
+<span class="fc" id="L45">        _initParameters = initParams;</span>
+<span class="fc" id="L46">        _context = application.getServletContext();</span>
+<span class="fc" id="L47">    }</span>
 
     // -------------------------------------------- ServletConfig methods
     // ---------------------------------------------------
@@ -44,7 +54,7 @@ class ServletUnitServletConfig implements ServletConfig {
      **/
     @Override
     public String getInitParameter(String name) {
-<span class="fc" id="L47">        return (String) _initParameters.get(name);</span>
+<span class="fc" id="L57">        return (String) _initParameters.get(name);</span>
     }
 
     /**
@@ -52,7 +62,7 @@ class ServletUnitServletConfig implements ServletConfig {
      **/
     @Override
     public Enumeration getInitParameterNames() {
-<span class="nc" id="L55">        return _initParameters.keys();</span>
+<span class="nc" id="L65">        return _initParameters.keys();</span>
     }
 
     /**
@@ -60,7 +70,7 @@ class ServletUnitServletConfig implements ServletConfig {
      **/
     @Override
     public ServletContext getServletContext() {
-<span class="fc" id="L63">        return _context;</span>
+<span class="fc" id="L73">        return _context;</span>
     }
 
     /**
@@ -68,16 +78,19 @@ class ServletUnitServletConfig implements ServletConfig {
      **/
     @Override
     public java.lang.String getServletName() {
-<span class="fc" id="L71">        return _name;</span>
+<span class="fc" id="L81">        return _name;</span>
     }
 
     // ----------------------------------------------- private members
     // ------------------------------------------------------
 
+    /** The name. */
     private String _name;
 
+    /** The init parameters. */
     private final Hashtable _initParameters;
 
+    /** The context. */
     private final ServletContext _context;
 
 }

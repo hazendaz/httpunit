@@ -21,17 +21,34 @@ package com.meterware.pseudoserver;
 
 import java.io.IOException;
 
+/**
+ * The Class UnknownMethodException.
+ */
 class UnknownMethodException extends IOException {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L27">    UnknownMethodException(String method) {</span>
-<span class="fc" id="L28">        _method = method;</span>
-<span class="fc" id="L29">    }</span>
+    /**
+     * Instantiates a new unknown method exception.
+     *
+     * @param method
+     *            the method
+     */
+<span class="fc" id="L38">    UnknownMethodException(String method) {</span>
+<span class="fc" id="L39">        _method = method;</span>
+<span class="fc" id="L40">    }</span>
 
+    /**
+     * Gets the method.
+     *
+     * @return the method
+     */
     String getMethod() {
-<span class="fc" id="L32">        return _method;</span>
+<span class="fc" id="L48">        return _method;</span>
     }
 
+    /** The method. */
     private String _method;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

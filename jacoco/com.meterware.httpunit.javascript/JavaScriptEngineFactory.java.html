@@ -28,59 +28,57 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 /**
  * An implementation of the scripting engine factory which selects a Rhino-based implementation of JavaScript.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
-<span class="fc" id="L34">public class JavaScriptEngineFactory implements ScriptingEngineFactory {</span>
+<span class="fc" id="L32">public class JavaScriptEngineFactory implements ScriptingEngineFactory {</span>
 
     @Override
     public boolean isEnabled() {
         try {
-<span class="fc" id="L39">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
-<span class="fc" id="L40">            return true;</span>
-<span class="nc" id="L41">        } catch (Exception e) {</span>
-<span class="nc" id="L42">            System.err.println(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
-<span class="nc" id="L43">            return false;</span>
+<span class="fc" id="L37">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
+<span class="fc" id="L38">            return true;</span>
+<span class="nc" id="L39">        } catch (Exception e) {</span>
+<span class="nc" id="L40">            System.err.println(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
+<span class="nc" id="L41">            return false;</span>
         }
     }
 
     @Override
     public void associate(WebResponse response) {
         try {
-<span class="fc" id="L50">            JavaScript.run(response);</span>
-<span class="nc" id="L51">        } catch (RuntimeException e) {</span>
-<span class="nc" id="L52">            throw e;</span>
-<span class="nc" id="L53">        } catch (Exception e) {</span>
-<span class="nc" id="L54">            HttpUnitUtils.handleException(e);</span>
-<span class="nc" id="L55">            throw new RuntimeException(e.toString());</span>
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L48">            JavaScript.run(response);</span>
+<span class="nc" id="L49">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L50">            throw e;</span>
+<span class="nc" id="L51">        } catch (Exception e) {</span>
+<span class="nc" id="L52">            HttpUnitUtils.handleException(e);</span>
+<span class="nc" id="L53">            throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">    }</span>
 
     @Override
     public void load(WebResponse response) {
         try {
-<span class="fc" id="L62">            JavaScript.load(response);</span>
-<span class="fc" id="L63">        } catch (RuntimeException e) {</span>
-<span class="fc" id="L64">            throw e;</span>
-<span class="nc" id="L65">        } catch (Exception e) {</span>
-<span class="nc" id="L66">            e.printStackTrace();</span>
-<span class="nc" id="L67">            throw new RuntimeException(e.toString());</span>
-<span class="fc" id="L68">        }</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L60">            JavaScript.load(response);</span>
+<span class="fc" id="L61">        } catch (RuntimeException e) {</span>
+<span class="fc" id="L62">            throw e;</span>
+<span class="nc" id="L63">        } catch (Exception e) {</span>
+<span class="nc" id="L64">            e.printStackTrace();</span>
+<span class="nc" id="L65">            throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc" id="L67">    }</span>
 
     @Override
     public void setThrowExceptionsOnError(boolean throwExceptions) {
-<span class="fc" id="L73">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L71">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
+<span class="fc" id="L72">    }</span>
 
     @Override
     public boolean isThrowExceptionsOnError() {
-<span class="nc" id="L78">        return JavaScript.isThrowExceptionsOnError();</span>
+<span class="nc" id="L76">        return JavaScript.isThrowExceptionsOnError();</span>
     }
 
     @Override
     public String[] getErrorMessages() {
-<span class="fc" id="L83">        return ScriptingEngineImpl.getErrorMessages();</span>
+<span class="fc" id="L81">        return ScriptingEngineImpl.getErrorMessages();</span>
     }
 
     /**
@@ -88,24 +86,24 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
      */
     @Override
     public void handleScriptException(Exception e, String badScript) {
-<span class="fc" id="L91">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L89">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
+<span class="fc" id="L90">    }</span>
 
     @Override
     public void clearErrorMessages() {
-<span class="fc" id="L96">        ScriptingEngineImpl.clearErrorMessages();</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L94">        ScriptingEngineImpl.clearErrorMessages();</span>
+<span class="fc" id="L95">    }</span>
 
     @Override
     public ScriptingHandler createHandler(HTMLElement elementBase) {
-<span class="fc" id="L101">        ScriptableDelegate delegate = elementBase.newScriptable();</span>
-<span class="fc" id="L102">        delegate.setScriptEngine(elementBase.getParentDelegate().getScriptEngine(delegate));</span>
-<span class="fc" id="L103">        return delegate;</span>
+<span class="fc" id="L99">        ScriptableDelegate delegate = elementBase.newScriptable();</span>
+<span class="fc" id="L100">        delegate.setScriptEngine(elementBase.getParentDelegate().getScriptEngine(delegate));</span>
+<span class="fc" id="L101">        return delegate;</span>
     }
 
     @Override
     public ScriptingHandler createHandler(WebResponse response) {
-<span class="fc" id="L108">        return response.createJavascriptScriptingHandler();</span>
+<span class="fc" id="L106">        return response.createJavascriptScriptingHandler();</span>
     }
 
 }

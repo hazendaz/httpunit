@@ -23,62 +23,70 @@ import java.net.URL;
 
 /**
  * This exception is thrown when an Http error (response code 4xx or 5xx) is detected.
- *
- * @author Seth Ladd
- * @author Russell Gold
  **/
 public class HttpException extends RuntimeException {
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /**
-     * throw a http Exception with the given responseCode
+     * throw a http Exception with the given responseCode.
      *
      * @param responseCode
+     *            the response code
      */
-<span class="nc" id="L39">    protected HttpException(int responseCode) {</span>
-<span class="nc" id="L40">        _responseCode = responseCode;</span>
-<span class="nc" id="L41">        System.err.println(responseCode);</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L38">    protected HttpException(int responseCode) {</span>
+<span class="nc" id="L39">        _responseCode = responseCode;</span>
+<span class="nc" id="L40">        System.err.println(responseCode);</span>
+<span class="nc" id="L41">    }</span>
 
     /**
-     * throw a http Exception with the given responseCode and cause
+     * throw a http Exception with the given responseCode and cause.
      *
      * @param responseCode
+     *            the response code
      * @param cause
+     *            the cause
      */
-<span class="nc" id="L50">    protected HttpException(int responseCode, Throwable cause) {</span>
-<span class="nc" id="L51">        _responseCode = responseCode;</span>
-<span class="nc" id="L52">        _cause = cause;</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L51">    protected HttpException(int responseCode, Throwable cause) {</span>
+<span class="nc" id="L52">        _responseCode = responseCode;</span>
+<span class="nc" id="L53">        _cause = cause;</span>
+<span class="nc" id="L54">    }</span>
 
     /**
-     * throw a http Exception with the given responseCode and Message and base url
+     * throw a http Exception with the given responseCode and Message and base url.
      *
      * @param responseCode
+     *            the response code
      * @param responseMessage
+     *            the response message
      * @param baseURL
+     *            the base URL
      */
-<span class="fc" id="L62">    protected HttpException(int responseCode, String responseMessage, URL baseURL) {</span>
-<span class="fc" id="L63">        _responseMessage = responseMessage;</span>
-<span class="fc" id="L64">        _responseCode = responseCode;</span>
-<span class="fc" id="L65">        _url = baseURL;</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L66">    protected HttpException(int responseCode, String responseMessage, URL baseURL) {</span>
+<span class="fc" id="L67">        _responseMessage = responseMessage;</span>
+<span class="fc" id="L68">        _responseCode = responseCode;</span>
+<span class="fc" id="L69">        _url = baseURL;</span>
+<span class="fc" id="L70">    }</span>
 
     /**
-     * throw a http Exception with the given responseCode and Message, base url and cause
+     * throw a http Exception with the given responseCode and Message, base url and cause.
      *
      * @param responseCode
+     *            the response code
      * @param responseMessage
+     *            the response message
      * @param baseURL
+     *            the base URL
      * @param cause
+     *            the cause
      */
-<span class="nc" id="L76">    protected HttpException(int responseCode, String responseMessage, URL baseURL, Throwable cause) {</span>
-<span class="nc" id="L77">        _responseMessage = responseMessage;</span>
-<span class="nc" id="L78">        _responseCode = responseCode;</span>
-<span class="nc" id="L79">        _url = baseURL;</span>
-<span class="nc" id="L80">        _cause = cause;</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L84">    protected HttpException(int responseCode, String responseMessage, URL baseURL, Throwable cause) {</span>
+<span class="nc" id="L85">        _responseMessage = responseMessage;</span>
+<span class="nc" id="L86">        _responseCode = responseCode;</span>
+<span class="nc" id="L87">        _url = baseURL;</span>
+<span class="nc" id="L88">        _cause = cause;</span>
+<span class="nc" id="L89">    }</span>
 
     /**
      * get the Message for the http Exception
@@ -87,42 +95,47 @@ public class HttpException extends RuntimeException {
      */
     @Override
     public String getMessage() {
-<span class="fc" id="L90">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append(&quot;Error on HTTP request: &quot;);</span>
-<span class="fc" id="L91">        sb.append(_responseCode);</span>
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (_responseMessage != null) {</span>
-<span class="fc" id="L93">            sb.append(&quot; &quot;);</span>
-<span class="fc" id="L94">            sb.append(_responseMessage);</span>
-<span class="fc" id="L95">            sb.append(&quot;&quot;);</span>
+<span class="fc" id="L98">        StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE).append(&quot;Error on HTTP request: &quot;);</span>
+<span class="fc" id="L99">        sb.append(_responseCode);</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (_responseMessage != null) {</span>
+<span class="fc" id="L101">            sb.append(&quot; &quot;);</span>
+<span class="fc" id="L102">            sb.append(_responseMessage);</span>
+<span class="fc" id="L103">            sb.append(&quot;&quot;);</span>
         }
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (_url != null) {</span>
-<span class="fc" id="L98">            sb.append(&quot; [&quot;);</span>
-<span class="fc" id="L99">            sb.append(_url.toExternalForm());</span>
-<span class="fc" id="L100">            sb.append(&quot;]&quot;);</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (_url != null) {</span>
+<span class="fc" id="L106">            sb.append(&quot; [&quot;);</span>
+<span class="fc" id="L107">            sb.append(_url.toExternalForm());</span>
+<span class="fc" id="L108">            sb.append(&quot;]&quot;);</span>
         }
-<span class="fc" id="L102">        return sb.toString();</span>
+<span class="fc" id="L110">        return sb.toString();</span>
     }
 
     /**
-     * get the response Code of this http Exception
+     * get the response Code of this http Exception.
      *
      * @return - the response Code code 4xx or 5xx
      */
     public int getResponseCode() {
-<span class="fc" id="L111">        return _responseCode;</span>
+<span class="fc" id="L119">        return _responseCode;</span>
     }
 
     /**
-     * get the response Message of this http Exception
+     * get the response Message of this http Exception.
      *
      * @return the response message
      */
     public String getResponseMessage() {
-<span class="fc" id="L120">        return _responseMessage;</span>
+<span class="fc" id="L128">        return _responseMessage;</span>
     }
 
+    /** The response code. */
     // private local copies of variables
     private int _responseCode;
+
+    /** The url. */
     private URL _url;
+
+    /** The response message. */
     private String _responseMessage;
 
     /**
@@ -130,31 +143,34 @@ public class HttpException extends RuntimeException {
      */
     @Override
     public Throwable getCause() {
-<span class="nc" id="L133">        return _cause;</span>
+<span class="nc" id="L146">        return _cause;</span>
     }
 
+    /** The cause. */
     private Throwable _cause;
 
+    /** The response. */
     // see feature request [ 914314 ] Add HttpException.getResponse for better reporting
     private WebResponse response;
 
     /**
-     * return the WebResponse associated with this Exception (if any)
+     * return the WebResponse associated with this Exception (if any).
      *
-     * @return
+     * @return the response
      */
     public WebResponse getResponse() {
-<span class="fc" id="L147">        return response;</span>
+<span class="fc" id="L162">        return response;</span>
     }
 
     /**
-     * add the given response to this exception
+     * add the given response to this exception.
      *
      * @param response
+     *            the new response
      */
     public void setResponse(WebResponse response) {
-<span class="fc" id="L156">        this.response = response;</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L172">        this.response = response;</span>
+<span class="fc" id="L173">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

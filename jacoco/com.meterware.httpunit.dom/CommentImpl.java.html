@@ -24,51 +24,72 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class CommentImpl.
+ */
 <span class="fc" id="L29">public class CommentImpl extends CharacterDataImpl implements Comment {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates the comment.
+     *
+     * @param ownerDocument
+     *            the owner document
+     * @param data
+     *            the data
+     *
+     * @return the comment impl
+     */
     static CommentImpl createComment(DocumentImpl ownerDocument, String data) {
-<span class="fc" id="L34">        CommentImpl comment = new CommentImpl();</span>
-<span class="fc" id="L35">        comment.initialize(ownerDocument, data);</span>
-<span class="fc" id="L36">        return comment;</span>
+<span class="fc" id="L45">        CommentImpl comment = new CommentImpl();</span>
+<span class="fc" id="L46">        comment.initialize(ownerDocument, data);</span>
+<span class="fc" id="L47">        return comment;</span>
     }
 
+    /**
+     * Import node.
+     *
+     * @param document
+     *            the document
+     * @param comment
+     *            the comment
+     *
+     * @return the node
+     */
     public static Node importNode(DocumentImpl document, Comment comment) {
-<span class="fc" id="L40">        return document.createComment(comment.getData());</span>
+<span class="fc" id="L61">        return document.createComment(comment.getData());</span>
     }
 
     @Override
     public String getNodeName() {
-<span class="fc" id="L45">        return &quot;#comment&quot;;</span>
+<span class="fc" id="L66">        return &quot;#comment&quot;;</span>
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-<span class="nc" id="L50">        return getData();</span>
+<span class="nc" id="L71">        return getData();</span>
     }
 
     @Override
     public void setNodeValue(String nodeValue) throws DOMException {
-<span class="nc" id="L55">        setData(nodeValue);</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L76">        setData(nodeValue);</span>
+<span class="nc" id="L77">    }</span>
 
     @Override
     public short getNodeType() {
-<span class="fc" id="L60">        return COMMENT_NODE;</span>
+<span class="fc" id="L81">        return COMMENT_NODE;</span>
     }
 
     @Override
     protected NodeImpl getChildIfPermitted(Node proposedChild) {
-<span class="nc" id="L65">        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;Comment nodes may not have children&quot;);</span>
+<span class="nc" id="L86">        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, &quot;Comment nodes may not have children&quot;);</span>
     }
 
     @Override
     void appendContents(StringBuilder sb) {
-<span class="nc" id="L70">        sb.append(getData());</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L91">        sb.append(getData());</span>
+<span class="nc" id="L92">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

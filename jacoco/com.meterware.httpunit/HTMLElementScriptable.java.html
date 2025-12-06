@@ -23,16 +23,16 @@ import com.meterware.httpunit.scripting.DocumentElement;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLElementScriptable.
+ */
 class HTMLElementScriptable extends ScriptableDelegate implements DocumentElement {
 
-    /**
-     * the element that I am scripting for
-     */
+    /** the element that I am scripting for. */
     private HTMLElement _element;
 
     /**
+     * Gets the element.
+     *
      * @return the _element
      */
     protected HTMLElement get_element() {
@@ -60,56 +60,61 @@ class HTMLElementScriptable extends ScriptableDelegate implements DocumentElemen
     }
 
     /**
-     * get the content of the given attribute
+     * get the content of the given attribute.
      *
      * @param attributeName
+     *            the attribute name
      *
      * @return the attribute as a string
      */
     public String getAttribute(String attributeName) {
-<span class="fc" id="L70">        return _element.getAttribute(attributeName);</span>
+<span class="fc" id="L71">        return _element.getAttribute(attributeName);</span>
     }
 
     /**
-     * set the attribute with the given attribute name to the given value
+     * set the attribute with the given attribute name to the given value.
      *
      * @param attributeName
+     *            the attribute name
      * @param value
+     *            the value
      */
     public void setAttribute(String attributeName, Object value) {
-<span class="fc" id="L80">        _element.setAttribute(attributeName, value);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L83">        _element.setAttribute(attributeName, value);</span>
+<span class="fc" id="L84">    }</span>
 
     /**
-     * remove the given attribute
+     * remove the given attribute.
      *
      * @param attributeName
+     *            the attribute name
      */
     public void removeAttribute(String attributeName) {
-<span class="nc" id="L89">        _element.removeAttribute(attributeName);</span>
-<span class="nc" id="L90">    }</span>
+<span class="nc" id="L93">        _element.removeAttribute(attributeName);</span>
+<span class="nc" id="L94">    }</span>
 
     @Override
     public boolean handleEvent(String eventName) {
         // check whether onclick is activated
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (eventName.toLowerCase().equals(&quot;onclick&quot;)) {</span>
-<span class="fc" id="L96">            handleEvent(&quot;onmousedown&quot;);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (eventName.equalsIgnoreCase(&quot;onclick&quot;)) {</span>
+<span class="fc" id="L100">            handleEvent(&quot;onmousedown&quot;);</span>
         }
-<span class="fc" id="L98">        String eventScript = getAttribute(eventName);</span>
-<span class="fc" id="L99">        boolean result = doEventScript(eventScript);</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (eventName.toLowerCase().equals(&quot;onclick&quot;)) {</span>
-<span class="fc" id="L101">            handleEvent(&quot;onmouseup&quot;);</span>
+<span class="fc" id="L102">        String eventScript = getAttribute(eventName);</span>
+<span class="fc" id="L103">        boolean result = doEventScript(eventScript);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (eventName.equalsIgnoreCase(&quot;onclick&quot;)) {</span>
+<span class="fc" id="L105">            handleEvent(&quot;onmouseup&quot;);</span>
         }
-<span class="fc" id="L103">        return result;</span>
+<span class="fc" id="L107">        return result;</span>
     }
 
     /**
-     * construct me from a given element
+     * construct me from a given element.
      *
      * @param element
+     *            the element
      */
-<span class="fc" id="L111">    public HTMLElementScriptable(HTMLElement element) {</span>
-<span class="fc" id="L112">        _element = element;</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L116">    public HTMLElementScriptable(HTMLElement element) {</span>
+<span class="fc" id="L117">        _element = element;</span>
+<span class="fc" id="L118">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

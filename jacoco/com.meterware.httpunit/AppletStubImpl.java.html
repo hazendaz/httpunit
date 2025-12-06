@@ -23,13 +23,23 @@ import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.URL;
 
+/**
+ * The Class AppletStubImpl.
+ */
 class AppletStubImpl implements AppletStub {
 
+    /** The web applet. */
     private WebApplet _webApplet;
 
-<span class="fc" id="L30">    AppletStubImpl(WebApplet webApplet) {</span>
-<span class="fc" id="L31">        _webApplet = webApplet;</span>
-<span class="fc" id="L32">    }</span>
+    /**
+     * Instantiates a new applet stub impl.
+     *
+     * @param webApplet
+     *            the web applet
+     */
+<span class="fc" id="L40">    AppletStubImpl(WebApplet webApplet) {</span>
+<span class="fc" id="L41">        _webApplet = webApplet;</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Determines if the applet is active. An applet is active just before its &lt;code&gt;start&lt;/code&gt; method is called. It
@@ -39,7 +49,7 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public boolean isActive() {
-<span class="nc" id="L42">        return false;</span>
+<span class="nc" id="L52">        return false;</span>
     }
 
     /**
@@ -64,7 +74,7 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public URL getDocumentBase() {
-<span class="nc" id="L67">        return null;</span>
+<span class="nc" id="L77">        return null;</span>
     }
 
     /**
@@ -74,7 +84,7 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public URL getCodeBase() {
-<span class="nc" id="L77">        return null;</span>
+<span class="nc" id="L87">        return null;</span>
     }
 
     /**
@@ -97,7 +107,7 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public String getParameter(String name) {
-<span class="fc" id="L100">        return _webApplet.getParameter(name);</span>
+<span class="fc" id="L110">        return _webApplet.getParameter(name);</span>
     }
 
     /**
@@ -107,7 +117,7 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public AppletContext getAppletContext() {
-<span class="fc" id="L110">        return new AppletContextImpl(_webApplet);</span>
+<span class="fc" id="L120">        return new AppletContextImpl(_webApplet);</span>
     }
 
     /**
@@ -120,6 +130,6 @@ class AppletStubImpl implements AppletStub {
      */
     @Override
     public void appletResize(int width, int height) {
-<span class="nc" id="L123">    }</span>
+<span class="nc" id="L133">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

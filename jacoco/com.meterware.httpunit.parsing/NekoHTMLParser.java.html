@@ -29,11 +29,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- * @author &lt;a href=&quot;mailto:bw@xmlizer.biz&quot;&gt;Bernhard Wagner&lt;/a&gt;
- * @author &lt;a href=&quot;mailto:Artashes.Aghajanyan@lycos-europe.com&quot;&gt;Artashes Aghajanyan&lt;/a&gt;
- **/
-<span class="fc" id="L36">class NekoHTMLParser implements HTMLParser {</span>
+ * The Class NekoHTMLParser.
+ */
+<span class="fc" id="L34">class NekoHTMLParser implements HTMLParser {</span>
 
     /**
      * parse the given URL with the given pageText using the given document adapter
@@ -45,40 +43,41 @@ import org.xml.sax.SAXException;
     @Override
     public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {
         try {
-<span class="fc" id="L48">            NekoDOMParser parser = NekoDOMParser.newParser(adapter, pageURL);</span>
-<span class="fc" id="L49">            parser.parse(new InputSource(new StringReader(pageText)));</span>
-<span class="fc" id="L50">            Document doc = parser.getDocument();</span>
-<span class="fc" id="L51">            adapter.setDocument((HTMLDocument) doc);</span>
-<span class="nc" id="L52">        } catch (NekoDOMParser.ScriptException e) {</span>
-<span class="nc" id="L53">            throw e.getException();</span>
-<span class="fc" id="L54">        }</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L46">            NekoDOMParser parser = NekoDOMParser.newParser(adapter, pageURL);</span>
+<span class="fc" id="L47">            parser.parse(new InputSource(new StringReader(pageText)));</span>
+<span class="fc" id="L48">            Document doc = parser.getDocument();</span>
+<span class="fc" id="L49">            adapter.setDocument((HTMLDocument) doc);</span>
+<span class="nc" id="L50">        } catch (NekoDOMParser.ScriptException e) {</span>
+<span class="nc" id="L51">            throw e.getException();</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
 
     @Override
     public String getCleanedText(String string) {
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        return string == null ? &quot;&quot; : string.replace(NBSP, ' ');</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        return string == null ? &quot;&quot; : string.replace(NBSP, ' ');</span>
     }
 
     @Override
     public boolean supportsPreserveTagCase() {
-<span class="nc" id="L64">        return false;</span>
+<span class="nc" id="L62">        return false;</span>
     }
 
     @Override
     public boolean supportsForceTagCase() {
-<span class="nc" id="L69">        return false;</span>
+<span class="nc" id="L67">        return false;</span>
     }
 
     @Override
     public boolean supportsReturnHTMLDocument() {
-<span class="fc" id="L74">        return true;</span>
+<span class="fc" id="L72">        return true;</span>
     }
 
     @Override
     public boolean supportsParserWarnings() {
-<span class="nc" id="L79">        return true;</span>
+<span class="nc" id="L77">        return true;</span>
     }
 
+    /** The Constant NBSP. */
     private static final char NBSP = (char) 160; // non-breaking space, defined by nekoHTML
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -19,80 +19,114 @@
  */
 package com.meterware.servletunit;
 
+import jakarta.servlet.ServletContext;
+
 import java.util.Hashtable;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-
+/**
+ * The Class ServletUnitContext.
+ */
 class ServletUnitContext {
 
+    /** The listener dispatcher. */
     private SessionListenerDispatcher _listenerDispatcher;
+
+    /** The servlet context. */
     private ServletContext _servletContext;
 
-<span class="fc" id="L32">    ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {</span>
-<span class="fc" id="L33">        _servletContext = servletContext;</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">        _contextPath = contextPath != null ? contextPath : &quot;&quot;;</span>
-<span class="fc" id="L35">        _listenerDispatcher = dispatcher;</span>
-<span class="fc" id="L36">    }</span>
+    /**
+     * Instantiates a new servlet unit context.
+     *
+     * @param contextPath
+     *            the context path
+     * @param servletContext
+     *            the servlet context
+     * @param dispatcher
+     *            the dispatcher
+     */
+<span class="fc" id="L48">    ServletUnitContext(String contextPath, ServletContext servletContext, SessionListenerDispatcher dispatcher) {</span>
+<span class="fc" id="L49">        _servletContext = servletContext;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        _contextPath = contextPath != null ? contextPath : &quot;&quot;;</span>
+<span class="fc" id="L51">        _listenerDispatcher = dispatcher;</span>
+<span class="fc" id="L52">    }</span>
 
+    /**
+     * Gets the session I ds.
+     *
+     * @return the session I ds
+     */
     Set getSessionIDs() {
-<span class="fc" id="L39">        return _sessions.keySet();</span>
+<span class="fc" id="L60">        return _sessions.keySet();</span>
     }
 
     /**
      * Returns an appropriate session for a request. If no cached session is
      *
      * @param sessionId
+     *            the session id
      * @param session
      *            the session cached by previous requests. May be null.
      * @param create
+     *            the create
      *
-     * @return
+     * @return the valid session
      */
     ServletUnitHttpSession getValidSession(String sessionId, ServletUnitHttpSession session, boolean create) {
-<span class="fc bfc" id="L53" title="All 4 branches covered.">        if (session == null &amp;&amp; sessionId != null) {</span>
-<span class="fc" id="L54">            session = getSession(sessionId);</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        if (session == null &amp;&amp; sessionId != null) {</span>
+<span class="fc" id="L77">            session = getSession(sessionId);</span>
         }
 
-<span class="fc bfc" id="L57" title="All 4 branches covered.">        if (session != null &amp;&amp; session.isInvalid()) {</span>
-<span class="fc" id="L58">            session = null;</span>
+<span class="fc bfc" id="L80" title="All 4 branches covered.">        if (session != null &amp;&amp; session.isInvalid()) {</span>
+<span class="fc" id="L81">            session = null;</span>
         }
 
-<span class="fc bfc" id="L61" title="All 4 branches covered.">        if (session == null &amp;&amp; create) {</span>
-<span class="fc" id="L62">            session = newSession();</span>
+<span class="fc bfc" id="L84" title="All 4 branches covered.">        if (session == null &amp;&amp; create) {</span>
+<span class="fc" id="L85">            session = newSession();</span>
         }
-<span class="fc" id="L64">        return session;</span>
+<span class="fc" id="L87">        return session;</span>
     }
 
     /**
      * Returns the session with the specified ID, if any.
-     **/
+     *
+     * @param id
+     *            the id
+     *
+     * @return the session
+     */
     ServletUnitHttpSession getSession(String id) {
-<span class="fc" id="L71">        return (ServletUnitHttpSession) _sessions.get(id);</span>
+<span class="fc" id="L99">        return (ServletUnitHttpSession) _sessions.get(id);</span>
     }
 
     /**
      * Creates a new session with a unique ID.
-     **/
+     *
+     * @return the servlet unit http session
+     */
     ServletUnitHttpSession newSession() {
-<span class="fc" id="L78">        ServletUnitHttpSession result = new ServletUnitHttpSession(_servletContext, _listenerDispatcher);</span>
-<span class="fc" id="L79">        _sessions.put(result.getId(), result);</span>
-<span class="fc" id="L80">        _listenerDispatcher.sendSessionCreated(result);</span>
-<span class="fc" id="L81">        return result;</span>
+<span class="fc" id="L108">        ServletUnitHttpSession result = new ServletUnitHttpSession(_servletContext, _listenerDispatcher);</span>
+<span class="fc" id="L109">        _sessions.put(result.getId(), result);</span>
+<span class="fc" id="L110">        _listenerDispatcher.sendSessionCreated(result);</span>
+<span class="fc" id="L111">        return result;</span>
     }
 
     /**
-     * Returns the contextPath
+     * Returns the contextPath.
+     *
+     * @return the context path
      */
     String getContextPath() {
-<span class="fc" id="L88">        return _contextPath;</span>
+<span class="fc" id="L120">        return _contextPath;</span>
     }
 
     // ------------------------------- private members ---------------------------
 
-<span class="fc" id="L93">    private Hashtable _sessions = new Hashtable&lt;&gt;();</span>
+    /** The sessions. */
+<span class="fc" id="L126">    private Hashtable _sessions = new Hashtable&lt;&gt;();</span>
 
-<span class="fc" id="L95">    private String _contextPath = null;</span>
+    /** The context path. */
+<span class="fc" id="L129">    private String _contextPath = null;</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -33,31 +33,55 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
 
     /**
      * Constructs a web request using a specific absolute url string.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     */
     public PostMethodWebRequest(String urlString) {
-<span class="fc" id="L38">        this(urlString, false);</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L41">        this(urlString, false);</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Constructs a web request using a specific absolute url string, with optional mime encoding.
-     **/
+     *
+     * @param urlString
+     *            the url string
+     * @param mimeEncoded
+     *            the mime encoded
+     */
     public PostMethodWebRequest(String urlString, boolean mimeEncoded) {
-<span class="fc" id="L45">        super(urlString, mimeEncoded);</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L53">        super(urlString, mimeEncoded);</span>
+<span class="fc" id="L54">    }</span>
 
     /**
      * Constructs a web request with a specific target.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     */
     public PostMethodWebRequest(URL urlBase, String urlString, String target) {
-<span class="nc" id="L52">        this(urlBase, urlString, target, false);</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L67">        this(urlBase, urlString, target, false);</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Constructs a web request with a specific target, with optional mime encoding.
-     **/
+     *
+     * @param urlBase
+     *            the url base
+     * @param urlString
+     *            the url string
+     * @param target
+     *            the target
+     * @param mimeEncoded
+     *            the mime encoded
+     */
     public PostMethodWebRequest(URL urlBase, String urlString, String target, boolean mimeEncoded) {
-<span class="nc" id="L59">        super(urlBase, urlString, target, mimeEncoded);</span>
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L83">        super(urlBase, urlString, target, mimeEncoded);</span>
+<span class="nc" id="L84">    }</span>
 
     /**
      * Constructs a web request using a specific absolute url string and input stream.
@@ -70,16 +94,16 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
      *            the MIME content type of the body, including any character set
      **/
     public PostMethodWebRequest(String urlString, InputStream source, String contentType) {
-<span class="fc" id="L73">        super(urlString, false);</span>
-<span class="fc" id="L74">        _body = new InputStreamMessageBody(source, contentType);</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L97">        super(urlString, false);</span>
+<span class="fc" id="L98">        _body = new InputStreamMessageBody(source, contentType);</span>
+<span class="fc" id="L99">    }</span>
 
     /**
      * Returns the HTTP method defined for this request.
      **/
     @Override
     public String getMethod() {
-<span class="fc" id="L82">        return &quot;POST&quot;;</span>
+<span class="fc" id="L106">        return &quot;POST&quot;;</span>
     }
 
     /**
@@ -88,11 +112,11 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
     @Override
     public String getQueryString() {
         try {
-<span class="fc" id="L91">            URLEncodedString encoder = new URLEncodedString();</span>
-<span class="fc" id="L92">            getParameterHolder().recordPredefinedParameters(encoder);</span>
-<span class="fc" id="L93">            return encoder.getString();</span>
-<span class="nc" id="L94">        } catch (IOException e) {</span>
-<span class="nc" id="L95">            throw new RuntimeException(&quot;Programming error: &quot; + e); // should never happen</span>
+<span class="fc" id="L115">            URLEncodedString encoder = new URLEncodedString();</span>
+<span class="fc" id="L116">            getParameterHolder().recordPredefinedParameters(encoder);</span>
+<span class="fc" id="L117">            return encoder.getString();</span>
+<span class="nc" id="L118">        } catch (IOException e) {</span>
+<span class="nc" id="L119">            throw new RuntimeException(&quot;Programming error: &quot; + e); // should never happen</span>
         }
     }
 
@@ -101,38 +125,64 @@ public class PostMethodWebRequest extends MessageBodyWebRequest {
      */
     @Override
     protected boolean maySelectFile(String parameterName) {
-<span class="fc bfc" id="L104" title="All 4 branches covered.">        return isMimeEncoded() &amp;&amp; isFileParameter(parameterName);</span>
+<span class="fc bfc" id="L128" title="All 4 branches covered.">        return isMimeEncoded() &amp;&amp; isFileParameter(parameterName);</span>
     }
 
     // ----------------------------- MessageBodyWebRequest methods ---------------------------
 
     @Override
     protected MessageBody getMessageBody() {
-<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (_body == null) {</span>
-<span class="fc" id="L112">            _body = MessageBody.createPostMethodMessageBody(isMimeEncoded(), getCharacterSet());</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (_body == null) {</span>
+<span class="fc" id="L136">            _body = MessageBody.createPostMethodMessageBody(isMimeEncoded(), getCharacterSet());</span>
         }
-<span class="fc" id="L114">        return _body;</span>
+<span class="fc" id="L138">        return _body;</span>
     }
 
     // ----------------------------------- package members -----------------------------------
 
     /**
      * Constructs a web request for a form submitted by clicking a button.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     PostMethodWebRequest(WebForm sourceForm, SubmitButton button, int x, int y) {
-<span class="fc" id="L123">        this(sourceForm, sourceForm, button, x, y);</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L156">        this(sourceForm, sourceForm, button, x, y);</span>
+<span class="fc" id="L157">    }</span>
 
+    /**
+     * Instantiates a new post method web request.
+     *
+     * @param sourceForm
+     *            the source form
+     * @param parameterHolder
+     *            the parameter holder
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     */
     PostMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
-<span class="fc" id="L127">        super(sourceForm, parameterHolder, button, x, y);</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L174">        super(sourceForm, parameterHolder, button, x, y);</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Constructs a web request for a form submitted via a script.
-     **/
+     *
+     * @param sourceForm
+     *            the source form
+     */
     PostMethodWebRequest(WebForm sourceForm) {
-<span class="fc" id="L134">        super(sourceForm);</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L184">        super(sourceForm);</span>
+<span class="fc" id="L185">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

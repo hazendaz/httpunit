@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLCollection;
@@ -45,12 +44,13 @@ import org.xml.sax.SAXException;
  * This class represents a form in an HTML page. Users of this class may examine the parameters defined for the form,
  * the structure of the form (as a DOM), or the text of the form. They may also create a {@link WebRequest} to simulate
  * the submission of the form.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class WebForm extends WebRequestSource {
-<span class="fc" id="L52">    private static final String[] NO_VALUES = {};</span>
 
+    /** The Constant NO_VALUES. */
+<span class="fc" id="L51">    private static final String[] NO_VALUES = {};</span>
+
+    /** The buttons. */
     private Button[] _buttons;
 
     /** The submit buttons in this form. **/
@@ -59,31 +59,36 @@ public class WebForm extends WebRequestSource {
     /** The character set in which the form will be submitted. **/
     private String _characterSet;
 
-    private Vector _buttonVector;
+    /** The button list. */
+    private List&lt;SubmitButton&gt; _buttonVector;
 
+    /** The preset parameters. */
     private FormControl[] _presetParameters;
+
+    /** The presets. */
     private ArrayList _presets;
 
+    /** The registry. */
     private ElementRegistry _registry;
 
     /** Predicate to match a link's name. **/
     public static final HTMLElementPredicate MATCH_NAME;
+
+    /** The dom element. */
     private HTMLFormElement _domElement;
 
     /**
      * Submits this form using the web client from which it was originally obtained.
-     **/
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse submit() throws IOException, SAXException {
-<span class="fc" id="L77">        return submit(getDefaultButton());</span>
-    }
-
-    /**
-     * Submits this form using the web client from which it was originally obtained. Will usually return the result of
-     * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
-     * inhibits the submission, will return the updated contents of the frame containing this form.
-     **/
-    public WebResponse submit(SubmitButton button) throws IOException, SAXException {
-<span class="fc" id="L86">        return submit(button, 0, 0);</span>
+<span class="fc" id="L91">        return submit(getDefaultButton());</span>
     }
 
     /**
@@ -91,199 +96,328 @@ public class WebForm extends WebRequestSource {
      * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
      * inhibits the submission, will return the updated contents of the frame containing this form.
      *
-     * @since 1.6
-     **/
+     * @param button
+     *            the button
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
+    public WebResponse submit(SubmitButton button) throws IOException, SAXException {
+<span class="fc" id="L110">        return submit(button, 0, 0);</span>
+    }
+
+    /**
+     * Submits this form using the web client from which it was originally obtained. Will usually return the result of
+     * that submission; however, if the submit button's 'onclick' or the form's 'onsubmit' event is triggered and
+     * inhibits the submission, will return the updated contents of the frame containing this form.
+     *
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (button == null) {</span>
-<span class="fc" id="L98">            throw new IllegalSubmitButtonException(&quot;?&quot;, &quot;?&quot;);</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (button == null) {</span>
+<span class="fc" id="L134">            throw new IllegalSubmitButtonException(&quot;?&quot;, &quot;?&quot;);</span>
         }
-<span class="fc" id="L100">        button.doOnClickSequence(x, y);</span>
-<span class="fc" id="L101">        return getCurrentFrameContents();</span>
+<span class="fc" id="L136">        button.doOnClickSequence(x, y);</span>
+<span class="fc" id="L137">        return getCurrentFrameContents();</span>
     }
 
     /**
      * Submits this form using the web client from which it was originally obtained, ignoring any buttons defined for
      * the form.
      *
-     * @since 1.6
-     **/
+     * @return the web response
+     *
+     * @throws SAXException
+     *             the SAX exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     public WebResponse submitNoButton() throws SAXException, IOException {
-<span class="fc" id="L111">        return submit(SubmitButton.createFakeSubmitButton(this /* fake */));</span>
+<span class="fc" id="L152">        return submit(SubmitButton.createFakeSubmitButton(this /* fake */));</span>
     }
 
     @Override
     protected WebResponse submitRequest(String event, WebRequest request) throws IOException, SAXException {
         try {
-<span class="fc" id="L117">            return super.submitRequest(event, request);</span>
-<span class="fc" id="L118">        } catch (UnknownServiceException e) {</span>
-<span class="fc" id="L119">            throw new UnsupportedActionException(</span>
-<span class="fc" id="L120">                    &quot;HttpUnit does not support &quot; + request.getURL().getProtocol() + &quot; URLs in form submissions&quot;);</span>
+<span class="fc" id="L158">            return super.submitRequest(event, request);</span>
+<span class="fc" id="L159">        } catch (UnknownServiceException e) {</span>
+<span class="fc" id="L160">            throw new UnsupportedActionException(</span>
+<span class="fc" id="L161">                    &quot;HttpUnit does not support &quot; + request.getURL().getProtocol() + &quot; URLs in form submissions&quot;);</span>
         }
     }
 
     /**
      * Submits the form without also invoking the button's &quot;onclick&quot; event.
+     *
+     * @param button
+     *            the button
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     WebResponse doFormSubmit(SubmitButton button) throws IOException, SAXException {
-<span class="nc" id="L128">        return submitRequest(getAttribute(&quot;onsubmit&quot;), getRequest(button));</span>
+<span class="nc" id="L179">        return submitRequest(getAttribute(&quot;onsubmit&quot;), getRequest(button));</span>
     }
 
+    /**
+     * Do form submit.
+     *
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     WebResponse doFormSubmit(SubmitButton button, int x, int y) throws IOException, SAXException {
-<span class="fc" id="L132">        return submitRequest(getAttribute(&quot;onsubmit&quot;), getRequest(button, x, y));</span>
+<span class="fc" id="L200">        return submitRequest(getAttribute(&quot;onsubmit&quot;), getRequest(button, x, y));</span>
     }
 
     /**
      * Returns the method defined for this form.
-     **/
+     *
+     * @return the method
+     */
     public String getMethod() {
-<span class="fc" id="L139">        return getAttribute(&quot;method&quot;, &quot;GET&quot;);</span>
+<span class="fc" id="L209">        return getAttribute(&quot;method&quot;, &quot;GET&quot;);</span>
     }
 
     /**
      * Returns the action defined for this form.
-     **/
+     *
+     * @return the action
+     */
     public String getAction() {
-<span class="fc" id="L146">        return getDestination();</span>
+<span class="fc" id="L218">        return getDestination();</span>
     }
 
     /**
      * Returns true if a parameter with given name exists in this form.
-     **/
+     *
+     * @param soughtName
+     *            the sought name
+     *
+     * @return true, if successful
+     */
     public boolean hasParameterNamed(String soughtName) {
-<span class="fc" id="L153">        return getFormParameters().containsKey(soughtName);</span>
+<span class="fc" id="L230">        return getFormParameters().containsKey(soughtName);</span>
     }
 
     /**
-     * Returns true if a parameter starting with a given name exists,
-     **/
+     * Returns true if a parameter starting with a given name exists,.
+     *
+     * @param prefix
+     *            the prefix
+     *
+     * @return true, if successful
+     */
     public boolean hasParameterStartingWithPrefix(String prefix) {
-<span class="fc" id="L160">        String[] names = getParameterNames();</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        for (String name : names) {</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (name.startsWith(prefix)) {</span>
-<span class="fc" id="L163">                return true;</span>
+<span class="fc" id="L242">        String[] names = getParameterNames();</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        for (String name : names) {</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (name.startsWith(prefix)) {</span>
+<span class="fc" id="L245">                return true;</span>
             }
         }
-<span class="nc" id="L166">        return false;</span>
+<span class="nc" id="L248">        return false;</span>
     }
 
     /**
      * Returns an array containing all of the buttons defined for this form.
-     **/
+     *
+     * @return the buttons
+     */
     public Button[] getButtons() {
-<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (_buttons == null) {</span>
-<span class="fc" id="L174">            FormControl[] controls = getFormControls();</span>
-<span class="fc" id="L175">            ArrayList buttonList = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L176" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
-<span class="fc bfc" id="L177" title="All 2 branches covered.">                if (control instanceof Button) {</span>
-<span class="fc" id="L178">                    buttonList.add(control);</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        if (_buttons == null) {</span>
+<span class="fc" id="L258">            FormControl[] controls = getFormControls();</span>
+<span class="fc" id="L259">            List&lt;FormControl&gt; buttonList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">                if (control instanceof Button) {</span>
+<span class="fc" id="L262">                    buttonList.add(control);</span>
                 }
             }
-<span class="fc" id="L181">            _buttons = (Button[]) buttonList.toArray(new Button[buttonList.size()]);</span>
+<span class="fc" id="L265">            _buttons = (Button[]) buttonList.toArray(new Button[buttonList.size()]);</span>
         }
-<span class="fc" id="L183">        return _buttons;</span>
+<span class="fc" id="L267">        return _buttons;</span>
     }
 
+    /**
+     * Gets the button.
+     *
+     * @param predicate
+     *            the predicate
+     * @param criteria
+     *            the criteria
+     *
+     * @return the button
+     */
     public Button getButton(HTMLElementPredicate predicate, Object criteria) {
-<span class="fc" id="L187">        Button[] buttons = getButtons();</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        for (Button button : buttons) {</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">            if (predicate.matchesCriteria(button, criteria)) {</span>
-<span class="fc" id="L190">                return button;</span>
+<span class="fc" id="L281">        Button[] buttons = getButtons();</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">        for (Button button : buttons) {</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">            if (predicate.matchesCriteria(button, criteria)) {</span>
+<span class="fc" id="L284">                return button;</span>
             }
         }
-<span class="nc" id="L193">        return null;</span>
+<span class="nc" id="L287">        return null;</span>
     }
 
     /**
      * Convenience method which returns the button with the specified ID.
+     *
+     * @param buttonID
+     *            the button ID
+     *
+     * @return the button with ID
      */
     public Button getButtonWithID(String buttonID) {
-<span class="fc" id="L200">        return getButton(Button.WITH_ID, buttonID);</span>
+<span class="fc" id="L299">        return getButton(Button.WITH_ID, buttonID);</span>
     }
 
     /**
      * Returns an array containing the submit buttons defined for this form.
-     **/
+     *
+     * @return the submit buttons
+     */
     public SubmitButton[] getSubmitButtons() {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (_submitButtons == null) {</span>
-<span class="fc" id="L208">            Vector buttons = getSubmitButtonVector();</span>
-<span class="fc" id="L209">            _submitButtons = new SubmitButton[buttons.size()];</span>
-<span class="fc" id="L210">            buttons.copyInto(_submitButtons);</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">        if (_submitButtons == null) {</span>
+<span class="fc" id="L309">            List&lt;SubmitButton&gt; buttons = getSubmitButtonVector();</span>
+<span class="fc" id="L310">            _submitButtons = buttons.toArray(new SubmitButton[buttons.size()]);</span>
         }
-<span class="fc" id="L212">        return _submitButtons;</span>
+<span class="fc" id="L312">        return _submitButtons;</span>
     }
 
     /**
      * Returns the submit button defined in this form with the specified name. If more than one such button exists, will
      * return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the submit button
+     */
     public SubmitButton getSubmitButton(String name) {
-<span class="fc" id="L220">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="fc bfc" id="L221" title="All 2 branches covered.">        for (SubmitButton button : buttons) {</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">            if (button.getName().equals(name)) {</span>
-<span class="fc" id="L223">                return button;</span>
+<span class="fc" id="L325">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        for (SubmitButton button : buttons) {</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">            if (button.getName().equals(name)) {</span>
+<span class="fc" id="L328">                return button;</span>
             }
         }
-<span class="fc" id="L226">        return null;</span>
+<span class="fc" id="L331">        return null;</span>
     }
 
     /**
      * Returns the submit button defined in this form with the specified name and value. If more than one such button
      * exists, will return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     *
+     * @return the submit button
+     */
     public SubmitButton getSubmitButton(String name, String value) {
-<span class="fc" id="L234">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        for (SubmitButton button : buttons) {</span>
-<span class="pc bpc" id="L236" title="1 of 4 branches missed.">            if (button.getName().equals(name) &amp;&amp; button.getValue().equals(value)) {</span>
-<span class="fc" id="L237">                return button;</span>
+<span class="fc" id="L346">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">        for (SubmitButton button : buttons) {</span>
+<span class="pc bpc" id="L348" title="1 of 4 branches missed.">            if (button.getName().equals(name) &amp;&amp; button.getValue().equals(value)) {</span>
+<span class="fc" id="L349">                return button;</span>
             }
         }
-<span class="nc" id="L240">        return null;</span>
+<span class="nc" id="L352">        return null;</span>
     }
 
     /**
      * Returns the submit button defined in this form with the specified ID. If more than one such button exists, will
      * return the first found. If no such button is found, will return null.
-     **/
+     *
+     * @param ID
+     *            the id
+     *
+     * @return the submit button with ID
+     */
     public SubmitButton getSubmitButtonWithID(String ID) {
-<span class="fc" id="L248">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        for (SubmitButton button : buttons) {</span>
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">            if (button.getID().equals(ID)) {</span>
-<span class="fc" id="L251">                return button;</span>
+<span class="fc" id="L365">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">        for (SubmitButton button : buttons) {</span>
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">            if (button.getID().equals(ID)) {</span>
+<span class="fc" id="L368">                return button;</span>
             }
         }
-<span class="nc" id="L254">        return null;</span>
+<span class="nc" id="L371">        return null;</span>
     }
 
     /**
      * Creates and returns a web request which will simulate the submission of this form with a button with the
      * specified name and value.
-     **/
+     *
+     * @param submitButtonName
+     *            the submit button name
+     * @param submitButtonValue
+     *            the submit button value
+     *
+     * @return the request
+     */
     public WebRequest getRequest(String submitButtonName, String submitButtonValue) {
-<span class="fc" id="L262">        SubmitButton sb = getSubmitButton(submitButtonName, submitButtonValue);</span>
-<span class="pc bpc" id="L263" title="1 of 2 branches missed.">        if (sb == null) {</span>
-<span class="nc" id="L264">            throw new IllegalSubmitButtonException(submitButtonName, submitButtonValue);</span>
+<span class="fc" id="L386">        SubmitButton sb = getSubmitButton(submitButtonName, submitButtonValue);</span>
+<span class="pc bpc" id="L387" title="1 of 2 branches missed.">        if (sb == null) {</span>
+<span class="nc" id="L388">            throw new IllegalSubmitButtonException(submitButtonName, submitButtonValue);</span>
         }
-<span class="fc" id="L266">        return getRequest(sb);</span>
+<span class="fc" id="L390">        return getRequest(sb);</span>
     }
 
     /**
      * Creates and returns a web request which will simulate the submission of this form with a button with the
      * specified name.
-     **/
+     *
+     * @param submitButtonName
+     *            the submit button name
+     *
+     * @return the request
+     */
     public WebRequest getRequest(String submitButtonName) {
-<span class="fc" id="L274">        SubmitButton sb = getSubmitButton(submitButtonName);</span>
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">        if (sb == null) {</span>
-<span class="nc" id="L276">            throw new IllegalSubmitButtonException(submitButtonName, &quot;&quot;);</span>
+<span class="fc" id="L403">        SubmitButton sb = getSubmitButton(submitButtonName);</span>
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">        if (sb == null) {</span>
+<span class="nc" id="L405">            throw new IllegalSubmitButtonException(submitButtonName, &quot;&quot;);</span>
         }
-<span class="fc" id="L278">        return getRequest(sb);</span>
+<span class="fc" id="L407">        return getRequest(sb);</span>
     }
 
     /**
      * Creates and returns a web request which will simulate the submission of this form by pressing the specified
      * button. If the button is null, simulates the pressing of the default button.
-     **/
+     *
+     * @param button
+     *            the button
+     *
+     * @return the request
+     */
     public WebRequest getRequest(SubmitButton button) {
-<span class="fc" id="L286">        return getRequest(button, 0, 0);</span>
+<span class="fc" id="L420">        return getRequest(button, 0, 0);</span>
     }
 
     /**
@@ -296,125 +430,176 @@ public class WebForm extends WebRequestSource {
      *            - the x position
      * @param y
      *            - the y position
-     **/
+     *
+     * @return the request
+     */
     public WebRequest getRequest(SubmitButton button, int x, int y) {
-<span class="fc bfc" id="L301" title="All 2 branches covered.">        if (button == null) {</span>
-<span class="fc" id="L302">            button = getDefaultButton();</span>
+<span class="fc bfc" id="L437" title="All 2 branches covered.">        if (button == null) {</span>
+<span class="fc" id="L438">            button = getDefaultButton();</span>
         }
 
-<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (HttpUnitOptions.getParameterValuesValidated()) {</span>
-<span class="fc bfc" id="L306" title="All 2 branches covered.">            if (button == null) {</span>
-<span class="fc" id="L307">                throw new IllegalUnnamedSubmitButtonException();</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">        if (HttpUnitOptions.getParameterValuesValidated()) {</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">            if (button == null) {</span>
+<span class="fc" id="L443">                throw new IllegalUnnamedSubmitButtonException();</span>
             }
-<span class="fc bfc" id="L309" title="All 2 branches covered.">            if (button.isFake()) {</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">            if (button.isFake()) {</span>
                 // bypass checks
-<span class="fc bfc" id="L311" title="All 2 branches covered.">            } else if (!getSubmitButtonVector().contains(button)) {</span>
-<span class="fc" id="L312">                throw new IllegalSubmitButtonException(button);</span>
-<span class="fc bfc" id="L313" title="All 2 branches covered.">            } else if (!button.wasEnabled()) {</span>
+<span class="fc bfc" id="L447" title="All 2 branches covered.">            } else if (!getSubmitButtonVector().contains(button)) {</span>
+<span class="fc" id="L448">                throw new IllegalSubmitButtonException(button);</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">            } else if (!button.wasEnabled()) {</span>
                 // this is too late for the check of isDisabled()
                 // onclick has already been done ...
                 // [ 1289151 ] Order of events in button.click() is wrong
-<span class="nc" id="L317">                button.throwDisabledException();</span>
+<span class="nc" id="L453">                button.throwDisabledException();</span>
             }
         }
 
-<span class="fc" id="L321">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="fc bfc" id="L322" title="All 2 branches covered.">        for (SubmitButton button2 : buttons) {</span>
-<span class="fc" id="L323">            button2.setPressed(false);</span>
+<span class="fc" id="L457">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="fc bfc" id="L458" title="All 2 branches covered.">        for (SubmitButton button2 : buttons) {</span>
+<span class="fc" id="L459">            button2.setPressed(false);</span>
         }
-<span class="fc" id="L325">        button.setPressed(true);</span>
+<span class="fc" id="L461">        button.setPressed(true);</span>
 
-<span class="fc bfc" id="L327" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
-<span class="fc" id="L328">            return new PostMethodWebRequest(this, button, x, y);</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
+<span class="fc" id="L464">            return new PostMethodWebRequest(this, button, x, y);</span>
         }
-<span class="fc" id="L330">        return new GetMethodWebRequest(this, WebRequest.newParameterHolder(this), button, x, y);</span>
+<span class="fc" id="L466">        return new GetMethodWebRequest(this, WebRequest.newParameterHolder(this), button, x, y);</span>
     }
 
     /**
      * Creates and returns a web request which includes the specified button. If no button is specified, will include
      * the default button, if any. No parameter validation will be done on the returned request and no scripts will be
      * run when it is submitted.
-     **/
+     *
+     * @param button
+     *            the button
+     *
+     * @return the web request
+     */
     public WebRequest newUnvalidatedRequest(SubmitButton button) {
-<span class="fc" id="L339">        return newUnvalidatedRequest(button, 0, 0);</span>
+<span class="fc" id="L480">        return newUnvalidatedRequest(button, 0, 0);</span>
     }
 
     /**
      * Creates and returns a web request which includes the specified button and position. If no button is specified,
      * will include the default button, if any. No parameter validation will be done on the returned request and no
      * scripts will be run when it is submitted.
-     **/
+     *
+     * @param button
+     *            the button
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     *
+     * @return the web request
+     */
     public WebRequest newUnvalidatedRequest(SubmitButton button, int x, int y) {
-<span class="fc bfc" id="L348" title="All 2 branches covered.">        if (button == null) {</span>
-<span class="fc" id="L349">            button = getDefaultButton();</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">        if (button == null) {</span>
+<span class="fc" id="L499">            button = getDefaultButton();</span>
         }
 
-<span class="fc" id="L352">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="fc bfc" id="L353" title="All 2 branches covered.">        for (SubmitButton button2 : buttons) {</span>
-<span class="fc" id="L354">            button2.setPressed(false);</span>
+<span class="fc" id="L502">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        for (SubmitButton button2 : buttons) {</span>
+<span class="fc" id="L504">            button2.setPressed(false);</span>
         }
-<span class="fc" id="L356">        button.setPressed(true);</span>
+<span class="fc" id="L506">        button.setPressed(true);</span>
 
-<span class="fc bfc" id="L358" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
-<span class="fc" id="L359">            return new PostMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
+<span class="fc" id="L509">            return new PostMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);</span>
         }
-<span class="fc" id="L361">        return new GetMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);</span>
+<span class="fc" id="L511">        return new GetMethodWebRequest(this, new UncheckedParameterHolder(this), button, x, y);</span>
     }
 
+    /**
+     * Gets the scripted submit request.
+     *
+     * @return the scripted submit request
+     */
     private WebRequest getScriptedSubmitRequest() {
-<span class="fc" id="L365">        SubmitButton[] buttons = getSubmitButtons();</span>
-<span class="fc bfc" id="L366" title="All 2 branches covered.">        for (SubmitButton button : buttons) {</span>
-<span class="fc" id="L367">            button.setPressed(false);</span>
+<span class="fc" id="L520">        SubmitButton[] buttons = getSubmitButtons();</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">        for (SubmitButton button : buttons) {</span>
+<span class="fc" id="L522">            button.setPressed(false);</span>
         }
 
-<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
-<span class="fc" id="L371">            return new PostMethodWebRequest(this);</span>
+<span class="fc bfc" id="L525" title="All 2 branches covered.">        if (getMethod().equalsIgnoreCase(&quot;post&quot;)) {</span>
+<span class="fc" id="L526">            return new PostMethodWebRequest(this);</span>
         }
-<span class="fc" id="L373">        return new GetMethodWebRequest(this);</span>
+<span class="fc" id="L528">        return new GetMethodWebRequest(this);</span>
 
     }
 
     /**
      * Returns the default value of the named parameter. If the parameter does not exist returns null.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the parameter value
+     */
     public String getParameterValue(String name) {
-<span class="fc" id="L381">        String[] values = getParameterValues(name);</span>
-<span class="fc bfc" id="L382" title="All 2 branches covered.">        return values.length == 0 ? null : values[0];</span>
+<span class="fc" id="L541">        String[] values = getParameterValues(name);</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">        return values.length == 0 ? null : values[0];</span>
     }
 
     /**
      * Returns the displayed options defined for the specified parameter name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the options
+     */
     public String[] getOptions(String name) {
-<span class="fc" id="L389">        return getParameter(name).getOptions();</span>
+<span class="fc" id="L554">        return getParameter(name).getOptions();</span>
     }
 
     /**
      * Returns the option values defined for the specified parameter name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the option values
+     */
     public String[] getOptionValues(String name) {
-<span class="fc" id="L396">        return getParameter(name).getOptionValues();</span>
+<span class="fc" id="L566">        return getParameter(name).getOptionValues();</span>
     }
 
     /**
      * Returns true if the named parameter accepts multiple values.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is multi valued parameter
+     */
     public boolean isMultiValuedParameter(String name) {
-<span class="nc" id="L403">        return getParameter(name).isMultiValuedParameter();</span>
+<span class="nc" id="L578">        return getParameter(name).isMultiValuedParameter();</span>
     }
 
     /**
      * Returns the number of text parameters in this form with the specified name.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return the num text parameters
+     */
     public int getNumTextParameters(String name) {
-<span class="fc" id="L410">        return getParameter(name).getNumTextParameters();</span>
+<span class="fc" id="L590">        return getParameter(name).getNumTextParameters();</span>
     }
 
     /**
      * Returns true if the named parameter accepts free-form text.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is text parameter
+     */
     public boolean isTextParameter(String name) {
-<span class="nc" id="L417">        return getParameter(name).isTextParameter();</span>
+<span class="nc" id="L602">        return getParameter(name).isTextParameter();</span>
     }
 
     /**
@@ -422,32 +607,40 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public boolean isSubmitAsMime() {
-<span class="fc" id="L425">        return &quot;multipart/form-data&quot;.equalsIgnoreCase(getAttribute(&quot;enctype&quot;));</span>
+<span class="fc" id="L610">        return &quot;multipart/form-data&quot;.equalsIgnoreCase(getAttribute(&quot;enctype&quot;));</span>
     }
 
+    /**
+     * Gets the scriptable object.
+     *
+     * @return the scriptable object
+     */
     public FormScriptable getScriptableObject() {
-<span class="fc" id="L429">        return (FormScriptable) getScriptingHandler();</span>
+<span class="fc" id="L619">        return (FormScriptable) getScriptingHandler();</span>
     }
 
     /**
      * Resets all parameters to their initial values.
      */
     public void reset() {
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">        if (handleEvent(&quot;onreset&quot;)) {</span>
-<span class="fc" id="L437">            resetControls();</span>
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">        if (handleEvent(&quot;onreset&quot;)) {</span>
+<span class="fc" id="L627">            resetControls();</span>
         }
-<span class="fc" id="L439">    }</span>
+<span class="fc" id="L629">    }</span>
 
+    /**
+     * Reset controls.
+     */
     private void resetControls() {
-<span class="fc" id="L442">        FormControl[] controls = getFormControls();</span>
-<span class="fc bfc" id="L443" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc" id="L444">            control.reset();</span>
+<span class="fc" id="L635">        FormControl[] controls = getFormControls();</span>
+<span class="fc bfc" id="L636" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L637">            control.reset();</span>
         }
-<span class="fc" id="L446">    }</span>
+<span class="fc" id="L639">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L450">        return new Scriptable();</span>
+<span class="fc" id="L643">        return new Scriptable();</span>
     }
 
     // ---------------------------------- WebRequestSource methods
@@ -458,7 +651,7 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public String getCharacterSet() {
-<span class="fc" id="L461">        return _characterSet;</span>
+<span class="fc" id="L654">        return _characterSet;</span>
     }
 
     /**
@@ -466,7 +659,7 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public boolean isFileParameter(String name) {
-<span class="fc" id="L469">        return getParameter(name).isFileParameter();</span>
+<span class="fc" id="L662">        return getParameter(name).isFileParameter();</span>
     }
 
     /**
@@ -474,8 +667,8 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public String[] getParameterNames() {
-<span class="fc" id="L477">        ArrayList parameterNames = new ArrayList(getFormParameters().keySet());</span>
-<span class="fc" id="L478">        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);</span>
+<span class="fc" id="L670">        List parameterNames = new ArrayList(getFormParameters().keySet());</span>
+<span class="fc" id="L671">        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);</span>
     }
 
     /**
@@ -483,32 +676,47 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public String[] getParameterValues(String name) {
-<span class="fc" id="L486">        final FormParameter parameter = getParameter(name);</span>
-<span class="fc" id="L487">        return parameter.getValues();</span>
+<span class="fc" id="L679">        final FormParameter parameter = getParameter(name);</span>
+<span class="fc" id="L680">        return parameter.getValues();</span>
     }
 
     /**
      * Returns true if the named parameter is read-only. If more than one control exists with the same name, will return
      * true only if all such controls are read-only.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is read only parameter
+     */
     public boolean isReadOnlyParameter(String name) {
-<span class="fc" id="L495">        return getParameter(name).isReadOnlyParameter();</span>
+<span class="fc" id="L693">        return getParameter(name).isReadOnlyParameter();</span>
     }
 
     /**
      * Returns true if the named parameter is disabled. If more than one control exists with the same name, will return
      * true only if all such controls are read-only.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is disabled parameter
+     */
     public boolean isDisabledParameter(String name) {
-<span class="fc" id="L503">        return getParameter(name).isDisabledParameter();</span>
+<span class="fc" id="L706">        return getParameter(name).isDisabledParameter();</span>
     }
 
     /**
      * Returns true if the named parameter is hidden. If more than one control exists with the same name, will return
      * true only if all such controls are hidden.
-     **/
+     *
+     * @param name
+     *            the name
+     *
+     * @return true, if is hidden parameter
+     */
     public boolean isHiddenParameter(String name) {
-<span class="fc" id="L511">        return getParameter(name).isHiddenParameter();</span>
+<span class="fc" id="L719">        return getParameter(name).isHiddenParameter();</span>
     }
 
     /**
@@ -516,15 +724,17 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public WebRequest getRequest() {
-<span class="fc" id="L519">        return getRequest((SubmitButton) null);</span>
+<span class="fc" id="L727">        return getRequest((SubmitButton) null);</span>
     }
 
     /**
      * Creates and returns a web request based on the current state of this form. No parameter validation will be done
      * and there is no guarantee over the order of parameters transmitted.
+     *
+     * @return the web request
      */
     public WebRequest newUnvalidatedRequest() {
-<span class="fc" id="L527">        return newUnvalidatedRequest(null);</span>
+<span class="fc" id="L737">        return newUnvalidatedRequest(null);</span>
     }
 
     /**
@@ -533,18 +743,18 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     protected void addPresetParameter(String name, String value) {
-<span class="fc" id="L536">        FormControl[] formControls = getFormControls();</span>
-<span class="fc bfc" id="L537" title="All 2 branches covered.">        for (FormControl formControl : formControls) {</span>
-<span class="fc bfc" id="L538" title="All 2 branches covered.">            if (formControl.getName().equals(name)) {</span>
-<span class="fc" id="L539">                return;</span>
+<span class="fc" id="L746">        FormControl[] formControls = getFormControls();</span>
+<span class="fc bfc" id="L747" title="All 2 branches covered.">        for (FormControl formControl : formControls) {</span>
+<span class="fc bfc" id="L748" title="All 2 branches covered.">            if (formControl.getName().equals(name)) {</span>
+<span class="fc" id="L749">                return;</span>
             }
         }
-<span class="fc" id="L542">        _presets.add(new PresetFormParameter(this, name, value));</span>
-<span class="fc" id="L543">    }</span>
+<span class="fc" id="L752">        _presets.add(new PresetFormParameter(this, name, value));</span>
+<span class="fc" id="L753">    }</span>
 
     @Override
     protected String getEmptyParameterValue() {
-<span class="fc" id="L547">        return null;</span>
+<span class="fc" id="L757">        return null;</span>
     }
 
     // ---------------------------------- ParameterHolder methods
@@ -555,8 +765,8 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
-<span class="fc" id="L558">        imageButton.setLocation(x, y);</span>
-<span class="fc" id="L559">    }</span>
+<span class="fc" id="L768">        imageButton.setLocation(x, y);</span>
+<span class="fc" id="L769">    }</span>
 
     /**
      * Iterates through the fixed, predefined parameters in this holder, recording them in the supplied parameter
@@ -565,30 +775,30 @@ public class WebForm extends WebRequestSource {
 
     @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L568">        FormControl[] controls = getPresetParameters();</span>
-<span class="fc bfc" id="L569" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc" id="L570">            control.addValues(processor, getCharacterSet());</span>
+<span class="fc" id="L778">        FormControl[] controls = getPresetParameters();</span>
+<span class="fc bfc" id="L779" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L780">            control.addValues(processor, getCharacterSet());</span>
         }
-<span class="fc" id="L572">    }</span>
+<span class="fc" id="L782">    }</span>
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L579">        FormControl[] controls = getFormControls();</span>
-<span class="fc bfc" id="L580" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc" id="L581">            control.addValues(processor, getCharacterSet());</span>
+<span class="fc" id="L789">        FormControl[] controls = getFormControls();</span>
+<span class="fc bfc" id="L790" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc" id="L791">            control.addValues(processor, getCharacterSet());</span>
         }
-<span class="fc" id="L583">    }</span>
+<span class="fc" id="L793">    }</span>
 
     /**
      * Removes a parameter name from this collection.
      **/
     @Override
     public void removeParameter(String name) {
-<span class="fc" id="L590">        setParameter(name, NO_VALUES);</span>
-<span class="fc" id="L591">    }</span>
+<span class="fc" id="L800">        setParameter(name, NO_VALUES);</span>
+<span class="fc" id="L801">    }</span>
 
     /**
      * Sets the value of a parameter in this form.
@@ -600,54 +810,59 @@ public class WebForm extends WebRequestSource {
      **/
     @Override
     public void setParameter(String name, String value) {
-<span class="fc" id="L603">        setParameter(name, new String[] { value });</span>
-<span class="fc" id="L604">    }</span>
+<span class="fc" id="L813">        setParameter(name, new String[] { value });</span>
+<span class="fc" id="L814">    }</span>
 
     /**
      * Sets the multiple values of a parameter in this form. This is generally used when there are multiple controls
      * with the same name in the form.
      *
      * @param name
+     *            the name
      * @param values
+     *            the values
      */
     @Override
     public void setParameter(String name, final String[] values) {
-<span class="fc" id="L615">        FormParameter parameter = getParameter(name);</span>
-<span class="fc bfc" id="L616" title="All 2 branches covered.">        if (parameter.isUnknown()) {</span>
-<span class="fc" id="L617">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L827">        FormParameter parameter = getParameter(name);</span>
+<span class="fc bfc" id="L828" title="All 2 branches covered.">        if (parameter.isUnknown()) {</span>
+<span class="fc" id="L829">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc bfc" id="L619" title="All 2 branches covered.">        if (parameter.isFileParameter()) {</span>
-<span class="fc bfc" id="L620" title="All 2 branches covered.">            if (values != NO_VALUES) {</span>
-<span class="fc" id="L621">                throw new InvalidFileParameterException(name, values);</span>
+<span class="fc bfc" id="L831" title="All 2 branches covered.">        if (parameter.isFileParameter()) {</span>
+<span class="fc bfc" id="L832" title="All 2 branches covered.">            if (values != NO_VALUES) {</span>
+<span class="fc" id="L833">                throw new InvalidFileParameterException(name, values);</span>
             }
-<span class="fc" id="L623">            parameter.setFiles(new UploadFileSpec[0]);</span>
+<span class="fc" id="L835">            parameter.setFiles(new UploadFileSpec[0]);</span>
         } else {
-<span class="fc" id="L625">            parameter.setValues(values);</span>
+<span class="fc" id="L837">            parameter.setValues(values);</span>
         }
 
-<span class="fc" id="L628">    }</span>
+<span class="fc" id="L840">    }</span>
 
     /**
      * Sets the multiple values of a file upload parameter in a web request.
      **/
     @Override
     public void setParameter(String name, UploadFileSpec[] files) {
-<span class="fc" id="L635">        FormParameter parameter = getParameter(name);</span>
-<span class="pc bpc" id="L636" title="1 of 4 branches missed.">        if (parameter == null || !parameter.isFileParameter()) {</span>
-<span class="fc" id="L637">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L847">        FormParameter parameter = getParameter(name);</span>
+<span class="pc bpc" id="L848" title="1 of 4 branches missed.">        if (parameter == null || !parameter.isFileParameter()) {</span>
+<span class="fc" id="L849">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc" id="L639">        parameter.setFiles(files);</span>
-<span class="fc" id="L640">    }</span>
+<span class="fc" id="L851">        parameter.setFiles(files);</span>
+<span class="fc" id="L852">    }</span>
 
     /**
      * Sets the single value of a file upload parameter in this form. A more convenient way to do this than using
      * {@link #setParameter(String,com.meterware.httpunit.protocol.UploadFileSpec[])}
      *
-     * @since 1.6
+     * @param name
+     *            the name
+     * @param file
+     *            the file
      */
     public void setParameter(String name, File file) {
-<span class="fc" id="L649">        setParameter(name, new UploadFileSpec[] { new UploadFileSpec(file) });</span>
-<span class="fc" id="L650">    }</span>
+<span class="fc" id="L864">        setParameter(name, new UploadFileSpec[] { new UploadFileSpec(file) });</span>
+<span class="fc" id="L865">    }</span>
 
     /**
      * Toggles the value of the specified checkbox parameter.
@@ -657,16 +872,14 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void toggleCheckbox(String name) {
-<span class="fc" id="L664">        FormParameter parameter = getParameter(name);</span>
-<span class="pc bpc" id="L665" title="1 of 2 branches missed.">        if (parameter == null) {</span>
-<span class="nc" id="L666">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L877">        FormParameter parameter = getParameter(name);</span>
+<span class="pc bpc" id="L878" title="1 of 2 branches missed.">        if (parameter == null) {</span>
+<span class="nc" id="L879">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc" id="L668">        parameter.toggleCheckbox();</span>
-<span class="fc" id="L669">    }</span>
+<span class="fc" id="L881">        parameter.toggleCheckbox();</span>
+<span class="fc" id="L882">    }</span>
 
     /**
      * Toggles the value of the specified checkbox parameter.
@@ -679,16 +892,14 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void toggleCheckbox(String name, String value) {
-<span class="fc" id="L686">        FormParameter parameter = getParameter(name);</span>
-<span class="pc bpc" id="L687" title="1 of 2 branches missed.">        if (parameter == null) {</span>
-<span class="nc" id="L688">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L897">        FormParameter parameter = getParameter(name);</span>
+<span class="pc bpc" id="L898" title="1 of 2 branches missed.">        if (parameter == null) {</span>
+<span class="nc" id="L899">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc" id="L690">        parameter.toggleCheckbox(value);</span>
-<span class="fc" id="L691">    }</span>
+<span class="fc" id="L901">        parameter.toggleCheckbox(value);</span>
+<span class="fc" id="L902">    }</span>
 
     /**
      * Sets the value of the specified checkbox parameter.
@@ -700,16 +911,14 @@ public class WebForm extends WebRequestSource {
      *
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or there is more than one control with that name.
-     *
-     * @since 1.5.4
      */
     public void setCheckbox(String name, boolean state) {
-<span class="fc" id="L707">        FormParameter parameter = getParameter(name);</span>
-<span class="pc bpc" id="L708" title="1 of 2 branches missed.">        if (parameter == null) {</span>
-<span class="nc" id="L709">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L916">        FormParameter parameter = getParameter(name);</span>
+<span class="pc bpc" id="L917" title="1 of 2 branches missed.">        if (parameter == null) {</span>
+<span class="nc" id="L918">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc" id="L711">        parameter.setValue(state);</span>
-<span class="fc" id="L712">    }</span>
+<span class="fc" id="L920">        parameter.setValue(state);</span>
+<span class="fc" id="L921">    }</span>
 
     /**
      * Sets the value of the specified checkbox parameter.
@@ -724,38 +933,58 @@ public class WebForm extends WebRequestSource {
      * @throws IllegalArgumentException
      *             if the specified parameter is not a checkbox or if there is no checkbox with the specified name and
      *             value.
-     *
-     * @since 1.6
      */
     public void setCheckbox(String name, String value, boolean state) {
-<span class="fc" id="L731">        FormParameter parameter = getParameter(name);</span>
-<span class="pc bpc" id="L732" title="1 of 2 branches missed.">        if (parameter == null) {</span>
-<span class="nc" id="L733">            throw new NoSuchParameterException(name);</span>
+<span class="fc" id="L938">        FormParameter parameter = getParameter(name);</span>
+<span class="pc bpc" id="L939" title="1 of 2 branches missed.">        if (parameter == null) {</span>
+<span class="nc" id="L940">            throw new NoSuchParameterException(name);</span>
         }
-<span class="fc" id="L735">        parameter.setValue(value, state);</span>
-<span class="fc" id="L736">    }</span>
+<span class="fc" id="L942">        parameter.setValue(value, state);</span>
+<span class="fc" id="L943">    }</span>
 
     /**
-     * Scriptable implementation for the WebForm
+     * Scriptable implementation for the WebForm.
      */
     public class Scriptable extends HTMLElementScriptable implements NamedDelegate, IdentifiedDelegate, FormScriptable {
+
+        /**
+         * Gets the action.
+         *
+         * @return the action
+         */
         public String getAction() {
-<span class="fc" id="L743">            return WebForm.this.getAction();</span>
+<span class="fc" id="L956">            return WebForm.this.getAction();</span>
         }
 
         @Override
         public void setAction(String newAction) {
-<span class="fc" id="L748">            setDestination(newAction);</span>
-<span class="fc" id="L749">            _presetParameters = null;</span>
-<span class="fc" id="L750">        }</span>
+<span class="fc" id="L961">            setDestination(newAction);</span>
+<span class="fc" id="L962">            _presetParameters = null;</span>
+<span class="fc" id="L963">        }</span>
 
+        /**
+         * Submit.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void submit() throws IOException, SAXException {
-<span class="fc" id="L753">            submitRequest(getScriptedSubmitRequest());</span>
-<span class="fc" id="L754">        }</span>
+<span class="fc" id="L974">            submitRequest(getScriptedSubmitRequest());</span>
+<span class="fc" id="L975">        }</span>
 
+        /**
+         * Reset.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         */
         public void reset() throws IOException, SAXException {
-<span class="fc" id="L757">            resetControls();</span>
-<span class="fc" id="L758">        }</span>
+<span class="fc" id="L986">            resetControls();</span>
+<span class="fc" id="L987">        }</span>
 
         /**
          * return the name of the WebForm
@@ -764,7 +993,7 @@ public class WebForm extends WebRequestSource {
          */
         @Override
         public String getName() {
-<span class="fc bfc" id="L767" title="All 2 branches covered.">            return WebForm.this.getName().length() != 0 ? WebForm.this.getName() : WebForm.this.getID();</span>
+<span class="fc bfc" id="L996" title="All 2 branches covered.">            return WebForm.this.getName().length() != 0 ? WebForm.this.getName() : WebForm.this.getID();</span>
         }
 
         /**
@@ -774,7 +1003,7 @@ public class WebForm extends WebRequestSource {
          */
         @Override
         public String getID() {
-<span class="fc" id="L777">            return WebForm.this.getID();</span>
+<span class="fc" id="L1006">            return WebForm.this.getID();</span>
         }
 
         /**
@@ -787,21 +1016,21 @@ public class WebForm extends WebRequestSource {
          */
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L790" title="All 2 branches covered.">            if (propertyName.equals(&quot;target&quot;)) {</span>
-<span class="fc" id="L791">                return getTarget();</span>
+<span class="fc bfc" id="L1019" title="All 2 branches covered.">            if (propertyName.equals(&quot;target&quot;)) {</span>
+<span class="fc" id="L1020">                return getTarget();</span>
             }
-<span class="fc bfc" id="L793" title="All 2 branches covered.">            if (propertyName.equals(&quot;action&quot;)) {</span>
-<span class="fc" id="L794">                return getAction();</span>
+<span class="fc bfc" id="L1022" title="All 2 branches covered.">            if (propertyName.equals(&quot;action&quot;)) {</span>
+<span class="fc" id="L1023">                return getAction();</span>
             }
-<span class="fc bfc" id="L796" title="All 2 branches covered.">            if (propertyName.equals(&quot;length&quot;)) {</span>
-<span class="fc" id="L797">                return Integer.valueOf(getFormControls().length);</span>
+<span class="fc bfc" id="L1025" title="All 2 branches covered.">            if (propertyName.equals(&quot;length&quot;)) {</span>
+<span class="fc" id="L1026">                return Integer.valueOf(getFormControls().length);</span>
             }
-<span class="fc" id="L799">            final FormParameter parameter = getParameter(propertyName);</span>
-<span class="fc bfc" id="L800" title="All 2 branches covered.">            if (!parameter.isUnknown()) {</span>
-<span class="fc" id="L801">                return parameter.getScriptableObject();</span>
+<span class="fc" id="L1028">            final FormParameter parameter = getParameter(propertyName);</span>
+<span class="fc bfc" id="L1029" title="All 2 branches covered.">            if (!parameter.isUnknown()) {</span>
+<span class="fc" id="L1030">                return parameter.getScriptableObject();</span>
             }
-<span class="fc" id="L803">            FormControl control = getControlWithID(propertyName);</span>
-<span class="fc bfc" id="L804" title="All 2 branches covered.">            return control == null ? super.get(propertyName) : control.getScriptingHandler();</span>
+<span class="fc" id="L1032">            FormControl control = getControlWithID(propertyName);</span>
+<span class="fc bfc" id="L1033" title="All 2 branches covered.">            return control == null ? super.get(propertyName) : control.getScriptingHandler();</span>
         }
 
         /**
@@ -815,47 +1044,66 @@ public class WebForm extends WebRequestSource {
          **/
         @Override
         public void set(String propertyName, Object value) {
-<span class="fc bfc" id="L818" title="All 2 branches covered.">            if (propertyName.equals(&quot;target&quot;)) {</span>
-<span class="fc" id="L819">                setTargetAttribute(value.toString());</span>
-<span class="fc bfc" id="L820" title="All 2 branches covered.">            } else if (propertyName.equals(&quot;action&quot;)) {</span>
-<span class="fc" id="L821">                setAction(value.toString());</span>
-<span class="fc bfc" id="L822" title="All 2 branches covered.">            } else if (propertyName.equals(&quot;name&quot;)) {</span>
-<span class="fc" id="L823">                getElement().setAttribute(&quot;name&quot;, value.toString());</span>
-<span class="pc bpc" id="L824" title="1 of 2 branches missed.">            } else if (value instanceof String) {</span>
-<span class="nc" id="L825">                setParameterValue(propertyName, (String) value);</span>
-<span class="pc bpc" id="L826" title="1 of 2 branches missed.">            } else if (value instanceof Number) {</span>
-<span class="fc" id="L827">                setParameterValue(propertyName, HttpUnitUtils.trimmedValue((Number) value));</span>
+<span class="fc bfc" id="L1047" title="All 2 branches covered.">            if (propertyName.equals(&quot;target&quot;)) {</span>
+<span class="fc" id="L1048">                setTargetAttribute(value.toString());</span>
+<span class="fc bfc" id="L1049" title="All 2 branches covered.">            } else if (propertyName.equals(&quot;action&quot;)) {</span>
+<span class="fc" id="L1050">                setAction(value.toString());</span>
+<span class="fc bfc" id="L1051" title="All 2 branches covered.">            } else if (propertyName.equals(&quot;name&quot;)) {</span>
+<span class="fc" id="L1052">                getElement().setAttribute(&quot;name&quot;, value.toString());</span>
+<span class="pc bpc" id="L1053" title="1 of 2 branches missed.">            } else if (value instanceof String) {</span>
+<span class="nc" id="L1054">                setParameterValue(propertyName, (String) value);</span>
+<span class="pc bpc" id="L1055" title="1 of 2 branches missed.">            } else if (value instanceof Number) {</span>
+<span class="fc" id="L1056">                setParameterValue(propertyName, HttpUnitUtils.trimmedValue((Number) value));</span>
             } else {
-<span class="nc" id="L829">                super.set(propertyName, value);</span>
+<span class="nc" id="L1058">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L831">        }</span>
+<span class="fc" id="L1060">        }</span>
 
         @Override
         public void setParameterValue(String name, String value) {
-<span class="fc" id="L835">            final Object scriptableObject = getParameter(name).getScriptableObject();</span>
-<span class="pc bpc" id="L836" title="1 of 2 branches missed.">            if (scriptableObject instanceof ScriptableDelegate) {</span>
-<span class="fc" id="L837">                ((ScriptableDelegate) scriptableObject).set(&quot;value&quot;, value);</span>
-<span class="nc bnc" id="L838" title="All 2 branches missed.">            } else if (scriptableObject instanceof ScriptableDelegate[]) {</span>
-<span class="nc" id="L839">                ((ScriptableDelegate[]) scriptableObject)[0].set(&quot;value&quot;, value);</span>
+<span class="fc" id="L1064">            final Object scriptableObject = getParameter(name).getScriptableObject();</span>
+<span class="pc bpc" id="L1065" title="1 of 2 branches missed.">            if (scriptableObject instanceof ScriptableDelegate) {</span>
+<span class="fc" id="L1066">                ((ScriptableDelegate) scriptableObject).set(&quot;value&quot;, value);</span>
+<span class="nc bnc" id="L1067" title="All 2 branches missed.">            } else if (scriptableObject instanceof ScriptableDelegate[]) {</span>
+<span class="nc" id="L1068">                ((ScriptableDelegate[]) scriptableObject)[0].set(&quot;value&quot;, value);</span>
             }
-<span class="fc" id="L841">        }</span>
+<span class="fc" id="L1070">        }</span>
 
+        /**
+         * Gets the element delegates.
+         *
+         * @return the element delegates
+         */
         public ScriptableDelegate[] getElementDelegates() {
-<span class="fc" id="L844">            FormControl[] controls = getFormControls();</span>
-<span class="fc" id="L845">            ScriptableDelegate[] result = new ScriptableDelegate[controls.length];</span>
-<span class="fc bfc" id="L846" title="All 2 branches covered.">            for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc" id="L847">                result[i] = (ScriptableDelegate) controls[i].getScriptingHandler();</span>
+<span class="fc" id="L1078">            FormControl[] controls = getFormControls();</span>
+<span class="fc" id="L1079">            ScriptableDelegate[] result = new ScriptableDelegate[controls.length];</span>
+<span class="fc bfc" id="L1080" title="All 2 branches covered.">            for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L1081">                result[i] = (ScriptableDelegate) controls[i].getScriptingHandler();</span>
             }
-<span class="fc" id="L849">            return result;</span>
+<span class="fc" id="L1083">            return result;</span>
         }
 
+        /**
+         * Gets the elements by tag name.
+         *
+         * @param name
+         *            the name
+         *
+         * @return the elements by tag name
+         *
+         * @throws SAXException
+         *             the SAX exception
+         */
         public ScriptableDelegate[] getElementsByTagName(String name) throws SAXException {
-<span class="fc" id="L853">            return getDelegates(getHTMLPage().getElementsByTagName(getElement(), name));</span>
+<span class="fc" id="L1098">            return getDelegates(getHTMLPage().getElementsByTagName(getElement(), name));</span>
         }
 
-<span class="fc" id="L856">        Scriptable() {</span>
-<span class="fc" id="L857">            super(WebForm.this);</span>
-<span class="fc" id="L858">        }</span>
+        /**
+         * Instantiates a new scriptable.
+         */
+<span class="fc" id="L1104">        Scriptable() {</span>
+<span class="fc" id="L1105">            super(WebForm.this);</span>
+<span class="fc" id="L1106">        }</span>
     }
 
     // ---------------------------------- package members
@@ -863,178 +1111,243 @@ public class WebForm extends WebRequestSource {
 
     /**
      * Contructs a web form given the URL of its source page and the DOM extracted from that page.
-     **/
+     *
+     * @param response
+     *            the response
+     * @param baseURL
+     *            the base URL
+     * @param node
+     *            the node
+     * @param frame
+     *            the frame
+     * @param defaultTarget
+     *            the default target
+     * @param characterSet
+     *            the character set
+     * @param registry
+     *            the registry
+     */
     WebForm(WebResponse response, URL baseURL, Node node, FrameSelector frame, String defaultTarget,
             String characterSet, ElementRegistry registry) {
-<span class="fc" id="L869">        super(response, node, baseURL, &quot;action&quot;, frame, defaultTarget);</span>
-<span class="fc" id="L870">        _characterSet = characterSet;</span>
-<span class="fc" id="L871">        _registry = registry;</span>
-<span class="fc" id="L872">        _domElement = (HTMLFormElement) node;</span>
-<span class="fc" id="L873">    }</span>
+<span class="fc" id="L1132">        super(response, node, baseURL, &quot;action&quot;, frame, defaultTarget);</span>
+<span class="fc" id="L1133">        _characterSet = characterSet;</span>
+<span class="fc" id="L1134">        _registry = registry;</span>
+<span class="fc" id="L1135">        _domElement = (HTMLFormElement) node;</span>
+<span class="fc" id="L1136">    }</span>
 
     /**
      * Returns the form control which is part of this form with the specified ID.
+     *
+     * @param id
+     *            the id
+     *
+     * @return the control with ID
      */
     public FormControl getControlWithID(String id) {
-<span class="fc" id="L879">        FormControl[] controls = getFormControls();</span>
-<span class="fc bfc" id="L880" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc bfc" id="L881" title="All 2 branches covered.">            if (control.getID().equals(id)) {</span>
-<span class="fc" id="L882">                return control;</span>
+<span class="fc" id="L1147">        FormControl[] controls = getFormControls();</span>
+<span class="fc bfc" id="L1148" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L1149" title="All 2 branches covered.">            if (control.getID().equals(id)) {</span>
+<span class="fc" id="L1150">                return control;</span>
             }
         }
-<span class="fc" id="L885">        return null;</span>
+<span class="fc" id="L1153">        return null;</span>
     }
 
     // ---------------------------------- private members
     // --------------------------------
 
+    /**
+     * Gets the default button.
+     *
+     * @return the default button
+     */
     private SubmitButton getDefaultButton() {
-<span class="fc bfc" id="L892" title="All 2 branches covered.">        if (getSubmitButtons().length == 1) {</span>
-<span class="fc" id="L893">            return getSubmitButtons()[0];</span>
+<span class="fc bfc" id="L1165" title="All 2 branches covered.">        if (getSubmitButtons().length == 1) {</span>
+<span class="fc" id="L1166">            return getSubmitButtons()[0];</span>
         }
-<span class="fc" id="L895">        return getSubmitButton(&quot;&quot;);</span>
+<span class="fc" id="L1168">        return getSubmitButton(&quot;&quot;);</span>
     }
 
     /**
-     * get the Vector of submit buttons - will always contain at least one button - if the original vector has none a
-     * faked submit button will be added
+     * get the list of submit buttons - will always contain at least one button - if the original list has none a faked
+     * submit button will be added.
      *
-     * @return a Vector with the submit buttons
+     * @return a list with the submit buttons
      */
-    private Vector getSubmitButtonVector() {
-<span class="fc bfc" id="L905" title="All 2 branches covered.">        if (_buttonVector == null) {</span>
-<span class="fc" id="L906">            _buttonVector = new Vector&lt;&gt;();</span>
-<span class="fc" id="L907">            FormControl[] controls = getFormControls();</span>
-<span class="fc bfc" id="L908" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
-<span class="fc bfc" id="L909" title="All 2 branches covered.">                if (control instanceof SubmitButton) {</span>
-<span class="fc" id="L910">                    SubmitButton sb = (SubmitButton) control;</span>
-<span class="fc" id="L911">                    sb.rememberEnableState();</span>
-<span class="fc" id="L912">                    _buttonVector.add(sb);</span>
+    private List&lt;SubmitButton&gt; getSubmitButtonVector() {
+<span class="fc bfc" id="L1178" title="All 2 branches covered.">        if (_buttonVector == null) {</span>
+<span class="fc" id="L1179">            _buttonVector = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1180">            FormControl[] controls = getFormControls();</span>
+<span class="fc bfc" id="L1181" title="All 2 branches covered.">            for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L1182" title="All 2 branches covered.">                if (control instanceof SubmitButton) {</span>
+<span class="fc" id="L1183">                    SubmitButton sb = (SubmitButton) control;</span>
+<span class="fc" id="L1184">                    sb.rememberEnableState();</span>
+<span class="fc" id="L1185">                    _buttonVector.add(sb);</span>
                 }
             }
 
             /**
-             * make sure that there is always at least one submit button if none is in the Vector add a faked one
+             * make sure that there is always at least one submit button if none is in the list add a faked one
              */
-<span class="fc bfc" id="L919" title="All 2 branches covered.">            if (_buttonVector.isEmpty()) {</span>
-<span class="fc" id="L920">                _buttonVector.addElement(SubmitButton.createFakeSubmitButton(this));</span>
+<span class="fc bfc" id="L1192" title="All 2 branches covered.">            if (_buttonVector.isEmpty()) {</span>
+<span class="fc" id="L1193">                _buttonVector.add(SubmitButton.createFakeSubmitButton(this));</span>
             }
         }
-<span class="fc" id="L923">        return _buttonVector;</span>
+<span class="fc" id="L1196">        return _buttonVector;</span>
     }
 
+    /**
+     * Gets the preset parameters.
+     *
+     * @return the preset parameters
+     */
     private FormControl[] getPresetParameters() {
-<span class="fc bfc" id="L927" title="All 2 branches covered.">        if (_presetParameters == null) {</span>
-<span class="fc" id="L928">            _presets = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L929">            loadDestinationParameters();</span>
-<span class="fc" id="L930">            _presetParameters = (FormControl[]) _presets.toArray(new FormControl[_presets.size()]);</span>
+<span class="fc bfc" id="L1205" title="All 2 branches covered.">        if (_presetParameters == null) {</span>
+<span class="fc" id="L1206">            _presets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1207">            loadDestinationParameters();</span>
+<span class="fc" id="L1208">            _presetParameters = (FormControl[]) _presets.toArray(new FormControl[_presets.size()]);</span>
         }
-<span class="fc" id="L932">        return _presetParameters;</span>
+<span class="fc" id="L1210">        return _presetParameters;</span>
     }
 
+    /**
+     * New form control.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the form control
+     */
     FormControl newFormControl(Node child) {
-<span class="fc" id="L936">        return FormControl.newFormParameter(this, child);</span>
+<span class="fc" id="L1222">        return FormControl.newFormParameter(this, child);</span>
     }
 
     /**
      * Returns an array of form parameter attributes for this form.
-     **/
+     *
+     * @return the form controls
+     */
     private FormControl[] getFormControls() {
-<span class="fc" id="L943">        HTMLCollection controlElements = _domElement.getElements();</span>
-<span class="fc" id="L944">        FormControl[] controls = new FormControl[controlElements.getLength()];</span>
-<span class="fc bfc" id="L945" title="All 2 branches covered.">        for (int i = 0; i &lt; controls.length; i++) {</span>
-<span class="fc" id="L946">            controls[i] = getControlForNode(controlElements.item(i));</span>
+<span class="fc" id="L1231">        HTMLCollection controlElements = _domElement.getElements();</span>
+<span class="fc" id="L1232">        FormControl[] controls = new FormControl[controlElements.getLength()];</span>
+<span class="fc bfc" id="L1233" title="All 2 branches covered.">        for (int i = 0; i &lt; controls.length; i++) {</span>
+<span class="fc" id="L1234">            controls[i] = getControlForNode(controlElements.item(i));</span>
         }
-<span class="fc" id="L948">        return controls;</span>
-    }
-
-    private FormControl getControlForNode(Node node) {
-<span class="pc bpc" id="L952" title="1 of 2 branches missed.">        if (_registry.hasNode(node)) {</span>
-<span class="fc" id="L953">            return (FormControl) _registry.getRegisteredElement(node);</span>
-        }
-<span class="nc" id="L955">        return (FormControl) _registry.registerElement(node, newFormControl(node));</span>
+<span class="fc" id="L1236">        return controls;</span>
     }
 
     /**
-     * get the form parameter with the given name
+     * Gets the control for node.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the control for node
+     */
+    private FormControl getControlForNode(Node node) {
+<span class="pc bpc" id="L1248" title="1 of 2 branches missed.">        if (_registry.hasNode(node)) {</span>
+<span class="fc" id="L1249">            return (FormControl) _registry.getRegisteredElement(node);</span>
+        }
+<span class="nc" id="L1251">        return (FormControl) _registry.registerElement(node, newFormControl(node));</span>
+    }
+
+    /**
+     * get the form parameter with the given name.
      *
      * @param name
+     *            the name
      *
      * @return the form parameter with this name
      */
     public FormParameter getParameter(String name) {
-<span class="fc" id="L966">        final FormParameter parameter = (FormParameter) getFormParameters().get(name);</span>
-<span class="fc bfc" id="L967" title="All 2 branches covered.">        return parameter != null ? parameter : FormParameter.getUNKNOWN_PARAMETER();</span>
+<span class="fc" id="L1263">        final FormParameter parameter = (FormParameter) getFormParameters().get(name);</span>
+<span class="fc bfc" id="L1264" title="All 2 branches covered.">        return parameter != null ? parameter : FormParameter.getUNKNOWN_PARAMETER();</span>
     }
 
     /**
      * Returns a map of parameter name to form parameter objects. Each form parameter object represents the set of form
      * controls with a particular name. Unnamed parameters are ignored.
+     *
+     * @return the form parameters
      */
     private Map getFormParameters() {
-<span class="fc" id="L975">        Map formParameters = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L976">        loadFormParameters(formParameters, getPresetParameters());</span>
-<span class="fc" id="L977">        loadFormParameters(formParameters, getFormControls());</span>
-<span class="fc" id="L978">        return formParameters;</span>
+<span class="fc" id="L1274">        Map formParameters = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L1275">        loadFormParameters(formParameters, getPresetParameters());</span>
+<span class="fc" id="L1276">        loadFormParameters(formParameters, getFormControls());</span>
+<span class="fc" id="L1277">        return formParameters;</span>
     }
 
+    /**
+     * Load form parameters.
+     *
+     * @param formParameters
+     *            the form parameters
+     * @param controls
+     *            the controls
+     */
     private void loadFormParameters(Map formParameters, FormControl[] controls) {
-<span class="fc bfc" id="L982" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
-<span class="fc bfc" id="L983" title="All 2 branches covered.">            if (control.getName().isEmpty()) {</span>
-<span class="fc" id="L984">                continue;</span>
+<span class="fc bfc" id="L1289" title="All 2 branches covered.">        for (FormControl control : controls) {</span>
+<span class="fc bfc" id="L1290" title="All 2 branches covered.">            if (control.getName().isEmpty()) {</span>
+<span class="fc" id="L1291">                continue;</span>
             }
-<span class="fc" id="L986">            FormParameter parameter = (FormParameter) formParameters.get(control.getName());</span>
-<span class="fc bfc" id="L987" title="All 2 branches covered.">            if (parameter == null) {</span>
-<span class="fc" id="L988">                parameter = new FormParameter();</span>
-<span class="fc" id="L989">                formParameters.put(control.getName(), parameter);</span>
+<span class="fc" id="L1293">            FormParameter parameter = (FormParameter) formParameters.get(control.getName());</span>
+<span class="fc bfc" id="L1294" title="All 2 branches covered.">            if (parameter == null) {</span>
+<span class="fc" id="L1295">                parameter = new FormParameter();</span>
+<span class="fc" id="L1296">                formParameters.put(control.getName(), parameter);</span>
             }
-<span class="fc" id="L991">            parameter.addControl(control);</span>
+<span class="fc" id="L1298">            parameter.addControl(control);</span>
         }
-<span class="fc" id="L993">    }</span>
+<span class="fc" id="L1300">    }</span>
 
     static {
-<span class="fc" id="L996">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebForm) htmlElement).getName(),</span>
+<span class="fc" id="L1303">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebForm) htmlElement).getName(),</span>
                 (String) criteria);
 
-<span class="fc" id="L999">    }</span>
+<span class="fc" id="L1306">    }</span>
 
     // ===========================---===== exception class
     // NoSuchParameterException =========================================
 
     /**
-     * This exception is thrown on an attempt to set a file parameter to a non file type
-     **/
+     * This exception is thrown on an attempt to set a file parameter to a non file type.
+     */
     class InvalidFileParameterException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         /**
-         * construct a new InvalidFileParameterException for the given parameter name and value list
+         * construct a new InvalidFileParameterException for the given parameter name and value list.
          *
          * @param parameterName
+         *            the parameter name
          * @param values
+         *            the values
          */
-<span class="fc" id="L1017">        InvalidFileParameterException(String parameterName, String[] values) {</span>
-<span class="fc" id="L1018">            _parameterName = parameterName;</span>
-<span class="fc" id="L1019">            _values = values;</span>
-<span class="fc" id="L1020">        }</span>
+<span class="fc" id="L1327">        InvalidFileParameterException(String parameterName, String[] values) {</span>
+<span class="fc" id="L1328">            _parameterName = parameterName;</span>
+<span class="fc" id="L1329">            _values = values;</span>
+<span class="fc" id="L1330">        }</span>
 
         /**
          * get the message for this exception
          */
         @Override
         public String getMessage() {
-<span class="fc" id="L1027">            StringBuilder valueList = new StringBuilder();</span>
-<span class="fc" id="L1028">            String delim = &quot;&quot;;</span>
-<span class="fc bfc" id="L1029" title="All 2 branches covered.">            for (String _value : _values) {</span>
-<span class="fc" id="L1030">                valueList.append(delim).append(&quot;'&quot;).append(_value).append(&quot;'&quot;);</span>
-<span class="fc" id="L1031">                delim = &quot;, &quot;;</span>
+<span class="fc" id="L1337">            StringBuilder valueList = new StringBuilder();</span>
+<span class="fc" id="L1338">            String delim = &quot;&quot;;</span>
+<span class="fc bfc" id="L1339" title="All 2 branches covered.">            for (String _value : _values) {</span>
+<span class="fc" id="L1340">                valueList.append(delim).append(&quot;'&quot;).append(_value).append(&quot;'&quot;);</span>
+<span class="fc" id="L1341">                delim = &quot;, &quot;;</span>
             }
-<span class="fc" id="L1033">            return &quot;The file parameter with the name '&quot; + _parameterName</span>
-<span class="fc" id="L1034">                    + &quot;' must have type File but the string values &quot; + valueList.append(&quot; where supplied&quot;).toString();</span>
+<span class="fc" id="L1343">            return &quot;The file parameter with the name '&quot; + _parameterName</span>
+<span class="fc" id="L1344">                    + &quot;' must have type File but the string values &quot; + valueList.append(&quot; where supplied&quot;).toString();</span>
         }
 
+        /** The parameter name. */
         private String _parameterName;
+
+        /** The values. */
         private String[] _values;
     }
 
@@ -1043,17 +1356,25 @@ public class WebForm extends WebRequestSource {
      **/
     class NoSuchParameterException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1048">        NoSuchParameterException(String parameterName) {</span>
-<span class="fc" id="L1049">            _parameterName = parameterName;</span>
-<span class="fc" id="L1050">        }</span>
+        /**
+         * Instantiates a new no such parameter exception.
+         *
+         * @param parameterName
+         *            the parameter name
+         */
+<span class="fc" id="L1368">        NoSuchParameterException(String parameterName) {</span>
+<span class="fc" id="L1369">            _parameterName = parameterName;</span>
+<span class="fc" id="L1370">        }</span>
 
         @Override
         public String getMessage() {
-<span class="fc" id="L1054">            return &quot;No parameter named '&quot; + _parameterName + &quot;' is defined in the form&quot;;</span>
+<span class="fc" id="L1374">            return &quot;No parameter named '&quot; + _parameterName + &quot;' is defined in the form&quot;;</span>
         }
 
+        /** The parameter name. */
         private String _parameterName;
 
     }
@@ -1067,14 +1388,18 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalUnnamedSubmitButtonException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1072">        IllegalUnnamedSubmitButtonException() {</span>
-<span class="fc" id="L1073">        }</span>
+        /**
+         * Instantiates a new illegal unnamed submit button exception.
+         */
+<span class="fc" id="L1397">        IllegalUnnamedSubmitButtonException() {</span>
+<span class="fc" id="L1398">        }</span>
 
         @Override
         public String getMessage() {
-<span class="nc" id="L1077">            return &quot;This form has more than one submit button, none unnamed. You must specify the button to be used.&quot;;</span>
+<span class="nc" id="L1402">            return &quot;This form has more than one submit button, none unnamed. You must specify the button to be used.&quot;;</span>
         }
 
     }
@@ -1087,24 +1412,42 @@ public class WebForm extends WebRequestSource {
      **/
     class IllegalSubmitButtonException extends IllegalRequestParameterException {
 
+        /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L1092">        IllegalSubmitButtonException(SubmitButton button) {</span>
-<span class="fc" id="L1093">            _name = button.getName();</span>
-<span class="fc" id="L1094">            _value = button.getValue();</span>
-<span class="fc" id="L1095">        }</span>
+        /**
+         * Instantiates a new illegal submit button exception.
+         *
+         * @param button
+         *            the button
+         */
+<span class="fc" id="L1424">        IllegalSubmitButtonException(SubmitButton button) {</span>
+<span class="fc" id="L1425">            _name = button.getName();</span>
+<span class="fc" id="L1426">            _value = button.getValue();</span>
+<span class="fc" id="L1427">        }</span>
 
-<span class="fc" id="L1097">        IllegalSubmitButtonException(String name, String value) {</span>
-<span class="fc" id="L1098">            _name = name;</span>
-<span class="fc" id="L1099">            _value = value;</span>
-<span class="fc" id="L1100">        }</span>
+        /**
+         * Instantiates a new illegal submit button exception.
+         *
+         * @param name
+         *            the name
+         * @param value
+         *            the value
+         */
+<span class="fc" id="L1437">        IllegalSubmitButtonException(String name, String value) {</span>
+<span class="fc" id="L1438">            _name = name;</span>
+<span class="fc" id="L1439">            _value = value;</span>
+<span class="fc" id="L1440">        }</span>
 
         @Override
         public String getMessage() {
-<span class="nc" id="L1104">            return &quot;Specified submit button (name=\&quot;&quot; + _name + &quot;\&quot; value=\&quot;&quot; + _value + &quot;\&quot;) not part of this form.&quot;;</span>
+<span class="nc" id="L1444">            return &quot;Specified submit button (name=\&quot;&quot; + _name + &quot;\&quot; value=\&quot;&quot; + _value + &quot;\&quot;) not part of this form.&quot;;</span>
         }
 
+        /** The name. */
         private String _name;
+
+        /** The value. */
         private String _value;
 
     }
@@ -1121,17 +1464,17 @@ public class WebForm extends WebRequestSource {
 class PresetFormParameter extends FormControl {
 
     PresetFormParameter(WebForm form, String name, String value) {
-<span class="fc" id="L1124">        super(form);</span>
-<span class="fc" id="L1125">        _name = name;</span>
-<span class="fc" id="L1126">        _value = value;</span>
-<span class="fc" id="L1127">    }</span>
+<span class="fc" id="L1467">        super(form);</span>
+<span class="fc" id="L1468">        _name = name;</span>
+<span class="fc" id="L1469">        _value = value;</span>
+<span class="fc" id="L1470">    }</span>
 
     /**
      * Returns the name of this control..
      **/
     @Override
     public String getName() {
-<span class="fc" id="L1134">        return _name;</span>
+<span class="fc" id="L1477">        return _name;</span>
     }
 
     /**
@@ -1139,7 +1482,7 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public boolean isReadOnly() {
-<span class="nc" id="L1142">        return true;</span>
+<span class="nc" id="L1485">        return true;</span>
     }
 
     /**
@@ -1147,7 +1490,7 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public boolean isTextControl() {
-<span class="nc" id="L1150">        return true;</span>
+<span class="nc" id="L1493">        return true;</span>
     }
 
     /**
@@ -1155,14 +1498,14 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     void claimRequiredValues(List values) {
-<span class="nc bnc" id="L1158" title="All 2 branches missed.">        if (_value != null) {</span>
-<span class="nc" id="L1159">            claimValueIsRequired(values, _value);</span>
+<span class="nc bnc" id="L1501" title="All 2 branches missed.">        if (_value != null) {</span>
+<span class="nc" id="L1502">            claimValueIsRequired(values, _value);</span>
         }
-<span class="nc" id="L1161">    }</span>
+<span class="nc" id="L1504">    }</span>
 
     @Override
     public String getType() {
-<span class="nc" id="L1165">        return UNDEFINED_TYPE;</span>
+<span class="nc" id="L1508">        return UNDEFINED_TYPE;</span>
     }
 
     /**
@@ -1171,16 +1514,16 @@ class PresetFormParameter extends FormControl {
      **/
     @Override
     public String[] getValues() {
-<span class="nc bnc" id="L1174" title="All 2 branches missed.">        if (_values == null) {</span>
-<span class="nc" id="L1175">            _values = new String[] { _value };</span>
+<span class="nc bnc" id="L1517" title="All 2 branches missed.">        if (_values == null) {</span>
+<span class="nc" id="L1518">            _values = new String[] { _value };</span>
         }
-<span class="nc" id="L1177">        return _values;</span>
+<span class="nc" id="L1520">        return _values;</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L1182">        processor.addParameter(_name, _value, characterSet);</span>
-<span class="fc" id="L1183">    }</span>
+<span class="fc" id="L1525">        processor.addParameter(_name, _value, characterSet);</span>
+<span class="fc" id="L1526">    }</span>
 
     private String _name;
     private String _value;

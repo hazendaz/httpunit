@@ -26,12 +26,12 @@ import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
 import org.xml.sax.SAXException;
 
@@ -42,20 +42,26 @@ import org.xml.sax.SAXException;
  * inside' by creating a ServletInvocationContext and then calling any servlet methods which may be desired. Even in
  * this latter mode, end-to-end testing is supported, but requires a call to this class's getResponse method to update
  * its cookies and frames.
- *
- * @author &lt;a href=&quot;russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
 public class ServletUnitClient extends WebClient {
 
-<span class="nc" id="L50">    private ServletUnitClient() {</span>
-<span class="nc" id="L51">        throw new RuntimeException(&quot;ServletUnitClient constructor needs InvocationContextFactory parameter&quot;);</span>
+    /**
+     * Instantiates a new servlet unit client.
+     */
+<span class="nc" id="L51">    private ServletUnitClient() {</span>
+<span class="nc" id="L52">        throw new RuntimeException(&quot;ServletUnitClient constructor needs InvocationContextFactory parameter&quot;);</span>
     }
 
     /**
      * Creates and returns a new servlet unit client instance.
-     **/
+     *
+     * @param factory
+     *            the factory
+     *
+     * @return the servlet unit client
+     */
     public static ServletUnitClient newClient(InvocationContextFactory factory) {
-<span class="fc" id="L58">        return new ServletUnitClient(factory);</span>
+<span class="fc" id="L64">        return new ServletUnitClient(factory);</span>
     }
 
     /**
@@ -64,57 +70,104 @@ public class ServletUnitClient extends WebClient {
     @Override
     public void setProxyServer(String proxyHost, int proxyPort) {
         // not implemented
-<span class="nc" id="L67">    }</span>
+<span class="nc" id="L73">    }</span>
 
     /**
      * Creates and returns a new invocation context from a GET request.
-     **/
+     *
+     * @param requestString
+     *            the request string
+     *
+     * @return the invocation context
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     public InvocationContext newInvocation(String requestString) throws IOException, MalformedURLException {
-<span class="fc" id="L73">        return newInvocation(new GetMethodWebRequest(requestString));</span>
+<span class="fc" id="L89">        return newInvocation(new GetMethodWebRequest(requestString));</span>
     }
 
     /**
      * Creates and returns a new invocation context to test calling of servlet methods.
-     **/
+     *
+     * @param request
+     *            the request
+     *
+     * @return the invocation context
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     */
     public InvocationContext newInvocation(WebRequest request) throws IOException, MalformedURLException {
-<span class="fc" id="L80">        return newInvocation(request, FrameSelector.TOP_FRAME);</span>
+<span class="fc" id="L106">        return newInvocation(request, FrameSelector.TOP_FRAME);</span>
     }
 
     /**
-     * get a new Invocation Context based on a request and a frame
+     * get a new Invocation Context based on a request and a frame.
      *
      * @param request
+     *            the request
      * @param frame
+     *            the frame
      *
-     * @return
+     * @return the invocation context
      *
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @throws MalformedURLException
+     *             the malformed URL exception
      */
     InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
-<span class="fc" id="L95">        ByteArrayOutputStream baos = getMessageBody(request);</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
-<span class="nc" id="L97">            throw new RuntimeException(&quot;newInvocation called with null _invocationContextFactory&quot;);</span>
+<span class="fc" id="L125">        ByteArrayOutputStream baos = getMessageBody(request);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
+<span class="nc" id="L127">            throw new RuntimeException(&quot;newInvocation called with null _invocationContextFactory&quot;);</span>
         }
-<span class="fc" id="L99">        return _invocationContextFactory.newInvocation(this, frame, request, getHeaderFields(request.getURL()),</span>
-<span class="fc" id="L100">                baos.toByteArray());</span>
+<span class="fc" id="L129">        return _invocationContextFactory.newInvocation(this, frame, request, getHeaderFields(request.getURL()),</span>
+<span class="fc" id="L130">                baos.toByteArray());</span>
     }
 
+    /**
+     * Gets the message body.
+     *
+     * @param request
+     *            the request
+     *
+     * @return the message body
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     ByteArrayOutputStream getMessageBody(WebRequest request) throws IOException {
-<span class="fc" id="L104">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
-<span class="fc" id="L105">        writeMessageBody(request, baos);</span>
-<span class="fc" id="L106">        return baos;</span>
+<span class="fc" id="L145">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L146">        writeMessageBody(request, baos);</span>
+<span class="fc" id="L147">        return baos;</span>
     }
 
     /**
      * Updates this client and returns the response which would be displayed by the user agent. Note that this will
      * typically be the same as that returned by the servlet invocation unless that invocation results in a redirect
      * request.
-     **/
+     *
+     * @param invocation
+     *            the invocation
+     *
+     * @return the response
+     *
+     * @throws MalformedURLException
+     *             the malformed URL exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     */
     public WebResponse getResponse(InvocationContext invocation)
             throws MalformedURLException, IOException, SAXException {
-<span class="fc" id="L116">        updateMainWindow(invocation.getFrame(), invocation.getServletResponse());</span>
-<span class="fc" id="L117">        return getFrameContents(invocation.getFrame());</span>
+<span class="fc" id="L169">        updateMainWindow(invocation.getFrame(), invocation.getServletResponse());</span>
+<span class="fc" id="L170">        return getFrameContents(invocation.getFrame());</span>
     }
 
     /**
@@ -123,15 +176,15 @@ public class ServletUnitClient extends WebClient {
      * @param create
      *            if true, will create a new session if no valid session is defined.
      *
-     * @since 1.6
+     * @return the session
      */
     public HttpSession getSession(boolean create) {
-<span class="fc" id="L129">        HttpSession session = _invocationContextFactory</span>
-<span class="fc" id="L130">                .getSession(getCookieValue(ServletUnitHttpSession.SESSION_COOKIE_NAME), create);</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (session != null) {</span>
-<span class="fc" id="L132">            putCookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
+<span class="fc" id="L182">        HttpSession session = _invocationContextFactory</span>
+<span class="fc" id="L183">                .getSession(getCookieValue(ServletUnitHttpSession.SESSION_COOKIE_NAME), create);</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        if (session != null) {</span>
+<span class="fc" id="L185">            putCookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
         }
-<span class="fc" id="L134">        return session;</span>
+<span class="fc" id="L187">        return session;</span>
     }
 
     // -------------------------------- WebClient methods --------------------------------------
@@ -144,26 +197,33 @@ public class ServletUnitClient extends WebClient {
             throws MalformedURLException, IOException {
 
         try {
-<span class="fc" id="L147">            InvocationContext invocation = newInvocation(request, targetFrame);</span>
-<span class="fc" id="L148">            invocation.service();</span>
-<span class="fc" id="L149">            return invocation.getServletResponse();</span>
-<span class="nc" id="L150">        } catch (ServletException e) {</span>
-<span class="nc" id="L151">            throw new HttpInternalErrorException(request.getURL(), e);</span>
+<span class="fc" id="L200">            InvocationContext invocation = newInvocation(request, targetFrame);</span>
+<span class="fc" id="L201">            invocation.service();</span>
+<span class="fc" id="L202">            return invocation.getServletResponse();</span>
+<span class="nc" id="L203">        } catch (ServletException e) {</span>
+<span class="nc" id="L204">            throw new HttpInternalErrorException(request.getURL(), e);</span>
         }
 
     }
 
     // -------------------------- private members -----------------------------------
 
+    /** The invocation context factory. */
     private InvocationContextFactory _invocationContextFactory;
 
     // --------------------------------- package methods ---------------------------------------
 
-<span class="fc" id="L162">    private ServletUnitClient(InvocationContextFactory factory) {</span>
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (factory == null) {</span>
-<span class="nc" id="L164">            throw new RuntimeException(&quot;constructor for ServletUnitClient called with null factory parameter&quot;);</span>
+    /**
+     * Instantiates a new servlet unit client.
+     *
+     * @param factory
+     *            the factory
+     */
+<span class="fc" id="L222">    private ServletUnitClient(InvocationContextFactory factory) {</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        if (factory == null) {</span>
+<span class="nc" id="L224">            throw new RuntimeException(&quot;constructor for ServletUnitClient called with null factory parameter&quot;);</span>
         }
-<span class="fc" id="L166">        _invocationContextFactory = factory;</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L226">        _invocationContextFactory = factory;</span>
+<span class="fc" id="L227">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

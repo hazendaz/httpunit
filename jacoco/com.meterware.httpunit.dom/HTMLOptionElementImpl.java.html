@@ -27,105 +27,191 @@ import org.w3c.dom.Node;
 import org.w3c.dom.html.HTMLOptionElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLOptionElementImpl.
+ */
 <span class="fc" id="L32">public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The selected. */
     private Boolean _selected;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L39">        return new HTMLOptionElementImpl();</span>
+<span class="fc" id="L42">        return new HTMLOptionElementImpl();</span>
     }
 
+    /**
+     * Gets the default selected.
+     *
+     * @return the default selected
+     */
     @Override
     public boolean getDefaultSelected() {
-<span class="fc" id="L44">        return getBooleanAttribute(&quot;selected&quot;);</span>
+<span class="fc" id="L52">        return getBooleanAttribute(&quot;selected&quot;);</span>
     }
 
+    /**
+     * Gets the index.
+     *
+     * @return the index
+     */
     @Override
     public int getIndex() {
-<span class="fc" id="L49">        return getSelect().getIndexOf(this);</span>
+<span class="fc" id="L62">        return getSelect().getIndexOf(this);</span>
     }
 
+    /**
+     * Sets the index.
+     *
+     * @param i
+     *            the new index
+     */
     public void setIndex(int i) {
-<span class="nc" id="L53">    } // obsolete - required for compatibility with JDK 1.3</span>
+<span class="nc" id="L72">    } // obsolete - required for compatibility with JDK 1.3</span>
 
+    /**
+     * Gets the label.
+     *
+     * @return the label
+     */
     @Override
     public String getLabel() {
-<span class="fc" id="L57">        return getAttributeWithNoDefault(&quot;label&quot;);</span>
+<span class="fc" id="L81">        return getAttributeWithNoDefault(&quot;label&quot;);</span>
     }
 
+    /**
+     * Gets the selected.
+     *
+     * @return the selected
+     */
     @Override
     public boolean getSelected() {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        return _selected != null ? _selected.booleanValue() : getDefaultSelected();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        return _selected != null ? _selected.booleanValue() : getDefaultSelected();</span>
     }
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Override
     public String getText() {
-<span class="fc" id="L67">        return asText();</span>
+<span class="fc" id="L101">        return asText();</span>
     }
 
+    /**
+     * Sets the default selected.
+     *
+     * @param defaultSelected
+     *            the new default selected
+     */
     @Override
     public void setDefaultSelected(boolean defaultSelected) {
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L112">    }</span>
 
+    /**
+     * Sets the label.
+     *
+     * @param label
+     *            the new label
+     */
     @Override
     public void setLabel(String label) {
-<span class="fc" id="L76">        setAttribute(&quot;label&quot;, label);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L122">        setAttribute(&quot;label&quot;, label);</span>
+<span class="fc" id="L123">    }</span>
 
+    /**
+     * Sets the selected.
+     *
+     * @param selected
+     *            the new selected
+     */
     public void setSelected(boolean selected) {
-<span class="fc bfc" id="L80" title="All 4 branches covered.">        if (selected &amp;&amp; getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {</span>
-<span class="fc" id="L81">            getSelect().clearSelected();</span>
+<span class="fc bfc" id="L132" title="All 4 branches covered.">        if (selected &amp;&amp; getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {</span>
+<span class="fc" id="L133">            getSelect().clearSelected();</span>
         }
-<span class="fc bfc" id="L83" title="All 2 branches covered.">        _selected = selected ? Boolean.TRUE : Boolean.FALSE;</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        _selected = selected ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc" id="L136">    }</span>
 
+    /**
+     * Gets the select.
+     *
+     * @return the select
+     */
     private HTMLSelectElementImpl getSelect() {
-<span class="fc" id="L87">        Node parent = getParentNode();</span>
-<span class="pc bpc" id="L88" title="2 of 4 branches missed.">        while (parent != null &amp;&amp; !&quot;select&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
-<span class="nc" id="L89">            parent = parent.getParentNode();</span>
+<span class="fc" id="L144">        Node parent = getParentNode();</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">        while (parent != null &amp;&amp; !&quot;select&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
+<span class="nc" id="L146">            parent = parent.getParentNode();</span>
         }
-<span class="fc" id="L91">        return (HTMLSelectElementImpl) parent;</span>
+<span class="fc" id="L148">        return (HTMLSelectElementImpl) parent;</span>
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     @Override
     public String getValue() {
-<span class="fc" id="L96">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
+<span class="fc" id="L158">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
     }
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the new value
+     */
     @Override
     public void setValue(String value) {
-<span class="fc" id="L101">        setAttribute(&quot;value&quot;, value);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L169">        setAttribute(&quot;value&quot;, value);</span>
+<span class="fc" id="L170">    }</span>
 
     @Override
     public void reset() {
-<span class="fc" id="L106">        _selected = null;</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L174">        _selected = null;</span>
+<span class="fc" id="L175">    }</span>
 
+    /**
+     * Adds the value if selected.
+     *
+     * @param processor
+     *            the processor
+     * @param name
+     *            the name
+     * @param characterSet
+     *            the character set
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     void addValueIfSelected(ParameterProcessor processor, String name, String characterSet) throws IOException {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (getSelected()) {</span>
-<span class="fc" id="L111">            String value = getValue();</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">            if (value == null) {</span>
-<span class="fc" id="L113">                value = readDisplayedValue();</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        if (getSelected()) {</span>
+<span class="fc" id="L192">            String value = getValue();</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">            if (value == null) {</span>
+<span class="fc" id="L194">                value = readDisplayedValue();</span>
             }
-<span class="fc" id="L115">            processor.addParameter(name, value, characterSet);</span>
+<span class="fc" id="L196">            processor.addParameter(name, value, characterSet);</span>
         }
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L198">    }</span>
 
+    /**
+     * Read displayed value.
+     *
+     * @return the string
+     */
     private String readDisplayedValue() {
-<span class="fc" id="L120">        Node nextSibling = getNextSibling();</span>
-<span class="pc bpc" id="L121" title="2 of 4 branches missed.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L123">            nextSibling = nextSibling.getNextSibling();</span>
+<span class="fc" id="L206">        Node nextSibling = getNextSibling();</span>
+<span class="pc bpc" id="L207" title="2 of 4 branches missed.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L209">            nextSibling = nextSibling.getNextSibling();</span>
         }
-<span class="pc bpc" id="L125" title="2 of 4 branches missed.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
-<span class="nc" id="L126">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L211" title="2 of 4 branches missed.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="nc" id="L212">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L128">        return nextSibling.getNodeValue();</span>
+<span class="fc" id="L214">        return nextSibling.getNodeValue();</span>
     }
 
 }

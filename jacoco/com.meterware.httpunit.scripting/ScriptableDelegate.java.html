@@ -23,60 +23,57 @@ import com.meterware.httpunit.HTMLElement;
 
 /**
  * An interface for objects which will be accessible via scripting.
- *
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
  **/
-<span class="fc" id="L29">public abstract class ScriptableDelegate implements ScriptingHandler {</span>
+<span class="fc" id="L27">public abstract class ScriptableDelegate implements ScriptingHandler {</span>
 
+    /** The script engine. */
     private ScriptingEngine _scriptEngine;
 
-    /**
-     * a dummy ScriptingEngine implementation
-     */
-<span class="fc" id="L36">    public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {</span>
+    /** a dummy ScriptingEngine implementation. */
+<span class="fc" id="L33">    public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {</span>
         @Override
         public boolean supportsScriptLanguage(String language) {
-<span class="nc" id="L39">            return false;</span>
+<span class="nc" id="L36">            return false;</span>
         }
 
         @Override
         public String runScript(String language, String script) {
-<span class="nc" id="L44">            return &quot;&quot;;</span>
+<span class="nc" id="L41">            return &quot;&quot;;</span>
         }
 
         @Override
         public boolean doEventScript(String eventScript) {
-<span class="nc" id="L49">            return true;</span>
+<span class="nc" id="L46">            return true;</span>
         }
 
         @Override
         public boolean doEvent(String eventScript) {
-<span class="nc" id="L54">            return true;</span>
+<span class="nc" id="L51">            return true;</span>
         }
 
         @Override
         public boolean handleEvent(String eventName) {
-<span class="fc" id="L59">            return true;</span>
+<span class="fc" id="L56">            return true;</span>
         }
 
         @Override
         public Object evaluateExpression(String urlString) {
-<span class="nc" id="L64">            return null;</span>
+<span class="nc" id="L61">            return null;</span>
         }
 
         @Override
         public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
-<span class="nc" id="L69">            return this;</span>
+<span class="nc" id="L66">            return this;</span>
         }
 
         @Override
         public void clearCaches() {
-<span class="nc" id="L74">        }</span>
+<span class="nc" id="L71">        }</span>
     };
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-<span class="fc" id="L79">        return getScriptEngine().supportsScriptLanguage(language);</span>
+<span class="fc" id="L76">        return getScriptEngine().supportsScriptLanguage(language);</span>
     }
 
     /**
@@ -90,7 +87,7 @@ import com.meterware.httpunit.HTMLElement;
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L93">        return doEventScript(eventScript);</span>
+<span class="nc" id="L90">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -103,7 +100,7 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="fc bfc" id="L106" title="All 4 branches covered.">        return eventScript.isEmpty() || getScriptEngine().doEventScript(eventScript);</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        return eventScript.isEmpty() || getScriptEngine().doEventScript(eventScript);</span>
     }
 
     /**
@@ -117,8 +114,8 @@ import com.meterware.httpunit.HTMLElement;
      */
     @Override
     public boolean handleEvent(String eventName) {
-<span class="nc" id="L120">        String eventScript = (String) get(eventName);</span>
-<span class="nc" id="L121">        return doEventScript(eventScript);</span>
+<span class="nc" id="L117">        String eventScript = (String) get(eventName);</span>
+<span class="nc" id="L118">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -128,7 +125,7 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public String runScript(String language, String script) {
-<span class="fc bfc" id="L131" title="All 2 branches covered.">        return script.isEmpty() ? &quot;&quot; : getScriptEngine().runScript(language, script);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        return script.isEmpty() ? &quot;&quot; : getScriptEngine().runScript(language, script);</span>
     }
 
     /**
@@ -136,60 +133,99 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public Object evaluateExpression(String urlString) {
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (urlString.isEmpty()) {</span>
-<span class="nc" id="L140">            return null;</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (urlString.isEmpty()) {</span>
+<span class="nc" id="L137">            return null;</span>
         }
-<span class="fc" id="L142">        return getScriptEngine().evaluateExpression(urlString);</span>
+<span class="fc" id="L139">        return getScriptEngine().evaluateExpression(urlString);</span>
     }
 
     @Override
     public void clearCaches() {
-<span class="fc" id="L147">        getScriptEngine().clearCaches();</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc" id="L144">        getScriptEngine().clearCaches();</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Returns the value of the named property. Will return null if the property does not exist.
-     **/
+     *
+     * @param propertyName
+     *            the property name
+     *
+     * @return the object
+     */
     public Object get(String propertyName) {
-<span class="fc" id="L154">        return null;</span>
+<span class="fc" id="L156">        return null;</span>
     }
 
     /**
      * Returns the value of the index property. Will return null if the property does not exist.
-     **/
+     *
+     * @param index
+     *            the index
+     *
+     * @return the object
+     */
     public Object get(int index) {
-<span class="nc" id="L161">        return null;</span>
+<span class="nc" id="L168">        return null;</span>
     }
 
     /**
      * Sets the value of the named property. Will throw a runtime exception if the property does not exist or cannot
      * accept the specified value.
-     **/
+     *
+     * @param propertyName
+     *            the property name
+     * @param value
+     *            the value
+     */
     public void set(String propertyName, Object value) {
-<span class="nc" id="L169">        throw new RuntimeException(&quot;No such property: &quot; + propertyName);</span>
+<span class="nc" id="L181">        throw new RuntimeException(&quot;No such property: &quot; + propertyName);</span>
     }
 
     /**
      * Specifies the scripting engine to be used.
+     *
+     * @param scriptEngine
+     *            the new script engine
      */
     public void setScriptEngine(ScriptingEngine scriptEngine) {
-<span class="fc" id="L176">        _scriptEngine = scriptEngine;</span>
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L191">        _scriptEngine = scriptEngine;</span>
+<span class="fc" id="L192">    }</span>
 
+    /**
+     * Gets the script engine.
+     *
+     * @return the script engine
+     */
     public ScriptingEngine getScriptEngine() {
-<span class="fc bfc" id="L180" title="All 2 branches covered.">        return _scriptEngine != null ? _scriptEngine : NULL_SCRIPT_ENGINE;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        return _scriptEngine != null ? _scriptEngine : NULL_SCRIPT_ENGINE;</span>
     }
 
+    /**
+     * Gets the script engine.
+     *
+     * @param child
+     *            the child
+     *
+     * @return the script engine
+     */
     public ScriptingEngine getScriptEngine(ScriptableDelegate child) {
-<span class="fc" id="L184">        return getScriptEngine().newScriptingEngine(child);</span>
+<span class="fc" id="L212">        return getScriptEngine().newScriptingEngine(child);</span>
     }
 
+    /**
+     * Gets the delegates.
+     *
+     * @param elements
+     *            the elements
+     *
+     * @return the delegates
+     */
     protected ScriptableDelegate[] getDelegates(final HTMLElement[] elements) {
-<span class="fc" id="L188">        ScriptableDelegate[] result = new ScriptableDelegate[elements.length];</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.length; i++) {</span>
-<span class="fc" id="L190">            result[i] = (ScriptableDelegate) elements[i].getScriptingHandler();</span>
+<span class="fc" id="L224">        ScriptableDelegate[] result = new ScriptableDelegate[elements.length];</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="fc" id="L226">            result[i] = (ScriptableDelegate) elements[i].getScriptingHandler();</span>
         }
-<span class="fc" id="L192">        return result;</span>
+<span class="fc" id="L228">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

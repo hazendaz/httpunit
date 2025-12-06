@@ -23,42 +23,57 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
+ * The Class URLEncodedString.
  */
 <span class="fc" id="L28">public class URLEncodedString implements ParameterProcessor {</span>
 
+    /** The Constant DEFAULT_BUFFER_SIZE. */
     public static final int DEFAULT_BUFFER_SIZE = 128;
 
-<span class="fc" id="L32">    private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);</span>
+    /** The buffer. */
+<span class="fc" id="L34">    private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);</span>
 
-<span class="fc" id="L34">    private boolean _haveParameters = false;</span>
+    /** The have parameters. */
+<span class="fc" id="L37">    private boolean _haveParameters = false;</span>
 
+    /**
+     * Gets the string.
+     *
+     * @return the string
+     */
     public String getString() {
-<span class="fc" id="L37">        return _buffer.toString();</span>
+<span class="fc" id="L45">        return _buffer.toString();</span>
     }
 
     @Override
     public void addParameter(String name, String value, String characterSet) {
-<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (_haveParameters) {</span>
-<span class="fc" id="L43">            _buffer.append('&amp;');</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (_haveParameters) {</span>
+<span class="fc" id="L51">            _buffer.append('&amp;');</span>
         }
-<span class="fc" id="L45">        _buffer.append(encode(name, characterSet));</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L47">            _buffer.append('=').append(encode(value, characterSet));</span>
+<span class="fc" id="L53">        _buffer.append(encode(name, characterSet));</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L55">            _buffer.append('=').append(encode(value, characterSet));</span>
         }
-<span class="fc" id="L49">        _haveParameters = true;</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L57">        _haveParameters = true;</span>
+<span class="fc" id="L58">    }</span>
 
     @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) {
-<span class="nc" id="L54">        throw new RuntimeException(&quot;May not URL-encode a file upload request&quot;);</span>
+<span class="nc" id="L62">        throw new RuntimeException(&quot;May not URL-encode a file upload request&quot;);</span>
     }
 
     /**
      * Returns a URL-encoded version of the string.
-     **/
+     *
+     * @param source
+     *            the source
+     * @param characterSet
+     *            the character set
+     *
+     * @return the string
+     */
     private String encode(String source, String characterSet) {
-<span class="fc" id="L61">        return URLEncoder.encode(source, Charset.forName(characterSet));</span>
+<span class="fc" id="L76">        return URLEncoder.encode(source, Charset.forName(characterSet));</span>
     }
 
 }

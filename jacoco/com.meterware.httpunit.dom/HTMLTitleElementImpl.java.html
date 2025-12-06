@@ -24,42 +24,59 @@ import org.w3c.dom.Text;
 import org.w3c.dom.html.HTMLTitleElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLTitleElementImpl.
+ */
 <span class="fc" id="L29">public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L35">        return new HTMLTitleElementImpl();</span>
+<span class="fc" id="L36">        return new HTMLTitleElementImpl();</span>
     }
 
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
     @Override
     public String getText() {
-<span class="fc" id="L40">        Text contentNode = getContentNode();</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        return contentNode == null ? &quot;&quot; : contentNode.getData();</span>
+<span class="fc" id="L46">        Text contentNode = getContentNode();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        return contentNode == null ? &quot;&quot; : contentNode.getData();</span>
     }
 
+    /**
+     * Gets the content node.
+     *
+     * @return the content node
+     */
     private Text getContentNode() {
-<span class="fc" id="L45">        NodeList childNodes = getChildNodes();</span>
-<span class="pc bfc" id="L46" title="All 2 branches covered.">        for (int i = 0; i &lt; childNodes.getLength(); i++) {</span>
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if (childNodes.item(i).getNodeType() == TEXT_NODE) {</span>
-<span class="fc" id="L48">                return (Text) childNodes.item(i);</span>
+<span class="fc" id="L56">        NodeList childNodes = getChildNodes();</span>
+<span class="pc bfc" id="L57" title="All 2 branches covered.">        for (int i = 0; i &lt; childNodes.getLength(); i++) {</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (childNodes.item(i).getNodeType() == TEXT_NODE) {</span>
+<span class="fc" id="L59">                return (Text) childNodes.item(i);</span>
             }
         }
-<span class="fc" id="L51">        return null;</span>
+<span class="fc" id="L62">        return null;</span>
     }
 
+    /**
+     * Sets the text.
+     *
+     * @param text
+     *            the new text
+     */
     @Override
     public void setText(String text) {
-<span class="fc" id="L56">        Text newChild = getOwnerDocument().createTextNode(text);</span>
-<span class="fc" id="L57">        Text oldChild = getContentNode();</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (oldChild == null) {</span>
-<span class="fc" id="L59">            appendChild(newChild);</span>
+<span class="fc" id="L73">        Text newChild = getOwnerDocument().createTextNode(text);</span>
+<span class="fc" id="L74">        Text oldChild = getContentNode();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (oldChild == null) {</span>
+<span class="fc" id="L76">            appendChild(newChild);</span>
         } else {
-<span class="fc" id="L61">            replaceChild(newChild, oldChild);</span>
+<span class="fc" id="L78">            replaceChild(newChild, oldChild);</span>
         }
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L80">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

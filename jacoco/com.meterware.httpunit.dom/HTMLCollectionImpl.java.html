@@ -27,56 +27,94 @@ import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLElement;
 
 /**
- * @author &lt;a href=&quot;mailto:russgold@httpunit.org&quot;&gt;Russell Gold&lt;/a&gt;
- **/
+ * The Class HTMLCollectionImpl.
+ */
 <span class="fc" id="L32">public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {</span>
 
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
+
+    /** The list. */
     private NodeList _list;
 
+    /**
+     * Creates the HTML collection impl.
+     *
+     * @param list
+     *            the list
+     *
+     * @return the HTML collection impl
+     */
     public static HTMLCollectionImpl createHTMLCollectionImpl(NodeList list) {
-<span class="fc" id="L38">        HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();</span>
-<span class="fc" id="L39">        htmlCollection.initialize(list);</span>
-<span class="fc" id="L40">        return htmlCollection;</span>
+<span class="fc" id="L49">        HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();</span>
+<span class="fc" id="L50">        htmlCollection.initialize(list);</span>
+<span class="fc" id="L51">        return htmlCollection;</span>
     }
 
+    /**
+     * Initialize.
+     *
+     * @param list
+     *            the list
+     */
     private void initialize(NodeList list) {
-<span class="fc" id="L44">        _list = list;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L61">        _list = list;</span>
+<span class="fc" id="L62">    }</span>
 
     // ------------------------------------------ HTMLCollection methods
     // --------------------------------------------------
 
+    /**
+     * Gets the length.
+     *
+     * @return the length
+     */
     @Override
     public int getLength() {
-<span class="fc" id="L52">        return _list.getLength();</span>
+<span class="fc" id="L74">        return _list.getLength();</span>
     }
 
+    /**
+     * Item.
+     *
+     * @param index
+     *            the index
+     *
+     * @return the node
+     */
     @Override
     public Node item(int index) {
-<span class="fc" id="L57">        return _list.item(index);</span>
+<span class="fc" id="L87">        return _list.item(index);</span>
     }
 
+    /**
+     * Named item.
+     *
+     * @param name
+     *            the name
+     *
+     * @return the node
+     */
     @Override
     public Node namedItem(String name) {
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (name == null) {</span>
-<span class="nc" id="L63">            return null;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L101">            return null;</span>
         }
 
-<span class="fc" id="L66">        Node nodeByName = null;</span>
-<span class="pc bpc" id="L67" title="1 of 4 branches missed.">        for (int i = 0; null == nodeByName &amp;&amp; i &lt; getLength(); i++) {</span>
-<span class="fc" id="L68">            Node node = item(i);</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">            if (!(node instanceof HTMLElementImpl)) {</span>
-<span class="nc" id="L70">                continue;</span>
+<span class="fc" id="L104">        Node nodeByName = null;</span>
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">        for (int i = 0; null == nodeByName &amp;&amp; i &lt; getLength(); i++) {</span>
+<span class="fc" id="L106">            Node node = item(i);</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (!(node instanceof HTMLElementImpl)) {</span>
+<span class="nc" id="L108">                continue;</span>
             }
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElement) node).getId())) {</span>
-<span class="fc" id="L73">                return node;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElement) node).getId())) {</span>
+<span class="fc" id="L111">                return node;</span>
             }
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault(&quot;name&quot;))) {</span>
-<span class="fc" id="L76">                nodeByName = node;</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault(&quot;name&quot;))) {</span>
+<span class="fc" id="L114">                nodeByName = node;</span>
             }
         }
-<span class="fc" id="L79">        return nodeByName;</span>
+<span class="fc" id="L117">        return nodeByName;</span>
     }
 
     // ------------------------------------------ ScriptableObject methods
@@ -84,31 +122,31 @@ import org.w3c.dom.html.HTMLElement;
 
     @Override
     public String getClassName() {
-<span class="nc" id="L87">        return getClass().getName();</span>
+<span class="nc" id="L125">        return getClass().getName();</span>
     }
 
     @Override
     public Object get(String propertyName, Scriptable scriptable) {
-<span class="fc" id="L92">        Object result = super.get(propertyName, scriptable);</span>
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
-<span class="nc" id="L94">            return result;</span>
+<span class="fc" id="L130">        Object result = super.get(propertyName, scriptable);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
+<span class="nc" id="L132">            return result;</span>
         }
 
-<span class="fc" id="L97">        Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (namedProperty != NOT_FOUND) {</span>
-<span class="fc" id="L99">            return namedProperty;</span>
+<span class="fc" id="L135">        Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (namedProperty != NOT_FOUND) {</span>
+<span class="fc" id="L137">            return namedProperty;</span>
         }
 
-<span class="fc" id="L102">        Node namedItem = namedItem(propertyName);</span>
-<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        return namedItem == null ? NOT_FOUND : namedItem;</span>
+<span class="fc" id="L140">        Node namedItem = namedItem(propertyName);</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        return namedItem == null ? NOT_FOUND : namedItem;</span>
     }
 
     @Override
     public Object get(int index, Scriptable start) {
-<span class="pc bpc" id="L108" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= _list.getLength()) {</span>
-<span class="nc" id="L109">            return NOT_FOUND;</span>
+<span class="pc bpc" id="L146" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= _list.getLength()) {</span>
+<span class="nc" id="L147">            return NOT_FOUND;</span>
         }
-<span class="fc" id="L111">        return item(index);</span>
+<span class="fc" id="L149">        return item(index);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

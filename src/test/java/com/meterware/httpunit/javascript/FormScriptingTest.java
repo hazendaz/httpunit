@@ -44,7 +44,6 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;

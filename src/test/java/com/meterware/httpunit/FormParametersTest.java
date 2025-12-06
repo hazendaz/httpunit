@@ -34,7 +34,6 @@ import com.meterware.httpunit.WebForm.NoSuchParameterException;
 import com.meterware.httpunit.controls.IllegalParameterValueException;
 import com.meterware.httpunit.protocol.UploadFileSpec;
 
-import java.io.File;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Assertions;

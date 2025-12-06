@@ -257,7 +257,7 @@ httpunit,com.meterware.servletunit,ServletUnitServletContext.new RequestDispatch
 httpunit,com.meterware.servletunit,ServletRunner.JasperJSPServletDescriptor,10,15,2,2,2,6,2,3,0,3
 httpunit,com.meterware.servletunit,WebApplication.SecurityConstraintImpl.WebResourceCollection,0,51,0,6,0,11,0,5,0,2
 httpunit,com.meterware.servletunit,WebApplication.FilterConfiguration,43,44,2,2,13,9,3,3,2,2
-httpunit,com.meterware.servletunit,ServletUnitHttpSession,47,195,11,13,14,54,11,22,3,18
+httpunit,com.meterware.servletunit,ServletUnitHttpSession,79,195,13,13,23,54,17,22,8,18
 httpunit,com.meterware.servletunit,WebApplication.WebResourceMap,34,445,8,54,10,99,8,35,0,12
 httpunit,com.meterware.servletunit,ServletUnitServletConfig,4,25,0,0,1,8,1,4,1,4
 httpunit,com.meterware.servletunit,InvocationContextImpl.FilterContext,0,15,0,0,0,6,0,3,0,3
@@ -266,7 +266,7 @@ httpunit,com.meterware.servletunit,InvocationContextImpl.ExecutionContext,25,109
 httpunit,com.meterware.servletunit,WebResourceConfiguration,0,74,0,4,0,19,0,8,0,6
 httpunit,com.meterware.servletunit,ExactUrlPatternMatcher,5,11,0,0,1,4,1,2,1,2
 httpunit,com.meterware.servletunit,PathMappingUrlPatternMatcher,0,56,1,9,0,10,1,9,0,5
-httpunit,com.meterware.servletunit,ServletUnitServletContext,155,152,5,7,69,33,51,15,47,13
+httpunit,com.meterware.servletunit,ServletUnitServletContext,166,152,5,7,74,33,55,15,51,13
 httpunit,com.meterware.servletunit,ExtensionUrlPatternMatcher,0,27,0,2,0,7,0,5,0,4
 httpunit,com.meterware.servletunit,WebApplication.ServletRequestImpl,20,115,2,12,4,28,2,13,0,8
 httpunit,com.meterware.servletunit,ServletRunner,78,175,1,3,19,43,7,17,6,16
@@ -291,8 +291,8 @@ httpunit,com.meterware.servletunit,JUnitServlet.XMLResultsFormatter,4,110,1,3,1,
 httpunit,com.meterware.servletunit,ServletUnitClient,26,93,3,3,7,24,5,9,2,9
 httpunit,com.meterware.servletunit,ServletInputStreamImpl,5,13,0,0,3,4,3,2,3,2
 httpunit,com.meterware.servletunit,JUnitServlet.ResultsFormatter,7,82,4,10,3,21,4,9,0,4
-httpunit,com.meterware.servletunit,ServletUnitHttpRequest,104,727,9,63,42,168,41,77,33,49
-httpunit,com.meterware.servletunit,ServletUnitHttpResponse,164,565,19,45,49,146,29,52,16,33
+httpunit,com.meterware.servletunit,ServletUnitHttpRequest,105,727,9,63,42,168,40,77,32,49
+httpunit,com.meterware.servletunit,ServletUnitHttpResponse,164,565,17,45,48,146,30,52,18,33
 httpunit,com.meterware.servletunit,ForwardRequestWrapper,3,23,0,0,1,6,1,4,1,4
 httpunit,com.meterware.servletunit,WebApplication.SecurityCheckServlet,5,35,0,0,2,9,1,4,1,4
 httpunit,com.meterware.servletunit,JUnitServlet.ServletTestRunner,3,59,0,2,3,20,3,8,3,7

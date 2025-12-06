@@ -19,13 +19,13 @@
  */
 package com.meterware.servletunit;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * This class represents a request dispatched via a RequestDispatcherImpl.
@@ -114,11 +114,11 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
-    static final String REQUEST_URI = &quot;jakarta.servlet.include.request_uri&quot;;
-    static final String CONTEXT_PATH = &quot;jakarta.servlet.include.context_path&quot;;
-    static final String SERVLET_PATH = &quot;jakarta.servlet.include.servlet_path&quot;;
-    static final String PATH_INFO = &quot;jakarta.servlet.include.path_info&quot;;
-    static final String QUERY_STRING = &quot;jakarta.servlet.include.query_string&quot;;
+    static final String REQUEST_URI = &quot;javax.servlet.include.request_uri&quot;;
+    static final String CONTEXT_PATH = &quot;javax.servlet.include.context_path&quot;;
+    static final String SERVLET_PATH = &quot;javax.servlet.include.servlet_path&quot;;
+    static final String PATH_INFO = &quot;javax.servlet.include.path_info&quot;;
+    static final String QUERY_STRING = &quot;javax.servlet.include.query_string&quot;;
 
 <span class="fc" id="L123">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
 

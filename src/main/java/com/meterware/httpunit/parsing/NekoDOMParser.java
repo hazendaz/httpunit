@@ -15,13 +15,13 @@ import java.net.URL;
 import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
+import net.sourceforge.htmlunit.cyberneko.parsers.DOMParser;
+import net.sourceforge.htmlunit.xerces.parsers.AbstractDOMParser;
+import net.sourceforge.htmlunit.xerces.xni.XNIException;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLDocumentFilter;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLErrorHandler;
+import net.sourceforge.htmlunit.xerces.xni.parser.XMLParseException;
 
-import org.apache.xerces.parsers.AbstractDOMParser;
-import org.apache.xerces.parsers.DOMParser;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLDocumentFilter;
-import org.apache.xerces.xni.parser.XMLErrorHandler;
-import org.apache.xerces.xni.parser.XMLParseException;
 import org.w3c.dom.Element;
 import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXNotRecognizedException;

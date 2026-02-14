@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2025 Russell Gold
+ * Copyright 2011-2026 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -23,7 +23,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 
-import org.w3c.dom.html.HTMLDocument;
+import org.w3c.dom.Document;
 
 /**
  * The Interface DocumentAdapter.
@@ -36,7 +36,7 @@ public interface DocumentAdapter {
      * @param document
      *            the new document
      */
-    void setDocument(HTMLDocument document);
+    void setDocument(Document document);
 
     /**
      * Returns the contents of an included script, given its src attribute.

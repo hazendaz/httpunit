@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2025 Russell Gold
+ * Copyright 2011-2026 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -314,7 +314,7 @@ public abstract class HTMLParserFactory {
 
     static {
         _jtidyParser = loadParserIfSupported("org.w3c.tidy.Parser", "com.meterware.httpunit.parsing.JTidyHTMLParser");
-        _nekoParser = loadParserIfSupported("net.sourceforge.htmlunit.cyberneko.HTMLConfiguration",
+        _nekoParser = loadParserIfSupported("org.htmlunit.cyberneko.HTMLConfiguration",
                 "com.meterware.httpunit.parsing.NekoHTMLParser");
         reset();
     }

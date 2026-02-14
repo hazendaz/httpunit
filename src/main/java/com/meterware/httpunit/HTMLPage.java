@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2025 Russell Gold
+ * Copyright 2011-2026 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -33,7 +33,6 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXException;
 
 /**
@@ -402,7 +401,7 @@ public class HTMLPage extends ParsedHTML {
     public void parse(String text, URL pageURL) throws SAXException, IOException {
         HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {
             @Override
-            public void setDocument(HTMLDocument document) {
+            public void setDocument(Document document) {
                 HTMLPage.this.setRootNode(document);
             }
 

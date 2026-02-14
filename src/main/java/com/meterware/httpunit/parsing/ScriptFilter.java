@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2025 Russell Gold
+ * Copyright 2011-2026 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -24,16 +24,15 @@ import com.meterware.httpunit.HttpUnitOptions;
 import java.io.IOException;
 import java.io.StringReader;
 
-import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
-import net.sourceforge.htmlunit.cyberneko.filters.DefaultFilter;
-
-import org.apache.xerces.xni.Augmentations;
-import org.apache.xerces.xni.QName;
-import org.apache.xerces.xni.XMLAttributes;
-import org.apache.xerces.xni.XMLLocator;
-import org.apache.xerces.xni.XMLString;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLInputSource;
+import org.htmlunit.cyberneko.HTMLConfiguration;
+import org.htmlunit.cyberneko.filters.DefaultFilter;
+import org.htmlunit.cyberneko.xerces.xni.Augmentations;
+import org.htmlunit.cyberneko.xerces.xni.QName;
+import org.htmlunit.cyberneko.xerces.xni.XMLAttributes;
+import org.htmlunit.cyberneko.xerces.xni.XMLLocator;
+import org.htmlunit.cyberneko.xerces.xni.XMLString;
+import org.htmlunit.cyberneko.xerces.xni.XNIException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLInputSource;
 
 /**
  * A filter to interpret JavaScript script blocks, based on the sample Scripts program provided by NekoHTML.
@@ -127,7 +126,7 @@ class ScriptFilter extends DefaultFilter {
      * @return true, if is supported script
      */
     private boolean isSupportedScript(QName element, XMLAttributes attrs) {
-        if (!element.rawname.equalsIgnoreCase("script") || attrs == null) {
+        if (!element.getRawname().equalsIgnoreCase("script") || attrs == null) {
             return false;
         }
         String value = getScriptLanguage(attrs);
@@ -156,7 +155,7 @@ class ScriptFilter extends DefaultFilter {
     @Override
     public void characters(XMLString text, Augmentations augs) throws XNIException {
         if (_activeScriptBlock != null) {
-            _activeScriptBlock.append(text.ch, text.offset, text.length);
+            _activeScriptBlock.append(text.toString());
         } else {
             super.characters(text, augs);
         }

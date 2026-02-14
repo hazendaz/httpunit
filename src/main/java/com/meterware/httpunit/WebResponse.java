@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright 2011-2025 Russell Gold
+ * Copyright 2011-2026 Russell Gold
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -1791,7 +1791,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
                     if (_page == null) {
                         throw new IllegalStateException("replaceText called in the middle of getReceivedPage()");
                     }
-                    ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);
+                    // Only set proxy if using custom HTMLDocumentImpl
+                    if (_page.getRootNode() instanceof HTMLDocumentImpl) {
+                        ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);
+                    }
                 }
             } catch (IOException e) {
                 HttpUnitUtils.handleException(e);

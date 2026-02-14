@@ -7,7 +7,6 @@
  */
 package com.meterware.httpunit.parsing;
 
-import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
 import net.sourceforge.htmlunit.cyberneko.parsers.DOMParser;
-import net.sourceforge.htmlunit.xerces.parsers.AbstractDOMParser;
 import net.sourceforge.htmlunit.xerces.xni.XNIException;
 import net.sourceforge.htmlunit.xerces.xni.parser.XMLDocumentFilter;
 import net.sourceforge.htmlunit.xerces.xni.parser.XMLErrorHandler;
@@ -93,9 +91,6 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
 
         try {
             final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);
-            if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
         } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
@@ -110,14 +105,9 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      * @return the current element
      */
     private Element getCurrentElement() {
-        try {
-            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
-        } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not recognized");
-        } catch (SAXNotSupportedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not supported");
-        }
+        // CURRENT_ELEMENT_NODE property removed in htmlunit-neko 2.68.0
+        // Use the document's root element instead
+        return getDocument().getDocumentElement();
     }
 
     /**

@@ -108,7 +108,7 @@
         <dependency>
             <groupId>org.htmlunit</groupId>
             <artifactId>neko-htmlunit</artifactId>
-            <version>3.0.0</version>
+            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>

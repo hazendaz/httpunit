@@ -1791,7 +1791,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
                     if (_page == null) {
                         throw new IllegalStateException("replaceText called in the middle of getReceivedPage()");
                     }
-                    ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);
+                    // Only set proxy if using custom HTMLDocumentImpl
+                    if (_page.getRootNode() instanceof HTMLDocumentImpl) {
+                        ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);
+                    }
                 }
             } catch (IOException e) {
                 HttpUnitUtils.handleException(e);

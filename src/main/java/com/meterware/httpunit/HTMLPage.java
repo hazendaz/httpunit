@@ -33,7 +33,6 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.SAXException;
 
 /**
@@ -402,7 +401,7 @@ public class HTMLPage extends ParsedHTML {
     public void parse(String text, URL pageURL) throws SAXException, IOException {
         HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {
             @Override
-            public void setDocument(HTMLDocument document) {
+            public void setDocument(Document document) {
                 HTMLPage.this.setRootNode(document);
             }
 

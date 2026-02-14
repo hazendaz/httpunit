@@ -24,7 +24,6 @@ import java.io.StringReader;
 import java.net.URL;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.html.HTMLDocument;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -46,7 +45,7 @@ class NekoHTMLParser implements HTMLParser {
             NekoDOMParser parser = NekoDOMParser.newParser(adapter, pageURL);
             parser.parse(new InputSource(new StringReader(pageText)));
             Document doc = parser.getDocument();
-            adapter.setDocument((HTMLDocument) doc);
+            adapter.setDocument(doc);
         } catch (NekoDOMParser.ScriptException e) {
             throw e.getException();
         }
@@ -69,6 +68,7 @@ class NekoHTMLParser implements HTMLParser {
 
     @Override
     public boolean supportsReturnHTMLDocument() {
+        // With neko-htmlunit 3.x+, we use neko's built-in HTMLDocumentImpl
         return true;
     }
 

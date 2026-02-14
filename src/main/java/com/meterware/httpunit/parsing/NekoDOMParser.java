@@ -19,7 +19,6 @@
  */
 package com.meterware.httpunit.parsing;
 
-import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
@@ -33,7 +32,6 @@ import org.htmlunit.cyberneko.xerces.xni.parser.XMLDocumentFilter;
 import org.htmlunit.cyberneko.xerces.xni.parser.XMLErrorHandler;
 import org.htmlunit.cyberneko.xerces.xni.parser.XMLParseException;
 import org.w3c.dom.Element;
-import org.w3c.dom.html.HTMLDocument;
 
 /**
  * The Class NekoDOMParser.
@@ -70,10 +68,10 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *         Allow configuration of neko parser properties by James Abley
      */
     static NekoDOMParser newParser(DocumentAdapter adapter, URL url) {
-        // Create the parser with appropriate document class
-        final Class documentClass = HTMLParserFactory.isReturnHTMLDocument() ? HTMLDocumentImpl.class
-                : org.htmlunit.cyberneko.xerces.dom.DocumentImpl.class;
-        final NekoDOMParser domParser = new NekoDOMParser(documentClass, adapter);
+        // Create the parser with neko's HTMLDocumentImpl
+        // With neko-htmlunit 3.x+, we use neko's built-in HTML document support
+        final NekoDOMParser domParser = new NekoDOMParser(org.htmlunit.cyberneko.html.dom.HTMLDocumentImpl.class,
+                adapter);
 
         // Get the configuration from the parser
         final HTMLConfiguration configuration = (HTMLConfiguration) domParser.getXMLParserConfiguration();
@@ -163,7 +161,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      * @return the scripting handler
      */
     private ScriptingHandler getScriptingHandler() {
-        _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());
+        _documentAdapter.setDocument(getCurrentElement().getOwnerDocument());
         return _documentAdapter.getScriptingHandler();
     }
 

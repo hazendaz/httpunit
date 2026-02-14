@@ -24,16 +24,15 @@ import com.meterware.httpunit.HttpUnitOptions;
 import java.io.IOException;
 import java.io.StringReader;
 
-import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
-import net.sourceforge.htmlunit.cyberneko.filters.DefaultFilter;
-
-import org.apache.xerces.xni.Augmentations;
-import org.apache.xerces.xni.QName;
-import org.apache.xerces.xni.XMLAttributes;
-import org.apache.xerces.xni.XMLLocator;
-import org.apache.xerces.xni.XMLString;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLInputSource;
+import org.htmlunit.cyberneko.HTMLConfiguration;
+import org.htmlunit.cyberneko.filters.DefaultFilter;
+import org.htmlunit.cyberneko.xerces.xni.Augmentations;
+import org.htmlunit.cyberneko.xerces.xni.QName;
+import org.htmlunit.cyberneko.xerces.xni.XMLAttributes;
+import org.htmlunit.cyberneko.xerces.xni.XMLLocator;
+import org.htmlunit.cyberneko.xerces.xni.XMLString;
+import org.htmlunit.cyberneko.xerces.xni.XNIException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLInputSource;
 
 /**
  * A filter to interpret JavaScript script blocks, based on the sample Scripts program provided by NekoHTML.

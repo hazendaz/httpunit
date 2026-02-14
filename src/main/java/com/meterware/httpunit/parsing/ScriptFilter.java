@@ -126,7 +126,7 @@ class ScriptFilter extends DefaultFilter {
      * @return true, if is supported script
      */
     private boolean isSupportedScript(QName element, XMLAttributes attrs) {
-        if (!element.rawname.equalsIgnoreCase("script") || attrs == null) {
+        if (!element.getRawname().equalsIgnoreCase("script") || attrs == null) {
             return false;
         }
         String value = getScriptLanguage(attrs);
@@ -155,7 +155,7 @@ class ScriptFilter extends DefaultFilter {
     @Override
     public void characters(XMLString text, Augmentations augs) throws XNIException {
         if (_activeScriptBlock != null) {
-            _activeScriptBlock.append(text.ch, text.offset, text.length);
+            _activeScriptBlock.append(text.toString());
         } else {
             super.characters(text, augs);
         }

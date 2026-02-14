@@ -68,8 +68,8 @@ class NekoHTMLParser implements HTMLParser {
 
     @Override
     public boolean supportsReturnHTMLDocument() {
-        // With neko-htmlunit 3.x+, we use neko's built-in HTMLDocumentImpl
-        return true;
+        // With neko-htmlunit 3.x+, HTMLDocument support is disabled due to API incompatibilities
+        return false;
     }
 
     @Override

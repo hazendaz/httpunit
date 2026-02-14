@@ -5,6 +5,8 @@ httpunit
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.hazendaz.httpunit/httpunit.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/com.github.hazendaz/httpunit)
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
+![hazendaz](src/site/resources/images/hazendaz-banner.jpg)
+
 A library for testing websites
 
 ### Project

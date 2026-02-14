@@ -12,7 +12,7 @@ A library for testing websites
 * Maven based Java project including Unit tests
 
 ### Stack Overflow Questions & Answers
-http://stackoverflow.com/questions/tagged/http-unit
+https://stackoverflow.com/questions/tagged/http-unit
 
 ### Servlet 3.1.0 and jsp initializer
 

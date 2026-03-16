@@ -5,6 +5,10 @@
  * Copyright 2000-2026 Russell Gold
  * Copyright 2021-2000 hazendaz
  */
+import com.meterware.httpunit.*;
+
+/** everything you need to start is in the com.meterware.httpunit package **/
+
 /** This is a simple example of using HttpUnit to read and understand web pages. **/
 public class Example {
 

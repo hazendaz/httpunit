@@ -57,7 +57,8 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      */
     static NekoDOMParser newParser(DocumentAdapter adapter, URL url) {
         // Create the parser with plain xerces DocumentImpl
-        // With neko-htmlunit 3.x+, we don't use HTMLDocument due to API incompatibilities
+        // In neko-htmlunit 3.x+, we cannot use custom HTMLDocumentImpl due to API changes
+        // The parser will create standard DOM elements, not HTML-specific ones
         final NekoDOMParser domParser = new NekoDOMParser(org.htmlunit.cyberneko.xerces.dom.DocumentImpl.class,
                 adapter);
 

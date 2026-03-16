@@ -56,7 +56,8 @@ class NekoHTMLParser implements HTMLParser {
 
     @Override
     public boolean supportsReturnHTMLDocument() {
-        // With neko-htmlunit 3.x+, HTMLDocument support is disabled due to API incompatibilities
+        // With neko-htmlunit 3.x+, HTMLDocument support must be disabled
+        // The parser creates plain DOM elements, not HTML-specific ones
         return false;
     }
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    MIT License
+    SPDX-License-Identifier: MIT
+    See LICENSE file for details.
 
     Copyright 2011-2026 Russell Gold
 
@@ -38,11 +39,14 @@
     <description>A library for testing websites programmatically</description>
 
     <url>http://www.httpunit.org</url>
+    <inceptionYear>2000</inceptionYear>
 
     <licenses>
         <license>
             <name>MIT</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+            <comments>See SPDX: https://spdx.org/licenses/MIT.html</comments>
         </license>
     </licenses>
 
@@ -103,7 +107,7 @@
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
-            <version>1.9.0</version>
+            <version>1.9.1</version>
         </dependency>
         <dependency>
             <groupId>org.htmlunit</groupId>
@@ -130,13 +134,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>6.0.2</version>
+            <version>6.0.3</version>
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>6.0.2</version>
+            <version>6.0.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>

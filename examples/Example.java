@@ -1,5 +1,6 @@
 /*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
  * Copyright 2011-2026 Russell Gold
  *
@@ -18,11 +19,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 /** everything you need to start is in the com.meterware.httpunit package **/
-import com.meterware.httpunit.*;
 
 /** This is a simple example of using HttpUnit to read and understand web pages. **/
 public class Example {
-
 
   /**
    * starting point of this Example

@@ -11,3 +11,7 @@ target
 *.releaseBackup
 release.properties
 .factorypath
+
+temp.*
+temp*
+# Rebased onto master

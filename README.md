@@ -11,8 +11,8 @@ A library for testing websites
 
 ## Version Selection
 
-* Sitemesh 1.x supports javax namespace.
-* Sitemesh 2.x supports jakarta namespace.
+* httpunit 1.x supports javax namespace.
+* httpunit 2.x supports jakarta namespace.
 
 ### Project
 * Open Source hosted at https://github.com/russgold/httpunit

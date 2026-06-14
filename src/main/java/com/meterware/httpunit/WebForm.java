@@ -1449,8 +1449,21 @@ public class WebForm extends WebRequestSource {
 // ========================================== class PresetFormParameter
 // =================================================
 
+/**
+ * The Class PresetFormParameter.
+ */
 class PresetFormParameter extends FormControl {
 
+    /**
+     * Instantiates a new preset form parameter.
+     *
+     * @param form
+     *            the form
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     PresetFormParameter(WebForm form, String name, String value) {
         super(form);
         _name = name;
@@ -1513,7 +1526,10 @@ class PresetFormParameter extends FormControl {
         processor.addParameter(_name, _value, characterSet);
     }
 
+    /** The name. */
     private String _name;
+    /** The value. */
     private String _value;
+    /** The values. */
     private String[] _values;
 }

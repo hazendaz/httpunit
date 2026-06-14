@@ -656,10 +656,17 @@ public class PseudoServer {
 
 }
 
+/**
+ * The Class HttpResponseStream.
+ */
 class HttpResponseStream {
 
+    /** The crlf. */
     private static final String CRLF = "\r\n";
 
+    /**
+     * Restart.
+     */
     void restart() {
         _headersWritten = false;
         _headers.clear();
@@ -667,16 +674,34 @@ class HttpResponseStream {
         _responseText = "OK";
     }
 
+    /**
+     * Close.
+     *
+     * @throws IOException
+     *             the io exception
+     */
     void close() throws IOException {
         flushHeaders();
         _pw.close();
     }
 
+    /**
+     * Instantiates a new http response stream.
+     *
+     * @param stream
+     *            the stream
+     */
     HttpResponseStream(OutputStream stream) {
         _stream = stream;
         setCharacterSet("us-ascii");
     }
 
+    /**
+     * Sets the protocol.
+     *
+     * @param protocol
+     *            the protocol
+     */
     void setProtocol(String protocol) {
         _protocol = protocol;
     }
@@ -692,16 +717,42 @@ class HttpResponseStream {
         _responseText = responseText;
     }
 
+    /**
+     * Add header.
+     *
+     * @param header
+     *            the header
+     */
     void addHeader(String header) {
         _headers.add(header);
     }
 
+    /**
+     * Write.
+     *
+     * @param contents
+     *            the contents
+     * @param charset
+     *            the charset
+     *
+     * @throws IOException
+     *             the io exception
+     */
     void write(String contents, String charset) throws IOException {
         flushHeaders();
         setCharacterSet(charset);
         sendText(contents);
     }
 
+    /**
+     * Write.
+     *
+     * @param resource
+     *            the resource
+     *
+     * @throws IOException
+     *             the io exception
+     */
     void write(WebResource resource) throws IOException {
         flushHeaders();
         if (resource != null) {
@@ -710,6 +761,12 @@ class HttpResponseStream {
         _stream.flush();
     }
 
+    /**
+     * Sets the character set.
+     *
+     * @param characterSet
+     *            the character set
+     */
     private void setCharacterSet(String characterSet) {
         if (_pw != null) {
             _pw.flush();
@@ -717,6 +774,9 @@ class HttpResponseStream {
         _pw = new PrintWriter(new OutputStreamWriter(_stream, Charset.forName(characterSet)));
     }
 
+    /**
+     * Flush headers.
+     */
     private void flushHeaders() {
         if (!_headersWritten) {
             sendResponse(_responseCode, _responseText);
@@ -729,36 +789,76 @@ class HttpResponseStream {
         }
     }
 
+    /**
+     * Send response.
+     *
+     * @param responseCode
+     *            the response code
+     * @param responseText
+     *            the response text
+     */
     private void sendResponse(int responseCode, String responseText) {
         sendLine(_protocol + ' ' + responseCode + ' ' + responseText);
     }
 
+    /**
+     * Send line.
+     *
+     * @param text
+     *            the text
+     */
     private void sendLine(String text) {
         sendText(text);
         sendText(CRLF);
     }
 
+    /**
+     * Send text.
+     *
+     * @param text
+     *            the text
+     */
     private void sendText(String text) {
         _pw.write(text);
     }
 
+    /** The stream. */
     private OutputStream _stream;
+    /** The pw. */
     private PrintWriter _pw;
 
+    /** The headers. */
     private List _headers = new ArrayList<>();
+    /** The protocol. */
     private String _protocol = "HTTP/1.0";
+    /** The response code. */
     private int _responseCode = HttpURLConnection.HTTP_OK;
+    /** The response text. */
     private String _responseText = "OK";
 
+    /** The headers written. */
     private boolean _headersWritten;
 
 }
 
+/**
+ * The Class RecordingOutputStream.
+ */
 class RecordingOutputStream extends OutputStream {
 
+    /** The nested stream. */
     private OutputStream _nestedStream;
+    /** The log. */
     private PrintStream _log;
 
+    /**
+     * Instantiates a new recording output stream.
+     *
+     * @param nestedStream
+     *            the nested stream
+     * @param log
+     *            the log
+     */
     public RecordingOutputStream(OutputStream nestedStream, PrintStream log) {
         _nestedStream = nestedStream;
         _log = log;
@@ -781,11 +881,24 @@ class RecordingOutputStream extends OutputStream {
     }
 }
 
+/**
+ * The Class RecordingInputStream.
+ */
 class RecordingInputStream extends InputStream {
 
+    /** The nested stream. */
     private InputStream _nestedStream;
+    /** The log. */
     private PrintStream _log;
 
+    /**
+     * Instantiates a new recording input stream.
+     *
+     * @param nestedStream
+     *            the nested stream
+     * @param log
+     *            the log
+     */
     public RecordingInputStream(InputStream nestedStream, PrintStream log) {
         _nestedStream = nestedStream;
         _log = log;

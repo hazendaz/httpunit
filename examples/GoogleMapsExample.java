@@ -53,6 +53,9 @@ public class GoogleMapsExample {
 	
 	 /** 
 	  * @param filePath the name of the file to open. Not sure if it can accept URLs or just filenames. Path handling could be better, and buffer sizes are hardcoded
+	  
+	  * @return the string
+	  * @throws java.io.IOException the io exception
 	  */ 
    private static String readFileAsString(String filePath)
    throws java.io.IOException{
@@ -76,6 +79,10 @@ public class GoogleMapsExample {
 	 * 
 	 * @param startPoint
 	 * @param destPoint
+	 
+	 * @param filename the filename
+	 * @param withDisplay the with display
+	 * @throws Exception the exception
 	 */
 	public void getRouteAsGPX(String startPoint, String destPoint,
 			String filename, boolean withDisplay) throws Exception {
@@ -128,6 +135,8 @@ public class GoogleMapsExample {
 	 * @param parent
 	 * @param tagName
 	 * @return
+	 
+	 * @param throwException the throw exception
 	 */
 	public Element getSubNode(Element parent, String tagName,
 			boolean throwException) {
@@ -149,6 +158,9 @@ public class GoogleMapsExample {
 	 * @param xml
 	 *          - the xml version of the file
 	 * @return
+	 
+	 * @param googlexml the googlexml
+	 * @throws Exception the exception
 	 */
 	public Document convertKMLtoGPX(String googlexml) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -208,6 +220,8 @@ public class GoogleMapsExample {
 	 * error handling in case the Google Maps WebPage has changed
 	 * 
 	 * @throws Exception
+	 
+	 * @param msg the msg
 	 */
 	public void notifyGoogleMapsHasChanged(String msg) throws Exception {
 		throw new Exception(
@@ -223,6 +237,9 @@ public class GoogleMapsExample {
 	 * @param destPoint
 	 * @param withDisplay
 	 * @param asKML
+	 
+	 * @return the string
+	 * @throws Exception the exception
 	 */
 	public String getRouteFromGoogleMaps(String startPoint, String destPoint,
 			boolean withDisplay, boolean asKML) throws Exception {
@@ -262,6 +279,12 @@ public class GoogleMapsExample {
 	 * file
 	 * 
 	 * @param
+	 
+	 * @param startPoint the start point
+	 * @param endPoint the end point
+	 * @param withDisplay the with display
+	 * @return the string
+	 * @throws Exception the exception
 	 */
 	public String getDistance(String startPoint, String endPoint,
 			boolean withDisplay) throws Exception {

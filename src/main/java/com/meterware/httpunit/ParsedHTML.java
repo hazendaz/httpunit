@@ -27,7 +27,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLAppletElement;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFormElement;
 import org.w3c.dom.html.HTMLImageElement;
@@ -167,25 +166,6 @@ public class ParsedHTML {
             if (result[i] == null) {
                 result[i] = new WebLink(_response, _baseURL, links.item(i), _frame, _baseTarget, _characterSet);
                 _registry.registerElement(links.item(i), result[i]);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Returns a proxy for each applet found embedded in this page.
-     *
-     * @return the applets
-     */
-    public WebApplet[] getApplets() {
-        loadElements();
-        HTMLCollection applets = ((HTMLContainerElement) _rootNode).getApplets();
-        WebApplet[] result = new WebApplet[applets.getLength()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = (WebApplet) _registry.getRegisteredElement(applets.item(i));
-            if (result[i] == null) {
-                result[i] = new WebApplet(_response, (HTMLAppletElement) applets.item(i), _baseTarget);
-                _registry.registerElement(applets.item(i), result[i]);
             }
         }
         return result;
@@ -910,21 +890,6 @@ public class ParsedHTML {
     }
 
     /**
-     * A factory for creating WebApplet objects.
-     */
-    static class WebAppletFactory extends HTMLElementFactory {
-        @Override
-        HTMLElement toHTMLElement(NodeUtils.PreOrderTraversal pot, ParsedHTML parsedHTML, Element element) {
-            return parsedHTML.toWebApplet(element);
-        }
-
-        @Override
-        protected boolean addToContext() {
-            return true;
-        }
-    }
-
-    /**
      * A factory for creating WebTable objects.
      */
     static class WebTableFactory extends HTMLElementFactory {
@@ -1150,7 +1115,6 @@ public class ParsedHTML {
         _htmlFactoryClasses.put("area", new WebLinkFactory());
         _htmlFactoryClasses.put("form", new WebFormFactory());
         _htmlFactoryClasses.put("img", new WebImageFactory());
-        _htmlFactoryClasses.put("applet", new WebAppletFactory());
         _htmlFactoryClasses.put("table", new WebTableFactory());
         _htmlFactoryClasses.put("tr", new TableRowFactory());
         _htmlFactoryClasses.put("td", new TableCellFactory());
@@ -1338,18 +1302,6 @@ public class ParsedHTML {
      */
     private WebImage toWebImage(Element child) {
         return new WebImage(_response, this, _baseURL, (HTMLImageElement) child, _frame, _baseTarget, _characterSet);
-    }
-
-    /**
-     * To web applet.
-     *
-     * @param element
-     *            the element
-     *
-     * @return the web applet
-     */
-    private WebApplet toWebApplet(Element element) {
-        return new WebApplet(_response, (HTMLAppletElement) element, _baseTarget);
     }
 
     /**

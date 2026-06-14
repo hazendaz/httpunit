@@ -195,10 +195,20 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     }
 }
 
+/**
+ * The Class ErrorHandler.
+ */
 class ErrorHandler implements XMLErrorHandler {
 
+    /** The url. */
     private URL _url;
 
+    /**
+     * Instantiates a new error handler.
+     *
+     * @param url
+     *            the url
+     */
     ErrorHandler(URL url) {
         _url = url;
     }

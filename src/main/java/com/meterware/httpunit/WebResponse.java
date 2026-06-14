@@ -158,8 +158,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the title
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String getTitle() throws SAXException {
         return getReceivedPage().getTitle();
@@ -171,8 +171,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the external style sheet
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String getExternalStyleSheet() throws SAXException {
         return getReceivedPage().getExternalStyleSheet();
@@ -191,8 +191,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the meta tag content
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String[] getMetaTagContent(String attribute, String attributeValue) throws SAXException {
         return getReceivedPage().getMetaTagContent(attribute, attributeValue);
@@ -398,8 +398,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the frame names
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String[] getFrameNames() throws SAXException {
         WebFrame[] frames = getFrames();
@@ -416,8 +416,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the frame selectors
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     FrameSelector[] getFrameSelectors() throws SAXException {
         WebFrame[] frames = getFrames();
@@ -514,8 +514,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the forms found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm[] getForms() throws SAXException {
@@ -525,8 +525,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the form found in the page with the specified name.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFormWithName(String name) throws SAXException {
@@ -536,8 +536,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the form found in the page with the specified ID.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFormWithID(String ID) throws SAXException {
@@ -547,8 +547,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first form found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object criteria) throws SAXException {
@@ -558,8 +558,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns all forms found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) throws SAXException {
@@ -569,8 +569,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the links found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink[] getLinks() throws SAXException {
@@ -580,8 +580,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first link which contains the specified text.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getLinkWith(String text) throws SAXException {
@@ -591,8 +591,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first link which contains an image with the specified text as its 'alt' attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getLinkWithImageText(String text) throws SAXException {
@@ -607,8 +607,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the link with name
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public WebLink getLinkWithName(String name) throws SAXException {
         return getReceivedPage().getLinkWithName(name);
@@ -622,8 +622,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the link with ID
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public WebLink getLinkWithID(String ID) throws SAXException {
         return getReceivedPage().getLinkWithID(ID);
@@ -632,8 +632,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first link found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) throws SAXException {
@@ -643,8 +643,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns all links found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) throws SAXException {
@@ -654,8 +654,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the images found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage[] getImages() throws SAXException {
@@ -665,8 +665,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the image found in the page with the specified name attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage getImageWithName(String source) throws SAXException {
@@ -676,8 +676,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the first image found in the page with the specified src attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage getImageWithSource(String source) throws SAXException {
@@ -690,11 +690,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     @Override
     public WebImage getImageWithAltText(String altText) throws SAXException {
         return getReceivedPage().getImageWithAltText(altText);
-    }
-
-    @Override
-    public WebApplet[] getApplets() throws SAXException {
-        return getReceivedPage().getApplets();
     }
 
     /**
@@ -730,8 +725,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the first matching text block
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public TextBlock getFirstMatchingTextBlock(HTMLElementPredicate predicate, Object criteria) throws SAXException {
         return getReceivedPage().getFirstMatchingTextBlock(predicate, criteria);
@@ -743,8 +738,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the dom
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public Document getDOM() throws SAXException {
         if (isHTML()) {
@@ -760,8 +755,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns the top-level tables found in this page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebTable[] getTables() throws SAXException {
@@ -782,8 +777,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     /**
      * Returns all tables found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) throws SAXException {
@@ -794,8 +789,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns the first table in the response which has the specified text as the full text of its first non-blank row
      * and non-blank column. Will recurse into any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
@@ -808,8 +803,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns the first table in the response which has the specified text as a prefix of the text of its first
      * non-blank row and non-blank column. Will recurse into any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
@@ -822,8 +817,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns the first table in the response which has the specified text as its summary attribute. Will recurse into
      * any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
@@ -836,8 +831,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Returns the first table in the response which has the specified text as its ID attribute. Will recurse into any
      * nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
@@ -2089,16 +2084,47 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
 // =======================================================================================
 
+/**
+ * The Class DefaultWebResponse.
+ */
 class DefaultWebResponse extends WebResponse {
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(String text) {
         this(null, null, text);
     }
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, URL url, String text) {
         this(client, FrameSelector.TOP_FRAME, url, text);
     }
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param frame
+     *            the frame
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, FrameSelector frame, URL url, String text) {
         super(client, frame, url, text);
     }

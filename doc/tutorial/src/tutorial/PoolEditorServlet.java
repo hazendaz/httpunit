@@ -18,8 +18,19 @@ import tutorial.persistence.BettingPool;
 import tutorial.persistence.BettingPoolGame;
 
 
+/**
+ * The Class PoolEditorServlet.
+ */
 public class PoolEditorServlet extends HttpServlet {
 
+    /**
+     * Do post.
+     *
+     * @param request the request
+     * @param response the response
+     * @throws ServletException the servlet exception
+     * @throws IOException the io exception
+     */
     protected void doPost( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
         updateBettingPool( request );
@@ -39,6 +50,12 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Report errors.
+     *
+     * @param pw the pw
+     * @param errors the errors
+     */
     private void reportErrors( PrintWriter pw, String[] errors ) {
         pw.println( "<table width='90%' style='background-color=yellow; border-color: black; border-width: 2; border-style: solid'>" );
         pw.println( "<tr><td colspan='2'><b>Cannot open pool for betting:</b></td></tr>" );
@@ -49,6 +66,11 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Gets the validation errors.
+     *
+     * @return the validation errors
+     */
     String[] getValidationErrors() {
         ArrayList errorList = new ArrayList<>();
         BettingPoolGame game = BettingPool.getGames()[ BettingPool.getTieBreakerIndex() ];
@@ -68,6 +90,11 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Update betting pool.
+     *
+     * @param request the request
+     */
     void updateBettingPool( HttpServletRequest request ) {
         BettingPoolGame[] games = BettingPool.getGames();
         for (int i = 0; i < games.length; i++) {
@@ -78,6 +105,12 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Get tie breaker index.
+     *
+     * @param request the request
+     * @return the int
+     */
     private int getTieBreakerIndex( HttpServletRequest request ) {
         try {
             return Integer.parseInt( request.getParameter( "tiebreaker" ) );
@@ -87,6 +120,14 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Do get.
+     *
+     * @param request the request
+     * @param response the response
+     * @throws ServletException the servlet exception
+     * @throws IOException the io exception
+     */
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
         response.setContentType( "text/html" );
@@ -98,6 +139,11 @@ public class PoolEditorServlet extends HttpServlet {
     }
 
 
+    /**
+     * Print body.
+     *
+     * @param pw the pw
+     */
     private void printBody( PrintWriter pw ) {
         pw.println( "<form id='pool' method='POST'>" );
         pw.println( "<table>" );
@@ -119,6 +165,11 @@ public class PoolEditorServlet extends HttpServlet {
         pw.println( "</form>" );
     }
 
+    /**
+     * Gets the read only flag.
+     *
+     * @return the read only flag
+     */
     private String getReadOnlyFlag() {
         return BettingPool.isEditable() ? "" : " readonly";
     }

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebRequestSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebRequestSource.java</span></div><h1>WebRequestSource.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -51,7 +39,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getID() {
-<span class="fc" id="L54">        return getAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L42">        return getAttribute(&quot;id&quot;);</span>
     }
 
     /**
@@ -59,7 +47,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getClassName() {
-<span class="fc" id="L62">        return getAttribute(&quot;class&quot;);</span>
+<span class="fc" id="L50">        return getAttribute(&quot;class&quot;);</span>
     }
 
     /**
@@ -67,7 +55,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getName() {
-<span class="fc" id="L70">        return getAttribute(&quot;name&quot;);</span>
+<span class="fc" id="L58">        return getAttribute(&quot;name&quot;);</span>
     }
 
     /**
@@ -75,7 +63,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getTitle() {
-<span class="fc" id="L78">        return getAttribute(&quot;title&quot;);</span>
+<span class="fc" id="L66">        return getAttribute(&quot;title&quot;);</span>
     }
 
     /**
@@ -84,10 +72,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the target
      */
     public String getTarget() {
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (getSpecifiedTarget().isEmpty()) {</span>
-<span class="fc" id="L88">            return _defaultTarget;</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (getSpecifiedTarget().isEmpty()) {</span>
+<span class="fc" id="L76">            return _defaultTarget;</span>
         }
-<span class="fc" id="L90">        return getSpecifiedTarget();</span>
+<span class="fc" id="L78">        return getSpecifiedTarget();</span>
     }
 
     /**
@@ -99,7 +87,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Deprecated
     public String getPageFrame() {
-<span class="nc" id="L102">        return _frame.getName();</span>
+<span class="nc" id="L90">        return _frame.getName();</span>
     }
 
     /**
@@ -108,7 +96,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the frame
      */
     public FrameSelector getFrame() {
-<span class="fc" id="L111">        return _frame;</span>
+<span class="fc" id="L99">        return _frame;</span>
     }
 
     /**
@@ -117,11 +105,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the fragment identifier
      */
     public String getFragmentIdentifier() {
-<span class="fc" id="L120">        final int hashIndex = getDestination().indexOf('#');</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (hashIndex &lt; 0) {</span>
-<span class="fc" id="L122">            return &quot;&quot;;</span>
+<span class="fc" id="L108">        final int hashIndex = getDestination().indexOf('#');</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (hashIndex &lt; 0) {</span>
+<span class="fc" id="L110">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L124">        return getDestination().substring(hashIndex + 1);</span>
+<span class="fc" id="L112">        return getDestination().substring(hashIndex + 1);</span>
     }
 
     /**
@@ -130,7 +118,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the DOM subtree
      */
     public Node getDOMSubtree() {
-<span class="nc" id="L133">        return _node.cloneNode( /* deep */true);</span>
+<span class="nc" id="L121">        return _node.cloneNode( /* deep */true);</span>
     }
 
     /**
@@ -158,15 +146,15 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the relative page
      */
     String getRelativePage() {
-<span class="fc" id="L161">        final String url = getRelativeURL();</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if (HttpUnitUtils.isJavaScriptURL(url)) {</span>
-<span class="nc" id="L163">            return url;</span>
+<span class="fc" id="L149">        final String url = getRelativeURL();</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (HttpUnitUtils.isJavaScriptURL(url)) {</span>
+<span class="nc" id="L151">            return url;</span>
         }
-<span class="fc" id="L165">        final int questionMarkIndex = url.indexOf(&quot;?&quot;);</span>
-<span class="pc bpc" id="L166" title="1 of 4 branches missed.">        if (questionMarkIndex &gt;= 1 &amp;&amp; questionMarkIndex &lt; url.length() - 1) {</span>
-<span class="fc" id="L167">            return url.substring(0, questionMarkIndex);</span>
+<span class="fc" id="L153">        final int questionMarkIndex = url.indexOf(&quot;?&quot;);</span>
+<span class="pc bpc" id="L154" title="1 of 4 branches missed.">        if (questionMarkIndex &gt;= 1 &amp;&amp; questionMarkIndex &lt; url.length() - 1) {</span>
+<span class="fc" id="L155">            return url.substring(0, questionMarkIndex);</span>
         }
-<span class="fc" id="L169">        return url;</span>
+<span class="fc" id="L157">        return url;</span>
     }
 
     /**
@@ -175,11 +163,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the relative URL as a string
      */
     protected String getRelativeURL() {
-<span class="fc" id="L178">        String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));</span>
-<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (result.trim().isEmpty()) {</span>
-<span class="fc" id="L180">            result = getBaseURL().getFile();</span>
+<span class="fc" id="L166">        String result = HttpUnitUtils.encodeSpaces(HttpUnitUtils.trimFragment(getDestination()));</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (result.trim().isEmpty()) {</span>
+<span class="fc" id="L168">            result = getBaseURL().getFile();</span>
         }
-<span class="fc" id="L182">        return result;</span>
+<span class="fc" id="L170">        return result;</span>
     }
 
     // ----------------------------- protected members
@@ -202,17 +190,17 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *            the default target
      */
     WebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
-<span class="fc" id="L205">            String defaultTarget) {</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (node == null) {</span>
-<span class="nc" id="L207">            throw new IllegalArgumentException(&quot;node must not be null&quot;);</span>
+<span class="fc" id="L193">            String defaultTarget) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L195">            throw new IllegalArgumentException(&quot;node must not be null&quot;);</span>
         }
-<span class="fc" id="L209">        _baseResponse = response;</span>
-<span class="fc" id="L210">        _node = node;</span>
-<span class="fc" id="L211">        _baseURL = baseURL;</span>
-<span class="fc" id="L212">        _destinationAttribute = attribute;</span>
-<span class="fc" id="L213">        _frame = frame;</span>
-<span class="fc" id="L214">        _defaultTarget = defaultTarget;</span>
-<span class="fc" id="L215">    }</span>
+<span class="fc" id="L197">        _baseResponse = response;</span>
+<span class="fc" id="L198">        _node = node;</span>
+<span class="fc" id="L199">        _baseURL = baseURL;</span>
+<span class="fc" id="L200">        _destinationAttribute = attribute;</span>
+<span class="fc" id="L201">        _frame = frame;</span>
+<span class="fc" id="L202">        _defaultTarget = defaultTarget;</span>
+<span class="fc" id="L203">    }</span>
 
     /**
      * Gets the base URL.
@@ -220,7 +208,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the base URL
      */
     protected URL getBaseURL() {
-<span class="fc" id="L223">        return _baseURL;</span>
+<span class="fc" id="L211">        return _baseURL;</span>
     }
 
     /**
@@ -229,7 +217,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the destination
      */
     public String getDestination() {
-<span class="fc" id="L232">        return getElement().getAttribute(_destinationAttribute);</span>
+<span class="fc" id="L220">        return getElement().getAttribute(_destinationAttribute);</span>
     }
 
     /**
@@ -239,8 +227,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *            the new destination
      */
     protected void setDestination(String destination) {
-<span class="fc" id="L242">        getElement().setAttribute(_destinationAttribute, destination);</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L230">        getElement().setAttribute(_destinationAttribute, destination);</span>
+<span class="fc" id="L231">    }</span>
 
     /**
      * Returns the actual DOM for this request source, not a copy.
@@ -248,7 +236,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the element
      */
     protected Element getElement() {
-<span class="fc" id="L251">        return (Element) _node;</span>
+<span class="fc" id="L239">        return (Element) _node;</span>
     }
 
     /**
@@ -260,7 +248,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *             the SAX exception
      */
     protected HTMLPage getHTMLPage() throws SAXException {
-<span class="fc" id="L263">        return _baseResponse.getReceivedPage();</span>
+<span class="fc" id="L251">        return _baseResponse.getReceivedPage();</span>
     }
 
     /**
@@ -268,11 +256,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * order in which they are found.
      */
     protected final void loadDestinationParameters() {
-<span class="fc" id="L271">        StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);</span>
-<span class="fc bfc" id="L272" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L273">            stripOneParameter(st.nextToken());</span>
+<span class="fc" id="L259">        StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L261">            stripOneParameter(st.nextToken());</span>
         }
-<span class="fc" id="L275">    }</span>
+<span class="fc" id="L263">    }</span>
 
     /**
      * submit the given event for the given request.
@@ -290,14 +278,14 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *             the SAX exception
      */
     protected WebResponse submitRequest(String event, final WebRequest request) throws IOException, SAXException {
-<span class="fc" id="L293">        WebResponse response = null;</span>
-<span class="fc bfc" id="L294" title="All 2 branches covered.">        if (doEventScript(event)) {</span>
-<span class="fc" id="L295">            response = submitRequest(request);</span>
+<span class="fc" id="L281">        WebResponse response = null;</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        if (doEventScript(event)) {</span>
+<span class="fc" id="L283">            response = submitRequest(request);</span>
         }
-<span class="fc bfc" id="L297" title="All 2 branches covered.">        if (response == null) {</span>
-<span class="fc" id="L298">            response = getCurrentFrameContents();</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (response == null) {</span>
+<span class="fc" id="L286">            response = getCurrentFrameContents();</span>
         }
-<span class="fc" id="L300">        return response;</span>
+<span class="fc" id="L288">        return response;</span>
     }
 
     /**
@@ -311,7 +299,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L314">        return doEventScript(eventScript);</span>
+<span class="nc" id="L302">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -324,12 +312,12 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="fc" id="L327">        return this.getScriptingHandler().doEventScript(eventScript);</span>
+<span class="fc" id="L315">        return this.getScriptingHandler().doEventScript(eventScript);</span>
     }
 
     @Override
     public boolean handleEvent(String eventName) {
-<span class="fc" id="L332">        return this.getScriptingHandler().handleEvent(eventName);</span>
+<span class="fc" id="L320">        return this.getScriptingHandler().handleEvent(eventName);</span>
     }
 
     /**
@@ -338,7 +326,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the current frame contents
      */
     protected WebResponse getCurrentFrameContents() {
-<span class="fc" id="L341">        return getCurrentFrame(getBaseResponse().getWindow(), _frame);</span>
+<span class="fc" id="L329">        return getCurrentFrame(getBaseResponse().getWindow(), _frame);</span>
     }
 
     /**
@@ -352,7 +340,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the current frame
      */
     private WebResponse getCurrentFrame(WebWindow window, FrameSelector pageFrame) {
-<span class="fc bfc" id="L355" title="All 2 branches covered.">        return window.hasFrame(pageFrame) ? window.getFrameContents(pageFrame) : window.getCurrentPage();</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        return window.hasFrame(pageFrame) ? window.getFrameContents(pageFrame) : window.getCurrentPage();</span>
     }
 
     /**
@@ -369,7 +357,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *             the SAX exception
      */
     protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
-<span class="pc bpc" id="L372" title="1 of 2 branches missed.">        return getDestination().equals(&quot;#&quot;) ? _baseResponse : _baseResponse.getWindow().sendRequest(request);</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">        return getDestination().equals(&quot;#&quot;) ? _baseResponse : _baseResponse.getWindow().sendRequest(request);</span>
     }
 
     /**
@@ -378,7 +366,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the base response
      */
     protected final WebResponse getBaseResponse() {
-<span class="fc" id="L381">        return _baseResponse;</span>
+<span class="fc" id="L369">        return _baseResponse;</span>
     }
 
     /**
@@ -400,7 +388,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getAttribute(final String name) {
-<span class="fc" id="L403">        return NodeUtils.getNodeAttribute(_node, name);</span>
+<span class="fc" id="L391">        return NodeUtils.getNodeAttribute(_node, name);</span>
     }
 
     /**
@@ -413,8 +401,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public void setAttribute(final String name, final Object value) {
-<span class="nc bnc" id="L416" title="All 2 branches missed.">        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());</span>
-<span class="nc" id="L417">    }</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">        NodeUtils.setNodeAttribute(getNode(), name, value == null ? null : value.toString());</span>
+<span class="nc" id="L405">    }</span>
 
     /**
      * remove the given attribute
@@ -424,17 +412,17 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public void removeAttribute(final String name) {
-<span class="nc" id="L427">        NodeUtils.removeNodeAttribute(getNode(), name);</span>
-<span class="nc" id="L428">    }</span>
+<span class="nc" id="L415">        NodeUtils.removeNodeAttribute(getNode(), name);</span>
+<span class="nc" id="L416">    }</span>
 
     @Override
     public boolean isSupportedAttribute(String name) {
-<span class="fc" id="L432">        return false;</span>
+<span class="fc" id="L420">        return false;</span>
     }
 
     @Override
     public Node getNode() {
-<span class="fc" id="L437">        return _node;</span>
+<span class="fc" id="L425">        return _node;</span>
     }
 
     /**
@@ -442,21 +430,21 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public String getText() {
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        if (_node == null) {</span>
-<span class="nc" id="L446">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L433" title="1 of 2 branches missed.">        if (_node == null) {</span>
+<span class="nc" id="L434">            return &quot;&quot;;</span>
         }
-<span class="pc bpc" id="L448" title="1 of 2 branches missed.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="nc" id="L449">            return _node.getNodeValue().trim();</span>
+<span class="pc bpc" id="L436" title="1 of 2 branches missed.">        if (_node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="nc" id="L437">            return _node.getNodeValue().trim();</span>
         }
-<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
-<span class="nc" id="L452">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">        if (!_node.hasChildNodes()) {</span>
+<span class="nc" id="L440">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L454">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
+<span class="fc" id="L442">        return NodeUtils.asText(_node.getChildNodes()).trim();</span>
     }
 
     @Override
     public String getTagName() {
-<span class="nc" id="L459">        return _node.getNodeName();</span>
+<span class="nc" id="L447">        return _node.getNodeName();</span>
     }
 
     /**
@@ -470,7 +458,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the attribute
      */
     String getAttribute(final String name, String defaultValue) {
-<span class="fc" id="L473">        return NodeUtils.getNodeAttribute(_node, name, defaultValue);</span>
+<span class="fc" id="L461">        return NodeUtils.getNodeAttribute(_node, name, defaultValue);</span>
     }
 
     // ----------------------------- private members
@@ -504,7 +492,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the specified target
      */
     private String getSpecifiedTarget() {
-<span class="fc" id="L507">        return getAttribute(&quot;target&quot;);</span>
+<span class="fc" id="L495">        return getAttribute(&quot;target&quot;);</span>
     }
 
     /**
@@ -514,8 +502,8 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *            the new target attribute
      */
     protected void setTargetAttribute(String value) {
-<span class="fc" id="L517">        ((Element) _node).setAttribute(&quot;target&quot;, value);</span>
-<span class="fc" id="L518">    }</span>
+<span class="fc" id="L505">        ((Element) _node).setAttribute(&quot;target&quot;, value);</span>
+<span class="fc" id="L506">    }</span>
 
     /**
      * Gets all parameters from a URL.
@@ -523,18 +511,18 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the parameters string
      */
     private String getParametersString() {
-<span class="fc" id="L526">        String url = HttpUnitUtils.trimFragment(getDestination());</span>
-<span class="fc bfc" id="L527" title="All 2 branches covered.">        if (url.trim().isEmpty()) {</span>
-<span class="fc" id="L528">            url = getBaseURL().toExternalForm();</span>
+<span class="fc" id="L514">        String url = HttpUnitUtils.trimFragment(getDestination());</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">        if (url.trim().isEmpty()) {</span>
+<span class="fc" id="L516">            url = getBaseURL().toExternalForm();</span>
         }
-<span class="pc bpc" id="L530" title="1 of 2 branches missed.">        if (HttpUnitUtils.isJavaScriptURL(url)) {</span>
-<span class="nc" id="L531">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">        if (HttpUnitUtils.isJavaScriptURL(url)) {</span>
+<span class="nc" id="L519">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L533">        final int questionMarkIndex = url.indexOf(&quot;?&quot;);</span>
-<span class="pc bpc" id="L534" title="1 of 4 branches missed.">        if (questionMarkIndex &gt;= 1 &amp;&amp; questionMarkIndex &lt; url.length() - 1) {</span>
-<span class="fc" id="L535">            return url.substring(questionMarkIndex + 1);</span>
+<span class="fc" id="L521">        final int questionMarkIndex = url.indexOf(&quot;?&quot;);</span>
+<span class="pc bpc" id="L522" title="1 of 4 branches missed.">        if (questionMarkIndex &gt;= 1 &amp;&amp; questionMarkIndex &lt; url.length() - 1) {</span>
+<span class="fc" id="L523">            return url.substring(questionMarkIndex + 1);</span>
         }
-<span class="fc" id="L537">        return &quot;&quot;;</span>
+<span class="fc" id="L525">        return &quot;&quot;;</span>
     }
 
     /**
@@ -544,12 +532,12 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *            the param
      */
     private void stripOneParameter(String param) {
-<span class="fc" id="L547">        final int index = param.indexOf(&quot;=&quot;);</span>
-<span class="fc bfc" id="L548" title="All 2 branches covered.">        String value = index &lt; 0 ? null</span>
-<span class="fc bfc" id="L549" title="All 2 branches covered.">                : index == param.length() - 1 ? getEmptyParameterValue() : decode(param.substring(index + 1));</span>
-<span class="fc bfc" id="L550" title="All 2 branches covered.">        String name = index &lt; 0 ? decode(param) : decode(param.substring(0, index));</span>
-<span class="fc" id="L551">        addPresetParameter(name, value);</span>
-<span class="fc" id="L552">    }</span>
+<span class="fc" id="L535">        final int index = param.indexOf(&quot;=&quot;);</span>
+<span class="fc bfc" id="L536" title="All 2 branches covered.">        String value = index &lt; 0 ? null</span>
+<span class="fc bfc" id="L537" title="All 2 branches covered.">                : index == param.length() - 1 ? getEmptyParameterValue() : decode(param.substring(index + 1));</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">        String name = index &lt; 0 ? decode(param) : decode(param.substring(0, index));</span>
+<span class="fc" id="L539">        addPresetParameter(name, value);</span>
+<span class="fc" id="L540">    }</span>
 
     /**
      * Decode.
@@ -560,7 +548,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * @return the string
      */
     private String decode(String string) {
-<span class="fc" id="L563">        return HttpUnitUtils.decode(string, _baseResponse.getCharacterSet()).trim();</span>
+<span class="fc" id="L551">        return HttpUnitUtils.decode(string, _baseResponse.getCharacterSet()).trim();</span>
     }
 
     /**
@@ -575,15 +563,15 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      */
     @Override
     public ScriptingHandler getScriptingHandler() {
-<span class="fc bfc" id="L578" title="All 2 branches covered.">        if (_scriptable == null) {</span>
-<span class="fc" id="L579">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+<span class="fc bfc" id="L566" title="All 2 branches covered.">        if (_scriptable == null) {</span>
+<span class="fc" id="L567">            _scriptable = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
         }
-<span class="fc" id="L581">        return _scriptable;</span>
+<span class="fc" id="L569">        return _scriptable;</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc" id="L586">        return getBaseResponse().getDocumentScriptable();</span>
+<span class="fc" id="L574">        return getBaseResponse().getDocumentScriptable();</span>
     }
 
 }

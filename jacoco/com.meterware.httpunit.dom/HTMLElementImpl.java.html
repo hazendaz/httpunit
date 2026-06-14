@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLElementImpl.java</span></div><h1>HTMLElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -26,13 +14,13 @@ import org.w3c.dom.html.HTMLElement;
 /**
  * The Class HTMLElementImpl.
  */
-<span class="fc" id="L29">public class HTMLElementImpl extends ElementImpl implements HTMLElement {</span>
+<span class="fc" id="L17">public class HTMLElementImpl extends ElementImpl implements HTMLElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** The Constant UNSPECIFIED_ATTRIBUTE. */
-<span class="fc" id="L35">    public static final String UNSPECIFIED_ATTRIBUTE = null;</span>
+<span class="fc" id="L23">    public static final String UNSPECIFIED_ATTRIBUTE = null;</span>
 
     /**
      * Creates the.
@@ -40,21 +28,21 @@ import org.w3c.dom.html.HTMLElement;
      * @return the element impl
      */
     ElementImpl create() {
-<span class="fc" id="L43">        return new HTMLElementImpl();</span>
+<span class="fc" id="L31">        return new HTMLElementImpl();</span>
     }
 
     /**
      * Click.
      */
     public void click() {
-<span class="fc" id="L50">        doClickAction();</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L38">        doClickAction();</span>
+<span class="fc" id="L39">    }</span>
 
     /**
      * Do click action.
      */
     public void doClickAction() {
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L45">    }</span>
 
     /**
      * Gets the id.
@@ -63,7 +51,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public String getId() {
-<span class="fc" id="L66">        return getAttributeWithNoDefault(&quot;id&quot;);</span>
+<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;id&quot;);</span>
     }
 
     /**
@@ -74,8 +62,8 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public void setId(String id) {
-<span class="fc" id="L77">        setAttribute(&quot;id&quot;, id);</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L65">        setAttribute(&quot;id&quot;, id);</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Gets the title.
@@ -84,7 +72,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public String getTitle() {
-<span class="fc" id="L87">        return getAttributeWithNoDefault(&quot;title&quot;);</span>
+<span class="fc" id="L75">        return getAttributeWithNoDefault(&quot;title&quot;);</span>
     }
 
     /**
@@ -95,8 +83,8 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public void setTitle(String title) {
-<span class="fc" id="L98">        setAttribute(&quot;title&quot;, title);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L86">        setAttribute(&quot;title&quot;, title);</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Gets the lang.
@@ -105,7 +93,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public String getLang() {
-<span class="fc" id="L108">        return getAttributeWithNoDefault(&quot;lang&quot;);</span>
+<span class="fc" id="L96">        return getAttributeWithNoDefault(&quot;lang&quot;);</span>
     }
 
     /**
@@ -116,8 +104,8 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public void setLang(String lang) {
-<span class="fc" id="L119">        setAttribute(&quot;lang&quot;, lang);</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L107">        setAttribute(&quot;lang&quot;, lang);</span>
+<span class="fc" id="L108">    }</span>
 
     /**
      * Gets the dir.
@@ -126,7 +114,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public String getDir() {
-<span class="fc" id="L129">        return getAttributeWithNoDefault(&quot;dir&quot;);</span>
+<span class="fc" id="L117">        return getAttributeWithNoDefault(&quot;dir&quot;);</span>
     }
 
     /**
@@ -137,12 +125,12 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public void setDir(String dir) {
-<span class="fc" id="L140">        setAttribute(&quot;dir&quot;, dir);</span>
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L128">        setAttribute(&quot;dir&quot;, dir);</span>
+<span class="fc" id="L129">    }</span>
 
     @Override
     public String getClassName() {
-<span class="fc" id="L145">        return getAttributeWithNoDefault(&quot;class&quot;);</span>
+<span class="fc" id="L133">        return getAttributeWithNoDefault(&quot;class&quot;);</span>
     }
 
     /**
@@ -153,12 +141,12 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public void setClassName(String className) {
-<span class="fc" id="L156">        setAttribute(&quot;class&quot;, className);</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L144">        setAttribute(&quot;class&quot;, className);</span>
+<span class="fc" id="L145">    }</span>
 
     @Override
     public NodeList getElementsByTagName(String name) {
-<span class="fc" id="L161">        return super.getElementsByTagName(((HTMLDocumentImpl) getOwnerDocument()).toNodeCase(name));</span>
+<span class="fc" id="L149">        return super.getElementsByTagName(((HTMLDocumentImpl) getOwnerDocument()).toNodeCase(name));</span>
     }
 
     // ---------------------------------------------- protected methods
@@ -175,10 +163,10 @@ import org.w3c.dom.html.HTMLElement;
      * @return the attribute with default
      */
     protected final String getAttributeWithDefault(String attributeName, String defaultValue) {
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
-<span class="fc" id="L179">            return getAttribute(attributeName);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
+<span class="fc" id="L167">            return getAttribute(attributeName);</span>
         }
-<span class="fc" id="L181">        return defaultValue;</span>
+<span class="fc" id="L169">        return defaultValue;</span>
     }
 
     /**
@@ -190,10 +178,10 @@ import org.w3c.dom.html.HTMLElement;
      * @return the attribute with no default
      */
     protected final String getAttributeWithNoDefault(String attributeName) {
-<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
-<span class="fc" id="L194">            return getAttribute(attributeName);</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (hasAttribute(attributeName)) {</span>
+<span class="fc" id="L182">            return getAttribute(attributeName);</span>
         }
-<span class="fc" id="L196">        return UNSPECIFIED_ATTRIBUTE;</span>
+<span class="fc" id="L184">        return UNSPECIFIED_ATTRIBUTE;</span>
     }
 
     /**
@@ -205,8 +193,8 @@ import org.w3c.dom.html.HTMLElement;
      * @return the boolean attribute
      */
     protected boolean getBooleanAttribute(String name) {
-<span class="fc" id="L208">        Attr attr = getAttributeNode(name);</span>
-<span class="fc bfc" id="L209" title="All 4 branches covered.">        return attr != null &amp;&amp; !attr.getValue().equalsIgnoreCase(&quot;false&quot;);</span>
+<span class="fc" id="L196">        Attr attr = getAttributeNode(name);</span>
+<span class="fc bfc" id="L197" title="All 4 branches covered.">        return attr != null &amp;&amp; !attr.getValue().equalsIgnoreCase(&quot;false&quot;);</span>
     }
 
     /**
@@ -218,8 +206,8 @@ import org.w3c.dom.html.HTMLElement;
      * @return the integer attribute
      */
     protected int getIntegerAttribute(String name) {
-<span class="fc" id="L221">        String value = getAttribute(name);</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        return value.isEmpty() ? 0 : Integer.parseInt(value);</span>
+<span class="fc" id="L209">        String value = getAttribute(name);</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        return value.isEmpty() ? 0 : Integer.parseInt(value);</span>
     }
 
     /**
@@ -233,8 +221,8 @@ import org.w3c.dom.html.HTMLElement;
      * @return the integer attribute
      */
     protected int getIntegerAttribute(String name, int defaultValue) {
-<span class="fc" id="L236">        String value = getAttribute(name);</span>
-<span class="fc bfc" id="L237" title="All 2 branches covered.">        return value.isEmpty() ? defaultValue : Integer.parseInt(value);</span>
+<span class="fc" id="L224">        String value = getAttribute(name);</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        return value.isEmpty() ? defaultValue : Integer.parseInt(value);</span>
     }
 
     /**
@@ -246,8 +234,8 @@ import org.w3c.dom.html.HTMLElement;
      *            the disabled
      */
     protected void setAttribute(String name, boolean disabled) {
-<span class="fc bfc" id="L249" title="All 2 branches covered.">        setAttribute(name, disabled ? &quot;true&quot; : &quot;false&quot;);</span>
-<span class="fc" id="L250">    }</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        setAttribute(name, disabled ? &quot;true&quot; : &quot;false&quot;);</span>
+<span class="fc" id="L238">    }</span>
 
     /**
      * Sets the attribute.
@@ -258,8 +246,8 @@ import org.w3c.dom.html.HTMLElement;
      *            the value
      */
     protected void setAttribute(String name, int value) {
-<span class="fc" id="L261">        setAttribute(name, Integer.toString(value));</span>
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L249">        setAttribute(name, Integer.toString(value));</span>
+<span class="fc" id="L250">    }</span>
 
     /**
      * Gets the html document.
@@ -267,7 +255,7 @@ import org.w3c.dom.html.HTMLElement;
      * @return the html document
      */
     HTMLDocumentImpl getHtmlDocument() {
-<span class="fc" id="L270">        return (HTMLDocumentImpl) getOwnerDocument();</span>
+<span class="fc" id="L258">        return (HTMLDocumentImpl) getOwnerDocument();</span>
     }
 
 }

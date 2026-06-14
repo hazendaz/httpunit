@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebLink.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebLink.java</span></div><h1>WebLink.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -57,7 +45,7 @@ public class WebLink extends FixedURLWebRequestSource {
      * @return the URL string
      */
     public String getURLString() {
-<span class="fc" id="L60">        return getRelativeURL();</span>
+<span class="fc" id="L48">        return getRelativeURL();</span>
     }
 
     /**
@@ -65,10 +53,10 @@ public class WebLink extends FixedURLWebRequestSource {
      **/
     @Override
     public String getText() {
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (getElement().getNodeName().equalsIgnoreCase(&quot;area&quot;)) {</span>
-<span class="fc" id="L69">            return getAttribute(&quot;alt&quot;);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (getElement().getNodeName().equalsIgnoreCase(&quot;area&quot;)) {</span>
+<span class="fc" id="L57">            return getAttribute(&quot;alt&quot;);</span>
         }
-<span class="fc" id="L71">        return super.getText();</span>
+<span class="fc" id="L59">        return super.getText();</span>
     }
 
     /**
@@ -80,7 +68,7 @@ public class WebLink extends FixedURLWebRequestSource {
      */
     @Deprecated
     public String asText() {
-<span class="nc" id="L83">        return getText();</span>
+<span class="nc" id="L71">        return getText();</span>
     }
 
     /**
@@ -96,18 +84,18 @@ public class WebLink extends FixedURLWebRequestSource {
      *             the SAX exception
      */
     public WebResponse click() throws IOException, SAXException {
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (handleEvent(&quot;onclick&quot;)) {</span>
-<span class="fc" id="L100">            ((HTMLElementImpl) getNode()).doClickAction();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (handleEvent(&quot;onclick&quot;)) {</span>
+<span class="fc" id="L88">            ((HTMLElementImpl) getNode()).doClickAction();</span>
         }
-<span class="fc" id="L102">        return getCurrentFrameContents();</span>
+<span class="fc" id="L90">        return getCurrentFrameContents();</span>
     }
 
     /**
      * Simulates moving the mouse over the link. Will fire the 'onMouseOver' event if defined.
      **/
     public void mouseOver() {
-<span class="fc" id="L109">        handleEvent(&quot;onmouseover&quot;);</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L97">        handleEvent(&quot;onmouseover&quot;);</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * The Class Scriptable.
@@ -117,31 +105,31 @@ public class WebLink extends FixedURLWebRequestSource {
         /**
          * Instantiates a new scriptable.
          */
-<span class="fc" id="L120">        public Scriptable() {</span>
-<span class="fc" id="L121">            super(WebLink.this);</span>
-<span class="fc" id="L122">        }</span>
+<span class="fc" id="L108">        public Scriptable() {</span>
+<span class="fc" id="L109">            super(WebLink.this);</span>
+<span class="fc" id="L110">        }</span>
 
         @Override
         public String getName() {
-<span class="fc bfc" id="L126" title="All 2 branches covered.">            return WebLink.this.getID().length() != 0 ? WebLink.this.getID() : WebLink.this.getName();</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            return WebLink.this.getID().length() != 0 ? WebLink.this.getID() : WebLink.this.getName();</span>
         }
 
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;href&quot;)) {</span>
-<span class="fc" id="L132">                return getReference().toExternalForm();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;href&quot;)) {</span>
+<span class="fc" id="L120">                return getReference().toExternalForm();</span>
             }
-<span class="fc" id="L134">            return super.get(propertyName);</span>
+<span class="fc" id="L122">            return super.get(propertyName);</span>
         }
 
         @Override
         public void set(String propertyName, Object value) {
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;href&quot;)) {</span>
-<span class="fc" id="L140">                setDestination((String) value);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;href&quot;)) {</span>
+<span class="fc" id="L128">                setDestination((String) value);</span>
             } else {
-<span class="nc" id="L142">                super.set(propertyName, value);</span>
+<span class="nc" id="L130">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L144">        }</span>
+<span class="fc" id="L132">        }</span>
 
         /**
          * Gets the reference.
@@ -150,9 +138,9 @@ public class WebLink extends FixedURLWebRequestSource {
          */
         private URL getReference() {
             try {
-<span class="fc" id="L153">                return getRequest().getURL();</span>
-<span class="nc" id="L154">            } catch (MalformedURLException e) {</span>
-<span class="nc" id="L155">                return WebLink.this.getBaseURL();</span>
+<span class="fc" id="L141">                return getRequest().getURL();</span>
+<span class="nc" id="L142">            } catch (MalformedURLException e) {</span>
+<span class="nc" id="L143">                return WebLink.this.getBaseURL();</span>
             }
         }
     }
@@ -162,7 +150,7 @@ public class WebLink extends FixedURLWebRequestSource {
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L165">        return new Scriptable();</span>
+<span class="fc" id="L153">        return new Scriptable();</span>
     }
 
     // --------------------------------------------------- package members
@@ -186,25 +174,25 @@ public class WebLink extends FixedURLWebRequestSource {
      */
     WebLink(WebResponse response, URL baseURL, Node node, FrameSelector sourceFrame, String defaultTarget,
             String characterSet) {
-<span class="fc" id="L189">        super(response, node, baseURL, &quot;href&quot;, sourceFrame, defaultTarget, characterSet);</span>
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L177">        super(response, node, baseURL, &quot;href&quot;, sourceFrame, defaultTarget, characterSet);</span>
+<span class="fc" id="L178">    }</span>
 
     static {
-<span class="fc" id="L193">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),</span>
+<span class="fc" id="L181">        MATCH_URL_STRING = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getURLString(),</span>
                 (String) criteria);
 
-<span class="pc" id="L196">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(),</span>
+<span class="pc" id="L184">        MATCH_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getText(),</span>
                 (String) criteria);
 
-<span class="fc" id="L199">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(),</span>
+<span class="fc" id="L187">        MATCH_CONTAINED_TEXT = (htmlElement, criteria) -&gt; HttpUnitUtils.contains(((WebLink) htmlElement).getText(),</span>
                 (String) criteria);
 
-<span class="pc" id="L202">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
+<span class="pc" id="L190">        MATCH_ID = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getID(), (String) criteria);</span>
 
-<span class="fc" id="L204">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(),</span>
+<span class="fc" id="L192">        MATCH_NAME = (htmlElement, criteria) -&gt; HttpUnitUtils.matches(((WebLink) htmlElement).getName(),</span>
                 (String) criteria);
 
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L195">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

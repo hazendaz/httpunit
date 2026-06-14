@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpWebResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpWebResponse.java</span></div><h1>HttpWebResponse.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -61,22 +49,22 @@ class HttpWebResponse extends WebResponse {
      */
     HttpWebResponse(WebConversation client, FrameSelector frame, URL url, URLConnection connection,
             boolean throwExceptionOnError) throws IOException {
-<span class="fc" id="L64">        super(client, frame, url);</span>
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L66">            System.out.println(&quot;\nReceived from &quot; + url);</span>
+<span class="fc" id="L52">        super(client, frame, url);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L54">            System.out.println(&quot;\nReceived from &quot; + url);</span>
         }
-<span class="fc" id="L68">        readHeaders(connection);</span>
+<span class="fc" id="L56">        readHeaders(connection);</span>
 
         /** make sure that any IO exception for HTML received page happens here, not later. **/
-<span class="fc bfc" id="L71" title="All 4 branches covered.">        if (_responseCode &lt; HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {</span>
-<span class="fc" id="L72">            InputStream inputStream = getInputStream(connection);</span>
-<span class="fc" id="L73">            defineRawInputStream(new BufferedInputStream(inputStream));</span>
-<span class="fc" id="L74">            String contentType = getContentType();</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (contentType.startsWith(&quot;text&quot;)) {</span>
-<span class="fc" id="L76">                loadResponseText();</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">        if (_responseCode &lt; HttpURLConnection.HTTP_BAD_REQUEST || !throwExceptionOnError) {</span>
+<span class="fc" id="L60">            InputStream inputStream = getInputStream(connection);</span>
+<span class="fc" id="L61">            defineRawInputStream(new BufferedInputStream(inputStream));</span>
+<span class="fc" id="L62">            String contentType = getContentType();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (contentType.startsWith(&quot;text&quot;)) {</span>
+<span class="fc" id="L64">                loadResponseText();</span>
             }
         }
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Instantiates a new http web response.
@@ -97,10 +85,10 @@ class HttpWebResponse extends WebResponse {
      */
     HttpWebResponse(WebConversation client, FrameSelector frame, WebRequest request, URLConnection connection,
             boolean throwExceptionOnError) throws IOException {
-<span class="fc" id="L100">        this(client, frame, request.getURL(), connection, throwExceptionOnError);</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        super.setWithParse(!request.getMethod().equals(&quot;HEAD&quot;));</span>
-<span class="fc" id="L102">        _referer = request.getReferer();</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L88">        this(client, frame, request.getURL(), connection, throwExceptionOnError);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        super.setWithParse(!request.getMethod().equals(&quot;HEAD&quot;));</span>
+<span class="fc" id="L90">        _referer = request.getReferer();</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * get the input stream for the given connection.
@@ -114,26 +102,26 @@ class HttpWebResponse extends WebResponse {
      *             Signals that an I/O exception has occurred.
      */
     private InputStream getInputStream(URLConnection connection) throws IOException {
-<span class="fc" id="L117">        InputStream result = null;</span>
+<span class="fc" id="L105">        InputStream result = null;</span>
         // check whether there is an error stream
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (isResponseOnErrorStream(connection)) {</span>
-<span class="fc" id="L120">            result = ((HttpURLConnection) connection).getErrorStream();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (isResponseOnErrorStream(connection)) {</span>
+<span class="fc" id="L108">            result = ((HttpURLConnection) connection).getErrorStream();</span>
         } else {
             // if there is no error stream it depends on the response code
             try {
-<span class="fc" id="L124">                result = connection.getInputStream();</span>
-<span class="fc" id="L125">            } catch (java.io.FileNotFoundException fnfe) {</span>
+<span class="fc" id="L112">                result = connection.getInputStream();</span>
+<span class="fc" id="L113">            } catch (java.io.FileNotFoundException fnfe) {</span>
                 // as of JDK 1.5 a null inputstream might have been returned here
                 // see bug report [ 1283878 ] FileNotFoundException using Sun JDK 1.5 on empty error pages
                 // by Roger Lindsj?
-<span class="fc bfc" id="L129" title="All 2 branches covered.">                if (!isErrorResponse(connection)) {</span>
-<span class="fc" id="L130">                    throw fnfe;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">                if (!isErrorResponse(connection)) {</span>
+<span class="fc" id="L118">                    throw fnfe;</span>
                 }
                 // fake an empty error stream
-<span class="fc" id="L133">                result = new ByteArrayInputStream(new byte[0]);</span>
-<span class="fc" id="L134">            }</span>
+<span class="fc" id="L121">                result = new ByteArrayInputStream(new byte[0]);</span>
+<span class="fc" id="L122">            }</span>
         }
-<span class="fc" id="L136">        return result;</span>
+<span class="fc" id="L124">        return result;</span>
     }
 
     /**
@@ -145,7 +133,7 @@ class HttpWebResponse extends WebResponse {
      * @return true, if is error response
      */
     private boolean isErrorResponse(URLConnection connection) {
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        return _responseCode &gt;= HttpURLConnection.HTTP_BAD_REQUEST;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        return _responseCode &gt;= HttpURLConnection.HTTP_BAD_REQUEST;</span>
     }
 
     /**
@@ -157,7 +145,7 @@ class HttpWebResponse extends WebResponse {
      * @return true, if is response on error stream
      */
     private boolean isResponseOnErrorStream(URLConnection connection) {
-<span class="fc bfc" id="L160" title="All 4 branches covered.">        return isErrorResponse(connection) &amp;&amp; ((HttpURLConnection) connection).getErrorStream() != null;</span>
+<span class="fc bfc" id="L148" title="All 4 branches covered.">        return isErrorResponse(connection) &amp;&amp; ((HttpURLConnection) connection).getErrorStream() != null;</span>
     }
 
     /**
@@ -165,7 +153,7 @@ class HttpWebResponse extends WebResponse {
      **/
     @Override
     public int getResponseCode() {
-<span class="fc" id="L168">        return _responseCode;</span>
+<span class="fc" id="L156">        return _responseCode;</span>
     }
 
     /**
@@ -173,16 +161,16 @@ class HttpWebResponse extends WebResponse {
      **/
     @Override
     public String getResponseMessage() {
-<span class="fc" id="L176">        return _responseMessage;</span>
+<span class="fc" id="L164">        return _responseMessage;</span>
     }
 
     @Override
     public String[] getHeaderFieldNames() {
-<span class="nc" id="L181">        List&lt;String&gt; names = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="nc" id="L183">            names.add((String) e.nextElement());</span>
+<span class="nc" id="L169">        List&lt;String&gt; names = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L171">            names.add((String) e.nextElement());</span>
         }
-<span class="nc" id="L185">        return names.toArray(new String[0]);</span>
+<span class="nc" id="L173">        return names.toArray(new String[0]);</span>
     }
 
     /**
@@ -190,46 +178,46 @@ class HttpWebResponse extends WebResponse {
      **/
     @Override
     public String getHeaderField(String fieldName) {
-<span class="fc" id="L193">        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">        return fields == null ? null : fields[0];</span>
+<span class="fc" id="L181">        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        return fields == null ? null : fields[0];</span>
     }
 
     @Override
     public String[] getHeaderFields(String fieldName) {
-<span class="fc" id="L199">        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">        return fields == null ? new String[0] : fields;</span>
+<span class="fc" id="L187">        String[] fields = (String[]) _headers.get(fieldName.toUpperCase());</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        return fields == null ? new String[0] : fields;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L205">        StringBuilder sb = new StringBuilder(&quot;HttpWebResponse [url=&quot;);</span>
-<span class="nc" id="L206">        sb.append(getURL()).append(&quot;; headers=&quot;);</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
-<span class="nc" id="L208">            Object key = e.nextElement();</span>
-<span class="nc" id="L209">            String[] values = (String[]) _headers.get(key);</span>
-<span class="nc bnc" id="L210" title="All 2 branches missed.">            for (String value : values) {</span>
-<span class="nc" id="L211">                sb.append(&quot;\n   &quot;).append(key).append(&quot;: &quot;).append(value);</span>
+<span class="nc" id="L193">        StringBuilder sb = new StringBuilder(&quot;HttpWebResponse [url=&quot;);</span>
+<span class="nc" id="L194">        sb.append(getURL()).append(&quot;; headers=&quot;);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {</span>
+<span class="nc" id="L196">            Object key = e.nextElement();</span>
+<span class="nc" id="L197">            String[] values = (String[]) _headers.get(key);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            for (String value : values) {</span>
+<span class="nc" id="L199">                sb.append(&quot;\n   &quot;).append(key).append(&quot;: &quot;).append(value);</span>
             }
-<span class="nc" id="L213">        }</span>
-<span class="nc" id="L214">        sb.append(&quot; ]&quot;);</span>
-<span class="nc" id="L215">        return sb.toString();</span>
+<span class="nc" id="L201">        }</span>
+<span class="nc" id="L202">        sb.append(&quot; ]&quot;);</span>
+<span class="nc" id="L203">        return sb.toString();</span>
     }
 
     @Override
     String getReferer() {
-<span class="fc" id="L220">        return _referer;</span>
+<span class="fc" id="L208">        return _referer;</span>
     }
 
     // ------------------------------------- private members -------------------------------------
 
     /** The Constant FILE_ENCODING. */
-<span class="fc" id="L226">    private static final String FILE_ENCODING = Charset.defaultCharset().displayName();</span>
+<span class="fc" id="L214">    private static final String FILE_ENCODING = Charset.defaultCharset().displayName();</span>
 
     /** The response code. */
-<span class="fc" id="L229">    private int _responseCode = HttpURLConnection.HTTP_OK;</span>
+<span class="fc" id="L217">    private int _responseCode = HttpURLConnection.HTTP_OK;</span>
 
     /** The response message. */
-<span class="fc" id="L232">    private String _responseMessage = &quot;OK&quot;;</span>
+<span class="fc" id="L220">    private String _responseMessage = &quot;OK&quot;;</span>
 
     /**
      * set the responseCode to the given code and message.
@@ -240,12 +228,12 @@ class HttpWebResponse extends WebResponse {
      *            the message
      */
     private void setResponseCode(int code, String message) {
-<span class="fc" id="L243">        _responseCode = code;</span>
-<span class="fc" id="L244">        _responseMessage = message;</span>
-<span class="fc" id="L245">    }</span>
+<span class="fc" id="L231">        _responseCode = code;</span>
+<span class="fc" id="L232">        _responseMessage = message;</span>
+<span class="fc" id="L233">    }</span>
 
     /** The headers. */
-<span class="fc" id="L248">    private Hashtable _headers = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L236">    private Hashtable _headers = new Hashtable&lt;&gt;();</span>
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly.
@@ -257,26 +245,26 @@ class HttpWebResponse extends WebResponse {
      *             Signals that an I/O exception has occurred.
      */
     private void readResponseHeader(HttpURLConnection connection) throws IOException {
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">        if (!needStatusWorkaround()) {</span>
-<span class="fc" id="L261">            setResponseCode(connection.getResponseCode(), connection.getResponseMessage());</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (!needStatusWorkaround()) {</span>
+<span class="fc" id="L249">            setResponseCode(connection.getResponseCode(), connection.getResponseMessage());</span>
         } else {
-<span class="nc bnc" id="L263" title="All 2 branches missed.">            if (connection.getHeaderField(0) == null) {</span>
-<span class="nc" id="L264">                throw new UnknownHostException(connection.getURL().toExternalForm());</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (connection.getHeaderField(0) == null) {</span>
+<span class="nc" id="L252">                throw new UnknownHostException(connection.getURL().toExternalForm());</span>
             }
 
-<span class="nc" id="L267">            StringTokenizer st = new StringTokenizer(connection.getHeaderField(0));</span>
-<span class="nc" id="L268">            st.nextToken();</span>
-<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
-<span class="nc" id="L270">                setResponseCode(HttpURLConnection.HTTP_OK, &quot;OK&quot;);</span>
+<span class="nc" id="L255">            StringTokenizer st = new StringTokenizer(connection.getHeaderField(0));</span>
+<span class="nc" id="L256">            st.nextToken();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
+<span class="nc" id="L258">                setResponseCode(HttpURLConnection.HTTP_OK, &quot;OK&quot;);</span>
             } else {
                 try {
-<span class="nc" id="L273">                    setResponseCode(Integer.parseInt(st.nextToken()), getRemainingTokens(st));</span>
-<span class="nc" id="L274">                } catch (NumberFormatException e) {</span>
-<span class="nc" id="L275">                    setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR, &quot;Cannot parse response header&quot;);</span>
-<span class="nc" id="L276">                }</span>
+<span class="nc" id="L261">                    setResponseCode(Integer.parseInt(st.nextToken()), getRemainingTokens(st));</span>
+<span class="nc" id="L262">                } catch (NumberFormatException e) {</span>
+<span class="nc" id="L263">                    setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR, &quot;Cannot parse response header&quot;);</span>
+<span class="nc" id="L264">                }</span>
             }
         }
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L267">    }</span>
 
     /**
      * Need status workaround.
@@ -284,8 +272,8 @@ class HttpWebResponse extends WebResponse {
      * @return true, if successful
      */
     private boolean needStatusWorkaround() {
-<span class="fc" id="L287">        final String jdkVersion = System.getProperty(&quot;java.version&quot;);</span>
-<span class="pc bpc" id="L288" title="2 of 4 branches missed.">        return jdkVersion.startsWith(&quot;1.2&quot;) || jdkVersion.startsWith(&quot;1.3&quot;);</span>
+<span class="fc" id="L275">        final String jdkVersion = System.getProperty(&quot;java.version&quot;);</span>
+<span class="pc bpc" id="L276" title="2 of 4 branches missed.">        return jdkVersion.startsWith(&quot;1.2&quot;) || jdkVersion.startsWith(&quot;1.3&quot;);</span>
     }
 
     /**
@@ -297,11 +285,11 @@ class HttpWebResponse extends WebResponse {
      * @return the remaining tokens
      */
     private String getRemainingTokens(StringTokenizer st) {
-<span class="nc bnc" id="L300" title="All 2 branches missed.">        StringBuilder messageBuffer = new StringBuilder(st.hasMoreTokens() ? st.nextToken() : &quot;&quot;);</span>
-<span class="nc bnc" id="L301" title="All 2 branches missed.">        while (st.hasMoreTokens()) {</span>
-<span class="nc" id="L302">            messageBuffer.append(' ').append(st.nextToken());</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        StringBuilder messageBuffer = new StringBuilder(st.hasMoreTokens() ? st.nextToken() : &quot;&quot;);</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L290">            messageBuffer.append(' ').append(st.nextToken());</span>
         }
-<span class="nc" id="L304">        return messageBuffer.toString();</span>
+<span class="nc" id="L292">        return messageBuffer.toString();</span>
     }
 
     /**
@@ -314,16 +302,16 @@ class HttpWebResponse extends WebResponse {
      *             Signals that an I/O exception has occurred.
      */
     private void readHeaders(URLConnection connection) throws IOException {
-<span class="fc" id="L317">        loadHeaders(connection);</span>
-<span class="fc bfc" id="L318" title="All 2 branches covered.">        if (connection instanceof HttpURLConnection) {</span>
-<span class="fc" id="L319">            readResponseHeader((HttpURLConnection) connection);</span>
+<span class="fc" id="L305">        loadHeaders(connection);</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">        if (connection instanceof HttpURLConnection) {</span>
+<span class="fc" id="L307">            readResponseHeader((HttpURLConnection) connection);</span>
         } else {
-<span class="fc" id="L321">            setResponseCode(HttpURLConnection.HTTP_OK, &quot;OK&quot;);</span>
-<span class="pc bpc" id="L322" title="1 of 2 branches missed.">            if (connection.getContentType().startsWith(&quot;text&quot;)) {</span>
-<span class="fc" id="L323">                setContentTypeHeader(connection.getContentType() + &quot;; charset=&quot; + FILE_ENCODING);</span>
+<span class="fc" id="L309">            setResponseCode(HttpURLConnection.HTTP_OK, &quot;OK&quot;);</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">            if (connection.getContentType().startsWith(&quot;text&quot;)) {</span>
+<span class="fc" id="L311">                setContentTypeHeader(connection.getContentType() + &quot;; charset=&quot; + FILE_ENCODING);</span>
             }
         }
-<span class="fc" id="L326">    }</span>
+<span class="fc" id="L314">    }</span>
 
     /**
      * Load headers.
@@ -332,25 +320,25 @@ class HttpWebResponse extends WebResponse {
      *            the connection
      */
     private void loadHeaders(URLConnection connection) {
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L336">            System.out.println(&quot;Header:: &quot; + connection.getHeaderField(0));</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L324">            System.out.println(&quot;Header:: &quot; + connection.getHeaderField(0));</span>
         }
-<span class="fc" id="L338">        for (int i = 1; true; i++) {</span>
-<span class="fc" id="L339">            String headerFieldKey = connection.getHeaderFieldKey(i);</span>
-<span class="fc" id="L340">            String headerField = connection.getHeaderField(i);</span>
-<span class="pc bpc" id="L341" title="1 of 4 branches missed.">            if (headerFieldKey == null || headerField == null) {</span>
-<span class="nc" id="L342">                break;</span>
+<span class="fc" id="L326">        for (int i = 1; true; i++) {</span>
+<span class="fc" id="L327">            String headerFieldKey = connection.getHeaderFieldKey(i);</span>
+<span class="fc" id="L328">            String headerField = connection.getHeaderField(i);</span>
+<span class="pc bpc" id="L329" title="1 of 4 branches missed.">            if (headerFieldKey == null || headerField == null) {</span>
+<span class="nc" id="L330">                break;</span>
             }
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">            if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
-<span class="nc" id="L345">                System.out.println(&quot;Header:: &quot; + headerFieldKey + &quot;: &quot; + headerField);</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">            if (HttpUnitOptions.isLoggingHttpHeaders()) {</span>
+<span class="nc" id="L333">                System.out.println(&quot;Header:: &quot; + headerFieldKey + &quot;: &quot; + headerField);</span>
             }
-<span class="fc" id="L347">            addHeader(headerFieldKey.toUpperCase(), headerField);</span>
+<span class="fc" id="L335">            addHeader(headerFieldKey.toUpperCase(), headerField);</span>
         }
 
-<span class="pc bpc" id="L350" title="1 of 2 branches missed.">        if (connection.getContentType() != null) {</span>
-<span class="fc" id="L351">            setContentTypeHeader(connection.getContentType());</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">        if (connection.getContentType() != null) {</span>
+<span class="fc" id="L339">            setContentTypeHeader(connection.getContentType());</span>
         }
-<span class="fc" id="L353">    }</span>
+<span class="fc" id="L341">    }</span>
 
     /**
      * Adds the header.
@@ -361,8 +349,8 @@ class HttpWebResponse extends WebResponse {
      *            the field
      */
     private void addHeader(String key, String field) {
-<span class="fc" id="L364">        _headers.put(key, HttpUnitUtils.withNewValue((String[]) _headers.get(key), field));</span>
-<span class="fc" id="L365">    }</span>
+<span class="fc" id="L352">        _headers.put(key, HttpUnitUtils.withNewValue((String[]) _headers.get(key), field));</span>
+<span class="fc" id="L353">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

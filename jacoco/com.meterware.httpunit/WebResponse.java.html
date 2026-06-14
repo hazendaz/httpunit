@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebResponse.java</span></div><h1>WebResponse.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -74,7 +62,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /** The valid content types. */
     // the list of valid content Types
-<span class="fc" id="L77">    private static String[] validContentTypes = { HTML_CONTENT, XHTML_CONTENT, FAUX_XHTML_CONTENT, XML_CONTENT };</span>
+<span class="fc" id="L65">    private static String[] validContentTypes = { HTML_CONTENT, XHTML_CONTENT, FAUX_XHTML_CONTENT, XML_CONTENT };</span>
 
     /** The Constant UNINITIALIZED_INT. */
     private static final int UNINITIALIZED_INT = -2;
@@ -90,7 +78,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     /** The with parse. */
     // allow to switch off parsing e.g. for method=&quot;HEAD&quot;
-<span class="fc" id="L93">    private boolean _withParse = true;</span>
+<span class="fc" id="L81">    private boolean _withParse = true;</span>
 
     /** The base target. */
     private String _baseTarget;
@@ -110,7 +98,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return true if parsing is enabled
      */
     public boolean isWithParse() {
-<span class="fc" id="L113">        return _withParse;</span>
+<span class="fc" id="L101">        return _withParse;</span>
     }
 
     /**
@@ -120,8 +108,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new with parse
      */
     public void setWithParse(boolean doParse) {
-<span class="fc" id="L123">        _withParse = doParse;</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L111">        _withParse = doParse;</span>
+<span class="fc" id="L112">    }</span>
 
     /**
      * Returns a web response built from a URL connection. Provided to allow access to WebResponse parsing without using
@@ -136,8 +124,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     public static WebResponse newResponse(URLConnection connection) throws IOException {
-<span class="nc" id="L139">        return new HttpWebResponse(null, FrameSelector.TOP_FRAME, connection.getURL(), connection,</span>
-<span class="nc" id="L140">                HttpUnitOptions.getExceptionsThrownOnErrorStatus());</span>
+<span class="nc" id="L127">        return new HttpWebResponse(null, FrameSelector.TOP_FRAME, connection.getURL(), connection,</span>
+<span class="nc" id="L128">                HttpUnitOptions.getExceptionsThrownOnErrorStatus());</span>
     }
 
     /**
@@ -146,15 +134,15 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return true if the contenType fits
      **/
     public boolean isHTML() {
-<span class="fc" id="L149">        boolean result = false;</span>
+<span class="fc" id="L137">        boolean result = false;</span>
         // check the different content types
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        for (String validContentType : validContentTypes) {</span>
-<span class="fc" id="L152">            result = getContentType().equalsIgnoreCase(validContentType);</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (result) {</span>
-<span class="fc" id="L154">                break;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        for (String validContentType : validContentTypes) {</span>
+<span class="fc" id="L140">            result = getContentType().equalsIgnoreCase(validContentType);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (result) {</span>
+<span class="fc" id="L142">                break;</span>
             }
         } // for
-<span class="fc" id="L157">        return result;</span>
+<span class="fc" id="L145">        return result;</span>
     }
 
     /**
@@ -162,7 +150,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     @Override
     public URL getURL() {
-<span class="fc" id="L165">        return _pageURL;</span>
+<span class="fc" id="L153">        return _pageURL;</span>
     }
 
     /**
@@ -170,11 +158,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the title
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String getTitle() throws SAXException {
-<span class="fc" id="L177">        return getReceivedPage().getTitle();</span>
+<span class="fc" id="L165">        return getReceivedPage().getTitle();</span>
     }
 
     /**
@@ -183,11 +171,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the external style sheet
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String getExternalStyleSheet() throws SAXException {
-<span class="fc" id="L190">        return getReceivedPage().getExternalStyleSheet();</span>
+<span class="fc" id="L178">        return getReceivedPage().getExternalStyleSheet();</span>
     }
 
     /**
@@ -203,11 +191,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the meta tag content
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String[] getMetaTagContent(String attribute, String attributeValue) throws SAXException {
-<span class="fc" id="L210">        return getReceivedPage().getMetaTagContent(attribute, attributeValue);</span>
+<span class="fc" id="L198">        return getReceivedPage().getMetaTagContent(attribute, attributeValue);</span>
     }
 
     /**
@@ -216,7 +204,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the frame name
      */
     public String getFrameName() {
-<span class="fc" id="L219">        return _frame.getName();</span>
+<span class="fc" id="L207">        return _frame.getName();</span>
     }
 
     /**
@@ -226,11 +214,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new frame
      */
     void setFrame(FrameSelector frame) {
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (!_frame.getName().equals(frame.getName())) {</span>
-<span class="nc" id="L230">            throw new IllegalArgumentException(&quot;May not modify the frame name&quot;);</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        if (!_frame.getName().equals(frame.getName())) {</span>
+<span class="nc" id="L218">            throw new IllegalArgumentException(&quot;May not modify the frame name&quot;);</span>
         }
-<span class="fc" id="L232">        _frame = frame;</span>
-<span class="fc" id="L233">    }</span>
+<span class="fc" id="L220">        _frame = frame;</span>
+<span class="fc" id="L221">    }</span>
 
     /**
      * Returns the frame containing this page.
@@ -238,7 +226,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the frame
      */
     FrameSelector getFrame() {
-<span class="fc" id="L241">        return _frame;</span>
+<span class="fc" id="L229">        return _frame;</span>
     }
 
     /**
@@ -248,8 +236,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the refresh request
      */
     public WebRequest getRefreshRequest() {
-<span class="fc" id="L251">        readRefreshRequest();</span>
-<span class="fc" id="L252">        return _refreshRequest;</span>
+<span class="fc" id="L239">        readRefreshRequest();</span>
+<span class="fc" id="L240">        return _refreshRequest;</span>
     }
 
     /**
@@ -259,8 +247,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the refresh delay
      */
     public int getRefreshDelay() {
-<span class="fc" id="L262">        readRefreshRequest();</span>
-<span class="fc" id="L263">        return _refreshDelay;</span>
+<span class="fc" id="L250">        readRefreshRequest();</span>
+<span class="fc" id="L251">        return _refreshDelay;</span>
     }
 
     /**
@@ -283,11 +271,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the content length, if known, or -1.
      */
     public int getContentLength() {
-<span class="fc bfc" id="L286" title="All 2 branches covered.">        if (_contentLength == UNINITIALIZED_INT) {</span>
-<span class="fc" id="L287">            String length = getHeaderField(&quot;Content-Length&quot;);</span>
-<span class="fc bfc" id="L288" title="All 2 branches covered.">            _contentLength = length == null ? -1 : Integer.parseInt(length);</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (_contentLength == UNINITIALIZED_INT) {</span>
+<span class="fc" id="L275">            String length = getHeaderField(&quot;Content-Length&quot;);</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">            _contentLength = length == null ? -1 : Integer.parseInt(length);</span>
         }
-<span class="fc" id="L290">        return _contentLength;</span>
+<span class="fc" id="L278">        return _contentLength;</span>
     }
 
     /**
@@ -296,10 +284,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the content type
      */
     public String getContentType() {
-<span class="fc bfc" id="L299" title="All 2 branches covered.">        if (_contentType == null) {</span>
-<span class="fc" id="L300">            readContentTypeHeader();</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (_contentType == null) {</span>
+<span class="fc" id="L288">            readContentTypeHeader();</span>
         }
-<span class="fc" id="L302">        return _contentType;</span>
+<span class="fc" id="L290">        return _contentType;</span>
     }
 
     /**
@@ -308,16 +296,16 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the character set
      */
     public String getCharacterSet() {
-<span class="fc bfc" id="L311" title="All 2 branches covered.">        if (_characterSet == null) {</span>
-<span class="fc" id="L312">            readContentTypeHeader();</span>
-<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (_characterSet == null) {</span>
-<span class="fc" id="L314">                setCharacterSet(getHeaderField(&quot;Charset&quot;));</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">        if (_characterSet == null) {</span>
+<span class="fc" id="L300">            readContentTypeHeader();</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">            if (_characterSet == null) {</span>
+<span class="fc" id="L302">                setCharacterSet(getHeaderField(&quot;Charset&quot;));</span>
             }
-<span class="fc bfc" id="L316" title="All 2 branches covered.">            if (_characterSet == null) {</span>
-<span class="fc" id="L317">                setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">            if (_characterSet == null) {</span>
+<span class="fc" id="L305">                setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());</span>
             }
         }
-<span class="fc" id="L320">        return _characterSet;</span>
+<span class="fc" id="L308">        return _characterSet;</span>
     }
 
     /**
@@ -326,7 +314,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the new cookie names
      */
     public String[] getNewCookieNames() {
-<span class="fc" id="L329">        return getCookieJar().getCookieNames();</span>
+<span class="fc" id="L317">        return getCookieJar().getCookieNames();</span>
     }
 
     /**
@@ -338,7 +326,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the new cookie value
      */
     public String getNewCookieValue(String name) {
-<span class="nc" id="L341">        return getCookieJar().getCookieValue(name);</span>
+<span class="nc" id="L329">        return getCookieJar().getCookieValue(name);</span>
     }
 
     /**
@@ -368,10 +356,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     public byte[] getBytes() throws IOException {
-<span class="fc bfc" id="L371" title="All 2 branches covered.">        if (_responseText == null) {</span>
-<span class="fc" id="L372">            loadResponseText();</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">        if (_responseText == null) {</span>
+<span class="fc" id="L360">            loadResponseText();</span>
         }
-<span class="fc" id="L374">        return _bytes;</span>
+<span class="fc" id="L362">        return _bytes;</span>
     }
 
     /**
@@ -384,10 +372,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     public String getText() throws IOException {
-<span class="fc bfc" id="L387" title="All 2 branches covered.">        if (_responseText == null) {</span>
-<span class="fc" id="L388">            loadResponseText();</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (_responseText == null) {</span>
+<span class="fc" id="L376">            loadResponseText();</span>
         }
-<span class="fc" id="L390">        return _responseText;</span>
+<span class="fc" id="L378">        return _responseText;</span>
     }
 
     /**
@@ -399,10 +387,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     public InputStream getInputStream() throws IOException {
-<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (_inputStream == null) {</span>
-<span class="fc" id="L403">            _inputStream = new ByteArrayInputStream(getText().getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">        if (_inputStream == null) {</span>
+<span class="fc" id="L391">            _inputStream = new ByteArrayInputStream(getText().getBytes(StandardCharsets.UTF_8));</span>
         }
-<span class="fc" id="L405">        return _inputStream;</span>
+<span class="fc" id="L393">        return _inputStream;</span>
     }
 
     /**
@@ -410,17 +398,17 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the frame names
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     public String[] getFrameNames() throws SAXException {
-<span class="fc" id="L417">        WebFrame[] frames = getFrames();</span>
-<span class="fc" id="L418">        String[] result = new String[frames.length];</span>
-<span class="fc bfc" id="L419" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc" id="L420">            result[i] = frames[i].getFrameName();</span>
+<span class="fc" id="L405">        WebFrame[] frames = getFrames();</span>
+<span class="fc" id="L406">        String[] result = new String[frames.length];</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L408">            result[i] = frames[i].getFrameName();</span>
         }
 
-<span class="fc" id="L423">        return result;</span>
+<span class="fc" id="L411">        return result;</span>
     }
 
     /**
@@ -428,17 +416,17 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the frame selectors
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing this response
+     * @throws SAXException
+     *             thrown if there is an error parsing this response
      */
     FrameSelector[] getFrameSelectors() throws SAXException {
-<span class="fc" id="L435">        WebFrame[] frames = getFrames();</span>
-<span class="fc" id="L436">        FrameSelector[] result = new FrameSelector[frames.length];</span>
-<span class="fc bfc" id="L437" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc" id="L438">            result[i] = frames[i].getSelector();</span>
+<span class="fc" id="L423">        WebFrame[] frames = getFrames();</span>
+<span class="fc" id="L424">        FrameSelector[] result = new FrameSelector[frames.length];</span>
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L426">            result[i] = frames[i].getSelector();</span>
         }
 
-<span class="fc" id="L441">        return result;</span>
+<span class="fc" id="L429">        return result;</span>
     }
 
     /**
@@ -450,10 +438,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the subframe contents
      */
     public WebResponse getSubframeContents(String subFrameName) {
-<span class="fc bfc" id="L453" title="All 2 branches covered.">        if (_window == null) {</span>
-<span class="fc" id="L454">            throw new NoSuchFrameException(subFrameName);</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">        if (_window == null) {</span>
+<span class="fc" id="L442">            throw new NoSuchFrameException(subFrameName);</span>
         }
-<span class="fc" id="L456">        return _window.getSubframeContents(_frame, subFrameName);</span>
+<span class="fc" id="L444">        return _window.getSubframeContents(_frame, subFrameName);</span>
     }
 
     // ---------------------- HTMLSegment methods -----------------------------
@@ -466,7 +454,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public HTMLElement getElementWithID(String id) throws SAXException {
-<span class="fc" id="L469">        return getReceivedPage().getElementWithID(id);</span>
+<span class="fc" id="L457">        return getReceivedPage().getElementWithID(id);</span>
     }
 
     /**
@@ -481,7 +469,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     public HTMLElement[] getElementsByTagName(String tagName) throws SAXException {
-<span class="fc" id="L484">        return getReceivedPage().getElementsByTagName(getDOM(), tagName);</span>
+<span class="fc" id="L472">        return getReceivedPage().getElementsByTagName(getDOM(), tagName);</span>
     }
 
     /**
@@ -489,7 +477,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public String[] getElementNames() throws SAXException {
-<span class="fc" id="L492">        return getReceivedPage().getElementNames();</span>
+<span class="fc" id="L480">        return getReceivedPage().getElementNames();</span>
     }
 
     /**
@@ -497,7 +485,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public HTMLElement[] getElementsWithName(String name) throws SAXException {
-<span class="fc" id="L500">        return getReceivedPage().getElementsWithName(name);</span>
+<span class="fc" id="L488">        return getReceivedPage().getElementsWithName(name);</span>
     }
 
     /**
@@ -512,7 +500,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     public HTMLElement[] getElementsWithClassName(String className) throws SAXException {
-<span class="fc" id="L515">        return getReceivedPage().getElementsWithClassName(className);</span>
+<span class="fc" id="L503">        return getReceivedPage().getElementsWithClassName(className);</span>
     }
 
     /**
@@ -520,95 +508,95 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public HTMLElement[] getElementsWithAttribute(String name, String value) throws SAXException {
-<span class="fc" id="L523">        return getReceivedPage().getElementsWithAttribute(name, value);</span>
+<span class="fc" id="L511">        return getReceivedPage().getElementsWithAttribute(name, value);</span>
     }
 
     /**
      * Returns the forms found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm[] getForms() throws SAXException {
-<span class="fc" id="L534">        return getReceivedPage().getForms();</span>
+<span class="fc" id="L522">        return getReceivedPage().getForms();</span>
     }
 
     /**
      * Returns the form found in the page with the specified name.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFormWithName(String name) throws SAXException {
-<span class="fc" id="L545">        return getReceivedPage().getFormWithName(name);</span>
+<span class="fc" id="L533">        return getReceivedPage().getFormWithName(name);</span>
     }
 
     /**
      * Returns the form found in the page with the specified ID.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFormWithID(String ID) throws SAXException {
-<span class="fc" id="L556">        return getReceivedPage().getFormWithID(ID);</span>
+<span class="fc" id="L544">        return getReceivedPage().getFormWithID(ID);</span>
     }
 
     /**
      * Returns the first form found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm getFirstMatchingForm(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="fc" id="L567">        return getReceivedPage().getFirstMatchingForm(predicate, criteria);</span>
+<span class="fc" id="L555">        return getReceivedPage().getFirstMatchingForm(predicate, criteria);</span>
     }
 
     /**
      * Returns all forms found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebForm[] getMatchingForms(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="nc" id="L578">        return getReceivedPage().getMatchingForms(predicate, criteria);</span>
+<span class="nc" id="L566">        return getReceivedPage().getMatchingForms(predicate, criteria);</span>
     }
 
     /**
      * Returns the links found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink[] getLinks() throws SAXException {
-<span class="fc" id="L589">        return getReceivedPage().getLinks();</span>
+<span class="fc" id="L577">        return getReceivedPage().getLinks();</span>
     }
 
     /**
      * Returns the first link which contains the specified text.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getLinkWith(String text) throws SAXException {
-<span class="fc" id="L600">        return getReceivedPage().getLinkWith(text);</span>
+<span class="fc" id="L588">        return getReceivedPage().getLinkWith(text);</span>
     }
 
     /**
      * Returns the first link which contains an image with the specified text as its 'alt' attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getLinkWithImageText(String text) throws SAXException {
-<span class="fc" id="L611">        return getReceivedPage().getLinkWithImageText(text);</span>
+<span class="fc" id="L599">        return getReceivedPage().getLinkWithImageText(text);</span>
     }
 
     /**
@@ -619,11 +607,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the link with name
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public WebLink getLinkWithName(String name) throws SAXException {
-<span class="fc" id="L626">        return getReceivedPage().getLinkWithName(name);</span>
+<span class="fc" id="L614">        return getReceivedPage().getLinkWithName(name);</span>
     }
 
     /**
@@ -634,66 +622,66 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the link with ID
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public WebLink getLinkWithID(String ID) throws SAXException {
-<span class="fc" id="L641">        return getReceivedPage().getLinkWithID(ID);</span>
+<span class="fc" id="L629">        return getReceivedPage().getLinkWithID(ID);</span>
     }
 
     /**
      * Returns the first link found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink getFirstMatchingLink(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="fc" id="L652">        return getReceivedPage().getFirstMatchingLink(predicate, criteria);</span>
+<span class="fc" id="L640">        return getReceivedPage().getFirstMatchingLink(predicate, criteria);</span>
     }
 
     /**
      * Returns all links found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebLink[] getMatchingLinks(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="fc" id="L663">        return getReceivedPage().getMatchingLinks(predicate, criteria);</span>
+<span class="fc" id="L651">        return getReceivedPage().getMatchingLinks(predicate, criteria);</span>
     }
 
     /**
      * Returns the images found in the page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage[] getImages() throws SAXException {
-<span class="fc" id="L674">        return getReceivedPage().getImages();</span>
+<span class="fc" id="L662">        return getReceivedPage().getImages();</span>
     }
 
     /**
      * Returns the image found in the page with the specified name attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage getImageWithName(String source) throws SAXException {
-<span class="fc" id="L685">        return getReceivedPage().getImageWithName(source);</span>
+<span class="fc" id="L673">        return getReceivedPage().getImageWithName(source);</span>
     }
 
     /**
      * Returns the first image found in the page with the specified src attribute.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebImage getImageWithSource(String source) throws SAXException {
-<span class="fc" id="L696">        return getReceivedPage().getImageWithSource(source);</span>
+<span class="fc" id="L684">        return getReceivedPage().getImageWithSource(source);</span>
     }
 
     /**
@@ -701,12 +689,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     @Override
     public WebImage getImageWithAltText(String altText) throws SAXException {
-<span class="fc" id="L704">        return getReceivedPage().getImageWithAltText(altText);</span>
-    }
-
-    @Override
-    public WebApplet[] getApplets() throws SAXException {
-<span class="fc" id="L709">        return getReceivedPage().getApplets();</span>
+<span class="fc" id="L692">        return getReceivedPage().getImageWithAltText(altText);</span>
     }
 
     /**
@@ -714,7 +697,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public TextBlock[] getTextBlocks() throws SAXException {
-<span class="fc" id="L717">        return getReceivedPage().getTextBlocks();</span>
+<span class="fc" id="L700">        return getReceivedPage().getTextBlocks();</span>
     }
 
     /**
@@ -729,7 +712,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     public TextBlock getNextTextBlock(TextBlock block) throws SAXException {
-<span class="fc" id="L732">        return getReceivedPage().getNextTextBlock(block);</span>
+<span class="fc" id="L715">        return getReceivedPage().getNextTextBlock(block);</span>
     }
 
     /**
@@ -742,11 +725,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the first matching text block
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public TextBlock getFirstMatchingTextBlock(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="fc" id="L749">        return getReceivedPage().getFirstMatchingTextBlock(predicate, criteria);</span>
+<span class="fc" id="L732">        return getReceivedPage().getFirstMatchingTextBlock(predicate, criteria);</span>
     }
 
     /**
@@ -755,29 +738,29 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @return the dom
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      */
     public Document getDOM() throws SAXException {
-<span class="pc bpc" id="L762" title="1 of 2 branches missed.">        if (isHTML()) {</span>
-<span class="fc" id="L763">            return (Document) getReceivedPage().getDOM();</span>
+<span class="pc bpc" id="L745" title="1 of 2 branches missed.">        if (isHTML()) {</span>
+<span class="fc" id="L746">            return (Document) getReceivedPage().getDOM();</span>
         }
         try {
-<span class="nc" id="L766">            return HttpUnitUtils.parse(new InputSource(new StringReader(getText())));</span>
-<span class="nc" id="L767">        } catch (IOException e) {</span>
-<span class="nc" id="L768">            throw new SAXException(e);</span>
+<span class="nc" id="L749">            return HttpUnitUtils.parse(new InputSource(new StringReader(getText())));</span>
+<span class="nc" id="L750">        } catch (IOException e) {</span>
+<span class="nc" id="L751">            throw new SAXException(e);</span>
         }
     }
 
     /**
      * Returns the top-level tables found in this page in the order in which they appear.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebTable[] getTables() throws SAXException {
-<span class="fc" id="L780">        return getReceivedPage().getTables();</span>
+<span class="fc" id="L763">        return getReceivedPage().getTables();</span>
     }
 
     /**
@@ -788,74 +771,74 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      **/
     @Override
     public WebTable getFirstMatchingTable(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="nc" id="L791">        return getReceivedPage().getFirstMatchingTable(predicate, criteria);</span>
+<span class="nc" id="L774">        return getReceivedPage().getFirstMatchingTable(predicate, criteria);</span>
     }
 
     /**
      * Returns all tables found in the page matching the specified criteria.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      **/
     @Override
     public WebTable[] getMatchingTables(HTMLElementPredicate predicate, Object criteria) throws SAXException {
-<span class="nc" id="L802">        return getReceivedPage().getMatchingTables(predicate, criteria);</span>
+<span class="nc" id="L785">        return getReceivedPage().getMatchingTables(predicate, criteria);</span>
     }
 
     /**
      * Returns the first table in the response which has the specified text as the full text of its first non-blank row
      * and non-blank column. Will recurse into any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
     @Override
     public WebTable getTableStartingWith(String text) throws SAXException {
-<span class="fc" id="L816">        return getReceivedPage().getTableStartingWith(text);</span>
+<span class="fc" id="L799">        return getReceivedPage().getTableStartingWith(text);</span>
     }
 
     /**
      * Returns the first table in the response which has the specified text as a prefix of the text of its first
      * non-blank row and non-blank column. Will recurse into any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
     @Override
     public WebTable getTableStartingWithPrefix(String text) throws SAXException {
-<span class="fc" id="L830">        return getReceivedPage().getTableStartingWithPrefix(text);</span>
+<span class="fc" id="L813">        return getReceivedPage().getTableStartingWithPrefix(text);</span>
     }
 
     /**
      * Returns the first table in the response which has the specified text as its summary attribute. Will recurse into
      * any nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
     @Override
     public WebTable getTableWithSummary(String text) throws SAXException {
-<span class="fc" id="L844">        return getReceivedPage().getTableWithSummary(text);</span>
+<span class="fc" id="L827">        return getReceivedPage().getTableWithSummary(text);</span>
     }
 
     /**
      * Returns the first table in the response which has the specified text as its ID attribute. Will recurse into any
      * nested tables, as needed. Case is ignored.
      *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response.
+     * @throws SAXException
+     *             thrown if there is an error parsing the response.
      *
      * @return the selected table, or null if none is found
      **/
     @Override
     public WebTable getTableWithID(String text) throws SAXException {
-<span class="fc" id="L858">        return getReceivedPage().getTableWithID(text);</span>
+<span class="fc" id="L841">        return getReceivedPage().getTableWithID(text);</span>
     }
 
     // ---------------------------------------- JavaScript methods ----------------------------------------
@@ -866,12 +849,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the scriptable object
      */
     public Scriptable getScriptableObject() {
-<span class="fc" id="L869">        ScriptingHandler result = this.getScriptingHandler();</span>
-<span class="pc bpc" id="L870" title="1 of 2 branches missed.">        if (!(result instanceof Scriptable)) {</span>
-<span class="nc" id="L871">            throw new RuntimeException(</span>
-<span class="nc" id="L872">                    &quot;getScriptableObject failed for &quot; + result.getClass().getName() + &quot; - not a Scriptable&quot;);</span>
+<span class="fc" id="L852">        ScriptingHandler result = this.getScriptingHandler();</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">        if (!(result instanceof Scriptable)) {</span>
+<span class="nc" id="L854">            throw new RuntimeException(</span>
+<span class="nc" id="L855">                    &quot;getScriptableObject failed for &quot; + result.getClass().getName() + &quot; - not a Scriptable&quot;);</span>
         }
-<span class="fc" id="L874">        return (Scriptable) result;</span>
+<span class="fc" id="L857">        return (Scriptable) result;</span>
     }
 
     /**
@@ -881,15 +864,15 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new scripting handler
      */
     public void setScriptingHandler(ScriptingHandler scriptingHandler) {
-<span class="nc" id="L884">        _scriptingHandler = scriptingHandler;</span>
-<span class="nc" id="L885">    }</span>
+<span class="nc" id="L867">        _scriptingHandler = scriptingHandler;</span>
+<span class="nc" id="L868">    }</span>
 
     @Override
     public ScriptingHandler getScriptingHandler() {
-<span class="fc bfc" id="L889" title="All 2 branches covered.">        if (_scriptingHandler == null) {</span>
-<span class="fc" id="L890">            _scriptingHandler = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
+<span class="fc bfc" id="L872" title="All 2 branches covered.">        if (_scriptingHandler == null) {</span>
+<span class="fc" id="L873">            _scriptingHandler = HttpUnitOptions.getScriptingEngine().createHandler(this);</span>
         }
-<span class="fc" id="L892">        return _scriptingHandler;</span>
+<span class="fc" id="L875">        return _scriptingHandler;</span>
     }
 
     /**
@@ -898,7 +881,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the scripting handler
      */
     public ScriptingHandler createJavascriptScriptingHandler() {
-<span class="fc" id="L901">        return new Scriptable();</span>
+<span class="fc" id="L884">        return new Scriptable();</span>
     }
 
     /**
@@ -907,18 +890,18 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the DOM scripting handler (the window)
      */
     public ScriptingHandler createDomScriptingHandler() {
-<span class="nc bnc" id="L910" title="All 2 branches missed.">        if (!isHTML()) {</span>
-<span class="nc" id="L911">            return new DomWindow(this);</span>
+<span class="nc bnc" id="L893" title="All 2 branches missed.">        if (!isHTML()) {</span>
+<span class="nc" id="L894">            return new DomWindow(this);</span>
         }
         try {
-<span class="nc" id="L914">            HTMLPage page = this.getReceivedPage();</span>
-<span class="nc" id="L915">            Node rootNode = page.getRootNode();</span>
-<span class="nc" id="L916">            HTMLDocumentImpl document = (HTMLDocumentImpl) rootNode;</span>
-<span class="nc" id="L917">            DomWindow result = document.getWindow();</span>
-<span class="nc" id="L918">            result.setProxy(this);</span>
-<span class="nc" id="L919">            return result;</span>
-<span class="nc" id="L920">        } catch (SAXException e) {</span>
-<span class="nc" id="L921">            return new DomWindow(this);</span>
+<span class="nc" id="L897">            HTMLPage page = this.getReceivedPage();</span>
+<span class="nc" id="L898">            Node rootNode = page.getRootNode();</span>
+<span class="nc" id="L899">            HTMLDocumentImpl document = (HTMLDocumentImpl) rootNode;</span>
+<span class="nc" id="L900">            DomWindow result = document.getWindow();</span>
+<span class="nc" id="L901">            result.setProxy(this);</span>
+<span class="nc" id="L902">            return result;</span>
+<span class="nc" id="L903">        } catch (SAXException e) {</span>
+<span class="nc" id="L904">            return new DomWindow(this);</span>
         }
     }
 
@@ -931,10 +914,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the scriptable delegate
      */
     public static ScriptableDelegate newDelegate(String delegateClassName) {
-<span class="pc bpc" id="L934" title="1 of 2 branches missed.">        if (delegateClassName.equalsIgnoreCase(&quot;Option&quot;)) {</span>
-<span class="fc" id="L935">            return FormControl.newSelectionOption();</span>
+<span class="pc bpc" id="L917" title="1 of 2 branches missed.">        if (delegateClassName.equalsIgnoreCase(&quot;Option&quot;)) {</span>
+<span class="fc" id="L918">            return FormControl.newSelectionOption();</span>
         }
-<span class="nc" id="L937">        throw new IllegalArgumentException(&quot;No such scripting class supported: &quot; + delegateClassName);</span>
+<span class="nc" id="L920">        throw new IllegalArgumentException(&quot;No such scripting class supported: &quot; + delegateClassName);</span>
     }
 
     /**
@@ -943,7 +926,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the document scriptable
      */
     HTMLPage.Scriptable getDocumentScriptable() {
-<span class="fc" id="L946">        return getScriptableObject().getDocument();</span>
+<span class="fc" id="L929">        return getScriptableObject().getDocument();</span>
     }
 
     /**
@@ -958,42 +941,42 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
-<span class="fc bfc" id="L961" title="All 4 branches covered.">        if (relativeUrl == null || relativeUrl.trim().isEmpty()) {</span>
-<span class="fc" id="L962">            relativeUrl = &quot;about:&quot;;</span>
+<span class="fc bfc" id="L944" title="All 4 branches covered.">        if (relativeUrl == null || relativeUrl.trim().isEmpty()) {</span>
+<span class="fc" id="L945">            relativeUrl = &quot;about:&quot;;</span>
         }
-<span class="fc" id="L964">        GetMethodWebRequest request = new GetMethodWebRequest(getURL(), relativeUrl, _frame, name);</span>
-<span class="fc" id="L965">        return _window.getResponse(request);</span>
+<span class="fc" id="L947">        GetMethodWebRequest request = new GetMethodWebRequest(getURL(), relativeUrl, _frame, name);</span>
+<span class="fc" id="L948">        return _window.getResponse(request);</span>
     }
 
     @Override
     public DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
             MessageBody requestBody) throws IOException, SAXException {
-<span class="pc bpc" id="L971" title="1 of 2 branches missed.">        if (method.equalsIgnoreCase(&quot;get&quot;)) {</span>
-<span class="fc" id="L972">            return getWindow().sendRequest(new GetMethodWebRequest(this, sourceElement, getURL(), location, target));</span>
+<span class="pc bpc" id="L954" title="1 of 2 branches missed.">        if (method.equalsIgnoreCase(&quot;get&quot;)) {</span>
+<span class="fc" id="L955">            return getWindow().sendRequest(new GetMethodWebRequest(this, sourceElement, getURL(), location, target));</span>
         }
-<span class="nc" id="L974">        return null;</span>
+<span class="nc" id="L957">        return null;</span>
     }
 
     @Override
     public void close() {
-<span class="pc bpc" id="L979" title="1 of 2 branches missed.">        if (getFrameName().equals(WebRequest.TOP_FRAME)) {</span>
-<span class="fc" id="L980">            _window.close();</span>
+<span class="pc bpc" id="L962" title="1 of 2 branches missed.">        if (getFrameName().equals(WebRequest.TOP_FRAME)) {</span>
+<span class="fc" id="L963">            _window.close();</span>
         }
-<span class="fc" id="L982">    }</span>
+<span class="fc" id="L965">    }</span>
 
     @Override
     public void alert(String message) {
-<span class="fc" id="L986">        _client.postAlert(message);</span>
-<span class="fc" id="L987">    }</span>
+<span class="fc" id="L969">        _client.postAlert(message);</span>
+<span class="fc" id="L970">    }</span>
 
     @Override
     public boolean confirm(String message) {
-<span class="fc" id="L991">        return _client.getConfirmationResponse(message);</span>
+<span class="fc" id="L974">        return _client.getConfirmationResponse(message);</span>
     }
 
     @Override
     public String prompt(String prompt, String defaultResponse) {
-<span class="fc" id="L996">        return _client.getUserResponse(prompt, defaultResponse);</span>
+<span class="fc" id="L979">        return _client.getUserResponse(prompt, defaultResponse);</span>
     }
 
     /**
@@ -1002,13 +985,13 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the base target
      */
     String getBaseTarget() {
-<span class="fc" id="L1005">        return _baseTarget;</span>
+<span class="fc" id="L988">        return _baseTarget;</span>
     }
 
     /**
      * The Class Scriptable.
      */
-<span class="fc" id="L1011">    public class Scriptable extends ScriptableDelegate implements NamedDelegate {</span>
+<span class="fc" id="L994">    public class Scriptable extends ScriptableDelegate implements NamedDelegate {</span>
 
         /**
          * Alert user.
@@ -1017,8 +1000,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *            the message
          */
         public void alertUser(String message) {
-<span class="fc" id="L1020">            alert(message);</span>
-<span class="fc" id="L1021">        }</span>
+<span class="fc" id="L1003">            alert(message);</span>
+<span class="fc" id="L1004">        }</span>
 
         /**
          * Gets the confirmation response.
@@ -1029,7 +1012,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the confirmation response
          */
         public boolean getConfirmationResponse(String message) {
-<span class="fc" id="L1032">            return confirm(message);</span>
+<span class="fc" id="L1015">            return confirm(message);</span>
         }
 
         /**
@@ -1043,7 +1026,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the user response
          */
         public String getUserResponse(String prompt, String defaultResponse) {
-<span class="fc" id="L1046">            return prompt(prompt, defaultResponse);</span>
+<span class="fc" id="L1029">            return prompt(prompt, defaultResponse);</span>
         }
 
         /**
@@ -1052,7 +1035,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the client properties
          */
         public ClientProperties getClientProperties() {
-<span class="fc bfc" id="L1055" title="All 2 branches covered.">            return _client == null ? ClientProperties.getDefaultProperties() : _client.getClientProperties();</span>
+<span class="fc bfc" id="L1038" title="All 2 branches covered.">            return _client == null ? ClientProperties.getDefaultProperties() : _client.getClientProperties();</span>
         }
 
         /**
@@ -1062,12 +1045,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          */
         public HTMLPage.Scriptable getDocument() {
             try {
-<span class="fc bfc" id="L1065" title="All 2 branches covered.">                if (!isHTML()) {</span>
-<span class="fc" id="L1066">                    replaceText(BLANK_HTML, HTML_CONTENT);</span>
+<span class="fc bfc" id="L1048" title="All 2 branches covered.">                if (!isHTML()) {</span>
+<span class="fc" id="L1049">                    replaceText(BLANK_HTML, HTML_CONTENT);</span>
                 }
-<span class="fc" id="L1068">                return getReceivedPage().getScriptableObject();</span>
-<span class="nc" id="L1069">            } catch (SAXException e) {</span>
-<span class="nc" id="L1070">                throw new RuntimeException(e.toString());</span>
+<span class="fc" id="L1051">                return getReceivedPage().getScriptableObject();</span>
+<span class="nc" id="L1052">            } catch (SAXException e) {</span>
+<span class="nc" id="L1053">                throw new RuntimeException(e.toString());</span>
             }
         }
 
@@ -1080,12 +1063,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *             the SAX exception
          */
         public Scriptable[] getFrames() throws SAXException {
-<span class="fc" id="L1083">            String[] names = getFrameNames();</span>
-<span class="fc" id="L1084">            Scriptable[] frames = new Scriptable[names.length];</span>
-<span class="fc bfc" id="L1085" title="All 2 branches covered.">            for (int i = 0; i &lt; frames.length; i++) {</span>
-<span class="fc" id="L1086">                frames[i] = getSubframeContents(names[i]).getScriptableObject();</span>
+<span class="fc" id="L1066">            String[] names = getFrameNames();</span>
+<span class="fc" id="L1067">            Scriptable[] frames = new Scriptable[names.length];</span>
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">            for (int i = 0; i &lt; frames.length; i++) {</span>
+<span class="fc" id="L1069">                frames[i] = getSubframeContents(names[i]).getScriptableObject();</span>
             }
-<span class="fc" id="L1088">            return frames;</span>
+<span class="fc" id="L1071">            return frames;</span>
         }
 
         /**
@@ -1095,11 +1078,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *             the SAX exception
          */
         public void load() throws SAXException {
-<span class="pc bpc" id="L1098" title="1 of 4 branches missed.">            if (isHTML() &amp;&amp; isWithParse()) {</span>
-<span class="fc" id="L1099">                getReceivedPage().getForms(); // TODO be more explicit here - don't care about forms, after all</span>
-<span class="fc" id="L1100">                doEventScript(getReceivedPage().getOnLoadEvent());</span>
+<span class="pc bpc" id="L1081" title="1 of 4 branches missed.">            if (isHTML() &amp;&amp; isWithParse()) {</span>
+<span class="fc" id="L1082">                getReceivedPage().getForms(); // TODO be more explicit here - don't care about forms, after all</span>
+<span class="fc" id="L1083">                doEventScript(getReceivedPage().getOnLoadEvent());</span>
             }
-<span class="fc" id="L1102">        }</span>
+<span class="fc" id="L1085">        }</span>
 
         /**
          * Open.
@@ -1122,48 +1105,48 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          */
         public Scriptable open(String urlString, String name, String features, boolean replace)
                 throws IOException, SAXException {
-<span class="fc" id="L1125">            WebResponse response = (WebResponse) openNewWindow(name, urlString);</span>
-<span class="fc bfc" id="L1126" title="All 2 branches covered.">            return response == null ? null : response.getScriptableObject();</span>
+<span class="fc" id="L1108">            WebResponse response = (WebResponse) openNewWindow(name, urlString);</span>
+<span class="fc bfc" id="L1109" title="All 2 branches covered.">            return response == null ? null : response.getScriptableObject();</span>
         }
 
         /**
          * Close window.
          */
         public void closeWindow() {
-<span class="fc" id="L1133">            close();</span>
-<span class="fc" id="L1134">        }</span>
+<span class="fc" id="L1116">            close();</span>
+<span class="fc" id="L1117">        }</span>
 
         /**
          * Returns the value of the named property. Will return null if the property does not exist.
          **/
         @Override
         public Object get(String propertyName) {
-<span class="fc bfc" id="L1141" title="All 2 branches covered.">            if (propertyName.equals(&quot;name&quot;)) {</span>
-<span class="fc" id="L1142">                return getName();</span>
+<span class="fc bfc" id="L1124" title="All 2 branches covered.">            if (propertyName.equals(&quot;name&quot;)) {</span>
+<span class="fc" id="L1125">                return getName();</span>
             }
-<span class="fc bfc" id="L1144" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;top&quot;)) {</span>
-<span class="fc" id="L1145">                return _window.getFrameContents(WebRequest.TOP_FRAME).getScriptableObject();</span>
+<span class="fc bfc" id="L1127" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;top&quot;)) {</span>
+<span class="fc" id="L1128">                return _window.getFrameContents(WebRequest.TOP_FRAME).getScriptableObject();</span>
             }
-<span class="fc bfc" id="L1147" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;parent&quot;)) {</span>
-<span class="fc" id="L1148">                return _window.getParentFrameContents(_frame).getScriptableObject();</span>
+<span class="fc bfc" id="L1130" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;parent&quot;)) {</span>
+<span class="fc" id="L1131">                return _window.getParentFrameContents(_frame).getScriptableObject();</span>
             }
-<span class="fc bfc" id="L1150" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;opener&quot;)) {</span>
-<span class="pc bpc" id="L1151" title="1 of 2 branches missed.">                return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;</span>
+<span class="fc bfc" id="L1133" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;opener&quot;)) {</span>
+<span class="pc bpc" id="L1134" title="1 of 2 branches missed.">                return getFrameName().equals(WebRequest.TOP_FRAME) ? getScriptable(_window.getOpener()) : null;</span>
             }
-<span class="fc bfc" id="L1153" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;closed&quot;)) {</span>
-<span class="pc bpc" id="L1154" title="1 of 4 branches missed.">                return getFrameName().equals(WebRequest.TOP_FRAME) &amp;&amp; _window.isClosed() ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc bfc" id="L1136" title="All 2 branches covered.">            if (propertyName.equalsIgnoreCase(&quot;closed&quot;)) {</span>
+<span class="pc bpc" id="L1137" title="1 of 4 branches missed.">                return getFrameName().equals(WebRequest.TOP_FRAME) &amp;&amp; _window.isClosed() ? Boolean.TRUE : Boolean.FALSE;</span>
             }
             try {
-<span class="fc" id="L1157">                return getSubframeContents(propertyName).getScriptableObject();</span>
-<span class="fc" id="L1158">            } catch (NoSuchFrameException e) {</span>
-<span class="fc" id="L1159">                return super.get(propertyName);</span>
+<span class="fc" id="L1140">                return getSubframeContents(propertyName).getScriptableObject();</span>
+<span class="fc" id="L1141">            } catch (NoSuchFrameException e) {</span>
+<span class="fc" id="L1142">                return super.get(propertyName);</span>
             }
         }
 
         @Override
         public String getName() {
-<span class="fc bfc" id="L1165" title="All 2 branches covered.">            String windowName = getFrameName().equals(WebRequest.TOP_FRAME) ? _window.getName() : getFrameName();</span>
-<span class="fc bfc" id="L1166" title="All 2 branches covered.">            return windowName.startsWith(WebWindow.NO_NAME) ? &quot;&quot; : windowName;</span>
+<span class="fc bfc" id="L1148" title="All 2 branches covered.">            String windowName = getFrameName().equals(WebRequest.TOP_FRAME) ? _window.getName() : getFrameName();</span>
+<span class="fc bfc" id="L1149" title="All 2 branches covered.">            return windowName.startsWith(WebWindow.NO_NAME) ? &quot;&quot; : windowName;</span>
         }
 
         /**
@@ -1175,7 +1158,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the scriptable
          */
         private Scriptable getScriptable(WebResponse opener) {
-<span class="fc bfc" id="L1178" title="All 2 branches covered.">            return opener == null ? null : opener.getScriptableObject();</span>
+<span class="fc bfc" id="L1161" title="All 2 branches covered.">            return opener == null ? null : opener.getScriptableObject();</span>
         }
 
         /**
@@ -1184,17 +1167,17 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          **/
         @Override
         public void set(String propertyName, Object value) {
-<span class="pc bpc" id="L1187" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;name&quot;)) {</span>
-<span class="pc bpc" id="L1188" title="1 of 2 branches missed.">                if (value == null) {</span>
-<span class="nc" id="L1189">                    value = &quot;&quot;;</span>
+<span class="pc bpc" id="L1170" title="1 of 2 branches missed.">            if (propertyName.equals(&quot;name&quot;)) {</span>
+<span class="pc bpc" id="L1171" title="1 of 2 branches missed.">                if (value == null) {</span>
+<span class="nc" id="L1172">                    value = &quot;&quot;;</span>
                 }
-<span class="pc bpc" id="L1191" title="1 of 2 branches missed.">                if (getFrameName().equals(WebRequest.TOP_FRAME)) {</span>
-<span class="fc" id="L1192">                    _window.setName(value.toString());</span>
+<span class="pc bpc" id="L1174" title="1 of 2 branches missed.">                if (getFrameName().equals(WebRequest.TOP_FRAME)) {</span>
+<span class="fc" id="L1175">                    _window.setName(value.toString());</span>
                 }
             } else {
-<span class="nc" id="L1195">                super.set(propertyName, value);</span>
+<span class="nc" id="L1178">                super.set(propertyName, value);</span>
             }
-<span class="fc" id="L1197">        }</span>
+<span class="fc" id="L1180">        }</span>
 
         /**
          * Sets the location.
@@ -1208,8 +1191,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *             the SAX exception
          */
         public void setLocation(String relativeURL) throws IOException, SAXException {
-<span class="fc" id="L1211">            getWindow().getResponse(new GetMethodWebRequest(_pageURL, relativeURL, _frame.getName()));</span>
-<span class="fc" id="L1212">        }</span>
+<span class="fc" id="L1194">            getWindow().getResponse(new GetMethodWebRequest(_pageURL, relativeURL, _frame.getName()));</span>
+<span class="fc" id="L1195">        }</span>
 
         /**
          * Gets the url.
@@ -1217,7 +1200,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the url
          */
         public URL getURL() {
-<span class="fc" id="L1220">            return WebResponse.this._pageURL;</span>
+<span class="fc" id="L1203">            return WebResponse.this._pageURL;</span>
         }
     }
 
@@ -1238,17 +1221,17 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @param url
      *            the url from which the response was received
      */
-<span class="fc" id="L1241">    protected WebResponse(WebClient client, FrameSelector frame, URL url) {</span>
-<span class="fc" id="L1242">        _client = client;</span>
-<span class="fc" id="L1243">        _baseURL = _pageURL = url;</span>
-<span class="fc" id="L1244">        _baseTarget = frame.getName();</span>
-<span class="fc" id="L1245">        _frame = frame;</span>
+<span class="fc" id="L1224">    protected WebResponse(WebClient client, FrameSelector frame, URL url) {</span>
+<span class="fc" id="L1225">        _client = client;</span>
+<span class="fc" id="L1226">        _baseURL = _pageURL = url;</span>
+<span class="fc" id="L1227">        _baseTarget = frame.getName();</span>
+<span class="fc" id="L1228">        _frame = frame;</span>
         // intialize window for interception as described in
         // https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1159844&amp;group_id=6550&amp;atid=356550
-<span class="fc bfc" id="L1248" title="All 2 branches covered.">        if (client != null) {</span>
-<span class="fc" id="L1249">            _window = client.getMainWindow();</span>
+<span class="fc bfc" id="L1231" title="All 2 branches covered.">        if (client != null) {</span>
+<span class="fc" id="L1232">            _window = client.getMainWindow();</span>
         }
-<span class="fc" id="L1251">    }</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Constructs a response object.
@@ -1263,9 +1246,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the text
      */
     protected WebResponse(WebClient client, FrameSelector frame, URL url, String text) {
-<span class="fc" id="L1266">        this(client, frame, url);</span>
-<span class="fc" id="L1267">        _responseText = text;</span>
-<span class="fc" id="L1268">    }</span>
+<span class="fc" id="L1249">        this(client, frame, url);</span>
+<span class="fc" id="L1250">        _responseText = text;</span>
+<span class="fc" id="L1251">    }</span>
 
     /**
      * Define raw input stream.
@@ -1277,8 +1260,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     protected final void defineRawInputStream(InputStream inputStream) throws IOException {
-<span class="pc bpc" id="L1280" title="2 of 4 branches missed.">        if (_inputStream != null || _responseText != null) {</span>
-<span class="nc" id="L1281">            throw new IllegalStateException(&quot;Must be called before response text is defined.&quot;);</span>
+<span class="pc bpc" id="L1263" title="2 of 4 branches missed.">        if (_inputStream != null || _responseText != null) {</span>
+<span class="nc" id="L1264">            throw new IllegalStateException(&quot;Must be called before response text is defined.&quot;);</span>
         }
 
         // please note bug report [ 1119205 ] EOFExceptions while using a Proxy
@@ -1290,16 +1273,16 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * else { _inputStream = inputStream; }
          */
 
-<span class="fc bfc" id="L1293" title="All 2 branches covered.">        if (encodedUsingGZIP()) {</span>
+<span class="fc bfc" id="L1276" title="All 2 branches covered.">        if (encodedUsingGZIP()) {</span>
             try {
-<span class="fc" id="L1295">                _inputStream = new GZIPInputStream(inputStream);</span>
-<span class="nc" id="L1296">            } catch (EOFException eof) {</span>
-<span class="nc" id="L1297">                _inputStream = inputStream;</span>
-<span class="pc" id="L1298">            }</span>
+<span class="fc" id="L1278">                _inputStream = new GZIPInputStream(inputStream);</span>
+<span class="nc" id="L1279">            } catch (EOFException eof) {</span>
+<span class="nc" id="L1280">                _inputStream = inputStream;</span>
+<span class="pc" id="L1281">            }</span>
         } else {
-<span class="fc" id="L1300">            _inputStream = inputStream;</span>
+<span class="fc" id="L1283">            _inputStream = inputStream;</span>
         }
-<span class="fc" id="L1302">    }</span>
+<span class="fc" id="L1285">    }</span>
 
     /**
      * Encoded using GZIP.
@@ -1307,8 +1290,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return true, if successful
      */
     private boolean encodedUsingGZIP() {
-<span class="fc" id="L1310">        String encoding = getHeaderField(&quot;Content-Encoding&quot;);</span>
-<span class="pc bpc" id="L1311" title="1 of 4 branches missed.">        return encoding != null &amp;&amp; encoding.indexOf(&quot;gzip&quot;) &gt;= 0;</span>
+<span class="fc" id="L1293">        String encoding = getHeaderField(&quot;Content-Encoding&quot;);</span>
+<span class="pc bpc" id="L1294" title="1 of 4 branches missed.">        return encoding != null &amp;&amp; encoding.indexOf(&quot;gzip&quot;) &gt;= 0;</span>
     }
 
     /**
@@ -1318,8 +1301,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new content type header
      */
     protected void setContentTypeHeader(String value) {
-<span class="fc" id="L1321">        _contentHeader = value;</span>
-<span class="fc" id="L1322">    }</span>
+<span class="fc" id="L1304">        _contentHeader = value;</span>
+<span class="fc" id="L1305">    }</span>
 
     // ------------------------------------------ package members ------------------------------------------------
 
@@ -1332,7 +1315,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the web response
      */
     static WebResponse createBlankResponse() {
-<span class="fc" id="L1335">        return new DefaultWebResponse(BLANK_HTML);</span>
+<span class="fc" id="L1318">        return new DefaultWebResponse(BLANK_HTML);</span>
     }
 
     /**
@@ -1341,7 +1324,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the window
      */
     WebWindow getWindow() {
-<span class="fc" id="L1344">        return _window;</span>
+<span class="fc" id="L1327">        return _window;</span>
     }
 
     /**
@@ -1351,8 +1334,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new window
      */
     void setWindow(WebWindow window) {
-<span class="fc" id="L1354">        _window = window;</span>
-<span class="fc" id="L1355">    }</span>
+<span class="fc" id="L1337">        _window = window;</span>
+<span class="fc" id="L1338">    }</span>
 
     /**
      * replace the given text
@@ -1364,23 +1347,23 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     @Override
     public boolean replaceText(String text, String contentType) {
-<span class="fc bfc" id="L1367" title="All 2 branches covered.">        if (_parsingPage) {</span>
-<span class="fc" id="L1368">            return false;</span>
+<span class="fc bfc" id="L1350" title="All 2 branches covered.">        if (_parsingPage) {</span>
+<span class="fc" id="L1351">            return false;</span>
         }
-<span class="fc" id="L1370">        _responseText = text;</span>
-<span class="fc" id="L1371">        _inputStream = null;</span>
-<span class="fc" id="L1372">        _page = null;</span>
-<span class="fc" id="L1373">        _contentType = contentType;</span>
-<span class="fc" id="L1374">        _baseURL = null;</span>
-<span class="fc" id="L1375">        _baseTarget = _frame.getName();</span>
-<span class="fc" id="L1376">        _refreshHeader = null;</span>
+<span class="fc" id="L1353">        _responseText = text;</span>
+<span class="fc" id="L1354">        _inputStream = null;</span>
+<span class="fc" id="L1355">        _page = null;</span>
+<span class="fc" id="L1356">        _contentType = contentType;</span>
+<span class="fc" id="L1357">        _baseURL = null;</span>
+<span class="fc" id="L1358">        _baseTarget = _frame.getName();</span>
+<span class="fc" id="L1359">        _refreshHeader = null;</span>
 
         try {
-<span class="fc" id="L1379">            readTags(text.getBytes(StandardCharsets.UTF_8));</span>
-<span class="nc" id="L1380">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L1381">            throw new RuntimeException(&quot;Failure while attempting to reparse text: &quot; + e);</span>
-<span class="fc" id="L1382">        }</span>
-<span class="fc" id="L1383">        return true;</span>
+<span class="fc" id="L1362">            readTags(text.getBytes(StandardCharsets.UTF_8));</span>
+<span class="nc" id="L1363">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L1364">            throw new RuntimeException(&quot;Failure while attempting to reparse text: &quot; + e);</span>
+<span class="fc" id="L1365">        }</span>
+<span class="fc" id="L1366">        return true;</span>
     }
 
     /**
@@ -1392,15 +1375,15 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     WebRequest[] getFrameRequests() throws SAXException {
-<span class="fc" id="L1395">        WebFrame[] frames = getFrames();</span>
-<span class="fc" id="L1396">        List&lt;WebRequest&gt; requests = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L1397" title="All 2 branches covered.">        for (WebFrame frame : frames) {</span>
-<span class="fc bfc" id="L1398" title="All 2 branches covered.">            if (frame.hasInitialRequest()) {</span>
-<span class="fc" id="L1399">                requests.add(frame.getInitialRequest());</span>
+<span class="fc" id="L1378">        WebFrame[] frames = getFrames();</span>
+<span class="fc" id="L1379">        List&lt;WebRequest&gt; requests = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L1380" title="All 2 branches covered.">        for (WebFrame frame : frames) {</span>
+<span class="fc bfc" id="L1381" title="All 2 branches covered.">            if (frame.hasInitialRequest()) {</span>
+<span class="fc" id="L1382">                requests.add(frame.getInitialRequest());</span>
             }
         }
 
-<span class="fc" id="L1403">        return requests.toArray(new WebRequest[requests.size()]);</span>
+<span class="fc" id="L1386">        return requests.toArray(new WebRequest[requests.size()]);</span>
     }
 
     // --------------------------------- private members --------------------------------------
@@ -1415,7 +1398,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     private String _contentHeader;
 
     /** The content length. */
-<span class="fc" id="L1418">    private int _contentLength = UNINITIALIZED_INT;</span>
+<span class="fc" id="L1401">    private int _contentLength = UNINITIALIZED_INT;</span>
 
     /** The content type. */
     private String _contentType;
@@ -1427,7 +1410,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     private WebRequest _refreshRequest;
 
     /** The refresh delay. */
-<span class="fc" id="L1430">    private int _refreshDelay = -1; // initialized to invalid value</span>
+<span class="fc" id="L1413">    private int _refreshDelay = -1; // initialized to invalid value</span>
 
     /** the response as a String. */
     private String _responseText;
@@ -1450,7 +1433,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the web client for this WebResponse (if any)
      */
     public WebClient getClient() {
-<span class="nc" id="L1453">        return _client;</span>
+<span class="nc" id="L1436">        return _client;</span>
     }
 
     /** The scripting handler. */
@@ -1463,26 +1446,26 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     protected void loadResponseText() throws IOException {
-<span class="pc bpc" id="L1466" title="1 of 2 branches missed.">        if (_responseText != null) {</span>
-<span class="nc" id="L1467">            throw new IllegalStateException(&quot;May only invoke loadResponseText once&quot;);</span>
+<span class="pc bpc" id="L1449" title="1 of 2 branches missed.">        if (_responseText != null) {</span>
+<span class="nc" id="L1450">            throw new IllegalStateException(&quot;May only invoke loadResponseText once&quot;);</span>
         }
-<span class="fc" id="L1469">        _responseText = &quot;&quot;;</span>
+<span class="fc" id="L1452">        _responseText = &quot;&quot;;</span>
 
-<span class="fc" id="L1471">        try (InputStream inputStream = getInputStream()) {</span>
-<span class="fc bfc" id="L1472" title="All 2 branches covered.">            final int contentLength = this.encodedUsingGZIP() ? -1 : getContentLength();</span>
-<span class="fc bfc" id="L1473" title="All 2 branches covered.">            int bytesRemaining = contentLength &lt; 0 ? Integer.MAX_VALUE : contentLength;</span>
-<span class="fc" id="L1474">            _bytes = readFromStream(inputStream, bytesRemaining);</span>
+<span class="fc" id="L1454">        try (InputStream inputStream = getInputStream()) {</span>
+<span class="fc bfc" id="L1455" title="All 2 branches covered.">            final int contentLength = this.encodedUsingGZIP() ? -1 : getContentLength();</span>
+<span class="fc bfc" id="L1456" title="All 2 branches covered.">            int bytesRemaining = contentLength &lt; 0 ? Integer.MAX_VALUE : contentLength;</span>
+<span class="fc" id="L1457">            _bytes = readFromStream(inputStream, bytesRemaining);</span>
 
-<span class="fc" id="L1476">            readTags(_bytes);</span>
-<span class="fc" id="L1477">            _responseText = new String(_bytes, Charset.forName(getCharacterSet()));</span>
-<span class="fc" id="L1478">            _inputStream = new ByteArrayInputStream(_bytes);</span>
+<span class="fc" id="L1459">            readTags(_bytes);</span>
+<span class="fc" id="L1460">            _responseText = new String(_bytes, Charset.forName(getCharacterSet()));</span>
+<span class="fc" id="L1461">            _inputStream = new ByteArrayInputStream(_bytes);</span>
 
-<span class="pc bpc" id="L1480" title="5 of 6 branches missed.">            if (HttpUnitOptions.isCheckContentLength() &amp;&amp; contentLength &gt;= 0 &amp;&amp; _bytes.length != contentLength) {</span>
-<span class="nc" id="L1481">                throw new IOException(</span>
+<span class="pc bpc" id="L1463" title="5 of 6 branches missed.">            if (HttpUnitOptions.isCheckContentLength() &amp;&amp; contentLength &gt;= 0 &amp;&amp; _bytes.length != contentLength) {</span>
+<span class="nc" id="L1464">                throw new IOException(</span>
                         &quot;Truncated message. Expected length: &quot; + contentLength + &quot;, Actual length: &quot; + _bytes.length);
             }
         }
-<span class="fc" id="L1485">    }</span>
+<span class="fc" id="L1468">    }</span>
 
     /**
      * Read from stream.
@@ -1498,27 +1481,27 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     private byte[] readFromStream(InputStream inputStream, int maxBytes) throws IOException {
-<span class="fc" id="L1501">        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</span>
-<span class="fc" id="L1502">        byte[] buffer = new byte[8 * 1024];</span>
-<span class="fc" id="L1503">        int count = 0;</span>
-<span class="fc bfc" id="L1504" title="All 2 branches covered.">        if (maxBytes &gt; 0) {</span>
+<span class="fc" id="L1484">        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</span>
+<span class="fc" id="L1485">        byte[] buffer = new byte[8 * 1024];</span>
+<span class="fc" id="L1486">        int count = 0;</span>
+<span class="fc bfc" id="L1487" title="All 2 branches covered.">        if (maxBytes &gt; 0) {</span>
             do {
-<span class="fc" id="L1506">                outputStream.write(buffer, 0, count);</span>
-<span class="fc" id="L1507">                maxBytes -= count;</span>
-<span class="fc bfc" id="L1508" title="All 2 branches covered.">                if (maxBytes &lt;= 0) {</span>
-<span class="fc" id="L1509">                    break;</span>
+<span class="fc" id="L1489">                outputStream.write(buffer, 0, count);</span>
+<span class="fc" id="L1490">                maxBytes -= count;</span>
+<span class="fc bfc" id="L1491" title="All 2 branches covered.">                if (maxBytes &lt;= 0) {</span>
+<span class="fc" id="L1492">                    break;</span>
                 }
-<span class="fc" id="L1511">                count = inputStream.read(buffer, 0, Math.min(maxBytes, buffer.length));</span>
-<span class="fc bfc" id="L1512" title="All 2 branches covered.">            } while (count != -1);</span>
+<span class="fc" id="L1494">                count = inputStream.read(buffer, 0, Math.min(maxBytes, buffer.length));</span>
+<span class="fc bfc" id="L1495" title="All 2 branches covered.">            } while (count != -1);</span>
         } else {
             do {
-<span class="fc" id="L1515">                outputStream.write(buffer, 0, count);</span>
-<span class="fc" id="L1516">                int available = getAvailableBytes(inputStream);</span>
-<span class="pc bpc" id="L1517" title="1 of 2 branches missed.">                count = available == 0 ? -1 : inputStream.read(buffer, 0, buffer.length);</span>
-<span class="pc bpc" id="L1518" title="1 of 2 branches missed.">            } while (count != -1);</span>
+<span class="fc" id="L1498">                outputStream.write(buffer, 0, count);</span>
+<span class="fc" id="L1499">                int available = getAvailableBytes(inputStream);</span>
+<span class="pc bpc" id="L1500" title="1 of 2 branches missed.">                count = available == 0 ? -1 : inputStream.read(buffer, 0, buffer.length);</span>
+<span class="pc bpc" id="L1501" title="1 of 2 branches missed.">            } while (count != -1);</span>
         }
 
-<span class="fc" id="L1521">        return outputStream.toByteArray();</span>
+<span class="fc" id="L1504">        return outputStream.toByteArray();</span>
     }
 
     /**
@@ -1533,19 +1516,19 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             Signals that an I/O exception has occurred.
      */
     private int getAvailableBytes(InputStream inputStream) throws IOException {
-<span class="fc" id="L1536">        int timeLeft = UNKNOWN_LENGTH_TIMEOUT;</span>
+<span class="fc" id="L1519">        int timeLeft = UNKNOWN_LENGTH_TIMEOUT;</span>
         int available;
         do {
-<span class="fc" id="L1539">            timeLeft -= UNKNOWN_LENGTH_RETRY_INTERVAL;</span>
+<span class="fc" id="L1522">            timeLeft -= UNKNOWN_LENGTH_RETRY_INTERVAL;</span>
             try {
-<span class="fc" id="L1541">                Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);</span>
-<span class="nc" id="L1542">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L1543">                Thread.interrupted();</span>
+<span class="fc" id="L1524">                Thread.sleep(UNKNOWN_LENGTH_RETRY_INTERVAL);</span>
+<span class="nc" id="L1525">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L1526">                Thread.interrupted();</span>
                 /* do nothing */
-<span class="fc" id="L1545">            }</span>
-<span class="fc" id="L1546">            available = inputStream.available();</span>
-<span class="pc bpc" id="L1547" title="1 of 4 branches missed.">        } while (available == 0 &amp;&amp; timeLeft &gt; 0);</span>
-<span class="fc" id="L1548">        return available;</span>
+<span class="fc" id="L1528">            }</span>
+<span class="fc" id="L1529">            available = inputStream.available();</span>
+<span class="pc bpc" id="L1530" title="1 of 4 branches missed.">        } while (available == 0 &amp;&amp; timeLeft &gt; 0);</span>
+<span class="fc" id="L1531">        return available;</span>
     }
 
     /**
@@ -1558,24 +1541,24 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the malformed URL exception
      */
     private void readTags(byte[] rawMessage) throws MalformedURLException {
-<span class="fc" id="L1561">        ByteTagParser parser = new ByteTagParser(rawMessage);</span>
-<span class="fc" id="L1562">        ByteTag tag = parser.getNextTag();</span>
-<span class="fc bfc" id="L1563" title="All 2 branches covered.">        while (tag != null) {</span>
-<span class="fc bfc" id="L1564" title="All 2 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;meta&quot;)) {</span>
-<span class="fc" id="L1565">                processMetaTag(tag);</span>
+<span class="fc" id="L1544">        ByteTagParser parser = new ByteTagParser(rawMessage);</span>
+<span class="fc" id="L1545">        ByteTag tag = parser.getNextTag();</span>
+<span class="fc bfc" id="L1546" title="All 2 branches covered.">        while (tag != null) {</span>
+<span class="fc bfc" id="L1547" title="All 2 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;meta&quot;)) {</span>
+<span class="fc" id="L1548">                processMetaTag(tag);</span>
             }
-<span class="fc bfc" id="L1567" title="All 2 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;base&quot;)) {</span>
-<span class="fc" id="L1568">                processBaseTag(tag);</span>
+<span class="fc bfc" id="L1550" title="All 2 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;base&quot;)) {</span>
+<span class="fc" id="L1551">                processBaseTag(tag);</span>
             }
             // loop over a noscript region
-<span class="fc bfc" id="L1571" title="All 4 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;noscript&quot;) &amp;&amp; HttpUnitOptions.isScriptingEnabled()) {</span>
+<span class="fc bfc" id="L1554" title="All 4 branches covered.">            if (tag.getName().equalsIgnoreCase(&quot;noscript&quot;) &amp;&amp; HttpUnitOptions.isScriptingEnabled()) {</span>
                 do {
-<span class="fc" id="L1573">                    tag = parser.getNextTag();</span>
-<span class="fc bfc" id="L1574" title="All 2 branches covered.">                } while (!tag.getName().equalsIgnoreCase(&quot;/noscript&quot;));</span>
+<span class="fc" id="L1556">                    tag = parser.getNextTag();</span>
+<span class="fc bfc" id="L1557" title="All 2 branches covered.">                } while (!tag.getName().equalsIgnoreCase(&quot;/noscript&quot;));</span>
             }
-<span class="fc" id="L1576">            tag = parser.getNextTag();</span>
+<span class="fc" id="L1559">            tag = parser.getNextTag();</span>
         }
-<span class="fc" id="L1578">    }</span>
+<span class="fc" id="L1561">    }</span>
 
     /**
      * Process base tag.
@@ -1587,13 +1570,13 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the malformed URL exception
      */
     private void processBaseTag(ByteTag tag) throws MalformedURLException {
-<span class="fc bfc" id="L1590" title="All 2 branches covered.">        if (tag.getAttribute(&quot;href&quot;) != null) {</span>
-<span class="fc" id="L1591">            _baseURL = new URL(getURL(), tag.getAttribute(&quot;href&quot;));</span>
+<span class="fc bfc" id="L1573" title="All 2 branches covered.">        if (tag.getAttribute(&quot;href&quot;) != null) {</span>
+<span class="fc" id="L1574">            _baseURL = new URL(getURL(), tag.getAttribute(&quot;href&quot;));</span>
         }
-<span class="fc bfc" id="L1593" title="All 2 branches covered.">        if (tag.getAttribute(&quot;target&quot;) != null) {</span>
-<span class="fc" id="L1594">            _baseTarget = tag.getAttribute(&quot;target&quot;);</span>
+<span class="fc bfc" id="L1576" title="All 2 branches covered.">        if (tag.getAttribute(&quot;target&quot;) != null) {</span>
+<span class="fc" id="L1577">            _baseTarget = tag.getAttribute(&quot;target&quot;);</span>
         }
-<span class="fc" id="L1596">    }</span>
+<span class="fc" id="L1579">    }</span>
 
     /**
      * process MetaTags based on the tag.
@@ -1602,12 +1585,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the tag
      */
     private void processMetaTag(ByteTag tag) {
-<span class="fc bfc" id="L1605" title="All 2 branches covered.">        if (isHttpEquivMetaTag(tag, &quot;content-type&quot;)) {</span>
-<span class="fc" id="L1606">            inferContentType(tag.getAttribute(&quot;content&quot;));</span>
-<span class="fc bfc" id="L1607" title="All 2 branches covered.">        } else if (isHttpEquivMetaTag(tag, &quot;refresh&quot;)) {</span>
-<span class="fc" id="L1608">            inferRefreshHeader(tag.getAttribute(&quot;content&quot;));</span>
+<span class="fc bfc" id="L1588" title="All 2 branches covered.">        if (isHttpEquivMetaTag(tag, &quot;content-type&quot;)) {</span>
+<span class="fc" id="L1589">            inferContentType(tag.getAttribute(&quot;content&quot;));</span>
+<span class="fc bfc" id="L1590" title="All 2 branches covered.">        } else if (isHttpEquivMetaTag(tag, &quot;refresh&quot;)) {</span>
+<span class="fc" id="L1591">            inferRefreshHeader(tag.getAttribute(&quot;content&quot;));</span>
         }
-<span class="fc" id="L1610">    }</span>
+<span class="fc" id="L1593">    }</span>
 
     /**
      * check whether the given tag is a http equiv meta tag.
@@ -1620,9 +1603,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return true, if is http equiv meta tag
      */
     private boolean isHttpEquivMetaTag(ByteTag tag, String headerName) {
-<span class="fc" id="L1623">        String equiv1 = tag.getAttribute(&quot;http_equiv&quot;);</span>
-<span class="fc" id="L1624">        String equiv2 = tag.getAttribute(&quot;http-equiv&quot;);</span>
-<span class="fc bfc" id="L1625" title="All 4 branches covered.">        return headerName.equalsIgnoreCase(equiv1) || headerName.equalsIgnoreCase(equiv2);</span>
+<span class="fc" id="L1606">        String equiv1 = tag.getAttribute(&quot;http_equiv&quot;);</span>
+<span class="fc" id="L1607">        String equiv2 = tag.getAttribute(&quot;http-equiv&quot;);</span>
+<span class="fc bfc" id="L1608" title="All 4 branches covered.">        return headerName.equalsIgnoreCase(equiv1) || headerName.equalsIgnoreCase(equiv2);</span>
     }
 
     /**
@@ -1632,37 +1615,37 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the refresh header
      */
     private void inferRefreshHeader(String refreshHeader) {
-<span class="fc" id="L1635">        String originalHeader = getHeaderField(&quot;Refresh&quot;);</span>
+<span class="fc" id="L1618">        String originalHeader = getHeaderField(&quot;Refresh&quot;);</span>
         // System.err.println(&quot;original='&quot;+originalHeader+&quot;'\nrefreshHeader='&quot;+refreshHeader+&quot;'&quot;);
-<span class="pc bpc" id="L1637" title="1 of 2 branches missed.">        if (originalHeader == null) {</span>
-<span class="fc" id="L1638">            _refreshHeader = refreshHeader;</span>
+<span class="pc bpc" id="L1620" title="1 of 2 branches missed.">        if (originalHeader == null) {</span>
+<span class="fc" id="L1621">            _refreshHeader = refreshHeader;</span>
         }
-<span class="fc" id="L1640">    }</span>
+<span class="fc" id="L1623">    }</span>
 
     /**
      * read the Refresh Request.
      */
     private void readRefreshRequest() {
-<span class="fc bfc" id="L1646" title="All 2 branches covered.">        if (_refreshDelay &gt;= 0) {</span>
-<span class="fc" id="L1647">            return;</span>
+<span class="fc bfc" id="L1629" title="All 2 branches covered.">        if (_refreshDelay &gt;= 0) {</span>
+<span class="fc" id="L1630">            return;</span>
         }
-<span class="fc" id="L1649">        _refreshDelay = 0;</span>
-<span class="fc bfc" id="L1650" title="All 2 branches covered.">        String refreshHeader = _refreshHeader != null ? _refreshHeader : getHeaderField(&quot;Refresh&quot;);</span>
-<span class="fc bfc" id="L1651" title="All 2 branches covered.">        if (refreshHeader == null) {</span>
-<span class="fc" id="L1652">            return;</span>
+<span class="fc" id="L1632">        _refreshDelay = 0;</span>
+<span class="fc bfc" id="L1633" title="All 2 branches covered.">        String refreshHeader = _refreshHeader != null ? _refreshHeader : getHeaderField(&quot;Refresh&quot;);</span>
+<span class="fc bfc" id="L1634" title="All 2 branches covered.">        if (refreshHeader == null) {</span>
+<span class="fc" id="L1635">            return;</span>
         }
 
-<span class="fc" id="L1655">        int semicolonIndex = refreshHeader.indexOf(';');</span>
-<span class="fc bfc" id="L1656" title="All 2 branches covered.">        if (semicolonIndex &lt; 0) {</span>
-<span class="fc" id="L1657">            interpretRefreshHeaderElement(refreshHeader, refreshHeader);</span>
+<span class="fc" id="L1638">        int semicolonIndex = refreshHeader.indexOf(';');</span>
+<span class="fc bfc" id="L1639" title="All 2 branches covered.">        if (semicolonIndex &lt; 0) {</span>
+<span class="fc" id="L1640">            interpretRefreshHeaderElement(refreshHeader, refreshHeader);</span>
         } else {
-<span class="fc" id="L1659">            interpretRefreshHeaderElement(refreshHeader.substring(0, semicolonIndex), refreshHeader);</span>
-<span class="fc" id="L1660">            interpretRefreshHeaderElement(refreshHeader.substring(semicolonIndex + 1), refreshHeader);</span>
+<span class="fc" id="L1642">            interpretRefreshHeaderElement(refreshHeader.substring(0, semicolonIndex), refreshHeader);</span>
+<span class="fc" id="L1643">            interpretRefreshHeaderElement(refreshHeader.substring(semicolonIndex + 1), refreshHeader);</span>
         }
-<span class="fc bfc" id="L1662" title="All 2 branches covered.">        if (_refreshRequest == null) {</span>
-<span class="fc" id="L1663">            _refreshRequest = new GetMethodWebRequest(_pageURL, _pageURL.toString(), _frame.getName());</span>
+<span class="fc bfc" id="L1645" title="All 2 branches covered.">        if (_refreshRequest == null) {</span>
+<span class="fc" id="L1646">            _refreshRequest = new GetMethodWebRequest(_pageURL, _pageURL.toString(), _frame.getName());</span>
         }
-<span class="fc" id="L1665">    }</span>
+<span class="fc" id="L1648">    }</span>
 
     /**
      * Interpret refresh header element.
@@ -1673,19 +1656,19 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the refresh header
      */
     private void interpretRefreshHeaderElement(String token, String refreshHeader) {
-<span class="pc bpc" id="L1676" title="1 of 2 branches missed.">        if (token.isEmpty()) {</span>
-<span class="nc" id="L1677">            return;</span>
+<span class="pc bpc" id="L1659" title="1 of 2 branches missed.">        if (token.isEmpty()) {</span>
+<span class="nc" id="L1660">            return;</span>
         }
         try {
-<span class="fc bfc" id="L1680" title="All 2 branches covered.">            if (Character.isDigit(token.charAt(0))) {</span>
-<span class="fc" id="L1681">                _refreshDelay = Integer.parseInt(token);</span>
+<span class="fc bfc" id="L1663" title="All 2 branches covered.">            if (Character.isDigit(token.charAt(0))) {</span>
+<span class="fc" id="L1664">                _refreshDelay = Integer.parseInt(token);</span>
             } else {
-<span class="fc" id="L1683">                _refreshRequest = new GetMethodWebRequest(_pageURL, getRefreshURL(token), _frame.getName());</span>
+<span class="fc" id="L1666">                _refreshRequest = new GetMethodWebRequest(_pageURL, getRefreshURL(token), _frame.getName());</span>
             }
-<span class="nc" id="L1685">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L1686">            System.out.println(&quot;Unable to interpret refresh tag: \&quot;&quot; + refreshHeader + '&quot;');</span>
-<span class="fc" id="L1687">        }</span>
-<span class="fc" id="L1688">    }</span>
+<span class="nc" id="L1668">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L1669">            System.out.println(&quot;Unable to interpret refresh tag: \&quot;&quot; + refreshHeader + '&quot;');</span>
+<span class="fc" id="L1670">        }</span>
+<span class="fc" id="L1671">    }</span>
 
     /**
      * Gets the refresh URL.
@@ -1696,13 +1679,13 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the refresh URL
      */
     private String getRefreshURL(String text) {
-<span class="fc" id="L1699">        text = text.trim();</span>
-<span class="fc bfc" id="L1700" title="All 2 branches covered.">        if (!text.toUpperCase().startsWith(&quot;URL&quot;)) {</span>
-<span class="fc" id="L1701">            return HttpUnitUtils.stripQuotes(text);</span>
+<span class="fc" id="L1682">        text = text.trim();</span>
+<span class="fc bfc" id="L1683" title="All 2 branches covered.">        if (!text.toUpperCase().startsWith(&quot;URL&quot;)) {</span>
+<span class="fc" id="L1684">            return HttpUnitUtils.stripQuotes(text);</span>
         }
-<span class="fc" id="L1703">        int splitIndex = text.indexOf('=');</span>
-<span class="fc" id="L1704">        String value = text.substring(splitIndex + 1).trim();</span>
-<span class="fc" id="L1705">        return HttpUnitUtils.replaceEntities(HttpUnitUtils.stripQuotes(value));</span>
+<span class="fc" id="L1686">        int splitIndex = text.indexOf('=');</span>
+<span class="fc" id="L1687">        String value = text.substring(splitIndex + 1).trim();</span>
+<span class="fc" id="L1688">        return HttpUnitUtils.replaceEntities(HttpUnitUtils.stripQuotes(value));</span>
     }
 
     /**
@@ -1712,11 +1695,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the content type header
      */
     private void inferContentType(String contentTypeHeader) {
-<span class="fc" id="L1715">        String originalHeader = getHeaderField(&quot;Content-type&quot;);</span>
-<span class="pc bpc" id="L1716" title="2 of 4 branches missed.">        if (originalHeader == null || originalHeader.indexOf(&quot;charset&quot;) &lt; 0) {</span>
-<span class="fc" id="L1717">            setContentTypeHeader(contentTypeHeader);</span>
+<span class="fc" id="L1698">        String originalHeader = getHeaderField(&quot;Content-type&quot;);</span>
+<span class="pc bpc" id="L1699" title="2 of 4 branches missed.">        if (originalHeader == null || originalHeader.indexOf(&quot;charset&quot;) &lt; 0) {</span>
+<span class="fc" id="L1700">            setContentTypeHeader(contentTypeHeader);</span>
         }
-<span class="fc" id="L1719">    }</span>
+<span class="fc" id="L1702">    }</span>
 
     /**
      * Gets the cookie jar.
@@ -1724,10 +1707,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the cookie jar
      */
     CookieJar getCookieJar() {
-<span class="fc bfc" id="L1727" title="All 2 branches covered.">        if (_cookies == null) {</span>
-<span class="fc" id="L1728">            _cookies = new CookieJar(this);</span>
+<span class="fc bfc" id="L1710" title="All 2 branches covered.">        if (_cookies == null) {</span>
+<span class="fc" id="L1711">            _cookies = new CookieJar(this);</span>
         }
-<span class="fc" id="L1730">        return _cookies;</span>
+<span class="fc" id="L1713">        return _cookies;</span>
     }
 
     /** The cookies. */
@@ -1737,23 +1720,23 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * Read content type header.
      */
     private void readContentTypeHeader() {
-<span class="fc bfc" id="L1740" title="All 2 branches covered.">        String contentHeader = _contentHeader != null ? _contentHeader : getHeaderField(&quot;Content-type&quot;);</span>
-<span class="pc bpc" id="L1741" title="1 of 2 branches missed.">        if (contentHeader == null) {</span>
-<span class="nc" id="L1742">            _contentType = HttpUnitOptions.getDefaultContentType();</span>
-<span class="nc" id="L1743">            setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());</span>
-<span class="nc" id="L1744">            _contentHeader = _contentType + &quot;;charset=&quot; + _characterSet;</span>
+<span class="fc bfc" id="L1723" title="All 2 branches covered.">        String contentHeader = _contentHeader != null ? _contentHeader : getHeaderField(&quot;Content-type&quot;);</span>
+<span class="pc bpc" id="L1724" title="1 of 2 branches missed.">        if (contentHeader == null) {</span>
+<span class="nc" id="L1725">            _contentType = HttpUnitOptions.getDefaultContentType();</span>
+<span class="nc" id="L1726">            setCharacterSet(HttpUnitOptions.getDefaultCharacterSet());</span>
+<span class="nc" id="L1727">            _contentHeader = _contentType + &quot;;charset=&quot; + _characterSet;</span>
         } else {
-<span class="fc" id="L1746">            String[] parts = HttpUnitUtils.parseContentTypeHeader(contentHeader);</span>
-<span class="fc bfc" id="L1747" title="All 4 branches covered.">            if (null != _client &amp;&amp; null != _client.getClientProperties().getOverrideContentType()) {</span>
-<span class="fc" id="L1748">                _contentType = _client.getClientProperties().getOverrideContentType();</span>
+<span class="fc" id="L1729">            String[] parts = HttpUnitUtils.parseContentTypeHeader(contentHeader);</span>
+<span class="fc bfc" id="L1730" title="All 4 branches covered.">            if (null != _client &amp;&amp; null != _client.getClientProperties().getOverrideContentType()) {</span>
+<span class="fc" id="L1731">                _contentType = _client.getClientProperties().getOverrideContentType();</span>
             } else {
-<span class="fc" id="L1750">                _contentType = parts[0];</span>
+<span class="fc" id="L1733">                _contentType = parts[0];</span>
             }
-<span class="fc bfc" id="L1752" title="All 2 branches covered.">            if (parts[1] != null) {</span>
-<span class="fc" id="L1753">                setCharacterSet(parts[1]);</span>
+<span class="fc bfc" id="L1735" title="All 2 branches covered.">            if (parts[1] != null) {</span>
+<span class="fc" id="L1736">                setCharacterSet(parts[1]);</span>
             }
         }
-<span class="fc" id="L1756">    }</span>
+<span class="fc" id="L1739">    }</span>
 
     /**
      * Gets the frames.
@@ -1764,10 +1747,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     private WebFrame[] getFrames() throws SAXException {
-<span class="fc bfc" id="L1767" title="All 2 branches covered.">        if (isWithParse()) {</span>
-<span class="fc" id="L1768">            return getReceivedPage().getFrames();</span>
+<span class="fc bfc" id="L1750" title="All 2 branches covered.">        if (isWithParse()) {</span>
+<span class="fc" id="L1751">            return getReceivedPage().getFrames();</span>
         }
-<span class="fc" id="L1770">        return new WebFrame[0];</span>
+<span class="fc" id="L1753">        return new WebFrame[0];</span>
     }
 
     /**
@@ -1779,36 +1762,36 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *             the SAX exception
      */
     HTMLPage getReceivedPage() throws SAXException {
-<span class="fc bfc" id="L1782" title="All 2 branches covered.">        if (_page == null) {</span>
+<span class="fc bfc" id="L1765" title="All 2 branches covered.">        if (_page == null) {</span>
             try {
-<span class="fc" id="L1784">                _parsingPage = true;</span>
-<span class="fc bfc" id="L1785" title="All 4 branches covered.">                if (HttpUnitOptions.isCheckHtmlContentType() &amp;&amp; !isHTML()) {</span>
-<span class="fc" id="L1786">                    throw new NotHTMLException(getContentType());</span>
+<span class="fc" id="L1767">                _parsingPage = true;</span>
+<span class="fc bfc" id="L1768" title="All 4 branches covered.">                if (HttpUnitOptions.isCheckHtmlContentType() &amp;&amp; !isHTML()) {</span>
+<span class="fc" id="L1769">                    throw new NotHTMLException(getContentType());</span>
                 }
-<span class="fc" id="L1788">                _page = new HTMLPage(this, _frame, _baseURL, _baseTarget, getCharacterSet());</span>
-<span class="pc bpc" id="L1789" title="1 of 2 branches missed.">                if (_withParse) {</span>
-<span class="fc" id="L1790">                    _page.parse(getText(), _pageURL);</span>
-<span class="pc bpc" id="L1791" title="1 of 2 branches missed.">                    if (_page == null) {</span>
-<span class="nc" id="L1792">                        throw new IllegalStateException(&quot;replaceText called in the middle of getReceivedPage()&quot;);</span>
+<span class="fc" id="L1771">                _page = new HTMLPage(this, _frame, _baseURL, _baseTarget, getCharacterSet());</span>
+<span class="pc bpc" id="L1772" title="1 of 2 branches missed.">                if (_withParse) {</span>
+<span class="fc" id="L1773">                    _page.parse(getText(), _pageURL);</span>
+<span class="pc bpc" id="L1774" title="1 of 2 branches missed.">                    if (_page == null) {</span>
+<span class="nc" id="L1775">                        throw new IllegalStateException(&quot;replaceText called in the middle of getReceivedPage()&quot;);</span>
                     }
-<span class="fc" id="L1794">                    ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);</span>
+<span class="fc" id="L1777">                    ((HTMLDocumentImpl) _page.getRootNode()).getWindow().setProxy(this);</span>
                 }
-<span class="nc" id="L1796">            } catch (IOException e) {</span>
-<span class="nc" id="L1797">                HttpUnitUtils.handleException(e);</span>
-<span class="nc" id="L1798">                throw new RuntimeException(e.toString());</span>
+<span class="nc" id="L1779">            } catch (IOException e) {</span>
+<span class="nc" id="L1780">                HttpUnitUtils.handleException(e);</span>
+<span class="nc" id="L1781">                throw new RuntimeException(e.toString());</span>
             } finally {
-<span class="fc" id="L1800">                _parsingPage = false;</span>
+<span class="fc" id="L1783">                _parsingPage = false;</span>
             }
         }
-<span class="fc" id="L1803">        return _page;</span>
+<span class="fc" id="L1786">        return _page;</span>
     }
 
     /** The default encoding. */
     private static String _defaultEncoding;
 
     /** The Constant DEFAULT_ENCODING_CANDIDATES. */
-<span class="fc" id="L1810">    private static final String[] DEFAULT_ENCODING_CANDIDATES = { StandardCharsets.ISO_8859_1.name(),</span>
-<span class="fc" id="L1811">            StandardCharsets.US_ASCII.name() };</span>
+<span class="fc" id="L1793">    private static final String[] DEFAULT_ENCODING_CANDIDATES = { StandardCharsets.ISO_8859_1.name(),</span>
+<span class="fc" id="L1794">            StandardCharsets.US_ASCII.name() };</span>
 
     /**
      * Gets the default encoding.
@@ -1816,15 +1799,15 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the default encoding
      */
     static String getDefaultEncoding() {
-<span class="fc bfc" id="L1819" title="All 2 branches covered.">        if (_defaultEncoding == null) {</span>
-<span class="pc bpc" id="L1820" title="1 of 2 branches missed.">            for (String element : DEFAULT_ENCODING_CANDIDATES) {</span>
-<span class="pc bpc" id="L1821" title="1 of 2 branches missed.">                if (isSupportedCharacterSet(element)) {</span>
-<span class="fc" id="L1822">                    return _defaultEncoding = element;</span>
+<span class="fc bfc" id="L1802" title="All 2 branches covered.">        if (_defaultEncoding == null) {</span>
+<span class="pc bpc" id="L1803" title="1 of 2 branches missed.">            for (String element : DEFAULT_ENCODING_CANDIDATES) {</span>
+<span class="pc bpc" id="L1804" title="1 of 2 branches missed.">                if (isSupportedCharacterSet(element)) {</span>
+<span class="fc" id="L1805">                    return _defaultEncoding = element;</span>
                 }
             }
-<span class="nc" id="L1825">            _defaultEncoding = Charset.defaultCharset().displayName();</span>
+<span class="nc" id="L1808">            _defaultEncoding = Charset.defaultCharset().displayName();</span>
         }
-<span class="fc" id="L1827">        return _defaultEncoding;</span>
+<span class="fc" id="L1810">        return _defaultEncoding;</span>
     }
 
     /**
@@ -1834,12 +1817,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the new character set
      */
     private void setCharacterSet(String characterSet) {
-<span class="fc bfc" id="L1837" title="All 2 branches covered.">        if (characterSet == null) {</span>
-<span class="fc" id="L1838">            return;</span>
+<span class="fc bfc" id="L1820" title="All 2 branches covered.">        if (characterSet == null) {</span>
+<span class="fc" id="L1821">            return;</span>
         }
 
-<span class="fc bfc" id="L1841" title="All 2 branches covered.">        _characterSet = isSupportedCharacterSet(characterSet) ? characterSet : getDefaultEncoding();</span>
-<span class="fc" id="L1842">    }</span>
+<span class="fc bfc" id="L1824" title="All 2 branches covered.">        _characterSet = isSupportedCharacterSet(characterSet) ? characterSet : getDefaultEncoding();</span>
+<span class="fc" id="L1825">    }</span>
 
     /**
      * Checks if is supported character set.
@@ -1851,9 +1834,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     private static boolean isSupportedCharacterSet(String characterSet) {
         try {
-<span class="pc bpc" id="L1854" title="1 of 2 branches missed.">            return &quot;abcd&quot;.getBytes(Charset.forName(characterSet)).length &gt; 0;</span>
-<span class="fc" id="L1855">        } catch (UnsupportedCharsetException e) {</span>
-<span class="fc" id="L1856">            return false;</span>
+<span class="pc bpc" id="L1837" title="1 of 2 branches missed.">            return &quot;abcd&quot;.getBytes(Charset.forName(characterSet)).length &gt; 0;</span>
+<span class="fc" id="L1838">        } catch (UnsupportedCharsetException e) {</span>
+<span class="fc" id="L1839">            return false;</span>
         }
     }
 
@@ -1866,8 +1849,8 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the value
      */
     void setCookie(String name, String value) {
-<span class="fc" id="L1869">        _client.putCookie(name, value);</span>
-<span class="fc" id="L1870">    }</span>
+<span class="fc" id="L1852">        _client.putCookie(name, value);</span>
+<span class="fc" id="L1853">    }</span>
 
     /**
      * Gets the cookie header.
@@ -1875,7 +1858,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the cookie header
      */
     String getCookieHeader() {
-<span class="fc" id="L1878">        return _client.getCookieJar().getCookieHeaderField(getURL());</span>
+<span class="fc" id="L1861">        return _client.getCookieJar().getCookieHeaderField(getURL());</span>
     }
 
     /**
@@ -1884,7 +1867,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the referer
      */
     String getReferer() {
-<span class="fc" id="L1887">        return null;</span>
+<span class="fc" id="L1870">        return null;</span>
     }
 
     // =======================================================================================
@@ -1904,26 +1887,26 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @param length
          *            the length
          */
-<span class="fc" id="L1907">        ByteTag(byte[] buffer, int start, int length) {</span>
-<span class="fc" id="L1908">            _buffer = new String(buffer, start, length, Charset.forName(WebResponse.getDefaultEncoding()))</span>
-<span class="fc" id="L1909">                    .toCharArray();</span>
-<span class="fc" id="L1910">            _name = nextToken();</span>
+<span class="fc" id="L1890">        ByteTag(byte[] buffer, int start, int length) {</span>
+<span class="fc" id="L1891">            _buffer = new String(buffer, start, length, Charset.forName(WebResponse.getDefaultEncoding()))</span>
+<span class="fc" id="L1892">                    .toCharArray();</span>
+<span class="fc" id="L1893">            _name = nextToken();</span>
 
-<span class="fc" id="L1912">            String attribute = &quot;&quot;;</span>
-<span class="fc" id="L1913">            String token = nextToken();</span>
-<span class="fc bfc" id="L1914" title="All 2 branches covered.">            while (!token.isEmpty()) {</span>
-<span class="fc bfc" id="L1915" title="All 4 branches covered.">                if (token.equals(&quot;=&quot;) &amp;&amp; !attribute.isEmpty()) {</span>
-<span class="fc" id="L1916">                    getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), nextToken());</span>
-<span class="fc" id="L1917">                    attribute = &quot;&quot;;</span>
+<span class="fc" id="L1895">            String attribute = &quot;&quot;;</span>
+<span class="fc" id="L1896">            String token = nextToken();</span>
+<span class="fc bfc" id="L1897" title="All 2 branches covered.">            while (!token.isEmpty()) {</span>
+<span class="fc bfc" id="L1898" title="All 4 branches covered.">                if (token.equals(&quot;=&quot;) &amp;&amp; !attribute.isEmpty()) {</span>
+<span class="fc" id="L1899">                    getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), nextToken());</span>
+<span class="fc" id="L1900">                    attribute = &quot;&quot;;</span>
                 } else {
-<span class="fc bfc" id="L1919" title="All 2 branches covered.">                    if (!attribute.isEmpty()) {</span>
-<span class="fc" id="L1920">                        getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), &quot;&quot;);</span>
+<span class="fc bfc" id="L1902" title="All 2 branches covered.">                    if (!attribute.isEmpty()) {</span>
+<span class="fc" id="L1903">                        getAttributes().put(attribute.toLowerCase(Locale.ENGLISH), &quot;&quot;);</span>
                     }
-<span class="fc" id="L1922">                    attribute = token;</span>
+<span class="fc" id="L1905">                    attribute = token;</span>
                 }
-<span class="fc" id="L1924">                token = nextToken();</span>
+<span class="fc" id="L1907">                token = nextToken();</span>
             }
-<span class="fc" id="L1926">        }</span>
+<span class="fc" id="L1909">        }</span>
 
         /**
          * Gets the name.
@@ -1931,7 +1914,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the name
          */
         public String getName() {
-<span class="fc" id="L1934">            return _name;</span>
+<span class="fc" id="L1917">            return _name;</span>
         }
 
         /**
@@ -1943,12 +1926,12 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the attribute
          */
         public String getAttribute(String attributeName) {
-<span class="fc" id="L1946">            return (String) getAttributes().get(attributeName);</span>
+<span class="fc" id="L1929">            return (String) getAttributes().get(attributeName);</span>
         }
 
         @Override
         public String toString() {
-<span class="nc" id="L1951">            return &quot;ByteTag[ name=&quot; + _name + &quot;;attributes = &quot; + _attributes + ']';</span>
+<span class="nc" id="L1934">            return &quot;ByteTag[ name=&quot; + _name + &quot;;attributes = &quot; + _attributes + ']';</span>
         }
 
         /**
@@ -1957,14 +1940,14 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the attributes
          */
         private Hashtable getAttributes() {
-<span class="fc bfc" id="L1960" title="All 2 branches covered.">            if (_attributes == null) {</span>
-<span class="fc" id="L1961">                _attributes = new Hashtable&lt;&gt;();</span>
+<span class="fc bfc" id="L1943" title="All 2 branches covered.">            if (_attributes == null) {</span>
+<span class="fc" id="L1944">                _attributes = new Hashtable&lt;&gt;();</span>
             }
-<span class="fc" id="L1963">            return _attributes;</span>
+<span class="fc" id="L1946">            return _attributes;</span>
         }
 
         /** The name. */
-<span class="fc" id="L1967">        private String _name = &quot;&quot;;</span>
+<span class="fc" id="L1950">        private String _name = &quot;&quot;;</span>
 
         /** The attributes. */
         private Hashtable _attributes;
@@ -1973,7 +1956,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
         private char[] _buffer;
 
         /** The end. */
-<span class="fc" id="L1976">        private int _end = -1;</span>
+<span class="fc" id="L1959">        private int _end = -1;</span>
 
         /**
          * Next token.
@@ -1981,34 +1964,34 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the string
          */
         private String nextToken() {
-<span class="fc" id="L1984">            int start = _end + 1;</span>
-<span class="fc bfc" id="L1985" title="All 4 branches covered.">            while (start &lt; _buffer.length &amp;&amp; Character.isWhitespace(_buffer[start])) {</span>
-<span class="fc" id="L1986">                start++;</span>
+<span class="fc" id="L1967">            int start = _end + 1;</span>
+<span class="fc bfc" id="L1968" title="All 4 branches covered.">            while (start &lt; _buffer.length &amp;&amp; Character.isWhitespace(_buffer[start])) {</span>
+<span class="fc" id="L1969">                start++;</span>
             }
-<span class="fc bfc" id="L1988" title="All 2 branches covered.">            if (start &gt;= _buffer.length) {</span>
-<span class="fc" id="L1989">                return &quot;&quot;;</span>
+<span class="fc bfc" id="L1971" title="All 2 branches covered.">            if (start &gt;= _buffer.length) {</span>
+<span class="fc" id="L1972">                return &quot;&quot;;</span>
             }
-<span class="fc bfc" id="L1991" title="All 2 branches covered.">            if (_buffer[start] == '&quot;') {</span>
-<span class="fc bfc" id="L1992" title="All 4 branches covered.">                for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '&quot;'; _end++) {</span>
+<span class="fc bfc" id="L1974" title="All 2 branches covered.">            if (_buffer[start] == '&quot;') {</span>
+<span class="fc bfc" id="L1975" title="All 4 branches covered.">                for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '&quot;'; _end++) {</span>
 
                 }
-<span class="fc" id="L1995">                return new String(_buffer, start + 1, _end - start - 1);</span>
+<span class="fc" id="L1978">                return new String(_buffer, start + 1, _end - start - 1);</span>
             }
-<span class="fc bfc" id="L1997" title="All 2 branches covered.">            if (_buffer[start] == '\'') {</span>
-<span class="fc bfc" id="L1998" title="All 4 branches covered.">                for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '\''; _end++) {</span>
+<span class="fc bfc" id="L1980" title="All 2 branches covered.">            if (_buffer[start] == '\'') {</span>
+<span class="fc bfc" id="L1981" title="All 4 branches covered.">                for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '\''; _end++) {</span>
 
                 }
-<span class="fc" id="L2001">                return new String(_buffer, start + 1, _end - start - 1);</span>
+<span class="fc" id="L1984">                return new String(_buffer, start + 1, _end - start - 1);</span>
             }
-<span class="fc bfc" id="L2003" title="All 2 branches covered.">            if (_buffer[start] == '=') {</span>
-<span class="fc" id="L2004">                _end = start;</span>
-<span class="fc" id="L2005">                return &quot;=&quot;;</span>
+<span class="fc bfc" id="L1986" title="All 2 branches covered.">            if (_buffer[start] == '=') {</span>
+<span class="fc" id="L1987">                _end = start;</span>
+<span class="fc" id="L1988">                return &quot;=&quot;;</span>
             }
-<span class="fc" id="L2007">            for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '='</span>
-<span class="fc bfc" id="L2008" title="All 6 branches covered.">                    &amp;&amp; !Character.isWhitespace(_buffer[_end]); _end++) {</span>
+<span class="fc" id="L1990">            for (_end = start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '='</span>
+<span class="fc bfc" id="L1991" title="All 6 branches covered.">                    &amp;&amp; !Character.isWhitespace(_buffer[_end]); _end++) {</span>
 
             }
-<span class="fc" id="L2011">            return new String(_buffer, start, _end-- - start);</span>
+<span class="fc" id="L1994">            return new String(_buffer, start, _end-- - start);</span>
         }
     }
 
@@ -2025,9 +2008,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @param buffer
          *            the buffer
          */
-<span class="fc" id="L2028">        ByteTagParser(byte[] buffer) {</span>
-<span class="fc" id="L2029">            _buffer = buffer;</span>
-<span class="fc" id="L2030">        }</span>
+<span class="fc" id="L2011">        ByteTagParser(byte[] buffer) {</span>
+<span class="fc" id="L2012">            _buffer = buffer;</span>
+<span class="fc" id="L2013">        }</span>
 
         /**
          * Gets the next tag.
@@ -2035,11 +2018,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          * @return the next tag
          */
         ByteTag getNextTag() {
-<span class="fc" id="L2038">            ByteTag byteTag = null;</span>
+<span class="fc" id="L2021">            ByteTag byteTag = null;</span>
             do {
-<span class="fc" id="L2040">                int _start = _end + 1;</span>
-<span class="fc bfc" id="L2041" title="All 4 branches covered.">                while (_start &lt; _buffer.length &amp;&amp; _buffer[_start] != '&lt;') {</span>
-<span class="fc" id="L2042">                    _start++;</span>
+<span class="fc" id="L2023">                int _start = _end + 1;</span>
+<span class="fc bfc" id="L2024" title="All 4 branches covered.">                while (_start &lt; _buffer.length &amp;&amp; _buffer[_start] != '&lt;') {</span>
+<span class="fc" id="L2025">                    _start++;</span>
                 }
                 // proposed patch for bug report
                 // [ 1376739 ] iframe tag not recognized if Javascript code contains '&lt;'
@@ -2050,29 +2033,29 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
                 // _end = _start+1;
                 // continue;
                 // }
-<span class="fc bfc" id="L2053" title="All 4 branches covered.">                for (_end = _start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '&gt;'; _end++) {</span>
+<span class="fc bfc" id="L2036" title="All 4 branches covered.">                for (_end = _start + 1; _end &lt; _buffer.length &amp;&amp; _buffer[_end] != '&gt;'; _end++) {</span>
 
                 }
-<span class="pc bpc" id="L2056" title="1 of 4 branches missed.">                if (_end &gt;= _buffer.length || _end &lt; _start) {</span>
-<span class="fc" id="L2057">                    return null;</span>
+<span class="pc bpc" id="L2039" title="1 of 4 branches missed.">                if (_end &gt;= _buffer.length || _end &lt; _start) {</span>
+<span class="fc" id="L2040">                    return null;</span>
                 }
-<span class="fc" id="L2059">                byteTag = new ByteTag(_buffer, _start + 1, _end - _start - 1);</span>
-<span class="fc bfc" id="L2060" title="All 2 branches covered.">                if (byteTag.getName().equalsIgnoreCase(&quot;script&quot;)) {</span>
-<span class="fc" id="L2061">                    _scriptDepth++;</span>
-<span class="fc" id="L2062">                    return byteTag;</span>
+<span class="fc" id="L2042">                byteTag = new ByteTag(_buffer, _start + 1, _end - _start - 1);</span>
+<span class="fc bfc" id="L2043" title="All 2 branches covered.">                if (byteTag.getName().equalsIgnoreCase(&quot;script&quot;)) {</span>
+<span class="fc" id="L2044">                    _scriptDepth++;</span>
+<span class="fc" id="L2045">                    return byteTag;</span>
                 }
-<span class="fc bfc" id="L2064" title="All 2 branches covered.">                if (byteTag.getName().equalsIgnoreCase(&quot;/script&quot;)) {</span>
-<span class="fc" id="L2065">                    _scriptDepth--;</span>
+<span class="fc bfc" id="L2047" title="All 2 branches covered.">                if (byteTag.getName().equalsIgnoreCase(&quot;/script&quot;)) {</span>
+<span class="fc" id="L2048">                    _scriptDepth--;</span>
                 }
-<span class="fc bfc" id="L2067" title="All 2 branches covered.">            } while (_scriptDepth &gt; 0);</span>
-<span class="fc" id="L2068">            return byteTag;</span>
+<span class="fc bfc" id="L2050" title="All 2 branches covered.">            } while (_scriptDepth &gt; 0);</span>
+<span class="fc" id="L2051">            return byteTag;</span>
         }
 
         /** The script depth. */
-<span class="fc" id="L2072">        private int _scriptDepth = 0;</span>
+<span class="fc" id="L2055">        private int _scriptDepth = 0;</span>
 
         /** The end. */
-<span class="fc" id="L2075">        private int _end = -1;</span>
+<span class="fc" id="L2058">        private int _end = -1;</span>
 
         /** The buffer. */
         private byte[] _buffer;
@@ -2084,7 +2067,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      * @return the validContentTypes
      */
     public static String[] getValidContentTypes() {
-<span class="nc" id="L2087">        return validContentTypes;</span>
+<span class="nc" id="L2070">        return validContentTypes;</span>
     }
 
     /**
@@ -2094,33 +2077,64 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            the validContentTypes to set
      */
     protected static void setValidContentTypes(String[] validContentTypes) {
-<span class="nc" id="L2097">        WebResponse.validContentTypes = validContentTypes;</span>
-<span class="nc" id="L2098">    }</span>
+<span class="nc" id="L2080">        WebResponse.validContentTypes = validContentTypes;</span>
+<span class="nc" id="L2081">    }</span>
 
 }
 
 // =======================================================================================
 
+/**
+ * The Class DefaultWebResponse.
+ */
 class DefaultWebResponse extends WebResponse {
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(String text) {
-<span class="fc" id="L2107">        this(null, null, text);</span>
-<span class="fc" id="L2108">    }</span>
+<span class="fc" id="L2099">        this(null, null, text);</span>
+<span class="fc" id="L2100">    }</span>
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, URL url, String text) {
-<span class="fc" id="L2111">        this(client, FrameSelector.TOP_FRAME, url, text);</span>
-<span class="fc" id="L2112">    }</span>
+<span class="fc" id="L2113">        this(client, FrameSelector.TOP_FRAME, url, text);</span>
+<span class="fc" id="L2114">    }</span>
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param frame
+     *            the frame
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, FrameSelector frame, URL url, String text) {
-<span class="fc" id="L2115">        super(client, frame, url, text);</span>
-<span class="fc" id="L2116">    }</span>
+<span class="fc" id="L2129">        super(client, frame, url, text);</span>
+<span class="fc" id="L2130">    }</span>
 
     /**
      * Returns the response code associated with this response.
      **/
     @Override
     public int getResponseCode() {
-<span class="fc" id="L2123">        return HttpURLConnection.HTTP_OK;</span>
+<span class="fc" id="L2137">        return HttpURLConnection.HTTP_OK;</span>
     }
 
     /**
@@ -2128,12 +2142,12 @@ class DefaultWebResponse extends WebResponse {
      **/
     @Override
     public String getResponseMessage() {
-<span class="nc" id="L2131">        return &quot;OK&quot;;</span>
+<span class="nc" id="L2145">        return &quot;OK&quot;;</span>
     }
 
     @Override
     public String[] getHeaderFieldNames() {
-<span class="nc" id="L2136">        return new String[] { &quot;Content-type&quot; };</span>
+<span class="nc" id="L2150">        return new String[] { &quot;Content-type&quot; };</span>
     }
 
     /**
@@ -2141,24 +2155,24 @@ class DefaultWebResponse extends WebResponse {
      **/
     @Override
     public String getHeaderField(String fieldName) {
-<span class="fc bfc" id="L2144" title="All 2 branches covered.">        if (fieldName.equalsIgnoreCase(&quot;Content-type&quot;)) {</span>
-<span class="fc" id="L2145">            return &quot;text/html; charset=us-ascii&quot;;</span>
+<span class="fc bfc" id="L2158" title="All 2 branches covered.">        if (fieldName.equalsIgnoreCase(&quot;Content-type&quot;)) {</span>
+<span class="fc" id="L2159">            return &quot;text/html; charset=us-ascii&quot;;</span>
         }
-<span class="fc" id="L2147">        return null;</span>
+<span class="fc" id="L2161">        return null;</span>
     }
 
     @Override
     public String[] getHeaderFields(String fieldName) {
-<span class="fc" id="L2152">        String value = getHeaderField(fieldName);</span>
-<span class="pc bpc" id="L2153" title="1 of 2 branches missed.">        return value == null ? new String[0] : new String[] { value };</span>
+<span class="fc" id="L2166">        String value = getHeaderField(fieldName);</span>
+<span class="pc bpc" id="L2167" title="1 of 2 branches missed.">        return value == null ? new String[0] : new String[] { value };</span>
     }
 
     @Override
     public String toString() {
         try {
-<span class="nc" id="L2159">            return &quot;DefaultWebResponse [&quot; + getText() + &quot;]&quot;;</span>
-<span class="nc" id="L2160">        } catch (IOException e) { // should never happen</span>
-<span class="nc" id="L2161">            return &quot;DefaultWebResponse [???]&quot;;</span>
+<span class="nc" id="L2173">            return &quot;DefaultWebResponse [&quot; + getText() + &quot;]&quot;;</span>
+<span class="nc" id="L2174">        } catch (IOException e) { // should never happen</span>
+<span class="nc" id="L2175">            return &quot;DefaultWebResponse [???]&quot;;</span>
         }
     }
 }

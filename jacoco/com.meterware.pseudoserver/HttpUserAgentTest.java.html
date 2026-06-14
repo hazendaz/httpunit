@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUserAgentTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">HttpUserAgentTest.java</span></div><h1>HttpUserAgentTest.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.pseudoserver;
 
@@ -34,11 +22,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 /**
  * A base class for test cases that use the pseudo server.
  **/
-<span class="fc" id="L37">public class HttpUserAgentTest {</span>
+<span class="fc" id="L25">public class HttpUserAgentTest {</span>
 
     /** The Constant testSupport. */
     @RegisterExtension
-<span class="fc" id="L41">    public static final PseudoServerTestSupport testSupport = new PseudoServerTestSupport();</span>
+<span class="fc" id="L29">    public static final PseudoServerTestSupport testSupport = new PseudoServerTestSupport();</span>
 
     /**
      * Define resource.
@@ -49,8 +37,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the servlet
      */
     protected void defineResource(String resourceName, PseudoServlet servlet) {
-<span class="fc" id="L52">        testSupport.defineResource(resourceName, servlet);</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L40">        testSupport.defineResource(resourceName, servlet);</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Define resource.
@@ -61,8 +49,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the value
      */
     protected void defineResource(String resourceName, String value) {
-<span class="fc" id="L64">        testSupport.defineResource(resourceName, value);</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L52">        testSupport.defineResource(resourceName, value);</span>
+<span class="fc" id="L53">    }</span>
 
     /**
      * Define resource.
@@ -75,8 +63,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the content type
      */
     protected void defineResource(String resourceName, byte[] value, String contentType) {
-<span class="fc" id="L78">        testSupport.defineResource(resourceName, value, contentType);</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L66">        testSupport.defineResource(resourceName, value, contentType);</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Define resource.
@@ -89,8 +77,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the status code
      */
     protected void defineResource(String resourceName, String value, int statusCode) {
-<span class="fc" id="L92">        testSupport.defineResource(resourceName, value, statusCode);</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L80">        testSupport.defineResource(resourceName, value, statusCode);</span>
+<span class="fc" id="L81">    }</span>
 
     /**
      * Define resource.
@@ -103,8 +91,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the content type
      */
     protected void defineResource(String resourceName, String value, String contentType) {
-<span class="fc" id="L106">        testSupport.defineResource(resourceName, value, contentType);</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L94">        testSupport.defineResource(resourceName, value, contentType);</span>
+<span class="fc" id="L95">    }</span>
 
     /**
      * Adds the resource header.
@@ -115,8 +103,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the header
      */
     protected void addResourceHeader(String resourceName, String header) {
-<span class="fc" id="L118">        testSupport.addResourceHeader(resourceName, header);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L106">        testSupport.addResourceHeader(resourceName, header);</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Sets the resource char set.
@@ -129,8 +117,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the report char set
      */
     protected void setResourceCharSet(String resourceName, String setName, boolean reportCharSet) {
-<span class="fc" id="L132">        testSupport.setResourceCharSet(resourceName, setName, reportCharSet);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L120">        testSupport.setResourceCharSet(resourceName, setName, reportCharSet);</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
@@ -144,8 +132,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the body
      */
     protected void defineWebPage(String xmlns, String pageName, String body) {
-<span class="fc" id="L147">        testSupport.defineWebPage(xmlns, pageName, body);</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc" id="L135">        testSupport.defineWebPage(xmlns, pageName, body);</span>
+<span class="fc" id="L136">    }</span>
 
     /**
      * define a Web Page with the given page name and boy adding the html and body tags with pageName as the title of
@@ -157,8 +145,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the body
      */
     protected void defineWebPage(String pageName, String body) {
-<span class="fc" id="L160">        testSupport.defineWebPage(pageName, body);</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L148">        testSupport.defineWebPage(pageName, body);</span>
+<span class="fc" id="L149">    }</span>
 
     /**
      * Map to classpath.
@@ -167,8 +155,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the directory
      */
     protected void mapToClasspath(String directory) {
-<span class="fc" id="L170">        testSupport.mapToClasspath(directory);</span>
-<span class="fc" id="L171">    }</span>
+<span class="nc" id="L158">        testSupport.mapToClasspath(directory);</span>
+<span class="nc" id="L159">    }</span>
 
     /**
      * Gets the server.
@@ -176,7 +164,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      * @return the server
      */
     protected PseudoServer getServer() {
-<span class="nc" id="L179">        return testSupport.getServer();</span>
+<span class="nc" id="L167">        return testSupport.getServer();</span>
     }
 
     /**
@@ -186,8 +174,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the new server debug
      */
     protected void setServerDebug(boolean enabled) {
-<span class="nc" id="L189">        testSupport.setServerDebug(enabled);</span>
-<span class="nc" id="L190">    }</span>
+<span class="nc" id="L177">        testSupport.setServerDebug(enabled);</span>
+<span class="nc" id="L178">    }</span>
 
     /**
      * Gets the host path.
@@ -195,7 +183,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      * @return the host path
      */
     protected String getHostPath() {
-<span class="fc" id="L198">        return testSupport.getHostPath();</span>
+<span class="fc" id="L186">        return testSupport.getHostPath();</span>
     }
 
     /**
@@ -207,7 +195,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *             Signals that an I/O exception has occurred.
      */
     protected int getHostPort() throws IOException {
-<span class="fc" id="L210">        return testSupport.getHostPort();</span>
+<span class="fc" id="L198">        return testSupport.getHostPort();</span>
     }
 
     /**
@@ -219,8 +207,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the query 2
      */
     protected void assertEqualQueries(String query1, String query2) {
-<span class="fc" id="L222">        assertEquals(new QuerySpec(query1), new QuerySpec(query2));</span>
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L210">        assertEquals(new QuerySpec(query1), new QuerySpec(query2));</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Assert implement.
@@ -233,13 +221,13 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the expected class
      */
     protected void assertImplement(String comment, Object[] objects, Class expectedClass) {
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        if (objects.length == 0) {</span>
-<span class="nc" id="L237">            fail(&quot;No &quot; + comment + &quot; found.&quot;);</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">        if (objects.length == 0) {</span>
+<span class="nc" id="L225">            fail(&quot;No &quot; + comment + &quot; found.&quot;);</span>
         }
-<span class="fc bfc" id="L239" title="All 2 branches covered.">        for (Object object : objects) {</span>
-<span class="fc" id="L240">            assertImplements(comment, object, expectedClass);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        for (Object object : objects) {</span>
+<span class="fc" id="L228">            assertImplements(comment, object, expectedClass);</span>
         }
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Assert implements.
@@ -252,12 +240,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the expected class
      */
     protected void assertImplements(String comment, Object object, Class expectedClass) {
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (object == null) {</span>
-<span class="nc" id="L256">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is null&quot;);</span>
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">        } else if (!expectedClass.isInstance(object)) {</span>
-<span class="nc" id="L258">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is &quot; + object.getClass().getName());</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (object == null) {</span>
+<span class="nc" id="L244">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is null&quot;);</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">        } else if (!expectedClass.isInstance(object)) {</span>
+<span class="nc" id="L246">            fail(comment + &quot; should be of class &quot; + expectedClass.getName() + &quot; but is &quot; + object.getClass().getName());</span>
         }
-<span class="fc" id="L260">    }</span>
+<span class="fc" id="L248">    }</span>
 
     /**
      * Assert matching set.
@@ -270,13 +258,13 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the found
      */
     protected void assertMatchingSet(String comment, Object[] expected, Enumeration found) {
-<span class="fc" id="L273">        List foundItems = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">        while (found.hasMoreElements()) {</span>
-<span class="fc" id="L275">            foundItems.add(found.nextElement());</span>
+<span class="fc" id="L261">        List foundItems = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        while (found.hasMoreElements()) {</span>
+<span class="fc" id="L263">            foundItems.add(found.nextElement());</span>
         }
 
-<span class="fc" id="L278">        assertMatchingSet(comment, expected, foundItems);</span>
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L266">        assertMatchingSet(comment, expected, foundItems);</span>
+<span class="fc" id="L267">    }</span>
 
     /**
      * Assert matching set.
@@ -289,22 +277,22 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the found items
      */
     private void assertMatchingSet(String comment, Object[] expected, List foundItems) {
-<span class="fc" id="L292">        List expectedItems = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        for (Object element : expected) {</span>
-<span class="fc" id="L294">            expectedItems.add(element);</span>
+<span class="fc" id="L280">        List expectedItems = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="fc" id="L282">            expectedItems.add(element);</span>
         }
-<span class="fc bfc" id="L296" title="All 2 branches covered.">        for (Object element : expected) {</span>
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
-<span class="nc" id="L298">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but missing &quot; + element);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
+<span class="nc" id="L286">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but missing &quot; + element);</span>
             } else {
-<span class="fc" id="L300">                foundItems.remove(element);</span>
+<span class="fc" id="L288">                foundItems.remove(element);</span>
             }
         }
 
-<span class="pc bpc" id="L304" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
-<span class="nc" id="L305">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found superfluous&quot; + foundItems);</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
+<span class="nc" id="L293">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found superfluous&quot; + foundItems);</span>
         }
-<span class="fc" id="L307">    }</span>
+<span class="fc" id="L295">    }</span>
 
     /**
      * Assert matching set.
@@ -317,37 +305,37 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      *            the found
      */
     public static void assertMatchingSet(String comment, Object[] expected, Object[] found) {
-<span class="fc" id="L320">        List foundItems = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L321" title="All 2 branches covered.">        for (Object element : found) {</span>
-<span class="fc" id="L322">            foundItems.add(element);</span>
+<span class="fc" id="L308">        List foundItems = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        for (Object element : found) {</span>
+<span class="fc" id="L310">            foundItems.add(element);</span>
         }
 
-<span class="fc" id="L325">        List expectedItems = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L313">        List expectedItems = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (Object element : expected) {</span>
-<span class="fc" id="L328">            expectedItems.add(element);</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="fc" id="L316">            expectedItems.add(element);</span>
         }
 
-<span class="fc bfc" id="L331" title="All 2 branches covered.">        for (Object element : expected) {</span>
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
-<span class="nc" id="L333">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">        for (Object element : expected) {</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">            if (!foundItems.contains(element)) {</span>
+<span class="nc" id="L321">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
             } else {
-<span class="fc" id="L335">                foundItems.remove(element);</span>
+<span class="fc" id="L323">                foundItems.remove(element);</span>
             }
         }
 
-<span class="fc bfc" id="L339" title="All 2 branches covered.">        for (Object element : found) {</span>
-<span class="pc bpc" id="L340" title="1 of 2 branches missed.">            if (!expectedItems.contains(element)) {</span>
-<span class="nc" id="L341">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (Object element : found) {</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">            if (!expectedItems.contains(element)) {</span>
+<span class="nc" id="L329">                fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
             } else {
-<span class="fc" id="L343">                expectedItems.remove(element);</span>
+<span class="fc" id="L331">                expectedItems.remove(element);</span>
             }
         }
 
-<span class="pc bpc" id="L347" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
-<span class="nc" id="L348">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (!foundItems.isEmpty()) {</span>
+<span class="nc" id="L336">            fail(comment + &quot;: expected &quot; + asText(expected) + &quot; but found &quot; + asText(found));</span>
         }
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L338">    }</span>
 
     /**
      * As text.
@@ -358,15 +346,15 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      * @return the string
      */
     public static String asText(Object[] args) {
-<span class="nc" id="L361">        StringBuilder sb = new StringBuilder(&quot;{&quot;);</span>
-<span class="nc bnc" id="L362" title="All 2 branches missed.">        for (int i = 0; i &lt; args.length; i++) {</span>
-<span class="nc bnc" id="L363" title="All 2 branches missed.">            if (i != 0) {</span>
-<span class="nc" id="L364">                sb.append(&quot;,&quot;);</span>
+<span class="nc" id="L349">        StringBuilder sb = new StringBuilder(&quot;{&quot;);</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">        for (int i = 0; i &lt; args.length; i++) {</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L352">                sb.append(&quot;,&quot;);</span>
             }
-<span class="nc" id="L366">            sb.append('&quot;').append(args[i]).append('&quot;');</span>
+<span class="nc" id="L354">            sb.append('&quot;').append(args[i]).append('&quot;');</span>
         }
-<span class="nc" id="L368">        sb.append(&quot;}&quot;);</span>
-<span class="nc" id="L369">        return sb.toString();</span>
+<span class="nc" id="L356">        sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L357">        return sb.toString();</span>
     }
 
     /**
@@ -378,12 +366,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
      * @return the string
      */
     protected String asBytes(String s) {
-<span class="nc" id="L381">        StringBuilder sb = new StringBuilder();</span>
-<span class="nc" id="L382">        char[] chars = s.toCharArray();</span>
-<span class="nc bnc" id="L383" title="All 2 branches missed.">        for (char element : chars) {</span>
-<span class="nc" id="L384">            sb.append(Integer.toHexString(element)).append(&quot; &quot;);</span>
+<span class="nc" id="L369">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L370">        char[] chars = s.toCharArray();</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        for (char element : chars) {</span>
+<span class="nc" id="L372">            sb.append(Integer.toHexString(element)).append(&quot; &quot;);</span>
         }
-<span class="nc" id="L386">        return sb.toString();</span>
+<span class="nc" id="L374">        return sb.toString();</span>
     }
 
     /**
@@ -397,33 +385,33 @@ import org.junit.jupiter.api.extension.RegisterExtension;
          * @param urlString
          *            the url string
          */
-<span class="fc" id="L400">        QuerySpec(String urlString) {</span>
-<span class="pc bpc" id="L401" title="1 of 2 branches missed.">            if (urlString.indexOf('?') &lt; 0) {</span>
-<span class="nc" id="L402">                _path = urlString;</span>
+<span class="fc" id="L388">        QuerySpec(String urlString) {</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">            if (urlString.indexOf('?') &lt; 0) {</span>
+<span class="nc" id="L390">                _path = urlString;</span>
             } else {
-<span class="fc" id="L404">                _path = urlString.substring(0, urlString.indexOf('?'));</span>
+<span class="fc" id="L392">                _path = urlString.substring(0, urlString.indexOf('?'));</span>
             }
-<span class="fc" id="L406">            _fullString = urlString;</span>
+<span class="fc" id="L394">            _fullString = urlString;</span>
 
-<span class="fc" id="L408">            StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), &quot;&amp;&quot;);</span>
-<span class="fc bfc" id="L409" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L410">                _parameters.add(st.nextToken());</span>
+<span class="fc" id="L396">            StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), &quot;&amp;&quot;);</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L398">                _parameters.add(st.nextToken());</span>
             }
-<span class="fc" id="L412">        }</span>
+<span class="fc" id="L400">        }</span>
 
         @Override
         public String toString() {
-<span class="nc" id="L416">            return _fullString;</span>
+<span class="nc" id="L404">            return _fullString;</span>
         }
 
         @Override
         public boolean equals(Object o) {
-<span class="pc bpc" id="L421" title="2 of 4 branches missed.">            return getClass().equals(o.getClass()) &amp;&amp; equals((QuerySpec) o);</span>
+<span class="pc bpc" id="L409" title="2 of 4 branches missed.">            return getClass().equals(o.getClass()) &amp;&amp; equals((QuerySpec) o);</span>
         }
 
         @Override
         public int hashCode() {
-<span class="nc" id="L426">            return _path.hashCode() ^ _parameters.size();</span>
+<span class="nc" id="L414">            return _path.hashCode() ^ _parameters.size();</span>
         }
 
         /** The path. */
@@ -433,7 +421,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
         private String _fullString;
 
         /** The parameters. */
-<span class="fc" id="L436">        private List _parameters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L424">        private List _parameters = new ArrayList&lt;&gt;();</span>
 
         /**
          * Equals.
@@ -444,15 +432,15 @@ import org.junit.jupiter.api.extension.RegisterExtension;
          * @return true, if successful
          */
         private boolean equals(QuerySpec o) {
-<span class="pc bpc" id="L447" title="2 of 4 branches missed.">            if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {</span>
-<span class="nc" id="L448">                return false;</span>
+<span class="pc bpc" id="L435" title="2 of 4 branches missed.">            if (!_path.equals(o._path) || _parameters.size() != o._parameters.size()) {</span>
+<span class="nc" id="L436">                return false;</span>
             }
-<span class="fc bfc" id="L450" title="All 2 branches covered.">            for (Enumeration e = Collections.enumeration(o._parameters); e.hasMoreElements();) {</span>
-<span class="pc bpc" id="L451" title="1 of 2 branches missed.">                if (!_parameters.contains(e.nextElement())) {</span>
-<span class="nc" id="L452">                    return false;</span>
+<span class="fc bfc" id="L438" title="All 2 branches covered.">            for (Enumeration e = Collections.enumeration(o._parameters); e.hasMoreElements();) {</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">                if (!_parameters.contains(e.nextElement())) {</span>
+<span class="nc" id="L440">                    return false;</span>
                 }
             }
-<span class="fc" id="L455">            return true;</span>
+<span class="fc" id="L443">            return true;</span>
         }
     }
 }

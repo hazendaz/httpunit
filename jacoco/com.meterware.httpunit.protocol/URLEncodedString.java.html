@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>URLEncodedString.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.protocol</a> &gt; <span class="el_source">URLEncodedString.java</span></div><h1>URLEncodedString.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.protocol;
 
@@ -25,16 +13,16 @@ import java.nio.charset.Charset;
 /**
  * The Class URLEncodedString.
  */
-<span class="fc" id="L28">public class URLEncodedString implements ParameterProcessor {</span>
+<span class="fc" id="L16">public class URLEncodedString implements ParameterProcessor {</span>
 
     /** The Constant DEFAULT_BUFFER_SIZE. */
     public static final int DEFAULT_BUFFER_SIZE = 128;
 
     /** The buffer. */
-<span class="fc" id="L34">    private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);</span>
+<span class="fc" id="L22">    private StringBuilder _buffer = new StringBuilder(DEFAULT_BUFFER_SIZE);</span>
 
     /** The have parameters. */
-<span class="fc" id="L37">    private boolean _haveParameters = false;</span>
+<span class="fc" id="L25">    private boolean _haveParameters = false;</span>
 
     /**
      * Gets the string.
@@ -42,24 +30,24 @@ import java.nio.charset.Charset;
      * @return the string
      */
     public String getString() {
-<span class="fc" id="L45">        return _buffer.toString();</span>
+<span class="fc" id="L33">        return _buffer.toString();</span>
     }
 
     @Override
     public void addParameter(String name, String value, String characterSet) {
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (_haveParameters) {</span>
-<span class="fc" id="L51">            _buffer.append('&amp;');</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (_haveParameters) {</span>
+<span class="fc" id="L39">            _buffer.append('&amp;');</span>
         }
-<span class="fc" id="L53">        _buffer.append(encode(name, characterSet));</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L55">            _buffer.append('=').append(encode(value, characterSet));</span>
+<span class="fc" id="L41">        _buffer.append(encode(name, characterSet));</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L43">            _buffer.append('=').append(encode(value, characterSet));</span>
         }
-<span class="fc" id="L57">        _haveParameters = true;</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L45">        _haveParameters = true;</span>
+<span class="fc" id="L46">    }</span>
 
     @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) {
-<span class="nc" id="L62">        throw new RuntimeException(&quot;May not URL-encode a file upload request&quot;);</span>
+<span class="nc" id="L50">        throw new RuntimeException(&quot;May not URL-encode a file upload request&quot;);</span>
     }
 
     /**
@@ -73,7 +61,7 @@ import java.nio.charset.Charset;
      * @return the string
      */
     private String encode(String source, String characterSet) {
-<span class="fc" id="L76">        return URLEncoder.encode(source, Charset.forName(characterSet));</span>
+<span class="fc" id="L64">        return URLEncoder.encode(source, Charset.forName(characterSet));</span>
     }
 
 }

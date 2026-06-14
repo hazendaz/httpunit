@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitClient.java</span></div><h1>ServletUnitClient.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -26,12 +14,12 @@ import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
 import org.xml.sax.SAXException;
 
@@ -48,8 +36,8 @@ public class ServletUnitClient extends WebClient {
     /**
      * Instantiates a new servlet unit client.
      */
-<span class="nc" id="L51">    private ServletUnitClient() {</span>
-<span class="nc" id="L52">        throw new RuntimeException(&quot;ServletUnitClient constructor needs InvocationContextFactory parameter&quot;);</span>
+<span class="nc" id="L39">    private ServletUnitClient() {</span>
+<span class="nc" id="L40">        throw new RuntimeException(&quot;ServletUnitClient constructor needs InvocationContextFactory parameter&quot;);</span>
     }
 
     /**
@@ -61,7 +49,7 @@ public class ServletUnitClient extends WebClient {
      * @return the servlet unit client
      */
     public static ServletUnitClient newClient(InvocationContextFactory factory) {
-<span class="fc" id="L64">        return new ServletUnitClient(factory);</span>
+<span class="fc" id="L52">        return new ServletUnitClient(factory);</span>
     }
 
     /**
@@ -70,7 +58,7 @@ public class ServletUnitClient extends WebClient {
     @Override
     public void setProxyServer(String proxyHost, int proxyPort) {
         // not implemented
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Creates and returns a new invocation context from a GET request.
@@ -86,7 +74,7 @@ public class ServletUnitClient extends WebClient {
      *             the malformed URL exception
      */
     public InvocationContext newInvocation(String requestString) throws IOException, MalformedURLException {
-<span class="fc" id="L89">        return newInvocation(new GetMethodWebRequest(requestString));</span>
+<span class="fc" id="L77">        return newInvocation(new GetMethodWebRequest(requestString));</span>
     }
 
     /**
@@ -103,7 +91,7 @@ public class ServletUnitClient extends WebClient {
      *             the malformed URL exception
      */
     public InvocationContext newInvocation(WebRequest request) throws IOException, MalformedURLException {
-<span class="fc" id="L106">        return newInvocation(request, FrameSelector.TOP_FRAME);</span>
+<span class="fc" id="L94">        return newInvocation(request, FrameSelector.TOP_FRAME);</span>
     }
 
     /**
@@ -122,12 +110,12 @@ public class ServletUnitClient extends WebClient {
      *             the malformed URL exception
      */
     InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
-<span class="fc" id="L125">        ByteArrayOutputStream baos = getMessageBody(request);</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
-<span class="nc" id="L127">            throw new RuntimeException(&quot;newInvocation called with null _invocationContextFactory&quot;);</span>
+<span class="fc" id="L113">        ByteArrayOutputStream baos = getMessageBody(request);</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
+<span class="nc" id="L115">            throw new RuntimeException(&quot;newInvocation called with null _invocationContextFactory&quot;);</span>
         }
-<span class="fc" id="L129">        return _invocationContextFactory.newInvocation(this, frame, request, getHeaderFields(request.getURL()),</span>
-<span class="fc" id="L130">                baos.toByteArray());</span>
+<span class="fc" id="L117">        return _invocationContextFactory.newInvocation(this, frame, request, getHeaderFields(request.getURL()),</span>
+<span class="fc" id="L118">                baos.toByteArray());</span>
     }
 
     /**
@@ -142,9 +130,9 @@ public class ServletUnitClient extends WebClient {
      *             Signals that an I/O exception has occurred.
      */
     ByteArrayOutputStream getMessageBody(WebRequest request) throws IOException {
-<span class="fc" id="L145">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
-<span class="fc" id="L146">        writeMessageBody(request, baos);</span>
-<span class="fc" id="L147">        return baos;</span>
+<span class="fc" id="L133">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L134">        writeMessageBody(request, baos);</span>
+<span class="fc" id="L135">        return baos;</span>
     }
 
     /**
@@ -166,8 +154,8 @@ public class ServletUnitClient extends WebClient {
      */
     public WebResponse getResponse(InvocationContext invocation)
             throws MalformedURLException, IOException, SAXException {
-<span class="fc" id="L169">        updateMainWindow(invocation.getFrame(), invocation.getServletResponse());</span>
-<span class="fc" id="L170">        return getFrameContents(invocation.getFrame());</span>
+<span class="fc" id="L157">        updateMainWindow(invocation.getFrame(), invocation.getServletResponse());</span>
+<span class="fc" id="L158">        return getFrameContents(invocation.getFrame());</span>
     }
 
     /**
@@ -179,12 +167,12 @@ public class ServletUnitClient extends WebClient {
      * @return the session
      */
     public HttpSession getSession(boolean create) {
-<span class="fc" id="L182">        HttpSession session = _invocationContextFactory</span>
-<span class="fc" id="L183">                .getSession(getCookieValue(ServletUnitHttpSession.SESSION_COOKIE_NAME), create);</span>
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        if (session != null) {</span>
-<span class="fc" id="L185">            putCookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
+<span class="fc" id="L170">        HttpSession session = _invocationContextFactory</span>
+<span class="fc" id="L171">                .getSession(getCookieValue(ServletUnitHttpSession.SESSION_COOKIE_NAME), create);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (session != null) {</span>
+<span class="fc" id="L173">            putCookie(ServletUnitHttpSession.SESSION_COOKIE_NAME, session.getId());</span>
         }
-<span class="fc" id="L187">        return session;</span>
+<span class="fc" id="L175">        return session;</span>
     }
 
     // -------------------------------- WebClient methods --------------------------------------
@@ -197,11 +185,11 @@ public class ServletUnitClient extends WebClient {
             throws MalformedURLException, IOException {
 
         try {
-<span class="fc" id="L200">            InvocationContext invocation = newInvocation(request, targetFrame);</span>
-<span class="fc" id="L201">            invocation.service();</span>
-<span class="fc" id="L202">            return invocation.getServletResponse();</span>
-<span class="nc" id="L203">        } catch (ServletException e) {</span>
-<span class="nc" id="L204">            throw new HttpInternalErrorException(request.getURL(), e);</span>
+<span class="fc" id="L188">            InvocationContext invocation = newInvocation(request, targetFrame);</span>
+<span class="fc" id="L189">            invocation.service();</span>
+<span class="fc" id="L190">            return invocation.getServletResponse();</span>
+<span class="nc" id="L191">        } catch (ServletException e) {</span>
+<span class="nc" id="L192">            throw new HttpInternalErrorException(request.getURL(), e);</span>
         }
 
     }
@@ -219,11 +207,11 @@ public class ServletUnitClient extends WebClient {
      * @param factory
      *            the factory
      */
-<span class="fc" id="L222">    private ServletUnitClient(InvocationContextFactory factory) {</span>
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        if (factory == null) {</span>
-<span class="nc" id="L224">            throw new RuntimeException(&quot;constructor for ServletUnitClient called with null factory parameter&quot;);</span>
+<span class="fc" id="L210">    private ServletUnitClient(InvocationContextFactory factory) {</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (factory == null) {</span>
+<span class="nc" id="L212">            throw new RuntimeException(&quot;constructor for ServletUnitClient called with null factory parameter&quot;);</span>
         }
-<span class="fc" id="L226">        _invocationContextFactory = factory;</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L214">        _invocationContextFactory = factory;</span>
+<span class="fc" id="L215">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

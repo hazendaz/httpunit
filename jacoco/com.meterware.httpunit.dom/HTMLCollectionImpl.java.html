@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLCollectionImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLCollectionImpl.java</span></div><h1>HTMLCollectionImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -29,7 +17,7 @@ import org.w3c.dom.html.HTMLElement;
 /**
  * The Class HTMLCollectionImpl.
  */
-<span class="fc" id="L32">public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {</span>
+<span class="fc" id="L20">public class HTMLCollectionImpl extends ScriptableObject implements HTMLCollection {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -46,9 +34,9 @@ import org.w3c.dom.html.HTMLElement;
      * @return the HTML collection impl
      */
     public static HTMLCollectionImpl createHTMLCollectionImpl(NodeList list) {
-<span class="fc" id="L49">        HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();</span>
-<span class="fc" id="L50">        htmlCollection.initialize(list);</span>
-<span class="fc" id="L51">        return htmlCollection;</span>
+<span class="fc" id="L37">        HTMLCollectionImpl htmlCollection = new HTMLCollectionImpl();</span>
+<span class="fc" id="L38">        htmlCollection.initialize(list);</span>
+<span class="fc" id="L39">        return htmlCollection;</span>
     }
 
     /**
@@ -58,8 +46,8 @@ import org.w3c.dom.html.HTMLElement;
      *            the list
      */
     private void initialize(NodeList list) {
-<span class="fc" id="L61">        _list = list;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L49">        _list = list;</span>
+<span class="fc" id="L50">    }</span>
 
     // ------------------------------------------ HTMLCollection methods
     // --------------------------------------------------
@@ -71,7 +59,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public int getLength() {
-<span class="fc" id="L74">        return _list.getLength();</span>
+<span class="fc" id="L62">        return _list.getLength();</span>
     }
 
     /**
@@ -84,7 +72,7 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public Node item(int index) {
-<span class="fc" id="L87">        return _list.item(index);</span>
+<span class="fc" id="L75">        return _list.item(index);</span>
     }
 
     /**
@@ -97,24 +85,24 @@ import org.w3c.dom.html.HTMLElement;
      */
     @Override
     public Node namedItem(String name) {
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (name == null) {</span>
-<span class="nc" id="L101">            return null;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L89">            return null;</span>
         }
 
-<span class="fc" id="L104">        Node nodeByName = null;</span>
-<span class="pc bpc" id="L105" title="1 of 4 branches missed.">        for (int i = 0; null == nodeByName &amp;&amp; i &lt; getLength(); i++) {</span>
-<span class="fc" id="L106">            Node node = item(i);</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">            if (!(node instanceof HTMLElementImpl)) {</span>
-<span class="nc" id="L108">                continue;</span>
+<span class="fc" id="L92">        Node nodeByName = null;</span>
+<span class="pc bpc" id="L93" title="1 of 4 branches missed.">        for (int i = 0; null == nodeByName &amp;&amp; i &lt; getLength(); i++) {</span>
+<span class="fc" id="L94">            Node node = item(i);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (!(node instanceof HTMLElementImpl)) {</span>
+<span class="nc" id="L96">                continue;</span>
             }
-<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElement) node).getId())) {</span>
-<span class="fc" id="L111">                return node;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElement) node).getId())) {</span>
+<span class="fc" id="L99">                return node;</span>
             }
-<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault(&quot;name&quot;))) {</span>
-<span class="fc" id="L114">                nodeByName = node;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            if (name.equalsIgnoreCase(((HTMLElementImpl) node).getAttributeWithNoDefault(&quot;name&quot;))) {</span>
+<span class="fc" id="L102">                nodeByName = node;</span>
             }
         }
-<span class="fc" id="L117">        return nodeByName;</span>
+<span class="fc" id="L105">        return nodeByName;</span>
     }
 
     // ------------------------------------------ ScriptableObject methods
@@ -122,31 +110,31 @@ import org.w3c.dom.html.HTMLElement;
 
     @Override
     public String getClassName() {
-<span class="nc" id="L125">        return getClass().getName();</span>
+<span class="nc" id="L113">        return getClass().getName();</span>
     }
 
     @Override
     public Object get(String propertyName, Scriptable scriptable) {
-<span class="fc" id="L130">        Object result = super.get(propertyName, scriptable);</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
-<span class="nc" id="L132">            return result;</span>
+<span class="fc" id="L118">        Object result = super.get(propertyName, scriptable);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (result != NOT_FOUND) {</span>
+<span class="nc" id="L120">            return result;</span>
         }
 
-<span class="fc" id="L135">        Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (namedProperty != NOT_FOUND) {</span>
-<span class="fc" id="L137">            return namedProperty;</span>
+<span class="fc" id="L123">        Object namedProperty = ScriptingSupport.getNamedProperty(this, propertyName, scriptable);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (namedProperty != NOT_FOUND) {</span>
+<span class="fc" id="L125">            return namedProperty;</span>
         }
 
-<span class="fc" id="L140">        Node namedItem = namedItem(propertyName);</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        return namedItem == null ? NOT_FOUND : namedItem;</span>
+<span class="fc" id="L128">        Node namedItem = namedItem(propertyName);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        return namedItem == null ? NOT_FOUND : namedItem;</span>
     }
 
     @Override
     public Object get(int index, Scriptable start) {
-<span class="pc bpc" id="L146" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= _list.getLength()) {</span>
-<span class="nc" id="L147">            return NOT_FOUND;</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= _list.getLength()) {</span>
+<span class="nc" id="L135">            return NOT_FOUND;</span>
         }
-<span class="fc" id="L149">        return item(index);</span>
+<span class="fc" id="L137">        return item(index);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">HttpRequest.java</span></div><h1>HttpRequest.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.pseudoserver;
 
@@ -53,21 +41,21 @@ public class HttpRequest extends ReceivedHttpMessage {
      *             Signals that an I/O exception has occurred.
      */
     HttpRequest(InputStream inputStream) throws IOException {
-<span class="fc" id="L56">        super(inputStream);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L44">        super(inputStream);</span>
+<span class="fc" id="L45">    }</span>
 
     @Override
     void interpretMessageHeader(String messageHeader) {
-<span class="fc" id="L61">        StringTokenizer st = new StringTokenizer(messageHeader);</span>
-<span class="fc" id="L62">        _command = st.nextToken();</span>
-<span class="fc" id="L63">        _uri = st.nextToken();</span>
-<span class="fc" id="L64">        _protocol = st.nextToken();</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L49">        StringTokenizer st = new StringTokenizer(messageHeader);</span>
+<span class="fc" id="L50">        _command = st.nextToken();</span>
+<span class="fc" id="L51">        _uri = st.nextToken();</span>
+<span class="fc" id="L52">        _protocol = st.nextToken();</span>
+<span class="fc" id="L53">    }</span>
 
     @Override
     void appendMessageHeader(StringBuilder sb) {
-<span class="fc" id="L69">        sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L57">        sb.append(_command).append(' ').append(_uri).append(' ').append(_protocol);</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * Returns the command associated with this request.
@@ -75,7 +63,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the command
      */
     public String getCommand() {
-<span class="fc" id="L78">        return _command;</span>
+<span class="fc" id="L66">        return _command;</span>
     }
 
     /**
@@ -84,7 +72,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the uri
      */
     public String getURI() {
-<span class="fc" id="L87">        return _uri;</span>
+<span class="fc" id="L75">        return _uri;</span>
     }
 
     /**
@@ -93,7 +81,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the protocol
      */
     public String getProtocol() {
-<span class="fc" id="L96">        return _protocol;</span>
+<span class="fc" id="L84">        return _protocol;</span>
     }
 
     /**
@@ -105,14 +93,14 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the parameter
      */
     public String[] getParameter(String name) {
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (_parameters == null) {</span>
-<span class="pc bpc" id="L109" title="1 of 4 branches missed.">            if (_command.equalsIgnoreCase(&quot;GET&quot;) || _command.equalsIgnoreCase(&quot;HEAD&quot;)) {</span>
-<span class="fc" id="L110">                _parameters = readParameters(getParameterString(_uri));</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (_parameters == null) {</span>
+<span class="pc bpc" id="L97" title="1 of 4 branches missed.">            if (_command.equalsIgnoreCase(&quot;GET&quot;) || _command.equalsIgnoreCase(&quot;HEAD&quot;)) {</span>
+<span class="fc" id="L98">                _parameters = readParameters(getParameterString(_uri));</span>
             } else {
-<span class="fc" id="L112">                _parameters = readParameters(new String(getBody()));</span>
+<span class="fc" id="L100">                _parameters = readParameters(new String(getBody()));</span>
             }
         }
-<span class="fc" id="L115">        return (String[]) _parameters.get(name);</span>
+<span class="fc" id="L103">        return (String[]) _parameters.get(name);</span>
     }
 
     /**
@@ -124,7 +112,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the parameter string
      */
     private String getParameterString(String uri) {
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        return uri.indexOf('?') &lt; 0 ? &quot;&quot; : uri.substring(uri.indexOf('?') + 1);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        return uri.indexOf('?') &lt; 0 ? &quot;&quot; : uri.substring(uri.indexOf('?') + 1);</span>
     }
 
     /**
@@ -133,13 +121,13 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return true, if successful
      */
     boolean wantsKeepAlive() {
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (&quot;Keep-alive&quot;.equalsIgnoreCase(getConnectionHeader())) {</span>
-<span class="fc" id="L137">            return true;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (&quot;Keep-alive&quot;.equalsIgnoreCase(getConnectionHeader())) {</span>
+<span class="fc" id="L125">            return true;</span>
         }
-<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (_protocol.equals(&quot;HTTP/1.1&quot;)) {</span>
-<span class="fc bfc" id="L140" title="All 2 branches covered.">            return !&quot;Close&quot;.equalsIgnoreCase(getConnectionHeader());</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (_protocol.equals(&quot;HTTP/1.1&quot;)) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            return !&quot;Close&quot;.equalsIgnoreCase(getConnectionHeader());</span>
         }
-<span class="fc" id="L142">        return false;</span>
+<span class="fc" id="L130">        return false;</span>
     }
 
     /**
@@ -151,17 +139,17 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the hashtable
      */
     private Hashtable readParameters(String content) {
-<span class="fc" id="L154">        Hashtable parameters = new Hashtable&lt;&gt;();</span>
-<span class="pc bpc" id="L155" title="2 of 4 branches missed.">        if (content == null || content.trim().isEmpty()) {</span>
-<span class="nc" id="L156">            return parameters;</span>
+<span class="fc" id="L142">        Hashtable parameters = new Hashtable&lt;&gt;();</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">        if (content == null || content.trim().isEmpty()) {</span>
+<span class="nc" id="L144">            return parameters;</span>
         }
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (String spec : content.split(&quot;&amp;&quot;)) {</span>
-<span class="fc" id="L160">            String[] split = spec.split(&quot;=&quot;);</span>
-<span class="fc" id="L161">            addParameter(parameters, HttpUnitUtils.decode(split[0]),</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">                    split.length &lt; 2 ? null : HttpUnitUtils.decode(split[1]));</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (String spec : content.split(&quot;&amp;&quot;)) {</span>
+<span class="fc" id="L148">            String[] split = spec.split(&quot;=&quot;);</span>
+<span class="fc" id="L149">            addParameter(parameters, HttpUnitUtils.decode(split[0]),</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">                    split.length &lt; 2 ? null : HttpUnitUtils.decode(split[1]));</span>
         }
-<span class="fc" id="L164">        return parameters;</span>
+<span class="fc" id="L152">        return parameters;</span>
     }
 
     /**
@@ -175,16 +163,16 @@ public class HttpRequest extends ReceivedHttpMessage {
      *            the value
      */
     private void addParameter(Hashtable parameters, String name, String value) {
-<span class="fc" id="L178">        String[] oldValues = (String[]) parameters.get(name);</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (oldValues == null) {</span>
-<span class="fc" id="L180">            parameters.put(name, new String[] { value });</span>
+<span class="fc" id="L166">        String[] oldValues = (String[]) parameters.get(name);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if (oldValues == null) {</span>
+<span class="fc" id="L168">            parameters.put(name, new String[] { value });</span>
         } else {
-<span class="nc" id="L182">            String[] values = new String[oldValues.length + 1];</span>
-<span class="nc" id="L183">            System.arraycopy(oldValues, 0, values, 0, oldValues.length);</span>
-<span class="nc" id="L184">            values[oldValues.length] = value;</span>
-<span class="nc" id="L185">            parameters.put(name, values);</span>
+<span class="nc" id="L170">            String[] values = new String[oldValues.length + 1];</span>
+<span class="nc" id="L171">            System.arraycopy(oldValues, 0, values, 0, oldValues.length);</span>
+<span class="nc" id="L172">            values[oldValues.length] = value;</span>
+<span class="nc" id="L173">            parameters.put(name, values);</span>
         }
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Gets the connection header.
@@ -192,7 +180,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @return the connection header
      */
     private String getConnectionHeader() {
-<span class="fc" id="L195">        return getHeader(&quot;Connection&quot;);</span>
+<span class="fc" id="L183">        return getHeader(&quot;Connection&quot;);</span>
     }
 
 }

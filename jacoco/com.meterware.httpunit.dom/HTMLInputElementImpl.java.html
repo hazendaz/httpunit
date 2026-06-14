@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLInputElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLInputElementImpl.java</span></div><h1>HTMLInputElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -32,7 +20,7 @@ import org.w3c.dom.html.HTMLInputElement;
 /**
  * The Class HTMLInputElementImpl.
  */
-<span class="fc" id="L35">public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {</span>
+<span class="fc" id="L23">public class HTMLInputElementImpl extends HTMLControl implements HTMLInputElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -48,7 +36,7 @@ import org.w3c.dom.html.HTMLInputElement;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L51">        return new HTMLInputElementImpl();</span>
+<span class="fc" id="L39">        return new HTMLInputElementImpl();</span>
     }
 
     /**
@@ -56,28 +44,28 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void blur() {
-<span class="nc" id="L59">        handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L47">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L48">    }</span>
 
     /**
      * simulate focus;.
      */
     @Override
     public void focus() {
-<span class="nc" id="L67">        handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L55">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L56">    }</span>
 
     @Override
     public void doClickAction() {
-<span class="fc" id="L72">        getBehavior().click();</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L60">        getBehavior().click();</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Select.
      */
     @Override
     public void select() {
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Gets the accept.
@@ -86,7 +74,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getAccept() {
-<span class="fc" id="L89">        return getAttributeWithNoDefault(&quot;accept&quot;);</span>
+<span class="fc" id="L77">        return getAttributeWithNoDefault(&quot;accept&quot;);</span>
     }
 
     /**
@@ -96,7 +84,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L99">        return getAttributeWithNoDefault(&quot;accessKey&quot;);</span>
+<span class="fc" id="L87">        return getAttributeWithNoDefault(&quot;accessKey&quot;);</span>
     }
 
     /**
@@ -106,7 +94,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getAlign() {
-<span class="fc" id="L109">        return getAttributeWithDefault(&quot;align&quot;, &quot;bottom&quot;);</span>
+<span class="fc" id="L97">        return getAttributeWithDefault(&quot;align&quot;, &quot;bottom&quot;);</span>
     }
 
     /**
@@ -116,7 +104,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getAlt() {
-<span class="fc" id="L119">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+<span class="fc" id="L107">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
     }
 
     /**
@@ -126,7 +114,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public boolean getChecked() {
-<span class="fc" id="L129">        return getBehavior().getChecked();</span>
+<span class="fc" id="L117">        return getBehavior().getChecked();</span>
     }
 
     /**
@@ -136,7 +124,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public boolean getDefaultChecked() {
-<span class="fc" id="L139">        return getBooleanAttribute(&quot;checked&quot;);</span>
+<span class="fc" id="L127">        return getBooleanAttribute(&quot;checked&quot;);</span>
     }
 
     /**
@@ -146,7 +134,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getDefaultValue() {
-<span class="fc" id="L149">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
+<span class="fc" id="L137">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
     }
 
     /**
@@ -156,7 +144,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public int getMaxLength() {
-<span class="fc" id="L159">        return getIntegerAttribute(&quot;maxlength&quot;);</span>
+<span class="fc" id="L147">        return getIntegerAttribute(&quot;maxlength&quot;);</span>
     }
 
     /**
@@ -166,7 +154,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getSize() {
-<span class="fc" id="L169">        return getAttributeWithNoDefault(&quot;size&quot;);</span>
+<span class="fc" id="L157">        return getAttributeWithNoDefault(&quot;size&quot;);</span>
     }
 
     /**
@@ -176,7 +164,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getSrc() {
-<span class="fc" id="L179">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+<span class="fc" id="L167">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
     }
 
     /**
@@ -186,7 +174,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getUseMap() {
-<span class="fc" id="L189">        return getAttributeWithNoDefault(&quot;useMap&quot;);</span>
+<span class="fc" id="L177">        return getAttributeWithNoDefault(&quot;useMap&quot;);</span>
     }
 
     /**
@@ -197,8 +185,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setAccept(String accept) {
-<span class="fc" id="L200">        setAttribute(&quot;accept&quot;, accept);</span>
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L188">        setAttribute(&quot;accept&quot;, accept);</span>
+<span class="fc" id="L189">    }</span>
 
     /**
      * Sets the access key.
@@ -208,8 +196,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L211">        setAttribute(&quot;accessKey&quot;, accessKey);</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L199">        setAttribute(&quot;accessKey&quot;, accessKey);</span>
+<span class="fc" id="L200">    }</span>
 
     /**
      * Sets the align.
@@ -219,8 +207,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L222">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L210">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Sets the alt.
@@ -230,8 +218,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setAlt(String alt) {
-<span class="fc" id="L233">        setAttribute(&quot;alt&quot;, alt);</span>
-<span class="fc" id="L234">    }</span>
+<span class="fc" id="L221">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L222">    }</span>
 
     /**
      * Sets the checked.
@@ -241,8 +229,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setChecked(boolean checked) {
-<span class="fc" id="L244">        getBehavior().setChecked(checked);</span>
-<span class="fc" id="L245">    }</span>
+<span class="fc" id="L232">        getBehavior().setChecked(checked);</span>
+<span class="fc" id="L233">    }</span>
 
     /**
      * Sets the default checked.
@@ -252,8 +240,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setDefaultChecked(boolean defaultChecked) {
-<span class="fc" id="L255">        setAttribute(&quot;checked&quot;, defaultChecked);</span>
-<span class="fc" id="L256">    }</span>
+<span class="fc" id="L243">        setAttribute(&quot;checked&quot;, defaultChecked);</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Sets the default value.
@@ -263,8 +251,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setDefaultValue(String defaultValue) {
-<span class="fc" id="L266">        setAttribute(&quot;value&quot;, defaultValue);</span>
-<span class="fc" id="L267">    }</span>
+<span class="fc" id="L254">        setAttribute(&quot;value&quot;, defaultValue);</span>
+<span class="fc" id="L255">    }</span>
 
     /**
      * Sets the max length.
@@ -274,8 +262,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setMaxLength(int maxLength) {
-<span class="fc" id="L277">        setAttribute(&quot;maxlength&quot;, maxLength);</span>
-<span class="fc" id="L278">    }</span>
+<span class="fc" id="L265">        setAttribute(&quot;maxlength&quot;, maxLength);</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * Sets the size.
@@ -285,8 +273,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setSize(String size) {
-<span class="fc" id="L288">        setAttribute(&quot;size&quot;, size);</span>
-<span class="fc" id="L289">    }</span>
+<span class="fc" id="L276">        setAttribute(&quot;size&quot;, size);</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Sets the src.
@@ -296,8 +284,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setSrc(String src) {
-<span class="fc" id="L299">        setAttribute(&quot;src&quot;, src);</span>
-<span class="fc" id="L300">    }</span>
+<span class="fc" id="L287">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L288">    }</span>
 
     /**
      * Sets the use map.
@@ -307,8 +295,8 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setUseMap(String useMap) {
-<span class="fc" id="L310">        setAttribute(&quot;useMap&quot;, useMap);</span>
-<span class="fc" id="L311">    }</span>
+<span class="fc" id="L298">        setAttribute(&quot;useMap&quot;, useMap);</span>
+<span class="fc" id="L299">    }</span>
 
     /**
      * Gets the value.
@@ -317,7 +305,7 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public String getValue() {
-<span class="fc" id="L320">        return getBehavior().getValue();</span>
+<span class="fc" id="L308">        return getBehavior().getValue();</span>
     }
 
     /**
@@ -328,31 +316,31 @@ import org.w3c.dom.html.HTMLInputElement;
      */
     @Override
     public void setValue(String value) {
-<span class="fc" id="L331">        getBehavior().setValue(value);</span>
-<span class="fc" id="L332">    }</span>
+<span class="fc" id="L319">        getBehavior().setValue(value);</span>
+<span class="fc" id="L320">    }</span>
 
     @Override
     public void reset() {
-<span class="fc" id="L336">        getBehavior().reset();</span>
-<span class="fc" id="L337">    }</span>
+<span class="fc" id="L324">        getBehavior().reset();</span>
+<span class="fc" id="L325">    }</span>
 
     @Override
     public void setAttribute(String name, String value) throws DOMException {
-<span class="fc" id="L341">        super.setAttribute(name, value);</span>
-<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (name.equalsIgnoreCase(&quot;type&quot;)) {</span>
-<span class="fc" id="L343">            selectBehavior(getType().toLowerCase(Locale.ENGLISH));</span>
+<span class="fc" id="L329">        super.setAttribute(name, value);</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        if (name.equalsIgnoreCase(&quot;type&quot;)) {</span>
+<span class="fc" id="L331">            selectBehavior(getType().toLowerCase(Locale.ENGLISH));</span>
         }
-<span class="fc" id="L345">    }</span>
+<span class="fc" id="L333">    }</span>
 
     @Override
     void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L349">        getBehavior().addValues(getName(), processor, characterSet);</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L337">        getBehavior().addValues(getName(), processor, characterSet);</span>
+<span class="fc" id="L338">    }</span>
 
     @Override
     public void silenceSubmitButton() {
-<span class="fc" id="L354">        getBehavior().silenceSubmitButton();</span>
-<span class="fc" id="L355">    }</span>
+<span class="fc" id="L342">        getBehavior().silenceSubmitButton();</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Sets the state.
@@ -361,8 +349,8 @@ import org.w3c.dom.html.HTMLInputElement;
      *            the new state
      */
     void setState(boolean checked) {
-<span class="fc bfc" id="L364" title="All 2 branches covered.">        _checked = checked ? Boolean.TRUE : Boolean.FALSE;</span>
-<span class="fc" id="L365">    }</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">        _checked = checked ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc" id="L353">    }</span>
 
     /**
      * Equals.
@@ -375,7 +363,7 @@ import org.w3c.dom.html.HTMLInputElement;
      * @return true, if successful
      */
     static boolean equals(String s1, String s2) {
-<span class="pc bpc" id="L378" title="1 of 4 branches missed.">        return s1 == null ? s2 == null : s1.equals(s2);</span>
+<span class="pc bpc" id="L366" title="1 of 4 branches missed.">        return s1 == null ? s2 == null : s1.equals(s2);</span>
     }
 
     /**
@@ -385,20 +373,20 @@ import org.w3c.dom.html.HTMLInputElement;
      *            the type
      */
     private void selectBehavior(String type) {
-<span class="pc bpc" id="L388" title="1 of 8 branches missed.">        if (type == null || type.equals(&quot;text&quot;) || type.equals(&quot;password&quot;) || type.equals(&quot;hidden&quot;)) {</span>
-<span class="fc" id="L389">            _behavior = new EditableTextBehavior(this);</span>
-<span class="fc bfc" id="L390" title="All 2 branches covered.">        } else if (type.equals(&quot;checkbox&quot;)) {</span>
-<span class="fc" id="L391">            _behavior = new CheckboxBehavior(this);</span>
-<span class="fc bfc" id="L392" title="All 2 branches covered.">        } else if (type.equals(&quot;radio&quot;)) {</span>
-<span class="fc" id="L393">            _behavior = new RadioButtonBehavior(this);</span>
-<span class="fc bfc" id="L394" title="All 2 branches covered.">        } else if (type.equals(&quot;reset&quot;)) {</span>
-<span class="fc" id="L395">            _behavior = new ResetButtonBehavior(this);</span>
-<span class="fc bfc" id="L396" title="All 2 branches covered.">        } else if (type.equals(&quot;submit&quot;)) {</span>
-<span class="fc" id="L397">            _behavior = new SubmitButtonBehavior(this);</span>
+<span class="pc bpc" id="L376" title="1 of 8 branches missed.">        if (type == null || type.equals(&quot;text&quot;) || type.equals(&quot;password&quot;) || type.equals(&quot;hidden&quot;)) {</span>
+<span class="fc" id="L377">            _behavior = new EditableTextBehavior(this);</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        } else if (type.equals(&quot;checkbox&quot;)) {</span>
+<span class="fc" id="L379">            _behavior = new CheckboxBehavior(this);</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        } else if (type.equals(&quot;radio&quot;)) {</span>
+<span class="fc" id="L381">            _behavior = new RadioButtonBehavior(this);</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        } else if (type.equals(&quot;reset&quot;)) {</span>
+<span class="fc" id="L383">            _behavior = new ResetButtonBehavior(this);</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        } else if (type.equals(&quot;submit&quot;)) {</span>
+<span class="fc" id="L385">            _behavior = new SubmitButtonBehavior(this);</span>
         } else {
-<span class="fc" id="L399">            _behavior = new DefaultBehavior(this);</span>
+<span class="fc" id="L387">            _behavior = new DefaultBehavior(this);</span>
         }
-<span class="fc" id="L401">    }</span>
+<span class="fc" id="L389">    }</span>
 
     /**
      * Gets the behavior.
@@ -406,10 +394,10 @@ import org.w3c.dom.html.HTMLInputElement;
      * @return the behavior
      */
     private TypeSpecificBehavior getBehavior() {
-<span class="fc bfc" id="L409" title="All 2 branches covered.">        if (_behavior == null) {</span>
-<span class="fc" id="L410">            selectBehavior(getType().toLowerCase(Locale.ENGLISH));</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (_behavior == null) {</span>
+<span class="fc" id="L398">            selectBehavior(getType().toLowerCase(Locale.ENGLISH));</span>
         }
-<span class="fc" id="L412">        return _behavior;</span>
+<span class="fc" id="L400">        return _behavior;</span>
     }
 
     /**
@@ -492,41 +480,41 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L495">        public DefaultBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L496">            _element = element;</span>
-<span class="fc" id="L497">        }</span>
+<span class="fc" id="L483">        public DefaultBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L484">            _element = element;</span>
+<span class="fc" id="L485">        }</span>
 
         @Override
         public String getValue() {
-<span class="fc bfc" id="L501" title="All 2 branches covered.">            return _value != null ? _value : getDefaultValue();</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">            return _value != null ? _value : getDefaultValue();</span>
         }
 
         @Override
         public void setValue(String value) {
-<span class="fc bfc" id="L506" title="All 2 branches covered.">            if (HTMLInputElementImpl.equals(value, _value)) {</span>
-<span class="fc" id="L507">                return;</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">            if (HTMLInputElementImpl.equals(value, _value)) {</span>
+<span class="fc" id="L495">                return;</span>
             }
 
-<span class="fc" id="L510">            _value = value;</span>
-<span class="fc" id="L511">            reportPropertyChanged(&quot;value&quot;);</span>
-<span class="fc" id="L512">        }</span>
+<span class="fc" id="L498">            _value = value;</span>
+<span class="fc" id="L499">            reportPropertyChanged(&quot;value&quot;);</span>
+<span class="fc" id="L500">        }</span>
 
         @Override
         public boolean getChecked() {
-<span class="nc" id="L516">            return getDefaultChecked();</span>
+<span class="nc" id="L504">            return getDefaultChecked();</span>
         }
 
         @Override
         public void setChecked(boolean checked) {
-<span class="nc" id="L521">        }</span>
+<span class="nc" id="L509">        }</span>
 
         @Override
         public void reset() {
-<span class="fc" id="L525">        }</span>
+<span class="fc" id="L513">        }</span>
 
         @Override
         public void click() {
-<span class="nc" id="L529">        }</span>
+<span class="nc" id="L517">        }</span>
 
         /**
          * Report property changed.
@@ -535,17 +523,17 @@ import org.w3c.dom.html.HTMLInputElement;
          *            the property name
          */
         protected void reportPropertyChanged(String propertyName) {
-<span class="fc" id="L538">            _element.reportPropertyChanged(propertyName);</span>
-<span class="fc" id="L539">        }</span>
+<span class="fc" id="L526">            _element.reportPropertyChanged(propertyName);</span>
+<span class="fc" id="L527">        }</span>
 
         @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L543">            processor.addParameter(name, getValue(), characterSet);</span>
-<span class="fc" id="L544">        }</span>
+<span class="fc" id="L531">            processor.addParameter(name, getValue(), characterSet);</span>
+<span class="fc" id="L532">        }</span>
 
         @Override
         public void silenceSubmitButton() {
-<span class="fc" id="L548">        }</span>
+<span class="fc" id="L536">        }</span>
     }
 
     /**
@@ -559,14 +547,14 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L562">        public EditableTextBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L563">            super(element);</span>
-<span class="fc" id="L564">        }</span>
+<span class="fc" id="L550">        public EditableTextBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L551">            super(element);</span>
+<span class="fc" id="L552">        }</span>
 
         @Override
         public void reset() {
-<span class="fc" id="L568">            _value = null;</span>
-<span class="fc" id="L569">        }</span>
+<span class="fc" id="L556">            _value = null;</span>
+<span class="fc" id="L557">        }</span>
 
     }
 
@@ -584,28 +572,28 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L587">        public SubmitButtonBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L588">            super(element);</span>
-<span class="fc" id="L589">        }</span>
+<span class="fc" id="L575">        public SubmitButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L576">            super(element);</span>
+<span class="fc" id="L577">        }</span>
 
         @Override
         public void click() {
-<span class="fc" id="L593">            _sendWithSubmit = true;</span>
-<span class="fc" id="L594">            ((HTMLFormElementImpl) getForm()).doSubmitAction();</span>
-<span class="fc" id="L595">        }</span>
+<span class="fc" id="L581">            _sendWithSubmit = true;</span>
+<span class="fc" id="L582">            ((HTMLFormElementImpl) getForm()).doSubmitAction();</span>
+<span class="fc" id="L583">        }</span>
 
         @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc bfc" id="L599" title="All 2 branches covered.">            if (!_sendWithSubmit) {</span>
-<span class="fc" id="L600">                return;</span>
+<span class="fc bfc" id="L587" title="All 2 branches covered.">            if (!_sendWithSubmit) {</span>
+<span class="fc" id="L588">                return;</span>
             }
-<span class="fc" id="L602">            super.addValues(name, processor, characterSet);</span>
-<span class="fc" id="L603">        }</span>
+<span class="fc" id="L590">            super.addValues(name, processor, characterSet);</span>
+<span class="fc" id="L591">        }</span>
 
         @Override
         public void silenceSubmitButton() {
-<span class="fc" id="L607">            _sendWithSubmit = false;</span>
-<span class="fc" id="L608">        }</span>
+<span class="fc" id="L595">            _sendWithSubmit = false;</span>
+<span class="fc" id="L596">        }</span>
 
     }
 
@@ -620,36 +608,36 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L623">        public CheckboxBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L624">            super(element);</span>
-<span class="fc" id="L625">        }</span>
+<span class="fc" id="L611">        public CheckboxBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L612">            super(element);</span>
+<span class="fc" id="L613">        }</span>
 
         @Override
         public boolean getChecked() {
-<span class="fc bfc" id="L629" title="All 2 branches covered.">            return _checked != null ? _checked.booleanValue() : getDefaultChecked();</span>
+<span class="fc bfc" id="L617" title="All 2 branches covered.">            return _checked != null ? _checked.booleanValue() : getDefaultChecked();</span>
         }
 
         @Override
         public void setChecked(boolean checked) {
-<span class="fc" id="L634">            setState(checked);</span>
-<span class="fc" id="L635">        }</span>
+<span class="fc" id="L622">            setState(checked);</span>
+<span class="fc" id="L623">        }</span>
 
         @Override
         public void reset() {
-<span class="fc" id="L639">            _checked = null;</span>
-<span class="fc" id="L640">        }</span>
+<span class="fc" id="L627">            _checked = null;</span>
+<span class="fc" id="L628">        }</span>
 
         @Override
         public void click() {
-<span class="fc bfc" id="L644" title="All 2 branches covered.">            setChecked(!getChecked());</span>
-<span class="fc" id="L645">        }</span>
+<span class="fc bfc" id="L632" title="All 2 branches covered.">            setChecked(!getChecked());</span>
+<span class="fc" id="L633">        }</span>
 
         @Override
         public void addValues(String name, ParameterProcessor processor, String characterSet) throws IOException {
-<span class="pc bpc" id="L649" title="1 of 4 branches missed.">            if (!getDisabled() &amp;&amp; getChecked()) {</span>
-<span class="fc" id="L650">                processor.addParameter(name, getFormValue(), characterSet);</span>
+<span class="pc bpc" id="L637" title="1 of 4 branches missed.">            if (!getDisabled() &amp;&amp; getChecked()) {</span>
+<span class="fc" id="L638">                processor.addParameter(name, getFormValue(), characterSet);</span>
             }
-<span class="fc" id="L652">        }</span>
+<span class="fc" id="L640">        }</span>
 
         /**
          * Gets the form value.
@@ -657,7 +645,7 @@ import org.w3c.dom.html.HTMLInputElement;
          * @return the form value
          */
         private String getFormValue() {
-<span class="fc bfc" id="L660" title="All 2 branches covered.">            return _value == null ? &quot;on&quot; : _value;</span>
+<span class="fc bfc" id="L648" title="All 2 branches covered.">            return _value == null ? &quot;on&quot; : _value;</span>
         }
     }
 
@@ -672,32 +660,32 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L675">        public RadioButtonBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L676">            super(element);</span>
-<span class="fc" id="L677">        }</span>
+<span class="fc" id="L663">        public RadioButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L664">            super(element);</span>
+<span class="fc" id="L665">        }</span>
 
         @Override
         public void setChecked(boolean checked) {
-<span class="fc bfc" id="L681" title="All 2 branches covered.">            if (checked) {</span>
-<span class="fc" id="L682">                HTMLCollection elements = getForm().getElements();</span>
-<span class="fc bfc" id="L683" title="All 2 branches covered.">                for (int i = 0; i &lt; elements.getLength(); i++) {</span>
-<span class="fc" id="L684">                    Node node = elements.item(i);</span>
-<span class="fc bfc" id="L685" title="All 2 branches covered.">                    if (!(node instanceof HTMLInputElementImpl)) {</span>
-<span class="fc" id="L686">                        continue;</span>
+<span class="fc bfc" id="L669" title="All 2 branches covered.">            if (checked) {</span>
+<span class="fc" id="L670">                HTMLCollection elements = getForm().getElements();</span>
+<span class="fc bfc" id="L671" title="All 2 branches covered.">                for (int i = 0; i &lt; elements.getLength(); i++) {</span>
+<span class="fc" id="L672">                    Node node = elements.item(i);</span>
+<span class="fc bfc" id="L673" title="All 2 branches covered.">                    if (!(node instanceof HTMLInputElementImpl)) {</span>
+<span class="fc" id="L674">                        continue;</span>
                     }
-<span class="fc" id="L688">                    HTMLInputElementImpl input = (HTMLInputElementImpl) node;</span>
-<span class="pc bpc" id="L689" title="1 of 4 branches missed.">                    if (getName().equals(input.getName()) &amp;&amp; input.getType().equalsIgnoreCase(&quot;radio&quot;)) {</span>
-<span class="fc" id="L690">                        input.setState(false);</span>
+<span class="fc" id="L676">                    HTMLInputElementImpl input = (HTMLInputElementImpl) node;</span>
+<span class="pc bpc" id="L677" title="1 of 4 branches missed.">                    if (getName().equals(input.getName()) &amp;&amp; input.getType().equalsIgnoreCase(&quot;radio&quot;)) {</span>
+<span class="fc" id="L678">                        input.setState(false);</span>
                     }
                 }
             }
-<span class="fc" id="L694">            setState(checked);</span>
-<span class="fc" id="L695">        }</span>
+<span class="fc" id="L682">            setState(checked);</span>
+<span class="fc" id="L683">        }</span>
 
         @Override
         public void click() {
-<span class="fc" id="L699">            setChecked(true);</span>
-<span class="fc" id="L700">        }</span>
+<span class="fc" id="L687">            setChecked(true);</span>
+<span class="fc" id="L688">        }</span>
     }
 
     /**
@@ -711,14 +699,14 @@ import org.w3c.dom.html.HTMLInputElement;
          * @param element
          *            the element
          */
-<span class="fc" id="L714">        public ResetButtonBehavior(HTMLElementImpl element) {</span>
-<span class="fc" id="L715">            super(element);</span>
-<span class="fc" id="L716">        }</span>
+<span class="fc" id="L702">        public ResetButtonBehavior(HTMLElementImpl element) {</span>
+<span class="fc" id="L703">            super(element);</span>
+<span class="fc" id="L704">        }</span>
 
         @Override
         public void click() {
-<span class="fc" id="L720">            getForm().reset();</span>
-<span class="fc" id="L721">        }</span>
+<span class="fc" id="L708">            getForm().reset();</span>
+<span class="fc" id="L709">        }</span>
 
     }
 

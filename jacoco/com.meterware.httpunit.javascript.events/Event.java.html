@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.javascript.events</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.javascript.events;
 
@@ -24,7 +12,7 @@ import org.mozilla.javascript.ScriptableObject;
 /**
  * The Class Event.
  */
-<span class="nc" id="L27">public abstract class Event extends ScriptableObject {</span>
+<span class="nc" id="L15">public abstract class Event extends ScriptableObject {</span>
     // -- Scriptable interface ------------------------------------------------------------------
 
     /** The Constant serialVersionUID. */
@@ -38,7 +26,7 @@ import org.mozilla.javascript.ScriptableObject;
      */
     @Override
     public String getClassName() {
-<span class="nc" id="L41">        return JS_CLASS_NAME;</span>
+<span class="nc" id="L29">        return JS_CLASS_NAME;</span>
     }
 
     // -- DOM2 Events specification -------------------------------------------------------------
@@ -89,7 +77,7 @@ import org.mozilla.javascript.ScriptableObject;
      * @return the string
      */
     public String jsGet_type() {
-<span class="nc" id="L92">        return type;</span>
+<span class="nc" id="L80">        return type;</span>
     }
 
     /**
@@ -99,7 +87,7 @@ import org.mozilla.javascript.ScriptableObject;
      * @return true, if successful
      */
     public boolean jsGet_bubbles() {
-<span class="nc" id="L102">        return bubbles;</span>
+<span class="nc" id="L90">        return bubbles;</span>
     }
 
     /**
@@ -111,7 +99,7 @@ import org.mozilla.javascript.ScriptableObject;
      * @return true, if successful
      */
     public boolean jsGet_cancelable() {
-<span class="nc" id="L114">        return cancelable;</span>
+<span class="nc" id="L102">        return cancelable;</span>
     }
 
     /**
@@ -123,7 +111,7 @@ import org.mozilla.javascript.ScriptableObject;
      * @return the long
      */
     public long jsGet_timeStamp() {
-<span class="nc" id="L126">        return timeStamp;</span>
+<span class="nc" id="L114">        return timeStamp;</span>
     }
 
     /**
@@ -185,9 +173,9 @@ import org.mozilla.javascript.ScriptableObject;
      *            Specifies whether or not the event's default action can be prevented.
      */
     public void jsFunction_initEvent(String eventTypeArg, boolean canBubbleArg, boolean cancelableArg) {
-<span class="nc" id="L188">        type = eventTypeArg;</span>
-<span class="nc" id="L189">        bubbles = canBubbleArg;</span>
-<span class="nc" id="L190">        cancelable = cancelableArg;</span>
-<span class="nc" id="L191">    }</span>
+<span class="nc" id="L176">        type = eventTypeArg;</span>
+<span class="nc" id="L177">        bubbles = canBubbleArg;</span>
+<span class="nc" id="L178">        cancelable = cancelableArg;</span>
+<span class="nc" id="L179">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

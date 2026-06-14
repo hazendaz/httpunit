@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CharacterDataImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">CharacterDataImpl.java</span></div><h1>CharacterDataImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -25,7 +13,7 @@ import org.w3c.dom.DOMException;
 /**
  * The Class CharacterDataImpl.
  */
-<span class="fc" id="L28">public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {</span>
+<span class="fc" id="L16">public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -42,48 +30,48 @@ import org.w3c.dom.DOMException;
      *            the data
      */
     protected void initialize(DocumentImpl ownerDocument, String data) {
-<span class="fc" id="L45">        super.initialize(ownerDocument);</span>
-<span class="fc" id="L46">        _data = data;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L33">        super.initialize(ownerDocument);</span>
+<span class="fc" id="L34">        _data = data;</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public String getData() throws DOMException {
-<span class="fc" id="L51">        return _data;</span>
+<span class="fc" id="L39">        return _data;</span>
     }
 
     @Override
     public void setData(String data) throws DOMException {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (data == null) {</span>
-<span class="fc" id="L57">            data = &quot;&quot;;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L45">            data = &quot;&quot;;</span>
         }
-<span class="fc" id="L59">        _data = data;</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L47">        _data = data;</span>
+<span class="fc" id="L48">    }</span>
 
     @Override
     public int getLength() {
-<span class="fc" id="L64">        return _data.length();</span>
+<span class="fc" id="L52">        return _data.length();</span>
     }
 
     @Override
     public String substringData(int offset, int count) throws DOMException {
-<span class="nc" id="L69">        return null;</span>
+<span class="nc" id="L57">        return null;</span>
     }
 
     @Override
     public void appendData(String arg) throws DOMException {
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L62">    }</span>
 
     @Override
     public void insertData(int offset, String arg) throws DOMException {
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L66">    }</span>
 
     @Override
     public void deleteData(int offset, int count) throws DOMException {
-<span class="nc" id="L82">    }</span>
+<span class="nc" id="L70">    }</span>
 
     @Override
     public void replaceData(int offset, int count, String arg) throws DOMException {
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L74">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

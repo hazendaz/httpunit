@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MimeEncodedMessageBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.protocol</a> &gt; <span class="el_source">MimeEncodedMessageBody.java</span></div><h1>MimeEncodedMessageBody.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.protocol;
 
@@ -37,15 +25,15 @@ class MimeEncodedMessageBody extends MessageBody {
      *            the character set
      */
     MimeEncodedMessageBody(String characterSet) {
-<span class="fc" id="L40">        super(characterSet);</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L28">        super(characterSet);</span>
+<span class="fc" id="L29">    }</span>
 
     /**
      * Returns the content type of this message body.
      **/
     @Override
     public String getContentType() {
-<span class="fc" id="L48">        return &quot;multipart/form-data; boundary=&quot; + BOUNDARY;</span>
+<span class="fc" id="L36">        return &quot;multipart/form-data; boundary=&quot; + BOUNDARY;</span>
     }
 
     /**
@@ -53,16 +41,16 @@ class MimeEncodedMessageBody extends MessageBody {
      **/
     @Override
     public void writeTo(OutputStream outputStream, ParameterCollection parameters) throws IOException {
-<span class="fc" id="L56">        MimeEncoding encoding = new MimeEncoding(outputStream);</span>
-<span class="fc" id="L57">        parameters.recordParameters(encoding);</span>
-<span class="fc" id="L58">        encoding.sendClose();</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L44">        MimeEncoding encoding = new MimeEncoding(outputStream);</span>
+<span class="fc" id="L45">        parameters.recordParameters(encoding);</span>
+<span class="fc" id="L46">        encoding.sendClose();</span>
+<span class="fc" id="L47">    }</span>
 
     /** The Constant BOUNDARY. */
     private static final String BOUNDARY = &quot;--HttpUnit-part0-aSgQ2M&quot;;
 
     /** The Constant CRLF. */
-<span class="fc" id="L65">    private static final byte[] CRLF = { 0x0d, 0x0A };</span>
+<span class="fc" id="L53">    private static final byte[] CRLF = { 0x0d, 0x0A };</span>
 
     /**
      * Encode.
@@ -73,16 +61,16 @@ class MimeEncodedMessageBody extends MessageBody {
      * @return the string
      */
     private String encode(String string) {
-<span class="fc" id="L76">        char[] chars = string.toCharArray();</span>
-<span class="fc" id="L77">        StringBuilder sb = new StringBuilder(chars.length + 20);</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (char element : chars) {</span>
-<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (element == '\\') {</span>
-<span class="fc" id="L80">                sb.append(&quot;\\\\&quot;); // accomodate MS-DOS file paths ??? is this safe??</span>
+<span class="fc" id="L64">        char[] chars = string.toCharArray();</span>
+<span class="fc" id="L65">        StringBuilder sb = new StringBuilder(chars.length + 20);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (char element : chars) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (element == '\\') {</span>
+<span class="fc" id="L68">                sb.append(&quot;\\\\&quot;); // accomodate MS-DOS file paths ??? is this safe??</span>
             } else {
-<span class="fc" id="L82">                sb.append(element);</span>
+<span class="fc" id="L70">                sb.append(element);</span>
             }
         }
-<span class="fc" id="L85">        return sb.toString();</span>
+<span class="fc" id="L73">        return sb.toString();</span>
     }
 
     /**
@@ -99,9 +87,9 @@ class MimeEncodedMessageBody extends MessageBody {
      *             Signals that an I/O exception has occurred.
      */
     private void writeLn(OutputStream os, String value, String encoding) throws IOException {
-<span class="fc" id="L102">        os.write(value.getBytes(Charset.forName(encoding)));</span>
-<span class="fc" id="L103">        os.write(CRLF);</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L90">        os.write(value.getBytes(Charset.forName(encoding)));</span>
+<span class="fc" id="L91">        os.write(CRLF);</span>
+<span class="fc" id="L92">    }</span>
 
     /**
      * Write ln.
@@ -115,8 +103,8 @@ class MimeEncodedMessageBody extends MessageBody {
      *             Signals that an I/O exception has occurred.
      */
     private void writeLn(OutputStream os, String value) throws IOException {
-<span class="fc" id="L118">        writeLn(os, value, getCharacterSet());</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L106">        writeLn(os, value, getCharacterSet());</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * The Class MimeEncoding.
@@ -129,9 +117,9 @@ class MimeEncodedMessageBody extends MessageBody {
          * @param outputStream
          *            the output stream
          */
-<span class="fc" id="L132">        public MimeEncoding(OutputStream outputStream) {</span>
-<span class="fc" id="L133">            _outputStream = outputStream;</span>
-<span class="fc" id="L134">        }</span>
+<span class="fc" id="L120">        public MimeEncoding(OutputStream outputStream) {</span>
+<span class="fc" id="L121">            _outputStream = outputStream;</span>
+<span class="fc" id="L122">        }</span>
 
         /**
          * Send close.
@@ -140,8 +128,8 @@ class MimeEncodedMessageBody extends MessageBody {
          *             Signals that an I/O exception has occurred.
          */
         public void sendClose() throws IOException {
-<span class="fc" id="L143">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY + &quot;--&quot;);</span>
-<span class="fc" id="L144">        }</span>
+<span class="fc" id="L131">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY + &quot;--&quot;);</span>
+<span class="fc" id="L132">        }</span>
 
         /**
          * add the parameter with the given name value and characterSet
@@ -155,16 +143,16 @@ class MimeEncodedMessageBody extends MessageBody {
          */
         @Override
         public void addParameter(String name, String value, String characterSet) throws IOException {
-<span class="pc bpc" id="L158" title="3 of 6 branches missed.">            if (name == null || name.isEmpty() || value == null) {</span>
-<span class="nc" id="L159">                return;</span>
+<span class="pc bpc" id="L146" title="3 of 6 branches missed.">            if (name == null || name.isEmpty() || value == null) {</span>
+<span class="nc" id="L147">                return;</span>
             }
-<span class="fc" id="L161">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY);</span>
-<span class="fc" id="L162">            writeLn(_outputStream, &quot;Content-Disposition: form-data; name=\&quot;&quot; + name + '&quot;'); // XXX need to handle</span>
+<span class="fc" id="L149">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY);</span>
+<span class="fc" id="L150">            writeLn(_outputStream, &quot;Content-Disposition: form-data; name=\&quot;&quot; + name + '&quot;'); // XXX need to handle</span>
             // non-ascii names here
-<span class="fc" id="L164">            writeLn(_outputStream, &quot;Content-Type: text/plain; charset=&quot; + getCharacterSet());</span>
-<span class="fc" id="L165">            writeLn(_outputStream, &quot;&quot;);</span>
-<span class="fc" id="L166">            writeLn(_outputStream, fixLineEndings(value), getCharacterSet());</span>
-<span class="fc" id="L167">        }</span>
+<span class="fc" id="L152">            writeLn(_outputStream, &quot;Content-Type: text/plain; charset=&quot; + getCharacterSet());</span>
+<span class="fc" id="L153">            writeLn(_outputStream, &quot;&quot;);</span>
+<span class="fc" id="L154">            writeLn(_outputStream, fixLineEndings(value), getCharacterSet());</span>
+<span class="fc" id="L155">        }</span>
 
         /** The Constant CR. */
         private static final char CR = 0x0D;
@@ -181,38 +169,38 @@ class MimeEncodedMessageBody extends MessageBody {
          * @return the string
          */
         private String fixLineEndings(String value) {
-<span class="fc" id="L184">            StringBuilder sb = new StringBuilder();</span>
-<span class="fc" id="L185">            char[] chars = value.toCharArray();</span>
-<span class="fc bfc" id="L186" title="All 2 branches covered.">            for (int i = 0; i &lt; chars.length; i++) {</span>
-<span class="pc bpc" id="L187" title="3 of 8 branches missed.">                if (chars[i] == CR || chars[i] == LF &amp;&amp; (i == 0 || chars[i - 1] != CR)) {</span>
-<span class="fc" id="L188">                    sb.append(CR).append(LF);</span>
+<span class="fc" id="L172">            StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L173">            char[] chars = value.toCharArray();</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            for (int i = 0; i &lt; chars.length; i++) {</span>
+<span class="pc bpc" id="L175" title="3 of 8 branches missed.">                if (chars[i] == CR || chars[i] == LF &amp;&amp; (i == 0 || chars[i - 1] != CR)) {</span>
+<span class="fc" id="L176">                    sb.append(CR).append(LF);</span>
                 } else {
-<span class="fc" id="L190">                    sb.append(chars[i]);</span>
+<span class="fc" id="L178">                    sb.append(chars[i]);</span>
                 }
             }
-<span class="fc" id="L193">            return sb.toString();</span>
+<span class="fc" id="L181">            return sb.toString();</span>
         }
 
         @Override
         public void addFile(String name, UploadFileSpec spec) throws IOException {
-<span class="fc" id="L198">            byte[] buffer = new byte[8 * 1024];</span>
+<span class="fc" id="L186">            byte[] buffer = new byte[8 * 1024];</span>
 
-<span class="fc" id="L200">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY);</span>
-<span class="fc" id="L201">            writeLn(_outputStream, &quot;Content-Disposition: form-data; name=\&quot;&quot; + encode(name) + &quot;\&quot;; filename=\&quot;&quot;</span>
-<span class="fc" id="L202">                    + encode(spec.getFileName()) + '&quot;'); // XXX need to handle non-ascii names here</span>
-<span class="fc" id="L203">            writeLn(_outputStream, &quot;Content-Type: &quot; + spec.getContentType());</span>
-<span class="fc" id="L204">            writeLn(_outputStream, &quot;&quot;);</span>
+<span class="fc" id="L188">            writeLn(_outputStream, &quot;--&quot; + BOUNDARY);</span>
+<span class="fc" id="L189">            writeLn(_outputStream, &quot;Content-Disposition: form-data; name=\&quot;&quot; + encode(name) + &quot;\&quot;; filename=\&quot;&quot;</span>
+<span class="fc" id="L190">                    + encode(spec.getFileName()) + '&quot;'); // XXX need to handle non-ascii names here</span>
+<span class="fc" id="L191">            writeLn(_outputStream, &quot;Content-Type: &quot; + spec.getContentType());</span>
+<span class="fc" id="L192">            writeLn(_outputStream, &quot;&quot;);</span>
 
-<span class="fc" id="L206">            InputStream in = spec.getInputStream();</span>
-<span class="fc" id="L207">            int count = 0;</span>
+<span class="fc" id="L194">            InputStream in = spec.getInputStream();</span>
+<span class="fc" id="L195">            int count = 0;</span>
             do {
-<span class="fc" id="L209">                _outputStream.write(buffer, 0, count);</span>
-<span class="fc" id="L210">                count = in.read(buffer, 0, buffer.length);</span>
-<span class="fc bfc" id="L211" title="All 2 branches covered.">            } while (count != -1);</span>
+<span class="fc" id="L197">                _outputStream.write(buffer, 0, count);</span>
+<span class="fc" id="L198">                count = in.read(buffer, 0, buffer.length);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">            } while (count != -1);</span>
 
-<span class="fc" id="L213">            in.close();</span>
-<span class="fc" id="L214">            writeLn(_outputStream, &quot;&quot;);</span>
-<span class="fc" id="L215">        }</span>
+<span class="fc" id="L201">            in.close();</span>
+<span class="fc" id="L202">            writeLn(_outputStream, &quot;&quot;);</span>
+<span class="fc" id="L203">        }</span>
 
         /** The output stream. */
         private OutputStream _outputStream;

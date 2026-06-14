@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpRequest.java</span></div><h1>ServletUnitHttpRequest.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.servletunit;
 
 import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebClient;
 import com.meterware.httpunit.WebRequest;
+
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,21 +46,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 
 /**
  * The Class ServletUnitHttpRequest.
@@ -114,49 +103,49 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *             the malformed URL exception
      */
     ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
-<span class="fc" id="L117">            Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (context == null) {</span>
-<span class="nc" id="L119">            throw new IllegalArgumentException(&quot;Context must not be null&quot;);</span>
+<span class="fc" id="L106">            Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (context == null) {</span>
+<span class="nc" id="L108">            throw new IllegalArgumentException(&quot;Context must not be null&quot;);</span>
         }
 
-<span class="fc" id="L122">        _servletRequest = servletRequest;</span>
-<span class="fc" id="L123">        _request = request;</span>
-<span class="fc" id="L124">        _context = context;</span>
-<span class="fc" id="L125">        _headers = new WebClient.HeaderDictionary();</span>
-<span class="fc" id="L126">        _headers.addEntries(clientHeaders);</span>
-<span class="fc" id="L127">        _headers.addEntries(request.getHeaders());</span>
-<span class="fc" id="L128">        setCookiesFromHeader(_headers);</span>
-<span class="fc" id="L129">        _messageBody = messageBody;</span>
-<span class="fc" id="L130">        _protocol = request.getURL().getProtocol().toLowerCase(Locale.ENGLISH);</span>
-<span class="fc" id="L131">        _secure = _protocol.endsWith(&quot;s&quot;);</span>
-<span class="fc" id="L132">        _serverName = request.getURL().getHost();</span>
-<span class="fc" id="L133">        _serverPort = request.getURL().getPort();</span>
-<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (_serverPort == -1) {</span>
-<span class="fc" id="L135">            _serverPort = request.getURL().getDefaultPort();</span>
+<span class="fc" id="L111">        _servletRequest = servletRequest;</span>
+<span class="fc" id="L112">        _request = request;</span>
+<span class="fc" id="L113">        _context = context;</span>
+<span class="fc" id="L114">        _headers = new WebClient.HeaderDictionary();</span>
+<span class="fc" id="L115">        _headers.addEntries(clientHeaders);</span>
+<span class="fc" id="L116">        _headers.addEntries(request.getHeaders());</span>
+<span class="fc" id="L117">        setCookiesFromHeader(_headers);</span>
+<span class="fc" id="L118">        _messageBody = messageBody;</span>
+<span class="fc" id="L119">        _protocol = request.getURL().getProtocol().toLowerCase(Locale.ENGLISH);</span>
+<span class="fc" id="L120">        _secure = _protocol.endsWith(&quot;s&quot;);</span>
+<span class="fc" id="L121">        _serverName = request.getURL().getHost();</span>
+<span class="fc" id="L122">        _serverPort = request.getURL().getPort();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (_serverPort == -1) {</span>
+<span class="fc" id="L124">            _serverPort = request.getURL().getDefaultPort();</span>
         }
 
-<span class="fc" id="L138">        _requestContext = new RequestContext(request.getURL());</span>
-<span class="fc" id="L139">        String contentTypeHeader = (String) _headers.get(&quot;Content-Type&quot;);</span>
-<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (contentTypeHeader != null) {</span>
-<span class="fc" id="L141">            String[] res = HttpUnitUtils.parseContentTypeHeader(contentTypeHeader);</span>
-<span class="fc" id="L142">            _charset = res[1];</span>
-<span class="fc" id="L143">            _requestContext.setMessageEncoding(_charset);</span>
+<span class="fc" id="L127">        _requestContext = new RequestContext(request.getURL());</span>
+<span class="fc" id="L128">        String contentTypeHeader = (String) _headers.get(&quot;Content-Type&quot;);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (contentTypeHeader != null) {</span>
+<span class="fc" id="L130">            String[] res = HttpUnitUtils.parseContentTypeHeader(contentTypeHeader);</span>
+<span class="fc" id="L131">            _charset = res[1];</span>
+<span class="fc" id="L132">            _requestContext.setMessageEncoding(_charset);</span>
         }
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (_headers.get(&quot;Content-Length&quot;) == null) {</span>
-<span class="fc" id="L146">            _headers.put(&quot;Content-Length&quot;, Integer.toString(messageBody.length));</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (_headers.get(&quot;Content-Length&quot;) == null) {</span>
+<span class="fc" id="L135">            _headers.put(&quot;Content-Length&quot;, Integer.toString(messageBody.length));</span>
         }
 
-<span class="pc bpc" id="L149" title="1 of 4 branches missed.">        boolean setBody =</span>
+<span class="pc bpc" id="L138" title="1 of 4 branches missed.">        boolean setBody =</span>
                 // pre [ 1509117 ] getContentType()
                 // _messageBody != null &amp;&amp; (_contentType == null || _contentType.indexOf( &quot;x-www-form-urlencoded&quot; ) &gt;= 0
                 // );
                 // patch version:
                 _messageBody != null
-<span class="fc bfc" id="L155" title="All 2 branches covered.">                        &amp;&amp; (contentTypeHeader == null || contentTypeHeader.indexOf(&quot;x-www-form-urlencoded&quot;) &gt;= 0);</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (setBody) {</span>
-<span class="fc" id="L157">            _requestContext.setMessageBody(_messageBody);</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                        &amp;&amp; (contentTypeHeader == null || contentTypeHeader.indexOf(&quot;x-www-form-urlencoded&quot;) &gt;= 0);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (setBody) {</span>
+<span class="fc" id="L146">            _requestContext.setMessageBody(_messageBody);</span>
         }
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L148">    }</span>
 
     // ----------------------------------------- HttpServletRequest methods --------------------------
 
@@ -166,7 +155,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getAuthType() {
-<span class="fc" id="L169">        return null;</span>
+<span class="fc" id="L158">        return null;</span>
     }
 
     /**
@@ -174,7 +163,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getQueryString() {
-<span class="fc" id="L177">        return _request.getQueryString();</span>
+<span class="fc" id="L166">        return _request.getQueryString();</span>
     }
 
     /**
@@ -183,10 +172,10 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Cookie[] getCookies() {
-<span class="fc bfc" id="L186" title="All 2 branches covered.">        if (_cookies.size() == 0) {</span>
-<span class="fc" id="L187">            return null;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (_cookies.size() == 0) {</span>
+<span class="fc" id="L176">            return null;</span>
         }
-<span class="fc" id="L189">        return _cookies.toArray(new Cookie[0]);</span>
+<span class="fc" id="L178">        return _cookies.toArray(new Cookie[0]);</span>
     }
 
     /**
@@ -196,7 +185,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public int getIntHeader(String name) {
-<span class="fc" id="L199">        return Integer.parseInt(getHeader(name));</span>
+<span class="fc" id="L188">        return Integer.parseInt(getHeader(name));</span>
     }
 
     /**
@@ -209,11 +198,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     @Override
     public long getDateHeader(String name) {
         try {
-<span class="fc" id="L212">            String dateString = getHeader(name);</span>
-<span class="fc" id="L213">            Date headerDate = new Date(dateString);</span>
-<span class="fc" id="L214">            return headerDate.getTime();</span>
-<span class="fc" id="L215">        } catch (Exception e) {</span>
-<span class="fc" id="L216">            return -1;</span>
+<span class="fc" id="L201">            String dateString = getHeader(name);</span>
+<span class="fc" id="L202">            Date headerDate = new Date(dateString);</span>
+<span class="fc" id="L203">            return headerDate.getTime();</span>
+<span class="fc" id="L204">        } catch (Exception e) {</span>
+<span class="fc" id="L205">            return -1;</span>
         }
     }
 
@@ -224,7 +213,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getHeader(String name) {
-<span class="fc" id="L227">        return (String) _headers.get(name);</span>
+<span class="fc" id="L216">        return (String) _headers.get(name);</span>
     }
 
     /**
@@ -234,7 +223,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Enumeration getHeaderNames() {
-<span class="fc" id="L237">        return _headers.keys();</span>
+<span class="fc" id="L226">        return _headers.keys();</span>
     }
 
     /**
@@ -243,7 +232,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getServletPath() {
-<span class="fc" id="L246">        return _servletRequest.getServletPath();</span>
+<span class="fc" id="L235">        return _servletRequest.getServletPath();</span>
     }
 
     /**
@@ -251,7 +240,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getMethod() {
-<span class="fc" id="L254">        return _request.getMethod();</span>
+<span class="fc" id="L243">        return _request.getMethod();</span>
     }
 
     /**
@@ -261,7 +250,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getPathInfo() {
-<span class="fc" id="L264">        return _servletRequest.getPathInfo();</span>
+<span class="fc" id="L253">        return _servletRequest.getPathInfo();</span>
     }
 
     /**
@@ -270,7 +259,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getPathTranslated() {
-<span class="nc" id="L273">        return null;</span>
+<span class="nc" id="L262">        return null;</span>
     }
 
     /**
@@ -278,7 +267,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public boolean isRequestedSessionIdFromCookie() {
-<span class="nc bnc" id="L281" title="All 2 branches missed.">        return _sessionID != null;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        return _sessionID != null;</span>
     }
 
     /**
@@ -288,7 +277,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getRemoteUser() {
-<span class="fc" id="L291">        return _userName;</span>
+<span class="fc" id="L280">        return _userName;</span>
     }
 
     /**
@@ -298,7 +287,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getRequestedSessionId() {
-<span class="fc" id="L301">        return _sessionID;</span>
+<span class="fc" id="L290">        return _sessionID;</span>
     }
 
     /**
@@ -307,7 +296,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getRequestURI() {
-<span class="fc" id="L310">        return _requestContext.getRequestURI();</span>
+<span class="fc" id="L299">        return _requestContext.getRequestURI();</span>
     }
 
     /**
@@ -317,8 +306,8 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public HttpSession getSession(boolean create) {
-<span class="fc" id="L320">        _session = _context.getValidSession(getRequestedSessionId(), _session, create);</span>
-<span class="fc" id="L321">        return _session;</span>
+<span class="fc" id="L309">        _session = _context.getValidSession(getRequestedSessionId(), _session, create);</span>
+<span class="fc" id="L310">        return _session;</span>
     }
 
     /**
@@ -326,7 +315,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public HttpSession getSession() {
-<span class="fc" id="L329">        return getSession(true);</span>
+<span class="fc" id="L318">        return getSession(true);</span>
     }
 
     /**
@@ -334,7 +323,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public boolean isRequestedSessionIdValid() {
-<span class="nc" id="L337">        return false;</span>
+<span class="nc" id="L326">        return false;</span>
     }
 
     /**
@@ -342,16 +331,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public boolean isRequestedSessionIdFromURL() {
-<span class="nc" id="L345">        return false;</span>
-    }
-
-    /**
-     * @deprecated use #isRequestedSessionIdFromURL
-     **/
-    @Deprecated
-    @Override
-    public boolean isRequestedSessionIdFromUrl() {
-<span class="nc" id="L354">        return isRequestedSessionIdFromURL();</span>
+<span class="nc" id="L334">        return false;</span>
     }
 
     // --------------------------------- ServletRequest methods ----------------------------------------------------
@@ -362,7 +342,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public int getContentLength() {
-<span class="fc" id="L365">        return getIntHeader(&quot;Content-length&quot;);</span>
+<span class="fc" id="L345">        return getIntHeader(&quot;Content-length&quot;);</span>
     }
 
     /**
@@ -372,7 +352,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Object getAttribute(String name) {
-<span class="fc" id="L375">        return _attributes.get(name);</span>
+<span class="fc" id="L355">        return _attributes.get(name);</span>
     }
 
     /**
@@ -381,7 +361,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Enumeration getAttributeNames() {
-<span class="fc" id="L384">        return _attributes.keys();</span>
+<span class="fc" id="L364">        return _attributes.keys();</span>
     }
 
     /**
@@ -390,29 +370,29 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @return a {@link ServletInputStream} object containing the body of the request
      *
-     * @exception IllegalStateException
-     *                if the {@link #getReader} method has already been called for this request
-     * @exception IOException
-     *                if an input or output exception occurred
+     * @throws IllegalStateException
+     *             if the {@link #getReader} method has already been called for this request
+     * @throws IOException
+     *             if an input or output exception occurred
      */
     @Override
     public ServletInputStream getInputStream() throws IOException {
-<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (_gotReader) {</span>
-<span class="fc" id="L401">            throw new IllegalStateException(&quot;getReader() has already been called for this request&quot;);</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (_gotReader) {</span>
+<span class="fc" id="L381">            throw new IllegalStateException(&quot;getReader() has already been called for this request&quot;);</span>
         }
-<span class="fc" id="L403">        initializeInputStream();</span>
-<span class="fc" id="L404">        _gotInputStream = true;</span>
-<span class="fc" id="L405">        return _inputStream;</span>
+<span class="fc" id="L383">        initializeInputStream();</span>
+<span class="fc" id="L384">        _gotInputStream = true;</span>
+<span class="fc" id="L385">        return _inputStream;</span>
     }
 
     /**
      * initialize the inputStream.
      */
     private void initializeInputStream() {
-<span class="fc bfc" id="L412" title="All 2 branches covered.">        if (_inputStream == null) {</span>
-<span class="fc" id="L413">            _inputStream = new ServletInputStreamImpl(_messageBody);</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">        if (_inputStream == null) {</span>
+<span class="fc" id="L393">            _inputStream = new ServletInputStreamImpl(_messageBody);</span>
         }
-<span class="fc" id="L415">    }</span>
+<span class="fc" id="L395">    }</span>
 
     /**
      * Returns the name of the character encoding style used in this request. This method returns &lt;code&gt;null&lt;/code&gt; if
@@ -420,7 +400,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getCharacterEncoding() {
-<span class="fc" id="L423">        return _charset;</span>
+<span class="fc" id="L403">        return _charset;</span>
     }
 
     /**
@@ -431,7 +411,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Enumeration getParameterNames() {
-<span class="nc" id="L434">        return _requestContext.getParameterNames();</span>
+<span class="nc" id="L414">        return _requestContext.getParameterNames();</span>
     }
 
     /**
@@ -440,7 +420,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getContentType() {
-<span class="fc" id="L443">        return this.getHeader(&quot;Content-Type&quot;);</span>
+<span class="fc" id="L423">        return this.getHeader(&quot;Content-Type&quot;);</span>
     }
 
     /**
@@ -449,8 +429,8 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getParameter(String name) {
-<span class="fc" id="L452">        String[] parameters = getParameterValues(name);</span>
-<span class="fc bfc" id="L453" title="All 2 branches covered.">        return parameters == null ? null : parameters[0];</span>
+<span class="fc" id="L432">        String[] parameters = getParameterValues(name);</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        return parameters == null ? null : parameters[0];</span>
     }
 
     /**
@@ -460,7 +440,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String[] getParameterValues(String name) {
-<span class="fc" id="L463">        return _requestContext.getParameterValues(name);</span>
+<span class="fc" id="L443">        return _requestContext.getParameterValues(name);</span>
     }
 
     /**
@@ -469,7 +449,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getProtocol() {
-<span class="nc" id="L472">        return &quot;HTTP/1.1&quot;;</span>
+<span class="nc" id="L452">        return &quot;HTTP/1.1&quot;;</span>
     }
 
     /**
@@ -478,7 +458,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getScheme() {
-<span class="fc" id="L481">        return _protocol;</span>
+<span class="fc" id="L461">        return _protocol;</span>
     }
 
     /**
@@ -486,7 +466,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getRemoteHost() {
-<span class="nc" id="L489">        return &quot;localhost&quot;;</span>
+<span class="nc" id="L469">        return &quot;localhost&quot;;</span>
     }
 
     /**
@@ -494,7 +474,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getServerName() {
-<span class="fc" id="L497">        return _serverName;</span>
+<span class="fc" id="L477">        return _serverName;</span>
     }
 
     /**
@@ -502,18 +482,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public int getServerPort() {
-<span class="fc" id="L505">        return _serverPort;</span>
-    }
-
-    /**
-     * @deprecated As of Version 2.1 of the Java Servlet API, use {@link javax.servlet.ServletContext#getRealPath}
-     *             instead.
-     */
-    @Deprecated
-    @Override
-    public String getRealPath(String path) {
-<span class="nc" id="L515">        throwNotImplementedYet();</span>
-<span class="nc" id="L516">        return &quot;&quot;;</span>
+<span class="fc" id="L485">        return _serverPort;</span>
     }
 
     /**
@@ -523,19 +492,19 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public BufferedReader getReader() throws IOException {
-<span class="fc bfc" id="L526" title="All 2 branches covered.">        if (_gotInputStream) {</span>
-<span class="fc" id="L527">            throw new IllegalStateException(&quot;getInputStream() has already been called on this request&quot;);</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">        if (_gotInputStream) {</span>
+<span class="fc" id="L496">            throw new IllegalStateException(&quot;getInputStream() has already been called on this request&quot;);</span>
         }
-<span class="fc bfc" id="L529" title="All 2 branches covered.">        if (_reader == null) {</span>
-<span class="fc" id="L530">            initializeInputStream();</span>
-<span class="fc" id="L531">            String encoding = getCharacterEncoding();</span>
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">            if (encoding == null) {</span>
-<span class="fc" id="L533">                encoding = StandardCharsets.ISO_8859_1.name();</span>
+<span class="fc bfc" id="L498" title="All 2 branches covered.">        if (_reader == null) {</span>
+<span class="fc" id="L499">            initializeInputStream();</span>
+<span class="fc" id="L500">            String encoding = getCharacterEncoding();</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">            if (encoding == null) {</span>
+<span class="fc" id="L502">                encoding = StandardCharsets.ISO_8859_1.name();</span>
             }
-<span class="fc" id="L535">            _reader = new BufferedReader(new InputStreamReader(_inputStream, Charset.forName(encoding)));</span>
-<span class="fc" id="L536">            _gotReader = true;</span>
+<span class="fc" id="L504">            _reader = new BufferedReader(new InputStreamReader(_inputStream, Charset.forName(encoding)));</span>
+<span class="fc" id="L505">            _gotReader = true;</span>
         }
-<span class="fc" id="L538">        return _reader;</span>
+<span class="fc" id="L507">        return _reader;</span>
     }
 
     /**
@@ -543,7 +512,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getRemoteAddr() {
-<span class="nc" id="L546">        return LOOPBACK_ADDRESS;</span>
+<span class="nc" id="L515">        return LOOPBACK_ADDRESS;</span>
     }
 
     /**
@@ -551,12 +520,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public void setAttribute(String key, Object o) {
-<span class="fc bfc" id="L554" title="All 2 branches covered.">        if (o == null) {</span>
-<span class="fc" id="L555">            _attributes.remove(key);</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">        if (o == null) {</span>
+<span class="fc" id="L524">            _attributes.remove(key);</span>
         } else {
-<span class="fc" id="L557">            _attributes.put(key, o);</span>
+<span class="fc" id="L526">            _attributes.put(key, o);</span>
         }
-<span class="fc" id="L559">    }</span>
+<span class="fc" id="L528">    }</span>
 
     // --------------------------------- methods added to ServletRequest in Servlet API 2.2
     // ------------------------------------------------
@@ -566,7 +535,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public boolean isSecure() {
-<span class="fc" id="L569">        return _secure;</span>
+<span class="fc" id="L538">        return _secure;</span>
     }
 
     /**
@@ -575,7 +544,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Locale getLocale() {
-<span class="fc" id="L578">        return (Locale) getPreferredLocales().get(0);</span>
+<span class="fc" id="L547">        return (Locale) getPreferredLocales().get(0);</span>
     }
 
     /**
@@ -586,7 +555,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getLocales() {
-<span class="fc" id="L589">        return Collections.enumeration(getPreferredLocales());</span>
+<span class="fc" id="L558">        return Collections.enumeration(getPreferredLocales());</span>
     }
 
     /**
@@ -595,25 +564,25 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the preferred locales, sorted by qvalue
      */
     private List getPreferredLocales() {
-<span class="fc bfc" id="L598" title="All 2 branches covered.">        if (_locales == null) {</span>
-<span class="fc" id="L599">            _locales = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L600">            String languages = getHeader(&quot;accept-language&quot;);</span>
-<span class="fc bfc" id="L601" title="All 2 branches covered.">            if (languages == null) {</span>
-<span class="fc" id="L602">                _locales.add(Locale.getDefault());</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">        if (_locales == null) {</span>
+<span class="fc" id="L568">            _locales = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L569">            String languages = getHeader(&quot;accept-language&quot;);</span>
+<span class="fc bfc" id="L570" title="All 2 branches covered.">            if (languages == null) {</span>
+<span class="fc" id="L571">                _locales.add(Locale.getDefault());</span>
             } else {
-<span class="fc" id="L604">                StringTokenizer st = new StringTokenizer(languages, &quot;,&quot;);</span>
-<span class="fc" id="L605">                ArrayList al = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L606" title="All 2 branches covered.">                while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L607">                    String token = st.nextToken();</span>
-<span class="fc" id="L608">                    al.add(new PrioritizedLocale(token));</span>
-<span class="fc" id="L609">                }</span>
-<span class="fc" id="L610">                Collections.sort(al);</span>
-<span class="fc bfc" id="L611" title="All 2 branches covered.">                for (Iterator iterator = al.iterator(); iterator.hasNext();) {</span>
-<span class="fc" id="L612">                    _locales.add(((PrioritizedLocale) iterator.next()).getLocale());</span>
+<span class="fc" id="L573">                StringTokenizer st = new StringTokenizer(languages, &quot;,&quot;);</span>
+<span class="fc" id="L574">                ArrayList al = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L575" title="All 2 branches covered.">                while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L576">                    String token = st.nextToken();</span>
+<span class="fc" id="L577">                    al.add(new PrioritizedLocale(token));</span>
+<span class="fc" id="L578">                }</span>
+<span class="fc" id="L579">                Collections.sort(al);</span>
+<span class="fc bfc" id="L580" title="All 2 branches covered.">                for (Iterator iterator = al.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L581">                    _locales.add(((PrioritizedLocale) iterator.next()).getLocale());</span>
                 }
             }
         }
-<span class="fc" id="L616">        return _locales;</span>
+<span class="fc" id="L585">        return _locales;</span>
     }
 
     /**
@@ -622,8 +591,8 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public void removeAttribute(String name) {
-<span class="nc" id="L625">        _attributes.remove(name);</span>
-<span class="nc" id="L626">    }</span>
+<span class="nc" id="L594">        _attributes.remove(name);</span>
+<span class="nc" id="L595">    }</span>
 
     /**
      * Returns a RequestDispatcher object that acts as a wrapper for the resource located at the given path. A
@@ -637,12 +606,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     @Override
     public RequestDispatcher getRequestDispatcher(String path) {
         try {
-<span class="fc bfc" id="L640" title="All 2 branches covered.">            if (!path.startsWith(&quot;/&quot;)) {</span>
-<span class="fc" id="L641">                path = combinedPath(getServletPath(), path);</span>
+<span class="fc bfc" id="L609" title="All 2 branches covered.">            if (!path.startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L610">                path = combinedPath(getServletPath(), path);</span>
             }
-<span class="fc" id="L643">            return _servletRequest.getServlet().getServletConfig().getServletContext().getRequestDispatcher(path);</span>
-<span class="nc" id="L644">        } catch (ServletException e) {</span>
-<span class="nc" id="L645">            return null;</span>
+<span class="fc" id="L612">            return _servletRequest.getServlet().getServletConfig().getServletContext().getRequestDispatcher(path);</span>
+<span class="nc" id="L613">        } catch (ServletException e) {</span>
+<span class="nc" id="L614">            return null;</span>
         }
     }
 
@@ -657,10 +626,10 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the string
      */
     private String combinedPath(String basePath, String relativePath) {
-<span class="pc bpc" id="L660" title="1 of 2 branches missed.">        if (basePath.indexOf('/') &lt; 0) {</span>
-<span class="nc" id="L661">            return relativePath;</span>
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">        if (basePath.indexOf('/') &lt; 0) {</span>
+<span class="nc" id="L630">            return relativePath;</span>
         }
-<span class="fc" id="L663">        return basePath.substring(0, basePath.lastIndexOf('/')) + '/' + relativePath;</span>
+<span class="fc" id="L632">        return basePath.substring(0, basePath.lastIndexOf('/')) + '/' + relativePath;</span>
     }
 
     // --------------------------------- methods added to HttpServletRequest in Servlet API 2.2
@@ -672,7 +641,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.security.Principal getUserPrincipal() {
-<span class="nc" id="L675">        return null;</span>
+<span class="nc" id="L644">        return null;</span>
     }
 
     /**
@@ -682,15 +651,15 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public boolean isUserInRole(String role) {
-<span class="fc bfc" id="L685" title="All 2 branches covered.">        if (_roles == null) {</span>
-<span class="fc" id="L686">            return false;</span>
+<span class="fc bfc" id="L654" title="All 2 branches covered.">        if (_roles == null) {</span>
+<span class="fc" id="L655">            return false;</span>
         }
-<span class="fc bfc" id="L688" title="All 2 branches covered.">        for (String _role : _roles) {</span>
-<span class="fc bfc" id="L689" title="All 2 branches covered.">            if (role.equals(_role)) {</span>
-<span class="fc" id="L690">                return true;</span>
+<span class="fc bfc" id="L657" title="All 2 branches covered.">        for (String _role : _roles) {</span>
+<span class="fc bfc" id="L658" title="All 2 branches covered.">            if (role.equals(_role)) {</span>
+<span class="fc" id="L659">                return true;</span>
             }
         }
-<span class="fc" id="L693">        return false;</span>
+<span class="fc" id="L662">        return false;</span>
     }
 
     /**
@@ -698,11 +667,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public java.util.Enumeration getHeaders(String name) {
-<span class="fc" id="L701">        List list = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L702" title="1 of 2 branches missed.">        if (_headers.containsKey(name)) {</span>
-<span class="fc" id="L703">            list.add(_headers.get(name));</span>
+<span class="fc" id="L670">        List list = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L671" title="1 of 2 branches missed.">        if (_headers.containsKey(name)) {</span>
+<span class="fc" id="L672">            list.add(_headers.get(name));</span>
         }
-<span class="fc" id="L705">        return Collections.enumeration(list);</span>
+<span class="fc" id="L674">        return Collections.enumeration(list);</span>
     }
 
     /**
@@ -712,7 +681,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public String getContextPath() {
-<span class="fc" id="L715">        return _context.getContextPath();</span>
+<span class="fc" id="L684">        return _context.getContextPath();</span>
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.3
@@ -724,7 +693,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Map getParameterMap() {
-<span class="fc" id="L727">        return _requestContext.getParameterMap();</span>
+<span class="fc" id="L696">        return _requestContext.getParameterMap();</span>
     }
 
     /**
@@ -733,9 +702,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public void setCharacterEncoding(String charset) {
-<span class="fc" id="L736">        _charset = charset;</span>
-<span class="fc" id="L737">        _requestContext.setMessageEncoding(charset);</span>
-<span class="fc" id="L738">    }</span>
+<span class="fc" id="L705">        _charset = charset;</span>
+<span class="fc" id="L706">        _requestContext.setMessageEncoding(charset);</span>
+<span class="fc" id="L707">    }</span>
 
     // --------------------------------------- methods added to HttpServletRequest in Servlet API 2.3
     // ----------------------------
@@ -748,17 +717,17 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     @Override
     public StringBuffer getRequestURL() {
-<span class="fc" id="L751">        StringBuilder url = new StringBuilder();</span>
+<span class="fc" id="L720">        StringBuilder url = new StringBuilder();</span>
         try {
-<span class="fc" id="L753">            url.append(_request.getURL().getProtocol()).append(&quot;://&quot;);</span>
-<span class="fc" id="L754">            url.append(_request.getURL().getHost());</span>
-<span class="fc bfc" id="L755" title="All 2 branches covered.">            String portPortion = _request.getURL().getPort() == -1 ? &quot;&quot; : &quot;:&quot; + _request.getURL().getPort();</span>
-<span class="fc" id="L756">            url.append(portPortion);</span>
-<span class="fc" id="L757">            url.append(_request.getURL().getPath());</span>
-<span class="nc" id="L758">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L759">            throw new RuntimeException(&quot;unable to read URL from request: &quot; + _request);</span>
-<span class="fc" id="L760">        }</span>
-<span class="fc" id="L761">        return new StringBuffer(url);</span>
+<span class="fc" id="L722">            url.append(_request.getURL().getProtocol()).append(&quot;://&quot;);</span>
+<span class="fc" id="L723">            url.append(_request.getURL().getHost());</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">            String portPortion = _request.getURL().getPort() == -1 ? &quot;&quot; : &quot;:&quot; + _request.getURL().getPort();</span>
+<span class="fc" id="L725">            url.append(portPortion);</span>
+<span class="fc" id="L726">            url.append(_request.getURL().getPath());</span>
+<span class="nc" id="L727">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L728">            throw new RuntimeException(&quot;unable to read URL from request: &quot; + _request);</span>
+<span class="fc" id="L729">        }</span>
+<span class="fc" id="L730">        return new StringBuffer(url);</span>
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4
@@ -766,22 +735,22 @@ class ServletUnitHttpRequest implements HttpServletRequest {
 
     @Override
     public int getRemotePort() {
-<span class="nc" id="L769">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L738">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getLocalName() {
-<span class="nc" id="L774">        return &quot;localhost&quot;;</span>
+<span class="nc" id="L743">        return &quot;localhost&quot;;</span>
     }
 
     @Override
     public String getLocalAddr() {
-<span class="nc" id="L779">        return &quot;127.0.0.1&quot;;</span>
+<span class="nc" id="L748">        return &quot;127.0.0.1&quot;;</span>
     }
 
     @Override
     public int getLocalPort() {
-<span class="nc" id="L784">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L753">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     // --------------------------------------------- package members ----------------------------------------------
@@ -793,11 +762,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *            the cookie
      */
     private void addCookie(Cookie cookie) {
-<span class="fc" id="L796">        _cookies.add(cookie);</span>
-<span class="fc bfc" id="L797" title="All 2 branches covered.">        if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {</span>
-<span class="fc" id="L798">            _sessionID = cookie.getValue();</span>
+<span class="fc" id="L765">        _cookies.add(cookie);</span>
+<span class="fc bfc" id="L766" title="All 2 branches covered.">        if (cookie.getName().equalsIgnoreCase(ServletUnitHttpSession.SESSION_COOKIE_NAME)) {</span>
+<span class="fc" id="L767">            _sessionID = cookie.getValue();</span>
         }
-<span class="fc" id="L800">    }</span>
+<span class="fc" id="L769">    }</span>
 
     /**
      * Gets the servlet session.
@@ -805,33 +774,33 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the servlet session
      */
     private ServletUnitHttpSession getServletSession() {
-<span class="fc" id="L808">        return (ServletUnitHttpSession) getSession();</span>
+<span class="fc" id="L777">        return (ServletUnitHttpSession) getSession();</span>
     }
 
     /**
      * Read form authentication.
      */
     void readFormAuthentication() {
-<span class="fc bfc" id="L815" title="All 2 branches covered.">        if (getSession( /* create */ false) != null) {</span>
-<span class="fc" id="L816">            recordAuthenticationInfo(getServletSession().getUserName(), getServletSession().getRoles());</span>
+<span class="fc bfc" id="L784" title="All 2 branches covered.">        if (getSession( /* create */ false) != null) {</span>
+<span class="fc" id="L785">            recordAuthenticationInfo(getServletSession().getUserName(), getServletSession().getRoles());</span>
         }
-<span class="fc" id="L818">    }</span>
+<span class="fc" id="L787">    }</span>
 
     /**
      * Read basic authentication.
      */
     void readBasicAuthentication() {
-<span class="fc" id="L824">        String authorizationHeader = (String) _headers.get(&quot;Authorization&quot;);</span>
+<span class="fc" id="L793">        String authorizationHeader = (String) _headers.get(&quot;Authorization&quot;);</span>
 
-<span class="fc bfc" id="L826" title="All 2 branches covered.">        if (authorizationHeader != null) {</span>
-<span class="fc" id="L827">            String userAndPassword = new String(Base64.getDecoder().decode(authorizationHeader</span>
-<span class="fc" id="L828">                    .substring(authorizationHeader.indexOf(' ') + 1).getBytes(StandardCharsets.UTF_8)),</span>
+<span class="fc bfc" id="L795" title="All 2 branches covered.">        if (authorizationHeader != null) {</span>
+<span class="fc" id="L796">            String userAndPassword = new String(Base64.getDecoder().decode(authorizationHeader</span>
+<span class="fc" id="L797">                    .substring(authorizationHeader.indexOf(' ') + 1).getBytes(StandardCharsets.UTF_8)),</span>
                     StandardCharsets.UTF_8);
-<span class="fc" id="L830">            int colonPos = userAndPassword.indexOf(':');</span>
-<span class="fc" id="L831">            recordAuthenticationInfo(userAndPassword.substring(0, colonPos),</span>
-<span class="fc" id="L832">                    toArray(userAndPassword.substring(colonPos + 1)));</span>
+<span class="fc" id="L799">            int colonPos = userAndPassword.indexOf(':');</span>
+<span class="fc" id="L800">            recordAuthenticationInfo(userAndPassword.substring(0, colonPos),</span>
+<span class="fc" id="L801">                    toArray(userAndPassword.substring(colonPos + 1)));</span>
         }
-<span class="fc" id="L834">    }</span>
+<span class="fc" id="L803">    }</span>
 
     /**
      * To array.
@@ -842,12 +811,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the string[]
      */
     static String[] toArray(String roleList) {
-<span class="fc" id="L845">        StringTokenizer st = new StringTokenizer(roleList, &quot;,&quot;);</span>
-<span class="fc" id="L846">        String[] result = new String[st.countTokens()];</span>
-<span class="fc bfc" id="L847" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc" id="L848">            result[i] = st.nextToken();</span>
+<span class="fc" id="L814">        StringTokenizer st = new StringTokenizer(roleList, &quot;,&quot;);</span>
+<span class="fc" id="L815">        String[] result = new String[st.countTokens()];</span>
+<span class="fc bfc" id="L816" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc" id="L817">            result[i] = st.nextToken();</span>
         }
-<span class="fc" id="L850">        return result;</span>
+<span class="fc" id="L819">        return result;</span>
     }
 
     /**
@@ -859,9 +828,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *            the roles
      */
     void recordAuthenticationInfo(String userName, String[] roles) {
-<span class="fc" id="L862">        _userName = userName;</span>
-<span class="fc" id="L863">        _roles = roles;</span>
-<span class="fc" id="L864">    }</span>
+<span class="fc" id="L831">        _userName = userName;</span>
+<span class="fc" id="L832">        _roles = roles;</span>
+<span class="fc" id="L833">    }</span>
 
     // --------------------------------------------- private members ----------------------------------------------
 
@@ -884,10 +853,10 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private ServletUnitHttpSession _session;
 
     /** The attributes. */
-<span class="fc" id="L887">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L856">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
 
     /** The cookies. */
-<span class="fc" id="L890">    private List&lt;Cookie&gt; _cookies = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L859">    private List&lt;Cookie&gt; _cookies = new ArrayList&lt;&gt;();</span>
 
     /** The session ID. */
     private String _sessionID;
@@ -905,7 +874,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * Throw not implemented yet.
      */
     private void throwNotImplementedYet() {
-<span class="nc" id="L908">        throw new RuntimeException(&quot;Not implemented yet&quot;);</span>
+<span class="nc" id="L877">        throw new RuntimeException(&quot;Not implemented yet&quot;);</span>
     }
 
     /**
@@ -915,21 +884,21 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *            the new cookies from header
      */
     private void setCookiesFromHeader(Dictionary clientHeaders) {
-<span class="fc" id="L918">        String cookieHeader = (String) clientHeaders.get(&quot;Cookie&quot;);</span>
-<span class="fc bfc" id="L919" title="All 2 branches covered.">        if (cookieHeader == null) {</span>
-<span class="fc" id="L920">            return;</span>
+<span class="fc" id="L887">        String cookieHeader = (String) clientHeaders.get(&quot;Cookie&quot;);</span>
+<span class="fc bfc" id="L888" title="All 2 branches covered.">        if (cookieHeader == null) {</span>
+<span class="fc" id="L889">            return;</span>
         }
 
-<span class="fc" id="L923">        StringTokenizer st = new StringTokenizer(cookieHeader, &quot;,;=&quot;, true);</span>
-<span class="fc" id="L924">        String lastToken = st.nextToken();</span>
-<span class="fc bfc" id="L925" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L926">            String token = st.nextToken();</span>
-<span class="pc bpc" id="L927" title="1 of 4 branches missed.">            if (token.equals(&quot;=&quot;) &amp;&amp; st.hasMoreTokens()) {</span>
-<span class="fc" id="L928">                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));</span>
+<span class="fc" id="L892">        StringTokenizer st = new StringTokenizer(cookieHeader, &quot;,;=&quot;, true);</span>
+<span class="fc" id="L893">        String lastToken = st.nextToken();</span>
+<span class="fc bfc" id="L894" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L895">            String token = st.nextToken();</span>
+<span class="pc bpc" id="L896" title="1 of 4 branches missed.">            if (token.equals(&quot;=&quot;) &amp;&amp; st.hasMoreTokens()) {</span>
+<span class="fc" id="L897">                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));</span>
             }
-<span class="fc" id="L930">            lastToken = token;</span>
-<span class="fc" id="L931">        }</span>
-<span class="fc" id="L932">    }</span>
+<span class="fc" id="L899">            lastToken = token;</span>
+<span class="fc" id="L900">        }</span>
+<span class="fc" id="L901">    }</span>
 
     /**
      * The Class PrioritizedLocale.
@@ -948,16 +917,16 @@ class ServletUnitHttpRequest implements HttpServletRequest {
          * @param languageSpec
          *            the language spec
          */
-<span class="fc" id="L951">        PrioritizedLocale(String languageSpec) {</span>
-<span class="fc" id="L952">            int semiIndex = languageSpec.indexOf(';');</span>
-<span class="fc bfc" id="L953" title="All 2 branches covered.">            if (semiIndex &lt; 0) {</span>
-<span class="fc" id="L954">                _priority = 1;</span>
-<span class="fc" id="L955">                _locale = parseLocale(languageSpec);</span>
+<span class="fc" id="L920">        PrioritizedLocale(String languageSpec) {</span>
+<span class="fc" id="L921">            int semiIndex = languageSpec.indexOf(';');</span>
+<span class="fc bfc" id="L922" title="All 2 branches covered.">            if (semiIndex &lt; 0) {</span>
+<span class="fc" id="L923">                _priority = 1;</span>
+<span class="fc" id="L924">                _locale = parseLocale(languageSpec);</span>
             } else {
-<span class="fc" id="L957">                _priority = Float.parseFloat(languageSpec.substring(languageSpec.indexOf('=', semiIndex) + 1));</span>
-<span class="fc" id="L958">                _locale = parseLocale(languageSpec.substring(0, semiIndex));</span>
+<span class="fc" id="L926">                _priority = Float.parseFloat(languageSpec.substring(languageSpec.indexOf('=', semiIndex) + 1));</span>
+<span class="fc" id="L927">                _locale = parseLocale(languageSpec.substring(0, semiIndex));</span>
             }
-<span class="fc" id="L960">        }</span>
+<span class="fc" id="L929">        }</span>
 
         /**
          * Parses the locale.
@@ -968,12 +937,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
          * @return the locale
          */
         private Locale parseLocale(String range) {
-<span class="fc" id="L971">            range = range.trim();</span>
-<span class="fc" id="L972">            int dashIndex = range.indexOf('-');</span>
-<span class="fc bfc" id="L973" title="All 2 branches covered.">            if (dashIndex &lt; 0) {</span>
-<span class="fc" id="L974">                return new Locale(range, &quot;&quot;);</span>
+<span class="fc" id="L940">            range = range.trim();</span>
+<span class="fc" id="L941">            int dashIndex = range.indexOf('-');</span>
+<span class="fc bfc" id="L942" title="All 2 branches covered.">            if (dashIndex &lt; 0) {</span>
+<span class="fc" id="L943">                return new Locale(range, &quot;&quot;);</span>
             }
-<span class="fc" id="L976">            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));</span>
+<span class="fc" id="L945">            return new Locale(range.substring(0, dashIndex), range.substring(dashIndex + 1));</span>
         }
 
         /**
@@ -982,17 +951,17 @@ class ServletUnitHttpRequest implements HttpServletRequest {
          * @return the locale
          */
         public Locale getLocale() {
-<span class="fc" id="L985">            return _locale;</span>
+<span class="fc" id="L954">            return _locale;</span>
         }
 
         @Override
         public int compareTo(Object o) {
-<span class="pc bpc" id="L990" title="1 of 2 branches missed.">            if (!(o instanceof PrioritizedLocale)) {</span>
-<span class="nc" id="L991">                throw new IllegalArgumentException(&quot;may only combine with other prioritized locales&quot;);</span>
+<span class="pc bpc" id="L959" title="1 of 2 branches missed.">            if (!(o instanceof PrioritizedLocale)) {</span>
+<span class="nc" id="L960">                throw new IllegalArgumentException(&quot;may only combine with other prioritized locales&quot;);</span>
             }
-<span class="fc" id="L993">            PrioritizedLocale other = (PrioritizedLocale) o;</span>
-<span class="pc bpc" id="L994" title="1 of 2 branches missed.">            return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())</span>
-<span class="fc bfc" id="L995" title="All 2 branches covered.">                    : _priority &lt; other._priority ? +1 : -1;</span>
+<span class="fc" id="L962">            PrioritizedLocale other = (PrioritizedLocale) o;</span>
+<span class="pc bpc" id="L963" title="1 of 2 branches missed.">            return _priority == other._priority ? _locale.getLanguage().compareTo(other._locale.getLanguage())</span>
+<span class="fc bfc" id="L964" title="All 2 branches covered.">                    : _priority &lt; other._priority ? +1 : -1;</span>
         }
 
     }
@@ -1000,96 +969,113 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     @Override
     public ServletContext getServletContext() {
         try {
-<span class="nc" id="L1003">            return _servletRequest.getServlet().getServletConfig().getServletContext();</span>
-<span class="nc" id="L1004">        } catch (ServletException e) {</span>
-<span class="nc" id="L1005">            return null;</span>
+<span class="nc" id="L972">            return _servletRequest.getServlet().getServletConfig().getServletContext();</span>
+<span class="nc" id="L973">        } catch (ServletException e) {</span>
+<span class="nc" id="L974">            return null;</span>
         }
     }
 
     @Override
     public AsyncContext startAsync() throws IllegalStateException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1012">        return null;</span>
+<span class="nc" id="L981">        return null;</span>
     }
 
     @Override
     public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
             throws IllegalStateException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1019">        return null;</span>
+<span class="nc" id="L988">        return null;</span>
     }
 
     @Override
     public boolean isAsyncStarted() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1025">        return false;</span>
+<span class="nc" id="L994">        return false;</span>
     }
 
     @Override
     public boolean isAsyncSupported() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1031">        return false;</span>
+<span class="nc" id="L1000">        return false;</span>
     }
 
     @Override
     public AsyncContext getAsyncContext() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1037">        return null;</span>
+<span class="nc" id="L1006">        return null;</span>
     }
 
     @Override
     public DispatcherType getDispatcherType() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1043">        return null;</span>
+<span class="nc" id="L1012">        return null;</span>
     }
 
     @Override
     public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1049">        return false;</span>
+<span class="nc" id="L1018">        return false;</span>
     }
 
     @Override
     public void login(String username, String password) throws ServletException {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L1056">    }</span>
+<span class="nc" id="L1025">    }</span>
 
     @Override
     public void logout() throws ServletException {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L1062">    }</span>
+<span class="nc" id="L1031">    }</span>
 
     @Override
     public Collection&lt;Part&gt; getParts() throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1067">        return null;</span>
+<span class="nc" id="L1036">        return null;</span>
     }
 
     @Override
     public Part getPart(String name) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1073">        return null;</span>
+<span class="nc" id="L1042">        return null;</span>
     }
 
     @Override
     public long getContentLengthLong() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1079">        return 0;</span>
+<span class="nc" id="L1048">        return 0;</span>
     }
 
     @Override
     public String changeSessionId() {
         // TODO Auto-generated method stub
-<span class="nc" id="L1085">        return null;</span>
+<span class="nc" id="L1054">        return null;</span>
     }
 
     @Override
     public &lt;T extends HttpUpgradeHandler&gt; T upgrade(Class&lt;T&gt; handlerClass) throws IOException, ServletException {
         // TODO Auto-generated method stub
-<span class="nc" id="L1091">        return null;</span>
+<span class="nc" id="L1060">        return null;</span>
     }
 
+    @Override
+    public String getRequestId() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L1066">        return null;</span>
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L1072">        return null;</span>
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
+        // TODO Auto-generated method stub
+<span class="nc" id="L1078">        return null;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

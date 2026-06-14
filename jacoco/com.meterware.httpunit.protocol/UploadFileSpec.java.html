@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UploadFileSpec.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.protocol</a> &gt; <span class="el_source">UploadFileSpec.java</span></div><h1>UploadFileSpec.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.protocol;
 
@@ -35,10 +23,10 @@ public class UploadFileSpec {
      * @param file
      *            the file
      */
-<span class="fc" id="L38">    public UploadFileSpec(File file) {</span>
-<span class="fc" id="L39">        _file = file;</span>
-<span class="fc" id="L40">        guessContentType();</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L26">    public UploadFileSpec(File file) {</span>
+<span class="fc" id="L27">        _file = file;</span>
+<span class="fc" id="L28">        guessContentType();</span>
+<span class="fc" id="L29">    }</span>
 
     /**
      * Creates a specification based on a File object and with a specified content type.
@@ -48,10 +36,10 @@ public class UploadFileSpec {
      * @param contentType
      *            the content type
      */
-<span class="fc" id="L51">    public UploadFileSpec(File file, String contentType) {</span>
-<span class="fc" id="L52">        _file = file;</span>
-<span class="fc" id="L53">        _contentType = contentType;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L39">    public UploadFileSpec(File file, String contentType) {</span>
+<span class="fc" id="L40">        _file = file;</span>
+<span class="fc" id="L41">        _contentType = contentType;</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Creates a specification for an upload from an input stream. The file name and content type must be specified.
@@ -63,11 +51,11 @@ public class UploadFileSpec {
      * @param contentType
      *            the content type
      */
-<span class="fc" id="L66">    public UploadFileSpec(String fileName, InputStream inputStream, String contentType) {</span>
-<span class="fc" id="L67">        _fileName = fileName;</span>
-<span class="fc" id="L68">        _inputStream = inputStream;</span>
-<span class="fc" id="L69">        _contentType = contentType;</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L54">    public UploadFileSpec(String fileName, InputStream inputStream, String contentType) {</span>
+<span class="fc" id="L55">        _fileName = fileName;</span>
+<span class="fc" id="L56">        _inputStream = inputStream;</span>
+<span class="fc" id="L57">        _contentType = contentType;</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * get the Inputstream - even if it has been closed previously.
@@ -78,15 +66,15 @@ public class UploadFileSpec {
      *             Signals that an I/O exception has occurred.
      */
     public InputStream getInputStream() throws IOException {
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (_inputStream == null) {</span>
-<span class="fc" id="L82">            _inputStream = Files.newInputStream(_file.toPath());</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (_inputStream == null) {</span>
+<span class="fc" id="L70">            _inputStream = Files.newInputStream(_file.toPath());</span>
         }
         try {
-<span class="fc" id="L85">            _inputStream.available();</span>
-<span class="nc" id="L86">        } catch (IOException ex) {</span>
-<span class="nc" id="L87">            _inputStream = Files.newInputStream(_file.toPath());</span>
-<span class="fc" id="L88">        }</span>
-<span class="fc" id="L89">        return _inputStream;</span>
+<span class="fc" id="L73">            _inputStream.available();</span>
+<span class="nc" id="L74">        } catch (IOException ex) {</span>
+<span class="nc" id="L75">            _inputStream = Files.newInputStream(_file.toPath());</span>
+<span class="fc" id="L76">        }</span>
+<span class="fc" id="L77">        return _inputStream;</span>
     }
 
     /**
@@ -95,10 +83,10 @@ public class UploadFileSpec {
      * @return the file name
      */
     public String getFileName() {
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (_fileName == null) {</span>
-<span class="fc" id="L99">            _fileName = _file.getAbsolutePath();</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (_fileName == null) {</span>
+<span class="fc" id="L87">            _fileName = _file.getAbsolutePath();</span>
         }
-<span class="fc" id="L101">        return _fileName;</span>
+<span class="fc" id="L89">        return _fileName;</span>
     }
 
     /**
@@ -107,7 +95,7 @@ public class UploadFileSpec {
      * @return the content type
      */
     public String getContentType() {
-<span class="fc" id="L110">        return _contentType;</span>
+<span class="fc" id="L98">        return _contentType;</span>
     }
 
     /** The file. */
@@ -120,10 +108,10 @@ public class UploadFileSpec {
     private String _fileName;
 
     /** The content type. */
-<span class="fc" id="L123">    private String _contentType = &quot;text/plain&quot;;</span>
+<span class="fc" id="L111">    private String _contentType = &quot;text/plain&quot;;</span>
 
     /** the default content extensions. */
-<span class="fc" id="L126">    private static String[][] CONTENT_EXTENSIONS = { { &quot;text/plain&quot;, &quot;txt&quot;, &quot;text&quot; }, { &quot;text/html&quot;, &quot;htm&quot;, &quot;html&quot; },</span>
+<span class="fc" id="L114">    private static String[][] CONTENT_EXTENSIONS = { { &quot;text/plain&quot;, &quot;txt&quot;, &quot;text&quot; }, { &quot;text/html&quot;, &quot;htm&quot;, &quot;html&quot; },</span>
             { &quot;image/gif&quot;, &quot;gif&quot; }, { &quot;image/jpeg&quot;, &quot;jpg&quot;, &quot;jpeg&quot; }, { &quot;image/png&quot;, &quot;png&quot; },
             { &quot;image/tiff&quot;, &quot;tif&quot;, &quot;tiff&quot; }, { &quot;application/pdf&quot;, &quot;pdf&quot; }, { &quot;application/octet-stream&quot;, &quot;zip&quot; } };
 
@@ -131,16 +119,16 @@ public class UploadFileSpec {
      * Guess content type.
      */
     private void guessContentType() {
-<span class="fc" id="L134">        String extension = getExtension(_file.getName());</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        for (String[] element : CONTENT_EXTENSIONS) {</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">            for (int j = 1; j &lt; element.length; j++) {</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">                if (extension.equalsIgnoreCase(element[j])) {</span>
-<span class="fc" id="L138">                    _contentType = element[0];</span>
-<span class="fc" id="L139">                    return;</span>
+<span class="fc" id="L122">        String extension = getExtension(_file.getName());</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        for (String[] element : CONTENT_EXTENSIONS) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            for (int j = 1; j &lt; element.length; j++) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                if (extension.equalsIgnoreCase(element[j])) {</span>
+<span class="fc" id="L126">                    _contentType = element[0];</span>
+<span class="fc" id="L127">                    return;</span>
                 }
             }
         }
-<span class="nc" id="L143">    }</span>
+<span class="nc" id="L131">    }</span>
 
     /**
      * Gets the extension.
@@ -151,7 +139,7 @@ public class UploadFileSpec {
      * @return the extension
      */
     private String getExtension(String fileName) {
-<span class="fc" id="L154">        return fileName.substring(fileName.lastIndexOf('.') + 1);</span>
+<span class="fc" id="L142">        return fileName.substring(fileName.lastIndexOf('.') + 1);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

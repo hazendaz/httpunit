@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLLinkElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLLinkElementImpl.java</span></div><h1>HTMLLinkElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -24,14 +12,14 @@ import org.w3c.dom.html.HTMLLinkElement;
 /**
  * The Class HTMLLinkElementImpl.
  */
-<span class="fc" id="L27">public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {</span>
+<span class="fc" id="L15">public class HTMLLinkElementImpl extends HTMLElementImpl implements HTMLLinkElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L34">        return new HTMLLinkElementImpl();</span>
+<span class="fc" id="L22">        return new HTMLLinkElementImpl();</span>
     }
 
     /**
@@ -41,7 +29,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getCharset() {
-<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
+<span class="fc" id="L32">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
     }
 
     /**
@@ -51,7 +39,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public boolean getDisabled() {
-<span class="fc" id="L54">        return getBooleanAttribute(&quot;disabled&quot;);</span>
+<span class="fc" id="L42">        return getBooleanAttribute(&quot;disabled&quot;);</span>
     }
 
     /**
@@ -61,7 +49,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getHref() {
-<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
+<span class="fc" id="L52">        return getAttributeWithNoDefault(&quot;href&quot;);</span>
     }
 
     /**
@@ -71,7 +59,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getHreflang() {
-<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
+<span class="fc" id="L62">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
     }
 
     /**
@@ -81,7 +69,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getMedia() {
-<span class="fc" id="L84">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
+<span class="fc" id="L72">        return getAttributeWithDefault(&quot;media&quot;, &quot;screen&quot;);</span>
     }
 
     /**
@@ -91,7 +79,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getRel() {
-<span class="fc" id="L94">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
+<span class="fc" id="L82">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
     }
 
     /**
@@ -101,7 +89,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getRev() {
-<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
+<span class="fc" id="L92">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
     }
 
     /**
@@ -111,7 +99,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getTarget() {
-<span class="fc" id="L114">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+<span class="fc" id="L102">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
     }
 
     /**
@@ -121,7 +109,7 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public String getType() {
-<span class="fc" id="L124">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
+<span class="fc" id="L112">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
     }
 
     /**
@@ -132,8 +120,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setCharset(String charset) {
-<span class="fc" id="L135">        setAttribute(&quot;charset&quot;, charset);</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L123">        setAttribute(&quot;charset&quot;, charset);</span>
+<span class="fc" id="L124">    }</span>
 
     /**
      * Sets the disabled.
@@ -143,8 +131,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setDisabled(boolean disabled) {
-<span class="fc" id="L146">        setAttribute(&quot;disabled&quot;, disabled);</span>
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L134">        setAttribute(&quot;disabled&quot;, disabled);</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Sets the href.
@@ -154,8 +142,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setHref(String href) {
-<span class="fc" id="L157">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L145">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Sets the hreflang.
@@ -165,8 +153,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setHreflang(String hreflang) {
-<span class="fc" id="L168">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L156">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Sets the media.
@@ -176,8 +164,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setMedia(String media) {
-<span class="fc" id="L179">        setAttribute(&quot;media&quot;, media);</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L167">        setAttribute(&quot;media&quot;, media);</span>
+<span class="fc" id="L168">    }</span>
 
     /**
      * Sets the rel.
@@ -187,8 +175,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setRel(String rel) {
-<span class="fc" id="L190">        setAttribute(&quot;rel&quot;, rel);</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L178">        setAttribute(&quot;rel&quot;, rel);</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Sets the rev.
@@ -198,8 +186,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setRev(String rev) {
-<span class="fc" id="L201">        setAttribute(&quot;rev&quot;, rev);</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L189">        setAttribute(&quot;rev&quot;, rev);</span>
+<span class="fc" id="L190">    }</span>
 
     /**
      * Sets the target.
@@ -209,8 +197,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setTarget(String target) {
-<span class="fc" id="L212">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L200">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L201">    }</span>
 
     /**
      * Sets the type.
@@ -220,8 +208,8 @@ import org.w3c.dom.html.HTMLLinkElement;
      */
     @Override
     public void setType(String type) {
-<span class="fc" id="L223">        setAttribute(&quot;type&quot;, type);</span>
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L211">        setAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L212">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

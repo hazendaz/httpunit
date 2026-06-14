@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">WebWindow.java</span></div><h1>WebWindow.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -43,7 +31,7 @@ public class WebWindow {
     private FrameHolder _frameContents;
 
     /** The name of the window, set via JavaScript. **/
-<span class="fc" id="L46">    private String _name = &quot;&quot;;</span>
+<span class="fc" id="L34">    private String _name = &quot;&quot;;</span>
 
     /** The web response containing the reference that opened this window *. */
     private WebResponse _opener;
@@ -58,7 +46,7 @@ public class WebWindow {
     private final Map _redirects;
 
     /** True if seen initial request. */
-<span class="fc" id="L61">    private boolean _isInitialRequest = true;</span>
+<span class="fc" id="L49">    private boolean _isInitialRequest = true;</span>
 
     /**
      * Cache the initial client request to ensure that the _redirects structure gets reset.
@@ -71,7 +59,7 @@ public class WebWindow {
      * @return the client
      */
     public WebClient getClient() {
-<span class="fc" id="L74">        return _client;</span>
+<span class="fc" id="L62">        return _client;</span>
     }
 
     /**
@@ -80,18 +68,18 @@ public class WebWindow {
      * @return true, if is closed
      */
     public boolean isClosed() {
-<span class="fc" id="L83">        return _closed;</span>
+<span class="fc" id="L71">        return _closed;</span>
     }
 
     /**
      * Closes this window.
      */
     public void close() {
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (!_closed) {</span>
-<span class="fc" id="L91">            _client.close(this);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (!_closed) {</span>
+<span class="fc" id="L79">            _client.close(this);</span>
         }
-<span class="fc" id="L93">        _closed = true;</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L81">        _closed = true;</span>
+<span class="fc" id="L82">    }</span>
 
     /**
      * Returns the name of this window. Windows created through normal HTML or browser commands have empty names, but
@@ -100,7 +88,7 @@ public class WebWindow {
      * @return the name
      */
     public String getName() {
-<span class="fc" id="L103">        return _name;</span>
+<span class="fc" id="L91">        return _name;</span>
     }
 
     /**
@@ -109,7 +97,7 @@ public class WebWindow {
      * @return the opener
      */
     public WebResponse getOpener() {
-<span class="fc" id="L112">        return _opener;</span>
+<span class="fc" id="L100">        return _opener;</span>
     }
 
     /**
@@ -122,12 +110,11 @@ public class WebWindow {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(String urlString) throws IOException, SAXException {
-<span class="fc" id="L130">        return getResponse(new GetMethodWebRequest(urlString));</span>
+<span class="fc" id="L117">        return getResponse(new GetMethodWebRequest(urlString));</span>
     }
 
     /**
@@ -144,7 +131,7 @@ public class WebWindow {
      *             the SAX exception
      */
     public WebResponse sendRequest(WebRequest request) throws IOException, SAXException {
-<span class="fc" id="L147">        return getResponse(request);</span>
+<span class="fc" id="L134">        return getResponse(request);</span>
     }
 
     /**
@@ -158,35 +145,34 @@ public class WebWindow {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
         // Need to have some sort of ExecuteAroundMethod to ensure that the
         // redirects data structure gets cleared down upon exit - not
         // straightforward, since this could be a recursive call
-<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (_isInitialRequest) {</span>
-<span class="fc" id="L170">            _initialRequest = request;</span>
-<span class="fc" id="L171">            _isInitialRequest = false;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (_isInitialRequest) {</span>
+<span class="fc" id="L156">            _initialRequest = request;</span>
+<span class="fc" id="L157">            _isInitialRequest = false;</span>
         }
 
-<span class="fc" id="L174">        WebResponse result = null;</span>
+<span class="fc" id="L160">        WebResponse result = null;</span>
 
         try {
-<span class="fc" id="L177">            final RequestContext requestContext = new RequestContext();</span>
-<span class="fc" id="L178">            final WebResponse response = getSubframeResponse(request, requestContext);</span>
-<span class="fc" id="L179">            requestContext.runScripts();</span>
+<span class="fc" id="L163">            final RequestContext requestContext = new RequestContext();</span>
+<span class="fc" id="L164">            final WebResponse response = getSubframeResponse(request, requestContext);</span>
+<span class="fc" id="L165">            requestContext.runScripts();</span>
             // javascript might replace the response in its frame
-<span class="fc bfc" id="L181" title="All 2 branches covered.">            result = response == null ? null : response.getWindow().getFrameContents(response.getFrame());</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">            result = response == null ? null : response.getWindow().getFrameContents(response.getFrame());</span>
         } finally {
-<span class="pc bpc" id="L183" title="1 of 4 branches missed.">            if (null != request &amp;&amp; request.equals(_initialRequest)) {</span>
-<span class="fc" id="L184">                _redirects.clear();</span>
-<span class="fc" id="L185">                _initialRequest = null;</span>
-<span class="fc" id="L186">                _isInitialRequest = true;</span>
+<span class="pc bpc" id="L169" title="1 of 4 branches missed.">            if (null != request &amp;&amp; request.equals(_initialRequest)) {</span>
+<span class="fc" id="L170">                _redirects.clear();</span>
+<span class="fc" id="L171">                _initialRequest = null;</span>
+<span class="fc" id="L172">                _isInitialRequest = true;</span>
             }
         }
-<span class="fc" id="L189">        return result;</span>
+<span class="fc" id="L175">        return result;</span>
     }
 
     /**
@@ -206,9 +192,9 @@ public class WebWindow {
      */
     WebResponse getSubframeResponse(WebRequest request, RequestContext requestContext)
             throws IOException, SAXException {
-<span class="fc" id="L209">        WebResponse response = getResource(request);</span>
+<span class="fc" id="L195">        WebResponse response = getResource(request);</span>
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        return response == null ? null : updateWindow(request.getTarget(), response, requestContext);</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        return response == null ? null : updateWindow(request.getTarget(), response, requestContext);</span>
     }
 
     /**
@@ -230,17 +216,17 @@ public class WebWindow {
      */
     WebResponse updateWindow(String requestTarget, WebResponse response, RequestContext requestContext)
             throws IOException, SAXException {
-<span class="fc" id="L233">        _client.updateClient(response);</span>
-<span class="fc bfc" id="L234" title="All 4 branches covered.">        if (getClient().getClientProperties().isAutoRefresh() &amp;&amp; response.getRefreshRequest() != null) {</span>
-<span class="fc" id="L235">            WebRequest request = response.getRefreshRequest();</span>
-<span class="fc" id="L236">            return getResponse(request);</span>
+<span class="fc" id="L219">        _client.updateClient(response);</span>
+<span class="fc bfc" id="L220" title="All 4 branches covered.">        if (getClient().getClientProperties().isAutoRefresh() &amp;&amp; response.getRefreshRequest() != null) {</span>
+<span class="fc" id="L221">            WebRequest request = response.getRefreshRequest();</span>
+<span class="fc" id="L222">            return getResponse(request);</span>
         }
-<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (shouldFollowRedirect(response)) {</span>
-<span class="fc" id="L239">            delay(HttpUnitOptions.getRedirectDelay());</span>
-<span class="fc" id="L240">            return getResponse(new RedirectWebRequest(response));</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (shouldFollowRedirect(response)) {</span>
+<span class="fc" id="L225">            delay(HttpUnitOptions.getRedirectDelay());</span>
+<span class="fc" id="L226">            return getResponse(new RedirectWebRequest(response));</span>
         }
-<span class="fc" id="L242">        _client.updateFrameContents(this, requestTarget, response, requestContext);</span>
-<span class="fc" id="L243">        return response;</span>
+<span class="fc" id="L228">        _client.updateFrameContents(this, requestTarget, response, requestContext);</span>
+<span class="fc" id="L229">        return response;</span>
     }
 
     /**
@@ -256,30 +242,30 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      */
     public WebResponse getResource(WebRequest request) throws IOException {
-<span class="fc" id="L259">        _client.tellListeners(request);</span>
+<span class="fc" id="L245">        _client.tellListeners(request);</span>
 
-<span class="fc" id="L261">        WebResponse response = null;</span>
-<span class="fc" id="L262">        String urlString = request.getURLString().trim();</span>
-<span class="fc" id="L263">        FrameSelector targetFrame = _frameContents.getTargetFrame(request);</span>
-<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (urlString.startsWith(&quot;about:&quot;)) {</span>
-<span class="fc" id="L265">            response = new DefaultWebResponse(_client, targetFrame, null, &quot;&quot;);</span>
-<span class="fc bfc" id="L266" title="All 2 branches covered.">        } else if (!HttpUnitUtils.isJavaScriptURL(urlString)) {</span>
-<span class="fc" id="L267">            response = _client.createResponse(request, targetFrame);</span>
+<span class="fc" id="L247">        WebResponse response = null;</span>
+<span class="fc" id="L248">        String urlString = request.getURLString().trim();</span>
+<span class="fc" id="L249">        FrameSelector targetFrame = _frameContents.getTargetFrame(request);</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (urlString.startsWith(&quot;about:&quot;)) {</span>
+<span class="fc" id="L251">            response = new DefaultWebResponse(_client, targetFrame, null, &quot;&quot;);</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        } else if (!HttpUnitUtils.isJavaScriptURL(urlString)) {</span>
+<span class="fc" id="L253">            response = _client.createResponse(request, targetFrame);</span>
         } else {
-<span class="fc" id="L269">            ScriptingHandler handler = request.getSourceScriptingHandler();</span>
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">            if (handler == null) {</span>
-<span class="fc" id="L271">                handler = getCurrentPage().getScriptingHandler();</span>
+<span class="fc" id="L255">            ScriptingHandler handler = request.getSourceScriptingHandler();</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">            if (handler == null) {</span>
+<span class="fc" id="L257">                handler = getCurrentPage().getScriptingHandler();</span>
             }
-<span class="fc" id="L273">            Object result = handler.evaluateExpression(urlString);</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">            if (result != null) {</span>
-<span class="fc" id="L275">                response = new DefaultWebResponse(_client, targetFrame, request.getURL(), result.toString());</span>
+<span class="fc" id="L259">            Object result = handler.evaluateExpression(urlString);</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if (result != null) {</span>
+<span class="fc" id="L261">                response = new DefaultWebResponse(_client, targetFrame, request.getURL(), result.toString());</span>
             }
         }
 
-<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (response != null) {</span>
-<span class="fc" id="L280">            _client.tellListeners(response);</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (response != null) {</span>
+<span class="fc" id="L266">            _client.tellListeners(response);</span>
         }
-<span class="fc" id="L282">        return response;</span>
+<span class="fc" id="L268">        return response;</span>
     }
 
     /**
@@ -288,8 +274,8 @@ public class WebWindow {
      * @return the frame names
      */
     public String[] getFrameNames() {
-<span class="fc" id="L291">        final List&lt;String&gt; names = _frameContents.getActiveFrameNames();</span>
-<span class="fc" id="L292">        return names.toArray(new String[names.size()]);</span>
+<span class="fc" id="L277">        final List&lt;String&gt; names = _frameContents.getActiveFrameNames();</span>
+<span class="fc" id="L278">        return names.toArray(new String[names.size()]);</span>
     }
 
     /**
@@ -301,7 +287,7 @@ public class WebWindow {
      * @return true, if successful
      */
     public boolean hasFrame(String frameName) {
-<span class="nc bnc" id="L304" title="All 2 branches missed.">        return _frameContents.get(frameName) != null;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">        return _frameContents.get(frameName) != null;</span>
     }
 
     /**
@@ -313,7 +299,7 @@ public class WebWindow {
      * @return true, if successful
      */
     boolean hasFrame(FrameSelector frame) {
-<span class="fc bfc" id="L316" title="All 2 branches covered.">        return _frameContents.get(frame) != null;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        return _frameContents.get(frame) != null;</span>
     }
 
     /**
@@ -326,11 +312,11 @@ public class WebWindow {
      * @return the frame contents
      */
     public WebResponse getFrameContents(String frameName) {
-<span class="fc" id="L329">        WebResponse response = _frameContents.get(frameName);</span>
-<span class="pc bpc" id="L330" title="1 of 2 branches missed.">        if (response == null) {</span>
-<span class="nc" id="L331">            throw new NoSuchFrameException(frameName);</span>
+<span class="fc" id="L315">        WebResponse response = _frameContents.get(frameName);</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">        if (response == null) {</span>
+<span class="nc" id="L317">            throw new NoSuchFrameException(frameName);</span>
         }
-<span class="fc" id="L333">        return response;</span>
+<span class="fc" id="L319">        return response;</span>
     }
 
     /**
@@ -343,7 +329,7 @@ public class WebWindow {
      * @return the frame contents
      */
     WebResponse getFrameContents(FrameSelector targetFrame) {
-<span class="fc" id="L346">        return _frameContents.getFrameContents(targetFrame);</span>
+<span class="fc" id="L332">        return _frameContents.getFrameContents(targetFrame);</span>
     }
 
     /**
@@ -357,7 +343,7 @@ public class WebWindow {
      * @return the subframe contents
      */
     WebResponse getSubframeContents(FrameSelector frame, String subFrameName) {
-<span class="fc" id="L360">        return _frameContents.getSubframeContents(frame, subFrameName);</span>
+<span class="fc" id="L346">        return _frameContents.getSubframeContents(frame, subFrameName);</span>
     }
 
     /**
@@ -369,7 +355,7 @@ public class WebWindow {
      * @return the parent frame contents
      */
     WebResponse getParentFrameContents(FrameSelector frame) {
-<span class="fc" id="L372">        return _frameContents.getParentFrameContents(frame);</span>
+<span class="fc" id="L358">        return _frameContents.getParentFrameContents(frame);</span>
     }
 
     /**
@@ -378,7 +364,7 @@ public class WebWindow {
      * @return the current page
      */
     public WebResponse getCurrentPage() {
-<span class="fc" id="L381">        return getFrameContents(WebRequest.TOP_FRAME);</span>
+<span class="fc" id="L367">        return getFrameContents(WebRequest.TOP_FRAME);</span>
     }
 
     /**
@@ -387,12 +373,12 @@ public class WebWindow {
      * @param client
      *            - the client to construct me from
      */
-<span class="fc" id="L390">    WebWindow(WebClient client) {</span>
-<span class="fc" id="L391">        _client = client;</span>
-<span class="fc" id="L392">        _frameContents = new FrameHolder(this);</span>
-<span class="fc" id="L393">        _name = NO_NAME + _client.getOpenWindows().length;</span>
-<span class="fc" id="L394">        _redirects = new Hashtable&lt;&gt;();</span>
-<span class="fc" id="L395">    }</span>
+<span class="fc" id="L376">    WebWindow(WebClient client) {</span>
+<span class="fc" id="L377">        _client = client;</span>
+<span class="fc" id="L378">        _frameContents = new FrameHolder(this);</span>
+<span class="fc" id="L379">        _name = NO_NAME + _client.getOpenWindows().length;</span>
+<span class="fc" id="L380">        _redirects = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L381">    }</span>
 
     /**
      * Instantiates a new web window.
@@ -403,9 +389,9 @@ public class WebWindow {
      *            the opener
      */
     WebWindow(WebClient client, WebResponse opener) {
-<span class="fc" id="L406">        this(client);</span>
-<span class="fc" id="L407">        _opener = opener;</span>
-<span class="fc" id="L408">    }</span>
+<span class="fc" id="L392">        this(client);</span>
+<span class="fc" id="L393">        _opener = opener;</span>
+<span class="fc" id="L394">    }</span>
 
     /**
      * Update frame contents.
@@ -421,9 +407,9 @@ public class WebWindow {
      *             the SAX exception
      */
     void updateFrameContents(WebResponse response, RequestContext requestContext) throws IOException, SAXException {
-<span class="fc" id="L424">        response.setWindow(this);</span>
-<span class="fc" id="L425">        _frameContents.updateFrames(response, response.getFrame(), requestContext);</span>
-<span class="fc" id="L426">    }</span>
+<span class="fc" id="L410">        response.setWindow(this);</span>
+<span class="fc" id="L411">        _frameContents.updateFrames(response, response.getFrame(), requestContext);</span>
+<span class="fc" id="L412">    }</span>
 
     /**
      * Sets the name.
@@ -432,8 +418,8 @@ public class WebWindow {
      *            the new name
      */
     void setName(String name) {
-<span class="fc" id="L435">        _name = name;</span>
-<span class="fc" id="L436">    }</span>
+<span class="fc" id="L421">        _name = name;</span>
+<span class="fc" id="L422">    }</span>
 
     /**
      * Delays the specified amount of time.
@@ -442,16 +428,16 @@ public class WebWindow {
      *            the num milliseconds
      */
     private void delay(int numMilliseconds) {
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        if (numMilliseconds == 0) {</span>
-<span class="fc" id="L446">            return;</span>
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">        if (numMilliseconds == 0) {</span>
+<span class="fc" id="L432">            return;</span>
         }
         try {
-<span class="nc" id="L449">            Thread.sleep(numMilliseconds);</span>
-<span class="nc" id="L450">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L435">            Thread.sleep(numMilliseconds);</span>
+<span class="nc" id="L436">        } catch (InterruptedException e) {</span>
             // ignore the exception
-<span class="nc" id="L452">            Thread.interrupted();</span>
-<span class="nc" id="L453">        }</span>
-<span class="nc" id="L454">    }</span>
+<span class="nc" id="L438">            Thread.interrupted();</span>
+<span class="nc" id="L439">        }</span>
+<span class="nc" id="L440">    }</span>
 
     /**
      * check whether redirect is configured.
@@ -462,10 +448,10 @@ public class WebWindow {
      * @return true, if successful
      */
     private boolean redirectConfigured(WebResponse response) {
-<span class="fc" id="L465">        boolean isAutoredirect = getClient().getClientProperties().isAutoRedirect();</span>
-<span class="fc bfc" id="L466" title="All 2 branches covered.">        boolean hasLocation = response.getHeaderField(&quot;Location&quot;) != null;</span>
-<span class="fc" id="L467">        int responseCode = response.getResponseCode();</span>
-<span class="pc bpc" id="L468" title="1 of 8 branches missed.">        return isAutoredirect &amp;&amp; responseCode &gt;= HttpURLConnection.HTTP_MOVED_PERM</span>
+<span class="fc" id="L451">        boolean isAutoredirect = getClient().getClientProperties().isAutoRedirect();</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">        boolean hasLocation = response.getHeaderField(&quot;Location&quot;) != null;</span>
+<span class="fc" id="L453">        int responseCode = response.getResponseCode();</span>
+<span class="pc bpc" id="L454" title="1 of 8 branches missed.">        return isAutoredirect &amp;&amp; responseCode &gt;= HttpURLConnection.HTTP_MOVED_PERM</span>
                 &amp;&amp; responseCode &lt;= HttpURLConnection.HTTP_MOVED_TEMP &amp;&amp; hasLocation;
     }
 
@@ -481,51 +467,51 @@ public class WebWindow {
         // first check whether redirect is configured for this response
         // this is the old pre [ 1155415 ] Handle redirect instructions which can lead to a loop
         // shouldFollowRedirect method - just renamed
-<span class="fc bfc" id="L484" title="All 2 branches covered.">        if (!redirectConfigured(response)) {</span>
-<span class="fc" id="L485">            return false;</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        if (!redirectConfigured(response)) {</span>
+<span class="fc" id="L471">            return false;</span>
         }
         // now do the recursion check
-<span class="fc" id="L488">        String redirectLocation = response.getHeaderField(&quot;Location&quot;);</span>
+<span class="fc" id="L474">        String redirectLocation = response.getHeaderField(&quot;Location&quot;);</span>
 
-<span class="fc" id="L490">        URL url = null;</span>
+<span class="fc" id="L476">        URL url = null;</span>
 
         try {
-<span class="pc bpc" id="L493" title="1 of 2 branches missed.">            if (redirectLocation != null) {</span>
-<span class="fc" id="L494">                url = new URL(response.getURL(), redirectLocation);</span>
+<span class="pc bpc" id="L479" title="1 of 2 branches missed.">            if (redirectLocation != null) {</span>
+<span class="fc" id="L480">                url = new URL(response.getURL(), redirectLocation);</span>
             }
-<span class="fc" id="L496">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L482">        } catch (MalformedURLException e) {</span>
             // Fall through and allow existing exception handling code deal
             // with any exception - we don't know at this stage whether it is
             // a redirect instruction, although it is highly likely, given
             // there is a location header present in the response!
-<span class="fc" id="L501">        }</span>
+<span class="fc" id="L487">        }</span>
 
-<span class="pc bpc" id="L503" title="1 of 2 branches missed.">        switch (response.getResponseCode()) {</span>
+<span class="pc bpc" id="L489" title="1 of 2 branches missed.">        switch (response.getResponseCode()) {</span>
             case HttpURLConnection.HTTP_MOVED_PERM:
             case HttpURLConnection.HTTP_MOVED_TEMP: // Fall through
-<span class="fc" id="L506">                int count = 0;</span>
-<span class="fc bfc" id="L507" title="All 2 branches covered.">                if (null != url) {</span>
-<span class="fc" id="L508">                    Integer value = (Integer) _redirects.get(url);</span>
-<span class="fc bfc" id="L509" title="All 2 branches covered.">                    if (null != value) {</span>
+<span class="fc" id="L492">                int count = 0;</span>
+<span class="fc bfc" id="L493" title="All 2 branches covered.">                if (null != url) {</span>
+<span class="fc" id="L494">                    Integer value = (Integer) _redirects.get(url);</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">                    if (null != value) {</span>
                         // We have already been instructed to redirect to that
                         // location in the course of this attempt to resolve the
                         // resource
 
-<span class="fc" id="L514">                        count = value.intValue();</span>
+<span class="fc" id="L500">                        count = value.intValue();</span>
 
-<span class="fc" id="L516">                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
+<span class="fc" id="L502">                        int maxRedirects = getClient().getClientProperties().getMaxRedirects();</span>
 
-<span class="fc bfc" id="L518" title="All 2 branches covered.">                        if (count == maxRedirects) {</span>
-<span class="fc" id="L519">                            throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">                        if (count == maxRedirects) {</span>
+<span class="fc" id="L505">                            throw new RecursiveRedirectionException(url, &quot;Maximum number of redirects exceeded&quot;);</span>
                         }
                     }
 
-<span class="fc" id="L523">                    count++;</span>
-<span class="fc" id="L524">                    _redirects.put(url, Integer.valueOf(count));</span>
+<span class="fc" id="L509">                    count++;</span>
+<span class="fc" id="L510">                    _redirects.put(url, Integer.valueOf(count));</span>
                 }
                 break;
         }
-<span class="pc bpc" id="L528" title="1 of 2 branches missed.">        return redirectLocation != null;</span>
+<span class="pc bpc" id="L514" title="1 of 2 branches missed.">        return redirectLocation != null;</span>
     }
 
     /**
@@ -534,7 +520,7 @@ public class WebWindow {
      * @return the top frame
      */
     FrameSelector getTopFrame() {
-<span class="fc" id="L537">        return _frameContents.getTopFrame();</span>
+<span class="fc" id="L523">        return _frameContents.getTopFrame();</span>
     }
 
     /**
@@ -546,7 +532,7 @@ public class WebWindow {
      * @return the frame
      */
     FrameSelector getFrame(String target) {
-<span class="fc" id="L549">        return _frameContents.getFrame(target);</span>
+<span class="fc" id="L535">        return _frameContents.getFrame(target);</span>
     }
 
 }

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CookieProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.cookies</a> &gt; <span class="el_source">CookieProperties.java</span></div><h1>CookieProperties.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.cookies;
 
@@ -26,13 +14,13 @@ import java.util.List;
 /**
  * Controls behavior for cookies.
  */
-<span class="nc" id="L29">public class CookieProperties {</span>
+<span class="nc" id="L17">public class CookieProperties {</span>
 
     /** If true, domain matching follows the spec. If false, permits any domain which is a prefix of the host. **/
-<span class="fc" id="L32">    private static boolean _domainMatchingStrict = true;</span>
+<span class="fc" id="L20">    private static boolean _domainMatchingStrict = true;</span>
 
     /** If true, path matching follows the spec. If false, permits any path. **/
-<span class="fc" id="L35">    private static boolean _pathMatchingStrict = true;</span>
+<span class="fc" id="L23">    private static boolean _pathMatchingStrict = true;</span>
 
     /** A collection of listeners for cookie events. **/
     private static ArrayList&lt;CookieListener&gt; _listeners;
@@ -41,10 +29,10 @@ import java.util.List;
      * Reset.
      */
     public static void reset() {
-<span class="fc" id="L44">        _domainMatchingStrict = true;</span>
-<span class="fc" id="L45">        _pathMatchingStrict = true;</span>
-<span class="fc" id="L46">        _listeners = null;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L32">        _domainMatchingStrict = true;</span>
+<span class="fc" id="L33">        _pathMatchingStrict = true;</span>
+<span class="fc" id="L34">        _listeners = null;</span>
+<span class="fc" id="L35">    }</span>
 
     /**
      * Returns true (the default) if cookies should be rejected if they specify a domain which is not a suffix of the
@@ -54,7 +42,7 @@ import java.util.List;
      * @return true, if is domain matching strict
      */
     public static boolean isDomainMatchingStrict() {
-<span class="fc" id="L57">        return _domainMatchingStrict;</span>
+<span class="fc" id="L45">        return _domainMatchingStrict;</span>
     }
 
     /**
@@ -64,8 +52,8 @@ import java.util.List;
      *            the new domain matching strict
      */
     public static void setDomainMatchingStrict(boolean domainMatchingStrict) {
-<span class="fc" id="L67">        _domainMatchingStrict = domainMatchingStrict;</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L55">        _domainMatchingStrict = domainMatchingStrict;</span>
+<span class="fc" id="L56">    }</span>
 
     /**
      * Returns true (the default) if cookies should be rejected if they specify a path which is not a prefix of the
@@ -74,7 +62,7 @@ import java.util.List;
      * @return true, if is path matching strict
      */
     public static boolean isPathMatchingStrict() {
-<span class="fc" id="L77">        return _pathMatchingStrict;</span>
+<span class="fc" id="L65">        return _pathMatchingStrict;</span>
     }
 
     /**
@@ -84,8 +72,8 @@ import java.util.List;
      *            the new path matching strict
      */
     public static void setPathMatchingStrict(boolean pathMatchingStrict) {
-<span class="fc" id="L87">        _pathMatchingStrict = pathMatchingStrict;</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L75">        _pathMatchingStrict = pathMatchingStrict;</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Adds a listener for cookie events.
@@ -94,13 +82,13 @@ import java.util.List;
      *            the listener
      */
     public static void addCookieListener(CookieListener listener) {
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (_listeners == null) {</span>
-<span class="fc" id="L98">            _listeners = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (_listeners == null) {</span>
+<span class="fc" id="L86">            _listeners = new ArrayList&lt;&gt;();</span>
         }
-<span class="fc" id="L100">        synchronized (_listeners) {</span>
-<span class="fc" id="L101">            _listeners.add(listener);</span>
-<span class="fc" id="L102">        }</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L88">        synchronized (_listeners) {</span>
+<span class="fc" id="L89">            _listeners.add(listener);</span>
+<span class="fc" id="L90">        }</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Report cookie rejected.
@@ -113,18 +101,18 @@ import java.util.List;
      *            the source
      */
     public static void reportCookieRejected(int reason, String attribute, String source) {
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (_listeners == null) {</span>
-<span class="fc" id="L117">            return;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (_listeners == null) {</span>
+<span class="fc" id="L105">            return;</span>
         }
 
         List&lt;CookieListener&gt; listeners;
-<span class="fc" id="L121">        synchronized (_listeners) {</span>
-<span class="fc" id="L122">            listeners = (List&lt;CookieListener&gt;) _listeners.clone();</span>
-<span class="fc" id="L123">        }</span>
+<span class="fc" id="L109">        synchronized (_listeners) {</span>
+<span class="fc" id="L110">            listeners = (List&lt;CookieListener&gt;) _listeners.clone();</span>
+<span class="fc" id="L111">        }</span>
 
-<span class="fc bfc" id="L125" title="All 2 branches covered.">        for (Iterator&lt;CookieListener&gt; i = listeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L126">            (i.next()).cookieRejected(source, reason, attribute);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (Iterator&lt;CookieListener&gt; i = listeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L114">            (i.next()).cookieRejected(source, reason, attribute);</span>
         }
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L116">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

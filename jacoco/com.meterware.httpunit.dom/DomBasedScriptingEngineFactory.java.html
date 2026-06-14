@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DomBasedScriptingEngineFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">DomBasedScriptingEngineFactory.java</span></div><h1>DomBasedScriptingEngineFactory.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -38,10 +26,10 @@ import org.w3c.dom.html.HTMLDocument;
 /**
  * The scripting engine factory which relies directly on the DOM.
  */
-<span class="nc" id="L41">public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {</span>
+<span class="nc" id="L29">public class DomBasedScriptingEngineFactory implements ScriptingEngineFactory {</span>
 
     /** The Constant logger. */
-<span class="nc" id="L44">    private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);</span>
+<span class="nc" id="L32">    private static final Logger logger = LoggerFactory.getLogger(DomBasedScriptingEngineFactory.class);</span>
 
     /**
      * check whether this ScriptingEngineFactory is enabled
@@ -49,11 +37,11 @@ import org.w3c.dom.html.HTMLDocument;
     @Override
     public boolean isEnabled() {
         try {
-<span class="nc" id="L52">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
-<span class="nc" id="L53">            return true;</span>
-<span class="nc" id="L54">        } catch (Exception e) {</span>
-<span class="nc" id="L55">            logger.warn(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
-<span class="nc" id="L56">            return false;</span>
+<span class="nc" id="L40">            Class.forName(&quot;org.mozilla.javascript.Context&quot;);</span>
+<span class="nc" id="L41">            return true;</span>
+<span class="nc" id="L42">        } catch (Exception e) {</span>
+<span class="nc" id="L43">            logger.warn(&quot;Rhino classes (js.jar) not found - Javascript disabled&quot;);</span>
+<span class="nc" id="L44">            return false;</span>
         }
     }
 
@@ -73,7 +61,7 @@ import org.w3c.dom.html.HTMLDocument;
             HttpUnitUtils.handleException(e);
             throw new RuntimeException(e.toString());
         }
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L64">    }</span>
 
     /**
      * load.
@@ -83,32 +71,32 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public void load(WebResponse response) {
-<span class="nc" id="L86">        Function onLoadEvent = null;</span>
+<span class="nc" id="L74">        Function onLoadEvent = null;</span>
         try {
-<span class="nc" id="L88">            Context context = Context.enter();</span>
-<span class="nc" id="L89">            context.initStandardObjects(null);</span>
+<span class="nc" id="L76">            Context context = Context.enter();</span>
+<span class="nc" id="L77">            context.initStandardObjects(null);</span>
 
-<span class="nc" id="L91">            HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (!(htmlDocument instanceof HTMLDocumentImpl)) {</span>
-<span class="nc" id="L93">                return;</span>
+<span class="nc" id="L79">            HTMLDocument htmlDocument = ((DomWindow) response.getScriptingHandler()).getDocument();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (!(htmlDocument instanceof HTMLDocumentImpl)) {</span>
+<span class="nc" id="L81">                return;</span>
             }
 
-<span class="nc" id="L96">            HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (body == null) {</span>
-<span class="nc" id="L98">                return;</span>
+<span class="nc" id="L84">            HTMLBodyElementImpl body = (HTMLBodyElementImpl) htmlDocument.getBody();</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (body == null) {</span>
+<span class="nc" id="L86">                return;</span>
             }
-<span class="nc" id="L100">            onLoadEvent = body.getOnloadEvent();</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (onLoadEvent == null) {</span>
-<span class="nc" id="L102">                return;</span>
+<span class="nc" id="L88">            onLoadEvent = body.getOnloadEvent();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (onLoadEvent == null) {</span>
+<span class="nc" id="L90">                return;</span>
             }
-<span class="nc" id="L104">            onLoadEvent.call(context, body, body, new Object[0]);</span>
-<span class="nc" id="L105">        } catch (JavaScriptException | EcmaError ee) {</span>
+<span class="nc" id="L92">            onLoadEvent.call(context, body, body, new Object[0]);</span>
+<span class="nc" id="L93">        } catch (JavaScriptException | EcmaError ee) {</span>
             // throw ee;
-<span class="nc" id="L107">            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());</span>
+<span class="nc" id="L95">            ScriptingEngineImpl.handleScriptException(ee, onLoadEvent.toString());</span>
         } finally {
-<span class="nc" id="L109">            Context.exit();</span>
+<span class="nc" id="L97">            Context.exit();</span>
         }
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L99">    }</span>
 
     /**
      * setter for the throwExceptions flag
@@ -118,8 +106,8 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public void setThrowExceptionsOnError(boolean throwExceptions) {
-<span class="nc" id="L121">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L109">        JavaScript.setThrowExceptionsOnError(throwExceptions);</span>
+<span class="nc" id="L110">    }</span>
 
     /**
      * getter for the throwExceptions flag
@@ -128,27 +116,27 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public boolean isThrowExceptionsOnError() {
-<span class="nc" id="L131">        return JavaScript.isThrowExceptionsOnError();</span>
+<span class="nc" id="L119">        return JavaScript.isThrowExceptionsOnError();</span>
     }
 
     @Override
     public String[] getErrorMessages() {
-<span class="nc" id="L136">        return ScriptingEngineImpl.getErrorMessages();</span>
+<span class="nc" id="L124">        return ScriptingEngineImpl.getErrorMessages();</span>
     }
 
     @Override
     public void clearErrorMessages() {
-<span class="nc" id="L141">        ScriptingEngineImpl.clearErrorMessages();</span>
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L129">        ScriptingEngineImpl.clearErrorMessages();</span>
+<span class="nc" id="L130">    }</span>
 
     @Override
     public ScriptingHandler createHandler(HTMLElement elementBase) {
-<span class="nc" id="L146">        return (ScriptingHandler) elementBase.getNode();</span>
+<span class="nc" id="L134">        return (ScriptingHandler) elementBase.getNode();</span>
     }
 
     @Override
     public ScriptingHandler createHandler(WebResponse response) {
-<span class="nc" id="L151">        return response.createDomScriptingHandler();</span>
+<span class="nc" id="L139">        return response.createDomScriptingHandler();</span>
     }
 
     /**
@@ -161,7 +149,7 @@ import org.w3c.dom.html.HTMLDocument;
      */
     @Override
     public void handleScriptException(Exception e, String badScript) {
-<span class="nc" id="L164">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L152">        ScriptingEngineImpl.handleScriptException(e, badScript);</span>
+<span class="nc" id="L153">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

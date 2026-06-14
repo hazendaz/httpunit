@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTitleElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTitleElementImpl.java</span></div><h1>HTMLTitleElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -26,14 +14,14 @@ import org.w3c.dom.html.HTMLTitleElement;
 /**
  * The Class HTMLTitleElementImpl.
  */
-<span class="fc" id="L29">public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {</span>
+<span class="fc" id="L17">public class HTMLTitleElementImpl extends HTMLElementImpl implements HTMLTitleElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L36">        return new HTMLTitleElementImpl();</span>
+<span class="fc" id="L24">        return new HTMLTitleElementImpl();</span>
     }
 
     /**
@@ -43,8 +31,8 @@ import org.w3c.dom.html.HTMLTitleElement;
      */
     @Override
     public String getText() {
-<span class="fc" id="L46">        Text contentNode = getContentNode();</span>
-<span class="fc bfc" id="L47" title="All 2 branches covered.">        return contentNode == null ? &quot;&quot; : contentNode.getData();</span>
+<span class="fc" id="L34">        Text contentNode = getContentNode();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        return contentNode == null ? &quot;&quot; : contentNode.getData();</span>
     }
 
     /**
@@ -53,13 +41,13 @@ import org.w3c.dom.html.HTMLTitleElement;
      * @return the content node
      */
     private Text getContentNode() {
-<span class="fc" id="L56">        NodeList childNodes = getChildNodes();</span>
-<span class="pc bfc" id="L57" title="All 2 branches covered.">        for (int i = 0; i &lt; childNodes.getLength(); i++) {</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (childNodes.item(i).getNodeType() == TEXT_NODE) {</span>
-<span class="fc" id="L59">                return (Text) childNodes.item(i);</span>
+<span class="fc" id="L44">        NodeList childNodes = getChildNodes();</span>
+<span class="pc bfc" id="L45" title="All 2 branches covered.">        for (int i = 0; i &lt; childNodes.getLength(); i++) {</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (childNodes.item(i).getNodeType() == TEXT_NODE) {</span>
+<span class="fc" id="L47">                return (Text) childNodes.item(i);</span>
             }
         }
-<span class="fc" id="L62">        return null;</span>
+<span class="fc" id="L50">        return null;</span>
     }
 
     /**
@@ -70,13 +58,13 @@ import org.w3c.dom.html.HTMLTitleElement;
      */
     @Override
     public void setText(String text) {
-<span class="fc" id="L73">        Text newChild = getOwnerDocument().createTextNode(text);</span>
-<span class="fc" id="L74">        Text oldChild = getContentNode();</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (oldChild == null) {</span>
-<span class="fc" id="L76">            appendChild(newChild);</span>
+<span class="fc" id="L61">        Text newChild = getOwnerDocument().createTextNode(text);</span>
+<span class="fc" id="L62">        Text oldChild = getContentNode();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (oldChild == null) {</span>
+<span class="fc" id="L64">            appendChild(newChild);</span>
         } else {
-<span class="fc" id="L78">            replaceChild(newChild, oldChild);</span>
+<span class="fc" id="L66">            replaceChild(newChild, oldChild);</span>
         }
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L68">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

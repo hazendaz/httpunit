@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NodeUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">NodeUtils.java</span></div><h1>NodeUtils.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -33,7 +21,7 @@ import org.w3c.dom.NodeList;
 /**
  * Some common utilities for manipulating DOM nodes.
  **/
-<span class="nc" id="L36">public class NodeUtils {</span>
+<span class="nc" id="L24">public class NodeUtils {</span>
 
     /**
      * get the attribute with the given name from the given node as an int value.
@@ -48,15 +36,15 @@ import org.w3c.dom.NodeList;
      * @return - the value - defaultValue as default
      */
     public static int getAttributeValue(Node node, String attributeName, int defaultValue) {
-<span class="fc" id="L51">        NamedNodeMap nnm = node.getAttributes();</span>
-<span class="fc" id="L52">        Node attribute = nnm.getNamedItem(attributeName);</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (attribute == null) {</span>
-<span class="fc" id="L54">            return defaultValue;</span>
+<span class="fc" id="L39">        NamedNodeMap nnm = node.getAttributes();</span>
+<span class="fc" id="L40">        Node attribute = nnm.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (attribute == null) {</span>
+<span class="fc" id="L42">            return defaultValue;</span>
         }
         try {
-<span class="fc" id="L57">            return Integer.parseInt(attribute.getNodeValue());</span>
-<span class="nc" id="L58">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L59">            return defaultValue;</span>
+<span class="fc" id="L45">            return Integer.parseInt(attribute.getNodeValue());</span>
+<span class="nc" id="L46">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L47">            return defaultValue;</span>
         }
     }
 
@@ -71,7 +59,7 @@ import org.w3c.dom.NodeList;
      * @return - the value - &quot;&quot; as default
      */
     public static String getNodeAttribute(Node node, String attributeName) {
-<span class="fc" id="L74">        return getNodeAttribute(node, attributeName, &quot;&quot;);</span>
+<span class="fc" id="L62">        return getNodeAttribute(node, attributeName, &quot;&quot;);</span>
     }
 
     /**
@@ -87,13 +75,13 @@ import org.w3c.dom.NodeList;
      * @return - the value - defaultValue as default
      */
     public static String getNodeAttribute(Node node, String attributeName, String defaultValue) {
-<span class="fc" id="L90">        NamedNodeMap attributes = node.getAttributes();</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (attributes == null) {</span>
-<span class="fc" id="L92">            return defaultValue;</span>
+<span class="fc" id="L78">        NamedNodeMap attributes = node.getAttributes();</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (attributes == null) {</span>
+<span class="fc" id="L80">            return defaultValue;</span>
         }
 
-<span class="fc" id="L95">        Node attribute = attributes.getNamedItem(attributeName);</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        return attribute == null ? defaultValue : attribute.getNodeValue();</span>
+<span class="fc" id="L83">        Node attribute = attributes.getNamedItem(attributeName);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        return attribute == null ? defaultValue : attribute.getNodeValue();</span>
     }
 
     /**
@@ -107,8 +95,8 @@ import org.w3c.dom.NodeList;
      *            - the value to set
      */
     static void setNodeAttribute(Node node, String attributeName, String value) {
-<span class="fc" id="L110">        ((Element) node).setAttributeNS(null, attributeName, value);</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L98">        ((Element) node).setAttributeNS(null, attributeName, value);</span>
+<span class="fc" id="L99">    }</span>
 
     /**
      * remove the given attribute from the given node based on the attribute's name.
@@ -119,8 +107,8 @@ import org.w3c.dom.NodeList;
      *            the attribute name
      */
     static void removeNodeAttribute(Node node, String attributeName) {
-<span class="nc" id="L122">        ((Element) node).removeAttribute(attributeName);</span>
-<span class="nc" id="L123">    }</span>
+<span class="nc" id="L110">        ((Element) node).removeAttribute(attributeName);</span>
+<span class="nc" id="L111">    }</span>
 
     /**
      * check whether the given Attribute in the Node is Present.
@@ -133,7 +121,7 @@ import org.w3c.dom.NodeList;
      * @return true if the attribute is present
      */
     public static boolean isNodeAttributePresent(Node node, final String attributeName) {
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        return node.getAttributes().getNamedItem(attributeName) != null;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return node.getAttributes().getNamedItem(attributeName) != null;</span>
     }
 
     /**
@@ -174,29 +162,29 @@ import org.w3c.dom.NodeList;
      * @return the string
      */
     public static String asText(NodeList rootNodes) {
-<span class="fc" id="L177">        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
-<span class="fc" id="L178">        NodeAction action = new NodeAction() {</span>
+<span class="fc" id="L165">        final StringBuilder sb = new StringBuilder(HttpUnitUtils.DEFAULT_TEXT_BUFFER_SIZE);</span>
+<span class="fc" id="L166">        NodeAction action = new NodeAction() {</span>
             @Override
             public boolean processElement(PreOrderTraversal traversal, Element node) {
-<span class="fc" id="L181">                String nodeName = node.getNodeName();</span>
-<span class="pc bpc" id="L182" title="1 of 4 branches missed.">                if (nodeName.equalsIgnoreCase(&quot;p&quot;) || nodeName.equalsIgnoreCase(&quot;br&quot;)</span>
-<span class="fc bfc" id="L183" title="All 2 branches covered.">                        || nodeName.equalsIgnoreCase(&quot;tr&quot;)) {</span>
-<span class="fc" id="L184">                    sb.append(&quot;\n&quot;);</span>
-<span class="pc bpc" id="L185" title="1 of 4 branches missed.">                } else if (nodeName.equalsIgnoreCase(&quot;td&quot;) || nodeName.equalsIgnoreCase(&quot;th&quot;)) {</span>
-<span class="fc" id="L186">                    sb.append(&quot; | &quot;);</span>
-<span class="fc bfc" id="L187" title="All 4 branches covered.">                } else if (nodeName.equalsIgnoreCase(&quot;img&quot;) &amp;&amp; HttpUnitOptions.getImagesTreatedAsAltText()) {</span>
-<span class="fc" id="L188">                    sb.append(getNodeAttribute(node, &quot;alt&quot;));</span>
+<span class="fc" id="L169">                String nodeName = node.getNodeName();</span>
+<span class="pc bpc" id="L170" title="1 of 4 branches missed.">                if (nodeName.equalsIgnoreCase(&quot;p&quot;) || nodeName.equalsIgnoreCase(&quot;br&quot;)</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">                        || nodeName.equalsIgnoreCase(&quot;tr&quot;)) {</span>
+<span class="fc" id="L172">                    sb.append(&quot;\n&quot;);</span>
+<span class="pc bpc" id="L173" title="1 of 4 branches missed.">                } else if (nodeName.equalsIgnoreCase(&quot;td&quot;) || nodeName.equalsIgnoreCase(&quot;th&quot;)) {</span>
+<span class="fc" id="L174">                    sb.append(&quot; | &quot;);</span>
+<span class="fc bfc" id="L175" title="All 4 branches covered.">                } else if (nodeName.equalsIgnoreCase(&quot;img&quot;) &amp;&amp; HttpUnitOptions.getImagesTreatedAsAltText()) {</span>
+<span class="fc" id="L176">                    sb.append(getNodeAttribute(node, &quot;alt&quot;));</span>
                 }
-<span class="fc" id="L190">                return true;</span>
+<span class="fc" id="L178">                return true;</span>
             }
 
             @Override
             public void processTextNode(PreOrderTraversal traversal, Node textNode) {
-<span class="fc" id="L195">                sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));</span>
-<span class="fc" id="L196">            }</span>
+<span class="fc" id="L183">                sb.append(HTMLParserFactory.getHTMLParser().getCleanedText(textNode.getNodeValue()));</span>
+<span class="fc" id="L184">            }</span>
         };
-<span class="fc" id="L198">        new PreOrderTraversal(rootNodes).perform(action);</span>
-<span class="fc" id="L199">        return sb.toString();</span>
+<span class="fc" id="L186">        new PreOrderTraversal(rootNodes).perform(action);</span>
+<span class="fc" id="L187">        return sb.toString();</span>
     }
 
     /**
@@ -205,13 +193,13 @@ import org.w3c.dom.NodeList;
     static class PreOrderTraversal {
 
         /** The pending nodes. */
-<span class="fc" id="L208">        private Stack _pendingNodes = new Stack();</span>
+<span class="fc" id="L196">        private Stack _pendingNodes = new Stack();</span>
 
         /** The traversal context. */
-<span class="fc" id="L211">        private Stack _traversalContext = new Stack();</span>
+<span class="fc" id="L199">        private Stack _traversalContext = new Stack();</span>
 
         /** The Constant POP_CONTEXT. */
-<span class="fc" id="L214">        private static final Object POP_CONTEXT = new Object();</span>
+<span class="fc" id="L202">        private static final Object POP_CONTEXT = new Object();</span>
 
         /**
          * Instantiates a new pre order traversal.
@@ -219,9 +207,9 @@ import org.w3c.dom.NodeList;
          * @param rootNodes
          *            the root nodes
          */
-<span class="fc" id="L222">        public PreOrderTraversal(NodeList rootNodes) {</span>
-<span class="fc" id="L223">            pushNodeList(rootNodes);</span>
-<span class="fc" id="L224">        }</span>
+<span class="fc" id="L210">        public PreOrderTraversal(NodeList rootNodes) {</span>
+<span class="fc" id="L211">            pushNodeList(rootNodes);</span>
+<span class="fc" id="L212">        }</span>
 
         /**
          * Instantiates a new pre order traversal.
@@ -229,9 +217,9 @@ import org.w3c.dom.NodeList;
          * @param rootNode
          *            the root node
          */
-<span class="fc" id="L232">        public PreOrderTraversal(Node rootNode) {</span>
-<span class="fc" id="L233">            pushNodeList(rootNode.getLastChild());</span>
-<span class="fc" id="L234">        }</span>
+<span class="fc" id="L220">        public PreOrderTraversal(Node rootNode) {</span>
+<span class="fc" id="L221">            pushNodeList(rootNode.getLastChild());</span>
+<span class="fc" id="L222">        }</span>
 
         /**
          * Push base context.
@@ -240,8 +228,8 @@ import org.w3c.dom.NodeList;
          *            the context
          */
         public void pushBaseContext(Object context) {
-<span class="fc" id="L243">            _traversalContext.push(context);</span>
-<span class="fc" id="L244">        }</span>
+<span class="fc" id="L231">            _traversalContext.push(context);</span>
+<span class="fc" id="L232">        }</span>
 
         /**
          * Push context.
@@ -250,9 +238,9 @@ import org.w3c.dom.NodeList;
          *            the context
          */
         public void pushContext(Object context) {
-<span class="fc" id="L253">            _traversalContext.push(context);</span>
-<span class="fc" id="L254">            _pendingNodes.push(POP_CONTEXT);</span>
-<span class="fc" id="L255">        }</span>
+<span class="fc" id="L241">            _traversalContext.push(context);</span>
+<span class="fc" id="L242">            _pendingNodes.push(POP_CONTEXT);</span>
+<span class="fc" id="L243">        }</span>
 
         /**
          * Gets the contexts.
@@ -260,8 +248,8 @@ import org.w3c.dom.NodeList;
          * @return the contexts
          */
         public Iterator getContexts() {
-<span class="fc" id="L263">            Stack stack = _traversalContext;</span>
-<span class="fc" id="L264">            return getTopDownIterator(stack);</span>
+<span class="fc" id="L251">            Stack stack = _traversalContext;</span>
+<span class="fc" id="L252">            return getTopDownIterator(stack);</span>
         }
 
         /**
@@ -270,7 +258,7 @@ import org.w3c.dom.NodeList;
          * @return the root context
          */
         public Object getRootContext() {
-<span class="nc" id="L273">            return _traversalContext.firstElement();</span>
+<span class="nc" id="L261">            return _traversalContext.firstElement();</span>
         }
 
         /**
@@ -282,23 +270,23 @@ import org.w3c.dom.NodeList;
          * @return the top down iterator
          */
         private Iterator getTopDownIterator(final Stack stack) {
-<span class="fc" id="L285">            return new Iterator() {</span>
-<span class="fc" id="L286">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
+<span class="fc" id="L273">            return new Iterator() {</span>
+<span class="fc" id="L274">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
 
                 @Override
                 public boolean hasNext() {
-<span class="fc" id="L290">                    return _forwardIterator.hasPrevious();</span>
+<span class="fc" id="L278">                    return _forwardIterator.hasPrevious();</span>
                 }
 
                 @Override
                 public Object next() {
-<span class="fc" id="L295">                    return _forwardIterator.previous();</span>
+<span class="fc" id="L283">                    return _forwardIterator.previous();</span>
                 }
 
                 @Override
                 public void remove() {
-<span class="nc" id="L300">                    _forwardIterator.remove();</span>
-<span class="nc" id="L301">                }</span>
+<span class="nc" id="L288">                    _forwardIterator.remove();</span>
+<span class="nc" id="L289">                }</span>
             };
         }
 
@@ -312,13 +300,13 @@ import org.w3c.dom.NodeList;
          * @return the closest context
          */
         public Object getClosestContext(Class matchingClass) {
-<span class="fc bfc" id="L315" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L316">                Object o = _traversalContext.elementAt(i);</span>
-<span class="fc bfc" id="L317" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
-<span class="fc" id="L318">                    return o;</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L304">                Object o = _traversalContext.elementAt(i);</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
+<span class="fc" id="L306">                    return o;</span>
                 }
             }
-<span class="fc" id="L321">            return null;</span>
+<span class="fc" id="L309">            return null;</span>
         }
 
         /**
@@ -328,23 +316,23 @@ import org.w3c.dom.NodeList;
          *            the action
          */
         public void perform(NodeAction action) {
-<span class="fc bfc" id="L331" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
-<span class="fc" id="L332">                final Object object = _pendingNodes.pop();</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
-<span class="fc" id="L334">                    _traversalContext.pop();</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
+<span class="fc" id="L320">                final Object object = _pendingNodes.pop();</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
+<span class="fc" id="L322">                    _traversalContext.pop();</span>
                 } else {
-<span class="fc" id="L336">                    Node node = (Node) object;</span>
-<span class="fc bfc" id="L337" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="fc" id="L338">                        action.processTextNode(this, node);</span>
-<span class="pc bpc" id="L339" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L340">                        continue;</span>
+<span class="fc" id="L324">                    Node node = (Node) object;</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L326">                        action.processTextNode(this, node);</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L328">                        continue;</span>
                     } else {
-<span class="fc" id="L342">                        action.processElement(this, (Element) node);</span>
+<span class="fc" id="L330">                        action.processElement(this, (Element) node);</span>
                     }
-<span class="fc" id="L344">                    pushNodeList(node.getLastChild());</span>
+<span class="fc" id="L332">                    pushNodeList(node.getLastChild());</span>
                 }
-<span class="fc" id="L346">            }</span>
-<span class="fc" id="L347">        }</span>
+<span class="fc" id="L334">            }</span>
+<span class="fc" id="L335">        }</span>
 
         /**
          * Push node list.
@@ -353,12 +341,12 @@ import org.w3c.dom.NodeList;
          *            the nl
          */
         private void pushNodeList(NodeList nl) {
-<span class="pc bpc" id="L356" title="1 of 2 branches missed.">            if (nl != null) {</span>
-<span class="fc bfc" id="L357" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L358">                    _pendingNodes.push(nl.item(i));</span>
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">            if (nl != null) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L346">                    _pendingNodes.push(nl.item(i));</span>
                 }
             }
-<span class="fc" id="L361">        }</span>
+<span class="fc" id="L349">        }</span>
 
         /**
          * Push node list.
@@ -367,10 +355,10 @@ import org.w3c.dom.NodeList;
          *            the last child
          */
         private void pushNodeList(Node lastChild) {
-<span class="fc bfc" id="L370" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
-<span class="fc" id="L371">                _pendingNodes.push(node);</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
+<span class="fc" id="L359">                _pendingNodes.push(node);</span>
             }
-<span class="fc" id="L373">        }</span>
+<span class="fc" id="L361">        }</span>
     }
 
 }

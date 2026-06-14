@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLAnchorElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLAnchorElementImpl.java</span></div><h1>HTMLAnchorElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -27,14 +15,14 @@ import org.w3c.dom.html.HTMLAnchorElement;
 /**
  * The Class HTMLAnchorElementImpl.
  */
-<span class="fc" id="L30">public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {</span>
+<span class="fc" id="L18">public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchorElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L37">        return new HTMLAnchorElementImpl();</span>
+<span class="fc" id="L25">        return new HTMLAnchorElementImpl();</span>
     }
 
     /**
@@ -44,7 +32,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getCharset() {
-<span class="fc" id="L47">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
+<span class="fc" id="L35">        return getAttributeWithNoDefault(&quot;charset&quot;);</span>
     }
 
     /**
@@ -54,14 +42,14 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getHref() {
-<span class="fc" id="L57">        String relativeLocation = getAttributeWithNoDefault(&quot;href&quot;);</span>
-<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (relativeLocation.indexOf(':') &gt; 0 || relativeLocation.equals(&quot;#&quot;)) {</span>
-<span class="fc" id="L59">            return relativeLocation;</span>
+<span class="fc" id="L45">        String relativeLocation = getAttributeWithNoDefault(&quot;href&quot;);</span>
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        if (relativeLocation.indexOf(':') &gt; 0 || relativeLocation.equals(&quot;#&quot;)) {</span>
+<span class="fc" id="L47">            return relativeLocation;</span>
         }
         try {
-<span class="fc" id="L62">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();</span>
-<span class="nc" id="L63">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L64">            return e.toString();</span>
+<span class="fc" id="L50">            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();</span>
+<span class="nc" id="L51">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L52">            return e.toString();</span>
         }
     }
 
@@ -72,7 +60,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getHreflang() {
-<span class="fc" id="L75">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
+<span class="fc" id="L63">        return getAttributeWithNoDefault(&quot;hreflang&quot;);</span>
     }
 
     /**
@@ -82,7 +70,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getRel() {
-<span class="fc" id="L85">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
+<span class="fc" id="L73">        return getAttributeWithNoDefault(&quot;rel&quot;);</span>
     }
 
     /**
@@ -92,7 +80,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getRev() {
-<span class="fc" id="L95">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
+<span class="fc" id="L83">        return getAttributeWithNoDefault(&quot;rev&quot;);</span>
     }
 
     /**
@@ -102,7 +90,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getTarget() {
-<span class="fc" id="L105">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
+<span class="fc" id="L93">        return getAttributeWithNoDefault(&quot;target&quot;);</span>
     }
 
     /**
@@ -112,7 +100,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getType() {
-<span class="fc" id="L115">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
+<span class="fc" id="L103">        return getAttributeWithNoDefault(&quot;type&quot;);</span>
     }
 
     /**
@@ -123,8 +111,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setCharset(String charset) {
-<span class="fc" id="L126">        setAttribute(&quot;charset&quot;, charset);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L114">        setAttribute(&quot;charset&quot;, charset);</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Sets the href.
@@ -134,8 +122,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setHref(String href) {
-<span class="fc" id="L137">        setAttribute(&quot;href&quot;, href);</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L125">        setAttribute(&quot;href&quot;, href);</span>
+<span class="fc" id="L126">    }</span>
 
     /**
      * Sets the hreflang.
@@ -145,8 +133,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setHreflang(String hreflang) {
-<span class="fc" id="L148">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L136">        setAttribute(&quot;hreflang&quot;, hreflang);</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * Sets the rel.
@@ -156,8 +144,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setRel(String rel) {
-<span class="fc" id="L159">        setAttribute(&quot;rel&quot;, rel);</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L147">        setAttribute(&quot;rel&quot;, rel);</span>
+<span class="fc" id="L148">    }</span>
 
     /**
      * Sets the rev.
@@ -167,8 +155,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setRev(String rev) {
-<span class="fc" id="L170">        setAttribute(&quot;rev&quot;, rev);</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L158">        setAttribute(&quot;rev&quot;, rev);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Sets the target.
@@ -178,8 +166,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setTarget(String target) {
-<span class="fc" id="L181">        setAttribute(&quot;target&quot;, target);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L169">        setAttribute(&quot;target&quot;, target);</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * Sets the type.
@@ -189,24 +177,24 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setType(String type) {
-<span class="fc" id="L192">        setAttribute(&quot;type&quot;, type);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L180">        setAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L181">    }</span>
 
     /**
      * simulate blur.
      */
     @Override
     public void blur() {
-<span class="nc" id="L200">        handleEvent(&quot;onblur&quot;);</span>
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L188">        handleEvent(&quot;onblur&quot;);</span>
+<span class="nc" id="L189">    }</span>
 
     /**
      * simulate focus;.
      */
     @Override
     public void focus() {
-<span class="nc" id="L208">        handleEvent(&quot;onfocus&quot;);</span>
-<span class="nc" id="L209">    }</span>
+<span class="nc" id="L196">        handleEvent(&quot;onfocus&quot;);</span>
+<span class="nc" id="L197">    }</span>
 
     /**
      * Gets the access key.
@@ -215,7 +203,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getAccessKey() {
-<span class="fc" id="L218">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
+<span class="fc" id="L206">        return getAttributeWithNoDefault(&quot;accesskey&quot;);</span>
     }
 
     /**
@@ -225,7 +213,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getCoords() {
-<span class="nc" id="L228">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
+<span class="nc" id="L216">        return getAttributeWithNoDefault(&quot;coords&quot;);</span>
     }
 
     /**
@@ -235,7 +223,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getName() {
-<span class="fc" id="L238">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L226">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
     /**
@@ -245,7 +233,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public String getShape() {
-<span class="nc" id="L248">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
+<span class="nc" id="L236">        return getAttributeWithNoDefault(&quot;shape&quot;);</span>
     }
 
     /**
@@ -255,7 +243,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public int getTabIndex() {
-<span class="fc" id="L258">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
+<span class="fc" id="L246">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
     }
 
     /**
@@ -266,8 +254,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setAccessKey(String accessKey) {
-<span class="fc" id="L269">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
-<span class="fc" id="L270">    }</span>
+<span class="fc" id="L257">        setAttribute(&quot;accesskey&quot;, accessKey);</span>
+<span class="fc" id="L258">    }</span>
 
     /**
      * Sets the coords.
@@ -277,8 +265,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setCoords(String coords) {
-<span class="nc" id="L280">        setAttribute(&quot;coords&quot;, coords);</span>
-<span class="nc" id="L281">    }</span>
+<span class="nc" id="L268">        setAttribute(&quot;coords&quot;, coords);</span>
+<span class="nc" id="L269">    }</span>
 
     /**
      * Sets the name.
@@ -288,8 +276,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setName(String name) {
-<span class="fc" id="L291">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L292">    }</span>
+<span class="fc" id="L279">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L280">    }</span>
 
     /**
      * Sets the shape.
@@ -299,8 +287,8 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setShape(String shape) {
-<span class="nc" id="L302">        setAttribute(&quot;shape&quot;, shape);</span>
-<span class="nc" id="L303">    }</span>
+<span class="nc" id="L290">        setAttribute(&quot;shape&quot;, shape);</span>
+<span class="nc" id="L291">    }</span>
 
     /**
      * Sets the tab index.
@@ -310,20 +298,20 @@ import org.w3c.dom.html.HTMLAnchorElement;
      */
     @Override
     public void setTabIndex(int tabIndex) {
-<span class="fc" id="L313">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc" id="L301">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
+<span class="fc" id="L302">    }</span>
 
     @Override
     public void doClickAction() {
-<span class="pc bpc" id="L318" title="1 of 4 branches missed.">        if (null == getHref() || getHref().startsWith(&quot;#&quot;)) {</span>
-<span class="fc" id="L319">            return;</span>
+<span class="pc bpc" id="L306" title="1 of 4 branches missed.">        if (null == getHref() || getHref().startsWith(&quot;#&quot;)) {</span>
+<span class="fc" id="L307">            return;</span>
         }
         try {
-<span class="fc" id="L322">            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, &quot;GET&quot;, getHref(), getTarget(),</span>
+<span class="fc" id="L310">            ((HTMLDocumentImpl) getOwnerDocument()).getWindow().submitRequest(this, &quot;GET&quot;, getHref(), getTarget(),</span>
                     new byte[0]);
-<span class="fc" id="L324">        } catch (Exception e) {</span>
-<span class="fc" id="L325">            throw new RuntimeException(&quot;Error clicking link: &quot; + e);</span>
-<span class="fc" id="L326">        }</span>
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L312">        } catch (Exception e) {</span>
+<span class="fc" id="L313">            throw new RuntimeException(&quot;Error clicking link: &quot; + e);</span>
+<span class="fc" id="L314">        }</span>
+<span class="fc" id="L315">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

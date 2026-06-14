@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FixedURLWebRequestSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">FixedURLWebRequestSource.java</span></div><h1>FixedURLWebRequestSource.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -39,7 +27,7 @@ import org.w3c.dom.Node;
 abstract class FixedURLWebRequestSource extends WebRequestSource {
 
     /** The Constant NO_VALUES. */
-<span class="fc" id="L42">    private static final String[] NO_VALUES = {};</span>
+<span class="fc" id="L30">    private static final String[] NO_VALUES = {};</span>
 
     /** The preset parameter map. */
     private Map _presetParameterMap;
@@ -70,9 +58,9 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      */
     public FixedURLWebRequestSource(WebResponse response, Node node, URL baseURL, String attribute, FrameSelector frame,
             String defaultTarget, String characterSet) {
-<span class="fc" id="L73">        super(response, node, baseURL, attribute, frame, defaultTarget);</span>
-<span class="fc" id="L74">        _characterSet = characterSet;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L61">        super(response, node, baseURL, attribute, frame, defaultTarget);</span>
+<span class="fc" id="L62">        _characterSet = characterSet;</span>
+<span class="fc" id="L63">    }</span>
 
     // ------------------------------------------- WebRequestSource methods
     // -------------------------------------------------
@@ -82,7 +70,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     public WebRequest getRequest() {
-<span class="fc" id="L85">        return new GetMethodWebRequest(this);</span>
+<span class="fc" id="L73">        return new GetMethodWebRequest(this);</span>
     }
 
     /**
@@ -90,8 +78,8 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     public String[] getParameterNames() {
-<span class="nc" id="L93">        ArrayList parameterNames = new ArrayList(getPresetParameterMap().keySet());</span>
-<span class="nc" id="L94">        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);</span>
+<span class="nc" id="L81">        ArrayList parameterNames = new ArrayList(getPresetParameterMap().keySet());</span>
+<span class="nc" id="L82">        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);</span>
     }
 
     /**
@@ -99,27 +87,27 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     public String[] getParameterValues(String name) {
-<span class="fc" id="L102">        final String[] values = (String[]) getPresetParameterMap().get(name);</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        return values == null ? NO_VALUES : values;</span>
+<span class="fc" id="L90">        final String[] values = (String[]) getPresetParameterMap().get(name);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        return values == null ? NO_VALUES : values;</span>
     }
 
     @Override
     protected void addPresetParameter(String name, String value) {
-<span class="fc" id="L108">        _presetParameterMap.put(name, HttpUnitUtils.withNewValue((String[]) _presetParameterMap.get(name), value));</span>
-<span class="fc" id="L109">        _presetParameterList.add(new PresetParameter(name, value));</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L96">        _presetParameterMap.put(name, HttpUnitUtils.withNewValue((String[]) _presetParameterMap.get(name), value));</span>
+<span class="fc" id="L97">        _presetParameterList.add(new PresetParameter(name, value));</span>
+<span class="fc" id="L98">    }</span>
 
     @Override
     protected String getEmptyParameterValue() {
-<span class="fc" id="L114">        return &quot;&quot;;</span>
+<span class="fc" id="L102">        return &quot;&quot;;</span>
     }
 
     @Override
     protected void setDestination(String destination) {
-<span class="fc" id="L119">        super.setDestination(destination);</span>
-<span class="fc" id="L120">        _presetParameterList = null;</span>
-<span class="fc" id="L121">        _presetParameterMap = null;</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L107">        super.setDestination(destination);</span>
+<span class="fc" id="L108">        _presetParameterList = null;</span>
+<span class="fc" id="L109">        _presetParameterMap = null;</span>
+<span class="fc" id="L110">    }</span>
 
     // ------------------------------------------- ParameterHolder methods
     // --------------------------------------------------
@@ -129,7 +117,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
-<span class="nc" id="L132">        throw new IllegalNonFormParametersRequest();</span>
+<span class="nc" id="L120">        throw new IllegalNonFormParametersRequest();</span>
     }
 
     /**
@@ -139,26 +127,26 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
 
     @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L130">    }</span>
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L149">        Iterator i = getPresetParameterList().iterator();</span>
-<span class="fc bfc" id="L150" title="All 2 branches covered.">        while (i.hasNext()) {</span>
-<span class="fc" id="L151">            PresetParameter o = (PresetParameter) i.next();</span>
-<span class="fc" id="L152">            processor.addParameter(o.getName(), o.getValue(), getCharacterSet());</span>
-<span class="fc" id="L153">        }</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L137">        Iterator i = getPresetParameterList().iterator();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        while (i.hasNext()) {</span>
+<span class="fc" id="L139">            PresetParameter o = (PresetParameter) i.next();</span>
+<span class="fc" id="L140">            processor.addParameter(o.getName(), o.getValue(), getCharacterSet());</span>
+<span class="fc" id="L141">        }</span>
+<span class="fc" id="L142">    }</span>
 
     /**
      * Removes a parameter name from this collection.
      **/
     @Override
     void removeParameter(String name) {
-<span class="nc" id="L161">        throw new IllegalNonFormParametersRequest();</span>
+<span class="nc" id="L149">        throw new IllegalNonFormParametersRequest();</span>
     }
 
     /**
@@ -166,25 +154,25 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     void setParameter(String name, String value) {
-<span class="nc" id="L169">        setParameter(name, new String[] { value });</span>
-<span class="nc" id="L170">    }</span>
+<span class="nc" id="L157">        setParameter(name, new String[] { value });</span>
+<span class="nc" id="L158">    }</span>
 
     /**
      * Sets the multiple values of a parameter in a web request.
      **/
     @Override
     void setParameter(String name, String[] values) {
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (values == null) {</span>
-<span class="nc" id="L178">            throw new IllegalArgumentException(&quot;May not supply a null argument array to setParameter()&quot;);</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (values == null) {</span>
+<span class="nc" id="L166">            throw new IllegalArgumentException(&quot;May not supply a null argument array to setParameter()&quot;);</span>
         }
-<span class="pc bpc" id="L180" title="1 of 4 branches missed.">        if (!getPresetParameterMap().containsKey(name) || !equals(getParameterValues(name), values)) {</span>
-<span class="fc" id="L181">            throw new IllegalNonFormParametersRequest();</span>
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">        if (!getPresetParameterMap().containsKey(name) || !equals(getParameterValues(name), values)) {</span>
+<span class="fc" id="L169">            throw new IllegalNonFormParametersRequest();</span>
         }
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L171">    }</span>
 
     @Override
     String getCharacterSet() {
-<span class="fc" id="L187">        return _characterSet;</span>
+<span class="fc" id="L175">        return _characterSet;</span>
     }
 
     /**
@@ -198,16 +186,16 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      * @return true, if successful
      */
     private boolean equals(String[] left, String[] right) {
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (left.length != right.length) {</span>
-<span class="fc" id="L202">            return false;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (left.length != right.length) {</span>
+<span class="fc" id="L190">            return false;</span>
         }
-<span class="fc" id="L204">        List rightValues = Arrays.asList(right);</span>
-<span class="fc bfc" id="L205" title="All 2 branches covered.">        for (String element : left) {</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if (!rightValues.contains(element)) {</span>
-<span class="nc" id="L207">                return false;</span>
+<span class="fc" id="L192">        List rightValues = Arrays.asList(right);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (String element : left) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">            if (!rightValues.contains(element)) {</span>
+<span class="nc" id="L195">                return false;</span>
             }
         }
-<span class="fc" id="L210">        return true;</span>
+<span class="fc" id="L198">        return true;</span>
     }
 
     /**
@@ -215,7 +203,7 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     void setParameter(String name, UploadFileSpec[] files) {
-<span class="nc" id="L218">        throw new IllegalNonFormParametersRequest();</span>
+<span class="nc" id="L206">        throw new IllegalNonFormParametersRequest();</span>
     }
 
     /**
@@ -223,12 +211,12 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      **/
     @Override
     boolean isFileParameter(String name) {
-<span class="nc" id="L226">        return false;</span>
+<span class="nc" id="L214">        return false;</span>
     }
 
     @Override
     boolean isSubmitAsMime() {
-<span class="nc" id="L231">        return false;</span>
+<span class="nc" id="L219">        return false;</span>
     }
 
     /**
@@ -237,10 +225,10 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      * @return the preset parameter map
      */
     private Map getPresetParameterMap() {
-<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (_presetParameterMap == null) {</span>
-<span class="fc" id="L241">            loadPresetParameters();</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        if (_presetParameterMap == null) {</span>
+<span class="fc" id="L229">            loadPresetParameters();</span>
         }
-<span class="fc" id="L243">        return _presetParameterMap;</span>
+<span class="fc" id="L231">        return _presetParameterMap;</span>
     }
 
     /**
@@ -249,51 +237,81 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
      * @return the preset parameter list
      */
     private ArrayList getPresetParameterList() {
-<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (_presetParameterList == null) {</span>
-<span class="fc" id="L253">            loadPresetParameters();</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (_presetParameterList == null) {</span>
+<span class="fc" id="L241">            loadPresetParameters();</span>
         }
-<span class="fc" id="L255">        return _presetParameterList;</span>
+<span class="fc" id="L243">        return _presetParameterList;</span>
     }
 
     /**
      * Load preset parameters.
      */
     private void loadPresetParameters() {
-<span class="fc" id="L262">        _presetParameterMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L263">        _presetParameterList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L264">        loadDestinationParameters();</span>
-<span class="fc" id="L265">    }</span>
+<span class="fc" id="L250">        _presetParameterMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L251">        _presetParameterList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L252">        loadDestinationParameters();</span>
+<span class="fc" id="L253">    }</span>
 
 }
 
+/**
+ * The Class PresetParameter.
+ */
 class PresetParameter {
+    /** The name. */
     private String _name;
+    /** The value. */
     private String _value;
 
-<span class="fc" id="L273">    public PresetParameter(String name, String value) {</span>
-<span class="fc" id="L274">        _name = name;</span>
-<span class="fc" id="L275">        _value = value;</span>
-<span class="fc" id="L276">    }</span>
+    /**
+     * Instantiates a new preset parameter.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
+<span class="fc" id="L274">    public PresetParameter(String name, String value) {</span>
+<span class="fc" id="L275">        _name = name;</span>
+<span class="fc" id="L276">        _value = value;</span>
+<span class="fc" id="L277">    }</span>
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
-<span class="fc" id="L279">        return _name;</span>
+<span class="fc" id="L285">        return _name;</span>
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public String getValue() {
-<span class="fc" id="L283">        return _value;</span>
+<span class="fc" id="L294">        return _value;</span>
     }
 }
 
+/**
+ * The Class IllegalNonFormParametersRequest.
+ */
 class IllegalNonFormParametersRequest extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
-<span class="fc" id="L291">    public IllegalNonFormParametersRequest() {</span>
-<span class="fc" id="L292">    }</span>
+    /**
+     * Instantiates a new illegal non form parameters request.
+     */
+<span class="fc" id="L309">    public IllegalNonFormParametersRequest() {</span>
+<span class="fc" id="L310">    }</span>
 
     @Override
     public String getMessage() {
-<span class="nc" id="L296">        return &quot;May not modify parameters for a request not derived from a form with parameter checking enabled.&quot;;</span>
+<span class="nc" id="L314">        return &quot;May not modify parameters for a request not derived from a form with parameter checking enabled.&quot;;</span>
     }
 
 }

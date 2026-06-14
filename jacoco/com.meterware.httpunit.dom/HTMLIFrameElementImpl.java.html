@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLIFrameElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLIFrameElementImpl.java</span></div><h1>HTMLIFrameElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -25,14 +13,14 @@ import org.w3c.dom.html.HTMLIFrameElement;
 /**
  * The Class HTMLIFrameElementImpl.
  */
-<span class="fc" id="L28">public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {</span>
+<span class="fc" id="L16">public class HTMLIFrameElementImpl extends HTMLElementImpl implements HTMLIFrameElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L35">        return new HTMLIFrameElementImpl();</span>
+<span class="fc" id="L23">        return new HTMLIFrameElementImpl();</span>
     }
 
     /**
@@ -42,7 +30,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getAlign() {
-<span class="fc" id="L45">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L33">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
     /**
@@ -53,8 +41,8 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L56">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L44">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L45">    }</span>
 
     /**
      * Gets the frame border.
@@ -63,7 +51,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getFrameBorder() {
-<span class="nc" id="L66">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L54">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -75,7 +63,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setFrameBorder(String frameBorder) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L66">    }</span>
 
     /**
      * Gets the height.
@@ -84,7 +72,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getHeight() {
-<span class="nc" id="L87">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L75">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -96,7 +84,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setHeight(String height) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L87">    }</span>
 
     /**
      * Gets the long desc.
@@ -105,7 +93,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getLongDesc() {
-<span class="nc" id="L108">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L96">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -117,7 +105,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setLongDesc(String longDesc) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L108">    }</span>
 
     /**
      * Gets the margin height.
@@ -126,7 +114,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getMarginHeight() {
-<span class="nc" id="L129">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L117">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -138,7 +126,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setMarginHeight(String marginHeight) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L141">    }</span>
+<span class="nc" id="L129">    }</span>
 
     /**
      * Gets the margin width.
@@ -147,7 +135,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getMarginWidth() {
-<span class="nc" id="L150">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L138">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -159,7 +147,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setMarginWidth(String marginWidth) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L150">    }</span>
 
     /**
      * Gets the name.
@@ -168,7 +156,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getName() {
-<span class="nc" id="L171">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L159">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -180,7 +168,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setName(String name) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L183">    }</span>
+<span class="nc" id="L171">    }</span>
 
     /**
      * Gets the scrolling.
@@ -189,7 +177,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getScrolling() {
-<span class="nc" id="L192">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L180">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -201,7 +189,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setScrolling(String scrolling) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L204">    }</span>
+<span class="nc" id="L192">    }</span>
 
     /**
      * Gets the src.
@@ -210,7 +198,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getSrc() {
-<span class="fc" id="L213">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+<span class="fc" id="L201">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
     }
 
     /**
@@ -221,8 +209,8 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public void setSrc(String src) {
-<span class="fc" id="L224">        setAttribute(&quot;src&quot;, src);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L212">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Gets the width.
@@ -231,7 +219,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public String getWidth() {
-<span class="nc" id="L234">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L222">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -243,7 +231,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
     @Override
     public void setWidth(String width) {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L246">    }</span>
+<span class="nc" id="L234">    }</span>
 
     /**
      * Gets the content document.
@@ -252,7 +240,7 @@ import org.w3c.dom.html.HTMLIFrameElement;
      */
     @Override
     public Document getContentDocument() {
-<span class="nc" id="L255">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L243">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
 }

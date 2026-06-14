@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpsProtocolSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HttpsProtocolSupport.java</span></div><h1>HttpsProtocolSupport.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -31,7 +19,7 @@ import javax.net.ssl.X509TrustManager;
 /**
  * Encapsulates support for the HTTPS protocol.
  **/
-<span class="nc" id="L34">public abstract class HttpsProtocolSupport {</span>
+<span class="nc" id="L22">public abstract class HttpsProtocolSupport {</span>
 
     /** The name of the system parameter used by java.net to locate protocol handlers. **/
     private static final String PROTOCOL_HANDLER_PKGS = &quot;java.protocol.handler.pkgs&quot;;
@@ -56,9 +44,9 @@ import javax.net.ssl.X509TrustManager;
     public static final String IBMSSL_PROTOCOL_HANDLER = &quot;com.ibm.net.ssl.www.protocol&quot;;
 
     /** The name of the JSSE class which provides support for SSL. **/
-<span class="fc" id="L59">    private static String JSSE_PROVIDER_CLASS = SunJSSE_PROVIDER_CLASS;</span>
+<span class="fc" id="L47">    private static String JSSE_PROVIDER_CLASS = SunJSSE_PROVIDER_CLASS;</span>
     /** The name of the JSSE class which supports the https protocol. **/
-<span class="fc" id="L61">    private static String SSL_PROTOCOL_HANDLER = SunSSL_PROTOCOL_HANDLER;</span>
+<span class="fc" id="L49">    private static String SSL_PROTOCOL_HANDLER = SunSSL_PROTOCOL_HANDLER;</span>
 
     /** The https provider class. */
     private static Class _httpsProviderClass;
@@ -78,17 +66,17 @@ import javax.net.ssl.X509TrustManager;
      *            the handler name
      */
     public static void useProvider(String className, String handlerName) {
-<span class="fc" id="L81">        _httpsProviderClass = null;</span>
-<span class="fc" id="L82">        JSSE_PROVIDER_CLASS = className;</span>
-<span class="fc" id="L83">        SSL_PROTOCOL_HANDLER = handlerName;</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L69">        _httpsProviderClass = null;</span>
+<span class="fc" id="L70">        JSSE_PROVIDER_CLASS = className;</span>
+<span class="fc" id="L71">        SSL_PROTOCOL_HANDLER = handlerName;</span>
+<span class="fc" id="L72">    }</span>
 
     /**
      * use the IBM WebShpere handlers.
      */
     public static void useIBM() {
-<span class="fc" id="L90">        useProvider(IBMJSSE_PROVIDER_CLASS, IBMSSL_PROTOCOL_HANDLER);</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L78">        useProvider(IBMJSSE_PROVIDER_CLASS, IBMSSL_PROTOCOL_HANDLER);</span>
+<span class="fc" id="L79">    }</span>
 
     /**
      * Returns true if the JSSE extension is installed.
@@ -96,14 +84,14 @@ import javax.net.ssl.X509TrustManager;
      * @return true, if successful
      */
     static boolean hasHttpsSupport() {
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (!_httpsSupportVerified) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (!_httpsSupportVerified) {</span>
             try {
-<span class="fc" id="L101">                getHttpsProviderClass();</span>
-<span class="nc" id="L102">            } catch (ClassNotFoundException e) {</span>
-<span class="fc" id="L103">            }</span>
-<span class="fc" id="L104">            _httpsSupportVerified = true;</span>
+<span class="fc" id="L89">                getHttpsProviderClass();</span>
+<span class="nc" id="L90">            } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L91">            }</span>
+<span class="fc" id="L92">            _httpsSupportVerified = true;</span>
         }
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        return _httpsProviderClass != null;</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        return _httpsProviderClass != null;</span>
     }
 
     /**
@@ -114,41 +102,41 @@ import javax.net.ssl.X509TrustManager;
      *            the protocol
      */
     static void verifyProtocolSupport(String protocol) {
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (protocol.equalsIgnoreCase(&quot;http&quot;)) {</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (protocol.equalsIgnoreCase(&quot;http&quot;)) {</span>
         }
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (protocol.equalsIgnoreCase(&quot;https&quot;)) {</span>
-<span class="fc" id="L120">            validateHttpsProtocolSupport();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (protocol.equalsIgnoreCase(&quot;https&quot;)) {</span>
+<span class="fc" id="L108">            validateHttpsProtocolSupport();</span>
         }
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Validate https protocol support.
      */
     private static void validateHttpsProtocolSupport() {
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (!_httpsProtocolSupportEnabled) {</span>
-<span class="fc" id="L129">            verifyHttpsSupport();</span>
-<span class="fc" id="L130">            _httpsProtocolSupportEnabled = true;</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (!_httpsProtocolSupportEnabled) {</span>
+<span class="fc" id="L117">            verifyHttpsSupport();</span>
+<span class="fc" id="L118">            _httpsProtocolSupportEnabled = true;</span>
         }
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L120">    }</span>
 
     /**
      * Verify https support.
      */
     private static void verifyHttpsSupport() {
         try {
-<span class="fc" id="L139">            Class providerClass = getHttpsProviderClass();</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (!hasProvider(providerClass)) {</span>
-<span class="nc" id="L141">                Security.addProvider((Provider) providerClass.getDeclaredConstructor().newInstance());</span>
+<span class="fc" id="L127">            Class providerClass = getHttpsProviderClass();</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if (!hasProvider(providerClass)) {</span>
+<span class="nc" id="L129">                Security.addProvider((Provider) providerClass.getDeclaredConstructor().newInstance());</span>
             }
-<span class="fc" id="L143">            registerSSLProtocolHandler();</span>
-<span class="nc" id="L144">        } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L145">            throw new RuntimeException(</span>
+<span class="fc" id="L131">            registerSSLProtocolHandler();</span>
+<span class="nc" id="L132">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L133">            throw new RuntimeException(</span>
                     &quot;https support requires the Java Secure Sockets Extension. See http://java.sun.com/products/jsse&quot;);
-<span class="nc" id="L147">        } catch (Throwable e) {</span>
-<span class="nc" id="L148">            throw new RuntimeException(&quot;Unable to enable https support. Make sure that you have installed JSSE &quot;</span>
+<span class="nc" id="L135">        } catch (Throwable e) {</span>
+<span class="nc" id="L136">            throw new RuntimeException(&quot;Unable to enable https support. Make sure that you have installed JSSE &quot;</span>
                     + &quot;as described in http://java.sun.com/products/jsse/install.html: &quot; + e);
-<span class="fc" id="L150">        }</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L138">        }</span>
+<span class="fc" id="L139">    }</span>
 
     /**
      * get the Https Provider Class if it's been set already return it - otherwise check with the Security package and
@@ -160,17 +148,17 @@ import javax.net.ssl.X509TrustManager;
      *             the class not found exception
      */
     public static Class getHttpsProviderClass() throws ClassNotFoundException {
-<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (_httpsProviderClass == null) {</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (_httpsProviderClass == null) {</span>
             // [ 1520925 ] SSL patch
-<span class="fc" id="L165">            Provider[] sslProviders = Security.getProviders(&quot;SSLContext.SSLv3&quot;);</span>
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (sslProviders.length &gt; 0) {</span>
-<span class="fc" id="L167">                _httpsProviderClass = sslProviders[0].getClass();</span>
+<span class="fc" id="L153">            Provider[] sslProviders = Security.getProviders(&quot;SSLContext.SSLv3&quot;);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">            if (sslProviders.length &gt; 0) {</span>
+<span class="fc" id="L155">                _httpsProviderClass = sslProviders[0].getClass();</span>
             }
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">            if (_httpsProviderClass == null) {</span>
-<span class="nc" id="L170">                _httpsProviderClass = Class.forName(JSSE_PROVIDER_CLASS);</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">            if (_httpsProviderClass == null) {</span>
+<span class="nc" id="L158">                _httpsProviderClass = Class.forName(JSSE_PROVIDER_CLASS);</span>
             }
         }
-<span class="fc" id="L173">        return _httpsProviderClass;</span>
+<span class="fc" id="L161">        return _httpsProviderClass;</span>
     }
 
     /**
@@ -182,13 +170,13 @@ import javax.net.ssl.X509TrustManager;
      * @return true, if successful
      */
     private static boolean hasProvider(Class providerClass) {
-<span class="fc" id="L185">        Provider[] list = Security.getProviders();</span>
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        for (Provider element : list) {</span>
-<span class="fc bfc" id="L187" title="All 2 branches covered.">            if (element.getClass().equals(providerClass)) {</span>
-<span class="fc" id="L188">                return true;</span>
+<span class="fc" id="L173">        Provider[] list = Security.getProviders();</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        for (Provider element : list) {</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">            if (element.getClass().equals(providerClass)) {</span>
+<span class="fc" id="L176">                return true;</span>
             }
         }
-<span class="nc" id="L191">        return false;</span>
+<span class="nc" id="L179">        return false;</span>
     }
 
     /**
@@ -201,39 +189,39 @@ import javax.net.ssl.X509TrustManager;
      *             the exception
      */
     public static SSLSocketFactory getSocketFactory() throws Exception {
-<span class="fc" id="L204">        final SSLContext context = SSLContext.getInstance(&quot;TLS&quot;);</span>
-<span class="fc" id="L205">        context.init(null, new X509TrustManager[] { new X509TrustManager() {</span>
+<span class="fc" id="L192">        final SSLContext context = SSLContext.getInstance(&quot;TLS&quot;);</span>
+<span class="fc" id="L193">        context.init(null, new X509TrustManager[] { new X509TrustManager() {</span>
             // @Override
             @Override
             public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-<span class="nc" id="L209">            }</span>
+<span class="nc" id="L197">            }</span>
 
             // @Override
             @Override
             public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-<span class="nc" id="L214">            }</span>
+<span class="nc" id="L202">            }</span>
 
             // @Override
             @Override
             public X509Certificate[] getAcceptedIssuers() {
-<span class="nc" id="L219">                return null;</span>
+<span class="nc" id="L207">                return null;</span>
             }
 
         } }, null);
-<span class="fc" id="L223">        return context.getSocketFactory();</span>
+<span class="fc" id="L211">        return context.getSocketFactory();</span>
     }
 
     /**
      * register the Secure Socket Layer Protocol Handler.
      */
     private static void registerSSLProtocolHandler() {
-<span class="fc" id="L230">        String list = System.getProperty(PROTOCOL_HANDLER_PKGS);</span>
-<span class="pc bpc" id="L231" title="3 of 4 branches missed.">        if (list == null || list.isEmpty()) {</span>
-<span class="fc" id="L232">            System.setProperty(PROTOCOL_HANDLER_PKGS, SSL_PROTOCOL_HANDLER);</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">        } else if (list.indexOf(SSL_PROTOCOL_HANDLER) &lt; 0) {</span>
+<span class="fc" id="L218">        String list = System.getProperty(PROTOCOL_HANDLER_PKGS);</span>
+<span class="pc bpc" id="L219" title="3 of 4 branches missed.">        if (list == null || list.isEmpty()) {</span>
+<span class="fc" id="L220">            System.setProperty(PROTOCOL_HANDLER_PKGS, SSL_PROTOCOL_HANDLER);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        } else if (list.indexOf(SSL_PROTOCOL_HANDLER) &lt; 0) {</span>
             // [ 1516007 ] Default SSL provider not being used
-<span class="nc" id="L235">            System.setProperty(PROTOCOL_HANDLER_PKGS, list + &quot; | &quot; + SSL_PROTOCOL_HANDLER);</span>
+<span class="nc" id="L223">            System.setProperty(PROTOCOL_HANDLER_PKGS, list + &quot; | &quot; + SSL_PROTOCOL_HANDLER);</span>
         }
-<span class="fc" id="L237">    }</span>
+<span class="fc" id="L225">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

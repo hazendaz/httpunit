@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestContext.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">RequestContext.java</span></div><h1>RequestContext.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.servletunit;
 
 import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.HttpUnitUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -29,15 +19,13 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * The Class RequestContext.
  */
 class RequestContext {
 
     /** The parameters. */
-<span class="fc" id="L40">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L28">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
 
     /** The visible parameters. */
     private Hashtable _visibleParameters;
@@ -60,13 +48,13 @@ class RequestContext {
      * @param url
      *            the url
      */
-<span class="fc" id="L63">    RequestContext(URL url) {</span>
-<span class="fc" id="L64">        _url = url;</span>
-<span class="fc" id="L65">        String file = _url.getFile();</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (file.indexOf('?') &gt;= 0) {</span>
-<span class="fc" id="L67">            loadParameters(file.substring(file.indexOf('?') + 1) /* urlEncoded */ );</span>
+<span class="fc" id="L51">    RequestContext(URL url) {</span>
+<span class="fc" id="L52">        _url = url;</span>
+<span class="fc" id="L53">        String file = _url.getFile();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (file.indexOf('?') &gt;= 0) {</span>
+<span class="fc" id="L55">            loadParameters(file.substring(file.indexOf('?') + 1) /* urlEncoded */ );</span>
         }
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L57">    }</span>
 
     /**
      * Sets the parent request.
@@ -75,9 +63,9 @@ class RequestContext {
      *            the new parent request
      */
     void setParentRequest(HttpServletRequest parentRequest) {
-<span class="fc" id="L78">        _parentRequest = parentRequest;</span>
-<span class="fc" id="L79">        _visibleParameters = null;</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L66">        _parentRequest = parentRequest;</span>
+<span class="fc" id="L67">        _visibleParameters = null;</span>
+<span class="fc" id="L68">    }</span>
 
     /**
      * Gets the request URI.
@@ -85,7 +73,7 @@ class RequestContext {
      * @return the request URI
      */
     String getRequestURI() {
-<span class="fc" id="L88">        return _url.getPath();</span>
+<span class="fc" id="L76">        return _url.getPath();</span>
     }
 
     /**
@@ -97,8 +85,8 @@ class RequestContext {
      * @return the parameter
      */
     String getParameter(String name) {
-<span class="fc" id="L100">        String[] parameters = (String[]) getParameters().get(name);</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        return parameters == null ? null : parameters[0];</span>
+<span class="fc" id="L88">        String[] parameters = (String[]) getParameters().get(name);</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        return parameters == null ? null : parameters[0];</span>
     }
 
     /**
@@ -107,7 +95,7 @@ class RequestContext {
      * @return the parameter names
      */
     Enumeration getParameterNames() {
-<span class="fc" id="L110">        return getParameters().keys();</span>
+<span class="fc" id="L98">        return getParameters().keys();</span>
     }
 
     /**
@@ -116,7 +104,7 @@ class RequestContext {
      * @return the parameter map
      */
     Map getParameterMap() {
-<span class="fc" id="L119">        return (Map) getParameters().clone();</span>
+<span class="fc" id="L107">        return (Map) getParameters().clone();</span>
     }
 
     /**
@@ -128,7 +116,7 @@ class RequestContext {
      * @return the parameter values
      */
     String[] getParameterValues(String name) {
-<span class="fc" id="L131">        return (String[]) getParameters().get(name);</span>
+<span class="fc" id="L119">        return (String[]) getParameters().get(name);</span>
     }
 
     /** The Constant STATE_INITIAL. */
@@ -153,41 +141,41 @@ class RequestContext {
      *            the query string
      */
     void loadParameters(String queryString) {
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (queryString.isEmpty()) {</span>
-<span class="fc" id="L157">            return;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (queryString.isEmpty()) {</span>
+<span class="fc" id="L145">            return;</span>
         }
-<span class="fc" id="L159">        StringTokenizer st = new StringTokenizer(queryString, &quot;&amp;=&quot;, /* return tokens */ true);</span>
-<span class="fc" id="L160">        int state = STATE_INITIAL;</span>
-<span class="fc" id="L161">        String name = null;</span>
-<span class="fc" id="L162">        String value = null;</span>
+<span class="fc" id="L147">        StringTokenizer st = new StringTokenizer(queryString, &quot;&amp;=&quot;, /* return tokens */ true);</span>
+<span class="fc" id="L148">        int state = STATE_INITIAL;</span>
+<span class="fc" id="L149">        String name = null;</span>
+<span class="fc" id="L150">        String value = null;</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
-<span class="fc" id="L165">            String token = st.nextToken();</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">            if (token.equals(&quot;&amp;&quot;)) {</span>
-<span class="fc" id="L167">                state = STATE_INITIAL;</span>
-<span class="pc bpc" id="L168" title="2 of 4 branches missed.">                if (name != null &amp;&amp; value != null) {</span>
-<span class="fc" id="L169">                    addParameter(name, value);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L153">            String token = st.nextToken();</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">            if (token.equals(&quot;&amp;&quot;)) {</span>
+<span class="fc" id="L155">                state = STATE_INITIAL;</span>
+<span class="pc bpc" id="L156" title="2 of 4 branches missed.">                if (name != null &amp;&amp; value != null) {</span>
+<span class="fc" id="L157">                    addParameter(name, value);</span>
                 }
-<span class="fc" id="L171">                name = value = null;</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">            } else if (token.equals(&quot;=&quot;)) {</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                if (state == STATE_HAVE_NAME) {</span>
-<span class="fc" id="L174">                    state = STATE_HAVE_EQUALS;</span>
-<span class="nc bnc" id="L175" title="All 2 branches missed.">                } else if (state == STATE_HAVE_VALUE) {</span>
-<span class="nc" id="L176">                    state = STATE_INITIAL;</span>
+<span class="fc" id="L159">                name = value = null;</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">            } else if (token.equals(&quot;=&quot;)) {</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">                if (state == STATE_HAVE_NAME) {</span>
+<span class="fc" id="L162">                    state = STATE_HAVE_EQUALS;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                } else if (state == STATE_HAVE_VALUE) {</span>
+<span class="nc" id="L164">                    state = STATE_INITIAL;</span>
                 }
-<span class="fc bfc" id="L178" title="All 2 branches covered.">            } else if (state == STATE_INITIAL) {</span>
-<span class="fc" id="L179">                name = HttpUnitUtils.decode(token, getMessageEncoding());</span>
-<span class="fc" id="L180">                value = &quot;&quot;;</span>
-<span class="fc" id="L181">                state = STATE_HAVE_NAME;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            } else if (state == STATE_INITIAL) {</span>
+<span class="fc" id="L167">                name = HttpUnitUtils.decode(token, getMessageEncoding());</span>
+<span class="fc" id="L168">                value = &quot;&quot;;</span>
+<span class="fc" id="L169">                state = STATE_HAVE_NAME;</span>
             } else {
-<span class="fc" id="L183">                value = HttpUnitUtils.decode(token, getMessageEncoding());</span>
-<span class="fc" id="L184">                state = STATE_HAVE_VALUE;</span>
+<span class="fc" id="L171">                value = HttpUnitUtils.decode(token, getMessageEncoding());</span>
+<span class="fc" id="L172">                state = STATE_HAVE_VALUE;</span>
             }
-<span class="fc" id="L186">        }</span>
-<span class="pc bpc" id="L187" title="2 of 4 branches missed.">        if (name != null &amp;&amp; value != null) {</span>
-<span class="fc" id="L188">            addParameter(name, value);</span>
+<span class="fc" id="L174">        }</span>
+<span class="pc bpc" id="L175" title="2 of 4 branches missed.">        if (name != null &amp;&amp; value != null) {</span>
+<span class="fc" id="L176">            addParameter(name, value);</span>
         }
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L178">    }</span>
 
     /**
      * Adds the parameter.
@@ -198,14 +186,14 @@ class RequestContext {
      *            the encoded value
      */
     private void addParameter(String name, String encodedValue) {
-<span class="fc" id="L201">        String[] values = (String[]) _parameters.get(name);</span>
-<span class="fc" id="L202">        _visibleParameters = null;</span>
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (values == null) {</span>
-<span class="fc" id="L204">            _parameters.put(name, new String[] { encodedValue });</span>
+<span class="fc" id="L189">        String[] values = (String[]) _parameters.get(name);</span>
+<span class="fc" id="L190">        _visibleParameters = null;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        if (values == null) {</span>
+<span class="fc" id="L192">            _parameters.put(name, new String[] { encodedValue });</span>
         } else {
-<span class="fc" id="L206">            _parameters.put(name, extendedArray(values, encodedValue));</span>
+<span class="fc" id="L194">            _parameters.put(name, extendedArray(values, encodedValue));</span>
         }
-<span class="fc" id="L208">    }</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * Extended array.
@@ -218,10 +206,10 @@ class RequestContext {
      * @return the string[]
      */
     private static String[] extendedArray(String[] baseArray, String newValue) {
-<span class="fc" id="L221">        String[] result = new String[baseArray.length + 1];</span>
-<span class="fc" id="L222">        System.arraycopy(baseArray, 0, result, 0, baseArray.length);</span>
-<span class="fc" id="L223">        result[baseArray.length] = newValue;</span>
-<span class="fc" id="L224">        return result;</span>
+<span class="fc" id="L209">        String[] result = new String[baseArray.length + 1];</span>
+<span class="fc" id="L210">        System.arraycopy(baseArray, 0, result, 0, baseArray.length);</span>
+<span class="fc" id="L211">        result[baseArray.length] = newValue;</span>
+<span class="fc" id="L212">        return result;</span>
     }
 
     /**
@@ -230,26 +218,26 @@ class RequestContext {
      * @return the parameters
      */
     private Hashtable getParameters() {
-<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (_messageBody != null) {</span>
-<span class="fc" id="L234">            loadParameters(getMessageBodyAsString());</span>
-<span class="fc" id="L235">            _messageBody = null;</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        if (_messageBody != null) {</span>
+<span class="fc" id="L222">            loadParameters(getMessageBodyAsString());</span>
+<span class="fc" id="L223">            _messageBody = null;</span>
         }
-<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (_visibleParameters == null) {</span>
-<span class="fc bfc" id="L238" title="All 2 branches covered.">            if (_parentRequest == null) {</span>
-<span class="fc" id="L239">                _visibleParameters = _parameters;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        if (_visibleParameters == null) {</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">            if (_parentRequest == null) {</span>
+<span class="fc" id="L227">                _visibleParameters = _parameters;</span>
             } else {
-<span class="fc" id="L241">                _visibleParameters = new Hashtable&lt;&gt;();</span>
-<span class="fc" id="L242">                final Map parameterMap = _parentRequest.getParameterMap();</span>
-<span class="fc bfc" id="L243" title="All 2 branches covered.">                for (Object key : parameterMap.keySet()) {</span>
-<span class="fc" id="L244">                    _visibleParameters.put(key, parameterMap.get(key));</span>
-<span class="fc" id="L245">                }</span>
-<span class="fc bfc" id="L246" title="All 2 branches covered.">                for (Enumeration e = _parameters.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L247">                    Object key = e.nextElement();</span>
-<span class="fc" id="L248">                    _visibleParameters.put(key, _parameters.get(key));</span>
-<span class="fc" id="L249">                }</span>
+<span class="fc" id="L229">                _visibleParameters = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L230">                final Map parameterMap = _parentRequest.getParameterMap();</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">                for (Object key : parameterMap.keySet()) {</span>
+<span class="fc" id="L232">                    _visibleParameters.put(key, parameterMap.get(key));</span>
+<span class="fc" id="L233">                }</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">                for (Enumeration e = _parameters.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L235">                    Object key = e.nextElement();</span>
+<span class="fc" id="L236">                    _visibleParameters.put(key, _parameters.get(key));</span>
+<span class="fc" id="L237">                }</span>
             }
         }
-<span class="fc" id="L252">        return _visibleParameters;</span>
+<span class="fc" id="L240">        return _visibleParameters;</span>
     }
 
     /**
@@ -258,7 +246,7 @@ class RequestContext {
      * @return the message body as string
      */
     private String getMessageBodyAsString() {
-<span class="fc" id="L261">        return new String(_messageBody, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L249">        return new String(_messageBody, StandardCharsets.UTF_8);</span>
     }
 
     /**
@@ -268,8 +256,8 @@ class RequestContext {
      *            the new message body
      */
     void setMessageBody(byte[] bytes) {
-<span class="fc" id="L271">        _messageBody = bytes;</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L259">        _messageBody = bytes;</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Sets the message encoding.
@@ -278,8 +266,8 @@ class RequestContext {
      *            the new message encoding
      */
     public void setMessageEncoding(String messageEncoding) {
-<span class="fc" id="L281">        _messageEncoding = messageEncoding;</span>
-<span class="fc" id="L282">    }</span>
+<span class="fc" id="L269">        _messageEncoding = messageEncoding;</span>
+<span class="fc" id="L270">    }</span>
 
     /**
      * Gets the message encoding.
@@ -287,9 +275,9 @@ class RequestContext {
      * @return the message encoding
      */
     private String getMessageEncoding() {
-<span class="fc bfc" id="L290" title="All 2 branches covered.">        return _messageEncoding == null ?</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">        return _messageEncoding == null ?</span>
         /* Fixing 1705925: StandardCharsets.ISO_8859_1.name() */
-<span class="fc" id="L292">                HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;</span>
+<span class="fc" id="L280">                HttpUnitOptions.getDefaultCharacterSet() : _messageEncoding;</span>
     }
 
 }

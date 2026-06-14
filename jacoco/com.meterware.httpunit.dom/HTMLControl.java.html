@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLControl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLControl.java</span></div><h1>HTMLControl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -31,7 +19,7 @@ import org.w3c.dom.html.HTMLFormElement;
 /**
  * The Class HTMLControl.
  */
-<span class="fc" id="L34">public class HTMLControl extends HTMLElementImpl {</span>
+<span class="fc" id="L22">public class HTMLControl extends HTMLElementImpl {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -42,7 +30,7 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the disabled
      */
     public boolean getDisabled() {
-<span class="fc" id="L45">        return getBooleanAttribute(&quot;disabled&quot;);</span>
+<span class="fc" id="L33">        return getBooleanAttribute(&quot;disabled&quot;);</span>
     }
 
     /**
@@ -51,21 +39,21 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the form
      */
     public HTMLFormElement getForm() {
-<span class="fc" id="L54">        Node parent = getParentNode();</span>
-<span class="fc bfc" id="L55" title="All 4 branches covered.">        while (parent != null &amp;&amp; !&quot;form&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
-<span class="fc" id="L56">            parent = parent.getParentNode();</span>
+<span class="fc" id="L42">        Node parent = getParentNode();</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">        while (parent != null &amp;&amp; !&quot;form&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
+<span class="fc" id="L44">            parent = parent.getParentNode();</span>
         }
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (parent != null) {</span>
-<span class="fc" id="L59">            return (HTMLFormElement) parent;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (parent != null) {</span>
+<span class="fc" id="L47">            return (HTMLFormElement) parent;</span>
         }
 
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (Iterator here = preOrderIterator(); here.hasNext();) {</span>
-<span class="fc" id="L63">            Object o = here.next();</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (o instanceof HTMLFormElement) {</span>
-<span class="fc" id="L65">                return getPreviousForm((HTMLFormElement) o);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (Iterator here = preOrderIterator(); here.hasNext();) {</span>
+<span class="fc" id="L51">            Object o = here.next();</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (o instanceof HTMLFormElement) {</span>
+<span class="fc" id="L53">                return getPreviousForm((HTMLFormElement) o);</span>
             }
-<span class="fc" id="L67">        }</span>
-<span class="fc" id="L68">        return getLastFormInDocument();</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">        return getLastFormInDocument();</span>
     }
 
     /**
@@ -77,13 +65,13 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the previous form
      */
     private HTMLFormElement getPreviousForm(HTMLFormElement nextForm) {
-<span class="fc" id="L80">        HTMLCollection forms = getHtmlDocument().getForms();</span>
-<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        for (int i = 0; i &lt; forms.getLength(); i++) {</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">            if (nextForm == forms.item(i)) {</span>
-<span class="fc bfc" id="L83" title="All 2 branches covered.">                return i == 0 ? null : (HTMLFormElement) forms.item(i - 1);</span>
+<span class="fc" id="L68">        HTMLCollection forms = getHtmlDocument().getForms();</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        for (int i = 0; i &lt; forms.getLength(); i++) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (nextForm == forms.item(i)) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                return i == 0 ? null : (HTMLFormElement) forms.item(i - 1);</span>
             }
         }
-<span class="nc" id="L86">        return null;</span>
+<span class="nc" id="L74">        return null;</span>
     }
 
     /**
@@ -92,8 +80,8 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the last form in document
      */
     private HTMLFormElement getLastFormInDocument() {
-<span class="fc" id="L95">        HTMLCollection forms = getHtmlDocument().getForms();</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        return forms.getLength() == 0 ? null : (HTMLFormElement) forms.item(forms.getLength() - 1);</span>
+<span class="fc" id="L83">        HTMLCollection forms = getHtmlDocument().getForms();</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        return forms.getLength() == 0 ? null : (HTMLFormElement) forms.item(forms.getLength() - 1);</span>
     }
 
     /**
@@ -102,7 +90,7 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the name
      */
     public String getName() {
-<span class="fc" id="L105">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L93">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
     /**
@@ -111,7 +99,7 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the read only
      */
     public boolean getReadOnly() {
-<span class="fc" id="L114">        return getBooleanAttribute(&quot;readonly&quot;);</span>
+<span class="fc" id="L102">        return getBooleanAttribute(&quot;readonly&quot;);</span>
     }
 
     /**
@@ -120,7 +108,7 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the tab index
      */
     public int getTabIndex() {
-<span class="fc" id="L123">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
+<span class="fc" id="L111">        return getIntegerAttribute(&quot;tabindex&quot;);</span>
     }
 
     /**
@@ -129,7 +117,7 @@ import org.w3c.dom.html.HTMLFormElement;
      * @return the type
      */
     public String getType() {
-<span class="fc" id="L132">        return getAttributeWithDefault(&quot;type&quot;, &quot;text&quot;);</span>
+<span class="fc" id="L120">        return getAttributeWithDefault(&quot;type&quot;, &quot;text&quot;);</span>
     }
 
     /**
@@ -139,8 +127,8 @@ import org.w3c.dom.html.HTMLFormElement;
      *            the new disabled
      */
     public void setDisabled(boolean disabled) {
-<span class="fc" id="L142">        setAttribute(&quot;disabled&quot;, disabled);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L130">        setAttribute(&quot;disabled&quot;, disabled);</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Sets the name.
@@ -149,8 +137,8 @@ import org.w3c.dom.html.HTMLFormElement;
      *            the new name
      */
     public void setName(String name) {
-<span class="fc" id="L152">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L140">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L141">    }</span>
 
     /**
      * Sets the read only.
@@ -159,8 +147,8 @@ import org.w3c.dom.html.HTMLFormElement;
      *            the new read only
      */
     public void setReadOnly(boolean readOnly) {
-<span class="fc" id="L162">        setAttribute(&quot;readonly&quot;, readOnly);</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L150">        setAttribute(&quot;readonly&quot;, readOnly);</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * Sets the tab index.
@@ -169,14 +157,14 @@ import org.w3c.dom.html.HTMLFormElement;
      *            the new tab index
      */
     public void setTabIndex(int tabIndex) {
-<span class="fc" id="L172">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L160">        setAttribute(&quot;tabindex&quot;, tabIndex);</span>
+<span class="fc" id="L161">    }</span>
 
     /**
      * Reset.
      */
     public void reset() {
-<span class="nc" id="L179">    }</span>
+<span class="nc" id="L167">    }</span>
 
     /**
      * Adds the values.
@@ -190,12 +178,12 @@ import org.w3c.dom.html.HTMLFormElement;
      *             Signals that an I/O exception has occurred.
      */
     void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="nc" id="L193">    }</span>
+<span class="nc" id="L181">    }</span>
 
     /**
      * Silence submit button.
      */
     public void silenceSubmitButton() {
-<span class="fc" id="L199">    }</span>
+<span class="fc" id="L187">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

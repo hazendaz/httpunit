@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUnitHttpSession.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">ServletUnitHttpSession.java</span></div><h1>ServletUnitHttpSession.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.servletunit;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
 /**
  * The Class ServletUnitHttpSession.
@@ -50,10 +37,10 @@ class ServletUnitHttpSession implements HttpSession {
      * @param listenerDispatcher
      *            the listener dispatcher
      */
-<span class="fc" id="L53">    ServletUnitHttpSession(ServletContext servletContext, SessionListenerDispatcher listenerDispatcher) {</span>
-<span class="fc" id="L54">        _servletContext = servletContext;</span>
-<span class="fc" id="L55">        _listenerDispatcher = listenerDispatcher;</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L40">    ServletUnitHttpSession(ServletContext servletContext, SessionListenerDispatcher listenerDispatcher) {</span>
+<span class="fc" id="L41">        _servletContext = servletContext;</span>
+<span class="fc" id="L42">        _listenerDispatcher = listenerDispatcher;</span>
+<span class="fc" id="L43">    }</span>
 
     /**
      * Returns the maximum time interval, in seconds, that the servlet engine will keep this session open between client
@@ -61,10 +48,10 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public int getMaxInactiveInterval() {
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L65">            throw new IllegalStateException();</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L52">            throw new IllegalStateException();</span>
         }
-<span class="nc" id="L67">        return _maxInactiveInterval;</span>
+<span class="nc" id="L54">        return _maxInactiveInterval;</span>
     }
 
     /**
@@ -73,11 +60,11 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public void setMaxInactiveInterval(int interval) {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L77">            throw new IllegalStateException();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L64">            throw new IllegalStateException();</span>
         }
-<span class="nc" id="L79">        _maxInactiveInterval = interval;</span>
-<span class="nc" id="L80">    }</span>
+<span class="nc" id="L66">        _maxInactiveInterval = interval;</span>
+<span class="nc" id="L67">    }</span>
 
     /**
      * Returns a string containing the unique identifier assigned to this session. The identifier is assigned by the
@@ -85,24 +72,24 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public String getId() {
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L89">            throw new IllegalStateException();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L76">            throw new IllegalStateException();</span>
         }
-<span class="fc" id="L91">        return _id;</span>
+<span class="fc" id="L78">        return _id;</span>
     }
 
     /**
      * Returns the time when this session was created, measured in milliseconds since midnight January 1, 1970 GMT.
      *
-     * @exception IllegalStateException
-     *                if you attempt to get the session's creation time after the session has been invalidated
+     * @throws IllegalStateException
+     *             if you attempt to get the session's creation time after the session has been invalidated
      **/
     @Override
     public long getCreationTime() {
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L103">            throw new IllegalStateException();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L90">            throw new IllegalStateException();</span>
         }
-<span class="nc" id="L105">        return _creationTime;</span>
+<span class="nc" id="L92">        return _creationTime;</span>
     }
 
     /**
@@ -111,10 +98,10 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public long getLastAccessedTime() {
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L115">            throw new IllegalStateException();</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L102">            throw new IllegalStateException();</span>
         }
-<span class="fc" id="L117">        return _lastAccessedTime;</span>
+<span class="fc" id="L104">        return _lastAccessedTime;</span>
     }
 
     /**
@@ -124,7 +111,7 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public boolean isNew() {
-<span class="fc" id="L127">        return _isNew;</span>
+<span class="fc" id="L114">        return _isNew;</span>
     }
 
     /**
@@ -132,68 +119,20 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public void invalidate() {
-<span class="fc" id="L135">        _listenerDispatcher.sendSessionDestroyed(this);</span>
-<span class="fc" id="L136">        _invalid = true;</span>
-<span class="fc" id="L137">        _values.clear();</span>
-<span class="fc" id="L138">    }</span>
-
-    /**
-     * @deprecated no replacement.
-     **/
-    @Deprecated
-    @Override
-    public HttpSessionContext getSessionContext() {
-<span class="nc" id="L146">        return null;</span>
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use getAttribute
-     **/
-    @Deprecated
-    @Override
-    public Object getValue(String name) {
-<span class="nc" id="L155">        return getAttribute(name);</span>
-    }
-
-    /**
-     * @deprecated as of JSDK 2.2, use setAttribute
-     **/
-    @Deprecated
-    @Override
-    public void putValue(String name, Object value) {
-<span class="nc" id="L164">        setAttribute(name, value);</span>
-<span class="nc" id="L165">    }</span>
-
-    /**
-     * @deprecated as of JSDK 2.2, use removeAttribute
-     **/
-    @Deprecated
-    @Override
-    public void removeValue(String name) {
-<span class="nc" id="L173">        removeAttribute(name);</span>
-<span class="nc" id="L174">    }</span>
-
-    /**
-     * @deprecated as of JSDK 2.2, use getAttributeNames.
-     **/
-    @Deprecated
-    @Override
-    public String[] getValueNames() {
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L183">            throw new IllegalStateException();</span>
-        }
-<span class="nc" id="L185">        return (String[]) _values.keySet().toArray(new String[_values.size()]);</span>
-    }
+<span class="fc" id="L122">        _listenerDispatcher.sendSessionDestroyed(this);</span>
+<span class="fc" id="L123">        _invalid = true;</span>
+<span class="fc" id="L124">        _values.clear();</span>
+<span class="fc" id="L125">    }</span>
 
     /**
      * Returns the object bound with the specified name in this session or null if no object of that name exists.
      **/
     @Override
     public Object getAttribute(String name) {
-<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (_invalid) {</span>
-<span class="fc" id="L194">            throw new IllegalStateException();</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (_invalid) {</span>
+<span class="fc" id="L133">            throw new IllegalStateException();</span>
         }
-<span class="fc" id="L196">        return _values.get(name);</span>
+<span class="fc" id="L135">        return _values.get(name);</span>
     }
 
     /**
@@ -202,21 +141,21 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public void setAttribute(String name, Object value) {
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L206">            throw new IllegalStateException();</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L145">            throw new IllegalStateException();</span>
         }
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (value == null) {</span>
-<span class="fc" id="L210">            removeAttribute(name);</span>
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        } else if (!_values.containsKey(name)) {</span>
-<span class="fc" id="L212">            _values.put(name, value);</span>
-<span class="fc" id="L213">            _listenerDispatcher.sendAttributeAdded(this, name, value);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (value == null) {</span>
+<span class="fc" id="L149">            removeAttribute(name);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        } else if (!_values.containsKey(name)) {</span>
+<span class="fc" id="L151">            _values.put(name, value);</span>
+<span class="fc" id="L152">            _listenerDispatcher.sendAttributeAdded(this, name, value);</span>
         } else {
-<span class="fc" id="L215">            Object oldValue = _values.get(name);</span>
-<span class="fc" id="L216">            _values.put(name, value);</span>
-<span class="fc" id="L217">            _listenerDispatcher.sendAttributeReplaced(this, name, oldValue);</span>
+<span class="fc" id="L154">            Object oldValue = _values.get(name);</span>
+<span class="fc" id="L155">            _values.put(name, value);</span>
+<span class="fc" id="L156">            _listenerDispatcher.sendAttributeReplaced(this, name, oldValue);</span>
         }
-<span class="fc" id="L219">    }</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Removes the object bound with the specified name from this session. If the session does not have an object bound
@@ -224,15 +163,15 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public void removeAttribute(String name) {
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (_invalid) {</span>
-<span class="nc" id="L228">            throw new IllegalStateException();</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (_invalid) {</span>
+<span class="nc" id="L167">            throw new IllegalStateException();</span>
         }
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (_values.containsKey(name)) {</span>
-<span class="fc" id="L231">            Object oldValue = _values.get(name);</span>
-<span class="fc" id="L232">            _values.remove(name);</span>
-<span class="fc" id="L233">            _listenerDispatcher.sendAttributeRemoved(this, name, oldValue);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (_values.containsKey(name)) {</span>
+<span class="fc" id="L170">            Object oldValue = _values.get(name);</span>
+<span class="fc" id="L171">            _values.remove(name);</span>
+<span class="fc" id="L172">            _listenerDispatcher.sendAttributeRemoved(this, name, oldValue);</span>
         }
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L174">    }</span>
 
     /**
      * Returns an array containing the names of all the objects bound to this session. This method is useful, for
@@ -240,10 +179,10 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public Enumeration&lt;String&gt; getAttributeNames() {
-<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (_invalid) {</span>
-<span class="fc" id="L244">            throw new IllegalStateException();</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (_invalid) {</span>
+<span class="fc" id="L183">            throw new IllegalStateException();</span>
         }
-<span class="fc" id="L246">        return _values.keys();</span>
+<span class="fc" id="L185">        return _values.keys();</span>
     }
 
     // ---------------------------- methods added to HttpSession in JSDK 2.3 ----------------------------------------
@@ -253,7 +192,7 @@ class ServletUnitHttpSession implements HttpSession {
      **/
     @Override
     public ServletContext getServletContext() {
-<span class="fc" id="L256">        return _servletContext;</span>
+<span class="fc" id="L195">        return _servletContext;</span>
     }
 
     // -------------------------------------------- package members -------------------------------------------------
@@ -263,9 +202,9 @@ class ServletUnitHttpSession implements HttpSession {
      * mark the session as no longer new.
      **/
     void access() {
-<span class="fc" id="L266">        _lastAccessedTime = new Date().getTime();</span>
-<span class="fc" id="L267">        _isNew = false;</span>
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L205">        _lastAccessedTime = new Date().getTime();</span>
+<span class="fc" id="L206">        _isNew = false;</span>
+<span class="fc" id="L207">    }</span>
 
     /**
      * Gets the original URL.
@@ -273,7 +212,7 @@ class ServletUnitHttpSession implements HttpSession {
      * @return the original URL
      */
     URL getOriginalURL() {
-<span class="fc" id="L276">        return _originalURL;</span>
+<span class="fc" id="L215">        return _originalURL;</span>
     }
 
     /**
@@ -283,8 +222,8 @@ class ServletUnitHttpSession implements HttpSession {
      *            the new original URL
      */
     void setOriginalURL(URL originalURL) {
-<span class="fc" id="L286">        _originalURL = originalURL;</span>
-<span class="fc" id="L287">    }</span>
+<span class="fc" id="L225">        _originalURL = originalURL;</span>
+<span class="fc" id="L226">    }</span>
 
     /**
      * Sets the authenticated user information for a session.
@@ -295,9 +234,9 @@ class ServletUnitHttpSession implements HttpSession {
      *            an array of role names assigned to the user
      **/
     void setUserInformation(String userName, String[] roles) {
-<span class="fc" id="L298">        _userName = userName;</span>
-<span class="fc" id="L299">        _roles = roles;</span>
-<span class="fc" id="L300">    }</span>
+<span class="fc" id="L237">        _userName = userName;</span>
+<span class="fc" id="L238">        _roles = roles;</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * Gets the user name.
@@ -305,7 +244,7 @@ class ServletUnitHttpSession implements HttpSession {
      * @return the user name
      */
     String getUserName() {
-<span class="fc" id="L308">        return _userName;</span>
+<span class="fc" id="L247">        return _userName;</span>
     }
 
     /**
@@ -314,7 +253,7 @@ class ServletUnitHttpSession implements HttpSession {
      * @return the roles
      */
     String[] getRoles() {
-<span class="fc" id="L317">        return _roles;</span>
+<span class="fc" id="L256">        return _roles;</span>
     }
 
     /**
@@ -323,34 +262,34 @@ class ServletUnitHttpSession implements HttpSession {
      * @return true, if is invalid
      */
     boolean isInvalid() {
-<span class="fc" id="L326">        return _invalid;</span>
+<span class="fc" id="L265">        return _invalid;</span>
     }
 
     // ------------------------------------- private members ---------------------------------------
 
     /** The Next ID. */
-<span class="fc" id="L332">    private static int _NextID = 1;</span>
+<span class="fc" id="L271">    private static int _NextID = 1;</span>
 
     /** The creation time. */
-<span class="fc" id="L335">    private final long _creationTime = new Date().getTime();</span>
+<span class="fc" id="L274">    private final long _creationTime = new Date().getTime();</span>
 
     /** The id. */
-<span class="fc" id="L338">    private final String _id = Integer.toString(_NextID++);</span>
+<span class="fc" id="L277">    private final String _id = Integer.toString(_NextID++);</span>
 
     /** The max inactive interval. */
     private int _maxInactiveInterval;
 
     /** The last accessed time. */
-<span class="fc" id="L344">    private long _lastAccessedTime = new Date().getTime();</span>
+<span class="fc" id="L283">    private long _lastAccessedTime = new Date().getTime();</span>
 
     /** The invalid. */
     private boolean _invalid;
 
     /** The values. */
-<span class="fc" id="L350">    private Hashtable _values = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L289">    private Hashtable _values = new Hashtable&lt;&gt;();</span>
 
     /** The is new. */
-<span class="fc" id="L353">    private boolean _isNew = true;</span>
+<span class="fc" id="L292">    private boolean _isNew = true;</span>
 
     /** The user name. */
     private String _userName;

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLBodyElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLBodyElementImpl.java</span></div><h1>HTMLBodyElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -26,17 +14,17 @@ import org.w3c.dom.html.HTMLBodyElement;
 /**
  * The Class HTMLBodyElementImpl.
  */
-<span class="fc" id="L29">public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {</span>
+<span class="fc" id="L17">public class HTMLBodyElementImpl extends HTMLElementImpl implements HTMLBodyElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** The on load. */
-<span class="fc" id="L35">    private HTMLEventHandler _onLoad = new HTMLEventHandler(this, &quot;onload&quot;);</span>
+<span class="fc" id="L23">    private HTMLEventHandler _onLoad = new HTMLEventHandler(this, &quot;onload&quot;);</span>
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L39">        return new HTMLBodyElementImpl();</span>
+<span class="fc" id="L27">        return new HTMLBodyElementImpl();</span>
     }
 
     /**
@@ -45,10 +33,10 @@ import org.w3c.dom.html.HTMLBodyElement;
      * @return the onload event
      */
     public Function getOnloadEvent() {
-<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        if (getParentScope() == null &amp;&amp; getOwnerDocument() instanceof Scriptable) {</span>
-<span class="fc" id="L49">            setParentScope((Scriptable) getOwnerDocument());</span>
+<span class="pc bpc" id="L36" title="1 of 4 branches missed.">        if (getParentScope() == null &amp;&amp; getOwnerDocument() instanceof Scriptable) {</span>
+<span class="fc" id="L37">            setParentScope((Scriptable) getOwnerDocument());</span>
         }
-<span class="fc" id="L51">        return _onLoad.getHandler();</span>
+<span class="fc" id="L39">        return _onLoad.getHandler();</span>
     }
 
     // ----------------------------------------- HTMLBodyElement methods
@@ -61,7 +49,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getALink() {
-<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;aLink&quot;);</span>
+<span class="fc" id="L52">        return getAttributeWithNoDefault(&quot;aLink&quot;);</span>
     }
 
     /**
@@ -71,7 +59,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getBackground() {
-<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;background&quot;);</span>
+<span class="fc" id="L62">        return getAttributeWithNoDefault(&quot;background&quot;);</span>
     }
 
     /**
@@ -81,7 +69,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getBgColor() {
-<span class="fc" id="L84">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+<span class="fc" id="L72">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
     }
 
     /**
@@ -91,7 +79,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getLink() {
-<span class="fc" id="L94">        return getAttributeWithNoDefault(&quot;link&quot;);</span>
+<span class="fc" id="L82">        return getAttributeWithNoDefault(&quot;link&quot;);</span>
     }
 
     /**
@@ -101,7 +89,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getText() {
-<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;text&quot;);</span>
+<span class="fc" id="L92">        return getAttributeWithNoDefault(&quot;text&quot;);</span>
     }
 
     /**
@@ -111,7 +99,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public String getVLink() {
-<span class="fc" id="L114">        return getAttributeWithNoDefault(&quot;vLink&quot;);</span>
+<span class="fc" id="L102">        return getAttributeWithNoDefault(&quot;vLink&quot;);</span>
     }
 
     /**
@@ -122,8 +110,8 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setALink(String aLink) {
-<span class="fc" id="L125">        setAttribute(&quot;aLink&quot;, aLink);</span>
-<span class="fc" id="L126">    }</span>
+<span class="fc" id="L113">        setAttribute(&quot;aLink&quot;, aLink);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Sets the background.
@@ -133,8 +121,8 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setBackground(String background) {
-<span class="fc" id="L136">        setAttribute(&quot;background&quot;, background);</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L124">        setAttribute(&quot;background&quot;, background);</span>
+<span class="fc" id="L125">    }</span>
 
     /**
      * Sets the bg color.
@@ -144,8 +132,8 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setBgColor(String bgColor) {
-<span class="fc" id="L147">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc" id="L135">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L136">    }</span>
 
     /**
      * Sets the link.
@@ -155,8 +143,8 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setLink(String link) {
-<span class="fc" id="L158">        setAttribute(&quot;link&quot;, link);</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L146">        setAttribute(&quot;link&quot;, link);</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * Sets the text.
@@ -166,8 +154,8 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setText(String text) {
-<span class="fc" id="L169">        setAttribute(&quot;text&quot;, text);</span>
-<span class="fc" id="L170">    }</span>
+<span class="fc" id="L157">        setAttribute(&quot;text&quot;, text);</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Sets the v link.
@@ -177,7 +165,7 @@ import org.w3c.dom.html.HTMLBodyElement;
      */
     @Override
     public void setVLink(String vLink) {
-<span class="fc" id="L180">        setAttribute(&quot;vLink&quot;, vLink);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L168">        setAttribute(&quot;vLink&quot;, vLink);</span>
+<span class="fc" id="L169">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

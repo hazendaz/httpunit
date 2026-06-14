@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Button.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">Button.java</span></div><h1>Button.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -45,11 +33,11 @@ public class Button extends FormControl {
 
     /** The was enabled. */
     // remember the last verifyEnabled result
-<span class="fc" id="L48">    private boolean _wasEnabled = true;</span>
+<span class="fc" id="L36">    private boolean _wasEnabled = true;</span>
 
     @Override
     public String getType() {
-<span class="fc" id="L52">        return BUTTON_TYPE;</span>
+<span class="fc" id="L40">        return BUTTON_TYPE;</span>
     }
 
     /**
@@ -59,8 +47,8 @@ public class Button extends FormControl {
      *            the form
      */
     Button(WebForm form) {
-<span class="fc" id="L62">        super(form);</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L50">        super(form);</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * construct a button from the given html control and assign the event handlers for onclick, onmousedown and
@@ -72,8 +60,8 @@ public class Button extends FormControl {
      *            the control
      */
     Button(WebForm form, HTMLControl control) {
-<span class="fc" id="L75">        super(form, control);</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L63">        super(form, control);</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Instantiates a new button.
@@ -84,9 +72,9 @@ public class Button extends FormControl {
      *            the control
      */
     Button(WebResponse response, HTMLControl control) {
-<span class="fc" id="L87">        super(null, control);</span>
-<span class="fc" id="L88">        _baseResponse = response;</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L75">        super(null, control);</span>
+<span class="fc" id="L76">        _baseResponse = response;</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Returns the value associated with this button.
@@ -94,8 +82,8 @@ public class Button extends FormControl {
      * @return the value
      */
     public String getValue() {
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        return emptyIfNull(getNode() instanceof HTMLInputElementImpl ? ((HTMLInputElementImpl) getNode()).getValue()</span>
-<span class="fc" id="L98">                : ((HTMLButtonElementImpl) getNode()).getValue());</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        return emptyIfNull(getNode() instanceof HTMLInputElementImpl ? ((HTMLInputElementImpl) getNode()).getValue()</span>
+<span class="fc" id="L86">                : ((HTMLButtonElementImpl) getNode()).getValue());</span>
     }
 
     /**
@@ -114,13 +102,13 @@ public class Button extends FormControl {
      *             the SAX exception
      */
     protected boolean doOnClickSequence(int x, int y) throws IOException, SAXException {
-<span class="fc" id="L117">        verifyButtonEnabled();</span>
-<span class="fc" id="L118">        boolean result = doOnClickEvent();</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (result) {</span>
-<span class="fc" id="L120">            doButtonAction(x, y);</span>
+<span class="fc" id="L105">        verifyButtonEnabled();</span>
+<span class="fc" id="L106">        boolean result = doOnClickEvent();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (result) {</span>
+<span class="fc" id="L108">            doButtonAction(x, y);</span>
         }
-<span class="fc" id="L122">        this.rememberEnableState();</span>
-<span class="fc" id="L123">        return result;</span>
+<span class="fc" id="L110">        this.rememberEnableState();</span>
+<span class="fc" id="L111">        return result;</span>
     }
 
     /**
@@ -133,8 +121,8 @@ public class Button extends FormControl {
      *             the SAX exception
      */
     public void click() throws IOException, SAXException {
-<span class="fc" id="L136">        doOnClickSequence(0, 0);</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L124">        doOnClickSequence(0, 0);</span>
+<span class="fc" id="L125">    }</span>
 
     /**
      * Was enabled.
@@ -142,31 +130,31 @@ public class Button extends FormControl {
      * @return true, if successful
      */
     boolean wasEnabled() {
-<span class="fc" id="L145">        return _wasEnabled;</span>
+<span class="fc" id="L133">        return _wasEnabled;</span>
     }
 
     /**
      * remember wether the button was enabled.
      */
     public void rememberEnableState() {
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        _wasEnabled = !isDisabled();</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        _wasEnabled = !isDisabled();</span>
+<span class="fc" id="L141">    }</span>
 
     /**
      * verifyButtonEnabled.
      */
     protected void verifyButtonEnabled() {
-<span class="fc" id="L159">        rememberEnableState();</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (isDisabled()) {</span>
-<span class="nc" id="L161">            throwDisabledException();</span>
+<span class="fc" id="L147">        rememberEnableState();</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (isDisabled()) {</span>
+<span class="nc" id="L149">            throwDisabledException();</span>
         }
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * throw an exception that I'm disbled.
      */
     public void throwDisabledException() {
-<span class="fc" id="L169">        throw new DisabledButtonException(this);</span>
+<span class="fc" id="L157">        throw new DisabledButtonException(this);</span>
     }
 
     /**
@@ -183,14 +171,14 @@ public class Button extends FormControl {
          * @param button
          *            the button
          */
-<span class="fc" id="L186">        DisabledButtonException(Button button) {</span>
-<span class="fc" id="L187">            _name = button.getName();</span>
-<span class="fc" id="L188">            _value = button.getValue();</span>
-<span class="fc" id="L189">        }</span>
+<span class="fc" id="L174">        DisabledButtonException(Button button) {</span>
+<span class="fc" id="L175">            _name = button.getName();</span>
+<span class="fc" id="L176">            _value = button.getValue();</span>
+<span class="fc" id="L177">        }</span>
 
         @Override
         public String getMessage() {
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().isEmpty() ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            return &quot;Button&quot; + (getName().isEmpty() ? &quot;&quot; : &quot; '&quot; + getName() + &quot;'&quot;)</span>
                     + &quot; is disabled and may not be clicked.&quot;;
         }
 
@@ -207,7 +195,7 @@ public class Button extends FormControl {
      **/
     @Override
     public boolean isDisabled() {
-<span class="fc" id="L210">        return super.isDisabled();</span>
+<span class="fc" id="L198">        return super.isDisabled();</span>
     }
 
     /**
@@ -225,7 +213,7 @@ public class Button extends FormControl {
      */
     protected void doButtonAction(int x, int y) throws IOException, SAXException {
         // pseudo - abstract
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L216">    }</span>
 
     /**
      * Perform the normal action of this button. delegate to the x-y version
@@ -236,50 +224,50 @@ public class Button extends FormControl {
      *             the SAX exception
      */
     protected void doButtonAction() throws IOException, SAXException {
-<span class="fc" id="L239">        doButtonAction(0, 0);</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L227">        doButtonAction(0, 0);</span>
+<span class="fc" id="L228">    }</span>
 
     // -------------------------------------------------- FormControl methods
     // -----------------------------------------------
 
     @Override
     protected String[] getValues() {
-<span class="nc" id="L247">        return new String[0];</span>
+<span class="nc" id="L235">        return new String[0];</span>
     }
 
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc" id="L252">    }</span>
+<span class="fc" id="L240">    }</span>
 
     @Override
     public ScriptableDelegate newScriptable() {
-<span class="fc" id="L256">        return new Scriptable();</span>
+<span class="fc" id="L244">        return new Scriptable();</span>
     }
 
     @Override
     public ScriptableDelegate getParentDelegate() {
-<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (getForm() != null) {</span>
-<span class="fc" id="L262">            return super.getParentDelegate();</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (getForm() != null) {</span>
+<span class="fc" id="L250">            return super.getParentDelegate();</span>
         }
-<span class="fc" id="L264">        return _baseResponse.getDocumentScriptable();</span>
+<span class="fc" id="L252">        return _baseResponse.getDocumentScriptable();</span>
     }
 
     /**
      * The Class Scriptable.
      */
-<span class="fc" id="L270">    class Scriptable extends FormControl.Scriptable {</span>
+<span class="fc" id="L258">    class Scriptable extends FormControl.Scriptable {</span>
 
         @Override
         public void click() throws IOException, SAXException {
-<span class="fc" id="L274">            doButtonAction();</span>
-<span class="fc" id="L275">        }</span>
+<span class="fc" id="L262">            doButtonAction();</span>
+<span class="fc" id="L263">        }</span>
     }
 
     static {
-<span class="fc" id="L279">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
+<span class="fc" id="L267">        WITH_ID = (button, id) -&gt; ((Button) button).getID().equals(id);</span>
 
-<span class="pc" id="L281">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
+<span class="pc" id="L269">        WITH_LABEL = (button, label) -&gt; ((Button) button).getValue().equals(label);</span>
 
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L271">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

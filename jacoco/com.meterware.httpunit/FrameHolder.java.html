@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FrameHolder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">FrameHolder.java</span></div><h1>FrameHolder.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -34,10 +22,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-<span class="fc" id="L37">    private Hashtable _contents = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L25">    private Hashtable _contents = new Hashtable&lt;&gt;();</span>
 
     /** Map from a frame selector to its subframe selectors. **/
-<span class="fc" id="L40">    private Hashtable _subframes = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L28">    private Hashtable _subframes = new Hashtable&lt;&gt;();</span>
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;
@@ -51,13 +39,13 @@ class FrameHolder {
      * @param window
      *            the window
      */
-<span class="fc" id="L54">    FrameHolder(WebWindow window) {</span>
-<span class="fc" id="L55">        _window = window;</span>
-<span class="fc" id="L56">        _topFrame = FrameSelector.newTopFrame(window);</span>
-<span class="fc" id="L57">        DefaultWebResponse blankResponse = new DefaultWebResponse(window.getClient(), null, WebResponse.BLANK_HTML);</span>
-<span class="fc" id="L58">        _contents.put(_topFrame, blankResponse);</span>
-<span class="fc" id="L59">        HttpUnitOptions.getScriptingEngine().associate(blankResponse);</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L42">    FrameHolder(WebWindow window) {</span>
+<span class="fc" id="L43">        _window = window;</span>
+<span class="fc" id="L44">        _topFrame = FrameSelector.newTopFrame(window);</span>
+<span class="fc" id="L45">        DefaultWebResponse blankResponse = new DefaultWebResponse(window.getClient(), null, WebResponse.BLANK_HTML);</span>
+<span class="fc" id="L46">        _contents.put(_topFrame, blankResponse);</span>
+<span class="fc" id="L47">        HttpUnitOptions.getScriptingEngine().associate(blankResponse);</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Gets the top frame.
@@ -65,7 +53,7 @@ class FrameHolder {
      * @return the top frame
      */
     FrameSelector getTopFrame() {
-<span class="fc" id="L68">        return _topFrame;</span>
+<span class="fc" id="L56">        return _topFrame;</span>
     }
 
     /**
@@ -77,14 +65,14 @@ class FrameHolder {
      * @return the frame contents
      */
     WebResponse getFrameContents(FrameSelector targetFrame) {
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (targetFrame == FrameSelector.TOP_FRAME) {</span>
-<span class="fc" id="L81">            targetFrame = getTopFrame();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (targetFrame == FrameSelector.TOP_FRAME) {</span>
+<span class="fc" id="L69">            targetFrame = getTopFrame();</span>
         }
-<span class="fc" id="L83">        WebResponse response = get(targetFrame);</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (response == null) {</span>
-<span class="nc" id="L85">            throw new NoSuchFrameException(targetFrame.getName());</span>
+<span class="fc" id="L71">        WebResponse response = get(targetFrame);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (response == null) {</span>
+<span class="nc" id="L73">            throw new NoSuchFrameException(targetFrame.getName());</span>
         }
-<span class="fc" id="L87">        return response;</span>
+<span class="fc" id="L75">        return response;</span>
     }
 
     /**
@@ -98,17 +86,17 @@ class FrameHolder {
      * @return the subframe contents
      */
     WebResponse getSubframeContents(FrameSelector frame, String subFrameName) {
-<span class="fc" id="L101">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (subframes == null) {</span>
-<span class="fc" id="L103">            throw new NoSuchFrameException(subFrameName);</span>
+<span class="fc" id="L89">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (subframes == null) {</span>
+<span class="fc" id="L91">            throw new NoSuchFrameException(subFrameName);</span>
         }
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (subframe.getName().equalsIgnoreCase(subFrameName)) {</span>
-<span class="fc" id="L108">                return get(subframe);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            if (subframe.getName().equalsIgnoreCase(subFrameName)) {</span>
+<span class="fc" id="L96">                return get(subframe);</span>
             }
         }
-<span class="fc" id="L111">        throw new NoSuchFrameException(subFrameName);</span>
+<span class="fc" id="L99">        throw new NoSuchFrameException(subFrameName);</span>
     }
 
     /**
@@ -120,7 +108,7 @@ class FrameHolder {
      * @return the parent frame contents
      */
     WebResponse getParentFrameContents(FrameSelector frame) {
-<span class="fc bfc" id="L123" title="All 2 branches covered.">        return get(frame.getParent() == null ? _topFrame : frame.getParent());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        return get(frame.getParent() == null ? _topFrame : frame.getParent());</span>
     }
 
     /**
@@ -132,7 +120,7 @@ class FrameHolder {
      * @return the web response
      */
     WebResponse get(FrameSelector targetFrame) {
-<span class="fc" id="L135">        return (WebResponse) _contents.get(targetFrame);</span>
+<span class="fc" id="L123">        return (WebResponse) _contents.get(targetFrame);</span>
     }
 
     /**
@@ -144,8 +132,8 @@ class FrameHolder {
      * @return the web response
      */
     WebResponse get(String target) {
-<span class="fc" id="L147">        FrameSelector frame = getFrame(_topFrame, target);</span>
-<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        return frame == null ? null : (WebResponse) _contents.get(frame);</span>
+<span class="fc" id="L135">        FrameSelector frame = getFrame(_topFrame, target);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        return frame == null ? null : (WebResponse) _contents.get(frame);</span>
     }
 
     /**
@@ -157,7 +145,7 @@ class FrameHolder {
      * @return the frame
      */
     FrameSelector getFrame(String target) {
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        return target.equals(_window.getName()) ? _topFrame : getFrame(_topFrame, target);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        return target.equals(_window.getName()) ? _topFrame : getFrame(_topFrame, target);</span>
     }
 
     /**
@@ -171,14 +159,14 @@ class FrameHolder {
      * @return the frame
      */
     private FrameSelector getFrame(FrameSelector rootFrame, String target) {
-<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (target.equalsIgnoreCase(WebRequest.TOP_FRAME)) {</span>
-<span class="fc" id="L175">            return _topFrame;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (target.equalsIgnoreCase(WebRequest.TOP_FRAME)) {</span>
+<span class="fc" id="L163">            return _topFrame;</span>
         }
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (target.equalsIgnoreCase(rootFrame.getName())) {</span>
-<span class="nc" id="L178">            return rootFrame;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (target.equalsIgnoreCase(rootFrame.getName())) {</span>
+<span class="nc" id="L166">            return rootFrame;</span>
         }
 
-<span class="fc" id="L181">        return lookupFrame(rootFrame, target);</span>
+<span class="fc" id="L169">        return lookupFrame(rootFrame, target);</span>
     }
 
     /**
@@ -192,17 +180,17 @@ class FrameHolder {
      * @return the frame selector
      */
     private FrameSelector lookupFrame(FrameSelector rootFrame, String target) {
-<span class="fc" id="L195">        FrameSelector result = getFromSubframe(rootFrame, target);</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (result != null) {</span>
-<span class="fc" id="L197">            return result;</span>
+<span class="fc" id="L183">        FrameSelector result = getFromSubframe(rootFrame, target);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (result != null) {</span>
+<span class="fc" id="L185">            return result;</span>
         }
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (rootFrame.getName().equals(target)) {</span>
-<span class="nc" id="L200">            return rootFrame;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (rootFrame.getName().equals(target)) {</span>
+<span class="nc" id="L188">            return rootFrame;</span>
         }
-<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (rootFrame.getParent() != null) {</span>
-<span class="fc" id="L203">            return lookupFrame(rootFrame.getParent(), target);</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (rootFrame.getParent() != null) {</span>
+<span class="fc" id="L191">            return lookupFrame(rootFrame.getParent(), target);</span>
         }
-<span class="fc" id="L205">        return null;</span>
+<span class="fc" id="L193">        return null;</span>
     }
 
     /**
@@ -216,23 +204,23 @@ class FrameHolder {
      * @return the from subframe
      */
     private FrameSelector getFromSubframe(FrameSelector rootFrame, String target) {
-<span class="fc" id="L219">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(rootFrame);</span>
-<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (subframes == null) {</span>
-<span class="fc" id="L221">            return null;</span>
+<span class="fc" id="L207">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(rootFrame);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (subframes == null) {</span>
+<span class="fc" id="L209">            return null;</span>
         }
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
-<span class="fc bfc" id="L225" title="All 2 branches covered.">            if (subframe.getName().equalsIgnoreCase(target)) {</span>
-<span class="fc" id="L226">                return subframe;</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">            if (subframe.getName().equalsIgnoreCase(target)) {</span>
+<span class="fc" id="L214">                return subframe;</span>
             }
         }
-<span class="fc bfc" id="L229" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
-<span class="fc" id="L230">            FrameSelector result = getFromSubframe(subframe, target);</span>
-<span class="fc bfc" id="L231" title="All 2 branches covered.">            if (result != null) {</span>
-<span class="fc" id="L232">                return result;</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
+<span class="fc" id="L218">            FrameSelector result = getFromSubframe(subframe, target);</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">            if (result != null) {</span>
+<span class="fc" id="L220">                return result;</span>
             }
         }
-<span class="fc" id="L235">        return null;</span>
+<span class="fc" id="L223">        return null;</span>
     }
 
     /**
@@ -241,12 +229,12 @@ class FrameHolder {
      * @return the active frame names
      */
     List&lt;String&gt; getActiveFrameNames() {
-<span class="fc" id="L244">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L245" title="All 2 branches covered.">        for (Enumeration e = _contents.keys(); e.hasMoreElements();) {</span>
-<span class="fc" id="L246">            result.add(((FrameSelector) e.nextElement()).getName());</span>
+<span class="fc" id="L232">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        for (Enumeration e = _contents.keys(); e.hasMoreElements();) {</span>
+<span class="fc" id="L234">            result.add(((FrameSelector) e.nextElement()).getName());</span>
         }
 
-<span class="fc" id="L249">        return result;</span>
+<span class="fc" id="L237">        return result;</span>
     }
 
     /**
@@ -258,26 +246,26 @@ class FrameHolder {
      * @return the target frame
      */
     FrameSelector getTargetFrame(WebRequest request) {
-<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (WebRequest.NEW_WINDOW.equalsIgnoreCase(request.getTarget())) {</span>
-<span class="fc" id="L262">            return FrameSelector.NEW_FRAME;</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (WebRequest.NEW_WINDOW.equalsIgnoreCase(request.getTarget())) {</span>
+<span class="fc" id="L250">            return FrameSelector.NEW_FRAME;</span>
         }
-<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (WebRequest.TOP_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
-<span class="fc" id="L265">            return _topFrame;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (WebRequest.TOP_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
+<span class="fc" id="L253">            return _topFrame;</span>
         }
-<span class="fc bfc" id="L267" title="All 2 branches covered.">        if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
-<span class="fc" id="L268">            return request.getSourceFrame();</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (WebRequest.SAME_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
+<span class="fc" id="L256">            return request.getSourceFrame();</span>
         }
-<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
-<span class="fc bfc" id="L271" title="All 2 branches covered.">            return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (WebRequest.PARENT_FRAME.equalsIgnoreCase(request.getTarget())) {</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">            return request.getSourceFrame().getParent() == null ? _topFrame : request.getSourceFrame().getParent();</span>
         }
-<span class="fc bfc" id="L273" title="All 2 branches covered.">        if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {</span>
-<span class="fc" id="L274">            return request.getSourceFrame();</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (request.getSourceFrame().getName().equalsIgnoreCase(request.getTarget())) {</span>
+<span class="fc" id="L262">            return request.getSourceFrame();</span>
         }
-<span class="fc" id="L276">        FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());</span>
-<span class="fc bfc" id="L277" title="All 2 branches covered.">        if (targetFrame == null) {</span>
-<span class="fc" id="L278">            targetFrame = _window.getClient().findFrame(request.getTarget());</span>
+<span class="fc" id="L264">        FrameSelector targetFrame = getFrame(request.getSourceFrame(), request.getTarget());</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (targetFrame == null) {</span>
+<span class="fc" id="L266">            targetFrame = _window.getClient().findFrame(request.getTarget());</span>
         }
-<span class="fc bfc" id="L280" title="All 2 branches covered.">        return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        return targetFrame != null ? targetFrame : FrameSelector.NEW_FRAME;</span>
     }
 
     /**
@@ -299,23 +287,23 @@ class FrameHolder {
      */
     void updateFrames(WebResponse response, FrameSelector frame, RequestContext requestContext)
             throws MalformedURLException, IOException, SAXException {
-<span class="fc" id="L302">        removeSubFrames(frame);</span>
-<span class="fc" id="L303">        _contents.put(frame, response);</span>
+<span class="fc" id="L290">        removeSubFrames(frame);</span>
+<span class="fc" id="L291">        _contents.put(frame, response);</span>
 
-<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (response.isHTML()) {</span>
-<span class="fc" id="L306">            HttpUnitOptions.getScriptingEngine().associate(response);</span>
-<span class="fc" id="L307">            requestContext.addNewResponse(response);</span>
-<span class="fc" id="L308">            WebRequest[] requests = response.getFrameRequests();</span>
-<span class="fc bfc" id="L309" title="All 2 branches covered.">            if (requests.length &gt; 0) {</span>
-<span class="fc" id="L310">                createSubFrames(frame, response.getFrameSelectors());</span>
-<span class="fc bfc" id="L311" title="All 2 branches covered.">                for (WebRequest request : requests) {</span>
-<span class="fc bfc" id="L312" title="All 2 branches covered.">                    if (request.getURLString().length() != 0) {</span>
-<span class="fc" id="L313">                        response.getWindow().getSubframeResponse(request, requestContext);</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">        if (response.isHTML()) {</span>
+<span class="fc" id="L294">            HttpUnitOptions.getScriptingEngine().associate(response);</span>
+<span class="fc" id="L295">            requestContext.addNewResponse(response);</span>
+<span class="fc" id="L296">            WebRequest[] requests = response.getFrameRequests();</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">            if (requests.length &gt; 0) {</span>
+<span class="fc" id="L298">                createSubFrames(frame, response.getFrameSelectors());</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">                for (WebRequest request : requests) {</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">                    if (request.getURLString().length() != 0) {</span>
+<span class="fc" id="L301">                        response.getWindow().getSubframeResponse(request, requestContext);</span>
                     }
                 }
             }
         }
-<span class="fc" id="L318">    }</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Removes the sub frames.
@@ -324,17 +312,17 @@ class FrameHolder {
      *            the frame
      */
     private void removeSubFrames(FrameSelector frame) {
-<span class="fc" id="L327">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);</span>
-<span class="fc bfc" id="L328" title="All 2 branches covered.">        if (subframes == null) {</span>
-<span class="fc" id="L329">            return;</span>
+<span class="fc" id="L315">        FrameSelector[] subframes = (FrameSelector[]) _subframes.get(frame);</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">        if (subframes == null) {</span>
+<span class="fc" id="L317">            return;</span>
         }
 
-<span class="fc" id="L332">        _subframes.remove(frame);</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
-<span class="fc" id="L334">            removeSubFrames(subframe);</span>
-<span class="fc" id="L335">            _contents.remove(subframe);</span>
+<span class="fc" id="L320">        _subframes.remove(frame);</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
+<span class="fc" id="L322">            removeSubFrames(subframe);</span>
+<span class="fc" id="L323">            _contents.remove(subframe);</span>
         }
-<span class="fc" id="L337">    }</span>
+<span class="fc" id="L325">    }</span>
 
     /**
      * Creates the sub frames.
@@ -345,11 +333,11 @@ class FrameHolder {
      *            the subframes
      */
     private void createSubFrames(FrameSelector frame, FrameSelector[] subframes) {
-<span class="fc" id="L348">        _subframes.put(frame, subframes);</span>
-<span class="fc bfc" id="L349" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
-<span class="fc" id="L350">            _contents.put(subframe, WebResponse.createBlankResponse());</span>
+<span class="fc" id="L336">        _subframes.put(frame, subframes);</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        for (FrameSelector subframe : subframes) {</span>
+<span class="fc" id="L338">            _contents.put(subframe, WebResponse.createBlankResponse());</span>
         }
-<span class="fc" id="L352">    }</span>
+<span class="fc" id="L340">    }</span>
 
     /**
      * Given the qualified name of a frame and the name of a nested frame, returns the qualified name of the nested
@@ -363,10 +351,10 @@ class FrameHolder {
      * @return the frame selector
      */
     static FrameSelector newNestedFrame(FrameSelector parentFrame, final String relativeName) {
-<span class="pc bpc" id="L366" title="1 of 4 branches missed.">        if (relativeName == null || relativeName.isEmpty()) {</span>
-<span class="fc" id="L367">            return new FrameSelector();</span>
+<span class="pc bpc" id="L354" title="1 of 4 branches missed.">        if (relativeName == null || relativeName.isEmpty()) {</span>
+<span class="fc" id="L355">            return new FrameSelector();</span>
         }
-<span class="fc" id="L369">        return new FrameSelector(relativeName, parentFrame);</span>
+<span class="fc" id="L357">        return new FrameSelector(relativeName, parentFrame);</span>
     }
 
 }

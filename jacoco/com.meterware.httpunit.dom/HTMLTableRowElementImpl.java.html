@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLTableRowElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLTableRowElementImpl.java</span></div><h1>HTMLTableRowElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -27,14 +15,14 @@ import org.w3c.dom.html.HTMLTableRowElement;
 /**
  * The Class HTMLTableRowElementImpl.
  */
-<span class="fc" id="L30">public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement, AttributeNameAdjusted {</span>
+<span class="fc" id="L18">public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement, AttributeNameAdjusted {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L37">        return new HTMLTableRowElementImpl();</span>
+<span class="fc" id="L25">        return new HTMLTableRowElementImpl();</span>
     }
 
     /**
@@ -44,7 +32,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public String getAlign() {
-<span class="fc" id="L47">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L35">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
     /**
@@ -55,8 +43,8 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L58">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L46">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Gets the bg color.
@@ -65,7 +53,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public String getBgColor() {
-<span class="fc" id="L68">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
+<span class="fc" id="L56">        return getAttributeWithNoDefault(&quot;bgColor&quot;);</span>
     }
 
     /**
@@ -76,8 +64,8 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public void setBgColor(String bgColor) {
-<span class="fc" id="L79">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L67">        setAttribute(&quot;bgColor&quot;, bgColor);</span>
+<span class="fc" id="L68">    }</span>
 
     /**
      * Gets the ch.
@@ -86,7 +74,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public String getCh() {
-<span class="fc" id="L89">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
+<span class="fc" id="L77">        return getAttributeWithDefault(&quot;char&quot;, &quot;.&quot;);</span>
     }
 
     /**
@@ -97,8 +85,8 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public void setCh(String ch) {
-<span class="fc" id="L100">        setAttribute(&quot;char&quot;, ch);</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L88">        setAttribute(&quot;char&quot;, ch);</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Gets the ch off.
@@ -107,7 +95,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public String getChOff() {
-<span class="fc" id="L110">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
+<span class="fc" id="L98">        return getAttributeWithNoDefault(&quot;charoff&quot;);</span>
     }
 
     /**
@@ -118,8 +106,8 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public void setChOff(String chOff) {
-<span class="fc" id="L121">        setAttribute(&quot;charoff&quot;, chOff);</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L109">        setAttribute(&quot;charoff&quot;, chOff);</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Gets the v align.
@@ -128,7 +116,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public String getVAlign() {
-<span class="fc" id="L131">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
+<span class="fc" id="L119">        return getAttributeWithDefault(&quot;valign&quot;, &quot;middle&quot;);</span>
     }
 
     /**
@@ -139,8 +127,8 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public void setVAlign(String vAlign) {
-<span class="fc" id="L142">        setAttribute(&quot;valign&quot;, vAlign);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L130">        setAttribute(&quot;valign&quot;, vAlign);</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Delete cell.
@@ -154,7 +142,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
     @Override
     public void deleteCell(int index) throws DOMException {
         // To change body of implemented methods use File | Settings | File Templates.
-<span class="nc" id="L157">    }</span>
+<span class="nc" id="L145">    }</span>
 
     /**
      * Gets the cells.
@@ -163,7 +151,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public HTMLCollection getCells() {
-<span class="fc" id="L166">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { &quot;td&quot;, &quot;th &quot; }));</span>
+<span class="fc" id="L154">        return HTMLCollectionImpl.createHTMLCollectionImpl(getElementsByTagNames(new String[] { &quot;td&quot;, &quot;th &quot; }));</span>
     }
 
     /**
@@ -173,7 +161,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public int getRowIndex() {
-<span class="nc" id="L176">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L164">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -183,7 +171,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public int getSectionRowIndex() {
-<span class="nc" id="L186">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L174">        return 0; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     /**
@@ -199,18 +187,18 @@ import org.w3c.dom.html.HTMLTableRowElement;
      */
     @Override
     public HTMLElement insertCell(int index) throws DOMException {
-<span class="nc" id="L202">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
+<span class="nc" id="L190">        return null; // To change body of implemented methods use File | Settings | File Templates.</span>
     }
 
     @Override
     public String getJavaAttributeName(String attributeName) {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
-<span class="fc" id="L208">            return &quot;ch&quot;;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (attributeName.equals(&quot;char&quot;)) {</span>
+<span class="fc" id="L196">            return &quot;ch&quot;;</span>
         }
-<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
-<span class="fc" id="L211">            return &quot;choff&quot;;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (attributeName.equals(&quot;charoff&quot;)) {</span>
+<span class="fc" id="L199">            return &quot;choff&quot;;</span>
         }
-<span class="fc" id="L213">        return attributeName;</span>
+<span class="fc" id="L201">        return attributeName;</span>
     }
 
     /**
@@ -222,7 +210,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
     public void setRowIndex(int rowIndex) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L213">    }</span>
 
     /**
      * Sets the section row index.
@@ -233,7 +221,7 @@ import org.w3c.dom.html.HTMLTableRowElement;
     public void setSectionRowIndex(int sectionRowIndex) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L236">    }</span>
+<span class="nc" id="L224">    }</span>
 
     /**
      * Sets the cells.
@@ -244,6 +232,6 @@ import org.w3c.dom.html.HTMLTableRowElement;
     public void setCells(HTMLCollection cells) {
         // TODO Auto-generated method stub
 
-<span class="nc" id="L247">    }</span>
+<span class="nc" id="L235">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

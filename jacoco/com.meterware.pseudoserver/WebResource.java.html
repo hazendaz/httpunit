@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.pseudoserver</a> &gt; <span class="el_source">WebResource.java</span></div><h1>WebResource.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.pseudoserver;
 
@@ -58,10 +46,10 @@ public class WebResource {
     private boolean _sendCharacterSet;
 
     /** The content type. */
-<span class="fc" id="L61">    private String _contentType = DEFAULT_CONTENT_TYPE;</span>
+<span class="fc" id="L49">    private String _contentType = DEFAULT_CONTENT_TYPE;</span>
 
     /** The character set. */
-<span class="fc" id="L64">    private String _characterSet = StandardCharsets.ISO_8859_1.name();</span>
+<span class="fc" id="L52">    private String _characterSet = StandardCharsets.ISO_8859_1.name();</span>
 
     /** The has explicit content type header. */
     private boolean _hasExplicitContentTypeHeader;
@@ -70,7 +58,7 @@ public class WebResource {
     private boolean _hasExplicitContentLengthHeader;
 
     /** The headers. */
-<span class="fc" id="L73">    private List&lt;String&gt; _headers = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L61">    private List&lt;String&gt; _headers = new ArrayList&lt;&gt;();</span>
 
     /** The is chunked. */
     private boolean _isChunked;
@@ -82,8 +70,8 @@ public class WebResource {
      *            the contents
      */
     public WebResource(String contents) {
-<span class="fc" id="L85">        this(contents, DEFAULT_CONTENT_TYPE);</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L73">        this(contents, DEFAULT_CONTENT_TYPE);</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -94,8 +82,8 @@ public class WebResource {
      *            the content type
      */
     public WebResource(String contents, String contentType) {
-<span class="fc" id="L97">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L85">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
+<span class="fc" id="L86">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -106,8 +94,8 @@ public class WebResource {
      *            the content type
      */
     public WebResource(byte[] contents, String contentType) {
-<span class="fc" id="L109">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L97">        this(contents, contentType, HttpURLConnection.HTTP_OK);</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * Adds the header.
@@ -116,22 +104,22 @@ public class WebResource {
      *            the header
      */
     public void addHeader(String header) {
-<span class="fc" id="L119">        _headers.add(header);</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (header.toLowerCase(Locale.ENGLISH).startsWith(&quot;content-type&quot;)) {</span>
-<span class="fc" id="L121">            _hasExplicitContentTypeHeader = true;</span>
+<span class="fc" id="L107">        _headers.add(header);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (header.toLowerCase(Locale.ENGLISH).startsWith(&quot;content-type&quot;)) {</span>
+<span class="fc" id="L109">            _hasExplicitContentTypeHeader = true;</span>
         }
-<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (header.toLowerCase(Locale.ENGLISH).startsWith(&quot;content-length&quot;)) {</span>
-<span class="fc" id="L124">            _hasExplicitContentLengthHeader = true;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (header.toLowerCase(Locale.ENGLISH).startsWith(&quot;content-length&quot;)) {</span>
+<span class="fc" id="L112">            _hasExplicitContentLengthHeader = true;</span>
         }
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith(&quot;connection&quot;)</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">                &amp;&amp; header.trim().toLowerCase(Locale.ENGLISH).endsWith(&quot;close&quot;)) {</span>
-<span class="fc" id="L128">            _closesConnection = true;</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith(&quot;connection&quot;)</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                &amp;&amp; header.trim().toLowerCase(Locale.ENGLISH).endsWith(&quot;close&quot;)) {</span>
+<span class="fc" id="L116">            _closesConnection = true;</span>
         }
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith(&quot;transfer-encoding&quot;)</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                &amp;&amp; header.trim().toLowerCase(Locale.ENGLISH).endsWith(&quot;chunked&quot;)) {</span>
-<span class="fc" id="L132">            _isChunked = true;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (header.trim().toLowerCase(Locale.ENGLISH).startsWith(&quot;transfer-encoding&quot;)</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                &amp;&amp; header.trim().toLowerCase(Locale.ENGLISH).endsWith(&quot;chunked&quot;)) {</span>
+<span class="fc" id="L120">            _isChunked = true;</span>
         }
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Sets the character set.
@@ -140,8 +128,8 @@ public class WebResource {
      *            the new character set
      */
     public void setCharacterSet(String characterSet) {
-<span class="fc" id="L143">        _characterSet = characterSet;</span>
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L131">        _characterSet = characterSet;</span>
+<span class="fc" id="L132">    }</span>
 
     /**
      * Sets the send character set.
@@ -150,22 +138,22 @@ public class WebResource {
      *            the new send character set
      */
     public void setSendCharacterSet(boolean enabled) {
-<span class="fc" id="L153">        _sendCharacterSet = enabled;</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L141">        _sendCharacterSet = enabled;</span>
+<span class="fc" id="L142">    }</span>
 
     /**
      * Suppress automatic length header.
      */
     public void suppressAutomaticLengthHeader() {
-<span class="nc" id="L160">        _hasExplicitContentLengthHeader = true;</span>
-<span class="nc" id="L161">    }</span>
+<span class="nc" id="L148">        _hasExplicitContentLengthHeader = true;</span>
+<span class="nc" id="L149">    }</span>
 
     /**
      * Suppress automatic content type header.
      */
     public void suppressAutomaticContentTypeHeader() {
-<span class="fc" id="L167">        _hasExplicitContentTypeHeader = true;</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L155">        _hasExplicitContentTypeHeader = true;</span>
+<span class="fc" id="L156">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -176,8 +164,8 @@ public class WebResource {
      *            the response code
      */
     public WebResource(String contents, int responseCode) {
-<span class="fc" id="L179">        this(contents, DEFAULT_CONTENT_TYPE, responseCode);</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L167">        this(contents, DEFAULT_CONTENT_TYPE, responseCode);</span>
+<span class="fc" id="L168">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -189,11 +177,11 @@ public class WebResource {
      * @param responseCode
      *            the response code
      */
-<span class="fc" id="L192">    public WebResource(String contents, String contentType, int responseCode) {</span>
-<span class="fc" id="L193">        _string = contents;</span>
-<span class="fc" id="L194">        _contentType = contentType;</span>
-<span class="fc" id="L195">        _responseCode = responseCode;</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L180">    public WebResource(String contents, String contentType, int responseCode) {</span>
+<span class="fc" id="L181">        _string = contents;</span>
+<span class="fc" id="L182">        _contentType = contentType;</span>
+<span class="fc" id="L183">        _responseCode = responseCode;</span>
+<span class="fc" id="L184">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -205,11 +193,11 @@ public class WebResource {
      * @param responseCode
      *            the response code
      */
-<span class="fc" id="L208">    public WebResource(byte[] contents, String contentType, int responseCode) {</span>
-<span class="fc" id="L209">        _contents = contents;</span>
-<span class="fc" id="L210">        _contentType = contentType;</span>
-<span class="fc" id="L211">        _responseCode = responseCode;</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L196">    public WebResource(byte[] contents, String contentType, int responseCode) {</span>
+<span class="fc" id="L197">        _contents = contents;</span>
+<span class="fc" id="L198">        _contentType = contentType;</span>
+<span class="fc" id="L199">        _responseCode = responseCode;</span>
+<span class="fc" id="L200">    }</span>
 
     /**
      * Instantiates a new web resource.
@@ -221,12 +209,12 @@ public class WebResource {
      * @param responseCode
      *            the response code
      */
-<span class="fc" id="L224">    public WebResource(InputStream stream, String contentType, int responseCode) {</span>
-<span class="fc" id="L225">        _stream = stream;</span>
-<span class="fc" id="L226">        _contentType = contentType;</span>
-<span class="fc" id="L227">        _responseCode = responseCode;</span>
-<span class="fc" id="L228">        addHeader(&quot;Connection: close&quot;);</span>
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L212">    public WebResource(InputStream stream, String contentType, int responseCode) {</span>
+<span class="fc" id="L213">        _stream = stream;</span>
+<span class="fc" id="L214">        _contentType = contentType;</span>
+<span class="fc" id="L215">        _responseCode = responseCode;</span>
+<span class="fc" id="L216">        addHeader(&quot;Connection: close&quot;);</span>
+<span class="fc" id="L217">    }</span>
 
     /**
      * Gets the headers.
@@ -234,14 +222,14 @@ public class WebResource {
      * @return the headers
      */
     String[] getHeaders() {
-<span class="fc" id="L237">        final List&lt;String&gt; effectiveHeaders = new ArrayList&lt;&gt;(_headers);</span>
-<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (!_hasExplicitContentTypeHeader) {</span>
-<span class="fc" id="L239">            effectiveHeaders.add(getContentTypeHeader());</span>
+<span class="fc" id="L225">        final List&lt;String&gt; effectiveHeaders = new ArrayList&lt;&gt;(_headers);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if (!_hasExplicitContentTypeHeader) {</span>
+<span class="fc" id="L227">            effectiveHeaders.add(getContentTypeHeader());</span>
         }
-<span class="fc bfc" id="L241" title="All 6 branches covered.">        if (_stream == null &amp;&amp; !_hasExplicitContentLengthHeader &amp;&amp; !isChunked()) {</span>
-<span class="fc" id="L242">            effectiveHeaders.add(getContentLengthHeader());</span>
+<span class="fc bfc" id="L229" title="All 6 branches covered.">        if (_stream == null &amp;&amp; !_hasExplicitContentLengthHeader &amp;&amp; !isChunked()) {</span>
+<span class="fc" id="L230">            effectiveHeaders.add(getContentLengthHeader());</span>
         }
-<span class="fc" id="L244">        return effectiveHeaders.toArray(new String[0]);</span>
+<span class="fc" id="L232">        return effectiveHeaders.toArray(new String[0]);</span>
     }
 
     /**
@@ -250,7 +238,7 @@ public class WebResource {
      * @return true, if is chunked
      */
     private boolean isChunked() {
-<span class="fc" id="L253">        return _isChunked;</span>
+<span class="fc" id="L241">        return _isChunked;</span>
     }
 
     /**
@@ -259,7 +247,7 @@ public class WebResource {
      * @return true, if successful
      */
     boolean closesConnection() {
-<span class="fc" id="L262">        return _closesConnection;</span>
+<span class="fc" id="L250">        return _closesConnection;</span>
     }
 
     /**
@@ -272,17 +260,17 @@ public class WebResource {
      *             Signals that an I/O exception has occurred.
      */
     void writeTo(OutputStream outputStream) throws IOException {
-<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (_stream == null) {</span>
-<span class="fc" id="L276">            outputStream.write(getContentsAsBytes());</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        if (_stream == null) {</span>
+<span class="fc" id="L264">            outputStream.write(getContentsAsBytes());</span>
         } else {
-<span class="fc" id="L278">            byte[] buffer = new byte[8 * 1024];</span>
-<span class="fc" id="L279">            int count = 0;</span>
+<span class="fc" id="L266">            byte[] buffer = new byte[8 * 1024];</span>
+<span class="fc" id="L267">            int count = 0;</span>
             do {
-<span class="fc" id="L281">                outputStream.write(buffer, 0, count);</span>
-<span class="fc" id="L282">                count = _stream.read(buffer, 0, buffer.length);</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">            } while (count != -1);</span>
+<span class="fc" id="L269">                outputStream.write(buffer, 0, count);</span>
+<span class="fc" id="L270">                count = _stream.read(buffer, 0, buffer.length);</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">            } while (count != -1);</span>
         }
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * To string.
@@ -293,11 +281,11 @@ public class WebResource {
      * @return the string
      */
     static String toString(byte[] contentsAsBytes) {
-<span class="nc" id="L296">        StringBuilder sb = new StringBuilder();</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">        for (byte contentsAsByte : contentsAsBytes) {</span>
-<span class="nc" id="L298">            sb.append(Integer.toHexString(contentsAsByte)).append(' ');</span>
+<span class="nc" id="L284">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        for (byte contentsAsByte : contentsAsBytes) {</span>
+<span class="nc" id="L286">            sb.append(Integer.toHexString(contentsAsByte)).append(' ');</span>
         }
-<span class="nc" id="L300">        return sb.toString();</span>
+<span class="nc" id="L288">        return sb.toString();</span>
     }
 
     /**
@@ -306,13 +294,13 @@ public class WebResource {
      * @return the contents as bytes
      */
     private byte[] getContentsAsBytes() {
-<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (_contents != null) {</span>
-<span class="fc" id="L310">            return _contents;</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        if (_contents != null) {</span>
+<span class="fc" id="L298">            return _contents;</span>
         }
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">        if (_string != null) {</span>
-<span class="fc" id="L313">            return _string.getBytes(getCharacterSet());</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (_string != null) {</span>
+<span class="fc" id="L301">            return _string.getBytes(getCharacterSet());</span>
         }
-<span class="nc" id="L315">        throw new IllegalStateException(&quot;Cannot get bytes from stream&quot;);</span>
+<span class="nc" id="L303">        throw new IllegalStateException(&quot;Cannot get bytes from stream&quot;);</span>
     }
 
     /**
@@ -321,7 +309,7 @@ public class WebResource {
      * @return the content type header
      */
     private String getContentTypeHeader() {
-<span class="fc" id="L324">        return &quot;Content-Type: &quot; + _contentType + getCharacterSetParameter();</span>
+<span class="fc" id="L312">        return &quot;Content-Type: &quot; + _contentType + getCharacterSetParameter();</span>
     }
 
     /**
@@ -330,7 +318,7 @@ public class WebResource {
      * @return the content length header
      */
     private String getContentLengthHeader() {
-<span class="fc" id="L333">        return &quot;Content-Length: &quot; + getContentsAsBytes().length;</span>
+<span class="fc" id="L321">        return &quot;Content-Length: &quot; + getContentsAsBytes().length;</span>
     }
 
     /**
@@ -339,7 +327,7 @@ public class WebResource {
      * @return the character set
      */
     Charset getCharacterSet() {
-<span class="fc" id="L342">        return Charset.forName(HttpUnitUtils.stripQuotes(_characterSet));</span>
+<span class="fc" id="L330">        return Charset.forName(HttpUnitUtils.stripQuotes(_characterSet));</span>
     }
 
     /**
@@ -348,10 +336,10 @@ public class WebResource {
      * @return the character set parameter
      */
     String getCharacterSetParameter() {
-<span class="fc bfc" id="L351" title="All 2 branches covered.">        if (!_sendCharacterSet) {</span>
-<span class="fc" id="L352">            return &quot;&quot;;</span>
+<span class="fc bfc" id="L339" title="All 2 branches covered.">        if (!_sendCharacterSet) {</span>
+<span class="fc" id="L340">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L354">        return &quot;; charset=&quot; + _characterSet;</span>
+<span class="fc" id="L342">        return &quot;; charset=&quot; + _characterSet;</span>
     }
 
     /**
@@ -360,13 +348,13 @@ public class WebResource {
      * @return the response code
      */
     int getResponseCode() {
-<span class="fc" id="L363">        return _responseCode;</span>
+<span class="fc" id="L351">        return _responseCode;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L368">        return &quot;WebResource [code=&quot; + _responseCode + &quot;; type = &quot; + _contentType + &quot;; charset = &quot; + _characterSet</span>
-<span class="nc" id="L369">                + &quot;]\n&quot; + getContentsAsString();</span>
+<span class="nc" id="L356">        return &quot;WebResource [code=&quot; + _responseCode + &quot;; type = &quot; + _contentType + &quot;; charset = &quot; + _characterSet</span>
+<span class="nc" id="L357">                + &quot;]\n&quot; + getContentsAsString();</span>
     }
 
     /**
@@ -375,10 +363,10 @@ public class WebResource {
      * @return the contents as string
      */
     private String getContentsAsString() {
-<span class="nc bnc" id="L378" title="All 2 branches missed.">        if (_string != null) {</span>
-<span class="nc" id="L379">            return _string;</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">        if (_string != null) {</span>
+<span class="nc" id="L367">            return _string;</span>
         }
-<span class="nc" id="L381">        return &quot;&lt;&lt; hex bytes &gt;&gt;&quot;;</span>
+<span class="nc" id="L369">        return &quot;&lt;&lt; hex bytes &gt;&gt;&quot;;</span>
     }
 
 }

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecursiveRedirectionException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">RecursiveRedirectionException.java</span></div><h1>RecursiveRedirectionException.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -43,9 +31,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public RecursiveRedirectionException(URL url, Throwable cause) {
-<span class="nc" id="L46">        super(cause);</span>
-<span class="nc" id="L47">        this.url = url;</span>
-<span class="nc" id="L48">    }</span>
+<span class="nc" id="L34">        super(cause);</span>
+<span class="nc" id="L35">        this.url = url;</span>
+<span class="nc" id="L36">    }</span>
 
     /**
      * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL and detail message.
@@ -57,9 +45,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            the detail message. The detail message is saved for later retrieval by {@link #getMessage()}
      */
     public RecursiveRedirectionException(URL url, String message) {
-<span class="fc" id="L60">        super(message);</span>
-<span class="fc" id="L61">        this.url = url;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L48">        super(message);</span>
+<span class="fc" id="L49">        this.url = url;</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Create a new &lt;code&gt;RecursiveRedirectionException&lt;/code&gt; with the specified URL, detail message and cause.
@@ -74,9 +62,9 @@ public class RecursiveRedirectionException extends RuntimeException {
      *            permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public RecursiveRedirectionException(URL url, String message, Throwable cause) {
-<span class="nc" id="L77">        super(message, cause);</span>
-<span class="nc" id="L78">        this.url = url;</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L65">        super(message, cause);</span>
+<span class="nc" id="L66">        this.url = url;</span>
+<span class="nc" id="L67">    }</span>
 
     /**
      * Returns the URL that caused this exception to be thrown.
@@ -84,7 +72,7 @@ public class RecursiveRedirectionException extends RuntimeException {
      * @return the &lt;code&gt;URL&lt;/code&gt; that gave rise to this Exception
      */
     public URL getURL() {
-<span class="nc" id="L87">        return url;</span>
+<span class="nc" id="L75">        return url;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

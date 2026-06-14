@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SubmitButton.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">SubmitButton.java</span></div><h1>SubmitButton.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -36,7 +24,7 @@ public class SubmitButton extends Button {
 
     @Override
     public String getType() {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        return isImageButton() ? IMAGE_BUTTON_TYPE : SUBMIT_BUTTON_TYPE;</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        return isImageButton() ? IMAGE_BUTTON_TYPE : SUBMIT_BUTTON_TYPE;</span>
     }
 
     /**
@@ -45,7 +33,7 @@ public class SubmitButton extends Button {
      * @return true, if is image button
      */
     public boolean isImageButton() {
-<span class="fc" id="L48">        return _isImageButton;</span>
+<span class="fc" id="L36">        return _isImageButton;</span>
     }
 
     /**
@@ -63,11 +51,11 @@ public class SubmitButton extends Button {
      *             the SAX exception
      */
     public void click(int x, int y) throws IOException, SAXException {
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (!isImageButton()) {</span>
-<span class="nc" id="L67">            throw new IllegalStateException(&quot;May only specify positions for an image button&quot;);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (!isImageButton()) {</span>
+<span class="nc" id="L55">            throw new IllegalStateException(&quot;May only specify positions for an image button&quot;);</span>
         }
-<span class="fc" id="L69">        doOnClickSequence(x, y);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L57">        doOnClickSequence(x, y);</span>
+<span class="fc" id="L58">    }</span>
 
     // --------------------------------- Button methods ----------------------------------------------
 
@@ -81,24 +69,24 @@ public class SubmitButton extends Button {
      */
     @Override
     protected void doButtonAction(int x, int y) throws IOException, SAXException {
-<span class="fc" id="L84">        getForm().doFormSubmit(this, x, y);</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L72">        getForm().doFormSubmit(this, x, y);</span>
+<span class="fc" id="L73">    }</span>
 
     // ------------------------------------ Object methods ----------------------------------------
 
     @Override
     public String toString() {
-<span class="nc" id="L91">        return &quot;Submit with &quot; + getName() + &quot;=&quot; + getValue();</span>
+<span class="nc" id="L79">        return &quot;Submit with &quot; + getName() + &quot;=&quot; + getValue();</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L96">        return getName().hashCode() + getValue().hashCode();</span>
+<span class="nc" id="L84">        return getName().hashCode() + getValue().hashCode();</span>
     }
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L101" title="1 of 4 branches missed.">        return getClass().equals(o.getClass()) &amp;&amp; equals((SubmitButton) o);</span>
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">        return getClass().equals(o.getClass()) &amp;&amp; equals((SubmitButton) o);</span>
     }
 
     // ------------------------------------------ package members ----------------------------------
@@ -112,9 +100,9 @@ public class SubmitButton extends Button {
      *            the control
      */
     SubmitButton(WebForm form, HTMLControl control) {
-<span class="fc" id="L115">        super(form, control);</span>
-<span class="fc" id="L116">        _isImageButton = control.getType().equalsIgnoreCase(IMAGE_BUTTON_TYPE);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L103">        super(form, control);</span>
+<span class="fc" id="L104">        _isImageButton = control.getType().equalsIgnoreCase(IMAGE_BUTTON_TYPE);</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Instantiates a new submit button.
@@ -123,9 +111,9 @@ public class SubmitButton extends Button {
      *            the form
      */
     SubmitButton(WebForm form) {
-<span class="fc" id="L126">        super(form);</span>
-<span class="fc" id="L127">        _isImageButton = false;</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L114">        super(form);</span>
+<span class="fc" id="L115">        _isImageButton = false;</span>
+<span class="fc" id="L116">    }</span>
 
     /**
      * Creates the fake submit button.
@@ -136,7 +124,7 @@ public class SubmitButton extends Button {
      * @return the submit button
      */
     static SubmitButton createFakeSubmitButton(WebForm form) {
-<span class="fc" id="L139">        return new SubmitButton(form, /* fake */ true);</span>
+<span class="fc" id="L127">        return new SubmitButton(form, /* fake */ true);</span>
     }
 
     /**
@@ -148,9 +136,9 @@ public class SubmitButton extends Button {
      *            the fake
      */
     private SubmitButton(WebForm form, boolean fake) {
-<span class="fc" id="L151">        this(form);</span>
-<span class="fc" id="L152">        _fake = fake;</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L139">        this(form);</span>
+<span class="fc" id="L140">        _fake = fake;</span>
+<span class="fc" id="L141">    }</span>
 
     /**
      * getter for the fake flag Returns true for synthetic submit buttons, created by HttpUnit in forms that contain no
@@ -159,7 +147,7 @@ public class SubmitButton extends Button {
      * @return - whether this button is a faked button inserted by httpunit
      */
     public boolean isFake() {
-<span class="fc" id="L162">        return _fake;</span>
+<span class="fc" id="L150">        return _fake;</span>
     }
 
     /**
@@ -169,8 +157,8 @@ public class SubmitButton extends Button {
      *            the new pressed
      */
     void setPressed(boolean pressed) {
-<span class="fc" id="L172">        _pressed = pressed;</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L160">        _pressed = pressed;</span>
+<span class="fc" id="L161">    }</span>
 
     /**
      * Sets the location.
@@ -181,9 +169,9 @@ public class SubmitButton extends Button {
      *            the y
      */
     void setLocation(int x, int y) {
-<span class="fc" id="L184">        _x = x;</span>
-<span class="fc" id="L185">        _y = y;</span>
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L172">        _x = x;</span>
+<span class="fc" id="L173">        _y = y;</span>
+<span class="fc" id="L174">    }</span>
 
     // --------------------------------- FormControl methods
     // ----------------------------------------------------------------
@@ -194,11 +182,11 @@ public class SubmitButton extends Button {
      **/
     @Override
     protected String[] getValues() {
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">        return isDisabled() || !_pressed ? NO_VALUE : toArray(getValue());</span>
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">        return isDisabled() || !_pressed ? NO_VALUE : toArray(getValue());</span>
     }
 
     /** should we allow unnamed Image Buttons?. */
-<span class="fc" id="L201">    private static boolean allowUnnamedImageButton = false;</span>
+<span class="fc" id="L189">    private static boolean allowUnnamedImageButton = false;</span>
 
     /**
      * Checks if is allow unnamed image button.
@@ -206,7 +194,7 @@ public class SubmitButton extends Button {
      * @return the allowUnnamedImageButton
      */
     public static boolean isAllowUnnamedImageButton() {
-<span class="fc" id="L209">        return allowUnnamedImageButton;</span>
+<span class="fc" id="L197">        return allowUnnamedImageButton;</span>
     }
 
     /**
@@ -216,8 +204,8 @@ public class SubmitButton extends Button {
      *            the allowUnnamedImageButton to set
      */
     public static void setAllowUnnamedImageButton(boolean allowUnnamedImageButton) {
-<span class="fc" id="L219">        SubmitButton.allowUnnamedImageButton = allowUnnamedImageButton;</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L207">        SubmitButton.allowUnnamedImageButton = allowUnnamedImageButton;</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * return whether this is a validImageButton.
@@ -225,12 +213,12 @@ public class SubmitButton extends Button {
      * @return true if it is an image Button
      */
     public boolean isValidImageButton() {
-<span class="fc" id="L228">        String buttonName = getName();</span>
-<span class="fc" id="L229">        boolean valid = this.isImageButton();</span>
-<span class="fc bfc" id="L230" title="All 2 branches covered.">        if (!allowUnnamedImageButton) {</span>
-<span class="pc bpc" id="L231" title="1 of 6 branches missed.">            valid = valid &amp;&amp; buttonName != null &amp;&amp; buttonName.length() &gt; 0;</span>
+<span class="fc" id="L216">        String buttonName = getName();</span>
+<span class="fc" id="L217">        boolean valid = this.isImageButton();</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (!allowUnnamedImageButton) {</span>
+<span class="pc bpc" id="L219" title="1 of 6 branches missed.">            valid = valid &amp;&amp; buttonName != null &amp;&amp; buttonName.length() &gt; 0;</span>
         }
-<span class="fc" id="L233">        return valid;</span>
+<span class="fc" id="L221">        return valid;</span>
     }
 
     /**
@@ -243,12 +231,12 @@ public class SubmitButton extends Button {
      */
     public String positionParameterName(String direction) {
         // [ 1443333 ] Allow unnamed Image input elments to submit x,y values
-<span class="fc" id="L246">        String buttonName = getName();</span>
-<span class="fc" id="L247">        String buttonPrefix = &quot;&quot;;</span>
-<span class="pc bpc" id="L248" title="1 of 4 branches missed.">        if (buttonName != null &amp;&amp; buttonName.length() &gt; 0) {</span>
-<span class="fc" id="L249">            buttonPrefix = buttonName + &quot;.&quot;;</span>
+<span class="fc" id="L234">        String buttonName = getName();</span>
+<span class="fc" id="L235">        String buttonPrefix = &quot;&quot;;</span>
+<span class="pc bpc" id="L236" title="1 of 4 branches missed.">        if (buttonName != null &amp;&amp; buttonName.length() &gt; 0) {</span>
+<span class="fc" id="L237">            buttonPrefix = buttonName + &quot;.&quot;;</span>
         }
-<span class="fc" id="L251">        return buttonPrefix + direction;</span>
+<span class="fc" id="L239">        return buttonPrefix + direction;</span>
     }
 
     /**
@@ -264,22 +252,22 @@ public class SubmitButton extends Button {
      */
     @Override
     protected void addValues(ParameterProcessor processor, String characterSet) throws IOException {
-<span class="fc bfc" id="L267" title="All 4 branches covered.">        if (_pressed &amp;&amp; !isDisabled()) {</span>
-<span class="fc" id="L268">            String buttonName = getName();</span>
-<span class="pc bpc" id="L269" title="1 of 6 branches missed.">            if (buttonName != null &amp;&amp; buttonName.length() &gt; 0 &amp;&amp; getValue().length() &gt; 0) {</span>
-<span class="fc" id="L270">                processor.addParameter(getName(), getValue(), characterSet);</span>
+<span class="fc bfc" id="L255" title="All 4 branches covered.">        if (_pressed &amp;&amp; !isDisabled()) {</span>
+<span class="fc" id="L256">            String buttonName = getName();</span>
+<span class="pc bpc" id="L257" title="1 of 6 branches missed.">            if (buttonName != null &amp;&amp; buttonName.length() &gt; 0 &amp;&amp; getValue().length() &gt; 0) {</span>
+<span class="fc" id="L258">                processor.addParameter(getName(), getValue(), characterSet);</span>
             }
-<span class="fc bfc" id="L272" title="All 2 branches covered.">            if (isValidImageButton()) {</span>
-<span class="fc" id="L273">                processor.addParameter(positionParameterName(&quot;x&quot;), Integer.toString(_x), characterSet);</span>
-<span class="fc" id="L274">                processor.addParameter(positionParameterName(&quot;y&quot;), Integer.toString(_y), characterSet);</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if (isValidImageButton()) {</span>
+<span class="fc" id="L261">                processor.addParameter(positionParameterName(&quot;x&quot;), Integer.toString(_x), characterSet);</span>
+<span class="fc" id="L262">                processor.addParameter(positionParameterName(&quot;y&quot;), Integer.toString(_y), characterSet);</span>
             }
         } // if
-<span class="fc" id="L277">    }</span>
+<span class="fc" id="L265">    }</span>
 
     // ------------------------------------------ private members ----------------------------------
 
     /** The value. */
-<span class="fc" id="L282">    private String[] _value = new String[1];</span>
+<span class="fc" id="L270">    private String[] _value = new String[1];</span>
 
     /** The is image button. */
     private final boolean _isImageButton;
@@ -302,8 +290,8 @@ public class SubmitButton extends Button {
      * @return the string[]
      */
     private String[] toArray(String value) {
-<span class="fc" id="L305">        _value[0] = value;</span>
-<span class="fc" id="L306">        return _value;</span>
+<span class="fc" id="L293">        _value[0] = value;</span>
+<span class="fc" id="L294">        return _value;</span>
     }
 
     /**
@@ -315,12 +303,12 @@ public class SubmitButton extends Button {
      * @return true, if successful
      */
     private boolean equals(SubmitButton button) {
-<span class="fc bfc" id="L318" title="All 6 branches covered.">        return getName().equals(button.getName()) &amp;&amp; (getName().isEmpty() || getValue().equals(button.getValue()));</span>
+<span class="fc bfc" id="L306" title="All 6 branches covered.">        return getName().equals(button.getName()) &amp;&amp; (getName().isEmpty() || getValue().equals(button.getValue()));</span>
     }
 
     @Override
     public void throwDisabledException() {
-<span class="fc" id="L323">        throw new DisabledSubmitButtonException(this);</span>
+<span class="fc" id="L311">        throw new DisabledSubmitButtonException(this);</span>
     }
 
     /**
@@ -337,13 +325,13 @@ public class SubmitButton extends Button {
          * @param button
          *            the button
          */
-<span class="fc" id="L340">        DisabledSubmitButtonException(SubmitButton button) {</span>
-<span class="fc" id="L341">            super(button);</span>
-<span class="fc" id="L342">        }</span>
+<span class="fc" id="L328">        DisabledSubmitButtonException(SubmitButton button) {</span>
+<span class="fc" id="L329">            super(button);</span>
+<span class="fc" id="L330">        }</span>
 
         @Override
         public String getMessage() {
-<span class="fc" id="L346">            return &quot;The specified button (name='&quot; + _name + &quot;' value='&quot; + _value</span>
+<span class="fc" id="L334">            return &quot;The specified button (name='&quot; + _name + &quot;' value='&quot; + _value</span>
                     + &quot;' is disabled and may not be used to submit this form.&quot;;
         }
 

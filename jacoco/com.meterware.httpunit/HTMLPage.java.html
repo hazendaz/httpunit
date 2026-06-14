@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">HTMLPage.java</span></div><h1>HTMLPage.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -59,8 +47,8 @@ public class HTMLPage extends ParsedHTML {
      *            the character set
      */
     HTMLPage(WebResponse response, FrameSelector frame, URL baseURL, String baseTarget, String characterSet) {
-<span class="fc" id="L62">        super(response, frame, baseURL, baseTarget, null, characterSet);</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L50">        super(response, frame, baseURL, baseTarget, null, characterSet);</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * Returns the title of the page.
@@ -71,11 +59,11 @@ public class HTMLPage extends ParsedHTML {
      *             the SAX exception
      */
     public String getTitle() throws SAXException {
-<span class="fc" id="L74">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;title&quot;);</span>
-<span class="pc bpc" id="L75" title="2 of 4 branches missed.">        if (nl.getLength() == 0 || !nl.item(0).hasChildNodes()) {</span>
-<span class="nc" id="L76">            return &quot;&quot;;</span>
+<span class="fc" id="L62">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;title&quot;);</span>
+<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        if (nl.getLength() == 0 || !nl.item(0).hasChildNodes()) {</span>
+<span class="nc" id="L64">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L78">        return nl.item(0).getFirstChild().getNodeValue();</span>
+<span class="fc" id="L66">        return nl.item(0).getFirstChild().getNodeValue();</span>
     }
 
     /**
@@ -87,8 +75,8 @@ public class HTMLPage extends ParsedHTML {
      *             the SAX exception
      */
     public String getOnLoadEvent() throws SAXException {
-<span class="fc" id="L90">        Element mainElement = getMainElement((Document) getOriginalDOM());</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        return mainElement == null ? &quot;&quot; : mainElement.getAttribute(&quot;onload&quot;);</span>
+<span class="fc" id="L78">        Element mainElement = getMainElement((Document) getOriginalDOM());</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        return mainElement == null ? &quot;&quot; : mainElement.getAttribute(&quot;onload&quot;);</span>
     }
 
     /**
@@ -100,11 +88,11 @@ public class HTMLPage extends ParsedHTML {
      * @return the main element
      */
     private Element getMainElement(Document document) {
-<span class="fc" id="L103">        NodeList nl = document.getElementsByTagName(&quot;frameset&quot;);</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (nl.getLength() == 0) {</span>
-<span class="fc" id="L105">            nl = document.getElementsByTagName(&quot;body&quot;);</span>
+<span class="fc" id="L91">        NodeList nl = document.getElementsByTagName(&quot;frameset&quot;);</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (nl.getLength() == 0) {</span>
+<span class="fc" id="L93">            nl = document.getElementsByTagName(&quot;body&quot;);</span>
         }
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        return nl.getLength() == 0 ? null : (Element) nl.item(0);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        return nl.getLength() == 0 ? null : (Element) nl.item(0);</span>
     }
 
     /**
@@ -117,18 +105,18 @@ public class HTMLPage extends ParsedHTML {
      *             the SAX exception
      */
     public String getExternalStyleSheet() throws SAXException {
-<span class="fc" id="L120">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;link&quot;);</span>
-<span class="fc" id="L121">        int length = nl.getLength();</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (length == 0) {</span>
-<span class="nc" id="L123">            return &quot;&quot;;</span>
+<span class="fc" id="L108">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;link&quot;);</span>
+<span class="fc" id="L109">        int length = nl.getLength();</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if (length == 0) {</span>
+<span class="nc" id="L111">            return &quot;&quot;;</span>
         }
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        for (int i = 0; i &lt; length; i++) {</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">            if (&quot;stylesheet&quot;.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), &quot;rel&quot;))) {</span>
-<span class="fc" id="L128">                return NodeUtils.getNodeAttribute(nl.item(i), &quot;href&quot;);</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (&quot;stylesheet&quot;.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), &quot;rel&quot;))) {</span>
+<span class="fc" id="L116">                return NodeUtils.getNodeAttribute(nl.item(i), &quot;href&quot;);</span>
             }
         }
-<span class="nc" id="L131">        return &quot;&quot;;</span>
+<span class="nc" id="L119">        return &quot;&quot;;</span>
     }
 
     /**
@@ -145,16 +133,16 @@ public class HTMLPage extends ParsedHTML {
      * @return the meta tag content
      */
     public String[] getMetaTagContent(String attribute, String attributeValue) {
-<span class="fc" id="L148">        List&lt;String&gt; matches = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L149">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;meta&quot;);</span>
-<span class="fc" id="L150">        int length = nl.getLength();</span>
+<span class="fc" id="L136">        List&lt;String&gt; matches = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L137">        NodeList nl = ((Document) getOriginalDOM()).getElementsByTagName(&quot;meta&quot;);</span>
+<span class="fc" id="L138">        int length = nl.getLength();</span>
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (attributeValue.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), attribute))) {</span>
-<span class="fc" id="L154">                matches.add(NodeUtils.getNodeAttribute(nl.item(i), &quot;content&quot;));</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (attributeValue.equalsIgnoreCase(NodeUtils.getNodeAttribute(nl.item(i), attribute))) {</span>
+<span class="fc" id="L142">                matches.add(NodeUtils.getNodeAttribute(nl.item(i), &quot;content&quot;));</span>
             }
         }
-<span class="fc" id="L157">        return matches.toArray(new String[0]);</span>
+<span class="fc" id="L145">        return matches.toArray(new String[0]);</span>
     }
 
     /**
@@ -171,17 +159,17 @@ public class HTMLPage extends ParsedHTML {
          */
         @Override
         public Object get(String propertyName) {
-<span class="fc" id="L174">            NamedDelegate delegate = getNamedItem(getForms(), propertyName);</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">            if (delegate != null) {</span>
-<span class="fc" id="L176">                return delegate;</span>
+<span class="fc" id="L162">            NamedDelegate delegate = getNamedItem(getForms(), propertyName);</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (delegate != null) {</span>
+<span class="fc" id="L164">                return delegate;</span>
             }
 
-<span class="fc" id="L179">            delegate = getNamedItem(getLinks(), propertyName);</span>
-<span class="fc bfc" id="L180" title="All 2 branches covered.">            if (delegate != null) {</span>
-<span class="fc" id="L181">                return delegate;</span>
+<span class="fc" id="L167">            delegate = getNamedItem(getLinks(), propertyName);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (delegate != null) {</span>
+<span class="fc" id="L169">                return delegate;</span>
             }
 
-<span class="fc" id="L184">            return getNamedItem(getImages(), propertyName);</span>
+<span class="fc" id="L172">            return getNamedItem(getImages(), propertyName);</span>
         }
 
         /**
@@ -195,15 +183,15 @@ public class HTMLPage extends ParsedHTML {
          * @return the named item
          */
         private NamedDelegate getNamedItem(ScriptingHandler[] items, String name) {
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            if (name == null) {</span>
-<span class="nc" id="L199">                return null;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            if (name == null) {</span>
+<span class="nc" id="L187">                return null;</span>
             }
-<span class="fc bfc" id="L201" title="All 2 branches covered.">            for (ScriptingHandler item : items) {</span>
-<span class="pc bpc" id="L202" title="1 of 4 branches missed.">                if (item instanceof NamedDelegate &amp;&amp; name.equals(((NamedDelegate) item).getName())) {</span>
-<span class="fc" id="L203">                    return (NamedDelegate) item;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">            for (ScriptingHandler item : items) {</span>
+<span class="pc bpc" id="L190" title="1 of 4 branches missed.">                if (item instanceof NamedDelegate &amp;&amp; name.equals(((NamedDelegate) item).getName())) {</span>
+<span class="fc" id="L191">                    return (NamedDelegate) item;</span>
                 }
             }
-<span class="fc" id="L206">            return null;</span>
+<span class="fc" id="L194">            return null;</span>
         }
 
         /**
@@ -212,12 +200,12 @@ public class HTMLPage extends ParsedHTML {
          **/
         @Override
         public void set(String propertyName, Object value) {
-<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (propertyName.equalsIgnoreCase(&quot;location&quot;)) {</span>
-<span class="nc" id="L216">                getResponse().getScriptableObject().set(&quot;location&quot;, value);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">            if (propertyName.equalsIgnoreCase(&quot;location&quot;)) {</span>
+<span class="nc" id="L204">                getResponse().getScriptableObject().set(&quot;location&quot;, value);</span>
             } else {
-<span class="nc" id="L218">                super.set(propertyName, value);</span>
+<span class="nc" id="L206">                super.set(propertyName, value);</span>
             }
-<span class="nc" id="L220">        }</span>
+<span class="nc" id="L208">        }</span>
 
         /**
          * Gets the parent.
@@ -225,7 +213,7 @@ public class HTMLPage extends ParsedHTML {
          * @return the parent
          */
         public WebResponse.Scriptable getParent() {
-<span class="nc" id="L228">            return getResponse().getScriptableObject();</span>
+<span class="nc" id="L216">            return getResponse().getScriptableObject();</span>
         }
 
         /**
@@ -237,7 +225,7 @@ public class HTMLPage extends ParsedHTML {
          *             the SAX exception
          */
         public String getTitle() throws SAXException {
-<span class="fc" id="L240">            return HTMLPage.this.getTitle();</span>
+<span class="fc" id="L228">            return HTMLPage.this.getTitle();</span>
         }
 
         /**
@@ -246,12 +234,12 @@ public class HTMLPage extends ParsedHTML {
          * @return the links
          */
         public ScriptingHandler[] getLinks() {
-<span class="fc" id="L249">            WebLink[] links = HTMLPage.this.getLinks();</span>
-<span class="fc" id="L250">            ScriptingHandler[] result = new WebLink.Scriptable[links.length];</span>
-<span class="fc bfc" id="L251" title="All 2 branches covered.">            for (int i = 0; i &lt; links.length; i++) {</span>
-<span class="fc" id="L252">                result[i] = links[i].getScriptingHandler();</span>
+<span class="fc" id="L237">            WebLink[] links = HTMLPage.this.getLinks();</span>
+<span class="fc" id="L238">            ScriptingHandler[] result = new WebLink.Scriptable[links.length];</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            for (int i = 0; i &lt; links.length; i++) {</span>
+<span class="fc" id="L240">                result[i] = links[i].getScriptingHandler();</span>
             }
-<span class="fc" id="L254">            return result;</span>
+<span class="fc" id="L242">            return result;</span>
         }
 
         /**
@@ -260,12 +248,12 @@ public class HTMLPage extends ParsedHTML {
          * @return the forms
          */
         public ScriptingHandler[] getForms() {
-<span class="fc" id="L263">            WebForm[] forms = HTMLPage.this.getForms();</span>
-<span class="fc" id="L264">            ScriptingHandler[] result = new ScriptingHandler[forms.length];</span>
-<span class="fc bfc" id="L265" title="All 2 branches covered.">            for (int i = 0; i &lt; forms.length; i++) {</span>
-<span class="fc" id="L266">                result[i] = forms[i].getScriptingHandler();</span>
+<span class="fc" id="L251">            WebForm[] forms = HTMLPage.this.getForms();</span>
+<span class="fc" id="L252">            ScriptingHandler[] result = new ScriptingHandler[forms.length];</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            for (int i = 0; i &lt; forms.length; i++) {</span>
+<span class="fc" id="L254">                result[i] = forms[i].getScriptingHandler();</span>
             }
-<span class="fc" id="L268">            return result;</span>
+<span class="fc" id="L256">            return result;</span>
         }
 
         /**
@@ -274,19 +262,19 @@ public class HTMLPage extends ParsedHTML {
          * @return the images
          */
         public ScriptingHandler[] getImages() {
-<span class="fc" id="L277">            WebImage[] images = HTMLPage.this.getImages();</span>
-<span class="fc" id="L278">            ScriptingHandler[] result = new WebImage.Scriptable[images.length];</span>
-<span class="fc bfc" id="L279" title="All 2 branches covered.">            for (int i = 0; i &lt; images.length; i++) {</span>
-<span class="fc" id="L280">                result[i] = images[i].getScriptingHandler();</span>
+<span class="fc" id="L265">            WebImage[] images = HTMLPage.this.getImages();</span>
+<span class="fc" id="L266">            ScriptingHandler[] result = new WebImage.Scriptable[images.length];</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            for (int i = 0; i &lt; images.length; i++) {</span>
+<span class="fc" id="L268">                result[i] = images[i].getScriptingHandler();</span>
             }
-<span class="fc" id="L282">            return result;</span>
+<span class="fc" id="L270">            return result;</span>
         }
 
         /**
          * Instantiates a new scriptable.
          */
-<span class="fc" id="L288">        Scriptable() {</span>
-<span class="fc" id="L289">        }</span>
+<span class="fc" id="L276">        Scriptable() {</span>
+<span class="fc" id="L277">        }</span>
 
         /**
          * Replace text.
@@ -299,7 +287,7 @@ public class HTMLPage extends ParsedHTML {
          * @return true, if successful
          */
         public boolean replaceText(String text, String contentType) {
-<span class="fc" id="L302">            return getResponse().replaceText(text, contentType);</span>
+<span class="fc" id="L290">            return getResponse().replaceText(text, contentType);</span>
         }
 
         /**
@@ -311,8 +299,8 @@ public class HTMLPage extends ParsedHTML {
          *            the value
          */
         public void setCookie(String name, String value) {
-<span class="fc" id="L314">            getResponse().setCookie(name, value);</span>
-<span class="fc" id="L315">        }</span>
+<span class="fc" id="L302">            getResponse().setCookie(name, value);</span>
+<span class="fc" id="L303">        }</span>
 
         /**
          * Gets the cookie.
@@ -320,7 +308,7 @@ public class HTMLPage extends ParsedHTML {
          * @return the cookie
          */
         public String getCookie() {
-<span class="fc" id="L323">            return emptyIfNull(getResponse().getCookieHeader());</span>
+<span class="fc" id="L311">            return emptyIfNull(getResponse().getCookieHeader());</span>
         }
 
         /**
@@ -332,7 +320,7 @@ public class HTMLPage extends ParsedHTML {
          * @return the string
          */
         private String emptyIfNull(String string) {
-<span class="fc bfc" id="L335" title="All 2 branches covered.">            return string == null ? &quot;&quot; : string;</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">            return string == null ? &quot;&quot; : string;</span>
         }
 
         /**
@@ -344,8 +332,8 @@ public class HTMLPage extends ParsedHTML {
          * @return the element with ID
          */
         public ScriptableDelegate getElementWithID(String id) {
-<span class="fc" id="L347">            final HTMLElement elementWithID = HTMLPage.this.getElementWithID(id);</span>
-<span class="fc bfc" id="L348" title="All 2 branches covered.">            return elementWithID == null ? null : (ScriptableDelegate) elementWithID.getScriptingHandler();</span>
+<span class="fc" id="L335">            final HTMLElement elementWithID = HTMLPage.this.getElementWithID(id);</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">            return elementWithID == null ? null : (ScriptableDelegate) elementWithID.getScriptingHandler();</span>
         }
 
         /**
@@ -357,7 +345,7 @@ public class HTMLPage extends ParsedHTML {
          * @return the elements by name
          */
         public ScriptableDelegate[] getElementsByName(String name) {
-<span class="fc" id="L360">            return getDelegates(HTMLPage.this.getElementsWithName(name));</span>
+<span class="fc" id="L348">            return getDelegates(HTMLPage.this.getElementsWithName(name));</span>
         }
 
         /**
@@ -369,7 +357,7 @@ public class HTMLPage extends ParsedHTML {
          * @return the elements by tag name
          */
         public ScriptableDelegate[] getElementsByTagName(String name) {
-<span class="fc" id="L372">            return getDelegates(HTMLPage.this.getElementsByTagName(HTMLPage.this.getRootNode(), name));</span>
+<span class="fc" id="L360">            return getDelegates(HTMLPage.this.getElementsByTagName(HTMLPage.this.getRootNode(), name));</span>
         }
     }
 
@@ -379,11 +367,11 @@ public class HTMLPage extends ParsedHTML {
      * @return the scriptable object
      */
     Scriptable getScriptableObject() {
-<span class="fc bfc" id="L382" title="All 2 branches covered.">        if (_scriptable == null) {</span>
-<span class="fc" id="L383">            _scriptable = new Scriptable();</span>
-<span class="fc" id="L384">            _scriptable.setScriptEngine(getResponse().getScriptableObject().getScriptEngine(_scriptable));</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (_scriptable == null) {</span>
+<span class="fc" id="L371">            _scriptable = new Scriptable();</span>
+<span class="fc" id="L372">            _scriptable.setScriptEngine(getResponse().getScriptableObject().getScriptEngine(_scriptable));</span>
         }
-<span class="fc" id="L386">        return _scriptable;</span>
+<span class="fc" id="L374">        return _scriptable;</span>
     }
 
     /**
@@ -400,23 +388,23 @@ public class HTMLPage extends ParsedHTML {
      *             Signals that an I/O exception has occurred.
      */
     public void parse(String text, URL pageURL) throws SAXException, IOException {
-<span class="fc" id="L403">        HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {</span>
+<span class="fc" id="L391">        HTMLParserFactory.getHTMLParser().parse(pageURL, text, new DocumentAdapter() {</span>
             @Override
             public void setDocument(HTMLDocument document) {
-<span class="fc" id="L406">                HTMLPage.this.setRootNode(document);</span>
-<span class="fc" id="L407">            }</span>
+<span class="fc" id="L394">                HTMLPage.this.setRootNode(document);</span>
+<span class="fc" id="L395">            }</span>
 
             @Override
             public String getIncludedScript(String srcAttribute) throws IOException {
-<span class="fc" id="L411">                return HTMLPage.this.getIncludedScript(srcAttribute);</span>
+<span class="fc" id="L399">                return HTMLPage.this.getIncludedScript(srcAttribute);</span>
             }
 
             @Override
             public ScriptingHandler getScriptingHandler() {
-<span class="fc" id="L416">                return getResponse().getScriptingHandler();</span>
+<span class="fc" id="L404">                return getResponse().getScriptingHandler();</span>
             }
         });
-<span class="fc" id="L419">    }</span>
+<span class="fc" id="L407">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

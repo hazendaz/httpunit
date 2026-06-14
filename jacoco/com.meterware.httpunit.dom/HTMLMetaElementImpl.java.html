@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLMetaElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLMetaElementImpl.java</span></div><h1>HTMLMetaElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -24,14 +12,14 @@ import org.w3c.dom.html.HTMLMetaElement;
 /**
  * The Class HTMLMetaElementImpl.
  */
-<span class="fc" id="L27">public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElement {</span>
+<span class="fc" id="L15">public class HTMLMetaElementImpl extends HTMLElementImpl implements HTMLMetaElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L34">        return new HTMLMetaElementImpl();</span>
+<span class="fc" id="L22">        return new HTMLMetaElementImpl();</span>
     }
 
     /**
@@ -41,7 +29,7 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public String getContent() {
-<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;content&quot;);</span>
+<span class="fc" id="L32">        return getAttributeWithNoDefault(&quot;content&quot;);</span>
     }
 
     /**
@@ -51,7 +39,7 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public String getHttpEquiv() {
-<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;http-equiv&quot;);</span>
+<span class="fc" id="L42">        return getAttributeWithNoDefault(&quot;http-equiv&quot;);</span>
     }
 
     /**
@@ -61,7 +49,7 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public String getName() {
-<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L52">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
     /**
@@ -71,7 +59,7 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public String getScheme() {
-<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;scheme&quot;);</span>
+<span class="fc" id="L62">        return getAttributeWithNoDefault(&quot;scheme&quot;);</span>
     }
 
     /**
@@ -82,8 +70,8 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public void setContent(String content) {
-<span class="fc" id="L85">        setAttribute(&quot;content&quot;, content);</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L73">        setAttribute(&quot;content&quot;, content);</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Sets the http equiv.
@@ -93,8 +81,8 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public void setHttpEquiv(String httpEquiv) {
-<span class="fc" id="L96">        setAttribute(&quot;http-equiv&quot;, httpEquiv);</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L84">        setAttribute(&quot;http-equiv&quot;, httpEquiv);</span>
+<span class="fc" id="L85">    }</span>
 
     /**
      * Sets the name.
@@ -104,8 +92,8 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public void setName(String name) {
-<span class="fc" id="L107">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L95">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L96">    }</span>
 
     /**
      * Sets the scheme.
@@ -115,7 +103,7 @@ import org.w3c.dom.html.HTMLMetaElement;
      */
     @Override
     public void setScheme(String scheme) {
-<span class="fc" id="L118">        setAttribute(&quot;scheme&quot;, scheme);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L106">        setAttribute(&quot;scheme&quot;, scheme);</span>
+<span class="fc" id="L107">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

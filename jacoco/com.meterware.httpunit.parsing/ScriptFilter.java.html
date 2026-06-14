@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">ScriptFilter.java</span></div><h1>ScriptFilter.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.parsing;
 
@@ -50,7 +38,7 @@ class ScriptFilter extends DefaultFilter {
     private String _scriptLanguage;
 
     /** The system identifier of the source document. */
-<span class="fc" id="L53">    private String _systemID = &quot;&quot;;</span>
+<span class="fc" id="L41">    private String _systemID = &quot;&quot;;</span>
 
     /** The number of the current script. */
     private int _scriptIndex;
@@ -64,9 +52,9 @@ class ScriptFilter extends DefaultFilter {
      * @param config
      *            the config
      */
-<span class="fc" id="L67">    ScriptFilter(HTMLConfiguration config) {</span>
-<span class="fc" id="L68">        _configuration = config;</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L55">    ScriptFilter(HTMLConfiguration config) {</span>
+<span class="fc" id="L56">        _configuration = config;</span>
+<span class="fc" id="L57">    }</span>
 
     /**
      * Sets the script handler.
@@ -75,8 +63,8 @@ class ScriptFilter extends DefaultFilter {
      *            the new script handler
      */
     public void setScriptHandler(ScriptHandler scriptHandler) {
-<span class="fc" id="L78">        _scriptHandler = scriptHandler;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L66">        _scriptHandler = scriptHandler;</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Start document.
@@ -92,11 +80,11 @@ class ScriptFilter extends DefaultFilter {
      *             the XNI exception
      */
     public void startDocument(XMLLocator locator, String encoding, Augmentations augs) throws XNIException {
-<span class="nc" id="L95">        _activeScriptBlock = null;</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        _systemID = locator == null ? &quot;&quot; : locator.getLiteralSystemId() + &quot;_&quot;;</span>
-<span class="nc" id="L97">        _scriptIndex = 0;</span>
-<span class="nc" id="L98">        super.startDocument(locator, encoding, null, augs);</span>
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L83">        _activeScriptBlock = null;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        _systemID = locator == null ? &quot;&quot; : locator.getLiteralSystemId() + &quot;_&quot;;</span>
+<span class="nc" id="L85">        _scriptIndex = 0;</span>
+<span class="nc" id="L86">        super.startDocument(locator, encoding, null, augs);</span>
+<span class="nc" id="L87">    }</span>
 
     /**
      * Invoked for a start element. If the element is a &lt;script&gt;, overrides the normal behavior to begin collecting the
@@ -104,17 +92,17 @@ class ScriptFilter extends DefaultFilter {
      */
     @Override
     public void startElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (!isSupportedScript(element, attrs)) {</span>
-<span class="fc" id="L108">            super.startElement(element, attrs, augs);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (!isSupportedScript(element, attrs)) {</span>
+<span class="fc" id="L96">            super.startElement(element, attrs, augs);</span>
         } else {
-<span class="fc" id="L110">            _activeScriptBlock = new StringBuilder();</span>
-<span class="fc" id="L111">            _scriptLanguage = getScriptLanguage(attrs);</span>
-<span class="fc" id="L112">            String srcAttribute = attrs.getValue(&quot;src&quot;);</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (srcAttribute != null) {</span>
-<span class="fc" id="L114">                _activeScriptBlock.append(_scriptHandler.getIncludedScript(srcAttribute));</span>
+<span class="fc" id="L98">            _activeScriptBlock = new StringBuilder();</span>
+<span class="fc" id="L99">            _scriptLanguage = getScriptLanguage(attrs);</span>
+<span class="fc" id="L100">            String srcAttribute = attrs.getValue(&quot;src&quot;);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            if (srcAttribute != null) {</span>
+<span class="fc" id="L102">                _activeScriptBlock.append(_scriptHandler.getIncludedScript(srcAttribute));</span>
             }
         }
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Checks if is supported script.
@@ -127,11 +115,11 @@ class ScriptFilter extends DefaultFilter {
      * @return true, if is supported script
      */
     private boolean isSupportedScript(QName element, XMLAttributes attrs) {
-<span class="pc bpc" id="L130" title="1 of 4 branches missed.">        if (!element.rawname.equalsIgnoreCase(&quot;script&quot;) || attrs == null) {</span>
-<span class="fc" id="L131">            return false;</span>
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">        if (!element.rawname.equalsIgnoreCase(&quot;script&quot;) || attrs == null) {</span>
+<span class="fc" id="L119">            return false;</span>
         }
-<span class="fc" id="L133">        String value = getScriptLanguage(attrs);</span>
-<span class="fc bfc" id="L134" title="All 4 branches covered.">        return HttpUnitOptions.isScriptingEnabled() &amp;&amp; _scriptHandler.supportsScriptLanguage(value);</span>
+<span class="fc" id="L121">        String value = getScriptLanguage(attrs);</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        return HttpUnitOptions.isScriptingEnabled() &amp;&amp; _scriptHandler.supportsScriptLanguage(value);</span>
     }
 
     /**
@@ -143,40 +131,40 @@ class ScriptFilter extends DefaultFilter {
      * @return the script language
      */
     private String getScriptLanguage(XMLAttributes attrs) {
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        return attrs == null ? null : attrs.getValue(&quot;language&quot;);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        return attrs == null ? null : attrs.getValue(&quot;language&quot;);</span>
     }
 
     @Override
     public void emptyElement(QName element, XMLAttributes attrs, Augmentations augs) throws XNIException {
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (!isSupportedScript(element, attrs)) {</span>
-<span class="fc" id="L152">            super.emptyElement(element, attrs, augs);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (!isSupportedScript(element, attrs)) {</span>
+<span class="fc" id="L140">            super.emptyElement(element, attrs, augs);</span>
         }
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L142">    }</span>
 
     @Override
     public void characters(XMLString text, Augmentations augs) throws XNIException {
-<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (_activeScriptBlock != null) {</span>
-<span class="fc" id="L159">            _activeScriptBlock.append(text.ch, text.offset, text.length);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (_activeScriptBlock != null) {</span>
+<span class="fc" id="L147">            _activeScriptBlock.append(text.ch, text.offset, text.length);</span>
         } else {
-<span class="fc" id="L161">            super.characters(text, augs);</span>
+<span class="fc" id="L149">            super.characters(text, augs);</span>
         }
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L151">    }</span>
 
     @Override
     public void endElement(QName element, Augmentations augs) throws XNIException {
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (_activeScriptBlock == null) {</span>
-<span class="fc" id="L168">            super.endElement(element, augs);</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (_activeScriptBlock == null) {</span>
+<span class="fc" id="L156">            super.endElement(element, augs);</span>
         } else {
             try {
-<span class="fc" id="L171">                final String scriptText = _activeScriptBlock.toString();</span>
-<span class="fc" id="L172">                String replacementText = getTranslatedScript(_scriptLanguage, scriptText);</span>
-<span class="fc" id="L173">                _configuration.pushInputSource(newInputSource(replacementText));</span>
-<span class="nc" id="L174">            } catch (IOException e) { // ignore</span>
+<span class="fc" id="L159">                final String scriptText = _activeScriptBlock.toString();</span>
+<span class="fc" id="L160">                String replacementText = getTranslatedScript(_scriptLanguage, scriptText);</span>
+<span class="fc" id="L161">                _configuration.pushInputSource(newInputSource(replacementText));</span>
+<span class="nc" id="L162">            } catch (IOException e) { // ignore</span>
             } finally {
-<span class="fc" id="L176">                _activeScriptBlock = null;</span>
+<span class="fc" id="L164">                _activeScriptBlock = null;</span>
             }
         }
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * New input source.
@@ -187,10 +175,10 @@ class ScriptFilter extends DefaultFilter {
      * @return the XML input source
      */
     private XMLInputSource newInputSource(String replacementText) {
-<span class="fc" id="L190">        StringBuilder systemID = new StringBuilder(_systemID);</span>
-<span class="fc" id="L191">        systemID.append(&quot;script&quot;).append(++_scriptIndex);</span>
+<span class="fc" id="L178">        StringBuilder systemID = new StringBuilder(_systemID);</span>
+<span class="fc" id="L179">        systemID.append(&quot;script&quot;).append(++_scriptIndex);</span>
 
-<span class="fc" id="L193">        return new XMLInputSource(null, systemID.toString(), null, new StringReader(replacementText), &quot;UTF-8&quot;);</span>
+<span class="fc" id="L181">        return new XMLInputSource(null, systemID.toString(), null, new StringReader(replacementText), &quot;UTF-8&quot;);</span>
     }
 
     /**
@@ -207,7 +195,7 @@ class ScriptFilter extends DefaultFilter {
      *             Signals that an I/O exception has occurred.
      */
     protected String getTranslatedScript(final String language, final String scriptText) throws IOException {
-<span class="fc" id="L210">        return _scriptHandler.runScript(language, scriptText);</span>
+<span class="fc" id="L198">        return _scriptHandler.runScript(language, scriptText);</span>
     }
 
 }

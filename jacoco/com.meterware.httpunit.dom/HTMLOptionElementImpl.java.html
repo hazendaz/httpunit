@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLOptionElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLOptionElementImpl.java</span></div><h1>HTMLOptionElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -29,7 +17,7 @@ import org.w3c.dom.html.HTMLOptionElement;
 /**
  * The Class HTMLOptionElementImpl.
  */
-<span class="fc" id="L32">public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {</span>
+<span class="fc" id="L20">public class HTMLOptionElementImpl extends HTMLControl implements HTMLOptionElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -39,7 +27,7 @@ import org.w3c.dom.html.HTMLOptionElement;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L42">        return new HTMLOptionElementImpl();</span>
+<span class="fc" id="L30">        return new HTMLOptionElementImpl();</span>
     }
 
     /**
@@ -49,7 +37,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public boolean getDefaultSelected() {
-<span class="fc" id="L52">        return getBooleanAttribute(&quot;selected&quot;);</span>
+<span class="fc" id="L40">        return getBooleanAttribute(&quot;selected&quot;);</span>
     }
 
     /**
@@ -59,7 +47,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public int getIndex() {
-<span class="fc" id="L62">        return getSelect().getIndexOf(this);</span>
+<span class="fc" id="L50">        return getSelect().getIndexOf(this);</span>
     }
 
     /**
@@ -69,7 +57,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      *            the new index
      */
     public void setIndex(int i) {
-<span class="nc" id="L72">    } // obsolete - required for compatibility with JDK 1.3</span>
+<span class="nc" id="L60">    } // obsolete - required for compatibility with JDK 1.3</span>
 
     /**
      * Gets the label.
@@ -78,7 +66,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public String getLabel() {
-<span class="fc" id="L81">        return getAttributeWithNoDefault(&quot;label&quot;);</span>
+<span class="fc" id="L69">        return getAttributeWithNoDefault(&quot;label&quot;);</span>
     }
 
     /**
@@ -88,7 +76,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public boolean getSelected() {
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        return _selected != null ? _selected.booleanValue() : getDefaultSelected();</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        return _selected != null ? _selected.booleanValue() : getDefaultSelected();</span>
     }
 
     /**
@@ -98,7 +86,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public String getText() {
-<span class="fc" id="L101">        return asText();</span>
+<span class="fc" id="L89">        return asText();</span>
     }
 
     /**
@@ -109,7 +97,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public void setDefaultSelected(boolean defaultSelected) {
-<span class="nc" id="L112">    }</span>
+<span class="nc" id="L100">    }</span>
 
     /**
      * Sets the label.
@@ -119,8 +107,8 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public void setLabel(String label) {
-<span class="fc" id="L122">        setAttribute(&quot;label&quot;, label);</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L110">        setAttribute(&quot;label&quot;, label);</span>
+<span class="fc" id="L111">    }</span>
 
     /**
      * Sets the selected.
@@ -129,11 +117,11 @@ import org.w3c.dom.html.HTMLOptionElement;
      *            the new selected
      */
     public void setSelected(boolean selected) {
-<span class="fc bfc" id="L132" title="All 4 branches covered.">        if (selected &amp;&amp; getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {</span>
-<span class="fc" id="L133">            getSelect().clearSelected();</span>
+<span class="fc bfc" id="L120" title="All 4 branches covered.">        if (selected &amp;&amp; getSelect().getType().equals(HTMLSelectElementImpl.TYPE_SELECT_ONE)) {</span>
+<span class="fc" id="L121">            getSelect().clearSelected();</span>
         }
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        _selected = selected ? Boolean.TRUE : Boolean.FALSE;</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        _selected = selected ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc" id="L124">    }</span>
 
     /**
      * Gets the select.
@@ -141,11 +129,11 @@ import org.w3c.dom.html.HTMLOptionElement;
      * @return the select
      */
     private HTMLSelectElementImpl getSelect() {
-<span class="fc" id="L144">        Node parent = getParentNode();</span>
-<span class="pc bpc" id="L145" title="2 of 4 branches missed.">        while (parent != null &amp;&amp; !&quot;select&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
-<span class="nc" id="L146">            parent = parent.getParentNode();</span>
+<span class="fc" id="L132">        Node parent = getParentNode();</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">        while (parent != null &amp;&amp; !&quot;select&quot;.equalsIgnoreCase(parent.getNodeName())) {</span>
+<span class="nc" id="L134">            parent = parent.getParentNode();</span>
         }
-<span class="fc" id="L148">        return (HTMLSelectElementImpl) parent;</span>
+<span class="fc" id="L136">        return (HTMLSelectElementImpl) parent;</span>
     }
 
     /**
@@ -155,7 +143,7 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public String getValue() {
-<span class="fc" id="L158">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
+<span class="fc" id="L146">        return getAttributeWithNoDefault(&quot;value&quot;);</span>
     }
 
     /**
@@ -166,13 +154,13 @@ import org.w3c.dom.html.HTMLOptionElement;
      */
     @Override
     public void setValue(String value) {
-<span class="fc" id="L169">        setAttribute(&quot;value&quot;, value);</span>
-<span class="fc" id="L170">    }</span>
+<span class="fc" id="L157">        setAttribute(&quot;value&quot;, value);</span>
+<span class="fc" id="L158">    }</span>
 
     @Override
     public void reset() {
-<span class="fc" id="L174">        _selected = null;</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L162">        _selected = null;</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Adds the value if selected.
@@ -188,14 +176,14 @@ import org.w3c.dom.html.HTMLOptionElement;
      *             Signals that an I/O exception has occurred.
      */
     void addValueIfSelected(ParameterProcessor processor, String name, String characterSet) throws IOException {
-<span class="fc bfc" id="L191" title="All 2 branches covered.">        if (getSelected()) {</span>
-<span class="fc" id="L192">            String value = getValue();</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">            if (value == null) {</span>
-<span class="fc" id="L194">                value = readDisplayedValue();</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (getSelected()) {</span>
+<span class="fc" id="L180">            String value = getValue();</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">            if (value == null) {</span>
+<span class="fc" id="L182">                value = readDisplayedValue();</span>
             }
-<span class="fc" id="L196">            processor.addParameter(name, value, characterSet);</span>
+<span class="fc" id="L184">            processor.addParameter(name, value, characterSet);</span>
         }
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L186">    }</span>
 
     /**
      * Read displayed value.
@@ -203,15 +191,15 @@ import org.w3c.dom.html.HTMLOptionElement;
      * @return the string
      */
     private String readDisplayedValue() {
-<span class="fc" id="L206">        Node nextSibling = getNextSibling();</span>
-<span class="pc bpc" id="L207" title="2 of 4 branches missed.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
-<span class="nc bnc" id="L208" title="All 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L209">            nextSibling = nextSibling.getNextSibling();</span>
+<span class="fc" id="L194">        Node nextSibling = getNextSibling();</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">        while (nextSibling != null &amp;&amp; nextSibling.getNodeType() != Node.TEXT_NODE</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                &amp;&amp; nextSibling.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L197">            nextSibling = nextSibling.getNextSibling();</span>
         }
-<span class="pc bpc" id="L211" title="2 of 4 branches missed.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
-<span class="nc" id="L212">            return &quot;&quot;;</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">        if (nextSibling == null || nextSibling.getNodeType() != Node.TEXT_NODE) {</span>
+<span class="nc" id="L200">            return &quot;&quot;;</span>
         }
-<span class="fc" id="L214">        return nextSibling.getNodeValue();</span>
+<span class="fc" id="L202">        return nextSibling.getNodeValue();</span>
     }
 
 }

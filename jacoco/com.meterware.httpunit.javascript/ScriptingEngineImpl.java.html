@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptingEngineImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.javascript</a> &gt; <span class="el_source">ScriptingEngineImpl.java</span></div><h1>ScriptingEngineImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.javascript;
 
@@ -37,23 +25,23 @@ import org.mozilla.javascript.Undefined;
 /**
  * The Class ScriptingEngineImpl.
  */
-<span class="fc" id="L40">public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {</span>
+<span class="fc" id="L28">public abstract class ScriptingEngineImpl extends ScriptableObject implements ScriptingEngine {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     /** The Constant NO_ARGS. */
-<span class="fc" id="L46">    private static final Object[] NO_ARGS = {};</span>
+<span class="fc" id="L34">    private static final Object[] NO_ARGS = {};</span>
 
     /** The error messages. */
-<span class="fc" id="L49">    private static ArrayList _errorMessages = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L37">    private static ArrayList _errorMessages = new ArrayList&lt;&gt;();</span>
 
     /**
      * clear the list of error Messages.
      */
     static public void clearErrorMessages() {
-<span class="fc" id="L55">        _errorMessages.clear();</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L43">        _errorMessages.clear();</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * access to the list of error Messages that were collected.
@@ -61,7 +49,7 @@ import org.mozilla.javascript.Undefined;
      * @return the array with error Messages
      */
     static public String[] getErrorMessages() {
-<span class="fc" id="L64">        return (String[]) _errorMessages.toArray(new String[_errorMessages.size()]);</span>
+<span class="fc" id="L52">        return (String[]) _errorMessages.toArray(new String[_errorMessages.size()]);</span>
     }
 
     /**
@@ -73,28 +61,28 @@ import org.mozilla.javascript.Undefined;
      *            - the script that caused the problem
      */
     static public void handleScriptException(Exception e, String badScript) {
-<span class="fc bfc" id="L76" title="All 2 branches covered.">        String errorMessage = badScript == null ? e.getMessage() : badScript + &quot; failed: &quot; + e;</span>
-<span class="pc bpc" id="L77" title="2 of 8 branches missed.">        if (!(e instanceof EcmaError) &amp;&amp; !(e instanceof EvaluatorException) &amp;&amp; !(e instanceof ScriptException)</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        String errorMessage = badScript == null ? e.getMessage() : badScript + &quot; failed: &quot; + e;</span>
+<span class="pc bpc" id="L65" title="2 of 8 branches missed.">        if (!(e instanceof EcmaError) &amp;&amp; !(e instanceof EvaluatorException) &amp;&amp; !(e instanceof ScriptException)</span>
                 &amp;&amp; !(e instanceof JavaScriptException)) {
-<span class="fc" id="L79">            HttpUnitUtils.handleException(e);</span>
-<span class="fc" id="L80">            throw new RuntimeException(errorMessage);</span>
+<span class="fc" id="L67">            HttpUnitUtils.handleException(e);</span>
+<span class="fc" id="L68">            throw new RuntimeException(errorMessage);</span>
         }
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (JavaScript.isThrowExceptionsOnError()) {</span>
-<span class="fc" id="L83">            HttpUnitUtils.handleException(e);</span>
-<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (e instanceof ScriptException) {</span>
-<span class="fc" id="L85">                throw (ScriptException) e;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (JavaScript.isThrowExceptionsOnError()) {</span>
+<span class="fc" id="L71">            HttpUnitUtils.handleException(e);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (e instanceof ScriptException) {</span>
+<span class="fc" id="L73">                throw (ScriptException) e;</span>
             }
-<span class="fc" id="L87">            throw new ScriptException(errorMessage);</span>
+<span class="fc" id="L75">            throw new ScriptException(errorMessage);</span>
         }
-<span class="fc" id="L89">        _errorMessages.add(errorMessage);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L77">        _errorMessages.add(errorMessage);</span>
+<span class="fc" id="L78">    }</span>
 
     // --------------------------------------- ScriptingEngine methods
     // ------------------------------------------------------
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-<span class="fc bfc" id="L97" title="All 4 branches covered.">        return language == null || language.toLowerCase(Locale.ENGLISH).startsWith(&quot;javascript&quot;);</span>
+<span class="fc bfc" id="L85" title="All 4 branches covered.">        return language == null || language.toLowerCase(Locale.ENGLISH).startsWith(&quot;javascript&quot;);</span>
     }
 
     /**
@@ -107,27 +95,27 @@ import org.mozilla.javascript.Undefined;
      */
     @Override
     public String runScript(String language, String script) {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (!supportsScriptLanguage(language)) {</span>
-<span class="fc" id="L111">            return &quot;&quot;;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (!supportsScriptLanguage(language)) {</span>
+<span class="fc" id="L99">            return &quot;&quot;;</span>
         }
         try {
-<span class="fc" id="L114">            script = script.trim();</span>
-<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (script.startsWith(&quot;&lt;!--&quot;)) {</span>
-<span class="fc" id="L116">                script = withoutFirstLine(script);</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">                if (script.endsWith(&quot;--&gt;&quot;)) {</span>
-<span class="fc" id="L118">                    script = script.substring(0, script.lastIndexOf(&quot;--&gt;&quot;));</span>
+<span class="fc" id="L102">            script = script.trim();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            if (script.startsWith(&quot;&lt;!--&quot;)) {</span>
+<span class="fc" id="L104">                script = withoutFirstLine(script);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                if (script.endsWith(&quot;--&gt;&quot;)) {</span>
+<span class="fc" id="L106">                    script = script.substring(0, script.lastIndexOf(&quot;--&gt;&quot;));</span>
                 }
             }
-<span class="fc" id="L121">            Context context = Context.enter();</span>
-<span class="fc" id="L122">            context.initStandardObjects(null);</span>
-<span class="fc" id="L123">            context.evaluateString(this, script, &quot;httpunit&quot;, 0, null);</span>
-<span class="fc" id="L124">            return getDocumentWriteBuffer();</span>
-<span class="nc" id="L125">        } catch (Exception e) {</span>
-<span class="nc" id="L126">            handleScriptException(e, &quot;Script '&quot; + script + &quot;'&quot;);</span>
-<span class="nc" id="L127">            return &quot;&quot;;</span>
+<span class="fc" id="L109">            Context context = Context.enter();</span>
+<span class="fc" id="L110">            context.initStandardObjects(null);</span>
+<span class="fc" id="L111">            context.evaluateString(this, script, &quot;httpunit&quot;, 0, null);</span>
+<span class="fc" id="L112">            return getDocumentWriteBuffer();</span>
+<span class="nc" id="L113">        } catch (Exception e) {</span>
+<span class="nc" id="L114">            handleScriptException(e, &quot;Script '&quot; + script + &quot;'&quot;);</span>
+<span class="nc" id="L115">            return &quot;&quot;;</span>
         } finally {
-<span class="fc" id="L129">            discardDocumentWriteBuffer();</span>
-<span class="fc" id="L130">            Context.exit();</span>
+<span class="fc" id="L117">            discardDocumentWriteBuffer();</span>
+<span class="fc" id="L118">            Context.exit();</span>
         }
     }
 
@@ -142,7 +130,7 @@ import org.mozilla.javascript.Undefined;
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L145">        return doEventScript(eventScript);</span>
+<span class="nc" id="L133">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -153,24 +141,24 @@ import org.mozilla.javascript.Undefined;
      */
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (eventScript.isEmpty()) {</span>
-<span class="nc" id="L157">            return true;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (eventScript.isEmpty()) {</span>
+<span class="nc" id="L145">            return true;</span>
         }
         try {
-<span class="fc" id="L160">            Context context = Context.enter();</span>
-<span class="fc" id="L161">            context.initStandardObjects(null);</span>
-<span class="fc" id="L162">            context.setOptimizationLevel(-1);</span>
+<span class="fc" id="L148">            Context context = Context.enter();</span>
+<span class="fc" id="L149">            context.initStandardObjects(null);</span>
+<span class="fc" id="L150">            context.setOptimizationLevel(-1);</span>
             // wrap the eventScript into a function
-<span class="fc" id="L164">            Function f = context.compileFunction(this, &quot;function x() { &quot; + eventScript + &quot;}&quot;, &quot;httpunit&quot;, 0, null);</span>
+<span class="fc" id="L152">            Function f = context.compileFunction(this, &quot;function x() { &quot; + eventScript + &quot;}&quot;, &quot;httpunit&quot;, 0, null);</span>
             // call the function with no arguments
-<span class="fc" id="L166">            Object result = f.call(context, this, this, NO_ARGS);</span>
+<span class="fc" id="L154">            Object result = f.call(context, this, this, NO_ARGS);</span>
             // return the result of the function or false if it is not boolean
-<span class="fc bfc" id="L168" title="All 4 branches covered.">            return !(result instanceof Boolean) || ((Boolean) result).booleanValue();</span>
-<span class="fc" id="L169">        } catch (Exception e) {</span>
-<span class="fc" id="L170">            handleScriptException(e, &quot;Event '&quot; + eventScript + &quot;'&quot;);</span>
-<span class="fc" id="L171">            return false;</span>
+<span class="fc bfc" id="L156" title="All 4 branches covered.">            return !(result instanceof Boolean) || ((Boolean) result).booleanValue();</span>
+<span class="fc" id="L157">        } catch (Exception e) {</span>
+<span class="fc" id="L158">            handleScriptException(e, &quot;Event '&quot; + eventScript + &quot;'&quot;);</span>
+<span class="fc" id="L159">            return false;</span>
         } finally {
-<span class="fc" id="L173">            Context.exit();</span>
+<span class="fc" id="L161">            Context.exit();</span>
         }
     }
 
@@ -185,7 +173,7 @@ import org.mozilla.javascript.Undefined;
      */
     @Override
     public boolean handleEvent(String eventName) {
-<span class="nc" id="L188">        throw new RuntimeException(&quot;pseudo - abstract handleEvent called &quot;);</span>
+<span class="nc" id="L176">        throw new RuntimeException(&quot;pseudo - abstract handleEvent called &quot;);</span>
     }
 
     /**
@@ -197,15 +185,15 @@ import org.mozilla.javascript.Undefined;
     @Override
     public Object evaluateExpression(String expression) {
         try {
-<span class="fc" id="L200">            Context context = Context.enter();</span>
-<span class="fc" id="L201">            context.initStandardObjects(null);</span>
-<span class="fc" id="L202">            Object result = context.evaluateString(this, expression, &quot;httpunit&quot;, 0, null);</span>
-<span class="pc bpc" id="L203" title="1 of 4 branches missed.">            return result == null || result instanceof Undefined ? null : result;</span>
-<span class="fc" id="L204">        } catch (Exception e) {</span>
-<span class="fc" id="L205">            handleScriptException(e, &quot;URL '&quot; + expression + &quot;'&quot;);</span>
-<span class="fc" id="L206">            return null;</span>
+<span class="fc" id="L188">            Context context = Context.enter();</span>
+<span class="fc" id="L189">            context.initStandardObjects(null);</span>
+<span class="fc" id="L190">            Object result = context.evaluateString(this, expression, &quot;httpunit&quot;, 0, null);</span>
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">            return result == null || result instanceof Undefined ? null : result;</span>
+<span class="fc" id="L192">        } catch (Exception e) {</span>
+<span class="fc" id="L193">            handleScriptException(e, &quot;URL '&quot; + expression + &quot;'&quot;);</span>
+<span class="fc" id="L194">            return null;</span>
         } finally {
-<span class="fc" id="L208">            Context.exit();</span>
+<span class="fc" id="L196">            Context.exit();</span>
         }
     }
 
@@ -218,14 +206,14 @@ import org.mozilla.javascript.Undefined;
      * @return the document write buffer
      */
     protected String getDocumentWriteBuffer() {
-<span class="nc" id="L221">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
+<span class="nc" id="L209">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
     }
 
     /**
      * Discard document write buffer.
      */
     protected void discardDocumentWriteBuffer() {
-<span class="nc" id="L228">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
+<span class="nc" id="L216">        throw new IllegalStateException(&quot;may not run runScript() from &quot; + getClass());</span>
     }
 
     /**
@@ -237,12 +225,12 @@ import org.mozilla.javascript.Undefined;
      * @return the string
      */
     private String withoutFirstLine(String script) {
-<span class="fc bfc" id="L240" title="All 2 branches covered.">        for (int i = 0; i &lt; script.length(); i++) {</span>
-<span class="fc bfc" id="L241" title="All 2 branches covered.">            if (isLineTerminator(script.charAt(i))) {</span>
-<span class="fc" id="L242">                return script.substring(i).trim();</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        for (int i = 0; i &lt; script.length(); i++) {</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">            if (isLineTerminator(script.charAt(i))) {</span>
+<span class="fc" id="L230">                return script.substring(i).trim();</span>
             }
         }
-<span class="fc" id="L245">        return &quot;&quot;;</span>
+<span class="fc" id="L233">        return &quot;&quot;;</span>
     }
 
     /**
@@ -254,7 +242,7 @@ import org.mozilla.javascript.Undefined;
      * @return true, if is line terminator
      */
     private boolean isLineTerminator(char c) {
-<span class="pc bpc" id="L257" title="1 of 4 branches missed.">        return c == 0x0A || c == 0x0D;</span>
+<span class="pc bpc" id="L245" title="1 of 4 branches missed.">        return c == 0x0A || c == 0x0D;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

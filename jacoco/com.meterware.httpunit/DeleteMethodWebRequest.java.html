@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeleteMethodWebRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit</a> &gt; <span class="el_source">DeleteMethodWebRequest.java</span></div><h1>DeleteMethodWebRequest.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -41,8 +29,8 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      * initialize me - set method to DELETE.
      */
     private void init() {
-<span class="fc" id="L44">        super.setMethod(&quot;DELETE&quot;);</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L32">        super.setMethod(&quot;DELETE&quot;);</span>
+<span class="fc" id="L33">    }</span>
 
     /**
      * Constructs a web request using a specific absolute url string.
@@ -51,9 +39,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the url string
      */
     public DeleteMethodWebRequest(String urlString) {
-<span class="fc" id="L54">        super(urlString);</span>
-<span class="fc" id="L55">        init();</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L42">        super(urlString);</span>
+<span class="fc" id="L43">        init();</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Constructs a web request using a base URL and a relative url string.
@@ -64,9 +52,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the url string
      */
     public DeleteMethodWebRequest(URL urlBase, String urlString) {
-<span class="nc" id="L67">        super(urlBase, urlString);</span>
-<span class="nc" id="L68">        init();</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L55">        super(urlBase, urlString);</span>
+<span class="nc" id="L56">        init();</span>
+<span class="nc" id="L57">    }</span>
 
     /**
      * Constructs a web request with a specific target.
@@ -79,9 +67,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the target
      */
     public DeleteMethodWebRequest(URL urlBase, String urlString, String target) {
-<span class="nc" id="L82">        super(urlBase, urlString, target);</span>
-<span class="nc" id="L83">        init();</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L70">        super(urlBase, urlString, target);</span>
+<span class="nc" id="L71">        init();</span>
+<span class="nc" id="L72">    }</span>
 
     // --------------------------------------- package members ---------------------------------------------
 
@@ -92,9 +80,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the source form
      */
     DeleteMethodWebRequest(WebForm sourceForm) {
-<span class="nc" id="L95">        super(sourceForm);</span>
-<span class="nc" id="L96">        init();</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L83">        super(sourceForm);</span>
+<span class="nc" id="L84">        init();</span>
+<span class="nc" id="L85">    }</span>
 
     /**
      * Constructs a web request for a link or image.
@@ -103,9 +91,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the source
      */
     DeleteMethodWebRequest(FixedURLWebRequestSource source) {
-<span class="nc" id="L106">        super(source);</span>
-<span class="nc" id="L107">        init();</span>
-<span class="nc" id="L108">    }</span>
+<span class="nc" id="L94">        super(source);</span>
+<span class="nc" id="L95">        init();</span>
+<span class="nc" id="L96">    }</span>
 
     /**
      * Constructs a web request with a specific target.
@@ -122,9 +110,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the target
      */
     DeleteMethodWebRequest(WebResponse referer, Element sourceElement, URL urlBase, String urlString, String target) {
-<span class="nc" id="L125">        super(referer, sourceElement, urlBase, urlString, target);</span>
-<span class="nc" id="L126">        init();</span>
-<span class="nc" id="L127">    }</span>
+<span class="nc" id="L113">        super(referer, sourceElement, urlBase, urlString, target);</span>
+<span class="nc" id="L114">        init();</span>
+<span class="nc" id="L115">    }</span>
 
     /**
      * Constructs an initial web request for a frame.
@@ -137,9 +125,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the frame
      */
     DeleteMethodWebRequest(URL urlBase, String urlString, FrameSelector frame) {
-<span class="nc" id="L140">        super(urlBase, urlString, frame);</span>
-<span class="nc" id="L141">        init();</span>
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L128">        super(urlBase, urlString, frame);</span>
+<span class="nc" id="L129">        init();</span>
+<span class="nc" id="L130">    }</span>
 
     /**
      * Constructs a web request for a javascript open call.
@@ -154,9 +142,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the target
      */
     DeleteMethodWebRequest(URL urlBase, String urlString, FrameSelector frame, String target) {
-<span class="nc" id="L157">        super(urlBase, urlString, frame, target);</span>
-<span class="nc" id="L158">        init();</span>
-<span class="nc" id="L159">    }</span>
+<span class="nc" id="L145">        super(urlBase, urlString, frame, target);</span>
+<span class="nc" id="L146">        init();</span>
+<span class="nc" id="L147">    }</span>
 
     /**
      * Constructs a web request for a form.
@@ -173,9 +161,9 @@ public class DeleteMethodWebRequest extends HeaderOnlyWebRequest {
      *            the y
      */
     DeleteMethodWebRequest(WebForm sourceForm, ParameterHolder parameterHolder, SubmitButton button, int x, int y) {
-<span class="nc" id="L176">        super(sourceForm, parameterHolder, button, x, y);</span>
-<span class="nc" id="L177">        init();</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L164">        super(sourceForm, parameterHolder, button, x, y);</span>
+<span class="nc" id="L165">        init();</span>
+<span class="nc" id="L166">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

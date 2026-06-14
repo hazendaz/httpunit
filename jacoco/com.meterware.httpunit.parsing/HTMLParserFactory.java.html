@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLParserFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.parsing</a> &gt; <span class="el_source">HTMLParserFactory.java</span></div><h1>HTMLParserFactory.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.parsing;
 
@@ -27,10 +15,10 @@ import java.util.List;
  * Factory for creating HTML parsers. Parser customization properties can be specified but do not necessarily work for
  * every parser type.
  **/
-<span class="nc" id="L30">public abstract class HTMLParserFactory {</span>
+<span class="nc" id="L18">public abstract class HTMLParserFactory {</span>
 
     /** The listeners. */
-<span class="fc" id="L33">    private static List&lt;HTMLParserListener&gt; _listeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">    private static List&lt;HTMLParserListener&gt; _listeners = new ArrayList&lt;&gt;();</span>
 
     /** The jtidy parser. */
     private static HTMLParser _jtidyParser;
@@ -61,34 +49,34 @@ import java.util.List;
      * Resets all settings to their default values. This includes the parser selection.
      */
     public static void reset() {
-<span class="fc" id="L64">        _preserveTagCase = false;</span>
-<span class="fc" id="L65">        _returnHTMLDocument = true;</span>
-<span class="fc" id="L66">        _parserWarningsEnabled = false;</span>
-<span class="fc" id="L67">        _htmlParser = null;</span>
-<span class="fc" id="L68">        _forceUpper = false;</span>
-<span class="fc" id="L69">        _forceLower = false;</span>
-<span class="fc" id="L70">        _listeners.clear();</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L52">        _preserveTagCase = false;</span>
+<span class="fc" id="L53">        _returnHTMLDocument = true;</span>
+<span class="fc" id="L54">        _parserWarningsEnabled = false;</span>
+<span class="fc" id="L55">        _htmlParser = null;</span>
+<span class="fc" id="L56">        _forceUpper = false;</span>
+<span class="fc" id="L57">        _forceLower = false;</span>
+<span class="fc" id="L58">        _listeners.clear();</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Selects the JTidy parser, if present.
      */
     public static void useJTidyParser() {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (_jtidyParser == null) {</span>
-<span class="nc" id="L78">            throw new RuntimeException(&quot;JTidy parser not available&quot;);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (_jtidyParser == null) {</span>
+<span class="nc" id="L66">            throw new RuntimeException(&quot;JTidy parser not available&quot;);</span>
         }
-<span class="nc" id="L80">        _htmlParser = _jtidyParser;</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L68">        _htmlParser = _jtidyParser;</span>
+<span class="nc" id="L69">    }</span>
 
     /**
      * Selects the NekoHTML parser, if present.
      */
     public static void useNekoHTMLParser() {
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (_nekoParser == null) {</span>
-<span class="nc" id="L88">            throw new RuntimeException(&quot;NekoHTML parser not available&quot;);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (_nekoParser == null) {</span>
+<span class="nc" id="L76">            throw new RuntimeException(&quot;NekoHTML parser not available&quot;);</span>
         }
-<span class="nc" id="L90">        _htmlParser = _nekoParser;</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L78">        _htmlParser = _nekoParser;</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Specifies the parser to use.
@@ -97,8 +85,8 @@ import java.util.List;
      *            the new HTML parser
      */
     public static void setHTMLParser(HTMLParser htmlParser) {
-<span class="fc" id="L100">        _htmlParser = htmlParser;</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L88">        _htmlParser = htmlParser;</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Returns the current selected parser.
@@ -106,17 +94,17 @@ import java.util.List;
      * @return the HTML parser
      */
     public static HTMLParser getHTMLParser() {
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (_htmlParser == null) {</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            if (_nekoParser != null) {</span>
-<span class="fc" id="L111">                _htmlParser = _nekoParser;</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">            } else if (_jtidyParser != null) {</span>
-<span class="nc" id="L113">                _htmlParser = _jtidyParser;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (_htmlParser == null) {</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (_nekoParser != null) {</span>
+<span class="fc" id="L99">                _htmlParser = _nekoParser;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            } else if (_jtidyParser != null) {</span>
+<span class="nc" id="L101">                _htmlParser = _jtidyParser;</span>
             } else {
-<span class="nc" id="L115">                throw new RuntimeException(</span>
+<span class="nc" id="L103">                throw new RuntimeException(</span>
                         &quot;No HTML parser found. Make sure that either nekoHTML.jar or Tidy.jar is in the in classpath&quot;);
             }
         }
-<span class="fc" id="L119">        return _htmlParser;</span>
+<span class="fc" id="L107">        return _htmlParser;</span>
     }
 
     /**
@@ -125,7 +113,7 @@ import java.util.List;
      * @return true, if is preserve tag case
      */
     public static boolean isPreserveTagCase() {
-<span class="pc bpc" id="L128" title="3 of 4 branches missed.">        return _preserveTagCase &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
+<span class="pc bpc" id="L116" title="3 of 4 branches missed.">        return _preserveTagCase &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
     }
 
     /**
@@ -141,12 +129,12 @@ import java.util.List;
      * @see #setForceLowerCase(boolean)
      */
     public static void setPreserveTagCase(boolean preserveTagCase) {
-<span class="fc" id="L144">        _preserveTagCase = preserveTagCase;</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (preserveTagCase) {</span>
-<span class="nc" id="L146">            _forceLower = false;</span>
-<span class="nc" id="L147">            _forceUpper = false;</span>
+<span class="fc" id="L132">        _preserveTagCase = preserveTagCase;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (preserveTagCase) {</span>
+<span class="nc" id="L134">            _forceLower = false;</span>
+<span class="nc" id="L135">            _forceUpper = false;</span>
         }
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * Returns true if the current parser will return an HTMLDocument object rather than a Document object.
@@ -154,7 +142,7 @@ import java.util.List;
      * @return true, if is return HTML document
      */
     public static boolean isReturnHTMLDocument() {
-<span class="pc bpc" id="L157" title="3 of 6 branches missed.">        return _returnHTMLDocument &amp;&amp; !isPreserveTagCase() &amp;&amp; getHTMLParser().supportsReturnHTMLDocument();</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">        return _returnHTMLDocument &amp;&amp; !isPreserveTagCase() &amp;&amp; getHTMLParser().supportsReturnHTMLDocument();</span>
     }
 
     /**
@@ -170,13 +158,13 @@ import java.util.List;
      * @see #setForceLowerCase(boolean)
      */
     public static void setReturnHTMLDocument(boolean returnHTMLDocument) {
-<span class="nc" id="L173">        _returnHTMLDocument = returnHTMLDocument;</span>
-<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (returnHTMLDocument) {</span>
-<span class="nc" id="L175">            _preserveTagCase = false;</span>
-<span class="nc" id="L176">            _forceLower = false;</span>
-<span class="nc" id="L177">            _forceUpper = false;</span>
+<span class="nc" id="L161">        _returnHTMLDocument = returnHTMLDocument;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (returnHTMLDocument) {</span>
+<span class="nc" id="L163">            _preserveTagCase = false;</span>
+<span class="nc" id="L164">            _forceLower = false;</span>
+<span class="nc" id="L165">            _forceUpper = false;</span>
         }
-<span class="nc" id="L179">    }</span>
+<span class="nc" id="L167">    }</span>
 
     /**
      * Specifies whether the parser should force the case of HTML tags and attributes to be upper case. Not every parser
@@ -192,13 +180,13 @@ import java.util.List;
      * @see #setForceLowerCase(boolean)
      */
     public static void setForceUpperCase(boolean forceUpper) {
-<span class="nc" id="L195">        _forceUpper = forceUpper;</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (_forceUpper) {</span>
-<span class="nc" id="L197">            _forceLower = false;</span>
-<span class="nc" id="L198">            _preserveTagCase = false;</span>
+<span class="nc" id="L183">        _forceUpper = forceUpper;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (_forceUpper) {</span>
+<span class="nc" id="L185">            _forceLower = false;</span>
+<span class="nc" id="L186">            _preserveTagCase = false;</span>
             // _returnHTMLDocument = false;
         }
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L189">    }</span>
 
     /**
      * Return true if the current parser will support forcing the tags and attributes to upper case.
@@ -206,7 +194,7 @@ import java.util.List;
      * @return boolean flag
      */
     public static boolean getForceUpperCase() {
-<span class="pc bpc" id="L209" title="3 of 4 branches missed.">        return _forceUpper &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
+<span class="pc bpc" id="L197" title="3 of 4 branches missed.">        return _forceUpper &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
     }
 
     /**
@@ -223,13 +211,13 @@ import java.util.List;
      * @see #setForceUpperCase(boolean)
      */
     public static void setForceLowerCase(boolean forceLower) {
-<span class="nc" id="L226">        _forceLower = forceLower;</span>
-<span class="nc bnc" id="L227" title="All 2 branches missed.">        if (_forceLower) {</span>
-<span class="nc" id="L228">            _forceUpper = false;</span>
-<span class="nc" id="L229">            _preserveTagCase = false;</span>
+<span class="nc" id="L214">        _forceLower = forceLower;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        if (_forceLower) {</span>
+<span class="nc" id="L216">            _forceUpper = false;</span>
+<span class="nc" id="L217">            _preserveTagCase = false;</span>
             // _returnHTMLDocument = false;
         }
-<span class="nc" id="L232">    }</span>
+<span class="nc" id="L220">    }</span>
 
     /**
      * Return true if the current parser will support forcing the tags and attributes to lower case.
@@ -237,7 +225,7 @@ import java.util.List;
      * @return boolean flag
      */
     public static boolean getForceLowerCase() {
-<span class="pc bpc" id="L240" title="3 of 4 branches missed.">        return _forceLower &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
+<span class="pc bpc" id="L228" title="3 of 4 branches missed.">        return _forceLower &amp;&amp; getHTMLParser().supportsPreserveTagCase();</span>
     }
 
     /**
@@ -246,7 +234,7 @@ import java.util.List;
      * @return true, if is parser warnings enabled
      */
     public static boolean isParserWarningsEnabled() {
-<span class="pc bpc" id="L249" title="3 of 4 branches missed.">        return _parserWarningsEnabled &amp;&amp; getHTMLParser().supportsParserWarnings();</span>
+<span class="pc bpc" id="L237" title="3 of 4 branches missed.">        return _parserWarningsEnabled &amp;&amp; getHTMLParser().supportsParserWarnings();</span>
     }
 
     /**
@@ -256,8 +244,8 @@ import java.util.List;
      *            the new parser warnings enabled
      */
     public static void setParserWarningsEnabled(boolean enabled) {
-<span class="fc" id="L259">        _parserWarningsEnabled = enabled;</span>
-<span class="fc" id="L260">    }</span>
+<span class="fc" id="L247">        _parserWarningsEnabled = enabled;</span>
+<span class="fc" id="L248">    }</span>
 
     /**
      * Remove an HTML Parser listener.
@@ -266,8 +254,8 @@ import java.util.List;
      *            the el
      */
     public static void removeHTMLParserListener(HTMLParserListener el) {
-<span class="fc" id="L269">        _listeners.remove(el);</span>
-<span class="fc" id="L270">    }</span>
+<span class="fc" id="L257">        _listeners.remove(el);</span>
+<span class="fc" id="L258">    }</span>
 
     /**
      * Add an HTML Parser listener.
@@ -276,8 +264,8 @@ import java.util.List;
      *            the el
      */
     public static void addHTMLParserListener(HTMLParserListener el) {
-<span class="fc" id="L279">        _listeners.add(el);</span>
-<span class="fc" id="L280">    }</span>
+<span class="fc" id="L267">        _listeners.add(el);</span>
+<span class="fc" id="L268">    }</span>
 
     // ------------------------------------- package protected members
     // ------------------------------------------------------
@@ -288,7 +276,7 @@ import java.util.List;
      * @return the HTML parser listeners
      */
     static List&lt;HTMLParserListener&gt; getHTMLParserListeners() {
-<span class="fc" id="L291">        return _listeners;</span>
+<span class="fc" id="L279">        return _listeners;</span>
     }
 
     /**
@@ -303,21 +291,21 @@ import java.util.List;
      */
     private static HTMLParser loadParserIfSupported(final String testClassName, final String parserClassName) {
         try {
-<span class="fc" id="L306">            Class.forName(testClassName);</span>
-<span class="fc" id="L307">            return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();</span>
-<span class="nc" id="L308">        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
+<span class="fc" id="L294">            Class.forName(testClassName);</span>
+<span class="fc" id="L295">            return (HTMLParser) Class.forName(parserClassName).getDeclaredConstructor().newInstance();</span>
+<span class="nc" id="L296">        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException</span>
                 | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-<span class="nc" id="L310">            e.printStackTrace();</span>
+<span class="nc" id="L298">            e.printStackTrace();</span>
         }
-<span class="nc" id="L312">        return null;</span>
+<span class="nc" id="L300">        return null;</span>
     }
 
     static {
-<span class="fc" id="L316">        _jtidyParser = loadParserIfSupported(&quot;org.w3c.tidy.Parser&quot;, &quot;com.meterware.httpunit.parsing.JTidyHTMLParser&quot;);</span>
-<span class="fc" id="L317">        _nekoParser = loadParserIfSupported(&quot;net.sourceforge.htmlunit.cyberneko.HTMLConfiguration&quot;,</span>
+<span class="fc" id="L304">        _jtidyParser = loadParserIfSupported(&quot;org.w3c.tidy.Parser&quot;, &quot;com.meterware.httpunit.parsing.JTidyHTMLParser&quot;);</span>
+<span class="fc" id="L305">        _nekoParser = loadParserIfSupported(&quot;net.sourceforge.htmlunit.cyberneko.HTMLConfiguration&quot;,</span>
                 &quot;com.meterware.httpunit.parsing.NekoHTMLParser&quot;);
-<span class="fc" id="L319">        reset();</span>
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L307">        reset();</span>
+<span class="fc" id="L308">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

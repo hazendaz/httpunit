@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.servletunit</a> &gt; <span class="el_source">WebApplication.java</span></div><h1>WebApplication.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.servletunit;
 
 import com.meterware.httpunit.HttpInternalErrorException;
 import com.meterware.httpunit.HttpNotFoundException;
 import com.meterware.httpunit.HttpUnitUtils;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,23 +31,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextAttributeEvent;
-import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -68,44 +42,44 @@ import org.xml.sax.SAXException;
 class WebApplication implements SessionListenerDispatcher {
 
     /** The Constant NULL_SECURITY_CONSTRAINT. */
-<span class="fc" id="L71">    private static final SecurityConstraint NULL_SECURITY_CONSTRAINT = new NullSecurityConstraint();</span>
+<span class="fc" id="L45">    private static final SecurityConstraint NULL_SECURITY_CONSTRAINT = new NullSecurityConstraint();</span>
 
     /** The security check configuration. */
-<span class="fc" id="L74">    private final ServletConfiguration SECURITY_CHECK_CONFIGURATION = new ServletConfiguration(</span>
-<span class="fc" id="L75">            SecurityCheckServlet.class.getName());</span>
+<span class="fc" id="L48">    private final ServletConfiguration SECURITY_CHECK_CONFIGURATION = new ServletConfiguration(</span>
+<span class="fc" id="L49">            SecurityCheckServlet.class.getName());</span>
 
     /** The security check mapping. */
-<span class="fc" id="L78">    private final WebResourceMapping SECURITY_CHECK_MAPPING = new WebResourceMapping(SECURITY_CHECK_CONFIGURATION);</span>
+<span class="fc" id="L52">    private final WebResourceMapping SECURITY_CHECK_MAPPING = new WebResourceMapping(SECURITY_CHECK_CONFIGURATION);</span>
 
     /** A mapping of resource names to servlet configurations. **/
-<span class="fc" id="L81">    private WebResourceMap _servletMapping = new WebResourceMap();</span>
+<span class="fc" id="L55">    private WebResourceMap _servletMapping = new WebResourceMap();</span>
 
     /** A mapping of filter names to FilterConfigurations. */
-<span class="fc" id="L84">    private Hashtable _filters = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L58">    private Hashtable _filters = new Hashtable&lt;&gt;();</span>
 
     /** A mapping of servlet names to ServletConfigurations. */
-<span class="fc" id="L87">    private Hashtable _servlets = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L61">    private Hashtable _servlets = new Hashtable&lt;&gt;();</span>
 
     /** A mapping of resource names to filter configurations. **/
-<span class="fc" id="L90">    private FilterUrlMap _filterUrlMapping = new FilterUrlMap();</span>
+<span class="fc" id="L64">    private FilterUrlMap _filterUrlMapping = new FilterUrlMap();</span>
 
     /** A mapping of servlet names to filter configurations. **/
-<span class="fc" id="L93">    private Hashtable _filterMapping = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L67">    private Hashtable _filterMapping = new Hashtable&lt;&gt;();</span>
 
     /** The security constraints. */
-<span class="fc" id="L96">    private List&lt;SecurityConstraint&gt; _securityConstraints = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L70">    private List&lt;SecurityConstraint&gt; _securityConstraints = new ArrayList&lt;&gt;();</span>
 
     /** The context listeners. */
-<span class="fc" id="L99">    private List&lt;ServletContextListener&gt; _contextListeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L73">    private List&lt;ServletContextListener&gt; _contextListeners = new ArrayList&lt;&gt;();</span>
 
     /** The context attribute listeners. */
-<span class="fc" id="L102">    private List&lt;ServletContextAttributeListener&gt; _contextAttributeListeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L76">    private List&lt;ServletContextAttributeListener&gt; _contextAttributeListeners = new ArrayList&lt;&gt;();</span>
 
     /** The session listeners. */
-<span class="fc" id="L105">    private List&lt;HttpSessionListener&gt; _sessionListeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L79">    private List&lt;HttpSessionListener&gt; _sessionListeners = new ArrayList&lt;&gt;();</span>
 
     /** The session attribute listeners. */
-<span class="fc" id="L108">    private List&lt;HttpSessionAttributeListener&gt; _sessionAttributeListeners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L82">    private List&lt;HttpSessionAttributeListener&gt; _sessionAttributeListeners = new ArrayList&lt;&gt;();</span>
 
     /** The use basic authentication. */
     private boolean _useBasicAuthentication;
@@ -114,7 +88,7 @@ class WebApplication implements SessionListenerDispatcher {
     private boolean _useFormAuthentication;
 
     /** The authentication realm. */
-<span class="fc" id="L117">    private String _authenticationRealm = &quot;&quot;;</span>
+<span class="fc" id="L91">    private String _authenticationRealm = &quot;&quot;;</span>
 
     /** The login URL. */
     private URL _loginURL;
@@ -123,13 +97,13 @@ class WebApplication implements SessionListenerDispatcher {
     private URL _errorURL;
 
     /** The context parameters. */
-<span class="fc" id="L126">    private Hashtable _contextParameters = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L100">    private Hashtable _contextParameters = new Hashtable&lt;&gt;();</span>
 
     /** The context dir. */
-<span class="fc" id="L129">    private File _contextDir = null;</span>
+<span class="fc" id="L103">    private File _contextDir = null;</span>
 
     /** The context path. */
-<span class="fc" id="L132">    private String _contextPath = null;</span>
+<span class="fc" id="L106">    private String _contextPath = null;</span>
 
     /** The servlet context. */
     private ServletUnitServletContext _servletContext;
@@ -140,9 +114,9 @@ class WebApplication implements SessionListenerDispatcher {
     /**
      * Constructs a default application spec with no information.
      */
-<span class="fc" id="L143">    WebApplication() {</span>
-<span class="fc" id="L144">        _contextPath = &quot;&quot;;</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L117">    WebApplication() {</span>
+<span class="fc" id="L118">        _contextPath = &quot;&quot;;</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Constructs an application spec from an XML document.
@@ -156,8 +130,8 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     WebApplication(Document document) throws MalformedURLException, SAXException {
-<span class="fc" id="L159">        this(document, null, &quot;&quot;);</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L133">        this(document, null, &quot;&quot;);</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructs an application spec from an XML document.
@@ -173,8 +147,8 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     WebApplication(Document document, String contextPath) throws MalformedURLException, SAXException {
-<span class="fc" id="L176">        this(document, null, contextPath);</span>
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L150">        this(document, null, contextPath);</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * Constructs an application spec from an XML document.
@@ -191,26 +165,26 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-<span class="fc" id="L194">    WebApplication(Document document, File file, String contextPath) throws MalformedURLException, SAXException {</span>
-<span class="pc bpc" id="L195" title="1 of 6 branches missed.">        if (contextPath != null &amp;&amp; !contextPath.isEmpty() &amp;&amp; !contextPath.startsWith(&quot;/&quot;)) {</span>
-<span class="nc" id="L196">            throw new IllegalArgumentException(&quot;Context path &quot; + contextPath + &quot; must start with '/'&quot;);</span>
+<span class="fc" id="L168">    WebApplication(Document document, File file, String contextPath) throws MalformedURLException, SAXException {</span>
+<span class="pc bpc" id="L169" title="1 of 6 branches missed.">        if (contextPath != null &amp;&amp; !contextPath.isEmpty() &amp;&amp; !contextPath.startsWith(&quot;/&quot;)) {</span>
+<span class="nc" id="L170">            throw new IllegalArgumentException(&quot;Context path &quot; + contextPath + &quot; must start with '/'&quot;);</span>
         }
-<span class="fc" id="L198">        _contextDir = file;</span>
-<span class="fc bfc" id="L199" title="All 2 branches covered.">        _contextPath = contextPath == null ? &quot;&quot; : contextPath;</span>
-<span class="fc" id="L200">        NodeList nl = document.getElementsByTagName(&quot;display-name&quot;);</span>
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (nl.getLength() &gt; 0) {</span>
-<span class="fc" id="L202">            _displayName = XMLUtils.getTextValue(nl.item(0)).trim();</span>
+<span class="fc" id="L172">        _contextDir = file;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        _contextPath = contextPath == null ? &quot;&quot; : contextPath;</span>
+<span class="fc" id="L174">        NodeList nl = document.getElementsByTagName(&quot;display-name&quot;);</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (nl.getLength() &gt; 0) {</span>
+<span class="fc" id="L176">            _displayName = XMLUtils.getTextValue(nl.item(0)).trim();</span>
         }
 
-<span class="fc" id="L205">        registerServlets(document);</span>
-<span class="fc" id="L206">        registerFilters(document);</span>
-<span class="fc" id="L207">        extractSecurityConstraints(document);</span>
-<span class="fc" id="L208">        extractContextParameters(document);</span>
-<span class="fc" id="L209">        extractLoginConfiguration(document);</span>
-<span class="fc" id="L210">        extractListeners(document);</span>
-<span class="fc" id="L211">        notifyContextInitialized();</span>
-<span class="fc" id="L212">        _servletMapping.autoLoadServlets();</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L179">        registerServlets(document);</span>
+<span class="fc" id="L180">        registerFilters(document);</span>
+<span class="fc" id="L181">        extractSecurityConstraints(document);</span>
+<span class="fc" id="L182">        extractContextParameters(document);</span>
+<span class="fc" id="L183">        extractLoginConfiguration(document);</span>
+<span class="fc" id="L184">        extractListeners(document);</span>
+<span class="fc" id="L185">        notifyContextInitialized();</span>
+<span class="fc" id="L186">        _servletMapping.autoLoadServlets();</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Extract listeners.
@@ -222,62 +196,62 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void extractListeners(Document document) throws SAXException {
-<span class="fc" id="L225">        NodeList nl = document.getElementsByTagName(&quot;listener&quot;);</span>
-<span class="fc bfc" id="L226" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L227">            String listenerName = XMLUtils.getChildNodeValue((Element) nl.item(i), &quot;listener-class&quot;).trim();</span>
+<span class="fc" id="L199">        NodeList nl = document.getElementsByTagName(&quot;listener&quot;);</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L201">            String listenerName = XMLUtils.getChildNodeValue((Element) nl.item(i), &quot;listener-class&quot;).trim();</span>
             try {
-<span class="fc" id="L229">                Object listener = Class.forName(listenerName).getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L203">                Object listener = Class.forName(listenerName).getDeclaredConstructor().newInstance();</span>
 
-<span class="fc bfc" id="L231" title="All 2 branches covered.">                if (listener instanceof ServletContextListener) {</span>
-<span class="fc" id="L232">                    _contextListeners.add((ServletContextListener) listener);</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">                if (listener instanceof ServletContextListener) {</span>
+<span class="fc" id="L206">                    _contextListeners.add((ServletContextListener) listener);</span>
                 }
-<span class="fc bfc" id="L234" title="All 2 branches covered.">                if (listener instanceof ServletContextAttributeListener) {</span>
-<span class="fc" id="L235">                    _contextAttributeListeners.add((ServletContextAttributeListener) listener);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">                if (listener instanceof ServletContextAttributeListener) {</span>
+<span class="fc" id="L209">                    _contextAttributeListeners.add((ServletContextAttributeListener) listener);</span>
                 }
-<span class="fc bfc" id="L237" title="All 2 branches covered.">                if (listener instanceof HttpSessionListener) {</span>
-<span class="fc" id="L238">                    _sessionListeners.add((HttpSessionListener) listener);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">                if (listener instanceof HttpSessionListener) {</span>
+<span class="fc" id="L212">                    _sessionListeners.add((HttpSessionListener) listener);</span>
                 }
-<span class="fc bfc" id="L240" title="All 2 branches covered.">                if (listener instanceof HttpSessionAttributeListener) {</span>
-<span class="fc" id="L241">                    _sessionAttributeListeners.add((HttpSessionAttributeListener) listener);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">                if (listener instanceof HttpSessionAttributeListener) {</span>
+<span class="fc" id="L215">                    _sessionAttributeListeners.add((HttpSessionAttributeListener) listener);</span>
                 }
-<span class="nc" id="L243">            } catch (Throwable e) {</span>
-<span class="nc" id="L244">                throw new RuntimeException(&quot;Unable to load context listener &quot; + listenerName + &quot;: &quot; + e.toString());</span>
-<span class="fc" id="L245">            }</span>
+<span class="nc" id="L217">            } catch (Throwable e) {</span>
+<span class="nc" id="L218">                throw new RuntimeException(&quot;Unable to load context listener &quot; + listenerName + &quot;: &quot; + e.toString());</span>
+<span class="fc" id="L219">            }</span>
         }
-<span class="fc" id="L247">    }</span>
+<span class="fc" id="L221">    }</span>
 
     /**
      * Notify context initialized.
      */
     private void notifyContextInitialized() {
-<span class="fc" id="L253">        ServletContextEvent event = new ServletContextEvent(getServletContext());</span>
+<span class="fc" id="L227">        ServletContextEvent event = new ServletContextEvent(getServletContext());</span>
 
-<span class="fc bfc" id="L255" title="All 2 branches covered.">        for (Iterator&lt;ServletContextListener&gt; i = _contextListeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L256">            ServletContextListener listener = i.next();</span>
-<span class="fc" id="L257">            listener.contextInitialized(event);</span>
-<span class="fc" id="L258">        }</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        for (Iterator&lt;ServletContextListener&gt; i = _contextListeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L230">            ServletContextListener listener = i.next();</span>
+<span class="fc" id="L231">            listener.contextInitialized(event);</span>
+<span class="fc" id="L232">        }</span>
+<span class="fc" id="L233">    }</span>
 
     /**
      * Shut down.
      */
     void shutDown() {
-<span class="fc" id="L265">        destroyServlets();</span>
-<span class="fc" id="L266">        notifyContextDestroyed();</span>
-<span class="fc" id="L267">    }</span>
+<span class="fc" id="L239">        destroyServlets();</span>
+<span class="fc" id="L240">        notifyContextDestroyed();</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Notify context destroyed.
      */
     private void notifyContextDestroyed() {
-<span class="fc" id="L273">        ServletContextEvent event = new ServletContextEvent(getServletContext());</span>
+<span class="fc" id="L247">        ServletContextEvent event = new ServletContextEvent(getServletContext());</span>
 
-<span class="fc" id="L275">        for (ListIterator&lt;ServletContextListener&gt; i = _contextListeners.listIterator(_contextListeners.size()); i</span>
-<span class="fc bfc" id="L276" title="All 2 branches covered.">                .hasPrevious();) {</span>
-<span class="fc" id="L277">            ServletContextListener listener = i.previous();</span>
-<span class="fc" id="L278">            listener.contextDestroyed(event);</span>
-<span class="fc" id="L279">        }</span>
-<span class="fc" id="L280">    }</span>
+<span class="fc" id="L249">        for (ListIterator&lt;ServletContextListener&gt; i = _contextListeners.listIterator(_contextListeners.size()); i</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">                .hasPrevious();) {</span>
+<span class="fc" id="L251">            ServletContextListener listener = i.previous();</span>
+<span class="fc" id="L252">            listener.contextDestroyed(event);</span>
+<span class="fc" id="L253">        }</span>
+<span class="fc" id="L254">    }</span>
 
     /**
      * Send attribute added.
@@ -288,13 +262,13 @@ class WebApplication implements SessionListenerDispatcher {
      *            the value
      */
     void sendAttributeAdded(String name, Object value) {
-<span class="fc" id="L291">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
+<span class="fc" id="L265">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
 
-<span class="fc bfc" id="L293" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L294">            ServletContextAttributeListener listener = i.next();</span>
-<span class="fc" id="L295">            listener.attributeAdded(event);</span>
-<span class="fc" id="L296">        }</span>
-<span class="fc" id="L297">    }</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L268">            ServletContextAttributeListener listener = i.next();</span>
+<span class="fc" id="L269">            listener.attributeAdded(event);</span>
+<span class="fc" id="L270">        }</span>
+<span class="fc" id="L271">    }</span>
 
     /**
      * Send attribute replaced.
@@ -305,13 +279,13 @@ class WebApplication implements SessionListenerDispatcher {
      *            the value
      */
     void sendAttributeReplaced(String name, Object value) {
-<span class="fc" id="L308">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
+<span class="fc" id="L282">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
 
-<span class="fc bfc" id="L310" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L311">            ServletContextAttributeListener listener = i.next();</span>
-<span class="fc" id="L312">            listener.attributeReplaced(event);</span>
-<span class="fc" id="L313">        }</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L285">            ServletContextAttributeListener listener = i.next();</span>
+<span class="fc" id="L286">            listener.attributeReplaced(event);</span>
+<span class="fc" id="L287">        }</span>
+<span class="fc" id="L288">    }</span>
 
     /**
      * Send attribute removed.
@@ -322,13 +296,13 @@ class WebApplication implements SessionListenerDispatcher {
      *            the value
      */
     void sendAttributeRemoved(String name, Object value) {
-<span class="fc" id="L325">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
+<span class="fc" id="L299">        ServletContextAttributeEvent event = new ServletContextAttributeEvent(getServletContext(), name, value);</span>
 
-<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
-<span class="fc" id="L328">            ServletContextAttributeListener listener = i.next();</span>
-<span class="fc" id="L329">            listener.attributeRemoved(event);</span>
-<span class="fc" id="L330">        }</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (Iterator&lt;ServletContextAttributeListener&gt; i = _contextAttributeListeners.iterator(); i.hasNext();) {</span>
+<span class="fc" id="L302">            ServletContextAttributeListener listener = i.next();</span>
+<span class="fc" id="L303">            listener.attributeRemoved(event);</span>
+<span class="fc" id="L304">        }</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Extract security constraints.
@@ -340,11 +314,11 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void extractSecurityConstraints(Document document) throws SAXException {
-<span class="fc" id="L343">        NodeList nl = document.getElementsByTagName(&quot;security-constraint&quot;);</span>
-<span class="fc bfc" id="L344" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L345">            _securityConstraints.add(new SecurityConstraintImpl((Element) nl.item(i)));</span>
+<span class="fc" id="L317">        NodeList nl = document.getElementsByTagName(&quot;security-constraint&quot;);</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L319">            _securityConstraints.add(new SecurityConstraintImpl((Element) nl.item(i)));</span>
         }
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L321">    }</span>
 
     /**
      * Gets the context path.
@@ -352,7 +326,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the context path
      */
     String getContextPath() {
-<span class="fc" id="L355">        return _contextPath;</span>
+<span class="fc" id="L329">        return _contextPath;</span>
     }
 
     /**
@@ -361,10 +335,10 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the servlet context
      */
     ServletContext getServletContext() {
-<span class="fc bfc" id="L364" title="All 2 branches covered.">        if (_servletContext == null) {</span>
-<span class="fc" id="L365">            _servletContext = new ServletUnitServletContext(this);</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">        if (_servletContext == null) {</span>
+<span class="fc" id="L339">            _servletContext = new ServletUnitServletContext(this);</span>
         }
-<span class="fc" id="L367">        return _servletContext;</span>
+<span class="fc" id="L341">        return _servletContext;</span>
     }
 
     /**
@@ -378,8 +352,8 @@ class WebApplication implements SessionListenerDispatcher {
      *            the init params
      */
     void registerServlet(String resourceName, String servletClassName, Hashtable initParams) {
-<span class="fc" id="L381">        registerServlet(resourceName, new ServletConfiguration(servletClassName, initParams));</span>
-<span class="fc" id="L382">    }</span>
+<span class="fc" id="L355">        registerServlet(resourceName, new ServletConfiguration(servletClassName, initParams));</span>
+<span class="fc" id="L356">    }</span>
 
     /**
      * Registers a servlet to be run.
@@ -391,18 +365,18 @@ class WebApplication implements SessionListenerDispatcher {
      */
     void registerServlet(String resourceName, ServletConfiguration servletConfiguration) {
         // FIXME - shouldn't everything start with one or the other?
-<span class="fc bfc" id="L394" title="All 4 branches covered.">        if (!resourceName.startsWith(&quot;/&quot;) &amp;&amp; !resourceName.startsWith(&quot;*&quot;)) {</span>
-<span class="fc" id="L395">            resourceName = &quot;/&quot; + resourceName;</span>
+<span class="fc bfc" id="L368" title="All 4 branches covered.">        if (!resourceName.startsWith(&quot;/&quot;) &amp;&amp; !resourceName.startsWith(&quot;*&quot;)) {</span>
+<span class="fc" id="L369">            resourceName = &quot;/&quot; + resourceName;</span>
         }
-<span class="fc" id="L397">        _servletMapping.put(resourceName, servletConfiguration);</span>
-<span class="fc" id="L398">    }</span>
+<span class="fc" id="L371">        _servletMapping.put(resourceName, servletConfiguration);</span>
+<span class="fc" id="L372">    }</span>
 
     /**
      * Calls the destroy method for every active servlet.
      */
     void destroyServlets() {
-<span class="fc" id="L404">        _servletMapping.destroyWebResources();</span>
-<span class="fc" id="L405">    }</span>
+<span class="fc" id="L378">        _servletMapping.destroyWebResources();</span>
+<span class="fc" id="L379">    }</span>
 
     /**
      * Gets the servlet request.
@@ -413,7 +387,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the servlet request
      */
     ServletMetaData getServletRequest(URL url) {
-<span class="fc" id="L416">        return _servletMapping.get(url);</span>
+<span class="fc" id="L390">        return _servletMapping.get(url);</span>
     }
 
     /**
@@ -422,7 +396,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return true, if successful
      */
     boolean usesBasicAuthentication() {
-<span class="fc" id="L425">        return _useBasicAuthentication;</span>
+<span class="fc" id="L399">        return _useBasicAuthentication;</span>
     }
 
     /**
@@ -431,7 +405,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return true, if successful
      */
     boolean usesFormAuthentication() {
-<span class="fc" id="L434">        return _useFormAuthentication;</span>
+<span class="fc" id="L408">        return _useFormAuthentication;</span>
     }
 
     /**
@@ -440,7 +414,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the authentication realm
      */
     String getAuthenticationRealm() {
-<span class="fc" id="L443">        return _authenticationRealm;</span>
+<span class="fc" id="L417">        return _authenticationRealm;</span>
     }
 
     /**
@@ -449,7 +423,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the login URL
      */
     URL getLoginURL() {
-<span class="fc" id="L452">        return _loginURL;</span>
+<span class="fc" id="L426">        return _loginURL;</span>
     }
 
     /**
@@ -458,7 +432,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the error URL
      */
     URL getErrorURL() {
-<span class="fc" id="L461">        return _errorURL;</span>
+<span class="fc" id="L435">        return _errorURL;</span>
     }
 
     /**
@@ -471,15 +445,15 @@ class WebApplication implements SessionListenerDispatcher {
      */
     boolean requiresAuthorization(URL url) {
         String result;
-<span class="fc" id="L474">        String file = url.getFile();</span>
-<span class="fc bfc" id="L475" title="All 2 branches covered.">        if (_contextPath.equals(&quot;&quot;)) {</span>
-<span class="fc" id="L476">            result = file;</span>
-<span class="pc bpc" id="L477" title="1 of 2 branches missed.">        } else if (file.startsWith(_contextPath)) {</span>
-<span class="fc" id="L478">            result = file.substring(_contextPath.length());</span>
+<span class="fc" id="L448">        String file = url.getFile();</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">        if (_contextPath.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L450">            result = file;</span>
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        } else if (file.startsWith(_contextPath)) {</span>
+<span class="fc" id="L452">            result = file.substring(_contextPath.length());</span>
         } else {
-<span class="nc" id="L480">            result = null;</span>
+<span class="nc" id="L454">            result = null;</span>
         }
-<span class="fc bfc" id="L482" title="All 2 branches covered.">        return getControllingConstraint(result) != NULL_SECURITY_CONSTRAINT;</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        return getControllingConstraint(result) != NULL_SECURITY_CONSTRAINT;</span>
     }
 
     /**
@@ -492,15 +466,15 @@ class WebApplication implements SessionListenerDispatcher {
      */
     String[] getPermittedRoles(URL url) {
         String result;
-<span class="fc" id="L495">        String file = url.getFile();</span>
-<span class="fc bfc" id="L496" title="All 2 branches covered.">        if (_contextPath.equals(&quot;&quot;)) {</span>
-<span class="fc" id="L497">            result = file;</span>
-<span class="pc bpc" id="L498" title="1 of 2 branches missed.">        } else if (file.startsWith(_contextPath)) {</span>
-<span class="fc" id="L499">            result = file.substring(_contextPath.length());</span>
+<span class="fc" id="L469">        String file = url.getFile();</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        if (_contextPath.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L471">            result = file;</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        } else if (file.startsWith(_contextPath)) {</span>
+<span class="fc" id="L473">            result = file.substring(_contextPath.length());</span>
         } else {
-<span class="nc" id="L501">            result = null;</span>
+<span class="nc" id="L475">            result = null;</span>
         }
-<span class="fc" id="L503">        return getControllingConstraint(result).getPermittedRoles();</span>
+<span class="fc" id="L477">        return getControllingConstraint(result).getPermittedRoles();</span>
     }
 
     /**
@@ -512,12 +486,12 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the controlling constraint
      */
     private SecurityConstraint getControllingConstraint(String urlPath) {
-<span class="fc bfc" id="L515" title="All 2 branches covered.">        for (SecurityConstraint sc : _securityConstraints) {</span>
-<span class="fc bfc" id="L516" title="All 2 branches covered.">            if (sc.controlsPath(urlPath)) {</span>
-<span class="fc" id="L517">                return sc;</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">        for (SecurityConstraint sc : _securityConstraints) {</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">            if (sc.controlsPath(urlPath)) {</span>
+<span class="fc" id="L491">                return sc;</span>
             }
-<span class="fc" id="L519">        }</span>
-<span class="fc" id="L520">        return NULL_SECURITY_CONSTRAINT;</span>
+<span class="fc" id="L493">        }</span>
+<span class="fc" id="L494">        return NULL_SECURITY_CONSTRAINT;</span>
     }
 
     /**
@@ -529,11 +503,11 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the resource file
      */
     File getResourceFile(String path) {
-<span class="fc bfc" id="L532" title="All 2 branches covered.">        String relativePath = path.startsWith(&quot;/&quot;) ? path.substring(1) : path;</span>
-<span class="fc bfc" id="L533" title="All 2 branches covered.">        if (_contextDir == null) {</span>
-<span class="fc" id="L534">            return Path.of(relativePath).toFile();</span>
+<span class="fc bfc" id="L506" title="All 2 branches covered.">        String relativePath = path.startsWith(&quot;/&quot;) ? path.substring(1) : path;</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        if (_contextDir == null) {</span>
+<span class="fc" id="L508">            return Path.of(relativePath).toFile();</span>
         }
-<span class="fc" id="L536">        return _contextDir.toPath().resolve(relativePath).toFile();</span>
+<span class="fc" id="L510">        return _contextDir.toPath().resolve(relativePath).toFile();</span>
     }
 
     /**
@@ -542,7 +516,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the context parameters
      */
     Hashtable getContextParameters() {
-<span class="fc" id="L545">        return _contextParameters;</span>
+<span class="fc" id="L519">        return _contextParameters;</span>
     }
 
     // ---------------------------------------- SessionListenerDispatcher methods
@@ -550,48 +524,48 @@ class WebApplication implements SessionListenerDispatcher {
 
     @Override
     public void sendSessionCreated(HttpSession session) {
-<span class="fc" id="L553">        HttpSessionEvent event = new HttpSessionEvent(session);</span>
+<span class="fc" id="L527">        HttpSessionEvent event = new HttpSessionEvent(session);</span>
 
-<span class="fc bfc" id="L555" title="All 2 branches covered.">        for (HttpSessionListener listener : _sessionListeners) {</span>
-<span class="fc" id="L556">            listener.sessionCreated(event);</span>
-<span class="fc" id="L557">        }</span>
-<span class="fc" id="L558">    }</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">        for (HttpSessionListener listener : _sessionListeners) {</span>
+<span class="fc" id="L530">            listener.sessionCreated(event);</span>
+<span class="fc" id="L531">        }</span>
+<span class="fc" id="L532">    }</span>
 
     @Override
     public void sendSessionDestroyed(HttpSession session) {
-<span class="fc" id="L562">        HttpSessionEvent event = new HttpSessionEvent(session);</span>
+<span class="fc" id="L536">        HttpSessionEvent event = new HttpSessionEvent(session);</span>
 
-<span class="fc bfc" id="L564" title="All 2 branches covered.">        for (HttpSessionListener listener : _sessionListeners) {</span>
-<span class="fc" id="L565">            listener.sessionDestroyed(event);</span>
-<span class="fc" id="L566">        }</span>
-<span class="fc" id="L567">    }</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">        for (HttpSessionListener listener : _sessionListeners) {</span>
+<span class="fc" id="L539">            listener.sessionDestroyed(event);</span>
+<span class="fc" id="L540">        }</span>
+<span class="fc" id="L541">    }</span>
 
     @Override
     public void sendAttributeAdded(HttpSession session, String name, Object value) {
-<span class="fc" id="L571">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, value);</span>
+<span class="fc" id="L545">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, value);</span>
 
-<span class="fc bfc" id="L573" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
-<span class="fc" id="L574">            listener.attributeAdded(event);</span>
-<span class="fc" id="L575">        }</span>
-<span class="fc" id="L576">    }</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
+<span class="fc" id="L548">            listener.attributeAdded(event);</span>
+<span class="fc" id="L549">        }</span>
+<span class="fc" id="L550">    }</span>
 
     @Override
     public void sendAttributeReplaced(HttpSession session, String name, Object oldValue) {
-<span class="fc" id="L580">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);</span>
+<span class="fc" id="L554">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);</span>
 
-<span class="fc bfc" id="L582" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
-<span class="fc" id="L583">            listener.attributeReplaced(event);</span>
-<span class="fc" id="L584">        }</span>
-<span class="fc" id="L585">    }</span>
+<span class="fc bfc" id="L556" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
+<span class="fc" id="L557">            listener.attributeReplaced(event);</span>
+<span class="fc" id="L558">        }</span>
+<span class="fc" id="L559">    }</span>
 
     @Override
     public void sendAttributeRemoved(HttpSession session, String name, Object oldValue) {
-<span class="fc" id="L589">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);</span>
+<span class="fc" id="L563">        HttpSessionBindingEvent event = new HttpSessionBindingEvent(session, name, oldValue);</span>
 
-<span class="fc bfc" id="L591" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
-<span class="fc" id="L592">            listener.attributeRemoved(event);</span>
-<span class="fc" id="L593">        }</span>
-<span class="fc" id="L594">    }</span>
+<span class="fc bfc" id="L565" title="All 2 branches covered.">        for (HttpSessionAttributeListener listener : _sessionAttributeListeners) {</span>
+<span class="fc" id="L566">            listener.attributeRemoved(event);</span>
+<span class="fc" id="L567">        }</span>
+<span class="fc" id="L568">    }</span>
 
     // --------------------------------------------------- private members
     // --------------------------------------------------
@@ -606,17 +580,17 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerFilters(Document document) throws SAXException {
-<span class="fc" id="L609">        Hashtable nameToClass = new Hashtable&lt;&gt;();</span>
-<span class="fc" id="L610">        NodeList nl = document.getElementsByTagName(&quot;filter&quot;);</span>
-<span class="fc bfc" id="L611" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L612">            registerFilterClass(nameToClass, (Element) nl.item(i));</span>
+<span class="fc" id="L583">        Hashtable nameToClass = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L584">        NodeList nl = document.getElementsByTagName(&quot;filter&quot;);</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L586">            registerFilterClass(nameToClass, (Element) nl.item(i));</span>
         }
-<span class="fc" id="L614">        nl = document.getElementsByTagName(&quot;filter-mapping&quot;);</span>
-<span class="fc bfc" id="L615" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L616">            registerFilter(nameToClass, (Element) nl.item(i));</span>
+<span class="fc" id="L588">        nl = document.getElementsByTagName(&quot;filter-mapping&quot;);</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L590">            registerFilter(nameToClass, (Element) nl.item(i));</span>
         }
-<span class="fc" id="L618">        this._filters = nameToClass;</span>
-<span class="fc" id="L619">    }</span>
+<span class="fc" id="L592">        this._filters = nameToClass;</span>
+<span class="fc" id="L593">    }</span>
 
     /**
      * Register filter class.
@@ -630,9 +604,9 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerFilterClass(Dictionary mapping, Element filterElement) throws SAXException {
-<span class="fc" id="L633">        String filterName = XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;);</span>
-<span class="fc" id="L634">        mapping.put(filterName, new FilterConfiguration(filterName, filterElement));</span>
-<span class="fc" id="L635">    }</span>
+<span class="fc" id="L607">        String filterName = XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;);</span>
+<span class="fc" id="L608">        mapping.put(filterName, new FilterConfiguration(filterName, filterElement));</span>
+<span class="fc" id="L609">    }</span>
 
     /**
      * Register filter.
@@ -646,15 +620,15 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerFilter(Dictionary mapping, Element filterElement) throws SAXException {
-<span class="fc bfc" id="L649" title="All 2 branches covered.">        if (XMLUtils.hasChildNode(filterElement, &quot;servlet-name&quot;)) {</span>
-<span class="fc" id="L650">            registerFilterForServlet(XMLUtils.getChildNodeValue(filterElement, &quot;servlet-name&quot;),</span>
-<span class="fc" id="L651">                    (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;)));</span>
+<span class="fc bfc" id="L623" title="All 2 branches covered.">        if (XMLUtils.hasChildNode(filterElement, &quot;servlet-name&quot;)) {</span>
+<span class="fc" id="L624">            registerFilterForServlet(XMLUtils.getChildNodeValue(filterElement, &quot;servlet-name&quot;),</span>
+<span class="fc" id="L625">                    (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;)));</span>
         }
-<span class="fc bfc" id="L653" title="All 2 branches covered.">        if (XMLUtils.hasChildNode(filterElement, &quot;url-pattern&quot;)) {</span>
-<span class="fc" id="L654">            registerFilterForUrl(XMLUtils.getChildNodeValue(filterElement, &quot;url-pattern&quot;),</span>
-<span class="fc" id="L655">                    (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;)));</span>
+<span class="fc bfc" id="L627" title="All 2 branches covered.">        if (XMLUtils.hasChildNode(filterElement, &quot;url-pattern&quot;)) {</span>
+<span class="fc" id="L628">            registerFilterForUrl(XMLUtils.getChildNodeValue(filterElement, &quot;url-pattern&quot;),</span>
+<span class="fc" id="L629">                    (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, &quot;filter-name&quot;)));</span>
         }
-<span class="fc" id="L657">    }</span>
+<span class="fc" id="L631">    }</span>
 
     /**
      * Register filter for url.
@@ -665,8 +639,8 @@ class WebApplication implements SessionListenerDispatcher {
      *            the filter configuration
      */
     private void registerFilterForUrl(String resourceName, FilterConfiguration filterConfiguration) {
-<span class="fc" id="L668">        _filterUrlMapping.put(resourceName, filterConfiguration);</span>
-<span class="fc" id="L669">    }</span>
+<span class="fc" id="L642">        _filterUrlMapping.put(resourceName, filterConfiguration);</span>
+<span class="fc" id="L643">    }</span>
 
     /**
      * Register filter for servlet.
@@ -677,13 +651,13 @@ class WebApplication implements SessionListenerDispatcher {
      *            the filter configuration
      */
     private void registerFilterForServlet(String servletName, FilterConfiguration filterConfiguration) {
-<span class="fc" id="L680">        List list = (List) _filterMapping.get(servletName);</span>
-<span class="fc bfc" id="L681" title="All 2 branches covered.">        if (list == null) {</span>
-<span class="fc" id="L682">            list = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L683">            _filterMapping.put(servletName, list);</span>
+<span class="fc" id="L654">        List list = (List) _filterMapping.get(servletName);</span>
+<span class="fc bfc" id="L655" title="All 2 branches covered.">        if (list == null) {</span>
+<span class="fc" id="L656">            list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L657">            _filterMapping.put(servletName, list);</span>
         }
-<span class="fc" id="L685">        list.add(filterConfiguration);</span>
-<span class="fc" id="L686">    }</span>
+<span class="fc" id="L659">        list.add(filterConfiguration);</span>
+<span class="fc" id="L660">    }</span>
 
     /**
      * Extract login configuration.
@@ -697,28 +671,28 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void extractLoginConfiguration(Document document) throws MalformedURLException, SAXException {
-<span class="fc" id="L700">        NodeList nl = document.getElementsByTagName(&quot;login-config&quot;);</span>
-<span class="fc bfc" id="L701" title="All 2 branches covered.">        if (nl.getLength() == 1) {</span>
-<span class="fc" id="L702">            final Element loginConfigElement = (Element) nl.item(0);</span>
-<span class="fc" id="L703">            String authenticationMethod = XMLUtils.getChildNodeValue(loginConfigElement, &quot;auth-method&quot;, &quot;BASIC&quot;);</span>
-<span class="fc" id="L704">            _authenticationRealm = XMLUtils.getChildNodeValue(loginConfigElement, &quot;realm-name&quot;, &quot;&quot;);</span>
-<span class="fc bfc" id="L705" title="All 2 branches covered.">            if (authenticationMethod.equalsIgnoreCase(&quot;BASIC&quot;)) {</span>
-<span class="fc" id="L706">                _useBasicAuthentication = true;</span>
-<span class="pc bpc" id="L707" title="1 of 2 branches missed.">                if (_authenticationRealm.isEmpty()) {</span>
-<span class="nc" id="L708">                    throw new SAXException(&quot;No realm specified for BASIC Authorization&quot;);</span>
+<span class="fc" id="L674">        NodeList nl = document.getElementsByTagName(&quot;login-config&quot;);</span>
+<span class="fc bfc" id="L675" title="All 2 branches covered.">        if (nl.getLength() == 1) {</span>
+<span class="fc" id="L676">            final Element loginConfigElement = (Element) nl.item(0);</span>
+<span class="fc" id="L677">            String authenticationMethod = XMLUtils.getChildNodeValue(loginConfigElement, &quot;auth-method&quot;, &quot;BASIC&quot;);</span>
+<span class="fc" id="L678">            _authenticationRealm = XMLUtils.getChildNodeValue(loginConfigElement, &quot;realm-name&quot;, &quot;&quot;);</span>
+<span class="fc bfc" id="L679" title="All 2 branches covered.">            if (authenticationMethod.equalsIgnoreCase(&quot;BASIC&quot;)) {</span>
+<span class="fc" id="L680">                _useBasicAuthentication = true;</span>
+<span class="pc bpc" id="L681" title="1 of 2 branches missed.">                if (_authenticationRealm.isEmpty()) {</span>
+<span class="nc" id="L682">                    throw new SAXException(&quot;No realm specified for BASIC Authorization&quot;);</span>
                 }
-<span class="pc bpc" id="L710" title="1 of 2 branches missed.">            } else if (authenticationMethod.equalsIgnoreCase(&quot;FORM&quot;)) {</span>
-<span class="fc" id="L711">                _useFormAuthentication = true;</span>
-<span class="pc bpc" id="L712" title="1 of 2 branches missed.">                if (_authenticationRealm.isEmpty()) {</span>
-<span class="nc" id="L713">                    throw new SAXException(&quot;No realm specified for FORM Authorization&quot;);</span>
+<span class="pc bpc" id="L684" title="1 of 2 branches missed.">            } else if (authenticationMethod.equalsIgnoreCase(&quot;FORM&quot;)) {</span>
+<span class="fc" id="L685">                _useFormAuthentication = true;</span>
+<span class="pc bpc" id="L686" title="1 of 2 branches missed.">                if (_authenticationRealm.isEmpty()) {</span>
+<span class="nc" id="L687">                    throw new SAXException(&quot;No realm specified for FORM Authorization&quot;);</span>
                 }
-<span class="fc" id="L715">                _loginURL = new URL(&quot;http&quot;, &quot;localhost&quot;,</span>
-<span class="fc" id="L716">                        _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, &quot;form-login-page&quot;));</span>
-<span class="fc" id="L717">                _errorURL = new URL(&quot;http&quot;, &quot;localhost&quot;,</span>
-<span class="fc" id="L718">                        _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, &quot;form-error-page&quot;));</span>
+<span class="fc" id="L689">                _loginURL = new URL(&quot;http&quot;, &quot;localhost&quot;,</span>
+<span class="fc" id="L690">                        _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, &quot;form-login-page&quot;));</span>
+<span class="fc" id="L691">                _errorURL = new URL(&quot;http&quot;, &quot;localhost&quot;,</span>
+<span class="fc" id="L692">                        _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, &quot;form-error-page&quot;));</span>
             }
         }
-<span class="fc" id="L721">    }</span>
+<span class="fc" id="L695">    }</span>
 
     /**
      * Register servlets.
@@ -730,17 +704,17 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerServlets(Document document) throws SAXException {
-<span class="fc" id="L733">        Hashtable nameToClass = new Hashtable&lt;&gt;();</span>
-<span class="fc" id="L734">        NodeList nl = document.getElementsByTagName(&quot;servlet&quot;);</span>
-<span class="fc bfc" id="L735" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L736">            registerServletClass(nameToClass, (Element) nl.item(i));</span>
+<span class="fc" id="L707">        Hashtable nameToClass = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L708">        NodeList nl = document.getElementsByTagName(&quot;servlet&quot;);</span>
+<span class="fc bfc" id="L709" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L710">            registerServletClass(nameToClass, (Element) nl.item(i));</span>
         }
-<span class="fc" id="L738">        nl = document.getElementsByTagName(&quot;servlet-mapping&quot;);</span>
-<span class="fc bfc" id="L739" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L740">            registerServlet(nameToClass, (Element) nl.item(i));</span>
+<span class="fc" id="L712">        nl = document.getElementsByTagName(&quot;servlet-mapping&quot;);</span>
+<span class="fc bfc" id="L713" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L714">            registerServlet(nameToClass, (Element) nl.item(i));</span>
         }
-<span class="fc" id="L742">        this._servlets = nameToClass;</span>
-<span class="fc" id="L743">    }</span>
+<span class="fc" id="L716">        this._servlets = nameToClass;</span>
+<span class="fc" id="L717">    }</span>
 
     /**
      * Register servlet class.
@@ -754,9 +728,9 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerServletClass(Dictionary mapping, Element servletElement) throws SAXException {
-<span class="fc" id="L757">        mapping.put(XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;),</span>
+<span class="fc" id="L731">        mapping.put(XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;),</span>
                 new ServletConfiguration(servletElement));
-<span class="fc" id="L759">    }</span>
+<span class="fc" id="L733">    }</span>
 
     /**
      * Register servlet.
@@ -770,9 +744,9 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerServlet(Dictionary mapping, Element servletElement) throws SAXException {
-<span class="fc" id="L773">        registerServlet(XMLUtils.getChildNodeValue(servletElement, &quot;url-pattern&quot;),</span>
-<span class="fc" id="L774">                (ServletConfiguration) mapping.get(XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;)));</span>
-<span class="fc" id="L775">    }</span>
+<span class="fc" id="L747">        registerServlet(XMLUtils.getChildNodeValue(servletElement, &quot;url-pattern&quot;),</span>
+<span class="fc" id="L748">                (ServletConfiguration) mapping.get(XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;)));</span>
+<span class="fc" id="L749">    }</span>
 
     /**
      * Extract context parameters.
@@ -784,14 +758,14 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void extractContextParameters(Document document) throws SAXException {
-<span class="fc" id="L787">        NodeList nl = document.getElementsByTagName(&quot;context-param&quot;);</span>
-<span class="fc bfc" id="L788" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
-<span class="fc" id="L789">            Element param = (Element) nl.item(i);</span>
-<span class="fc" id="L790">            String name = XMLUtils.getChildNodeValue(param, &quot;param-name&quot;);</span>
-<span class="fc" id="L791">            String value = XMLUtils.getChildNodeValue(param, &quot;param-value&quot;);</span>
-<span class="fc" id="L792">            _contextParameters.put(name, value);</span>
+<span class="fc" id="L761">        NodeList nl = document.getElementsByTagName(&quot;context-param&quot;);</span>
+<span class="fc bfc" id="L762" title="All 2 branches covered.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="fc" id="L763">            Element param = (Element) nl.item(i);</span>
+<span class="fc" id="L764">            String name = XMLUtils.getChildNodeValue(param, &quot;param-name&quot;);</span>
+<span class="fc" id="L765">            String value = XMLUtils.getChildNodeValue(param, &quot;param-value&quot;);</span>
+<span class="fc" id="L766">            _contextParameters.put(name, value);</span>
         }
-<span class="fc" id="L794">    }</span>
+<span class="fc" id="L768">    }</span>
 
     /**
      * Pattern matches.
@@ -804,7 +778,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return true, if successful
      */
     private static boolean patternMatches(String urlPattern, String urlPath) {
-<span class="fc" id="L807">        return urlPattern.equals(urlPath);</span>
+<span class="fc" id="L781">        return urlPattern.equals(urlPath);</span>
     }
 
     /**
@@ -813,7 +787,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the display name
      */
     String getDisplayName() {
-<span class="fc" id="L816">        return _displayName;</span>
+<span class="fc" id="L790">        return _displayName;</span>
     }
 
     // ============================================= SecurityCheckServlet class
@@ -822,20 +796,20 @@ class WebApplication implements SessionListenerDispatcher {
     /**
      * The Class SecurityCheckServlet.
      */
-<span class="fc" id="L825">    static class SecurityCheckServlet extends HttpServlet {</span>
+<span class="fc" id="L799">    static class SecurityCheckServlet extends HttpServlet {</span>
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-<span class="nc" id="L832">            handleLogin(req, resp);</span>
-<span class="nc" id="L833">        }</span>
+<span class="nc" id="L806">            handleLogin(req, resp);</span>
+<span class="nc" id="L807">        }</span>
 
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-<span class="fc" id="L837">            handleLogin(req, resp);</span>
-<span class="fc" id="L838">        }</span>
+<span class="fc" id="L811">            handleLogin(req, resp);</span>
+<span class="fc" id="L812">        }</span>
 
         /**
          * Handle login.
@@ -849,11 +823,11 @@ class WebApplication implements SessionListenerDispatcher {
          *             Signals that an I/O exception has occurred.
          */
         private void handleLogin(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-<span class="fc" id="L852">            final String username = req.getParameter(&quot;j_username&quot;);</span>
-<span class="fc" id="L853">            final String roleList = req.getParameter(&quot;j_password&quot;);</span>
-<span class="fc" id="L854">            getServletSession(req).setUserInformation(username, ServletUnitHttpRequest.toArray(roleList));</span>
-<span class="fc" id="L855">            resp.sendRedirect(getServletSession(req).getOriginalURL().toExternalForm());</span>
-<span class="fc" id="L856">        }</span>
+<span class="fc" id="L826">            final String username = req.getParameter(&quot;j_username&quot;);</span>
+<span class="fc" id="L827">            final String roleList = req.getParameter(&quot;j_password&quot;);</span>
+<span class="fc" id="L828">            getServletSession(req).setUserInformation(username, ServletUnitHttpRequest.toArray(roleList));</span>
+<span class="fc" id="L829">            resp.sendRedirect(getServletSession(req).getOriginalURL().toExternalForm());</span>
+<span class="fc" id="L830">        }</span>
 
         /**
          * Gets the servlet session.
@@ -864,7 +838,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the servlet session
          */
         private ServletUnitHttpSession getServletSession(HttpServletRequest req) {
-<span class="fc" id="L867">            return (ServletUnitHttpSession) req.getSession();</span>
+<span class="fc" id="L841">            return (ServletUnitHttpSession) req.getSession();</span>
         }
 
     }
@@ -893,7 +867,7 @@ class WebApplication implements SessionListenerDispatcher {
         private String _jspFile;
 
         /** The load order. */
-<span class="fc" id="L896">        private int _loadOrder = DONT_AUTOLOAD;</span>
+<span class="fc" id="L870">        private int _loadOrder = DONT_AUTOLOAD;</span>
 
         /**
          * Instantiates a new servlet configuration.
@@ -901,9 +875,9 @@ class WebApplication implements SessionListenerDispatcher {
          * @param className
          *            the class name
          */
-<span class="fc" id="L904">        ServletConfiguration(String className) {</span>
-<span class="fc" id="L905">            super(className);</span>
-<span class="fc" id="L906">        }</span>
+<span class="fc" id="L878">        ServletConfiguration(String className) {</span>
+<span class="fc" id="L879">            super(className);</span>
+<span class="fc" id="L880">        }</span>
 
         /**
          * Instantiates a new servlet configuration.
@@ -913,9 +887,9 @@ class WebApplication implements SessionListenerDispatcher {
          * @param initParams
          *            the init params
          */
-<span class="fc" id="L916">        ServletConfiguration(String className, Hashtable initParams) {</span>
-<span class="fc" id="L917">            super(className, initParams);</span>
-<span class="fc" id="L918">        }</span>
+<span class="fc" id="L890">        ServletConfiguration(String className, Hashtable initParams) {</span>
+<span class="fc" id="L891">            super(className, initParams);</span>
+<span class="fc" id="L892">        }</span>
 
         /**
          * Instantiates a new servlet configuration.
@@ -926,24 +900,24 @@ class WebApplication implements SessionListenerDispatcher {
          * @throws SAXException
          *             the SAX exception
          */
-<span class="fc" id="L929">        ServletConfiguration(Element servletElement) throws SAXException {</span>
-<span class="fc" id="L930">            super(servletElement, &quot;servlet-class&quot;, XMLUtils.getChildNodeValue(servletElement, &quot;servlet-class&quot;,</span>
+<span class="fc" id="L903">        ServletConfiguration(Element servletElement) throws SAXException {</span>
+<span class="fc" id="L904">            super(servletElement, &quot;servlet-class&quot;, XMLUtils.getChildNodeValue(servletElement, &quot;servlet-class&quot;,</span>
                     &quot;org.apache.jasper.servlet.JspServlet&quot;));
-<span class="fc" id="L932">            _servletName = XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;);</span>
-<span class="fc" id="L933">            _jspFile = XMLUtils.getChildNodeValue(servletElement, &quot;jsp-file&quot;, &quot;&quot;);</span>
-<span class="pc bpc" id="L934" title="1 of 2 branches missed.">            if (&quot;&quot;.equals(_jspFile)) {</span>
-<span class="fc" id="L935">                _jspFile = null;</span>
+<span class="fc" id="L906">            _servletName = XMLUtils.getChildNodeValue(servletElement, &quot;servlet-name&quot;);</span>
+<span class="fc" id="L907">            _jspFile = XMLUtils.getChildNodeValue(servletElement, &quot;jsp-file&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L908" title="1 of 2 branches missed.">            if (&quot;&quot;.equals(_jspFile)) {</span>
+<span class="fc" id="L909">                _jspFile = null;</span>
             }
-<span class="fc" id="L937">            final NodeList loadOrder = servletElement.getElementsByTagName(&quot;load-on-startup&quot;);</span>
-<span class="fc bfc" id="L938" title="All 2 branches covered.">            for (int i = 0; i &lt; loadOrder.getLength(); i++) {</span>
-<span class="fc" id="L939">                String order = XMLUtils.getTextValue(loadOrder.item(i));</span>
+<span class="fc" id="L911">            final NodeList loadOrder = servletElement.getElementsByTagName(&quot;load-on-startup&quot;);</span>
+<span class="fc bfc" id="L912" title="All 2 branches covered.">            for (int i = 0; i &lt; loadOrder.getLength(); i++) {</span>
+<span class="fc" id="L913">                String order = XMLUtils.getTextValue(loadOrder.item(i));</span>
                 try {
-<span class="fc" id="L941">                    _loadOrder = Integer.parseInt(order);</span>
-<span class="fc" id="L942">                } catch (NumberFormatException e) {</span>
-<span class="fc" id="L943">                    _loadOrder = ANY_LOAD_ORDER;</span>
-<span class="fc" id="L944">                }</span>
+<span class="fc" id="L915">                    _loadOrder = Integer.parseInt(order);</span>
+<span class="fc" id="L916">                } catch (NumberFormatException e) {</span>
+<span class="fc" id="L917">                    _loadOrder = ANY_LOAD_ORDER;</span>
+<span class="fc" id="L918">                }</span>
             }
-<span class="fc" id="L946">        }</span>
+<span class="fc" id="L920">        }</span>
 
         /**
          * Gets the servlet.
@@ -970,22 +944,22 @@ class WebApplication implements SessionListenerDispatcher {
         synchronized Servlet getServlet()
                 throws ClassNotFoundException, InstantiationException, IllegalAccessException, ServletException,
                 IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-<span class="fc bfc" id="L973" title="All 2 branches covered.">            if (_servlet == null) {</span>
-<span class="fc" id="L974">                Class servletClass = Class.forName(getClassName());</span>
-<span class="fc" id="L975">                _servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();</span>
-<span class="fc bfc" id="L976" title="All 2 branches covered.">                String servletName = _servletName != null ? _servletName : _servlet.getClass().getName();</span>
-<span class="fc" id="L977">                _servlet.init(new ServletUnitServletConfig(servletName, WebApplication.this, getInitParams()));</span>
+<span class="fc bfc" id="L947" title="All 2 branches covered.">            if (_servlet == null) {</span>
+<span class="fc" id="L948">                Class servletClass = Class.forName(getClassName());</span>
+<span class="fc" id="L949">                _servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();</span>
+<span class="fc bfc" id="L950" title="All 2 branches covered.">                String servletName = _servletName != null ? _servletName : _servlet.getClass().getName();</span>
+<span class="fc" id="L951">                _servlet.init(new ServletUnitServletConfig(servletName, WebApplication.this, getInitParams()));</span>
             }
 
-<span class="fc" id="L980">            return _servlet;</span>
+<span class="fc" id="L954">            return _servlet;</span>
         }
 
         @Override
         synchronized void destroyResource() {
-<span class="fc bfc" id="L985" title="All 2 branches covered.">            if (_servlet != null) {</span>
-<span class="fc" id="L986">                _servlet.destroy();</span>
+<span class="fc bfc" id="L959" title="All 2 branches covered.">            if (_servlet != null) {</span>
+<span class="fc" id="L960">                _servlet.destroy();</span>
             }
-<span class="fc" id="L988">        }</span>
+<span class="fc" id="L962">        }</span>
 
         /**
          * Gets the servlet name.
@@ -993,12 +967,12 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the servlet name
          */
         String getServletName() {
-<span class="fc" id="L996">            return _servletName;</span>
+<span class="fc" id="L970">            return _servletName;</span>
         }
 
         @Override
         boolean isLoadOnStartup() {
-<span class="fc bfc" id="L1001" title="All 2 branches covered.">            return _loadOrder != DONT_AUTOLOAD;</span>
+<span class="fc bfc" id="L975" title="All 2 branches covered.">            return _loadOrder != DONT_AUTOLOAD;</span>
         }
 
         /**
@@ -1007,7 +981,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the load order
          */
         public int getLoadOrder() {
-<span class="fc" id="L1010">            return _loadOrder;</span>
+<span class="fc" id="L984">            return _loadOrder;</span>
         }
 
         /**
@@ -1016,7 +990,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the jsp file
          */
         public Object getJspFile() {
-<span class="nc" id="L1019">            return this._jspFile;</span>
+<span class="nc" id="L993">            return this._jspFile;</span>
         }
     }
 
@@ -1045,45 +1019,45 @@ class WebApplication implements SessionListenerDispatcher {
          * @throws SAXException
          *             the SAX exception
          */
-<span class="fc" id="L1048">        FilterConfiguration(String name, Element filterElement) throws SAXException {</span>
-<span class="fc" id="L1049">            super(filterElement, &quot;filter-class&quot;);</span>
-<span class="fc" id="L1050">            _name = name;</span>
-<span class="fc" id="L1051">        }</span>
+<span class="fc" id="L1022">        FilterConfiguration(String name, Element filterElement) throws SAXException {</span>
+<span class="fc" id="L1023">            super(filterElement, &quot;filter-class&quot;);</span>
+<span class="fc" id="L1024">            _name = name;</span>
+<span class="fc" id="L1025">        }</span>
 
         @Override
         public synchronized Filter getFilter() throws ServletException {
             try {
-<span class="fc bfc" id="L1056" title="All 2 branches covered.">                if (_filter == null) {</span>
-<span class="fc" id="L1057">                    Class filterClass = Class.forName(getClassName());</span>
-<span class="fc" id="L1058">                    _filter = (Filter) filterClass.getDeclaredConstructor().newInstance();</span>
-<span class="fc" id="L1059">                    _filter.init(new FilterConfigImpl(_name, getServletContext(), getInitParams()));</span>
+<span class="fc bfc" id="L1030" title="All 2 branches covered.">                if (_filter == null) {</span>
+<span class="fc" id="L1031">                    Class filterClass = Class.forName(getClassName());</span>
+<span class="fc" id="L1032">                    _filter = (Filter) filterClass.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L1033">                    _filter.init(new FilterConfigImpl(_name, getServletContext(), getInitParams()));</span>
                 }
 
-<span class="fc" id="L1062">                return _filter;</span>
-<span class="nc" id="L1063">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L1064">                throw new ServletException(&quot;Did not find filter class: &quot; + getClassName());</span>
-<span class="nc" id="L1065">            } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L1066">                throw new ServletException(&quot;Filter class &quot; + getClassName() + &quot; lacks a public no-arg constructor&quot;);</span>
-<span class="nc" id="L1067">            } catch (InstantiationException | IllegalArgumentException | InvocationTargetException</span>
+<span class="fc" id="L1036">                return _filter;</span>
+<span class="nc" id="L1037">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L1038">                throw new ServletException(&quot;Did not find filter class: &quot; + getClassName());</span>
+<span class="nc" id="L1039">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L1040">                throw new ServletException(&quot;Filter class &quot; + getClassName() + &quot; lacks a public no-arg constructor&quot;);</span>
+<span class="nc" id="L1041">            } catch (InstantiationException | IllegalArgumentException | InvocationTargetException</span>
                     | NoSuchMethodException | SecurityException e) {
-<span class="nc" id="L1069">                throw new ServletException(&quot;Filter class &quot; + getClassName() + &quot; could not be instantiated.&quot;);</span>
-<span class="nc" id="L1070">            } catch (ClassCastException e) {</span>
-<span class="nc" id="L1071">                throw new ServletException(</span>
-<span class="nc" id="L1072">                        &quot;Filter class &quot; + getClassName() + &quot; does not implement&quot; + Filter.class.getName());</span>
+<span class="nc" id="L1043">                throw new ServletException(&quot;Filter class &quot; + getClassName() + &quot; could not be instantiated.&quot;);</span>
+<span class="nc" id="L1044">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L1045">                throw new ServletException(</span>
+<span class="nc" id="L1046">                        &quot;Filter class &quot; + getClassName() + &quot; does not implement&quot; + Filter.class.getName());</span>
             }
         }
 
         @Override
         boolean isLoadOnStartup() {
-<span class="nc" id="L1078">            return false;</span>
+<span class="nc" id="L1052">            return false;</span>
         }
 
         @Override
         synchronized void destroyResource() {
-<span class="nc bnc" id="L1083" title="All 2 branches missed.">            if (_filter != null) {</span>
-<span class="nc" id="L1084">                _filter.destroy();</span>
+<span class="nc bnc" id="L1057" title="All 2 branches missed.">            if (_filter != null) {</span>
+<span class="nc" id="L1058">                _filter.destroy();</span>
             }
-<span class="nc" id="L1086">        }</span>
+<span class="nc" id="L1060">        }</span>
     }
 
     // =================================== SecurityConstract interface and implementations
@@ -1115,19 +1089,19 @@ class WebApplication implements SessionListenerDispatcher {
     /**
      * The Class NullSecurityConstraint.
      */
-<span class="fc" id="L1118">    static class NullSecurityConstraint implements SecurityConstraint {</span>
+<span class="fc" id="L1092">    static class NullSecurityConstraint implements SecurityConstraint {</span>
 
         /** The Constant NO_ROLES. */
-<span class="fc" id="L1121">        private static final String[] NO_ROLES = {};</span>
+<span class="fc" id="L1095">        private static final String[] NO_ROLES = {};</span>
 
         @Override
         public boolean controlsPath(String urlPath) {
-<span class="nc" id="L1125">            return false;</span>
+<span class="nc" id="L1099">            return false;</span>
         }
 
         @Override
         public String[] getPermittedRoles() {
-<span class="nc" id="L1130">            return NO_ROLES;</span>
+<span class="nc" id="L1104">            return NO_ROLES;</span>
         }
     }
 
@@ -1145,39 +1119,39 @@ class WebApplication implements SessionListenerDispatcher {
          * @throws SAXException
          *             the SAX exception
          */
-<span class="fc" id="L1148">        SecurityConstraintImpl(Element root) throws SAXException {</span>
-<span class="fc" id="L1149">            final NodeList roleNames = root.getElementsByTagName(&quot;role-name&quot;);</span>
-<span class="fc bfc" id="L1150" title="All 2 branches covered.">            for (int i = 0; i &lt; roleNames.getLength(); i++) {</span>
-<span class="fc" id="L1151">                _roleList.add(XMLUtils.getTextValue(roleNames.item(i)));</span>
+<span class="fc" id="L1122">        SecurityConstraintImpl(Element root) throws SAXException {</span>
+<span class="fc" id="L1123">            final NodeList roleNames = root.getElementsByTagName(&quot;role-name&quot;);</span>
+<span class="fc bfc" id="L1124" title="All 2 branches covered.">            for (int i = 0; i &lt; roleNames.getLength(); i++) {</span>
+<span class="fc" id="L1125">                _roleList.add(XMLUtils.getTextValue(roleNames.item(i)));</span>
             }
 
-<span class="fc" id="L1154">            final NodeList resources = root.getElementsByTagName(&quot;web-resource-collection&quot;);</span>
-<span class="fc bfc" id="L1155" title="All 2 branches covered.">            for (int i = 0; i &lt; resources.getLength(); i++) {</span>
-<span class="fc" id="L1156">                _resources.add(new WebResourceCollection((Element) resources.item(i)));</span>
+<span class="fc" id="L1128">            final NodeList resources = root.getElementsByTagName(&quot;web-resource-collection&quot;);</span>
+<span class="fc bfc" id="L1129" title="All 2 branches covered.">            for (int i = 0; i &lt; resources.getLength(); i++) {</span>
+<span class="fc" id="L1130">                _resources.add(new WebResourceCollection((Element) resources.item(i)));</span>
             }
-<span class="fc" id="L1158">        }</span>
+<span class="fc" id="L1132">        }</span>
 
         @Override
         public boolean controlsPath(String urlPath) {
-<span class="fc bfc" id="L1162" title="All 2 branches covered.">            return getMatchingCollection(urlPath) != null;</span>
+<span class="fc bfc" id="L1136" title="All 2 branches covered.">            return getMatchingCollection(urlPath) != null;</span>
         }
 
         @Override
         public String[] getPermittedRoles() {
-<span class="fc bfc" id="L1167" title="All 2 branches covered.">            if (_roles == null) {</span>
-<span class="fc" id="L1168">                _roles = _roleList.toArray(new String[_roleList.size()]);</span>
+<span class="fc bfc" id="L1141" title="All 2 branches covered.">            if (_roles == null) {</span>
+<span class="fc" id="L1142">                _roles = _roleList.toArray(new String[_roleList.size()]);</span>
             }
-<span class="fc" id="L1170">            return _roles;</span>
+<span class="fc" id="L1144">            return _roles;</span>
         }
 
         /** The roles. */
         private String[] _roles;
 
         /** The role list. */
-<span class="fc" id="L1177">        private List&lt;String&gt; _roleList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1151">        private List&lt;String&gt; _roleList = new ArrayList&lt;&gt;();</span>
 
         /** The resources. */
-<span class="fc" id="L1180">        private List&lt;WebResourceCollection&gt; _resources = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1154">        private List&lt;WebResourceCollection&gt; _resources = new ArrayList&lt;&gt;();</span>
 
         /**
          * Gets the matching collection.
@@ -1188,12 +1162,12 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the matching collection
          */
         public WebResourceCollection getMatchingCollection(String urlPath) {
-<span class="fc bfc" id="L1191" title="All 2 branches covered.">            for (WebResourceCollection wrc : _resources) {</span>
-<span class="fc bfc" id="L1192" title="All 2 branches covered.">                if (wrc.controlsPath(urlPath)) {</span>
-<span class="fc" id="L1193">                    return wrc;</span>
+<span class="fc bfc" id="L1165" title="All 2 branches covered.">            for (WebResourceCollection wrc : _resources) {</span>
+<span class="fc bfc" id="L1166" title="All 2 branches covered.">                if (wrc.controlsPath(urlPath)) {</span>
+<span class="fc" id="L1167">                    return wrc;</span>
                 }
-<span class="fc" id="L1195">            }</span>
-<span class="fc" id="L1196">            return null;</span>
+<span class="fc" id="L1169">            }</span>
+<span class="fc" id="L1170">            return null;</span>
         }
 
         /**
@@ -1210,12 +1184,12 @@ class WebApplication implements SessionListenerDispatcher {
              * @throws SAXException
              *             the SAX exception
              */
-<span class="fc" id="L1213">            WebResourceCollection(Element root) throws SAXException {</span>
-<span class="fc" id="L1214">                final NodeList urlPatterns = root.getElementsByTagName(&quot;url-pattern&quot;);</span>
-<span class="fc bfc" id="L1215" title="All 2 branches covered.">                for (int i = 0; i &lt; urlPatterns.getLength(); i++) {</span>
-<span class="fc" id="L1216">                    _urlPatterns.add(XMLUtils.getTextValue(urlPatterns.item(i)));</span>
+<span class="fc" id="L1187">            WebResourceCollection(Element root) throws SAXException {</span>
+<span class="fc" id="L1188">                final NodeList urlPatterns = root.getElementsByTagName(&quot;url-pattern&quot;);</span>
+<span class="fc bfc" id="L1189" title="All 2 branches covered.">                for (int i = 0; i &lt; urlPatterns.getLength(); i++) {</span>
+<span class="fc" id="L1190">                    _urlPatterns.add(XMLUtils.getTextValue(urlPatterns.item(i)));</span>
                 }
-<span class="fc" id="L1218">            }</span>
+<span class="fc" id="L1192">            }</span>
 
             /**
              * Controls path.
@@ -1226,21 +1200,21 @@ class WebApplication implements SessionListenerDispatcher {
              * @return true, if successful
              */
             boolean controlsPath(String urlPath) {
-<span class="fc bfc" id="L1229" title="All 2 branches covered.">                for (String pattern : _urlPatterns) {</span>
-<span class="fc bfc" id="L1230" title="All 2 branches covered.">                    if (patternMatches(pattern, urlPath)) {</span>
-<span class="fc" id="L1231">                        return true;</span>
+<span class="fc bfc" id="L1203" title="All 2 branches covered.">                for (String pattern : _urlPatterns) {</span>
+<span class="fc bfc" id="L1204" title="All 2 branches covered.">                    if (patternMatches(pattern, urlPath)) {</span>
+<span class="fc" id="L1205">                        return true;</span>
                     }
-<span class="fc" id="L1233">                }</span>
-<span class="fc" id="L1234">                return false;</span>
+<span class="fc" id="L1207">                }</span>
+<span class="fc" id="L1208">                return false;</span>
             }
 
             /** The url patterns. */
-<span class="fc" id="L1238">            private List&lt;String&gt; _urlPatterns = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1212">            private List&lt;String&gt; _urlPatterns = new ArrayList&lt;&gt;();</span>
         }
     }
 
     /** The Constant NO_FILTERS. */
-<span class="fc" id="L1243">    static final FilterMetaData[] NO_FILTERS = {};</span>
+<span class="fc" id="L1217">    static final FilterMetaData[] NO_FILTERS = {};</span>
 
     /**
      * The Class ServletRequestImpl.
@@ -1277,13 +1251,13 @@ class WebApplication implements SessionListenerDispatcher {
          *            the filters per url
          */
         ServletRequestImpl(URL url, String servletPath, WebResourceMapping mapping, Hashtable filtersPerName,
-<span class="fc" id="L1280">                FilterUrlMap filtersPerUrl) {</span>
-<span class="fc" id="L1281">            _url = url;</span>
-<span class="fc" id="L1282">            _fullServletPath = servletPath;</span>
-<span class="fc" id="L1283">            _mapping = mapping;</span>
-<span class="fc" id="L1284">            _filtersPerName = filtersPerName;</span>
-<span class="fc" id="L1285">            _filtersPerUrl = filtersPerUrl;</span>
-<span class="fc" id="L1286">        }</span>
+<span class="fc" id="L1254">                FilterUrlMap filtersPerUrl) {</span>
+<span class="fc" id="L1255">            _url = url;</span>
+<span class="fc" id="L1256">            _fullServletPath = servletPath;</span>
+<span class="fc" id="L1257">            _mapping = mapping;</span>
+<span class="fc" id="L1258">            _filtersPerName = filtersPerName;</span>
+<span class="fc" id="L1259">            _filtersPerUrl = filtersPerUrl;</span>
+<span class="fc" id="L1260">        }</span>
 
         /**
          * get the Servlet
@@ -1295,17 +1269,17 @@ class WebApplication implements SessionListenerDispatcher {
          */
         @Override
         public Servlet getServlet() throws ServletException {
-<span class="fc bfc" id="L1298" title="All 2 branches covered.">            if (getConfiguration() == null) {</span>
-<span class="fc" id="L1299">                throw new HttpNotFoundException(&quot;No servlet mapping defined&quot;, _url);</span>
+<span class="fc bfc" id="L1272" title="All 2 branches covered.">            if (getConfiguration() == null) {</span>
+<span class="fc" id="L1273">                throw new HttpNotFoundException(&quot;No servlet mapping defined&quot;, _url);</span>
             }
 
             try {
-<span class="fc" id="L1303">                return getConfiguration().getServlet();</span>
-<span class="nc" id="L1304">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L1305">                throw new HttpNotFoundException(_url, e);</span>
-<span class="nc" id="L1306">            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException</span>
+<span class="fc" id="L1277">                return getConfiguration().getServlet();</span>
+<span class="nc" id="L1278">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L1279">                throw new HttpNotFoundException(_url, e);</span>
+<span class="nc" id="L1280">            } catch (IllegalAccessException | InstantiationException | IllegalArgumentException</span>
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-<span class="nc" id="L1308">                throw new HttpInternalErrorException(_url, e);</span>
+<span class="nc" id="L1282">                throw new HttpInternalErrorException(_url, e);</span>
             }
         }
 
@@ -1314,7 +1288,7 @@ class WebApplication implements SessionListenerDispatcher {
          */
         @Override
         public String getServletPath() {
-<span class="pc bpc" id="L1317" title="1 of 2 branches missed.">            return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getServletPath(_fullServletPath));</span>
+<span class="pc bpc" id="L1291" title="1 of 2 branches missed.">            return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getServletPath(_fullServletPath));</span>
         }
 
         /**
@@ -1324,20 +1298,20 @@ class WebApplication implements SessionListenerDispatcher {
          */
         @Override
         public String getPathInfo() {
-<span class="pc bpc" id="L1327" title="1 of 2 branches missed.">            return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getPathInfo(_fullServletPath));</span>
+<span class="pc bpc" id="L1301" title="1 of 2 branches missed.">            return _mapping == null ? null : HttpUnitUtils.decode(_mapping.getPathInfo(_fullServletPath));</span>
         }
 
         @Override
         public FilterMetaData[] getFilters() {
-<span class="fc bfc" id="L1332" title="All 2 branches covered.">            if (getConfiguration() == null) {</span>
-<span class="fc" id="L1333">                return NO_FILTERS;</span>
+<span class="fc bfc" id="L1306" title="All 2 branches covered.">            if (getConfiguration() == null) {</span>
+<span class="fc" id="L1307">                return NO_FILTERS;</span>
             }
 
-<span class="fc" id="L1336">            List&lt;FilterMetaData&gt; filters = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L1337">            addFiltersForPath(filters, _fullServletPath);</span>
-<span class="fc" id="L1338">            addFiltersForServletWithName(filters, getConfiguration().getServletName());</span>
+<span class="fc" id="L1310">            List&lt;FilterMetaData&gt; filters = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1311">            addFiltersForPath(filters, _fullServletPath);</span>
+<span class="fc" id="L1312">            addFiltersForServletWithName(filters, getConfiguration().getServletName());</span>
 
-<span class="fc" id="L1340">            return filters.toArray(new FilterMetaData[filters.size()]);</span>
+<span class="fc" id="L1314">            return filters.toArray(new FilterMetaData[filters.size()]);</span>
         }
 
         /**
@@ -1349,9 +1323,9 @@ class WebApplication implements SessionListenerDispatcher {
          *            the full servlet path
          */
         private void addFiltersForPath(List&lt;FilterMetaData&gt; filters, String fullServletPath) {
-<span class="fc" id="L1352">            FilterMetaData[] matches = _filtersPerUrl.getMatchingFilters(fullServletPath);</span>
-<span class="fc" id="L1353">            Collections.addAll(filters, matches);</span>
-<span class="fc" id="L1354">        }</span>
+<span class="fc" id="L1326">            FilterMetaData[] matches = _filtersPerUrl.getMatchingFilters(fullServletPath);</span>
+<span class="fc" id="L1327">            Collections.addAll(filters, matches);</span>
+<span class="fc" id="L1328">        }</span>
 
         /**
          * Adds the filters for servlet with name.
@@ -1362,14 +1336,14 @@ class WebApplication implements SessionListenerDispatcher {
          *            the servlet name
          */
         private void addFiltersForServletWithName(List&lt;FilterMetaData&gt; filters, String servletName) {
-<span class="fc bfc" id="L1365" title="All 2 branches covered.">            if (servletName == null) {</span>
-<span class="fc" id="L1366">                return;</span>
+<span class="fc bfc" id="L1339" title="All 2 branches covered.">            if (servletName == null) {</span>
+<span class="fc" id="L1340">                return;</span>
             }
-<span class="fc" id="L1368">            List&lt;FilterMetaData&gt; matches = (List&lt;FilterMetaData&gt;) _filtersPerName.get(servletName);</span>
-<span class="fc bfc" id="L1369" title="All 2 branches covered.">            if (matches != null) {</span>
-<span class="fc" id="L1370">                filters.addAll(matches);</span>
+<span class="fc" id="L1342">            List&lt;FilterMetaData&gt; matches = (List&lt;FilterMetaData&gt;) _filtersPerName.get(servletName);</span>
+<span class="fc bfc" id="L1343" title="All 2 branches covered.">            if (matches != null) {</span>
+<span class="fc" id="L1344">                filters.addAll(matches);</span>
             }
-<span class="fc" id="L1372">        }</span>
+<span class="fc" id="L1346">        }</span>
 
         /**
          * Gets the configuration.
@@ -1377,7 +1351,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the configuration
          */
         private ServletConfiguration getConfiguration() {
-<span class="fc bfc" id="L1380" title="All 2 branches covered.">            return _mapping == null ? null : (ServletConfiguration) _mapping.getConfiguration();</span>
+<span class="fc bfc" id="L1354" title="All 2 branches covered.">            return _mapping == null ? null : (ServletConfiguration) _mapping.getConfiguration();</span>
         }
     }
 
@@ -1395,7 +1369,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the configuration
          */
         WebResourceConfiguration getConfiguration() {
-<span class="fc" id="L1398">            return _configuration;</span>
+<span class="fc" id="L1372">            return _configuration;</span>
         }
 
         /**
@@ -1404,9 +1378,9 @@ class WebApplication implements SessionListenerDispatcher {
          * @param configuration
          *            the configuration
          */
-<span class="fc" id="L1407">        WebResourceMapping(WebResourceConfiguration configuration) {</span>
-<span class="fc" id="L1408">            _configuration = configuration;</span>
-<span class="fc" id="L1409">        }</span>
+<span class="fc" id="L1381">        WebResourceMapping(WebResourceConfiguration configuration) {</span>
+<span class="fc" id="L1382">            _configuration = configuration;</span>
+<span class="fc" id="L1383">        }</span>
 
         /**
          * Returns the portion of the request path which was actually used to select the servlet. This default
@@ -1418,7 +1392,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the servlet path
          */
         String getServletPath(String requestPath) {
-<span class="fc" id="L1421">            return requestPath;</span>
+<span class="fc" id="L1395">            return requestPath;</span>
         }
 
         /**
@@ -1431,15 +1405,15 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the path info
          */
         String getPathInfo(String requestPath) {
-<span class="fc" id="L1434">            return null;</span>
+<span class="fc" id="L1408">            return null;</span>
         }
 
         /**
          * Destroy resource.
          */
         public void destroyResource() {
-<span class="fc" id="L1441">            getConfiguration().destroyResource();</span>
-<span class="fc" id="L1442">        }</span>
+<span class="fc" id="L1415">            getConfiguration().destroyResource();</span>
+<span class="fc" id="L1416">        }</span>
     }
 
     /**
@@ -1459,21 +1433,21 @@ class WebApplication implements SessionListenerDispatcher {
          *            the prefix
          */
         public PartialMatchWebResourceMapping(WebResourceConfiguration configuration, String prefix) {
-<span class="fc" id="L1462">            super(configuration);</span>
-<span class="pc bpc" id="L1463" title="1 of 2 branches missed.">            if (!prefix.endsWith(&quot;/*&quot;)) {</span>
-<span class="nc" id="L1464">                throw new IllegalArgumentException(prefix + &quot; does not end with '/*'&quot;);</span>
+<span class="fc" id="L1436">            super(configuration);</span>
+<span class="pc bpc" id="L1437" title="1 of 2 branches missed.">            if (!prefix.endsWith(&quot;/*&quot;)) {</span>
+<span class="nc" id="L1438">                throw new IllegalArgumentException(prefix + &quot; does not end with '/*'&quot;);</span>
             }
-<span class="fc" id="L1466">            _prefix = prefix.substring(0, prefix.length() - 2);</span>
-<span class="fc" id="L1467">        }</span>
+<span class="fc" id="L1440">            _prefix = prefix.substring(0, prefix.length() - 2);</span>
+<span class="fc" id="L1441">        }</span>
 
         @Override
         String getServletPath(String requestPath) {
-<span class="fc" id="L1471">            return _prefix;</span>
+<span class="fc" id="L1445">            return _prefix;</span>
         }
 
         @Override
         String getPathInfo(String requestPath) {
-<span class="fc bfc" id="L1476" title="All 2 branches covered.">            return requestPath.length() &gt; _prefix.length() ? requestPath.substring(_prefix.length()) : null;</span>
+<span class="fc bfc" id="L1450" title="All 2 branches covered.">            return requestPath.length() &gt; _prefix.length() ? requestPath.substring(_prefix.length()) : null;</span>
         }
     }
 
@@ -1481,16 +1455,16 @@ class WebApplication implements SessionListenerDispatcher {
      * A utility class for mapping web resources to url patterns. This implements the matching algorithm documented in
      * section 10 of the JSDK-2.2 reference.
      */
-<span class="fc" id="L1484">    class WebResourceMap {</span>
+<span class="fc" id="L1458">    class WebResourceMap {</span>
 
         /** The exact matches. */
-<span class="fc" id="L1487">        private final Map _exactMatches = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L1461">        private final Map _exactMatches = new HashMap&lt;&gt;();</span>
 
         /** The extensions. */
-<span class="fc" id="L1490">        private final Map _extensions = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L1464">        private final Map _extensions = new HashMap&lt;&gt;();</span>
 
         /** The url tree. */
-<span class="fc" id="L1493">        private final Map _urlTree = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L1467">        private final Map _urlTree = new HashMap&lt;&gt;();</span>
 
         /** The default mapping. */
         private WebResourceMapping _defaultMapping;
@@ -1504,28 +1478,28 @@ class WebApplication implements SessionListenerDispatcher {
          *            the configuration
          */
         void put(String mapping, WebResourceConfiguration configuration) {
-<span class="fc bfc" id="L1507" title="All 2 branches covered.">            if (mapping.equals(&quot;/&quot;)) {</span>
-<span class="fc" id="L1508">                _defaultMapping = new WebResourceMapping(configuration);</span>
-<span class="fc bfc" id="L1509" title="All 2 branches covered.">            } else if (mapping.startsWith(&quot;*.&quot;)) {</span>
-<span class="fc" id="L1510">                _extensions.put(mapping.substring(2), new WebResourceMapping(configuration));</span>
-<span class="pc bpc" id="L1511" title="1 of 4 branches missed.">            } else if (!mapping.startsWith(&quot;/&quot;) || !mapping.endsWith(&quot;/*&quot;)) {</span>
-<span class="fc" id="L1512">                _exactMatches.put(mapping, new WebResourceMapping(configuration));</span>
+<span class="fc bfc" id="L1481" title="All 2 branches covered.">            if (mapping.equals(&quot;/&quot;)) {</span>
+<span class="fc" id="L1482">                _defaultMapping = new WebResourceMapping(configuration);</span>
+<span class="fc bfc" id="L1483" title="All 2 branches covered.">            } else if (mapping.startsWith(&quot;*.&quot;)) {</span>
+<span class="fc" id="L1484">                _extensions.put(mapping.substring(2), new WebResourceMapping(configuration));</span>
+<span class="pc bpc" id="L1485" title="1 of 4 branches missed.">            } else if (!mapping.startsWith(&quot;/&quot;) || !mapping.endsWith(&quot;/*&quot;)) {</span>
+<span class="fc" id="L1486">                _exactMatches.put(mapping, new WebResourceMapping(configuration));</span>
             } else {
-<span class="fc" id="L1514">                ParsedPath path = new ParsedPath(mapping);</span>
-<span class="fc" id="L1515">                Map context = _urlTree;</span>
-<span class="pc bpc" id="L1516" title="1 of 2 branches missed.">                while (path.hasNext()) {</span>
-<span class="fc" id="L1517">                    String part = path.next();</span>
-<span class="fc bfc" id="L1518" title="All 2 branches covered.">                    if (part.equals(&quot;*&quot;)) {</span>
-<span class="fc" id="L1519">                        context.put(&quot;*&quot;, new PartialMatchWebResourceMapping(configuration, mapping));</span>
-<span class="fc" id="L1520">                        return;</span>
+<span class="fc" id="L1488">                ParsedPath path = new ParsedPath(mapping);</span>
+<span class="fc" id="L1489">                Map context = _urlTree;</span>
+<span class="pc bpc" id="L1490" title="1 of 2 branches missed.">                while (path.hasNext()) {</span>
+<span class="fc" id="L1491">                    String part = path.next();</span>
+<span class="fc bfc" id="L1492" title="All 2 branches covered.">                    if (part.equals(&quot;*&quot;)) {</span>
+<span class="fc" id="L1493">                        context.put(&quot;*&quot;, new PartialMatchWebResourceMapping(configuration, mapping));</span>
+<span class="fc" id="L1494">                        return;</span>
                     }
-<span class="pc bpc" id="L1522" title="1 of 2 branches missed.">                    if (!context.containsKey(part)) {</span>
-<span class="fc" id="L1523">                        context.put(part, new HashMap&lt;&gt;());</span>
+<span class="pc bpc" id="L1496" title="1 of 2 branches missed.">                    if (!context.containsKey(part)) {</span>
+<span class="fc" id="L1497">                        context.put(part, new HashMap&lt;&gt;());</span>
                     }
-<span class="fc" id="L1525">                    context = (Map) context.get(part);</span>
-<span class="fc" id="L1526">                }</span>
+<span class="fc" id="L1499">                    context = (Map) context.get(part);</span>
+<span class="fc" id="L1500">                }</span>
             }
-<span class="fc" id="L1528">        }</span>
+<span class="fc" id="L1502">        }</span>
 
         /**
          * Gets the.
@@ -1536,18 +1510,18 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the servlet meta data
          */
         ServletMetaData get(URL url) {
-<span class="fc" id="L1539">            String file = url.getFile();</span>
-<span class="fc bfc" id="L1540" title="All 2 branches covered.">            if (!file.startsWith(_contextPath)) {</span>
-<span class="fc" id="L1541">                throw new HttpNotFoundException(&quot;File path does not begin with '&quot; + _contextPath + &quot;'&quot;, url);</span>
+<span class="fc" id="L1513">            String file = url.getFile();</span>
+<span class="fc bfc" id="L1514" title="All 2 branches covered.">            if (!file.startsWith(_contextPath)) {</span>
+<span class="fc" id="L1515">                throw new HttpNotFoundException(&quot;File path does not begin with '&quot; + _contextPath + &quot;'&quot;, url);</span>
             }
 
-<span class="fc" id="L1544">            String servletPath = getServletPath(file.substring(_contextPath.length()));</span>
+<span class="fc" id="L1518">            String servletPath = getServletPath(file.substring(_contextPath.length()));</span>
 
-<span class="fc bfc" id="L1546" title="All 2 branches covered.">            if (servletPath.endsWith(&quot;j_security_check&quot;)) {</span>
-<span class="fc" id="L1547">                return new ServletRequestImpl(url, servletPath, SECURITY_CHECK_MAPPING, _filterMapping,</span>
+<span class="fc bfc" id="L1520" title="All 2 branches covered.">            if (servletPath.endsWith(&quot;j_security_check&quot;)) {</span>
+<span class="fc" id="L1521">                return new ServletRequestImpl(url, servletPath, SECURITY_CHECK_MAPPING, _filterMapping,</span>
                         _filterUrlMapping);
             }
-<span class="fc" id="L1550">            return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping, _filterUrlMapping);</span>
+<span class="fc" id="L1524">            return new ServletRequestImpl(url, servletPath, getMapping(servletPath), _filterMapping, _filterUrlMapping);</span>
         }
 
         /**
@@ -1559,23 +1533,23 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the servlet path
          */
         private String getServletPath(String urlFile) {
-<span class="fc bfc" id="L1562" title="All 2 branches covered.">            if (urlFile.indexOf('?') &lt; 0) {</span>
-<span class="fc" id="L1563">                return urlFile;</span>
+<span class="fc bfc" id="L1536" title="All 2 branches covered.">            if (urlFile.indexOf('?') &lt; 0) {</span>
+<span class="fc" id="L1537">                return urlFile;</span>
             }
-<span class="fc" id="L1565">            return urlFile.substring(0, urlFile.indexOf('?'));</span>
+<span class="fc" id="L1539">            return urlFile.substring(0, urlFile.indexOf('?'));</span>
         }
 
         /**
          * Destroy web resources.
          */
         public void destroyWebResources() {
-<span class="pc bpc" id="L1572" title="1 of 2 branches missed.">            if (_defaultMapping != null) {</span>
-<span class="nc" id="L1573">                _defaultMapping.destroyResource();</span>
+<span class="pc bpc" id="L1546" title="1 of 2 branches missed.">            if (_defaultMapping != null) {</span>
+<span class="nc" id="L1547">                _defaultMapping.destroyResource();</span>
             }
-<span class="fc" id="L1575">            destroyWebResources(_exactMatches);</span>
-<span class="fc" id="L1576">            destroyWebResources(_extensions);</span>
-<span class="fc" id="L1577">            destroyWebResources(_urlTree);</span>
-<span class="fc" id="L1578">        }</span>
+<span class="fc" id="L1549">            destroyWebResources(_exactMatches);</span>
+<span class="fc" id="L1550">            destroyWebResources(_extensions);</span>
+<span class="fc" id="L1551">            destroyWebResources(_urlTree);</span>
+<span class="fc" id="L1552">        }</span>
 
         /**
          * Destroy web resources.
@@ -1584,47 +1558,47 @@ class WebApplication implements SessionListenerDispatcher {
          *            the map
          */
         private void destroyWebResources(Map map) {
-<span class="fc bfc" id="L1587" title="All 2 branches covered.">            for (Object o : map.values()) {</span>
-<span class="pc bpc" id="L1588" title="1 of 2 branches missed.">                if (o instanceof WebResourceMapping) {</span>
-<span class="fc" id="L1589">                    WebResourceMapping webResourceMapping = (WebResourceMapping) o;</span>
-<span class="fc" id="L1590">                    webResourceMapping.destroyResource();</span>
-<span class="fc" id="L1591">                } else {</span>
-<span class="nc" id="L1592">                    destroyWebResources((Map) o);</span>
+<span class="fc bfc" id="L1561" title="All 2 branches covered.">            for (Object o : map.values()) {</span>
+<span class="pc bpc" id="L1562" title="1 of 2 branches missed.">                if (o instanceof WebResourceMapping) {</span>
+<span class="fc" id="L1563">                    WebResourceMapping webResourceMapping = (WebResourceMapping) o;</span>
+<span class="fc" id="L1564">                    webResourceMapping.destroyResource();</span>
+<span class="fc" id="L1565">                } else {</span>
+<span class="nc" id="L1566">                    destroyWebResources((Map) o);</span>
                 }
-<span class="fc" id="L1594">            }</span>
-<span class="fc" id="L1595">        }</span>
+<span class="fc" id="L1568">            }</span>
+<span class="fc" id="L1569">        }</span>
 
         /**
          * Auto load servlets.
          */
         void autoLoadServlets() {
-<span class="fc" id="L1601">            ArrayList autoLoadable = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L1602" title="1 of 4 branches missed.">            if (_defaultMapping != null &amp;&amp; _defaultMapping.getConfiguration().isLoadOnStartup()) {</span>
-<span class="nc" id="L1603">                autoLoadable.add(_defaultMapping.getConfiguration());</span>
+<span class="fc" id="L1575">            ArrayList autoLoadable = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L1576" title="1 of 4 branches missed.">            if (_defaultMapping != null &amp;&amp; _defaultMapping.getConfiguration().isLoadOnStartup()) {</span>
+<span class="nc" id="L1577">                autoLoadable.add(_defaultMapping.getConfiguration());</span>
             }
-<span class="fc" id="L1605">            collectAutoLoadableServlets(autoLoadable, _exactMatches);</span>
-<span class="fc" id="L1606">            collectAutoLoadableServlets(autoLoadable, _extensions);</span>
-<span class="fc" id="L1607">            collectAutoLoadableServlets(autoLoadable, _urlTree);</span>
-<span class="fc bfc" id="L1608" title="All 2 branches covered.">            if (autoLoadable.isEmpty()) {</span>
-<span class="fc" id="L1609">                return;</span>
+<span class="fc" id="L1579">            collectAutoLoadableServlets(autoLoadable, _exactMatches);</span>
+<span class="fc" id="L1580">            collectAutoLoadableServlets(autoLoadable, _extensions);</span>
+<span class="fc" id="L1581">            collectAutoLoadableServlets(autoLoadable, _urlTree);</span>
+<span class="fc bfc" id="L1582" title="All 2 branches covered.">            if (autoLoadable.isEmpty()) {</span>
+<span class="fc" id="L1583">                return;</span>
             }
 
-<span class="fc" id="L1612">            Collections.sort(autoLoadable, (o1, o2) -&gt; {</span>
-<span class="fc" id="L1613">                ServletConfiguration sc1 = (ServletConfiguration) o1;</span>
-<span class="fc" id="L1614">                ServletConfiguration sc2 = (ServletConfiguration) o2;</span>
-<span class="fc bfc" id="L1615" title="All 2 branches covered.">                return sc1.getLoadOrder() &lt;= sc2.getLoadOrder() ? -1 : +1;</span>
+<span class="fc" id="L1586">            Collections.sort(autoLoadable, (o1, o2) -&gt; {</span>
+<span class="fc" id="L1587">                ServletConfiguration sc1 = (ServletConfiguration) o1;</span>
+<span class="fc" id="L1588">                ServletConfiguration sc2 = (ServletConfiguration) o2;</span>
+<span class="fc bfc" id="L1589" title="All 2 branches covered.">                return sc1.getLoadOrder() &lt;= sc2.getLoadOrder() ? -1 : +1;</span>
             });
-<span class="fc bfc" id="L1617" title="All 2 branches covered.">            for (Iterator iterator = autoLoadable.iterator(); iterator.hasNext();) {</span>
-<span class="fc" id="L1618">                ServletConfiguration servletConfiguration = (ServletConfiguration) iterator.next();</span>
+<span class="fc bfc" id="L1591" title="All 2 branches covered.">            for (Iterator iterator = autoLoadable.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L1592">                ServletConfiguration servletConfiguration = (ServletConfiguration) iterator.next();</span>
                 try {
-<span class="fc" id="L1620">                    servletConfiguration.getServlet();</span>
-<span class="nc" id="L1621">                } catch (Exception e) {</span>
-<span class="nc" id="L1622">                    HttpUnitUtils.handleException(e);</span>
-<span class="nc" id="L1623">                    throw new RuntimeException(</span>
-<span class="nc" id="L1624">                            &quot;Unable to autoload servlet: &quot; + servletConfiguration.getClassName() + &quot;: &quot; + e);</span>
-<span class="fc" id="L1625">                }</span>
-<span class="fc" id="L1626">            }</span>
-<span class="fc" id="L1627">        }</span>
+<span class="fc" id="L1594">                    servletConfiguration.getServlet();</span>
+<span class="nc" id="L1595">                } catch (Exception e) {</span>
+<span class="nc" id="L1596">                    HttpUnitUtils.handleException(e);</span>
+<span class="nc" id="L1597">                    throw new RuntimeException(</span>
+<span class="nc" id="L1598">                            &quot;Unable to autoload servlet: &quot; + servletConfiguration.getClassName() + &quot;: &quot; + e);</span>
+<span class="fc" id="L1599">                }</span>
+<span class="fc" id="L1600">            }</span>
+<span class="fc" id="L1601">        }</span>
 
         /**
          * Collect auto loadable servlets.
@@ -1635,17 +1609,17 @@ class WebApplication implements SessionListenerDispatcher {
          *            the map
          */
         private void collectAutoLoadableServlets(Collection collection, Map map) {
-<span class="fc bfc" id="L1638" title="All 2 branches covered.">            for (Object o : map.values()) {</span>
-<span class="fc bfc" id="L1639" title="All 2 branches covered.">                if (o instanceof WebResourceMapping) {</span>
-<span class="fc" id="L1640">                    WebResourceMapping servletMapping = (WebResourceMapping) o;</span>
-<span class="fc bfc" id="L1641" title="All 2 branches covered.">                    if (servletMapping.getConfiguration().isLoadOnStartup()) {</span>
-<span class="fc" id="L1642">                        collection.add(servletMapping.getConfiguration());</span>
+<span class="fc bfc" id="L1612" title="All 2 branches covered.">            for (Object o : map.values()) {</span>
+<span class="fc bfc" id="L1613" title="All 2 branches covered.">                if (o instanceof WebResourceMapping) {</span>
+<span class="fc" id="L1614">                    WebResourceMapping servletMapping = (WebResourceMapping) o;</span>
+<span class="fc bfc" id="L1615" title="All 2 branches covered.">                    if (servletMapping.getConfiguration().isLoadOnStartup()) {</span>
+<span class="fc" id="L1616">                        collection.add(servletMapping.getConfiguration());</span>
                     }
-<span class="fc" id="L1644">                } else {</span>
-<span class="fc" id="L1645">                    collectAutoLoadableServlets(collection, (Map) o);</span>
+<span class="fc" id="L1618">                } else {</span>
+<span class="fc" id="L1619">                    collectAutoLoadableServlets(collection, (Map) o);</span>
                 }
-<span class="fc" id="L1647">            }</span>
-<span class="fc" id="L1648">        }</span>
+<span class="fc" id="L1621">            }</span>
+<span class="fc" id="L1622">        }</span>
 
         /**
          * Gets the mapping.
@@ -1656,38 +1630,38 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the mapping
          */
         private WebResourceMapping getMapping(String url) {
-<span class="fc bfc" id="L1659" title="All 2 branches covered.">            if (_exactMatches.containsKey(url)) {</span>
-<span class="fc" id="L1660">                return (WebResourceMapping) _exactMatches.get(url);</span>
+<span class="fc bfc" id="L1633" title="All 2 branches covered.">            if (_exactMatches.containsKey(url)) {</span>
+<span class="fc" id="L1634">                return (WebResourceMapping) _exactMatches.get(url);</span>
             }
 
-<span class="fc" id="L1663">            Map context = getContextForLongestPathPrefix(url);</span>
-<span class="fc bfc" id="L1664" title="All 2 branches covered.">            if (context.containsKey(&quot;*&quot;)) {</span>
-<span class="fc" id="L1665">                return (WebResourceMapping) context.get(&quot;*&quot;);</span>
+<span class="fc" id="L1637">            Map context = getContextForLongestPathPrefix(url);</span>
+<span class="fc bfc" id="L1638" title="All 2 branches covered.">            if (context.containsKey(&quot;*&quot;)) {</span>
+<span class="fc" id="L1639">                return (WebResourceMapping) context.get(&quot;*&quot;);</span>
             }
 
-<span class="fc bfc" id="L1668" title="All 2 branches covered.">            if (_extensions.containsKey(getExtension(url))) {</span>
-<span class="fc" id="L1669">                return (WebResourceMapping) _extensions.get(getExtension(url));</span>
+<span class="fc bfc" id="L1642" title="All 2 branches covered.">            if (_extensions.containsKey(getExtension(url))) {</span>
+<span class="fc" id="L1643">                return (WebResourceMapping) _extensions.get(getExtension(url));</span>
             }
 
-<span class="pc bpc" id="L1672" title="1 of 2 branches missed.">            if (_urlTree.containsKey(&quot;/&quot;)) {</span>
-<span class="nc" id="L1673">                return (WebResourceMapping) _urlTree.get(&quot;/&quot;);</span>
+<span class="pc bpc" id="L1646" title="1 of 2 branches missed.">            if (_urlTree.containsKey(&quot;/&quot;)) {</span>
+<span class="nc" id="L1647">                return (WebResourceMapping) _urlTree.get(&quot;/&quot;);</span>
             }
 
-<span class="fc bfc" id="L1676" title="All 2 branches covered.">            if (_defaultMapping != null) {</span>
-<span class="fc" id="L1677">                return _defaultMapping;</span>
+<span class="fc bfc" id="L1650" title="All 2 branches covered.">            if (_defaultMapping != null) {</span>
+<span class="fc" id="L1651">                return _defaultMapping;</span>
             }
 
-<span class="fc" id="L1680">            final String prefix = &quot;/servlet/&quot;;</span>
-<span class="fc bfc" id="L1681" title="All 2 branches covered.">            if (!url.startsWith(prefix)) {</span>
-<span class="fc" id="L1682">                return null;</span>
+<span class="fc" id="L1654">            final String prefix = &quot;/servlet/&quot;;</span>
+<span class="fc bfc" id="L1655" title="All 2 branches covered.">            if (!url.startsWith(prefix)) {</span>
+<span class="fc" id="L1656">                return null;</span>
             }
 
-<span class="fc" id="L1685">            String className = url.substring(prefix.length());</span>
+<span class="fc" id="L1659">            String className = url.substring(prefix.length());</span>
             try {
-<span class="fc" id="L1687">                Class.forName(className);</span>
-<span class="fc" id="L1688">                return new WebResourceMapping(new ServletConfiguration(className));</span>
-<span class="nc" id="L1689">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L1690">                return null;</span>
+<span class="fc" id="L1661">                Class.forName(className);</span>
+<span class="fc" id="L1662">                return new WebResourceMapping(new ServletConfiguration(className));</span>
+<span class="nc" id="L1663">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L1664">                return null;</span>
             }
         }
 
@@ -1700,17 +1674,17 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the context for longest path prefix
          */
         private Map getContextForLongestPathPrefix(String url) {
-<span class="fc" id="L1703">            Map context = _urlTree;</span>
+<span class="fc" id="L1677">            Map context = _urlTree;</span>
 
-<span class="fc" id="L1705">            ParsedPath path = new ParsedPath(url);</span>
-<span class="fc bfc" id="L1706" title="All 2 branches covered.">            while (path.hasNext()) {</span>
-<span class="fc" id="L1707">                String part = path.next();</span>
-<span class="fc bfc" id="L1708" title="All 2 branches covered.">                if (!context.containsKey(part)) {</span>
-<span class="fc" id="L1709">                    break;</span>
+<span class="fc" id="L1679">            ParsedPath path = new ParsedPath(url);</span>
+<span class="fc bfc" id="L1680" title="All 2 branches covered.">            while (path.hasNext()) {</span>
+<span class="fc" id="L1681">                String part = path.next();</span>
+<span class="fc bfc" id="L1682" title="All 2 branches covered.">                if (!context.containsKey(part)) {</span>
+<span class="fc" id="L1683">                    break;</span>
                 }
-<span class="fc" id="L1711">                context = (Map) context.get(part);</span>
-<span class="fc" id="L1712">            }</span>
-<span class="fc" id="L1713">            return context;</span>
+<span class="fc" id="L1685">                context = (Map) context.get(part);</span>
+<span class="fc" id="L1686">            }</span>
+<span class="fc" id="L1687">            return context;</span>
         }
 
         /**
@@ -1722,11 +1696,11 @@ class WebApplication implements SessionListenerDispatcher {
          * @return the extension
          */
         private String getExtension(String url) {
-<span class="fc" id="L1725">            int index = url.lastIndexOf('.');</span>
-<span class="pc bpc" id="L1726" title="1 of 4 branches missed.">            if (index == -1 || index &gt;= url.length() - 1) {</span>
-<span class="fc" id="L1727">                return &quot;&quot;;</span>
+<span class="fc" id="L1699">            int index = url.lastIndexOf('.');</span>
+<span class="pc bpc" id="L1700" title="1 of 4 branches missed.">            if (index == -1 || index &gt;= url.length() - 1) {</span>
+<span class="fc" id="L1701">                return &quot;&quot;;</span>
             }
-<span class="fc" id="L1729">            return url.substring(index + 1);</span>
+<span class="fc" id="L1703">            return url.substring(index + 1);</span>
         }
 
     }
@@ -1740,7 +1714,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @return the corresponding ServletConfiguration
      */
     public ServletConfiguration getServletByName(String servletName) {
-<span class="fc" id="L1743">        return (ServletConfiguration) _servlets.get(servletName);</span>
+<span class="fc" id="L1717">        return (ServletConfiguration) _servlets.get(servletName);</span>
     }
 
 }
@@ -1750,8 +1724,11 @@ class WebApplication implements SessionListenerDispatcher {
  */
 class ParsedPath {
 
+    /** The path. */
     private final String path;
-<span class="fc" id="L1754">    private int position = 0;</span>
+    /** The position. */
+<span class="fc" id="L1730">    private int position = 0;</span>
+    /** The seperator char. */
     static final char seperator_char = '/';
 
     /**
@@ -1760,31 +1737,35 @@ class ParsedPath {
      * @param path
      *            the path
      */
-<span class="fc" id="L1763">    ParsedPath(String path) {</span>
-<span class="pc bpc" id="L1764" title="1 of 2 branches missed.">        if (path.charAt(0) != seperator_char) {</span>
-<span class="nc" id="L1765">            throw new IllegalArgumentException(&quot;Illegal path '&quot; + path + &quot;', does not begin with &quot; + seperator_char);</span>
+<span class="fc" id="L1740">    ParsedPath(String path) {</span>
+<span class="pc bpc" id="L1741" title="1 of 2 branches missed.">        if (path.charAt(0) != seperator_char) {</span>
+<span class="nc" id="L1742">            throw new IllegalArgumentException(&quot;Illegal path '&quot; + path + &quot;', does not begin with &quot; + seperator_char);</span>
         }
-<span class="fc" id="L1767">        this.path = path;</span>
-<span class="fc" id="L1768">    }</span>
+<span class="fc" id="L1744">        this.path = path;</span>
+<span class="fc" id="L1745">    }</span>
 
     /**
      * Returns true if there are more parts left, otherwise false
+     *
+     * @return true, if successful
      */
     public final boolean hasNext() {
-<span class="fc bfc" id="L1774" title="All 2 branches covered.">        return position &lt; path.length();</span>
+<span class="fc bfc" id="L1753" title="All 2 branches covered.">        return position &lt; path.length();</span>
     }
 
     /**
      * Returns the next part in the path
+     *
+     * @return the string
      */
     public final String next() {
-<span class="fc" id="L1781">        int offset = position + 1;</span>
-<span class="fc bfc" id="L1782" title="All 4 branches covered.">        while (offset &lt; path.length() &amp;&amp; path.charAt(offset) != seperator_char) {</span>
-<span class="fc" id="L1783">            offset++;</span>
+<span class="fc" id="L1762">        int offset = position + 1;</span>
+<span class="fc bfc" id="L1763" title="All 4 branches covered.">        while (offset &lt; path.length() &amp;&amp; path.charAt(offset) != seperator_char) {</span>
+<span class="fc" id="L1764">            offset++;</span>
         }
-<span class="fc" id="L1785">        String result = path.substring(position + 1, offset);</span>
-<span class="fc" id="L1786">        position = offset;</span>
-<span class="fc" id="L1787">        return result;</span>
+<span class="fc" id="L1766">        String result = path.substring(position + 1, offset);</span>
+<span class="fc" id="L1767">        position = offset;</span>
+<span class="fc" id="L1768">        return result;</span>
     }
 
 }

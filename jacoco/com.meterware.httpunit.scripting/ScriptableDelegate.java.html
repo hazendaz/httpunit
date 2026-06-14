@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScriptableDelegate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.scripting</a> &gt; <span class="el_source">ScriptableDelegate.java</span></div><h1>ScriptableDelegate.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.scripting;
 
@@ -24,56 +12,56 @@ import com.meterware.httpunit.HTMLElement;
 /**
  * An interface for objects which will be accessible via scripting.
  **/
-<span class="fc" id="L27">public abstract class ScriptableDelegate implements ScriptingHandler {</span>
+<span class="fc" id="L15">public abstract class ScriptableDelegate implements ScriptingHandler {</span>
 
     /** The script engine. */
     private ScriptingEngine _scriptEngine;
 
     /** a dummy ScriptingEngine implementation. */
-<span class="fc" id="L33">    public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {</span>
+<span class="fc" id="L21">    public static final ScriptingEngine NULL_SCRIPT_ENGINE = new ScriptingEngine() {</span>
         @Override
         public boolean supportsScriptLanguage(String language) {
-<span class="nc" id="L36">            return false;</span>
+<span class="nc" id="L24">            return false;</span>
         }
 
         @Override
         public String runScript(String language, String script) {
-<span class="nc" id="L41">            return &quot;&quot;;</span>
+<span class="nc" id="L29">            return &quot;&quot;;</span>
         }
 
         @Override
         public boolean doEventScript(String eventScript) {
-<span class="nc" id="L46">            return true;</span>
+<span class="nc" id="L34">            return true;</span>
         }
 
         @Override
         public boolean doEvent(String eventScript) {
-<span class="nc" id="L51">            return true;</span>
+<span class="nc" id="L39">            return true;</span>
         }
 
         @Override
         public boolean handleEvent(String eventName) {
-<span class="fc" id="L56">            return true;</span>
+<span class="fc" id="L44">            return true;</span>
         }
 
         @Override
         public Object evaluateExpression(String urlString) {
-<span class="nc" id="L61">            return null;</span>
+<span class="nc" id="L49">            return null;</span>
         }
 
         @Override
         public ScriptingEngine newScriptingEngine(ScriptableDelegate child) {
-<span class="nc" id="L66">            return this;</span>
+<span class="nc" id="L54">            return this;</span>
         }
 
         @Override
         public void clearCaches() {
-<span class="nc" id="L71">        }</span>
+<span class="nc" id="L59">        }</span>
     };
 
     @Override
     public boolean supportsScriptLanguage(String language) {
-<span class="fc" id="L76">        return getScriptEngine().supportsScriptLanguage(language);</span>
+<span class="fc" id="L64">        return getScriptEngine().supportsScriptLanguage(language);</span>
     }
 
     /**
@@ -87,7 +75,7 @@ import com.meterware.httpunit.HTMLElement;
     @Deprecated
     @Override
     public boolean doEvent(String eventScript) {
-<span class="nc" id="L90">        return doEventScript(eventScript);</span>
+<span class="nc" id="L78">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -100,7 +88,7 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public boolean doEventScript(String eventScript) {
-<span class="fc bfc" id="L103" title="All 4 branches covered.">        return eventScript.isEmpty() || getScriptEngine().doEventScript(eventScript);</span>
+<span class="fc bfc" id="L91" title="All 4 branches covered.">        return eventScript.isEmpty() || getScriptEngine().doEventScript(eventScript);</span>
     }
 
     /**
@@ -114,8 +102,8 @@ import com.meterware.httpunit.HTMLElement;
      */
     @Override
     public boolean handleEvent(String eventName) {
-<span class="nc" id="L117">        String eventScript = (String) get(eventName);</span>
-<span class="nc" id="L118">        return doEventScript(eventScript);</span>
+<span class="nc" id="L105">        String eventScript = (String) get(eventName);</span>
+<span class="nc" id="L106">        return doEventScript(eventScript);</span>
     }
 
     /**
@@ -125,7 +113,7 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public String runScript(String language, String script) {
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        return script.isEmpty() ? &quot;&quot; : getScriptEngine().runScript(language, script);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        return script.isEmpty() ? &quot;&quot; : getScriptEngine().runScript(language, script);</span>
     }
 
     /**
@@ -133,16 +121,16 @@ import com.meterware.httpunit.HTMLElement;
      **/
     @Override
     public Object evaluateExpression(String urlString) {
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (urlString.isEmpty()) {</span>
-<span class="nc" id="L137">            return null;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (urlString.isEmpty()) {</span>
+<span class="nc" id="L125">            return null;</span>
         }
-<span class="fc" id="L139">        return getScriptEngine().evaluateExpression(urlString);</span>
+<span class="fc" id="L127">        return getScriptEngine().evaluateExpression(urlString);</span>
     }
 
     @Override
     public void clearCaches() {
-<span class="fc" id="L144">        getScriptEngine().clearCaches();</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L132">        getScriptEngine().clearCaches();</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Returns the value of the named property. Will return null if the property does not exist.
@@ -153,7 +141,7 @@ import com.meterware.httpunit.HTMLElement;
      * @return the object
      */
     public Object get(String propertyName) {
-<span class="fc" id="L156">        return null;</span>
+<span class="fc" id="L144">        return null;</span>
     }
 
     /**
@@ -165,7 +153,7 @@ import com.meterware.httpunit.HTMLElement;
      * @return the object
      */
     public Object get(int index) {
-<span class="nc" id="L168">        return null;</span>
+<span class="nc" id="L156">        return null;</span>
     }
 
     /**
@@ -178,7 +166,7 @@ import com.meterware.httpunit.HTMLElement;
      *            the value
      */
     public void set(String propertyName, Object value) {
-<span class="nc" id="L181">        throw new RuntimeException(&quot;No such property: &quot; + propertyName);</span>
+<span class="nc" id="L169">        throw new RuntimeException(&quot;No such property: &quot; + propertyName);</span>
     }
 
     /**
@@ -188,8 +176,8 @@ import com.meterware.httpunit.HTMLElement;
      *            the new script engine
      */
     public void setScriptEngine(ScriptingEngine scriptEngine) {
-<span class="fc" id="L191">        _scriptEngine = scriptEngine;</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L179">        _scriptEngine = scriptEngine;</span>
+<span class="fc" id="L180">    }</span>
 
     /**
      * Gets the script engine.
@@ -197,7 +185,7 @@ import com.meterware.httpunit.HTMLElement;
      * @return the script engine
      */
     public ScriptingEngine getScriptEngine() {
-<span class="fc bfc" id="L200" title="All 2 branches covered.">        return _scriptEngine != null ? _scriptEngine : NULL_SCRIPT_ENGINE;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        return _scriptEngine != null ? _scriptEngine : NULL_SCRIPT_ENGINE;</span>
     }
 
     /**
@@ -209,7 +197,7 @@ import com.meterware.httpunit.HTMLElement;
      * @return the script engine
      */
     public ScriptingEngine getScriptEngine(ScriptableDelegate child) {
-<span class="fc" id="L212">        return getScriptEngine().newScriptingEngine(child);</span>
+<span class="fc" id="L200">        return getScriptEngine().newScriptingEngine(child);</span>
     }
 
     /**
@@ -221,11 +209,11 @@ import com.meterware.httpunit.HTMLElement;
      * @return the delegates
      */
     protected ScriptableDelegate[] getDelegates(final HTMLElement[] elements) {
-<span class="fc" id="L224">        ScriptableDelegate[] result = new ScriptableDelegate[elements.length];</span>
-<span class="fc bfc" id="L225" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.length; i++) {</span>
-<span class="fc" id="L226">            result[i] = (ScriptableDelegate) elements[i].getScriptingHandler();</span>
+<span class="fc" id="L212">        ScriptableDelegate[] result = new ScriptableDelegate[elements.length];</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="fc" id="L214">            result[i] = (ScriptableDelegate) elements[i].getScriptingHandler();</span>
         }
-<span class="fc" id="L228">        return result;</span>
+<span class="fc" id="L216">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

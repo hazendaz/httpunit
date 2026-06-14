@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HTMLImageElementImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">httpunit</a> &gt; <a href="index.source.html" class="el_package">com.meterware.httpunit.dom</a> &gt; <span class="el_source">HTMLImageElementImpl.java</span></div><h1>HTMLImageElementImpl.java</h1><pre class="source lang-java linenums">/*
- * MIT License
+ * SPDX-License-Identifier: MIT
+ * See LICENSE file for details.
  *
- * Copyright 2011-2025 Russell Gold
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
- * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
- * THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * Copyright 2000-2026 Russell Gold
+ * Copyright 2021-2000 hazendaz
  */
 package com.meterware.httpunit.dom;
 
@@ -24,14 +12,14 @@ import org.w3c.dom.html.HTMLImageElement;
 /**
  * The Class HTMLImageElementImpl.
  */
-<span class="fc" id="L27">public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {</span>
+<span class="fc" id="L15">public class HTMLImageElementImpl extends HTMLElementImpl implements HTMLImageElement {</span>
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
     @Override
     ElementImpl create() {
-<span class="fc" id="L34">        return new HTMLImageElementImpl();</span>
+<span class="fc" id="L22">        return new HTMLImageElementImpl();</span>
     }
 
     /**
@@ -41,7 +29,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getAlign() {
-<span class="fc" id="L44">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
+<span class="fc" id="L32">        return getAttributeWithNoDefault(&quot;align&quot;);</span>
     }
 
     /**
@@ -51,7 +39,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getAlt() {
-<span class="fc" id="L54">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
+<span class="fc" id="L42">        return getAttributeWithNoDefault(&quot;alt&quot;);</span>
     }
 
     /**
@@ -61,7 +49,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getBorder() {
-<span class="fc" id="L64">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
+<span class="fc" id="L52">        return getAttributeWithNoDefault(&quot;border&quot;);</span>
     }
 
     /**
@@ -71,7 +59,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getHeight() {
-<span class="fc" id="L74">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
+<span class="fc" id="L62">        return getAttributeWithNoDefault(&quot;height&quot;);</span>
     }
 
     /**
@@ -81,7 +69,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getHspace() {
-<span class="fc" id="L84">        return getAttributeWithNoDefault(&quot;hspace&quot;);</span>
+<span class="fc" id="L72">        return getAttributeWithNoDefault(&quot;hspace&quot;);</span>
     }
 
     /**
@@ -91,7 +79,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public boolean getIsMap() {
-<span class="fc" id="L94">        return getBooleanAttribute(&quot;ismap&quot;);</span>
+<span class="fc" id="L82">        return getBooleanAttribute(&quot;ismap&quot;);</span>
     }
 
     /**
@@ -101,7 +89,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getLongDesc() {
-<span class="fc" id="L104">        return getAttributeWithNoDefault(&quot;longdesc&quot;);</span>
+<span class="fc" id="L92">        return getAttributeWithNoDefault(&quot;longdesc&quot;);</span>
     }
 
     /**
@@ -111,7 +99,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getLowSrc() {
-<span class="nc" id="L114">        return null;</span>
+<span class="nc" id="L102">        return null;</span>
     }
 
     /**
@@ -121,7 +109,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getName() {
-<span class="fc" id="L124">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
+<span class="fc" id="L112">        return getAttributeWithNoDefault(&quot;name&quot;);</span>
     }
 
     /**
@@ -131,7 +119,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getSrc() {
-<span class="fc" id="L134">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
+<span class="fc" id="L122">        return getAttributeWithNoDefault(&quot;src&quot;);</span>
     }
 
     /**
@@ -141,7 +129,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getUseMap() {
-<span class="fc" id="L144">        return getAttributeWithNoDefault(&quot;usemap&quot;);</span>
+<span class="fc" id="L132">        return getAttributeWithNoDefault(&quot;usemap&quot;);</span>
     }
 
     /**
@@ -151,7 +139,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getVspace() {
-<span class="fc" id="L154">        return getAttributeWithNoDefault(&quot;vspace&quot;);</span>
+<span class="fc" id="L142">        return getAttributeWithNoDefault(&quot;vspace&quot;);</span>
     }
 
     /**
@@ -161,7 +149,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public String getWidth() {
-<span class="fc" id="L164">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
+<span class="fc" id="L152">        return getAttributeWithNoDefault(&quot;width&quot;);</span>
     }
 
     /**
@@ -172,8 +160,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setAlign(String align) {
-<span class="fc" id="L175">        setAttribute(&quot;align&quot;, align);</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L163">        setAttribute(&quot;align&quot;, align);</span>
+<span class="fc" id="L164">    }</span>
 
     /**
      * Sets the alt.
@@ -183,8 +171,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setAlt(String alt) {
-<span class="fc" id="L186">        setAttribute(&quot;alt&quot;, alt);</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L174">        setAttribute(&quot;alt&quot;, alt);</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Sets the border.
@@ -194,8 +182,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setBorder(String border) {
-<span class="fc" id="L197">        setAttribute(&quot;border&quot;, border);</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L185">        setAttribute(&quot;border&quot;, border);</span>
+<span class="fc" id="L186">    }</span>
 
     /**
      * Sets the height.
@@ -205,8 +193,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setHeight(String height) {
-<span class="fc" id="L208">        setAttribute(&quot;height&quot;, height);</span>
-<span class="fc" id="L209">    }</span>
+<span class="fc" id="L196">        setAttribute(&quot;height&quot;, height);</span>
+<span class="fc" id="L197">    }</span>
 
     /**
      * Sets the hspace.
@@ -216,8 +204,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setHspace(String hspace) {
-<span class="fc" id="L219">        setAttribute(&quot;hspace&quot;, hspace);</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L207">        setAttribute(&quot;hspace&quot;, hspace);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Sets the checks if is map.
@@ -227,8 +215,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setIsMap(boolean isMap) {
-<span class="fc" id="L230">        setAttribute(&quot;ismap&quot;, isMap);</span>
-<span class="fc" id="L231">    }</span>
+<span class="fc" id="L218">        setAttribute(&quot;ismap&quot;, isMap);</span>
+<span class="fc" id="L219">    }</span>
 
     /**
      * Sets the long desc.
@@ -238,8 +226,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setLongDesc(String longDesc) {
-<span class="fc" id="L241">        setAttribute(&quot;longdesc&quot;, longDesc);</span>
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L229">        setAttribute(&quot;longdesc&quot;, longDesc);</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Sets the low src.
@@ -249,7 +237,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setLowSrc(String lowSrc) {
-<span class="nc" id="L252">    }</span>
+<span class="nc" id="L240">    }</span>
 
     /**
      * Sets the name.
@@ -259,8 +247,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setName(String name) {
-<span class="fc" id="L262">        setAttribute(&quot;name&quot;, name);</span>
-<span class="fc" id="L263">    }</span>
+<span class="fc" id="L250">        setAttribute(&quot;name&quot;, name);</span>
+<span class="fc" id="L251">    }</span>
 
     /**
      * Sets the src.
@@ -270,8 +258,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setSrc(String src) {
-<span class="fc" id="L273">        setAttribute(&quot;src&quot;, src);</span>
-<span class="fc" id="L274">    }</span>
+<span class="fc" id="L261">        setAttribute(&quot;src&quot;, src);</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * Sets the use map.
@@ -281,8 +269,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setUseMap(String useMap) {
-<span class="fc" id="L284">        setAttribute(&quot;usemap&quot;, useMap);</span>
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L272">        setAttribute(&quot;usemap&quot;, useMap);</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * Sets the vspace.
@@ -292,8 +280,8 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setVspace(String vspace) {
-<span class="fc" id="L295">        setAttribute(&quot;vspace&quot;, vspace);</span>
-<span class="fc" id="L296">    }</span>
+<span class="fc" id="L283">        setAttribute(&quot;vspace&quot;, vspace);</span>
+<span class="fc" id="L284">    }</span>
 
     /**
      * Sets the width.
@@ -303,7 +291,7 @@ import org.w3c.dom.html.HTMLImageElement;
      */
     @Override
     public void setWidth(String width) {
-<span class="fc" id="L306">        setAttribute(&quot;width&quot;, width);</span>
-<span class="fc" id="L307">    }</span>
+<span class="fc" id="L294">        setAttribute(&quot;width&quot;, width);</span>
+<span class="fc" id="L295">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -247,16 +247,6 @@ public interface HTMLSegment {
     WebImage getImageWithAltText(String source) throws SAXException;
 
     /**
-     * Returns the applets found in the page in the order in which they appear.
-     *
-     * @return the applets
-     *
-     * @throws SAXException
-     *             thrown if there is an error parsing the segment.
-     */
-    WebApplet[] getApplets() throws SAXException;
-
-    /**
      * Returns the top-level block elements found in the page in the order in which they appear.
      *
      * @return the text blocks

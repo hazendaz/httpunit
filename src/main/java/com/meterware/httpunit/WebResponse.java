@@ -692,11 +692,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
         return getReceivedPage().getImageWithAltText(altText);
     }
 
-    @Override
-    public WebApplet[] getApplets() throws SAXException {
-        return getReceivedPage().getApplets();
-    }
-
     /**
      * Returns an array of text blocks found in the page.
      */

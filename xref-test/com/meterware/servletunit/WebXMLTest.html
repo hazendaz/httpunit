@@ -31,25 +31,25 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> com.meterware.httpunit.WebRequest;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> com.meterware.httpunit.WebResponse;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletConfig;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletContext;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletException;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServlet;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletResponse;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.io.File;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.io.OutputStream;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.io.OutputStream;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletConfig;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletContext;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletException;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServlet;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletResponse;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Disabled;
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
@@ -331,7 +331,7 @@
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>         assertEquals(<span class="jxr_string">"vanilla"</span>, sr.getContextParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"Context parameter 'icecream'"</span>);
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>         InvocationContext ic = client.newInvocation(<span class="jxr_string">"http://localhost/SimpleServlet"</span>);
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> 
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         assertNotNull(sc, <span class="jxr_string">"ServletContext should not be null"</span>);
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>         assertEquals(<span class="jxr_string">"vanilla"</span>, sc.getInitParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"ServletContext.getInitParameter()"</span>);
 <a class="jxr_linenumber" name="L329" href="#L329">329</a>         assertEquals(<span class="jxr_string">"waffle"</span>, sc.getInitParameter(<span class="jxr_string">"cone"</span>), <span class="jxr_string">"init parameter: cone"</span>);
@@ -357,7 +357,7 @@
 <a class="jxr_linenumber" name="L349" href="#L349">349</a> 
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>         InvocationContext ic = client.newInvocation(<span class="jxr_string">"http://localhost/SimpleServlet"</span>);
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> 
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>         jakarta.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>         javax.servlet.ServletContext sc = ((HttpServlet) ic.getServlet()).getServletContext();
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>         assertNotNull(sc, <span class="jxr_string">"ServletContext should not be null"</span>);
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>         assertEquals(<span class="jxr_string">"strawberry"</span>, sc.getInitParameter(<span class="jxr_string">"icecream"</span>), <span class="jxr_string">"ServletContext.getInitParameter()"</span>);
 <a class="jxr_linenumber" name="L355" href="#L355">355</a>         assertNull(sc.getInitParameter(<span class="jxr_string">"shoesize"</span>), <span class="jxr_string">"ServletContext.getInitParameter() should be null"</span>);

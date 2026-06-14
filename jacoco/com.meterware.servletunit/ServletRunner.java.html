@@ -12,8 +12,6 @@ import com.meterware.httpunit.HttpUnitUtils;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import jakarta.servlet.http.HttpSession;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +20,7 @@ import java.nio.file.Path;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
@@ -37,10 +36,10 @@ public class ServletRunner {
     /**
      * Default constructor, which defines no servlets.
      */
-<span class="fc" id="L40">    public ServletRunner() {</span>
-<span class="fc" id="L41">        _application = new WebApplication();</span>
-<span class="fc" id="L42">        completeInitialization(null);</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L39">    public ServletRunner() {</span>
+<span class="fc" id="L40">        _application = new WebApplication();</span>
+<span class="fc" id="L41">        completeInitialization(null);</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Constructor which expects the full path to the web.xml for the application.
@@ -56,10 +55,10 @@ public class ServletRunner {
      * @deprecated as of 1.6, use {@link #ServletRunner(File)}
      */
     @Deprecated
-<span class="nc" id="L59">    public ServletRunner(String webXMLFileSpec) throws IOException, SAXException {</span>
-<span class="nc" id="L60">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXMLFileSpec));</span>
-<span class="nc" id="L61">        completeInitialization(null);</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L58">    public ServletRunner(String webXMLFileSpec) throws IOException, SAXException {</span>
+<span class="nc" id="L59">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXMLFileSpec));</span>
+<span class="nc" id="L60">        completeInitialization(null);</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Constructor which expects the full path to the web.xml for the application and a context path under which to
@@ -79,8 +78,8 @@ public class ServletRunner {
      */
     @Deprecated
     public ServletRunner(String webXMLFileSpec, String contextPath) throws IOException, SAXException {
-<span class="nc" id="L82">        this(Path.of(webXMLFileSpec).toFile(), contextPath);</span>
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L81">        this(Path.of(webXMLFileSpec).toFile(), contextPath);</span>
+<span class="nc" id="L82">    }</span>
 
     /**
      * Constructor which expects a File object representing the web.xml for the application.
@@ -93,10 +92,10 @@ public class ServletRunner {
      * @throws SAXException
      *             the SAX exception
      */
-<span class="fc" id="L96">    public ServletRunner(File webXml) throws IOException, SAXException {</span>
-<span class="fc" id="L97">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml));</span>
-<span class="fc" id="L98">        completeInitialization(null);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L95">    public ServletRunner(File webXml) throws IOException, SAXException {</span>
+<span class="fc" id="L96">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml));</span>
+<span class="fc" id="L97">        completeInitialization(null);</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * Constructor which expects a File object representing the web.xml for the application and a context path under
@@ -112,11 +111,11 @@ public class ServletRunner {
      * @throws SAXException
      *             the SAX exception
      */
-<span class="fc" id="L115">    public ServletRunner(File webXml, String contextPath) throws IOException, SAXException {</span>
-<span class="fc" id="L116">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml),</span>
-<span class="fc" id="L117">                webXml.getParentFile().getParentFile(), contextPath);</span>
-<span class="fc" id="L118">        completeInitialization(contextPath);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L114">    public ServletRunner(File webXml, String contextPath) throws IOException, SAXException {</span>
+<span class="fc" id="L115">        _application = new WebApplication(HttpUnitUtils.newParser().parse(webXml),</span>
+<span class="fc" id="L116">                webXml.getParentFile().getParentFile(), contextPath);</span>
+<span class="fc" id="L117">        completeInitialization(contextPath);</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * constructor with entity Resolver as asked for in Bug report 1222269 by jim - jafergus.
@@ -131,12 +130,12 @@ public class ServletRunner {
      * @throws SAXException
      *             the SAX exception
      */
-<span class="nc" id="L134">    public ServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {</span>
-<span class="nc" id="L135">        DocumentBuilder parser = HttpUnitUtils.newParser();</span>
-<span class="nc" id="L136">        parser.setEntityResolver(resolver);</span>
-<span class="nc" id="L137">        _application = new WebApplication(parser.parse(webXMLFileSpec));</span>
-<span class="nc" id="L138">        completeInitialization(null);</span>
-<span class="nc" id="L139">    }</span>
+<span class="nc" id="L133">    public ServletRunner(String webXMLFileSpec, EntityResolver resolver) throws IOException, SAXException {</span>
+<span class="nc" id="L134">        DocumentBuilder parser = HttpUnitUtils.newParser();</span>
+<span class="nc" id="L135">        parser.setEntityResolver(resolver);</span>
+<span class="nc" id="L136">        _application = new WebApplication(parser.parse(webXMLFileSpec));</span>
+<span class="nc" id="L137">        completeInitialization(null);</span>
+<span class="nc" id="L138">    }</span>
 
     /**
      * Constructor which expects an input stream containing the web.xml for the application.
@@ -150,8 +149,8 @@ public class ServletRunner {
      *             the SAX exception
      */
     public ServletRunner(InputStream webXML) throws IOException, SAXException {
-<span class="fc" id="L153">        this(webXML, null);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L152">        this(webXML, null);</span>
+<span class="fc" id="L153">    }</span>
 
     /**
      * Constructor which expects an input stream containing the web.xml for the application.
@@ -166,16 +165,16 @@ public class ServletRunner {
      * @throws SAXException
      *             the SAX exception
      */
-<span class="fc" id="L169">    public ServletRunner(InputStream webXML, String contextPath) throws IOException, SAXException {</span>
-<span class="fc" id="L170">        InputSource inputSource = new InputSource(webXML);</span>
-<span class="fc" id="L171">        Document doc = HttpUnitUtils.parse(inputSource);</span>
+<span class="fc" id="L168">    public ServletRunner(InputStream webXML, String contextPath) throws IOException, SAXException {</span>
+<span class="fc" id="L169">        InputSource inputSource = new InputSource(webXML);</span>
+<span class="fc" id="L170">        Document doc = HttpUnitUtils.parse(inputSource);</span>
         try {
-<span class="fc" id="L173">            _application = new WebApplication(doc, contextPath);</span>
-<span class="fc" id="L174">            completeInitialization(contextPath);</span>
-<span class="nc" id="L175">        } catch (java.net.MalformedURLException mue) {</span>
-<span class="nc" id="L176">            throw mue;</span>
-<span class="fc" id="L177">        }</span>
-<span class="fc" id="L178">    }</span>
+<span class="fc" id="L172">            _application = new WebApplication(doc, contextPath);</span>
+<span class="fc" id="L173">            completeInitialization(contextPath);</span>
+<span class="nc" id="L174">        } catch (java.net.MalformedURLException mue) {</span>
+<span class="nc" id="L175">            throw mue;</span>
+<span class="fc" id="L176">        }</span>
+<span class="fc" id="L177">    }</span>
 
     /**
      * Registers a servlet class to be run.
@@ -186,8 +185,8 @@ public class ServletRunner {
      *            the servlet class name
      */
     public void registerServlet(String resourceName, String servletClassName) {
-<span class="fc" id="L189">        _application.registerServlet(resourceName, servletClassName, null);</span>
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L188">        _application.registerServlet(resourceName, servletClassName, null);</span>
+<span class="fc" id="L189">    }</span>
 
     /**
      * Complete initialization.
@@ -196,10 +195,10 @@ public class ServletRunner {
      *            the context path
      */
     private void completeInitialization(String contextPath) {
-<span class="fc" id="L199">        _context = new ServletUnitContext(contextPath, _application.getServletContext(), _application);</span>
-<span class="fc" id="L200">        _application.registerServlet(&quot;*.jsp&quot;, _jspServletDescriptor.getClassName(),</span>
-<span class="fc" id="L201">                _jspServletDescriptor.getInitializationParameters(null, null));</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L198">        _context = new ServletUnitContext(contextPath, _application.getServletContext(), _application);</span>
+<span class="fc" id="L199">        _application.registerServlet(&quot;*.jsp&quot;, _jspServletDescriptor.getClassName(),</span>
+<span class="fc" id="L200">                _jspServletDescriptor.getInitializationParameters(null, null));</span>
+<span class="fc" id="L201">    }</span>
 
     /**
      * Registers a servlet class to be run, specifying initialization parameters.
@@ -212,8 +211,8 @@ public class ServletRunner {
      *            the init parameters
      */
     public void registerServlet(String resourceName, String servletClassName, Hashtable initParameters) {
-<span class="nc" id="L215">        _application.registerServlet(resourceName, servletClassName, initParameters);</span>
-<span class="nc" id="L216">    }</span>
+<span class="nc" id="L214">        _application.registerServlet(resourceName, servletClassName, initParameters);</span>
+<span class="nc" id="L215">    }</span>
 
     /**
      * Returns the response from the specified servlet.
@@ -231,7 +230,7 @@ public class ServletRunner {
      *             thrown if there is an error parsing the response
      */
     public WebResponse getResponse(WebRequest request) throws MalformedURLException, IOException, SAXException {
-<span class="fc" id="L234">        return getClient().getResponse(request);</span>
+<span class="fc" id="L233">        return getClient().getResponse(request);</span>
     }
 
     /**
@@ -250,7 +249,7 @@ public class ServletRunner {
      *             thrown if there is an error parsing the response
      */
     public WebResponse getResponse(String url) throws MalformedURLException, IOException, SAXException {
-<span class="nc" id="L253">        return getClient().getResponse(url);</span>
+<span class="nc" id="L252">        return getClient().getResponse(url);</span>
     }
 
     /**
@@ -262,7 +261,7 @@ public class ServletRunner {
      * @return the session
      */
     public HttpSession getSession(boolean create) {
-<span class="fc" id="L265">        return getClient().getSession(create);</span>
+<span class="fc" id="L264">        return getClient().getSession(create);</span>
     }
 
     /**
@@ -274,8 +273,8 @@ public class ServletRunner {
      * @return - the context parameter with the given name
      */
     public String getContextParameter(String name) {
-<span class="fc" id="L277">        Object value = _application.getContextParameters().get(name);</span>
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">        return value == null ? null : value.toString();</span>
+<span class="fc" id="L276">        Object value = _application.getContextParameters().get(name);</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">        return value == null ? null : value.toString();</span>
     }
 
     /**
@@ -290,16 +289,16 @@ public class ServletRunner {
      */
     @Deprecated
     public void setContextParameter(String name, Object value) {
-<span class="nc" id="L293">        getApplication().getServletContext().setAttribute(name, value);</span>
-<span class="nc" id="L294">    }</span>
+<span class="nc" id="L292">        getApplication().getServletContext().setAttribute(name, value);</span>
+<span class="nc" id="L293">    }</span>
 
     /**
      * Shuts down the servlet container, returning any resources held by it. Calls the destroy method of each active
      * servlet, then notifies ContextListeners of server shutdown.
      */
     public void shutDown() {
-<span class="fc" id="L301">        _application.shutDown();</span>
-<span class="fc" id="L302">    }</span>
+<span class="fc" id="L300">        _application.shutDown();</span>
+<span class="fc" id="L301">    }</span>
 
     /**
      * Creates and returns a new web client that communicates with this servlet runner.
@@ -307,34 +306,34 @@ public class ServletRunner {
      * @return the servlet unit client
      */
     public ServletUnitClient newClient() {
-<span class="fc" id="L310">        return ServletUnitClient.newClient(_factory);</span>
+<span class="fc" id="L309">        return ServletUnitClient.newClient(_factory);</span>
     }
 
     /**
      * The Class JasperJSPServletDescriptor.
      */
-<span class="fc" id="L316">    public static class JasperJSPServletDescriptor implements JSPServletDescriptor {</span>
+<span class="fc" id="L315">    public static class JasperJSPServletDescriptor implements JSPServletDescriptor {</span>
 
         @Override
         public String getClassName() {
-<span class="fc" id="L320">            return &quot;org.apache.jasper.servlet.JspServlet&quot;;</span>
+<span class="fc" id="L319">            return &quot;org.apache.jasper.servlet.JspServlet&quot;;</span>
         }
 
         @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-<span class="fc" id="L325">            Hashtable params = new Hashtable&lt;&gt;();</span>
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">            if (classPath != null) {</span>
-<span class="nc" id="L327">                params.put(&quot;classpath&quot;, classPath);</span>
+<span class="fc" id="L324">            Hashtable params = new Hashtable&lt;&gt;();</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">            if (classPath != null) {</span>
+<span class="nc" id="L326">                params.put(&quot;classpath&quot;, classPath);</span>
             }
-<span class="pc bpc" id="L329" title="1 of 2 branches missed.">            if (workingDirectory != null) {</span>
-<span class="nc" id="L330">                params.put(&quot;scratchdir&quot;, workingDirectory);</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">            if (workingDirectory != null) {</span>
+<span class="nc" id="L329">                params.put(&quot;scratchdir&quot;, workingDirectory);</span>
             }
-<span class="fc" id="L332">            return params;</span>
+<span class="fc" id="L331">            return params;</span>
         }
     }
 
     /** The Constant JASPER_DESCRIPTOR. */
-<span class="fc" id="L337">    public static final JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();</span>
+<span class="fc" id="L336">    public static final JSPServletDescriptor JASPER_DESCRIPTOR = new JasperJSPServletDescriptor();</span>
 
     // -------------------------------------------- package methods
     // ---------------------------------------------------------
@@ -345,7 +344,7 @@ public class ServletRunner {
      * @return the context
      */
     ServletUnitContext getContext() {
-<span class="fc" id="L348">        return _context;</span>
+<span class="fc" id="L347">        return _context;</span>
     }
 
     /**
@@ -354,13 +353,13 @@ public class ServletRunner {
      * @return the application
      */
     WebApplication getApplication() {
-<span class="fc" id="L357">        return _application;</span>
+<span class="fc" id="L356">        return _application;</span>
     }
 
     // ---------------------------- private members ------------------------------------
 
     /** The jsp servlet descriptor. */
-<span class="fc" id="L363">    private static JSPServletDescriptor _jspServletDescriptor = JASPER_DESCRIPTOR;</span>
+<span class="fc" id="L362">    private static JSPServletDescriptor _jspServletDescriptor = JASPER_DESCRIPTOR;</span>
 
     /** The application. */
     private WebApplication _application;
@@ -372,17 +371,17 @@ public class ServletRunner {
     private ServletUnitContext _context;
 
     /** The factory. */
-<span class="pc" id="L375">    private InvocationContextFactory _factory = new InvocationContextFactory() {</span>
+<span class="pc" id="L374">    private InvocationContextFactory _factory = new InvocationContextFactory() {</span>
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
                 Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
-<span class="fc" id="L379">            return new InvocationContextImpl(client, ServletRunner.this, targetFrame, request, clientHeaders,</span>
+<span class="fc" id="L378">            return new InvocationContextImpl(client, ServletRunner.this, targetFrame, request, clientHeaders,</span>
                     messageBody);
         }
 
         @Override
         public HttpSession getSession(String sessionId, boolean create) {
-<span class="fc" id="L385">            return _context.getValidSession(sessionId, null, create);</span>
+<span class="fc" id="L384">            return _context.getValidSession(sessionId, null, create);</span>
         }
     };
 
@@ -392,10 +391,10 @@ public class ServletRunner {
      * @return the client
      */
     private ServletUnitClient getClient() {
-<span class="fc bfc" id="L395" title="All 2 branches covered.">        if (_client == null) {</span>
-<span class="fc" id="L396">            _client = newClient();</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">        if (_client == null) {</span>
+<span class="fc" id="L395">            _client = newClient();</span>
         }
-<span class="fc" id="L398">        return _client;</span>
+<span class="fc" id="L397">        return _client;</span>
     }
 
 }

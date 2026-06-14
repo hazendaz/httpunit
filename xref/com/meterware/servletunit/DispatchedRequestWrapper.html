@@ -15,13 +15,13 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">package</strong> com.meterware.servletunit;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.RequestDispatcher;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequestWrapper;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.util.Hashtable;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.Hashtable;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> javax.servlet.RequestDispatcher;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequestWrapper;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment"> * This class represents a request dispatched via a RequestDispatcherImpl.</em>
@@ -114,15 +114,15 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> <strong class="jxr_keyword">class</strong> <a name="IncludeRequestWrapper" href="../../../com/meterware/servletunit/DispatchedRequestWrapper.html#IncludeRequestWrapper">IncludeRequestWrapper</a> <strong class="jxr_keyword">extends</strong> <a name="DispatchedRequestWrapper" href="../../../com/meterware/servletunit/DispatchedRequestWrapper.html#DispatchedRequestWrapper">DispatchedRequestWrapper</a> {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> 
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     <em class="jxr_javadoccomment">/** The request uri. */</em>
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REQUEST_URI = <span class="jxr_string">"jakarta.servlet.include.request_uri"</span>;
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String REQUEST_URI = <span class="jxr_string">"javax.servlet.include.request_uri"</span>;
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     <em class="jxr_javadoccomment">/** The context path. */</em>
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String CONTEXT_PATH = <span class="jxr_string">"jakarta.servlet.include.context_path"</span>;
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String CONTEXT_PATH = <span class="jxr_string">"javax.servlet.include.context_path"</span>;
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>     <em class="jxr_javadoccomment">/** The servlet path. */</em>
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String SERVLET_PATH = <span class="jxr_string">"jakarta.servlet.include.servlet_path"</span>;
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String SERVLET_PATH = <span class="jxr_string">"javax.servlet.include.servlet_path"</span>;
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     <em class="jxr_javadoccomment">/** The path info. */</em>
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PATH_INFO = <span class="jxr_string">"jakarta.servlet.include.path_info"</span>;
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PATH_INFO = <span class="jxr_string">"javax.servlet.include.path_info"</span>;
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>     <em class="jxr_javadoccomment">/** The query string. */</em>
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String QUERY_STRING = <span class="jxr_string">"jakarta.servlet.include.query_string"</span>;
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String QUERY_STRING = <span class="jxr_string">"javax.servlet.include.query_string"</span>;
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <em class="jxr_javadoccomment">/** The attributes. */</em>
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">private</strong> Hashtable _attributes = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();

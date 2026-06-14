@@ -2089,16 +2089,47 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
 // =======================================================================================
 
+/**
+ * The Class DefaultWebResponse.
+ */
 class DefaultWebResponse extends WebResponse {
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(String text) {
         this(null, null, text);
     }
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, URL url, String text) {
         this(client, FrameSelector.TOP_FRAME, url, text);
     }
 
+    /**
+     * Instantiates a new default web response.
+     *
+     * @param client
+     *            the client
+     * @param frame
+     *            the frame
+     * @param url
+     *            the url
+     * @param text
+     *            the text
+     */
     DefaultWebResponse(WebClient client, FrameSelector frame, URL url, String text) {
         super(client, frame, url, text);
     }

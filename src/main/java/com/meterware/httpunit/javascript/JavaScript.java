@@ -2093,9 +2093,17 @@ public class JavaScript {
  */
 class RhinoException extends RuntimeException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
+    /** The cause. */
     private Exception _cause;
 
+    /**
+     * Instantiates a new rhino exception.
+     *
+     * @param cause
+     *            the cause
+     */
     public RhinoException(Exception cause) {
         _cause = cause;
     }

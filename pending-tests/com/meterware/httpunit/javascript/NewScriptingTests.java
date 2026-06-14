@@ -19,16 +19,31 @@ import junit.framework.TestSuite;
 public class NewScriptingTests extends AbstractJavaScriptTest {
 
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main( String args[] ) {
         TestRunner.run( suite() );
     }
 
 
+    /**
+     * Suite.
+     *
+     * @return the test suite
+     */
     public static TestSuite suite() {
         return new TestSuite( NewScriptingTests.class );
     }
 
 
+    /**
+     * Instantiates a new new scripting tests.
+     *
+     * @param name the name
+     */
     public NewScriptingTests( String name ) {
         super( name );
     }
@@ -68,6 +83,8 @@ public class NewScriptingTests extends AbstractJavaScriptTest {
      * by Grzegorz Lukasik
      * and bug report [ 1572117 ] ClassFormatError
      * by Walter Meier
+     
+     * @throws Exception the exception
      */
     public void testLargeJavaScript() throws Exception {
         // create at least 64 KByte worth of Java script of the form

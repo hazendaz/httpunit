@@ -681,6 +681,19 @@ class ServletUnitHttpResponse implements HttpServletResponse {
         setLongHeader("Content-Length", len);
     }
 
+    /**
+     * Send redirect.
+     *
+     * @param location
+     *            the location
+     * @param sc
+     *            the sc
+     * @param clearBuffer
+     *            the clear buffer
+     *
+     * @throws IOException
+     *             the io exception
+     */
     public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
         setStatus(sc);
         setHeader("Location", location);
@@ -691,8 +704,17 @@ class ServletUnitHttpResponse implements HttpServletResponse {
 
 }
 
+/**
+ * The Class ServletUnitOutputStream.
+ */
 class ServletUnitOutputStream extends ServletOutputStream {
 
+    /**
+     * Instantiates a new servlet unit output stream.
+     *
+     * @param stream
+     *            the stream
+     */
     ServletUnitOutputStream(ByteArrayOutputStream stream) {
         _stream = stream;
     }
@@ -702,6 +724,7 @@ class ServletUnitOutputStream extends ServletOutputStream {
         _stream.write(aByte);
     }
 
+    /** The stream. */
     private ByteArrayOutputStream _stream;
 
     @Override

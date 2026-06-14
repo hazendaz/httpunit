@@ -46,9 +46,11 @@ public class BrowserDisplayer {
 		openURL(url);
 	}
 
+	/** The browsers. */
 	static final String[] browsers = { "google-chrome", "firefox", "opera",
 			"epiphany", "konqueror", "conkeror", "midori", "kazehakase", "mozilla" };
 
+	/** The err msg. */
 	static final String errMsg = "Error attempting to launch web browser";
 
 	/**

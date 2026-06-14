@@ -17,16 +17,31 @@ import junit.textui.TestRunner;
  */
 public class NewScriptingEngineTests extends AbstractJavaScriptTest {
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main( String args[] ) {
         TestRunner.run( suite() );
     }
 
 
+    /**
+     * Suite.
+     *
+     * @return the test suite
+     */
     public static TestSuite suite() {
         return new TestSuite( NewScriptingEngineTests.class );
     }
 
 
+    /**
+     * Instantiates a new new scripting engine tests.
+     *
+     * @param name the name
+     */
     public NewScriptingEngineTests( String name ) {
         super( name );
     }

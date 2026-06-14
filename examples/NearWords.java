@@ -56,6 +56,7 @@ public class NearWords {
  * 
  */
 class WordSeeker {
+	/** The url. */
 	String url = "http://simple.wiktionary.org/";
 	
 	/**
@@ -97,8 +98,10 @@ class WordSeeker {
 		return getOptionsFromResponse(pattern);
 	}
 
+	/** The conversation. */
 	private WebConversation conversation = new WebConversation();
 
+	/** The response. */
 	private WebResponse response;
 
 	/**

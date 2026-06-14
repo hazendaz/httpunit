@@ -1041,8 +1041,17 @@ public abstract class WebClient {
 
 // ==================================================================================================
 
+/**
+ * The Class RedirectWebRequest.
+ */
 class RedirectWebRequest extends WebRequest {
 
+    /**
+     * Instantiates a new redirect web request.
+     *
+     * @param response
+     *            the response
+     */
     RedirectWebRequest(WebResponse response) {
         super(response.getURL(), response.getHeaderField("Location"), response.getFrame(), response.getFrameName());
         if (response.getReferer() != null) {

@@ -30,20 +30,28 @@ import org.xml.sax.SAXException;
 public class YouTubeVisitor extends JPanel implements ActionListener {
 
 	// where all visited videos should go to
+	/** The target folder. */
 	protected File targetFolder;
 
 	// UI elements for targetFolder selection
+	/** The target folder label. */
 	protected JLabel targetFolderLabel;
 
+	/** The target folder field. */
 	protected JTextField targetFolderField;
 
+	/** The folder select button. */
 	protected JButton FolderSelectButton;
 	
 	// UI elements for format selection
+	/** The formats. */
 	String[] formats = {"mp4","flv (Low Quality)","flv (High Quality (320p))","flv (High Quality (480p)",
 			"3gp","mp3","mpeg","mov"};
+	/** The format label. */
 	protected JLabel formatLabel;
+	/** The format combo box. */
 	protected JComboBox formatComboBox = new JComboBox(formats);
+	/** The video format. */
 	protected String videoFormat;
 
 	/**
@@ -55,18 +63,25 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 	}
 
 	// UI elements for selection of videos to visit
+	/** The url label. */
 	protected JLabel urlLabel;
 
+	/** The url area. */
 	protected JTextArea urlArea;
 
+	/** The visit button. */
 	protected JButton visitButton;
 
 	// progressbar for visits
+	/** The progress bar. */
 	protected JProgressBar progressBar;
 
 	// status message
+	/** The status message. */
 	protected JLabel statusMessage;
+	/** The display checkbox. */
 	protected JCheckBox displayCheckbox;
+	/** The with display. */
 	private boolean withDisplay;
 
 	/**
@@ -83,14 +98,18 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 		this.withDisplay = withDisplay;
 		this.displayCheckbox.setSelected(withDisplay);
 	}
+	/** The help message. */
 	static final String helpMessage = "Select Target Folder and cut&paste Video URLs then click 'visit'";
 
 	// Create a file chooser
+	/** The file chooser. */
 	protected JFileChooser fileChooser;
 
+	/** The chooser title. */
 	static final String chooserTitle = "Select Target Folder";
 
 	// Layout constraints
+	/** The gbc. */
 	GridBagConstraints gbc = new GridBagConstraints();
 
 	/**
@@ -219,6 +238,8 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 	 *          the targetFolder to set
 	 * @param withField
 	 *          - shall the GUI display also be set?
+	 
+	 * @param newTargetFolder the new target folder
 	 */
 	public void setTargetFolder(File newTargetFolder, boolean withField) {
 		this.targetFolder = newTargetFolder;
@@ -260,7 +281,9 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 			visit(urls[i]);
 		}
 	}
+	/** The conversation. */
 	private WebConversation conversation = new WebConversation();
+	/** The response. */
 	private WebResponse response;
 	
 	/**
@@ -329,6 +352,8 @@ public class YouTubeVisitor extends JPanel implements ActionListener {
 
 	/**
 	 * react on clicks
+	 
+	 * @param evt the evt
 	 */
 	public void actionPerformed(ActionEvent evt) {
 		// Folder Selection

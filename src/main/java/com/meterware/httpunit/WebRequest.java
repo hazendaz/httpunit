@@ -844,6 +844,9 @@ public abstract class WebRequest {
 // ======================================== class JavaScriptURLStreamHandler
 // ============================================
 
+/**
+ * The Class JavascriptURLStreamHandler.
+ */
 class JavascriptURLStreamHandler extends URLStreamHandler {
 
     @Override
@@ -854,6 +857,9 @@ class JavascriptURLStreamHandler extends URLStreamHandler {
 
 // ======================================== class HttpsURLStreamHandler ============================================
 
+/**
+ * The Class HttpsURLStreamHandler.
+ */
 class HttpsURLStreamHandler extends URLStreamHandler {
 
     @Override
@@ -870,8 +876,15 @@ class HttpsURLStreamHandler extends URLStreamHandler {
  **/
 class IllegalNonFileParameterException extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new illegal non file parameter exception.
+     *
+     * @param parameterName
+     *            the parameter name
+     */
     IllegalNonFileParameterException(String parameterName) {
         _parameterName = parameterName;
     }
@@ -881,6 +894,7 @@ class IllegalNonFileParameterException extends IllegalRequestParameterException 
         return "Parameter '" + _parameterName + "' is not a file parameter and may not be set to a file value.";
     }
 
+    /** The parameter name. */
     private String _parameterName;
 
 }
@@ -892,8 +906,12 @@ class IllegalNonFileParameterException extends IllegalRequestParameterException 
  **/
 class MultipartFormRequiredException extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new multipart form required exception.
+     */
     MultipartFormRequiredException() {
     }
 
@@ -911,8 +929,12 @@ class MultipartFormRequiredException extends IllegalRequestParameterException {
  **/
 class IllegalButtonPositionException extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new illegal button position exception.
+     */
     IllegalButtonPositionException() {
     }
 

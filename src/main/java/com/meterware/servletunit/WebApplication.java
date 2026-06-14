@@ -1724,8 +1724,11 @@ class WebApplication implements SessionListenerDispatcher {
  */
 class ParsedPath {
 
+    /** The path. */
     private final String path;
+    /** The position. */
     private int position = 0;
+    /** The seperator char. */
     static final char seperator_char = '/';
 
     /**
@@ -1743,6 +1746,8 @@ class ParsedPath {
 
     /**
      * Returns true if there are more parts left, otherwise false
+     *
+     * @return true, if successful
      */
     public final boolean hasNext() {
         return position < path.length();
@@ -1750,6 +1755,8 @@ class ParsedPath {
 
     /**
      * Returns the next part in the path
+     *
+     * @return the string
      */
     public final String next() {
         int offset = position + 1;

@@ -15,26 +15,54 @@ import java.util.Arrays;
 import junit.framework.*;
 import tutorial.persistence.BettingPool;
 
+/**
+ * The Class PoolEditorTest.
+ */
 public class PoolEditorTest extends TestCase {
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main( String args[] ) {
         junit.textui.TestRunner.run( suite() );
     }
 
+    /**
+     * Suite.
+     *
+     * @return the test suite
+     */
     public static TestSuite suite() {
         return new TestSuite( PoolEditorTest.class );
     }
 
+    /**
+     * Instantiates a new pool editor test.
+     *
+     * @param s the s
+     */
     public PoolEditorTest( String s ) {
         super( s );
     }
 
 
+    /**
+     * Set up.
+     *
+     * @throws Exception the exception
+     */
     public void setUp() throws Exception {
         BettingPool.reset();
     }
 
 
+    /**
+     * Test get form.
+     *
+     * @throws Exception the exception
+     */
     public void testGetForm() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();
@@ -50,6 +78,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test form action.
+     *
+     * @throws Exception the exception
+     */
     public void testFormAction() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
 
@@ -63,6 +96,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test form contents.
+     *
+     * @throws Exception the exception
+     */
     public void testFormContents() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
 
@@ -82,6 +120,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test submit buttons.
+     *
+     * @throws Exception the exception
+     */
     public void testSubmitButtons() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();
@@ -97,6 +140,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test pool display.
+     *
+     * @throws Exception the exception
+     */
     public void testPoolDisplay() throws Exception {
         BettingPool.getGames()[0].setAwayTeam( "New York Jets" );
         BettingPool.getGames()[0].setHomeTeam( "Philadelphia Eagles" );
@@ -123,6 +171,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test pool entry.
+     *
+     * @throws Exception the exception
+     */
     public void testPoolEntry() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();
@@ -148,6 +201,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test pool validation.
+     *
+     * @throws Exception the exception
+     */
     public void testPoolValidation() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();
@@ -171,6 +229,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test pool open error detection.
+     *
+     * @throws Exception the exception
+     */
     public void testPoolOpenErrorDetection() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();
@@ -194,6 +257,11 @@ public class PoolEditorTest extends TestCase {
     }
 
 
+    /**
+     * Test good pool open.
+     *
+     * @throws Exception the exception
+     */
     public void testGoodPoolOpen() throws Exception {
         ServletRunner sr = new ServletRunner( "web.xml" );
         ServletUnitClient client = sr.newClient();

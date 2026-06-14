@@ -255,8 +255,8 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * Returns a {@link ServletOutputStream} suitable for writing binary data in the response. The servlet engine does
      * not encode the binary data.
      *
-     * @exception IllegalStateException
-     *                if you have already called the <code>getWriter</code> method
+     * @throws IllegalStateException
+     *             if you have already called the <code>getWriter</code> method
      **/
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
@@ -280,9 +280,9 @@ class ServletUnitHttpResponse implements HttpServletResponse {
      * You cannot use this method if you have already called {@link #getOutputStream} for this
      * <code>ServletResponse</code> object.
      *
-     * @exception IllegalStateException
-     *                if the <code>getOutputStream</code> method has already been called for this response object; in
-     *                that case, you can't use this method
+     * @throws IllegalStateException
+     *             if the <code>getOutputStream</code> method has already been called for this response object; in that
+     *             case, you can't use this method
      **/
     @Override
     public PrintWriter getWriter() {

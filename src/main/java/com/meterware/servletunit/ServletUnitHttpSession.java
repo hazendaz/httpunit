@@ -81,8 +81,8 @@ class ServletUnitHttpSession implements HttpSession {
     /**
      * Returns the time when this session was created, measured in milliseconds since midnight January 1, 1970 GMT.
      *
-     * @exception IllegalStateException
-     *                if you attempt to get the session's creation time after the session has been invalidated
+     * @throws IllegalStateException
+     *             if you attempt to get the session's creation time after the session has been invalidated
      **/
     @Override
     public long getCreationTime() {

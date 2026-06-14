@@ -113,9 +113,8 @@ public abstract class WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(String urlString) throws IOException, SAXException {
         return _mainWindow.getResponse(urlString);
@@ -158,9 +157,8 @@ public abstract class WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
         return _mainWindow.getResponse(request);

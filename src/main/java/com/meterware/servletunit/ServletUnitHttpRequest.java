@@ -370,10 +370,10 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @return a {@link ServletInputStream} object containing the body of the request
      *
-     * @exception IllegalStateException
-     *                if the {@link #getReader} method has already been called for this request
-     * @exception IOException
-     *                if an input or output exception occurred
+     * @throws IllegalStateException
+     *             if the {@link #getReader} method has already been called for this request
+     * @throws IOException
+     *             if an input or output exception occurred
      */
     @Override
     public ServletInputStream getInputStream() throws IOException {

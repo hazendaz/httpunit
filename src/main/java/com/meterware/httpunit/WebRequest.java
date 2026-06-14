@@ -353,8 +353,8 @@ public abstract class WebRequest {
      * @param y
      *            the y
      *
-     * @exception IllegalRequestParameterException
-     *                thrown if the request was not created from a form with an image button.
+     * @throws IllegalRequestParameterException
+     *             thrown if the request was not created from a form with an image button.
      */
     public void setImageButtonClickPosition(int x, int y) throws IllegalRequestParameterException {
         if (_button == null) {

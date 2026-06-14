@@ -227,9 +227,8 @@ public class ServletRunner {
      *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response
+     * @throws SAXException
+     *             thrown if there is an error parsing the response
      */
     public WebResponse getResponse(WebRequest request) throws MalformedURLException, IOException, SAXException {
         return getClient().getResponse(request);
@@ -247,9 +246,8 @@ public class ServletRunner {
      *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the response
+     * @throws SAXException
+     *             thrown if there is an error parsing the response
      */
     public WebResponse getResponse(String url) throws MalformedURLException, IOException, SAXException {
         return getClient().getResponse(url);

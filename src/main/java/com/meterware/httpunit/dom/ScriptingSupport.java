@@ -26,13 +26,13 @@ class ScriptingSupport {
     private static final Object[] NO_ARGS = {};
 
     /** map of classes to maps of string to function objects. **/
-    private static Hashtable _classFunctionMaps = new Hashtable<>();
+    private static java.util.Map _classFunctionMaps = new java.util.HashMap<>();
 
     /** map of classes to maps of string to getter methods. **/
-    private static Hashtable _classGetterMaps = new Hashtable<>();
+    private static java.util.Map _classGetterMaps = new java.util.HashMap<>();
 
     /** map of classes to maps of string to setter methods. **/
-    private static Hashtable _classSetterMaps = new Hashtable<>();
+    private static java.util.Map _classSetterMaps = new java.util.HashMap<>();
 
     /**
      * Checks for named property.
@@ -93,9 +93,9 @@ class ScriptingSupport {
      * @return the function object
      */
     private static FunctionObject getFunctionObject(Class aClass, String methodName, Scriptable scriptable) {
-        Hashtable functionMap = (Hashtable) _classFunctionMaps.get(aClass);
+        java.util.Map functionMap = (java.util.Map) _classFunctionMaps.get(aClass);
         if (functionMap == null) {
-            _classFunctionMaps.put(aClass, functionMap = new Hashtable<>());
+            _classFunctionMaps.put(aClass, functionMap = new java.util.HashMap<>());
         }
 
         Object result = functionMap.get(methodName);
@@ -129,9 +129,9 @@ class ScriptingSupport {
      * @return the property getter
      */
     private static Method getPropertyGetter(Class aClass, String propertyName) {
-        Hashtable methodMap = (Hashtable) _classGetterMaps.get(aClass);
+        java.util.Map methodMap = (java.util.Map) _classGetterMaps.get(aClass);
         if (methodMap == null) {
-            _classGetterMaps.put(aClass, methodMap = new Hashtable<>());
+            _classGetterMaps.put(aClass, methodMap = new java.util.HashMap<>());
         }
 
         Method result = (Method) methodMap.get(propertyName);
@@ -232,9 +232,9 @@ class ScriptingSupport {
      * @return the property setter
      */
     static Method getPropertySetter(Class aClass, String propertyName, Object value) {
-        Hashtable methodMap = (Hashtable) _classSetterMaps.get(aClass);
+        java.util.Map methodMap = (java.util.Map) _classSetterMaps.get(aClass);
         if (methodMap == null) {
-            _classSetterMaps.put(aClass, methodMap = new Hashtable<>());
+            _classSetterMaps.put(aClass, methodMap = new java.util.HashMap<>());
         }
 
         Method result = (Method) methodMap.get(propertyName);

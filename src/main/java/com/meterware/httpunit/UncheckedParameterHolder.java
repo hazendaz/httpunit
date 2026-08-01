@@ -26,7 +26,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private final String _characterSet;
 
     /** The parameters. */
-    private Hashtable _parameters = new Hashtable<>();
+    private java.util.Map _parameters = new java.util.HashMap<>();
 
     /** The submit as mime. */
     private boolean _submitAsMime;
@@ -97,7 +97,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-        Enumeration e = _parameters.keys();
+        Enumeration e = java.util.Collections.enumeration(_parameters.keySet());
 
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();

@@ -1,0 +1,16 @@
+[INFO] Scanning for projects...
+[INFO] Inspecting build with total of 1 modules
+[INFO] Installing Central Publishing features
+[INFO] 
+[INFO] ---------------< com.github.hazendaz.httpunit:httpunit >----------------
+[INFO] Building httpunit 2.6.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- modernizer:3.4.0:modernizer (default-cli) @ httpunit ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.819 s
+[INFO] Finished at: 2026-08-01T19:44:34Z
+[INFO] ------------------------------------------------------------------------

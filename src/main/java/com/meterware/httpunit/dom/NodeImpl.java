@@ -45,7 +45,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
     private NodeImpl _previousSibling;
 
     /** The user data. */
-    private Hashtable _userData = new Hashtable<>();
+    private java.util.Map _userData = new java.util.HashMap<>();
 
     /** The skip iframes. */
     static IteratorMask SKIP_IFRAMES = subtreeRoot -> subtreeRoot instanceof HTMLIFrameElement;

@@ -134,7 +134,7 @@ public class WebTable extends HTMLElementBase {
         int numColumnsWithText = 0;
         boolean[] rowHasText = new boolean[getRowCount()];
         boolean[] columnHasText = new boolean[getColumnCount()];
-        Hashtable spanningCells = new Hashtable<>();
+        java.util.Map spanningCells = new java.util.HashMap<>();
 
         // look for rows and columns with any text in a non-spanning cell
         for (int row = 0; row < rowHasText.length; row++) {
@@ -173,7 +173,7 @@ public class WebTable extends HTMLElementBase {
 
         // look for requirements to keep spanning cells: special processing is needed if either:
         // none of its rows already have text, or none of its columns already have text.
-        for (Enumeration e = spanningCells.keys(); e.hasMoreElements();) {
+        for (Enumeration e = java.util.Collections.enumeration(spanningCells.keySet()); e.hasMoreElements();) {
             TableCell cell = (TableCell) e.nextElement();
             int[] coords = (int[]) spanningCells.get(cell);
             boolean neededInRow = true;

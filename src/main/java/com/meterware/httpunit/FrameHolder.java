@@ -22,10 +22,10 @@ import org.xml.sax.SAXException;
 class FrameHolder {
 
     /** Map from a frame selector to its corresponding web response. **/
-    private Hashtable _contents = new Hashtable<>();
+    private java.util.Map _contents = new java.util.HashMap<>();
 
     /** Map from a frame selector to its subframe selectors. **/
-    private Hashtable _subframes = new Hashtable<>();
+    private java.util.Map _subframes = new java.util.HashMap<>();
 
     /** The window which owns this frame holder. **/
     private WebWindow _window;
@@ -230,7 +230,7 @@ class FrameHolder {
      */
     List<String> getActiveFrameNames() {
         List<String> result = new ArrayList<>();
-        for (Enumeration e = _contents.keys(); e.hasMoreElements();) {
+        for (Enumeration e = java.util.Collections.enumeration(_contents.keySet()); e.hasMoreElements();) {
             result.add(((FrameSelector) e.nextElement()).getName());
         }
 

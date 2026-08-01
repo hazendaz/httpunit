@@ -29,7 +29,7 @@ public class HttpRequest extends ReceivedHttpMessage {
     private String _uri;
 
     /** The parameters. */
-    private Hashtable _parameters;
+    private java.util.Map _parameters;
 
     /**
      * Instantiates a new http request.
@@ -138,8 +138,8 @@ public class HttpRequest extends ReceivedHttpMessage {
      *
      * @return the hashtable
      */
-    private Hashtable readParameters(String content) {
-        Hashtable parameters = new Hashtable<>();
+    private java.util.Map readParameters(String content) {
+        java.util.Map parameters = new java.util.HashMap<>();
         if (content == null || content.trim().isEmpty()) {
             return parameters;
         }
@@ -162,7 +162,7 @@ public class HttpRequest extends ReceivedHttpMessage {
      * @param value
      *            the value
      */
-    private void addParameter(Hashtable parameters, String name, String value) {
+    private void addParameter(java.util.Map parameters, String name, String value) {
         String[] oldValues = (String[]) parameters.get(name);
         if (oldValues == null) {
             parameters.put(name, new String[] { value });

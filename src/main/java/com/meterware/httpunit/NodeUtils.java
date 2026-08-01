@@ -11,7 +11,8 @@ import com.meterware.httpunit.parsing.HTMLParserFactory;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -193,10 +194,10 @@ public class NodeUtils {
     static class PreOrderTraversal {
 
         /** The pending nodes. */
-        private Stack _pendingNodes = new Stack();
+        private final Deque _pendingNodes = new ArrayDeque();
 
         /** The traversal context. */
-        private Stack _traversalContext = new Stack();
+        private final Deque _traversalContext = new ArrayDeque();
 
         /** The Constant POP_CONTEXT. */
         private static final Object POP_CONTEXT = new Object();
@@ -228,7 +229,7 @@ public class NodeUtils {
          *            the context
          */
         public void pushBaseContext(Object context) {
-            _traversalContext.push(context);
+            _traversalContext.addLast(context);
         }
 
         /**
@@ -238,8 +239,8 @@ public class NodeUtils {
          *            the context
          */
         public void pushContext(Object context) {
-            _traversalContext.push(context);
-            _pendingNodes.push(POP_CONTEXT);
+            _traversalContext.addLast(context);
+            _pendingNodes.addLast(POP_CONTEXT);
         }
 
         /**
@@ -248,8 +249,7 @@ public class NodeUtils {
          * @return the contexts
          */
         public Iterator getContexts() {
-            Stack stack = _traversalContext;
-            return getTopDownIterator(stack);
+            return _traversalContext.descendingIterator();
         }
 
         /**
@@ -258,7 +258,7 @@ public class NodeUtils {
          * @return the root context
          */
         public Object getRootContext() {
-            return _traversalContext.firstElement();
+            return _traversalContext.peekFirst();
         }
 
         /**
@@ -269,27 +269,6 @@ public class NodeUtils {
          *
          * @return the top down iterator
          */
-        private Iterator getTopDownIterator(final Stack stack) {
-            return new Iterator() {
-                private ListIterator _forwardIterator = stack.listIterator(stack.size());
-
-                @Override
-                public boolean hasNext() {
-                    return _forwardIterator.hasPrevious();
-                }
-
-                @Override
-                public Object next() {
-                    return _forwardIterator.previous();
-                }
-
-                @Override
-                public void remove() {
-                    _forwardIterator.remove();
-                }
-            };
-        }
-
         /**
          * Returns the most recently pushed context which implements the specified class. Will return null if no
          * matching context is found.
@@ -300,8 +279,8 @@ public class NodeUtils {
          * @return the closest context
          */
         public Object getClosestContext(Class matchingClass) {
-            for (int i = _traversalContext.size() - 1; i >= 0; i--) {
-                Object o = _traversalContext.elementAt(i);
+            for (Iterator iterator = _traversalContext.descendingIterator(); iterator.hasNext();) {
+                Object o = iterator.next();
                 if (matchingClass.isInstance(o)) {
                     return o;
                 }
@@ -316,10 +295,10 @@ public class NodeUtils {
          *            the action
          */
         public void perform(NodeAction action) {
-            while (!_pendingNodes.empty()) {
-                final Object object = _pendingNodes.pop();
+            while (!_pendingNodes.isEmpty()) {
+                final Object object = _pendingNodes.removeLast();
                 if (object == POP_CONTEXT) {
-                    _traversalContext.pop();
+                    _traversalContext.removeLast();
                 } else {
                     Node node = (Node) object;
                     if (node.getNodeType() == Node.TEXT_NODE) {
@@ -343,7 +322,7 @@ public class NodeUtils {
         private void pushNodeList(NodeList nl) {
             if (nl != null) {
                 for (int i = nl.getLength() - 1; i >= 0; i--) {
-                    _pendingNodes.push(nl.item(i));
+                    _pendingNodes.addLast(nl.item(i));
                 }
             }
         }
@@ -356,7 +335,7 @@ public class NodeUtils {
          */
         private void pushNodeList(Node lastChild) {
             for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {
-                _pendingNodes.push(node);
+                _pendingNodes.addLast(node);
             }
         }
     }

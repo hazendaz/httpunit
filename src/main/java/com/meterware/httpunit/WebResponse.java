@@ -1939,9 +1939,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *
          * @return the attributes
          */
-        private Hashtable getAttributes() {
+        private java.util.Map getAttributes() {
             if (_attributes == null) {
-                _attributes = new Hashtable<>();
+                _attributes = new java.util.HashMap<>();
             }
             return _attributes;
         }
@@ -1950,7 +1950,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
         private String _name = "";
 
         /** The attributes. */
-        private Hashtable _attributes;
+        private java.util.Map _attributes;
 
         /** The buffer. */
         private char[] _buffer;

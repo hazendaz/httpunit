@@ -25,10 +25,10 @@ import java.util.StringTokenizer;
 class RequestContext {
 
     /** The parameters. */
-    private Hashtable _parameters = new Hashtable<>();
+    private java.util.Map _parameters = new java.util.HashMap<>();
 
     /** The visible parameters. */
-    private Hashtable _visibleParameters;
+    private java.util.Map _visibleParameters;
 
     /** The parent request. */
     private HttpServletRequest _parentRequest;
@@ -95,7 +95,7 @@ class RequestContext {
      * @return the parameter names
      */
     Enumeration getParameterNames() {
-        return getParameters().keys();
+        return java.util.Collections.enumeration(getParameters().keySet());
     }
 
     /**
@@ -104,7 +104,7 @@ class RequestContext {
      * @return the parameter map
      */
     Map getParameterMap() {
-        return (Map) getParameters().clone();
+        return new java.util.HashMap(getParameters());
     }
 
     /**
@@ -217,7 +217,7 @@ class RequestContext {
      *
      * @return the parameters
      */
-    private Hashtable getParameters() {
+    private java.util.Map getParameters() {
         if (_messageBody != null) {
             loadParameters(getMessageBodyAsString());
             _messageBody = null;
@@ -226,12 +226,12 @@ class RequestContext {
             if (_parentRequest == null) {
                 _visibleParameters = _parameters;
             } else {
-                _visibleParameters = new Hashtable<>();
+                _visibleParameters = new java.util.HashMap<>();
                 final Map parameterMap = _parentRequest.getParameterMap();
                 for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));
                 }
-                for (Enumeration e = _parameters.keys(); e.hasMoreElements();) {
+                for (Enumeration e = java.util.Collections.enumeration(_parameters.keySet()); e.hasMoreElements();) {
                     Object key = e.nextElement();
                     _visibleParameters.put(key, _parameters.get(key));
                 }

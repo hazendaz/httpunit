@@ -37,7 +37,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
     private static final long serialVersionUID = 1L;
 
     /** The exemplars. */
-    private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
+    private static java.util.Map<String, HTMLElementImpl> _exemplars = new java.util.HashMap<>();
 
     /** The window. */
     private DomWindow _window;

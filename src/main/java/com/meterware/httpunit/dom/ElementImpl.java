@@ -27,7 +27,7 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
     private static final long serialVersionUID = 1L;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();

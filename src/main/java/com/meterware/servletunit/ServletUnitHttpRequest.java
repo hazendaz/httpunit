@@ -361,7 +361,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Enumeration getAttributeNames() {
-        return _attributes.keys();
+        return java.util.Collections.enumeration(_attributes.keySet());
     }
 
     /**
@@ -576,7 +576,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
                     String token = st.nextToken();
                     al.add(new PrioritizedLocale(token));
                 }
-                Collections.sort(al);
+                al.sort(java.util.Comparator.naturalOrder());
                 for (Iterator iterator = al.iterator(); iterator.hasNext();) {
                     _locales.add(((PrioritizedLocale) iterator.next()).getLocale());
                 }
@@ -727,7 +727,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         } catch (MalformedURLException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
-        return new StringBuffer(url);
+        return new StringBuffer(url.toString());
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4
@@ -853,7 +853,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private ServletUnitHttpSession _session;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The cookies. */
     private List<Cookie> _cookies = new ArrayList<>();

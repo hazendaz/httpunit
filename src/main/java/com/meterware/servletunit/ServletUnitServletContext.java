@@ -287,7 +287,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public Enumeration<String> getInitParameterNames() {
-        return getContextParams().keys();
+        return java.util.Collections.enumeration(getContextParams().keySet());
     }
 
     /**
@@ -303,7 +303,7 @@ public class ServletUnitServletContext implements ServletContext {
 
     @Override
     public Enumeration<String> getAttributeNames() {
-        return _attributes.keys();
+        return java.util.Collections.enumeration(_attributes.keySet());
     }
 
     @Override
@@ -398,7 +398,7 @@ public class ServletUnitServletContext implements ServletContext {
     // ----------------------------------------------------
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The application. */
     private WebApplication _application;
@@ -408,7 +408,7 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return the context params
      */
-    private Hashtable getContextParams() {
+    private java.util.Map getContextParams() {
         return _application.getContextParameters();
     }
 

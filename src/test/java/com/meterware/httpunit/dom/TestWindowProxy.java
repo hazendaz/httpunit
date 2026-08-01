@@ -14,7 +14,8 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.junit.jupiter.api.Disabled;
 import org.xml.sax.SAXException;
@@ -26,7 +27,7 @@ import org.xml.sax.SAXException;
 class TestWindowProxy implements DomWindowProxy {
 
     /** The proxy calls. */
-    private static Stack _proxyCalls = new Stack();
+    private static final Deque _proxyCalls = new ArrayDeque();
 
     /** The document. */
     private HTMLDocumentImpl _document;

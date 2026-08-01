@@ -22,7 +22,7 @@ abstract class WebResourceConfiguration {
     private String _className;
 
     /** The init params. */
-    private Hashtable _initParams = new Hashtable<>();
+    private java.util.Map _initParams = new java.util.HashMap<>();
 
     /**
      * Instantiates a new web resource configuration.
@@ -42,7 +42,7 @@ abstract class WebResourceConfiguration {
      * @param initParams
      *            the init params
      */
-    WebResourceConfiguration(String className, Hashtable initParams) {
+    WebResourceConfiguration(String className, java.util.Map initParams) {
         _className = className;
         if (initParams != null) {
             _initParams = initParams;
@@ -106,7 +106,7 @@ abstract class WebResourceConfiguration {
      *
      * @return the inits the params
      */
-    Hashtable getInitParams() {
+    java.util.Map getInitParams() {
         return _initParams;
     }
 

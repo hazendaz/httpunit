@@ -373,7 +373,7 @@ public class PseudoServer {
     // ------------------------------------- private members ---------------------------------------
 
     /** The resources. */
-    private Hashtable _resources = new Hashtable<>();
+    private java.util.Map _resources = new java.util.HashMap<>();
 
     /** The active. */
     private boolean _active = true;

@@ -201,6 +201,9 @@ public class NodeUtils {
         /** The Constant POP_CONTEXT. */
         private static final Object POP_CONTEXT = new Object();
 
+        /** The Constant NULL_CONTEXT. */
+        private static final Object NULL_CONTEXT = new Object();
+
         /**
          * Instantiates a new pre order traversal.
          *
@@ -228,7 +231,7 @@ public class NodeUtils {
          *            the context
          */
         public void pushBaseContext(Object context) {
-            _traversalContext.addLast(context);
+            _traversalContext.addLast(encodeContext(context));
         }
 
         /**
@@ -238,7 +241,7 @@ public class NodeUtils {
          *            the context
          */
         public void pushContext(Object context) {
-            _traversalContext.addLast(context);
+            _traversalContext.addLast(encodeContext(context));
             _pendingNodes.addLast(POP_CONTEXT);
         }
 
@@ -248,7 +251,23 @@ public class NodeUtils {
          * @return the contexts
          */
         public Iterator getContexts() {
-            return _traversalContext.descendingIterator();
+            final Iterator iterator = _traversalContext.descendingIterator();
+            return new Iterator() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
+
+                @Override
+                public Object next() {
+                    return decodeContext(iterator.next());
+                }
+
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         }
 
         /**
@@ -257,7 +276,7 @@ public class NodeUtils {
          * @return the root context
          */
         public Object getRootContext() {
-            return _traversalContext.peekFirst();
+            return decodeContext(_traversalContext.peekFirst());
         }
 
         /**
@@ -279,7 +298,7 @@ public class NodeUtils {
          */
         public Object getClosestContext(Class matchingClass) {
             for (Iterator iterator = _traversalContext.descendingIterator(); iterator.hasNext();) {
-                Object o = iterator.next();
+                Object o = decodeContext(iterator.next());
                 if (matchingClass.isInstance(o)) {
                     return o;
                 }
@@ -336,6 +355,30 @@ public class NodeUtils {
             for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {
                 _pendingNodes.addLast(node);
             }
+        }
+
+        /**
+         * Encode context.
+         *
+         * @param context
+         *            the context
+         *
+         * @return the object
+         */
+        private Object encodeContext(Object context) {
+            return context == null ? NULL_CONTEXT : context;
+        }
+
+        /**
+         * Decode context.
+         *
+         * @param context
+         *            the context
+         *
+         * @return the object
+         */
+        private Object decodeContext(Object context) {
+            return context == NULL_CONTEXT ? null : context;
         }
     }
 

@@ -166,9 +166,11 @@ class EncodingTest extends HttpUnitTest {
             @Override
             public WebResource getPostResponse() throws UnsupportedEncodingException {
                 String name = getParameter("name")[0];
-                WebResource result = new WebResource("<html><body><table><tr><td>Hello, "
-                        + new String(name.getBytes(StandardCharsets.ISO_8859_1), "ISO-8859-8")
-                        + "</td></tr></table></body></html>");
+                WebResource result = new WebResource(
+                        "<html><body><table><tr><td>Hello, "
+                                + new String(name.getBytes(StandardCharsets.ISO_8859_1),
+                                        java.nio.charset.Charset.forName("ISO-8859-8"))
+                                + "</td></tr></table></body></html>");
                 result.setCharacterSet("ISO-8859-8");
                 result.setSendCharacterSet(true);
                 return result;
@@ -201,9 +203,11 @@ class EncodingTest extends HttpUnitTest {
             @Override
             public WebResource getPostResponse() throws UnsupportedEncodingException {
                 String name = getParameter("name")[0];
-                WebResource result = new WebResource("<html><body><table><tr><td>Hello, "
-                        + new String(name.getBytes(StandardCharsets.ISO_8859_1), "ISO-8859-8")
-                        + "</td></tr></table></body></html>");
+                WebResource result = new WebResource(
+                        "<html><body><table><tr><td>Hello, "
+                                + new String(name.getBytes(StandardCharsets.ISO_8859_1),
+                                        java.nio.charset.Charset.forName("ISO-8859-8"))
+                                + "</td></tr></table></body></html>");
                 result.setCharacterSet("ISO-8859-8");
                 result.setSendCharacterSet(true);
                 return result;

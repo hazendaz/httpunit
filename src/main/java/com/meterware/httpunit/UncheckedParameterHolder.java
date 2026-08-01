@@ -25,7 +25,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     private final String _characterSet;
 
     /** The parameters. */
-    private java.util.Map _parameters = new java.util.HashMap<>();
+    private java.util.Map _parameters = new java.util.LinkedHashMap<>();
 
     /** The submit as mime. */
     private boolean _submitAsMime;
@@ -96,7 +96,7 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-        Enumeration e = java.util.Collections.enumeration(_parameters.keySet());
+        Enumeration e = asLegacyKeyEnumeration();
 
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();
@@ -113,7 +113,11 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
 
     @Override
     String[] getParameterNames() {
-        return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);
+        java.util.ArrayList parameterNames = new java.util.ArrayList();
+        for (Enumeration e = asLegacyKeyEnumeration(); e.hasMoreElements();) {
+            parameterNames.add(e.nextElement());
+        }
+        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
     }
 
     /**
@@ -167,6 +171,64 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     @Override
     boolean isFileParameter(String name) {
         return true;
+    }
+
+    /**
+     * Returns parameter names using the same iteration order as the previous Hashtable-based implementation.
+     *
+     * @return the key enumeration
+     */
+    private Enumeration asLegacyKeyEnumeration() {
+        java.util.List keys = new java.util.ArrayList(_parameters.keySet());
+        java.util.Map insertionOrder = new java.util.HashMap();
+        for (int i = 0; i < keys.size(); i++) {
+            insertionOrder.put(keys.get(i), Integer.valueOf(i));
+        }
+        final int capacity = getLegacyHashtableCapacity(keys.size());
+        keys.sort((left, right) -> {
+            final int leftBucket = getLegacyBucket(left, capacity);
+            final int rightBucket = getLegacyBucket(right, capacity);
+            if (leftBucket != rightBucket) {
+                return Integer.compare(rightBucket, leftBucket);
+            }
+            return Integer.compare(((Integer) insertionOrder.get(right)).intValue(),
+                    ((Integer) insertionOrder.get(left)).intValue());
+        });
+        return java.util.Collections.enumeration(keys);
+    }
+
+    /**
+     * Gets the legacy hashtable capacity.
+     *
+     * @param size
+     *            the size
+     *
+     * @return the legacy hashtable capacity
+     */
+    private int getLegacyHashtableCapacity(int size) {
+        int capacity = 11;
+        int threshold = (int) (capacity * 0.75f);
+        for (int i = 0; i < size; i++) {
+            if (i >= threshold) {
+                capacity = capacity * 2 + 1;
+                threshold = (int) (capacity * 0.75f);
+            }
+        }
+        return capacity;
+    }
+
+    /**
+     * Gets the legacy bucket.
+     *
+     * @param key
+     *            the key
+     * @param capacity
+     *            the capacity
+     *
+     * @return the legacy bucket
+     */
+    private int getLegacyBucket(Object key, int capacity) {
+        return (key.hashCode() & Integer.MAX_VALUE) % capacity;
     }
 
     @Override

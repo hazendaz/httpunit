@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 class RequestContext {
 
     /** The parameters. */
-    private java.util.Map _parameters = new java.util.HashMap<>();
+    private java.util.Map _parameters = new java.util.LinkedHashMap<>();
 
     /** The visible parameters. */
     private java.util.Map _visibleParameters;
@@ -225,7 +225,7 @@ class RequestContext {
             if (_parentRequest == null) {
                 _visibleParameters = _parameters;
             } else {
-                _visibleParameters = new java.util.HashMap<>();
+                _visibleParameters = new java.util.LinkedHashMap<>();
                 final Map parameterMap = _parentRequest.getParameterMap();
                 for (Object key : parameterMap.keySet()) {
                     _visibleParameters.put(key, parameterMap.get(key));

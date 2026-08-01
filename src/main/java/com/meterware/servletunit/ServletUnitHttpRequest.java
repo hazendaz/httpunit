@@ -726,7 +726,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         } catch (MalformedURLException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
-        return new StringBuffer(url.toString());
+        return new StringBuffer(url);
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4

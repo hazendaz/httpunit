@@ -974,10 +974,26 @@ public abstract class WebClient {
     /**
      * The Class HeaderDictionary.
      */
-    static public class HeaderDictionary extends Hashtable {
+    static public class HeaderDictionary extends java.util.Properties {
 
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Instantiates a new header dictionary.
+         */
+        public HeaderDictionary() {
+        }
+
+        /**
+         * Instantiates a new header dictionary.
+         *
+         * @param source
+         *            the source
+         */
+        public HeaderDictionary(HeaderDictionary source) {
+            putAll(source);
+        }
 
         /**
          * Adds the entries.
@@ -992,7 +1008,6 @@ public abstract class WebClient {
             }
         }
 
-        @Override
         public boolean containsKey(Object key) {
             return super.containsKey(matchPreviousFieldName(key.toString()));
         }

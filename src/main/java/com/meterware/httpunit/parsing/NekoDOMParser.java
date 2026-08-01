@@ -7,25 +7,19 @@
  */
 package com.meterware.httpunit.parsing;
 
-import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import net.sourceforge.htmlunit.cyberneko.HTMLConfiguration;
-
-import org.apache.xerces.parsers.AbstractDOMParser;
-import org.apache.xerces.parsers.DOMParser;
-import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.parser.XMLDocumentFilter;
-import org.apache.xerces.xni.parser.XMLErrorHandler;
-import org.apache.xerces.xni.parser.XMLParseException;
+import org.htmlunit.cyberneko.HTMLConfiguration;
+import org.htmlunit.cyberneko.parsers.DOMParser;
+import org.htmlunit.cyberneko.xerces.xni.XNIException;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLDocumentFilter;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLErrorHandler;
+import org.htmlunit.cyberneko.xerces.xni.parser.XMLParseException;
 import org.w3c.dom.Element;
-import org.w3c.dom.html.HTMLDocument;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 
 /**
  * The Class NekoDOMParser.
@@ -62,8 +56,17 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *         Allow configuration of neko parser properties by James Abley
      */
     static NekoDOMParser newParser(DocumentAdapter adapter, URL url) {
-        final HTMLConfiguration configuration = new HTMLConfiguration();
-        // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't solve
+        // Create the parser with plain xerces DocumentImpl
+        // In neko-htmlunit 3.x+, we cannot use custom HTMLDocumentImpl due to API changes
+        // The parser will create standard DOM elements, not HTML-specific ones
+        final NekoDOMParser domParser = new NekoDOMParser(org.htmlunit.cyberneko.xerces.dom.DocumentImpl.class,
+                adapter);
+
+        // Get the configuration from the parser
+        final HTMLConfiguration configuration = (HTMLConfiguration) domParser.getXMLParserConfiguration();
+
+        // note: Introduced in 1.9.9 nekohtml but doesn't apply against header but rather body and thus doesn't
+        // solve
         // issue with <noscript> needs.
         // configuration.setFeature(HTMLScanner.PARSE_NOSCRIPT_CONTENT, false);
         if (!HTMLParserFactory.getHTMLParserListeners().isEmpty() || HTMLParserFactory.isParserWarningsEnabled()) {
@@ -91,16 +94,8 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
             }
         }
 
-        try {
-            final NekoDOMParser domParser = new NekoDOMParser(configuration, adapter);
-            domParser.setFeature(AbstractDOMParser.DEFER_NODE_EXPANSION, false);
-            if (HTMLParserFactory.isReturnHTMLDocument())
-                domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
-            javaScriptFilter.setScriptHandler(domParser);
-            return domParser;
-        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
-            throw new RuntimeException(e.toString());
-        }
+        javaScriptFilter.setScriptHandler(domParser);
+        return domParser;
 
     }
 
@@ -110,26 +105,22 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      * @return the current element
      */
     private Element getCurrentElement() {
-        try {
-            return (Element) getProperty(AbstractDOMParser.CURRENT_ELEMENT_NODE);
-        } catch (SAXNotRecognizedException e) {
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not recognized");
-        } catch (SAXNotSupportedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(AbstractDOMParser.CURRENT_ELEMENT_NODE + " property not supported");
-        }
+        // In neko-htmlunit 3.0+, we can directly access fCurrentNode since we extend AbstractDOMParser
+        return (fCurrentNode != null && fCurrentNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE)
+                ? (Element) fCurrentNode
+                : null;
     }
 
     /**
      * Instantiates a new neko DOM parser.
      *
-     * @param configuration
-     *            the configuration
+     * @param documentClass
+     *            the document class to use
      * @param adapter
      *            the adapter
      */
-    NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
-        super(configuration);
+    NekoDOMParser(Class documentClass, DocumentAdapter adapter) {
+        super(documentClass);
         _documentAdapter = adapter;
     }
 
@@ -159,7 +150,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      * @return the scripting handler
      */
     private ScriptingHandler getScriptingHandler() {
-        _documentAdapter.setDocument((HTMLDocument) getCurrentElement().getOwnerDocument());
+        _documentAdapter.setDocument(getCurrentElement().getOwnerDocument());
         return _documentAdapter.getScriptingHandler();
     }
 

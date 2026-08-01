@@ -716,17 +716,30 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     @Override
     public StringBuffer getRequestURL() {
-        StringBuilder url = new StringBuilder();
         try {
+            StringBuffer url = newStringBuffer();
             url.append(_request.getURL().getProtocol()).append("://");
             url.append(_request.getURL().getHost());
             String portPortion = _request.getURL().getPort() == -1 ? "" : ":" + _request.getURL().getPort();
             url.append(portPortion);
             url.append(_request.getURL().getPath());
+            return url;
         } catch (MalformedURLException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
-        return new StringBuffer(url);
+    }
+
+    /**
+     * Creates a string buffer.
+     *
+     * @return the string buffer
+     */
+    private StringBuffer newStringBuffer() {
+        try {
+            return StringBuffer.class.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("unable to create request URL buffer", e);
+        }
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4

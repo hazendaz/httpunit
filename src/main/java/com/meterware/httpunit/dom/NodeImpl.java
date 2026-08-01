@@ -8,7 +8,6 @@
 package com.meterware.httpunit.dom;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public abstract class NodeImpl extends AbstractDomComponent implements Node {
     private NodeImpl _previousSibling;
 
     /** The user data. */
-    private Hashtable _userData = new Hashtable<>();
+    private java.util.Map _userData = new java.util.HashMap<>();
 
     /** The skip iframes. */
     static IteratorMask SKIP_IFRAMES = subtreeRoot -> subtreeRoot instanceof HTMLIFrameElement;

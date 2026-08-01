@@ -32,7 +32,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.zip.GZIPInputStream;
@@ -1939,9 +1938,9 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *
          * @return the attributes
          */
-        private Hashtable getAttributes() {
+        private java.util.Map getAttributes() {
             if (_attributes == null) {
-                _attributes = new Hashtable<>();
+                _attributes = new java.util.HashMap<>();
             }
             return _attributes;
         }
@@ -1950,7 +1949,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
         private String _name = "";
 
         /** The attributes. */
-        private Hashtable _attributes;
+        private java.util.Map _attributes;
 
         /** The buffer. */
         private char[] _buffer;

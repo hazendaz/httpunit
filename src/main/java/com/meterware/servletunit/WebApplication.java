@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -55,16 +54,16 @@ class WebApplication implements SessionListenerDispatcher {
     private WebResourceMap _servletMapping = new WebResourceMap();
 
     /** A mapping of filter names to FilterConfigurations. */
-    private Hashtable _filters = new Hashtable<>();
+    private java.util.Map _filters = new java.util.HashMap<>();
 
     /** A mapping of servlet names to ServletConfigurations. */
-    private Hashtable _servlets = new Hashtable<>();
+    private java.util.Map _servlets = new java.util.HashMap<>();
 
     /** A mapping of resource names to filter configurations. **/
     private FilterUrlMap _filterUrlMapping = new FilterUrlMap();
 
     /** A mapping of servlet names to filter configurations. **/
-    private Hashtable _filterMapping = new Hashtable<>();
+    private java.util.Map _filterMapping = new java.util.HashMap<>();
 
     /** The security constraints. */
     private List<SecurityConstraint> _securityConstraints = new ArrayList<>();
@@ -97,7 +96,7 @@ class WebApplication implements SessionListenerDispatcher {
     private URL _errorURL;
 
     /** The context parameters. */
-    private Hashtable _contextParameters = new Hashtable<>();
+    private java.util.Map _contextParameters = new java.util.HashMap<>();
 
     /** The context dir. */
     private File _contextDir = null;
@@ -515,7 +514,7 @@ class WebApplication implements SessionListenerDispatcher {
      *
      * @return the context parameters
      */
-    Hashtable getContextParameters() {
+    java.util.Map getContextParameters() {
         return _contextParameters;
     }
 
@@ -580,7 +579,7 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerFilters(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable<>();
+        java.util.Map nameToClass = new java.util.HashMap<>();
         NodeList nl = document.getElementsByTagName("filter");
         for (int i = 0; i < nl.getLength(); i++) {
             registerFilterClass(nameToClass, (Element) nl.item(i));
@@ -603,7 +602,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerFilterClass(Dictionary mapping, Element filterElement) throws SAXException {
+    private void registerFilterClass(java.util.Map mapping, Element filterElement) throws SAXException {
         String filterName = XMLUtils.getChildNodeValue(filterElement, "filter-name");
         mapping.put(filterName, new FilterConfiguration(filterName, filterElement));
     }
@@ -619,7 +618,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerFilter(Dictionary mapping, Element filterElement) throws SAXException {
+    private void registerFilter(java.util.Map mapping, Element filterElement) throws SAXException {
         if (XMLUtils.hasChildNode(filterElement, "servlet-name")) {
             registerFilterForServlet(XMLUtils.getChildNodeValue(filterElement, "servlet-name"),
                     (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, "filter-name")));
@@ -704,7 +703,7 @@ class WebApplication implements SessionListenerDispatcher {
      *             the SAX exception
      */
     private void registerServlets(Document document) throws SAXException {
-        Hashtable nameToClass = new Hashtable<>();
+        java.util.Map nameToClass = new java.util.HashMap<>();
         NodeList nl = document.getElementsByTagName("servlet");
         for (int i = 0; i < nl.getLength(); i++) {
             registerServletClass(nameToClass, (Element) nl.item(i));
@@ -727,7 +726,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerServletClass(Dictionary mapping, Element servletElement) throws SAXException {
+    private void registerServletClass(java.util.Map mapping, Element servletElement) throws SAXException {
         mapping.put(XMLUtils.getChildNodeValue(servletElement, "servlet-name"),
                 new ServletConfiguration(servletElement));
     }
@@ -743,7 +742,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerServlet(Dictionary mapping, Element servletElement) throws SAXException {
+    private void registerServlet(java.util.Map mapping, Element servletElement) throws SAXException {
         registerServlet(XMLUtils.getChildNodeValue(servletElement, "url-pattern"),
                 (ServletConfiguration) mapping.get(XMLUtils.getChildNodeValue(servletElement, "servlet-name")));
     }
@@ -887,7 +886,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @param initParams
          *            the init params
          */
-        ServletConfiguration(String className, Hashtable initParams) {
+        ServletConfiguration(String className, java.util.Map initParams) {
             super(className, initParams);
         }
 
@@ -1231,7 +1230,7 @@ class WebApplication implements SessionListenerDispatcher {
         private WebResourceMapping _mapping;
 
         /** The filters per name. */
-        private Hashtable _filtersPerName;
+        private java.util.Map _filtersPerName;
 
         /** The filters per url. */
         private FilterUrlMap _filtersPerUrl;
@@ -1250,7 +1249,7 @@ class WebApplication implements SessionListenerDispatcher {
          * @param filtersPerUrl
          *            the filters per url
          */
-        ServletRequestImpl(URL url, String servletPath, WebResourceMapping mapping, Hashtable filtersPerName,
+        ServletRequestImpl(URL url, String servletPath, WebResourceMapping mapping, java.util.Map filtersPerName,
                 FilterUrlMap filtersPerUrl) {
             _url = url;
             _fullServletPath = servletPath;
@@ -1583,7 +1582,7 @@ class WebApplication implements SessionListenerDispatcher {
                 return;
             }
 
-            Collections.sort(autoLoadable, (o1, o2) -> {
+            autoLoadable.sort((o1, o2) -> {
                 ServletConfiguration sc1 = (ServletConfiguration) o1;
                 ServletConfiguration sc2 = (ServletConfiguration) o2;
                 return sc1.getLoadOrder() <= sc2.getLoadOrder() ? -1 : +1;

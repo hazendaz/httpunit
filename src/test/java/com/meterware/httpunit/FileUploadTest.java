@@ -551,7 +551,8 @@ class MimeEcho extends PseudoServlet {
      */
     private void appendFieldValue(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
-        sb.append(parameterName).append("=").append(URLEncoder.encode(mbp.getContent().toString()));
+        sb.append(parameterName).append("=")
+                .append(URLEncoder.encode(mbp.getContent().toString(), StandardCharsets.UTF_8));
     }
 
     /**

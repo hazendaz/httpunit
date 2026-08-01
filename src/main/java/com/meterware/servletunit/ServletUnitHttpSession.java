@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpSession;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The Class ServletUnitHttpSession.
@@ -182,7 +181,7 @@ class ServletUnitHttpSession implements HttpSession {
         if (_invalid) {
             throw new IllegalStateException();
         }
-        return _values.keys();
+        return java.util.Collections.enumeration(_values.keySet());
     }
 
     // ---------------------------- methods added to HttpSession in JSDK 2.3 ----------------------------------------
@@ -286,7 +285,7 @@ class ServletUnitHttpSession implements HttpSession {
     private boolean _invalid;
 
     /** The values. */
-    private Hashtable _values = new Hashtable<>();
+    private java.util.Map _values = new java.util.HashMap<>();
 
     /** The is new. */
     private boolean _isNew = true;

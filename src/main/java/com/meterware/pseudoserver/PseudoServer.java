@@ -26,7 +26,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -373,7 +372,7 @@ public class PseudoServer {
     // ------------------------------------- private members ---------------------------------------
 
     /** The resources. */
-    private Hashtable _resources = new Hashtable<>();
+    private java.util.Map _resources = new java.util.HashMap<>();
 
     /** The active. */
     private boolean _active = true;

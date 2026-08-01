@@ -9,7 +9,6 @@ package com.meterware.servletunit;
 
 import jakarta.servlet.ServletContext;
 
-import java.util.Hashtable;
 import java.util.Set;
 
 /**
@@ -111,7 +110,7 @@ class ServletUnitContext {
     // ------------------------------- private members ---------------------------
 
     /** The sessions. */
-    private Hashtable _sessions = new Hashtable<>();
+    private java.util.Map _sessions = new java.util.HashMap<>();
 
     /** The context path. */
     private String _contextPath = null;

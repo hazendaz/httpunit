@@ -322,7 +322,7 @@ public class ServletRunner {
 
         @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-            Hashtable params = new Hashtable<>();
+            Hashtable params = new java.util.Properties();
             if (classPath != null) {
                 params.put("classpath", classPath);
             }

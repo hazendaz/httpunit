@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The Class ReceivedHttpMessage.
@@ -31,7 +30,7 @@ abstract class ReceivedHttpMessage {
     private Reader _reader;
 
     /** The headers. */
-    private Hashtable _headers = new Hashtable<>();
+    private java.util.Map _headers = new java.util.HashMap<>();
 
     /** The request body. */
     private byte[] _requestBody;
@@ -56,7 +55,7 @@ abstract class ReceivedHttpMessage {
         StringBuilder sb = new StringBuilder(getClassName()).append("[ ");
         appendMessageHeader(sb);
         sb.append("\n");
-        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
+        for (Enumeration e = java.util.Collections.enumeration(_headers.keySet()); e.hasMoreElements();) {
             Object key = e.nextElement();
             sb.append("      ").append(key).append(": ").append(_headers.get(key)).append("\n");
         }
@@ -112,7 +111,7 @@ abstract class ReceivedHttpMessage {
      *            the sb
      */
     void appendContents(StringBuilder sb) {
-        for (Enumeration e = _headers.keys(); e.hasMoreElements();) {
+        for (Enumeration e = java.util.Collections.enumeration(_headers.keySet()); e.hasMoreElements();) {
             Object key = e.nextElement();
             sb.append("      ").append(key).append(": ").append(_headers.get(key)).append("\n");
         }

@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -117,7 +116,7 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
     static final String QUERY_STRING = "jakarta.servlet.include.query_string";
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /**
      * Instantiates a new include request wrapper.

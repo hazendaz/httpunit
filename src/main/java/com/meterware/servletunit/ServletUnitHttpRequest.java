@@ -40,7 +40,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -361,7 +360,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      **/
     @Override
     public Enumeration getAttributeNames() {
-        return _attributes.keys();
+        return java.util.Collections.enumeration(_attributes.keySet());
     }
 
     /**
@@ -576,7 +575,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
                     String token = st.nextToken();
                     al.add(new PrioritizedLocale(token));
                 }
-                Collections.sort(al);
+                al.sort(java.util.Comparator.naturalOrder());
                 for (Iterator iterator = al.iterator(); iterator.hasNext();) {
                     _locales.add(((PrioritizedLocale) iterator.next()).getLocale());
                 }
@@ -717,17 +716,30 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      */
     @Override
     public StringBuffer getRequestURL() {
-        StringBuilder url = new StringBuilder();
         try {
+            StringBuffer url = newStringBuffer();
             url.append(_request.getURL().getProtocol()).append("://");
             url.append(_request.getURL().getHost());
             String portPortion = _request.getURL().getPort() == -1 ? "" : ":" + _request.getURL().getPort();
             url.append(portPortion);
             url.append(_request.getURL().getPath());
+            return url;
         } catch (MalformedURLException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
-        return new StringBuffer(url);
+    }
+
+    /**
+     * Creates a string buffer.
+     *
+     * @return the string buffer
+     */
+    private StringBuffer newStringBuffer() {
+        try {
+            return StringBuffer.class.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("unable to create request URL buffer", e);
+        }
     }
 
     // --------------------------------------- methods added to ServletRequest in Servlet API 2.4
@@ -853,7 +865,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
     private ServletUnitHttpSession _session;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The cookies. */
     private List<Cookie> _cookies = new ArrayList<>();

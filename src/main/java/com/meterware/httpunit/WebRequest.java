@@ -803,7 +803,7 @@ public abstract class WebRequest {
      */
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
-            _headers = new Hashtable<>();
+            _headers = new WebClient.HeaderDictionary();
             if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
             }

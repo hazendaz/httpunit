@@ -7,8 +7,6 @@
  */
 package com.meterware.httpunit.dom;
 
-import java.util.Hashtable;
-
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -19,7 +17,7 @@ import org.w3c.dom.Node;
 public class NamedNodeMapImpl implements NamedNodeMap {
 
     /** The items. */
-    private Hashtable _items;
+    private java.util.Map _items;
 
     /** The item array. */
     private Node[] _itemArray;
@@ -30,8 +28,8 @@ public class NamedNodeMapImpl implements NamedNodeMap {
      * @param items
      *            the items
      */
-    NamedNodeMapImpl(Hashtable items) {
-        _items = (Hashtable) items.clone();
+    NamedNodeMapImpl(java.util.Map items) {
+        _items = new java.util.HashMap(items);
         _itemArray = (Node[]) _items.values().toArray(new Node[_items.size()]);
     }
 

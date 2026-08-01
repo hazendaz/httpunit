@@ -233,7 +233,7 @@ class HttpWebResponse extends WebResponse {
     }
 
     /** The headers. */
-    private Hashtable _headers = new Hashtable<>();
+    private Hashtable _headers = new WebClient.HeaderDictionary();
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly.

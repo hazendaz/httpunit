@@ -110,9 +110,8 @@ public class WebWindow {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(String urlString) throws IOException, SAXException {
         return getResponse(new GetMethodWebRequest(urlString));
@@ -146,9 +145,8 @@ public class WebWindow {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     *
-     * @exception SAXException
-     *                thrown if there is an error parsing the retrieved page
+     * @throws SAXException
+     *             thrown if there is an error parsing the retrieved page
      */
     public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
         // Need to have some sort of ExecuteAroundMethod to ensure that the

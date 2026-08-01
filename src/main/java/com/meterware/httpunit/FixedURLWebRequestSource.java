@@ -254,28 +254,58 @@ abstract class FixedURLWebRequestSource extends WebRequestSource {
 
 }
 
+/**
+ * The Class PresetParameter.
+ */
 class PresetParameter {
+    /** The name. */
     private String _name;
+    /** The value. */
     private String _value;
 
+    /**
+     * Instantiates a new preset parameter.
+     *
+     * @param name
+     *            the name
+     * @param value
+     *            the value
+     */
     public PresetParameter(String name, String value) {
         _name = name;
         _value = value;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return _name;
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public String getValue() {
         return _value;
     }
 }
 
+/**
+ * The Class IllegalNonFormParametersRequest.
+ */
 class IllegalNonFormParametersRequest extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new illegal non form parameters request.
+     */
     public IllegalNonFormParametersRequest() {
     }
 

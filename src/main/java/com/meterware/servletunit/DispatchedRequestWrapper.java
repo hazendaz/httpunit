@@ -100,16 +100,33 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 
 }
 
+/**
+ * The Class IncludeRequestWrapper.
+ */
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
+    /** The request uri. */
     static final String REQUEST_URI = "jakarta.servlet.include.request_uri";
+    /** The context path. */
     static final String CONTEXT_PATH = "jakarta.servlet.include.context_path";
+    /** The servlet path. */
     static final String SERVLET_PATH = "jakarta.servlet.include.servlet_path";
+    /** The path info. */
     static final String PATH_INFO = "jakarta.servlet.include.path_info";
+    /** The query string. */
     static final String QUERY_STRING = "jakarta.servlet.include.query_string";
 
+    /** The attributes. */
     private Hashtable _attributes = new Hashtable<>();
 
+    /**
+     * Instantiates a new include request wrapper.
+     *
+     * @param request
+     *            the request
+     * @param dispatcher
+     *            the dispatcher
+     */
     IncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         super(request, dispatcher);
         _attributes.put(REQUEST_URI, ((RequestDispatcherImpl) dispatcher).getRequestURI());
@@ -129,10 +146,22 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
 }
 
+/**
+ * The Class ForwardRequestWrapper.
+ */
 class ForwardRequestWrapper extends DispatchedRequestWrapper {
 
+    /** The request context. */
     private RequestDispatcherImpl _requestContext;
 
+    /**
+     * Instantiates a new forward request wrapper.
+     *
+     * @param request
+     *            the request
+     * @param dispatcher
+     *            the dispatcher
+     */
     ForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
         super(request, dispatcher);
         _requestContext = (RequestDispatcherImpl) dispatcher;

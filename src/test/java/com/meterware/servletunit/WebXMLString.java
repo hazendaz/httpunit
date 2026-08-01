@@ -450,20 +450,46 @@ class WebXMLString {
     }
 }
 
+/**
+ * The Class WebResourceSpec.
+ */
 class WebResourceSpec {
 
+    /**
+     * Instantiates a new web resource spec.
+     *
+     * @param name
+     *            the name
+     */
     WebResourceSpec(String name) {
         _name = name;
     }
 
+    /**
+     * Add url pattern.
+     *
+     * @param urlPattern
+     *            the url pattern
+     */
     void addURLPattern(String urlPattern) {
         _urls.add(urlPattern);
     }
 
+    /**
+     * Add authorized role.
+     *
+     * @param roleName
+     *            the role name
+     */
     void addAuthorizedRole(String roleName) {
         _roles.add(roleName);
     }
 
+    /**
+     * As text.
+     *
+     * @return the string
+     */
     String asText() {
         StringBuilder sb = new StringBuilder();
         sb.append("  <security-constraint>\n");
@@ -482,7 +508,10 @@ class WebResourceSpec {
         return sb.toString();
     }
 
+    /** The name. */
     private String _name;
+    /** The urls. */
     private ArrayList _urls = new ArrayList<>();
+    /** The roles. */
     private ArrayList _roles = new ArrayList<>();
 }

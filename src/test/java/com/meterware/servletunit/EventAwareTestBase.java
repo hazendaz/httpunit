@@ -96,25 +96,69 @@ class EventAwareTestBase {
 
 }
 
+/**
+ * The Class EventData.
+ */
 class EventData {
+    /** The event name. */
     private String _eventName;
+    /** The listener class. */
     private Class _listenerClass;
+    /** The verifier. */
     private EventAwareTestBase.EventVerifier _verifier;
 
+    /**
+     * To event string.
+     *
+     * @param eventName
+     *            the event name
+     * @param listenerClass
+     *            the listener class
+     *
+     * @return the string
+     */
     static String toEventString(String eventName, Class listenerClass) {
         return eventName + " from " + listenerClass.getName();
     }
 
+    /**
+     * Instantiates a new event data.
+     *
+     * @param eventName
+     *            the event name
+     * @param listenerClass
+     *            the listener class
+     */
     EventData(String eventName, Class listenerClass) {
         this(eventName, listenerClass, null);
     }
 
+    /**
+     * Instantiates a new event data.
+     *
+     * @param eventName
+     *            the event name
+     * @param listenerClass
+     *            the listener class
+     * @param verifier
+     *            the verifier
+     */
     EventData(String eventName, Class listenerClass, EventAwareTestBase.EventVerifier verifier) {
         _eventName = eventName;
         _listenerClass = listenerClass;
         _verifier = verifier;
     }
 
+    /**
+     * Verify event.
+     *
+     * @param eventName
+     *            the event name
+     * @param listener
+     *            the listener
+     * @param event
+     *            the event
+     */
     void verifyEvent(String eventName, Object listener, Object event) {
         assertEquals(toString(), toEventString(eventName, listener.getClass()), "Event");
         if (_verifier != null) {

@@ -49,6 +49,8 @@ public class ExampleTest extends TestCase {
 	 * @param request
 	 * @return the response
 	 * @throws an Exception if getting the response fails
+	 
+	 * @throws Exception the exception
 	 */
 	public WebResponse tryGetResponse(WebConversation conversation,WebRequest request) throws Exception {
 		WebResponse response=null;
@@ -63,7 +65,9 @@ public class ExampleTest extends TestCase {
 
   /**
    * Verifies that the welcome page has exactly one form, with the single parameter, "name"
-   **/
+   *
+   * @throws Exception the exception
+   */
   public void testWelcomePage() throws Exception {
       WebConversation     conversation = new WebConversation();
       WebRequest request = new GetMethodWebRequest( "http://www.meterware.com/servlet/TopSecret" );
@@ -79,7 +83,9 @@ public class ExampleTest extends TestCase {
   /**
    * Verifies that submitting the login form without entering a name results in a page
    * containing the text "Login failed"
-   **/
+   *
+   * @throws Exception the exception
+   */
   public void testBadLogin() throws Exception {
       WebConversation     conversation = new WebConversation();
       WebRequest  request = new GetMethodWebRequest( "http://www.meterware.com/servlet/TopSecret" );
@@ -95,7 +101,9 @@ public class ExampleTest extends TestCase {
   /**
    * Verifies that submitting the login form with the name "master" results
    * in a page containing the text "Top Secret"
-   **/
+   *
+   * @throws Exception the exception
+   */
   public void testGoodLogin() throws Exception {
       WebConversation     conversation = new WebConversation();
       WebRequest  request = new GetMethodWebRequest( "http://www.meterware.com/servlet/TopSecret" );

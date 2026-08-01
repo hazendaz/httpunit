@@ -10,12 +10,17 @@ import com.meterware.httpunit.WebConversation;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * The Class ProxySample.
+ */
 public class ProxySample extends TestCase {
 
 
 	// modify proxyURL and proxyPort to your personal preferences
 	// e.g. a proxy server that is accessible from your network
+	/** The proxy url. */
 	public static String proxyURL="www-proxy.us.oracle.com";
+	/** The proxy port. */
 	public static int proxyPort=80;
 	
 		/**

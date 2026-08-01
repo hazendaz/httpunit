@@ -9,18 +9,19 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.github.hazendaz</groupId>
         <artifactId>base-parent</artifactId>
-        <version>57</version>
+        <version>60</version>
         <relativePath />
     </parent>
 
     <groupId>com.github.hazendaz.httpunit</groupId>
     <artifactId>httpunit</artifactId>
-    <version>2.5.1-SNAPSHOT</version>
+    <version>2.6.1-SNAPSHOT</version>
 
     <name>httpunit</name>
     <description>A library for testing websites programmatically</description>
@@ -87,7 +88,7 @@
         <module.name>com.meterware.httpunit</module.name>
 
         <!-- Reproducible Builds -->
-        <project.build.outputTimestamp>1760403923</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1781469211</project.build.outputTimestamp>
     </properties>
 
     <dependencies>
@@ -121,13 +122,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>6.0.3</version>
+            <version>6.1.2</version>
         </dependency>
         <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>6.0.3</version>
+            <version>6.1.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>
@@ -138,7 +139,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.17</version>
+            <version>2.0.18</version>
         </dependency>
     </dependencies>
 

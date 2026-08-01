@@ -189,6 +189,9 @@ class MessageBodyRequestTest extends HttpUnitTest {
 
 }
 
+/**
+ * The Class BodyEcho.
+ */
 class BodyEcho extends PseudoServlet {
     /**
      * Returns a resource object as a result of a get request.

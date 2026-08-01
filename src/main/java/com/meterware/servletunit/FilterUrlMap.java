@@ -54,10 +54,22 @@ class FilterUrlMap {
 
 }
 
+/**
+ * The Class UrlPatternMatcher.
+ */
 abstract class UrlPatternMatcher {
 
+    /** The templates. */
     static UrlPatternMatcher[] _templates = { new ExtensionUrlPatternMatcher(), new PathMappingUrlPatternMatcher() };
 
+    /**
+     * New pattern matcher.
+     *
+     * @param pattern
+     *            the pattern
+     *
+     * @return the url pattern matcher
+     */
     static UrlPatternMatcher newPatternMatcher(String pattern) {
         for (UrlPatternMatcher _template : _templates) {
             UrlPatternMatcher matcher = _template.create(pattern);
@@ -70,18 +82,38 @@ abstract class UrlPatternMatcher {
 
     /**
      * Returns a suitable pattern matcher if this class is compatible with the pattern. Will return null otherwise.
+     *
+     * @param pattern
+     *            the pattern
+     *
+     * @return the url pattern matcher
      */
     abstract UrlPatternMatcher create(String pattern);
 
     /**
      * Returns true if the specified resource matches this pattern.
+     *
+     * @param resourceName
+     *            the resource name
+     *
+     * @return true, if successful
      */
     abstract boolean matchesResourceName(String resourceName);
 }
 
+/**
+ * The Class ExactUrlPatternMatcher.
+ */
 class ExactUrlPatternMatcher extends UrlPatternMatcher {
+    /** The pattern. */
     private String _pattern;
 
+    /**
+     * Instantiates a new exact url pattern matcher.
+     *
+     * @param pattern
+     *            the pattern
+     */
     public ExactUrlPatternMatcher(String pattern) {
         _pattern = pattern;
     }
@@ -97,12 +129,25 @@ class ExactUrlPatternMatcher extends UrlPatternMatcher {
     }
 }
 
+/**
+ * The Class ExtensionUrlPatternMatcher.
+ */
 class ExtensionUrlPatternMatcher extends UrlPatternMatcher {
+    /** The suffix. */
     private String _suffix;
 
+    /**
+     * Instantiates a new extension url pattern matcher.
+     */
     ExtensionUrlPatternMatcher() {
     }
 
+    /**
+     * Instantiates a new extension url pattern matcher.
+     *
+     * @param suffix
+     *            the suffix
+     */
     ExtensionUrlPatternMatcher(String suffix) {
         _suffix = suffix;
     }
@@ -118,13 +163,27 @@ class ExtensionUrlPatternMatcher extends UrlPatternMatcher {
     }
 }
 
+/**
+ * The Class PathMappingUrlPatternMatcher.
+ */
 class PathMappingUrlPatternMatcher extends UrlPatternMatcher {
+    /** The exact path. */
     private String _exactPath;
+    /** The prefix. */
     private String _prefix;
 
+    /**
+     * Instantiates a new path mapping url pattern matcher.
+     */
     PathMappingUrlPatternMatcher() {
     }
 
+    /**
+     * Instantiates a new path mapping url pattern matcher.
+     *
+     * @param exactPath
+     *            the exact path
+     */
     PathMappingUrlPatternMatcher(String exactPath) {
         _exactPath = exactPath;
         _prefix = exactPath + '/';
@@ -136,6 +195,14 @@ class PathMappingUrlPatternMatcher extends UrlPatternMatcher {
                 : new PathMappingUrlPatternMatcher(pattern.substring(0, pattern.length() - 2));
     }
 
+    /**
+     * Handles pattern.
+     *
+     * @param pattern
+     *            the pattern
+     *
+     * @return true, if successful
+     */
     private boolean handlesPattern(String pattern) {
         return pattern.startsWith("/") && pattern.endsWith("/*");
     }

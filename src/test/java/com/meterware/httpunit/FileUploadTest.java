@@ -440,7 +440,18 @@ class FileUploadTest extends HttpUnitTest {
     }
 }
 
+/**
+ * The Class ByteArrayDataSource.
+ */
 class ByteArrayDataSource implements DataSource {
+    /**
+     * Instantiates a new byte array data source.
+     *
+     * @param contentType
+     *            the content type
+     * @param body
+     *            the body
+     */
     ByteArrayDataSource(String contentType, byte[] body) {
         _contentType = contentType;
         _inputStream = new ByteArrayInputStream(body);
@@ -466,11 +477,16 @@ class ByteArrayDataSource implements DataSource {
         return "test";
     }
 
+    /** The content type. */
     private String _contentType;
+    /** The input stream. */
     private InputStream _inputStream;
 
 }
 
+/**
+ * The Class MimeEcho.
+ */
 class MimeEcho extends PseudoServlet {
     @Override
     public WebResource getPostResponse() {
@@ -494,6 +510,19 @@ class MimeEcho extends PseudoServlet {
         return new WebResource(sb.toString(), "text/plain");
     }
 
+    /**
+     * Append part.
+     *
+     * @param sb
+     *            the sb
+     * @param mbp
+     *            the mbp
+     *
+     * @throws IOException
+     *             the io exception
+     * @throws MessagingException
+     *             the messaging exception
+     */
     private void appendPart(StringBuilder sb, MimeBodyPart mbp) throws IOException, MessagingException {
         String[] disposition = mbp.getHeader("Content-Disposition");
         String name = getHeaderAttribute(disposition[0], "name");
@@ -505,11 +534,41 @@ class MimeEcho extends PseudoServlet {
         }
     }
 
+    /**
+     * Append field value.
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param sb
+     *            the sb
+     * @param mbp
+     *            the mbp
+     *
+     * @throws IOException
+     *             the io exception
+     * @throws MessagingException
+     *             the messaging exception
+     */
     private void appendFieldValue(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
         sb.append(parameterName).append("=").append(URLEncoder.encode(mbp.getContent().toString()));
     }
 
+    /**
+     * Append file specs.
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param sb
+     *            the sb
+     * @param mbp
+     *            the mbp
+     *
+     * @throws IOException
+     *             the io exception
+     * @throws MessagingException
+     *             the messaging exception
+     */
     private void appendFileSpecs(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
         String filename = mbp.getFileName();
@@ -524,6 +583,16 @@ class MimeEcho extends PseudoServlet {
         sb.append(parameterName).append(".lines=").append(numLines);
     }
 
+    /**
+     * Get header attribute.
+     *
+     * @param headerValue
+     *            the header value
+     * @param attributeName
+     *            the attribute name
+     *
+     * @return the string
+     */
     private String getHeaderAttribute(String headerValue, String attributeName) {
         StringTokenizer st = new StringTokenizer(headerValue, ";=", /* returnTokens */ true);
 
@@ -548,6 +617,14 @@ class MimeEcho extends PseudoServlet {
         return "";
     }
 
+    /**
+     * Strip quotes.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string
+     */
     private String stripQuotes(String value) {
         if (value.startsWith("\"") && value.endsWith("\"")) {
             return value.substring(1, value.length() - 1);

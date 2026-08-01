@@ -11,26 +11,50 @@ package com.meterware.httpunit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * The Class NewParsingTests.
+ */
 public class NewParsingTests extends HttpUnitTest {
 
+    /** The wc. */
     private WebClient _wc;
 
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main(String args[]) {
         junit.textui.TestRunner.run( suite() );
     }
 
 
+    /**
+     * Suite.
+     *
+     * @return the test
+     */
     public static Test suite() {
         return new TestSuite( NewParsingTests.class );
     }
 
 
+    /**
+     * Instantiates a new new parsing tests.
+     *
+     * @param name the name
+     */
     public NewParsingTests( String name ) {
         super( name );
     }
 
 
+    /**
+     * Set up.
+     *
+     * @throws Exception the exception
+     */
     public void setUp() throws Exception {
         super.setUp();
         _wc = new WebConversation();

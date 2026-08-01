@@ -675,10 +675,15 @@ public abstract class FormControl extends HTMLElementBase {
 
 }
 
+/**
+ * The Class BooleanFormControl.
+ */
 abstract class BooleanFormControl extends FormControl {
 
+    /** The displayed value. */
     private String[] _displayedValue;
 
+    /** The element. */
     private HTMLInputElementImpl _element;
 
     @Override
@@ -686,6 +691,9 @@ abstract class BooleanFormControl extends FormControl {
         return new Scriptable();
     }
 
+    /**
+     * The Class Scriptable.
+     */
     class Scriptable extends FormControl.Scriptable {
 
         @Override
@@ -712,12 +720,28 @@ abstract class BooleanFormControl extends FormControl {
         }
     }
 
+    /**
+     * Instantiates a new boolean form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public BooleanFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
         _element = element;
         _displayedValue = new String[] { readDisplayedValue(element) };
     }
 
+    /**
+     * Read displayed value.
+     *
+     * @param node
+     *            the node
+     *
+     * @return the string
+     */
     private String readDisplayedValue(Node node) {
         Node nextSibling = node.getNextSibling();
         while (nextSibling != null && nextSibling.getNodeType() != Node.TEXT_NODE
@@ -730,6 +754,11 @@ abstract class BooleanFormControl extends FormControl {
         return nextSibling.getNodeValue();
     }
 
+    /**
+     * Checks if is checked.
+     *
+     * @return true, if successful
+     */
     boolean isChecked() {
         return _element.getChecked();
     }
@@ -802,13 +831,29 @@ abstract class BooleanFormControl extends FormControl {
         return isReadOnly() && isChecked();
     }
 
+    /**
+     * Gets the query value.
+     *
+     * @return the query value
+     */
     abstract String getQueryValue();
 
+    /**
+     * To array.
+     *
+     * @param value
+     *            the value
+     *
+     * @return the string[]
+     */
     private String[] toArray(String value) {
         return new String[] { value };
     }
 }
 
+/**
+ * The Class CheckboxFormControl.
+ */
 class CheckboxFormControl extends BooleanFormControl {
 
     @Override
@@ -816,6 +861,14 @@ class CheckboxFormControl extends BooleanFormControl {
         return CHECKBOX_TYPE;
     }
 
+    /**
+     * Instantiates a new checkbox form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public CheckboxFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
     }
@@ -858,8 +911,19 @@ class CheckboxFormControl extends BooleanFormControl {
     }
 }
 
+/**
+ * The Class TextFormControl.
+ */
 abstract class TextFormControl extends FormControl {
 
+    /**
+     * Instantiates a new text form control.
+     *
+     * @param form
+     *            the form
+     * @param control
+     *            the control
+     */
     public TextFormControl(WebForm form, HTMLControl control) {
         super(form, control);
     }
@@ -873,10 +937,26 @@ abstract class TextFormControl extends FormControl {
         return new String[] { getValue() };
     }
 
+    /**
+     * Gets the default value.
+     *
+     * @return the default value
+     */
     abstract protected String getDefaultValue();
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     abstract protected String getValue();
 
+    /**
+     * Sets the value.
+     *
+     * @param value
+     *            the value
+     */
     abstract protected void setValue(String value);
 
     /**
@@ -934,10 +1014,19 @@ abstract class TextFormControl extends FormControl {
         }
     }
 
+    /**
+     * Claim value is required.
+     *
+     * @param values
+     *            the values
+     */
     protected void claimValueIsRequired(List values) {
         claimValueIsRequired(values, getDefaultValue());
     }
 
+    /**
+     * The Class Scriptable.
+     */
     class Scriptable extends FormControl.Scriptable {
 
         @Override
@@ -964,8 +1053,12 @@ abstract class TextFormControl extends FormControl {
     }
 }
 
+/**
+ * The Class TextFieldFormControl.
+ */
 class TextFieldFormControl extends TextFormControl {
 
+    /** The element. */
     private HTMLInputElementImpl _element;
 
     @Override
@@ -973,6 +1066,14 @@ class TextFieldFormControl extends TextFormControl {
         return TEXT_TYPE;
     }
 
+    /**
+     * Instantiates a new text field form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public TextFieldFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
         _element = element;
@@ -995,6 +1096,9 @@ class TextFieldFormControl extends TextFormControl {
     }
 }
 
+/**
+ * The Class PasswordFieldFormControl.
+ */
 class PasswordFieldFormControl extends TextFieldFormControl {
 
     @Override
@@ -1002,6 +1106,14 @@ class PasswordFieldFormControl extends TextFieldFormControl {
         return PASSWORD_TYPE;
     }
 
+    /**
+     * Instantiates a new password field form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public PasswordFieldFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
     }
@@ -1017,6 +1129,14 @@ class HiddenFieldFormControl extends TextFieldFormControl {
         return HIDDEN_TYPE;
     }
 
+    /**
+     * Instantiates a new hidden field form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public HiddenFieldFormControl(WebForm form, HTMLInputElementImpl element) {
         super(form, element);
     }
@@ -1036,10 +1156,22 @@ class HiddenFieldFormControl extends TextFieldFormControl {
     }
 }
 
+/**
+ * The Class TextAreaFormControl.
+ */
 class TextAreaFormControl extends TextFormControl {
 
+    /** The element. */
     private HTMLTextAreaElementImpl _element;
 
+    /**
+     * Instantiates a new text area form control.
+     *
+     * @param form
+     *            the form
+     * @param element
+     *            the element
+     */
     public TextAreaFormControl(WebForm form, HTMLTextAreaElementImpl element) {
         super(form, element);
         _element = element;
@@ -1082,6 +1214,7 @@ class FileSubmitFormControl extends FormControl {
         return FILE_TYPE;
     }
 
+    /** The file to upload. */
     private UploadFileSpec _fileToUpload;
 
     @Override
@@ -1089,6 +1222,9 @@ class FileSubmitFormControl extends FormControl {
         return new Scriptable();
     }
 
+    /**
+     * The Class Scriptable.
+     */
     class Scriptable extends FormControl.Scriptable {
 
         @Override
@@ -1101,6 +1237,14 @@ class FileSubmitFormControl extends FormControl {
 
     }
 
+    /**
+     * Instantiates a new file submit form control.
+     *
+     * @param form
+     *            the form
+     * @param node
+     *            the node
+     */
     public FileSubmitFormControl(WebForm form, HTMLInputElementImpl node) {
         super(form, node);
     }
@@ -1121,6 +1265,11 @@ class FileSubmitFormControl extends FormControl {
         return new String[] { getSelectedName() };
     }
 
+    /**
+     * Gets the selected name.
+     *
+     * @return the selected name
+     */
     private String getSelectedName() {
         return _fileToUpload == null ? "" : _fileToUpload.getFileName();
     }
@@ -1153,8 +1302,19 @@ class FileSubmitFormControl extends FormControl {
  **/
 class MissingParameterValueException extends IllegalRequestParameterException {
 
+    /** The serial version uid. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new missing parameter value exception.
+     *
+     * @param parameterName
+     *            the parameter name
+     * @param missingValue
+     *            the missing value
+     * @param proposed
+     *            the proposed
+     */
     MissingParameterValueException(String parameterName, String missingValue, String[] proposed) {
         _parameterName = parameterName;
         _missingValue = missingValue;
@@ -1176,7 +1336,10 @@ class MissingParameterValueException extends IllegalRequestParameterException {
         return sb.toString();
     }
 
+    /** The parameter name. */
     private String _parameterName;
+    /** The missing value. */
     private String _missingValue;
+    /** The proposed values. */
     private String[] _proposedValues;
 }

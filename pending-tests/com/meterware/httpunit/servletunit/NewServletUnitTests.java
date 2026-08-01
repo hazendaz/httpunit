@@ -28,16 +28,31 @@ import java.io.PrintWriter;
  */
 public class NewServletUnitTests extends HttpUnitTest {
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main( String args[] ) {
         junit.textui.TestRunner.run( suite() );
     }
 
 
+    /**
+     * Suite.
+     *
+     * @return the test suite
+     */
     public static TestSuite suite() {
         return new TestSuite( NewServletUnitTests.class );
     }
 
 
+    /**
+     * Instantiates a new new servlet unit tests.
+     *
+     * @param name the name
+     */
     public NewServletUnitTests( String name ) {
         super( name );
     }
@@ -63,9 +78,18 @@ public class NewServletUnitTests extends HttpUnitTest {
      */
     public static class CheckIsCommittedServlet extends HttpServlet {
 
+        /** The is committed. */
         public static boolean isCommitted;
 
 
+        /**
+         * Do get.
+         *
+         * @param req the req
+         * @param resp the resp
+         * @throws ServletException the servlet exception
+         * @throws IOException the io exception
+         */
         protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
             resp.setContentType( "text/html" );
 

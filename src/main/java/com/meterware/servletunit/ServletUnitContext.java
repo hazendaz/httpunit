@@ -9,7 +9,6 @@ package com.meterware.servletunit;
 
 import jakarta.servlet.ServletContext;
 
-import java.util.Hashtable;
 import java.util.Set;
 
 /**

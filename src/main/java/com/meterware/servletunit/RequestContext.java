@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 

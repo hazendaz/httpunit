@@ -9,7 +9,6 @@ package com.meterware.httpunit.dom;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Hashtable;
 
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.Scriptable;

@@ -9,10 +9,9 @@ package com.meterware.httpunit;
 
 import com.meterware.httpunit.parsing.HTMLParserFactory;
 
-import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;

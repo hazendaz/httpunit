@@ -12,7 +12,6 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The Class UncheckedParameterHolder.

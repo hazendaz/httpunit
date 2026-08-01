@@ -7,8 +7,6 @@
  */
 package com.meterware.servletunit;
 
-import java.util.Hashtable;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;

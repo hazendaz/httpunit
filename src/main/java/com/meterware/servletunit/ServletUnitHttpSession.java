@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpSession;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The Class ServletUnitHttpSession.

@@ -12,7 +12,6 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

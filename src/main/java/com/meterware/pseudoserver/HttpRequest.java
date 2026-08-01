@@ -11,7 +11,6 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 /**

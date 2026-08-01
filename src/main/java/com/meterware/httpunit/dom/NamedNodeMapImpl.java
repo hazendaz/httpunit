@@ -7,8 +7,6 @@
  */
 package com.meterware.httpunit.dom;
 
-import java.util.Hashtable;
-
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

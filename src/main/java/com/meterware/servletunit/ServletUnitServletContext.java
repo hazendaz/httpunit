@@ -20,7 +20,6 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.EventListener;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 

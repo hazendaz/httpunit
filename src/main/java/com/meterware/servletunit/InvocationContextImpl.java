@@ -22,9 +22,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Dictionary;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Dictionary;
 
 /**
  * This class represents the context in which a specific servlet request is being made. It contains the objects needed

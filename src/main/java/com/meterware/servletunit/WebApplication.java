@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -603,7 +602,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerFilterClass(Dictionary mapping, Element filterElement) throws SAXException {
+    private void registerFilterClass(java.util.Map mapping, Element filterElement) throws SAXException {
         String filterName = XMLUtils.getChildNodeValue(filterElement, "filter-name");
         mapping.put(filterName, new FilterConfiguration(filterName, filterElement));
     }
@@ -619,7 +618,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerFilter(Dictionary mapping, Element filterElement) throws SAXException {
+    private void registerFilter(java.util.Map mapping, Element filterElement) throws SAXException {
         if (XMLUtils.hasChildNode(filterElement, "servlet-name")) {
             registerFilterForServlet(XMLUtils.getChildNodeValue(filterElement, "servlet-name"),
                     (FilterConfiguration) mapping.get(XMLUtils.getChildNodeValue(filterElement, "filter-name")));
@@ -727,7 +726,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerServletClass(Dictionary mapping, Element servletElement) throws SAXException {
+    private void registerServletClass(java.util.Map mapping, Element servletElement) throws SAXException {
         mapping.put(XMLUtils.getChildNodeValue(servletElement, "servlet-name"),
                 new ServletConfiguration(servletElement));
     }
@@ -743,7 +742,7 @@ class WebApplication implements SessionListenerDispatcher {
      * @throws SAXException
      *             the SAX exception
      */
-    private void registerServlet(Dictionary mapping, Element servletElement) throws SAXException {
+    private void registerServlet(java.util.Map mapping, Element servletElement) throws SAXException {
         registerServlet(XMLUtils.getChildNodeValue(servletElement, "url-pattern"),
                 (ServletConfiguration) mapping.get(XMLUtils.getChildNodeValue(servletElement, "servlet-name")));
     }

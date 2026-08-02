@@ -124,7 +124,7 @@ class JUnitServletTest {
         assertEquals(3, results[0].length, "Num columns");
         assertEquals("3 tests", results[0][0], "First header");
         assertEquals("Problems Occurred", results[0][2], "Status");
-        assertEquals("2 failures", results[1][1], "Failure header");
+        assertEquals("2 failures:", results[1][1], "Failure header");
         assertEquals("1", results[2][0], "Failure index 1");
         assertEquals("2", results[3][0], "Failure index 2");
         assertTrue(results[2][1].indexOf('(' + FailingTests.class.getName() + ')') >= 0, "Test class not found");
@@ -166,7 +166,7 @@ class JUnitServletTest {
         assertEquals(3, results[0].length, "Num columns");
         assertEquals("2 tests", results[0][0], "First header");
         assertEquals("Problems Occurred", results[0][2], "Status");
-        assertEquals("1 error", results[1][1], "Failure header");
+        assertEquals("1 error:", results[1][1], "Failure header");
         assertEquals("1", results[2][0], "Failure index 1");
         assertTrue(results[2][1].indexOf('(' + ErrorTests.class.getName() + ')') >= 0, "Test class not found");
     }
@@ -213,11 +213,11 @@ class JUnitServletTest {
         Element element = document.getDocumentElement();
         assertEquals("testsuite", element.getNodeName(), "document element name");
         assertEquals("2", element.getAttribute("tests"), "number of tests");
-        assertEquals("0", element.getAttribute("failures"), "number of failures");
-        assertEquals("1", element.getAttribute("errors"), "number of errors");
+        assertEquals("1", element.getAttribute("failures"), "number of failures");
+        assertEquals("0", element.getAttribute("errors"), "number of errors");
         NodeList nl = element.getElementsByTagName("testcase");
-        verifyElementWithNameHasFailureNode("testAddition", nl, /* failed */ "error", true);
-        verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "error", false);
+        verifyElementWithNameHasFailureNode("testAddition", nl, /* failed */ "failure", true);
+        verifyElementWithNameHasFailureNode("testMultiplication", nl, /* failed */ "failure", false);
     }
 
     /**

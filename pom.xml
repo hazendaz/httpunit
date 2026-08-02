@@ -134,17 +134,11 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>6.1.2</version>
         </dependency>
-        <!-- Junit 4 still used on usage, our tests will move to junit 5 -->
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
             <version>6.1.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -152,5 +146,22 @@
             <version>2.0.18</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/ErrorTests.java</exclude>
+                        <exclude>**/FailingTests.java</exclude>
+                        <exclude>**/PassingTests.java</exclude>
+                        <exclude>**/ServletAccessTestClass.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

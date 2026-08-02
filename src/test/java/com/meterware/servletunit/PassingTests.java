@@ -7,32 +7,19 @@
  */
 package com.meterware.servletunit;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-// XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
 /**
  * The Class PassingTests.
  */
-// nor any IDE
-@Ignore
-public class PassingTests extends TestCase {
-
-    /**
-     * Instantiates a new passing tests.
-     *
-     * @param s
-     *            the s
-     */
-    public PassingTests(String s) {
-        super(s);
-    }
+public class PassingTests {
 
     /**
      * Test addition.
      */
+    @Test
     public void testAddition() {
-        assertEquals(2, 1 + 1);
+        Assertions.assertEquals(2, 1 + 1);
     }
 }

@@ -7,31 +7,18 @@
  */
 package com.meterware.servletunit;
 
-import org.junit.Ignore;
-
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * This test is run by the junit servlet only.
  */
-// XXX This test is managed via JUnitServletTest and thus ignore here ensures newer surefire plugin doesn't use directly
-// nor any IDE
-@Ignore
-public class ErrorTests extends TestCase {
-
-    /**
-     * Instantiates a new error tests.
-     *
-     * @param s
-     *            the s
-     */
-    public ErrorTests(String s) {
-        super(s);
-    }
+public class ErrorTests {
 
     /**
      * Test addition.
      */
+    @Test
     public void testAddition() {
         throw new RuntimeException("Got a problem?");
     }
@@ -39,7 +26,8 @@ public class ErrorTests extends TestCase {
     /**
      * Test multiplication.
      */
+    @Test
     public void testMultiplication() {
-        assertEquals(4, 2 * 2);
+        Assertions.assertEquals(4, 2 * 2);
     }
 }

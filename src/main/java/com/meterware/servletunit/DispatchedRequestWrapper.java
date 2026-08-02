@@ -3,12 +3,11 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -117,7 +116,7 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
     static final String QUERY_STRING = "javax.servlet.include.query_string";
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /**
      * Instantiates a new include request wrapper.

@@ -3,14 +3,13 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit.dom;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -37,7 +36,7 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
     private static final long serialVersionUID = 1L;
 
     /** The exemplars. */
-    private static Hashtable<String, HTMLElementImpl> _exemplars = new Hashtable<>();
+    private static java.util.Map<String, HTMLElementImpl> _exemplars = new java.util.HashMap<>();
 
     /** The window. */
     private DomWindow _window;

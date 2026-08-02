@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -551,7 +551,8 @@ class MimeEcho extends PseudoServlet {
      */
     private void appendFieldValue(String parameterName, StringBuilder sb, MimeBodyPart mbp)
             throws IOException, MessagingException {
-        sb.append(parameterName).append("=").append(URLEncoder.encode(mbp.getContent().toString()));
+        sb.append(parameterName).append("=")
+                .append(URLEncoder.encode(mbp.getContent().toString(), StandardCharsets.UTF_8));
     }
 
     /**

@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -11,7 +11,8 @@ import com.meterware.httpunit.WebResponse;
 
 import javax.servlet.http.HttpServlet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * The Class ServletAccessTestClass.
@@ -19,34 +20,25 @@ import org.junit.Test;
 public class ServletAccessTestClass extends ServletTestCase {
 
     /**
-     * construct a ServletAccessTest.
-     *
-     * @param name
-     *            the name
-     */
-    public ServletAccessTestClass(String name) {
-        super(name);
-    }
-
-    /**
      * Test servlet parameters.
      *
      * @throws Exception
      *             the exception
      */
-    // TODO JWL 4/20/2025 Keep 'test' on this method as well as public until such time its not using junit 3.
     @Test
-    public void testServletParameters() throws Exception {
+    void testServletParameters() throws Exception {
         ServletUnitClient client = newClient();
         InvocationContext ic = client.newInvocation("http://localhost/SimpleServlet");
-        assertNull("init parameter 'gender' should be null",
-                ic.getServlet().getServletConfig().getInitParameter("gender"));
-        assertEquals("init parameter via config", "red", ic.getServlet().getServletConfig().getInitParameter("color"));
-        assertEquals("init parameter directly", "12", ((HttpServlet) ic.getServlet()).getInitParameter("age"));
+        Assertions.assertNull(ic.getServlet().getServletConfig().getInitParameter("gender"),
+                "init parameter 'gender' should be null");
+        Assertions.assertEquals("red", ic.getServlet().getServletConfig().getInitParameter("color"),
+                "init parameter via config");
+        Assertions.assertEquals("12", ((HttpServlet) ic.getServlet()).getInitParameter("age"),
+                "init parameter directly");
         ic.getServlet().service(ic.getRequest(), ic.getResponse());
 
         WebResponse wr = client.getResponse(ic);
-        assertEquals("Servlet response", "the desired content", wr.getText());
+        Assertions.assertEquals("the desired content", wr.getText(), "Servlet response");
     }
 
 }

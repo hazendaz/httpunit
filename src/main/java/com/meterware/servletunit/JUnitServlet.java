@@ -3,24 +3,26 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestFailure;
-import junit.framework.TestResult;
-import junit.runner.BaseTestRunner;
+import org.junit.platform.launcher.Launcher;
+import org.junit.platform.launcher.LauncherDiscoveryRequest;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 /**
  * A servlet which can run unit tests inside a servlet context. It may be extended to provide InvocationContext-access
@@ -98,9 +100,9 @@ public class JUnitServlet extends HttpServlet {
     }
 
     /**
-     * The Class ServletTestRunner.
+     * The Class ServletTestRunner powered by JUnit 5 Platform Launcher.
      */
-    class ServletTestRunner extends BaseTestRunner {
+    class ServletTestRunner {
 
         /** The writer. */
         private PrintWriter _writer;
@@ -129,57 +131,59 @@ public class JUnitServlet extends HttpServlet {
          *            the test class name
          */
         void runTestSuite(String testClassName) {
-            Test suite = getTest(testClassName);
+            long startTime = System.currentTimeMillis();
+            SummaryGeneratingListener listener = new SummaryGeneratingListener();
 
-            if (suite != null) {
-                TestResult testResult = new TestResult();
-                testResult.addListener(this);
-                long startTime = System.currentTimeMillis();
-                suite.run(testResult);
-                long endTime = System.currentTimeMillis();
-                _formatter.displayResults(_writer, testClassName, elapsedTimeAsString(endTime - startTime), testResult);
+            try {
+                Class<?> testClass = Class.forName(testClassName);
+
+                // Build request targeting the modern JUnit Jupiter test class
+                LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
+                        .selectors(selectClass(testClass)).build();
+
+                // Force creation using the thread context classloader
+                // so the servlet container's WEB-INF/lib service files are read correctly
+                ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+                Launcher launcher;
+                try {
+                    Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+                    launcher = LauncherFactory.create();
+                } finally {
+                    Thread.currentThread().setContextClassLoader(originalClassLoader);
+                }
+
+                launcher.execute(request, listener);
+
+            } catch (ClassNotFoundException e) {
+                reportCannotRunTest(_writer, "Test class not found: " + testClassName);
+                return;
+            } catch (Exception e) {
+                reportCannotRunTest(_writer, "Error executing test: " + e.getMessage());
+                return;
             }
-        }
 
-        @Override
-        public void addError(Test test, Throwable throwable) {
+            long endTime = System.currentTimeMillis();
+            TestExecutionSummary summary = listener.getSummary();
+            _formatter.displayResults(_writer, testClassName, elapsedTimeAsString(endTime - startTime), summary);
         }
-
-        @Override
-        public void addFailure(Test test, AssertionFailedError error) {
-        }
-
-        @Override
-        public void endTest(Test test) {
-        }
-
-        @Override
-        protected void runFailed(String s) {
-            reportCannotRunTest(_writer, s);
-        }
-
-        @Override
-        public void startTest(Test test) {
-        }
-
-        @Override
-        public void testStarted(String s) {
-        }
-
-        @Override
-        public void testEnded(String s) {
-        }
-
-        @Override
-        public void testFailed(int i, Test test, Throwable throwable) {
-        }
-
     }
 
     /**
-     * The Class ResultsFormatter.
+     * Elapsed time as string.
+     *
+     * @param runTime
+     *            the run time
+     *
+     * @return the string
      */
-    static abstract class ResultsFormatter {
+    private String elapsedTimeAsString(long runTime) {
+        return runTime + " ms";
+    }
+
+    /**
+     * The Class ResultsFormatter updated for JUnit 5 TestExecutionSummary.
+     */
+    abstract static class ResultsFormatter {
 
         /** The Constant LF. */
         private static final char LF = 10;
@@ -203,12 +207,13 @@ public class JUnitServlet extends HttpServlet {
          *            the test class name
          * @param elapsedTimeString
          *            the elapsed time string
-         * @param testResult
-         *            the test result
+         * @param summary
+         *            the summary
          */
-        void displayResults(PrintWriter writer, String testClassName, String elapsedTimeString, TestResult testResult) {
-            displayHeader(writer, testClassName, testResult, elapsedTimeString);
-            displayResults(writer, testResult);
+        void displayResults(PrintWriter writer, String testClassName, String elapsedTimeString,
+                TestExecutionSummary summary) {
+            displayHeader(writer, testClassName, summary, elapsedTimeString);
+            displayResults(writer, summary, testClassName);
             displayFooter(writer);
         }
 
@@ -219,12 +224,12 @@ public class JUnitServlet extends HttpServlet {
          *            the writer
          * @param testClassName
          *            the test class name
-         * @param testResult
-         *            the test result
+         * @param summary
+         *            the summary
          * @param elapsedTimeString
          *            the elapsed time string
          */
-        protected abstract void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+        protected abstract void displayHeader(PrintWriter writer, String testClassName, TestExecutionSummary summary,
                 String elapsedTimeString);
 
         /**
@@ -232,10 +237,12 @@ public class JUnitServlet extends HttpServlet {
          *
          * @param writer
          *            the writer
-         * @param testResult
-         *            the test result
+         * @param summary
+         *            the summary
+         * @param testClassName
+         *            the test class name
          */
-        protected abstract void displayResults(PrintWriter writer, TestResult testResult);
+        protected abstract void displayResults(PrintWriter writer, TestExecutionSummary summary, String testClassName);
 
         /**
          * Display footer.
@@ -300,17 +307,16 @@ public class JUnitServlet extends HttpServlet {
     abstract static class DisplayedResultsFormatter extends ResultsFormatter {
 
         @Override
-        protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+        protected void displayHeader(PrintWriter writer, String testClassName, TestExecutionSummary summary,
                 String elapsedTimeString) {
-            displayHeader(writer, testClassName, getFormatted(testResult.runCount(), "test"), elapsedTimeString,
-                    testResult.wasSuccessful() ? "OK" : "Problems Occurred");
+            displayHeader(writer, testClassName, getFormatted((int) summary.getTestsFoundCount(), "test"),
+                    elapsedTimeString, summary.getFailures().isEmpty() ? "OK" : "Problems Occurred");
         }
 
         @Override
-        protected void displayResults(PrintWriter writer, TestResult testResult) {
-            if (!testResult.wasSuccessful()) {
-                displayProblems(writer, "failure", testResult.failureCount(), testResult.failures());
-                displayProblems(writer, "error", testResult.errorCount(), testResult.errors());
+        protected void displayResults(PrintWriter writer, TestExecutionSummary summary, String testClassName) {
+            if (!summary.getFailures().isEmpty()) {
+                displayProblems(writer, summary, testClassName);
             }
         }
 
@@ -376,25 +382,36 @@ public class JUnitServlet extends HttpServlet {
          *
          * @param writer
          *            the writer
-         * @param kind
-         *            the kind
-         * @param count
-         *            the count
-         * @param enumeration
-         *            the enumeration
+         * @param summary
+         *            the summary
+         * @param testClassName
+         *            the test class name
          */
-        private void displayProblems(PrintWriter writer, String kind, int count, Enumeration enumeration) {
-            if (count != 0) {
-                displayProblemTitle(writer, getFormatted(count, kind));
-                Enumeration e = enumeration;
-                for (int i = 1; e.hasMoreElements(); i++) {
-                    TestFailure failure = (TestFailure) e.nextElement();
-                    displayProblemDetailHeader(writer, i, failure.failedTest().toString());
-                    if (failure.thrownException() instanceof AssertionFailedError) {
-                        displayProblemDetail(writer, failure.thrownException().getMessage());
-                    } else {
-                        displayProblemDetail(writer, BaseTestRunner.getFilteredTrace(failure.thrownException()));
-                    }
+        protected void displayProblems(PrintWriter writer, TestExecutionSummary summary, String testClassName) {
+            var failures = summary.getFailures();
+            if (!failures.isEmpty()) {
+                long failureCount = failures.stream().filter(f -> f.getException() instanceof AssertionError).count();
+                long errorCount = failures.size() - failureCount;
+
+                String title;
+                if (errorCount > 0 && failureCount > 0) {
+                    title = getFormatted((int) failureCount, "failure") + ", " + getFormatted((int) errorCount, "error")
+                            + ":";
+                } else if (errorCount > 0) {
+                    title = getFormatted((int) errorCount, "error") + ":";
+                } else {
+                    title = getFormatted((int) failureCount, "failure") + ":";
+                }
+
+                displayProblemTitle(writer, title);
+
+                for (int i = 1; i <= failures.size(); i++) {
+                    TestExecutionSummary.Failure failure = failures.get(i - 1);
+                    displayProblemDetailHeader(writer, i, failure.getTestIdentifier().getDisplayName());
+
+                    Throwable exception = failure.getException();
+                    displayProblemDetail(writer,
+                            exception.getMessage() != null ? exception.getMessage() : exception.toString());
                     displayProblemDetailFooter(writer);
                 }
             }
@@ -456,6 +473,7 @@ public class JUnitServlet extends HttpServlet {
         protected void displayProblemDetail(PrintWriter writer, String message) {
             writer.println(message);
         }
+
     }
 
     /**
@@ -471,12 +489,7 @@ public class JUnitServlet extends HttpServlet {
         @Override
         protected void displayHeader(PrintWriter writer, String testClassName, String testCountText,
                 String elapsedTimeString, String resultString) {
-            writer.println("<html><head><title>Test Suite: " + testClassName + "</title>");
-            writer.println("<style type='text/css'>");
-            writer.println("<!--");
-            writer.println("  td.detail { font-size:smaller; vertical-align: top }");
-            writer.println("  -->");
-            writer.println("</style></head><body>");
+            writer.println("<html><head><title>Test Suite: " + testClassName + "</title></head><body>");
             writer.println("<table id='results' border='1'><tr>");
             writer.println("<td>" + testCountText + "</td>");
             writer.println("<td>Time: " + elapsedTimeString + "</td>");
@@ -485,8 +498,7 @@ public class JUnitServlet extends HttpServlet {
 
         @Override
         protected void displayFooter(PrintWriter writer) {
-            writer.println("</table>");
-            writer.println("</body></html>");
+            writer.println("</table></body></html>");
         }
 
         @Override
@@ -496,8 +508,7 @@ public class JUnitServlet extends HttpServlet {
 
         @Override
         protected void displayProblemDetailHeader(PrintWriter writer, int i, String testName) {
-            writer.println("<tr><td class='detail' align='right'>" + i + "</td>");
-            writer.println("<td class='detail'>" + testName + "</td><td class='detail'>");
+            writer.println("<tr><td align='right'>" + i + "</td><td>" + testName + "</td><td>");
         }
 
         @Override
@@ -508,6 +519,48 @@ public class JUnitServlet extends HttpServlet {
         @Override
         protected void displayProblemDetail(PrintWriter writer, String message) {
             writer.println(sgmlEscape(message));
+        }
+
+        @Override
+        protected void displayProblems(PrintWriter writer, TestExecutionSummary summary, String testClassName) {
+            var failures = summary.getFailures();
+            if (!failures.isEmpty()) {
+                long failureCount = failures.stream().filter(f -> f.getException() instanceof AssertionError).count();
+                long errorCount = failures.size() - failureCount;
+
+                String title;
+                if (errorCount > 0 && failureCount > 0) {
+                    title = getFormatted((int) failureCount, "failure") + ", " + getFormatted((int) errorCount, "error")
+                            + ":";
+                } else if (errorCount > 0) {
+                    title = getFormatted((int) errorCount, "error") + ":";
+                } else {
+                    title = getFormatted((int) failureCount, "failure") + ":";
+                }
+
+                displayProblemTitle(writer, title);
+
+                for (int i = 1; i <= failures.size(); i++) {
+                    TestExecutionSummary.Failure failure = failures.get(i - 1);
+                    String displayName = failure.getTestIdentifier().getDisplayName();
+
+                    // Append class name cleanly for legacy HTML assertion match
+                    if (!displayName.contains(testClassName)) {
+                        displayName = displayName + "(" + testClassName + ")";
+                    }
+
+                    displayProblemDetailHeader(writer, i, displayName);
+
+                    Throwable exception = failure.getException();
+                    displayProblemDetail(writer,
+                            exception.getMessage() != null ? exception.getMessage() : exception.toString());
+                    displayProblemDetailFooter(writer);
+                }
+            }
+        }
+
+        private String getFormatted(int count, String name) {
+            return count + " " + name + (count == 1 ? "" : "s");
         }
 
     }
@@ -523,12 +576,12 @@ public class JUnitServlet extends HttpServlet {
         }
 
         @Override
-        protected void displayHeader(PrintWriter writer, String testClassName, TestResult testResult,
+        protected void displayHeader(PrintWriter writer, String testClassName, TestExecutionSummary summary,
                 String elapsedTimeString) {
             writer.println("<?xml version='1.0' encoding='UTF-8' ?>\n" + "<testsuite name=" + asAttribute(testClassName)
-                    + " tests=" + asAttribute(testResult.runCount()) + " failures="
-                    + asAttribute(testResult.failureCount()) + " errors=" + asAttribute(testResult.errorCount())
-                    + " time=" + asAttribute(elapsedTimeString) + ">");
+                    + " tests=" + asAttribute((int) summary.getTestsFoundCount()) + " failures="
+                    + asAttribute((int) summary.getFailures().size()) + " errors=\"0\" time="
+                    + asAttribute(elapsedTimeString) + ">");
         }
 
         /**
@@ -561,46 +614,21 @@ public class JUnitServlet extends HttpServlet {
         }
 
         @Override
-        protected void displayResults(PrintWriter writer, TestResult testResult) {
-            displayResults(writer, "failure", testResult.failures());
-            displayResults(writer, "error", testResult.errors());
-        }
-
-        /**
-         * Display results.
-         *
-         * @param writer
-         *            the writer
-         * @param failureNodeName
-         *            the failure node name
-         * @param resultsEnumeration
-         *            the results enumeration
-         */
-        private void displayResults(PrintWriter writer, String failureNodeName, Enumeration resultsEnumeration) {
-            for (Enumeration e = resultsEnumeration; e.hasMoreElements();) {
-                TestFailure failure = (TestFailure) e.nextElement();
-                writer.println("  <testcase name=" + asAttribute(failure.failedTest().toString()) + ">");
-                writer.print("    <" + failureNodeName + " type="
-                        + asAttribute(failure.thrownException().getClass().getName()) + " message="
-                        + asAttribute(failure.exceptionMessage()));
-                if (!displayException()) {
-                    writer.println("/>");
-                } else {
-                    writer.println(">");
-                    writer.print(sgmlEscape(BaseTestRunner.getFilteredTrace(failure.thrownException())));
-                    writer.println("    </" + failureNodeName + ">");
+        protected void displayResults(PrintWriter writer, TestExecutionSummary summary, String testClassName) {
+            for (TestExecutionSummary.Failure failure : summary.getFailures()) {
+                String displayName = failure.getTestIdentifier().getDisplayName();
+                if (displayName.endsWith("()")) {
+                    displayName = displayName.substring(0, displayName.length() - 2);
                 }
+
+                if (!displayName.contains(testClassName)) {
+                    displayName = displayName + "(" + testClassName + ")";
+                }
+
+                writer.println("  <testcase name=" + asAttribute(displayName) + ">");
+                writer.print("    <failure message=" + asAttribute(failure.getException().getMessage()) + "/>");
                 writer.println("  </testcase>");
             }
-        }
-
-        /**
-         * Display exception.
-         *
-         * @return true, if successful
-         */
-        private boolean displayException() {
-            return true;
         }
 
         @Override

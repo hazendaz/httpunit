@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -803,7 +803,7 @@ public abstract class WebRequest {
      */
     Hashtable getHeaderDictionary() {
         if (_headers == null) {
-            _headers = new Hashtable<>();
+            _headers = new WebClient.HeaderDictionary();
             if (getContentType() != null) {
                 _headers.put("Content-Type", getContentType());
             }

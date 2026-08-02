@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -321,7 +321,7 @@ public class ServletRunner {
 
         @Override
         public Hashtable getInitializationParameters(String classPath, String workingDirectory) {
-            Hashtable params = new Hashtable<>();
+            Hashtable params = new java.util.Properties();
             if (classPath != null) {
                 params.put("classpath", classPath);
             }

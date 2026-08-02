@@ -3,12 +3,11 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
@@ -25,7 +24,7 @@ class FilterConfigImpl implements FilterConfig {
     private ServletContext _servletContext;
 
     /** The init params. */
-    private Hashtable _initParams;
+    private java.util.Map _initParams;
 
     /**
      * Instantiates a new filter config impl.
@@ -37,7 +36,7 @@ class FilterConfigImpl implements FilterConfig {
      * @param initParams
      *            the init params
      */
-    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {
+    FilterConfigImpl(String name, ServletContext servletContext, java.util.Map initParams) {
         _name = name;
         _servletContext = servletContext;
         _initParams = initParams;
@@ -60,7 +59,7 @@ class FilterConfigImpl implements FilterConfig {
 
     @Override
     public Enumeration getInitParameterNames() {
-        return _initParams.keys();
+        return java.util.Collections.enumeration(_initParams.keySet());
     }
 
 }

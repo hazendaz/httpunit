@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -333,7 +332,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public Enumeration<String> getInitParameterNames() {
-        return getContextParams().keys();
+        return java.util.Collections.enumeration(getContextParams().keySet());
     }
 
     /**
@@ -349,7 +348,7 @@ public class ServletUnitServletContext implements ServletContext {
 
     @Override
     public Enumeration<String> getAttributeNames() {
-        return _attributes.keys();
+        return java.util.Collections.enumeration(_attributes.keySet());
     }
 
     @Override
@@ -444,7 +443,7 @@ public class ServletUnitServletContext implements ServletContext {
     // ----------------------------------------------------
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The application. */
     private WebApplication _application;
@@ -454,7 +453,7 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return the context params
      */
-    private Hashtable getContextParams() {
+    private java.util.Map getContextParams() {
         return _application.getContextParameters();
     }
 

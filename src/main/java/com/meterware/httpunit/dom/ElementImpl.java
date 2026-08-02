@@ -3,12 +3,11 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit.dom;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.w3c.dom.Attr;
@@ -27,7 +26,7 @@ public class ElementImpl extends NamespaceAwareNodeImpl implements Element {
     private static final long serialVersionUID = 1L;
 
     /** The attributes. */
-    private Hashtable _attributes = new Hashtable<>();
+    private java.util.Map _attributes = new java.util.HashMap<>();
 
     /** The listeners. */
     private ArrayList _listeners = new ArrayList<>();

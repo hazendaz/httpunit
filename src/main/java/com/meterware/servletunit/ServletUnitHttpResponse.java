@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -49,7 +49,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private Locale _locale = Locale.getDefault();
 
     /** The Constant ENCODING_MAP. */
-    private static final Hashtable ENCODING_MAP = new Hashtable<>();
+    private static final java.util.Map ENCODING_MAP = new java.util.HashMap<>();
 
     /**
      * @deprecated Use encodeURL(String url)
@@ -611,7 +611,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
     private String _statusMessage = "OK";
 
     /** The headers. */
-    private final Hashtable _headers = new Hashtable<>();
+    private final java.util.Hashtable _headers = new com.meterware.httpunit.WebClient.HeaderDictionary();
 
     /** The headers complete. */
     private boolean _headersComplete;
@@ -688,7 +688,7 @@ class ServletUnitHttpResponse implements HttpServletResponse {
             values = (ArrayList) _headers.get(name.toUpperCase());
         }
         if (values == null) {
-            return Collections.emptyList();
+            return List.of();
         }
         return values;
     }

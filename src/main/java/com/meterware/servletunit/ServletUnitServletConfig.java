@@ -3,12 +3,11 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -28,7 +27,7 @@ class ServletUnitServletConfig implements ServletConfig {
      * @param initParams
      *            the init params
      */
-    ServletUnitServletConfig(String name, WebApplication application, Hashtable initParams) {
+    ServletUnitServletConfig(String name, WebApplication application, java.util.Map initParams) {
         _name = name;
         _initParameters = initParams;
         _context = application.getServletContext();
@@ -50,7 +49,7 @@ class ServletUnitServletConfig implements ServletConfig {
      **/
     @Override
     public Enumeration getInitParameterNames() {
-        return _initParameters.keys();
+        return java.util.Collections.enumeration(_initParameters.keySet());
     }
 
     /**
@@ -76,7 +75,7 @@ class ServletUnitServletConfig implements ServletConfig {
     private String _name;
 
     /** The init parameters. */
-    private final Hashtable _initParameters;
+    private final java.util.Map _initParameters;
 
     /** The context. */
     private final ServletContext _context;

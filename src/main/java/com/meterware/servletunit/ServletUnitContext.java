@@ -3,11 +3,10 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
-import java.util.Hashtable;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -111,7 +110,7 @@ class ServletUnitContext {
     // ------------------------------- private members ---------------------------
 
     /** The sessions. */
-    private Hashtable _sessions = new Hashtable<>();
+    private java.util.Map _sessions = new java.util.HashMap<>();
 
     /** The context path. */
     private String _contextPath = null;

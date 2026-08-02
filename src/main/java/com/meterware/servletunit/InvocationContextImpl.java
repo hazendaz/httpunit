@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
@@ -16,8 +16,9 @@ import com.meterware.httpunit.WebResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Dictionary;
-import java.util.Stack;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpSession;
 class InvocationContextImpl implements InvocationContext {
 
     /** The context stack. */
-    private Stack _contextStack = new Stack();
+    private final Deque _contextStack = new ArrayDeque();
 
     /** The effective URL. */
     private URL _effectiveURL;
@@ -124,7 +125,7 @@ class InvocationContextImpl implements InvocationContext {
         if (isFilterActive()) {
             throw new IllegalStateException("May not push an include request when no servlet is active");
         }
-        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createIncludeRequestWrapper(request, rd),
+        _contextStack.addLast(new ExecutionContext(DispatchedRequestWrapper.createIncludeRequestWrapper(request, rd),
                 response, ((RequestDispatcherImpl) rd).getServletMetaData()));
     }
 
@@ -134,7 +135,7 @@ class InvocationContextImpl implements InvocationContext {
         if (isFilterActive()) {
             throw new IllegalStateException("May not push a forward request when no servlet is active");
         }
-        _contextStack.push(new ExecutionContext(DispatchedRequestWrapper.createForwardRequestWrapper(request, rd),
+        _contextStack.addLast(new ExecutionContext(DispatchedRequestWrapper.createForwardRequestWrapper(request, rd),
                 response, ((RequestDispatcherImpl) rd).getServletMetaData()));
     }
 
@@ -145,7 +146,7 @@ class InvocationContextImpl implements InvocationContext {
         } else if (_contextStack.size() == 1) {
             throw new IllegalStateException("May not pop the initial request");
         } else {
-            _contextStack.pop();
+            _contextStack.removeLast();
         }
     }
 
@@ -236,7 +237,7 @@ class InvocationContextImpl implements InvocationContext {
         }
 
         _effectiveURL = computeEffectiveUrl(suhr, requestURL);
-        _contextStack.push(new ExecutionContext(suhr, new ServletUnitHttpResponse(),
+        _contextStack.addLast(new ExecutionContext(suhr, new ServletUnitHttpResponse(),
                 _application.getServletRequest(_effectiveURL)));
     }
 
@@ -303,7 +304,7 @@ class InvocationContextImpl implements InvocationContext {
         private ServletMetaData _metaData;
 
         /** The filter stack. */
-        private Stack _filterStack = new Stack();
+        private final Deque _filterStack = new ArrayDeque();
 
         /**
          * Instantiates a new execution context.
@@ -351,7 +352,7 @@ class InvocationContextImpl implements InvocationContext {
          * @return the response
          */
         HttpServletResponse getResponse() {
-            return _filterStack.isEmpty() ? _response : ((FilterContext) _filterStack.lastElement()).getResponse();
+            return _filterStack.isEmpty() ? _response : ((FilterContext) _filterStack.peekLast()).getResponse();
         }
 
         /**
@@ -360,7 +361,7 @@ class InvocationContextImpl implements InvocationContext {
          * @return the request
          */
         HttpServletRequest getRequest() {
-            return _filterStack.isEmpty() ? _request : ((FilterContext) _filterStack.lastElement()).getRequest();
+            return _filterStack.isEmpty() ? _request : ((FilterContext) _filterStack.peekLast()).getRequest();
         }
 
         /**
@@ -397,7 +398,7 @@ class InvocationContextImpl implements InvocationContext {
                 throw new IllegalArgumentException("HttpUnit does not support non-HTTP response wrappers");
             }
 
-            _filterStack.push(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));
+            _filterStack.addLast(new FilterContext((HttpServletRequest) request, (HttpServletResponse) response));
         }
 
         /**
@@ -413,7 +414,7 @@ class InvocationContextImpl implements InvocationContext {
          * Pop filter.
          */
         public void popFilter() {
-            _filterStack.pop();
+            _filterStack.removeLast();
         }
 
         /**
@@ -475,6 +476,6 @@ class InvocationContextImpl implements InvocationContext {
      * @return the context
      */
     private ExecutionContext getContext() {
-        return (ExecutionContext) _contextStack.lastElement();
+        return (ExecutionContext) _contextStack.peekLast();
     }
 }

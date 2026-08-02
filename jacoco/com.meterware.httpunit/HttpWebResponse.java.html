@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -233,7 +233,7 @@ class HttpWebResponse extends WebResponse {
 <span class="fc" id="L233">    }</span>
 
     /** The headers. */
-<span class="fc" id="L236">    private Hashtable _headers = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L236">    private Hashtable _headers = new WebClient.HeaderDictionary();</span>
 
     /**
      * read the response Header for the given connection and set the response code and message accordingly.

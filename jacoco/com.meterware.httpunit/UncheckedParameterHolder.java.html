@@ -3,7 +3,7 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit;
 
@@ -12,7 +12,6 @@ import com.meterware.httpunit.protocol.UploadFileSpec;
 
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The Class UncheckedParameterHolder.
@@ -20,13 +19,13 @@ import java.util.Hashtable;
 final class UncheckedParameterHolder extends ParameterHolder implements ParameterProcessor {
 
     /** The Constant NO_VALUES. */
-<span class="fc" id="L23">    private static final String[] NO_VALUES = {};</span>
+<span class="fc" id="L22">    private static final String[] NO_VALUES = {};</span>
 
     /** The character set. */
     private final String _characterSet;
 
     /** The parameters. */
-<span class="fc" id="L29">    private Hashtable _parameters = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L28">    private java.util.Map _parameters = new java.util.LinkedHashMap&lt;&gt;();</span>
 
     /** The submit as mime. */
     private boolean _submitAsMime;
@@ -34,9 +33,9 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
     /**
      * Instantiates a new unchecked parameter holder.
      */
-<span class="fc" id="L37">    UncheckedParameterHolder() {</span>
-<span class="fc" id="L38">        _characterSet = HttpUnitOptions.getDefaultCharacterSet();</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L36">    UncheckedParameterHolder() {</span>
+<span class="fc" id="L37">        _characterSet = HttpUnitOptions.getDefaultCharacterSet();</span>
+<span class="fc" id="L38">    }</span>
 
     /**
      * Instantiates a new unchecked parameter holder.
@@ -44,32 +43,32 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      * @param source
      *            the source
      */
-<span class="fc" id="L47">    UncheckedParameterHolder(WebRequestSource source) {</span>
-<span class="fc" id="L48">        _characterSet = source.getCharacterSet();</span>
-<span class="fc" id="L49">        _submitAsMime = source.isSubmitAsMime();</span>
+<span class="fc" id="L46">    UncheckedParameterHolder(WebRequestSource source) {</span>
+<span class="fc" id="L47">        _characterSet = source.getCharacterSet();</span>
+<span class="fc" id="L48">        _submitAsMime = source.isSubmitAsMime();</span>
 
         try {
-<span class="fc" id="L52">            source.recordPredefinedParameters(this);</span>
-<span class="fc" id="L53">            source.recordParameters(this);</span>
-<span class="nc" id="L54">        } catch (IOException e) {</span>
-<span class="nc" id="L55">            throw new RuntimeException(&quot;This should never happen&quot;);</span>
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L51">            source.recordPredefinedParameters(this);</span>
+<span class="fc" id="L52">            source.recordParameters(this);</span>
+<span class="nc" id="L53">        } catch (IOException e) {</span>
+<span class="nc" id="L54">            throw new RuntimeException(&quot;This should never happen&quot;);</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
 
     // ----------------------------------- ParameterProcessor methods
     // -------------------------------------------------------
 
     @Override
     public void addParameter(String name, String value, String characterSet) throws IOException {
-<span class="fc" id="L64">        Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="fc" id="L65">        _parameters.put(name, HttpUnitUtils.withNewValue(values, value));</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L63">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc" id="L64">        _parameters.put(name, HttpUnitUtils.withNewValue(values, value));</span>
+<span class="fc" id="L65">    }</span>
 
     @Override
     public void addFile(String parameterName, UploadFileSpec fileSpec) throws IOException {
-<span class="fc" id="L70">        Object[] values = (Object[]) _parameters.get(parameterName);</span>
-<span class="fc" id="L71">        _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L69">        Object[] values = (Object[]) _parameters.get(parameterName);</span>
+<span class="fc" id="L70">        _parameters.put(parameterName, HttpUnitUtils.withNewValue(values, fileSpec));</span>
+<span class="fc" id="L71">    }</span>
 
     // ----------------------------------- ParameterHolder methods
     // ----------------------------------------------------------
@@ -79,42 +78,46 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      **/
     @Override
     void selectImageButtonPosition(SubmitButton imageButton, int x, int y) {
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (imageButton.isValidImageButton()) {</span>
-<span class="fc" id="L83">            setParameter(imageButton.positionParameterName(&quot;x&quot;), Integer.toString(x));</span>
-<span class="fc" id="L84">            setParameter(imageButton.positionParameterName(&quot;y&quot;), Integer.toString(y));</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (imageButton.isValidImageButton()) {</span>
+<span class="fc" id="L82">            setParameter(imageButton.positionParameterName(&quot;x&quot;), Integer.toString(x));</span>
+<span class="fc" id="L83">            setParameter(imageButton.positionParameterName(&quot;y&quot;), Integer.toString(y));</span>
         }
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L85">    }</span>
 
     /**
      * Does nothing, since unchecked requests treat all parameters the same.
      **/
     @Override
     void recordPredefinedParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L92">    }</span>
 
     /**
      * Iterates through the parameters in this holder, recording them in the supplied parameter processor.
      **/
     @Override
     public void recordParameters(ParameterProcessor processor) throws IOException {
-<span class="fc" id="L100">        Enumeration e = _parameters.keys();</span>
+<span class="fc" id="L99">        Enumeration e = asLegacyKeyEnumeration();</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        while (e.hasMoreElements()) {</span>
-<span class="fc" id="L103">            String name = (String) e.nextElement();</span>
-<span class="fc" id="L104">            Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="fc bfc" id="L105" title="All 2 branches covered.">            for (Object value : values) {</span>
-<span class="fc bfc" id="L106" title="All 4 branches covered.">                if (value instanceof String || value == null) {</span>
-<span class="fc" id="L107">                    processor.addParameter(name, (String) value, _characterSet);</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">                } else if (value instanceof UploadFileSpec) {</span>
-<span class="fc" id="L109">                    processor.addFile(name, (UploadFileSpec) value);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        while (e.hasMoreElements()) {</span>
+<span class="fc" id="L102">            String name = (String) e.nextElement();</span>
+<span class="fc" id="L103">            Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            for (Object value : values) {</span>
+<span class="fc bfc" id="L105" title="All 4 branches covered.">                if (value instanceof String || value == null) {</span>
+<span class="fc" id="L106">                    processor.addParameter(name, (String) value, _characterSet);</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                } else if (value instanceof UploadFileSpec) {</span>
+<span class="fc" id="L108">                    processor.addFile(name, (UploadFileSpec) value);</span>
                 }
             }
-<span class="fc" id="L112">        }</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L111">        }</span>
+<span class="fc" id="L112">    }</span>
 
     @Override
     String[] getParameterNames() {
-<span class="nc" id="L117">        return (String[]) _parameters.keySet().toArray(new String[_parameters.size()]);</span>
+<span class="nc" id="L116">        java.util.ArrayList parameterNames = new java.util.ArrayList();</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (Enumeration e = asLegacyKeyEnumeration(); e.hasMoreElements();) {</span>
+<span class="nc" id="L118">            parameterNames.add(e.nextElement());</span>
+        }
+<span class="nc" id="L120">        return (String[]) parameterNames.toArray(new String[parameterNames.size()]);</span>
     }
 
     /**
@@ -126,58 +129,116 @@ final class UncheckedParameterHolder extends ParameterHolder implements Paramete
      * @return the parameter value
      */
     String getParameterValue(String name) {
-<span class="nc" id="L129">        String[] values = getParameterValues(name);</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        return values.length == 0 ? null : values[0];</span>
+<span class="nc" id="L132">        String[] values = getParameterValues(name);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        return values.length == 0 ? null : values[0];</span>
     }
 
     @Override
     String[] getParameterValues(String name) {
-<span class="fc" id="L135">        Object[] values = (Object[]) _parameters.get(name);</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (values == null) {</span>
-<span class="nc" id="L137">            return NO_VALUES;</span>
+<span class="fc" id="L138">        Object[] values = (Object[]) _parameters.get(name);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (values == null) {</span>
+<span class="nc" id="L140">            return NO_VALUES;</span>
         }
 
-<span class="fc" id="L140">        String[] result = new String[values.length];</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">            result[i] = values[i] instanceof UploadFileSpec ? ((UploadFileSpec) values[i]).getFileName()</span>
-<span class="fc" id="L143">                    : values[i].toString();</span>
+<span class="fc" id="L143">        String[] result = new String[values.length];</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        for (int i = 0; i &lt; result.length; i++) {</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            result[i] = values[i] instanceof UploadFileSpec ? ((UploadFileSpec) values[i]).getFileName()</span>
+<span class="fc" id="L146">                    : values[i].toString();</span>
         }
-<span class="fc" id="L145">        return result;</span>
+<span class="fc" id="L148">        return result;</span>
     }
 
     @Override
     void removeParameter(String name) {
-<span class="nc" id="L150">        _parameters.remove(name);</span>
-<span class="nc" id="L151">    }</span>
+<span class="nc" id="L153">        _parameters.remove(name);</span>
+<span class="nc" id="L154">    }</span>
 
     @Override
     void setParameter(String name, String value) {
-<span class="fc" id="L155">        _parameters.put(name, new Object[] { value });</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L158">        _parameters.put(name, new Object[] { value });</span>
+<span class="fc" id="L159">    }</span>
 
     @Override
     void setParameter(String name, String[] values) {
-<span class="fc" id="L160">        _parameters.put(name, values);</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L163">        _parameters.put(name, values);</span>
+<span class="fc" id="L164">    }</span>
 
     @Override
     void setParameter(String name, UploadFileSpec[] files) {
-<span class="fc" id="L165">        _parameters.put(name, files);</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L168">        _parameters.put(name, files);</span>
+<span class="fc" id="L169">    }</span>
 
     @Override
     boolean isFileParameter(String name) {
-<span class="fc" id="L170">        return true;</span>
+<span class="fc" id="L173">        return true;</span>
+    }
+
+    /**
+     * Returns parameter names using the same iteration order as the previous Hashtable-based implementation.
+     *
+     * @return the key enumeration
+     */
+    private Enumeration asLegacyKeyEnumeration() {
+<span class="fc" id="L182">        java.util.List keys = new java.util.ArrayList(_parameters.keySet());</span>
+<span class="fc" id="L183">        java.util.Map insertionOrder = new java.util.HashMap();</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (int i = 0; i &lt; keys.size(); i++) {</span>
+<span class="fc" id="L185">            insertionOrder.put(keys.get(i), Integer.valueOf(i));</span>
+        }
+<span class="fc" id="L187">        final int capacity = getLegacyHashtableCapacity(keys.size());</span>
+<span class="fc" id="L188">        keys.sort((left, right) -&gt; {</span>
+<span class="fc" id="L189">            final int leftBucket = getLegacyBucket(left, capacity);</span>
+<span class="fc" id="L190">            final int rightBucket = getLegacyBucket(right, capacity);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (leftBucket != rightBucket) {</span>
+<span class="fc" id="L192">                return Integer.compare(rightBucket, leftBucket);</span>
+            }
+<span class="fc" id="L194">            return Integer.compare(((Integer) insertionOrder.get(right)).intValue(),</span>
+<span class="fc" id="L195">                    ((Integer) insertionOrder.get(left)).intValue());</span>
+        });
+<span class="fc" id="L197">        return java.util.Collections.enumeration(keys);</span>
+    }
+
+    /**
+     * Gets the legacy hashtable capacity.
+     *
+     * @param size
+     *            the size
+     *
+     * @return the legacy hashtable capacity
+     */
+    private int getLegacyHashtableCapacity(int size) {
+<span class="fc" id="L209">        int capacity = 11;</span>
+<span class="fc" id="L210">        int threshold = (int) (capacity * 0.75f);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (i &gt;= threshold) {</span>
+<span class="nc" id="L213">                capacity = capacity * 2 + 1;</span>
+<span class="nc" id="L214">                threshold = (int) (capacity * 0.75f);</span>
+            }
+        }
+<span class="fc" id="L217">        return capacity;</span>
+    }
+
+    /**
+     * Gets the legacy bucket.
+     *
+     * @param key
+     *            the key
+     * @param capacity
+     *            the capacity
+     *
+     * @return the legacy bucket
+     */
+    private int getLegacyBucket(Object key, int capacity) {
+<span class="fc" id="L231">        return (key.hashCode() &amp; Integer.MAX_VALUE) % capacity;</span>
     }
 
     @Override
     String getCharacterSet() {
-<span class="fc" id="L175">        return _characterSet;</span>
+<span class="fc" id="L236">        return _characterSet;</span>
     }
 
     @Override
     boolean isSubmitAsMime() {
-<span class="fc" id="L180">        return _submitAsMime;</span>
+<span class="fc" id="L241">        return _submitAsMime;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

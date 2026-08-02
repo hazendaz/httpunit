@@ -3,9 +3,13 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
+
+import jakarta.servlet.*;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,25 +18,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
-import javax.servlet.descriptor.JspConfigDescriptor;
 
 /**
  * This class is a private implementation of the ServletContext class.
@@ -40,7 +29,7 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 public class ServletUnitServletContext implements ServletContext {
 
     /** The log stream. */
-<span class="fc" id="L43">    private PrintStream _logStream = System.out;</span>
+<span class="fc" id="L32">    private PrintStream _logStream = System.out;</span>
 
     /**
      * Instantiates a new servlet unit servlet context.
@@ -48,9 +37,9 @@ public class ServletUnitServletContext implements ServletContext {
      * @param application
      *            the application
      */
-<span class="fc" id="L51">    ServletUnitServletContext(WebApplication application) {</span>
-<span class="fc" id="L52">        _application = application;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L40">    ServletUnitServletContext(WebApplication application) {</span>
+<span class="fc" id="L41">        _application = application;</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Returns a ServletContext object that corresponds to a specified URL on the server.
@@ -62,8 +51,8 @@ public class ServletUnitServletContext implements ServletContext {
      * In a security conscious environment, the servlet container may return null for a given URL.
      **/
     @Override
-    public javax.servlet.ServletContext getContext(java.lang.String A) {
-<span class="nc" id="L66">        return null;</span>
+    public jakarta.servlet.ServletContext getContext(java.lang.String A) {
+<span class="nc" id="L55">        return null;</span>
     }
 
     /**
@@ -72,7 +61,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public int getMajorVersion() {
-<span class="nc" id="L75">        return 4;</span>
+<span class="nc" id="L64">        return 4;</span>
     }
 
     /**
@@ -81,7 +70,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public int getMinorVersion() {
-<span class="nc" id="L84">        return 0;</span>
+<span class="nc" id="L73">        return 0;</span>
     }
 
     /**
@@ -91,7 +80,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public java.lang.String getMimeType(String filePath) {
-<span class="fc" id="L94">        return URLConnection.getFileNameMap().getContentTypeFor(filePath);</span>
+<span class="fc" id="L83">        return URLConnection.getFileNameMap().getContentTypeFor(filePath);</span>
     }
 
     /**
@@ -113,10 +102,10 @@ public class ServletUnitServletContext implements ServletContext {
     @Override
     public java.net.URL getResource(String path) {
         try {
-<span class="fc" id="L116">            File resourceFile = _application.getResourceFile(path);</span>
-<span class="pc bpc" id="L117" title="1 of 4 branches missed.">            return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();</span>
-<span class="nc" id="L118">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L119">            return null;</span>
+<span class="fc" id="L105">            File resourceFile = _application.getResourceFile(path);</span>
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">            return resourceFile == null || !resourceFile.exists() ? null : resourceFile.toURI().toURL();</span>
+<span class="nc" id="L107">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L108">            return null;</span>
         }
     }
 
@@ -132,10 +121,10 @@ public class ServletUnitServletContext implements ServletContext {
     @Override
     public java.io.InputStream getResourceAsStream(String path) {
         try {
-<span class="fc" id="L135">            File resourceFile = _application.getResourceFile(path);</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            return resourceFile == null ? null : Files.newInputStream(resourceFile.toPath());</span>
-<span class="fc" id="L137">        } catch (IOException e) {</span>
-<span class="fc" id="L138">            return null;</span>
+<span class="fc" id="L124">            File resourceFile = _application.getResourceFile(path);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">            return resourceFile == null ? null : Files.newInputStream(resourceFile.toPath());</span>
+<span class="fc" id="L126">        } catch (IOException e) {</span>
+<span class="fc" id="L127">            return null;</span>
         }
     }
 
@@ -147,12 +136,12 @@ public class ServletUnitServletContext implements ServletContext {
      * contexts. This method returns null if the ServletContext cannot return a RequestDispatcher.
      **/
     @Override
-    public javax.servlet.RequestDispatcher getRequestDispatcher(String path) {
+    public jakarta.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
-<span class="fc" id="L152">            URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, _application.getContextPath() + path);</span>
-<span class="fc" id="L153">            return new RequestDispatcherImpl(_application, url);</span>
-<span class="nc" id="L154">        } catch (ServletException | MalformedURLException e) {</span>
-<span class="nc" id="L155">            return null;</span>
+<span class="fc" id="L141">            URL url = new URL(&quot;http&quot;, &quot;localhost&quot;, _application.getContextPath() + path);</span>
+<span class="fc" id="L142">            return new RequestDispatcherImpl(_application, url);</span>
+<span class="nc" id="L143">        } catch (ServletException | MalformedURLException e) {</span>
+<span class="nc" id="L144">            return null;</span>
         }
     }
 
@@ -166,96 +155,69 @@ public class ServletUnitServletContext implements ServletContext {
      *            - the name of the dispatcher to get
      **/
     @Override
-    public javax.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
-<span class="fc" id="L170">        final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (servletConfig == null) {</span>
-<span class="fc" id="L172">            return null;</span>
+    public jakarta.servlet.RequestDispatcher getNamedDispatcher(java.lang.String servletName) {
+<span class="fc" id="L159">        final WebApplication.ServletConfiguration servletConfig = _application.getServletByName(servletName);</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if (servletConfig == null) {</span>
+<span class="fc" id="L161">            return null;</span>
         }
 
         Servlet tempServlet;
         Exception tempException;
 
         try {
-<span class="nc" id="L179">            tempServlet = servletConfig.getServlet();</span>
-<span class="nc" id="L180">            tempException = null;</span>
-<span class="nc" id="L181">        } catch (Exception e) {</span>
-<span class="nc" id="L182">            tempServlet = null;</span>
-<span class="nc" id="L183">            tempException = e;</span>
-<span class="nc" id="L184">        }</span>
+<span class="nc" id="L168">            tempServlet = servletConfig.getServlet();</span>
+<span class="nc" id="L169">            tempException = null;</span>
+<span class="nc" id="L170">        } catch (Exception e) {</span>
+<span class="nc" id="L171">            tempServlet = null;</span>
+<span class="nc" id="L172">            tempException = e;</span>
+<span class="nc" id="L173">        }</span>
 
-<span class="nc" id="L186">        final Servlet servlet = tempServlet;</span>
+<span class="nc" id="L175">        final Servlet servlet = tempServlet;</span>
 
-<span class="nc" id="L188">        final Exception instantiationException = tempException;</span>
+<span class="nc" id="L177">        final Exception instantiationException = tempException;</span>
 
-<span class="nc" id="L190">        return new javax.servlet.RequestDispatcher() {</span>
+<span class="nc" id="L179">        return new jakarta.servlet.RequestDispatcher() {</span>
 
             @Override
             public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">                if (instantiationException != null) {</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                if (instantiationException != null) {</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
-<span class="nc" id="L198">                        throw (ServletException) instantiationException;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
+<span class="nc" id="L187">                        throw (ServletException) instantiationException;</span>
 
                     }
-<span class="nc" id="L201">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
+<span class="nc" id="L190">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
 
-<span class="nc" id="L203">                    e.initCause(instantiationException);</span>
+<span class="nc" id="L192">                    e.initCause(instantiationException);</span>
 
-<span class="nc" id="L205">                    throw e;</span>
+<span class="nc" id="L194">                    throw e;</span>
 
                 }
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
-<span class="nc" id="L210">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
+<span class="nc" id="L199">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
                 }
-<span class="nc" id="L212">                response.reset();</span>
-<span class="nc" id="L213">                servlet.service(request, response);</span>
-<span class="nc" id="L214">            }</span>
+<span class="nc" id="L201">                response.reset();</span>
+<span class="nc" id="L202">                servlet.service(request, response);</span>
+<span class="nc" id="L203">            }</span>
 
             @Override
             public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                if (instantiationException != null) {</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
-<span class="nc" id="L220">                        throw (ServletException) instantiationException;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                if (instantiationException != null) {</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">                    if (instantiationException instanceof ServletException) {</span>
+<span class="nc" id="L209">                        throw (ServletException) instantiationException;</span>
                     }
-<span class="nc" id="L222">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
-<span class="nc" id="L223">                    e.initCause(instantiationException);</span>
-<span class="nc" id="L224">                    throw e;</span>
+<span class="nc" id="L211">                    ServletException e = new ServletException(instantiationException.getMessage());</span>
+<span class="nc" id="L212">                    e.initCause(instantiationException);</span>
+<span class="nc" id="L213">                    throw e;</span>
                 }
-<span class="nc bnc" id="L226" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
-<span class="nc" id="L227">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                if (servletConfig.getJspFile() != null) {</span>
+<span class="nc" id="L216">                    request.setAttribute(&quot;org.apache.catalina.jsp_file&quot;, servletConfig.getJspFile());</span>
                 }
-<span class="nc" id="L229">                servlet.service(request, response);</span>
-<span class="nc" id="L230">            }</span>
+<span class="nc" id="L218">                servlet.service(request, response);</span>
+<span class="nc" id="L219">            }</span>
         };
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    @Deprecated
-    @Override
-    public javax.servlet.Servlet getServlet(java.lang.String A) {
-<span class="nc" id="L240">        return null;</span>
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.0
-     **/
-    @Deprecated
-    @Override
-    public Enumeration&lt;Servlet&gt; getServlets() {
-<span class="nc" id="L249">        return Collections.emptyEnumeration();</span>
-    }
-
-    /**
-     * @deprecated as of Servlet API 2.1
-     **/
-    @Deprecated
-    @Override
-    public Enumeration&lt;String&gt; getServletNames() {
-<span class="nc" id="L258">        return Collections.emptyEnumeration();</span>
     }
 
     /**
@@ -264,17 +226,8 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public void log(String message) {
-<span class="nc" id="L267">        _logStream.println(message);</span>
-<span class="nc" id="L268">    }</span>
-
-    /**
-     * @deprecated use log( String, Throwable )
-     **/
-    @Deprecated
-    @Override
-    public void log(Exception e, String message) {
-<span class="nc" id="L276">        log(message, e);</span>
-<span class="nc" id="L277">    }</span>
+<span class="nc" id="L229">        _logStream.println(message);</span>
+<span class="nc" id="L230">    }</span>
 
     /**
      * Writes an explanatory message and a stack trace for a given Throwable exception to the servlet log file. The name
@@ -282,12 +235,12 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public void log(String message, Throwable t) {
-<span class="nc" id="L285">        _logStream.print(message);</span>
-<span class="nc" id="L286">        _logStream.print(&quot;:&quot;);</span>
-<span class="nc bnc" id="L287" title="All 2 branches missed.">        if (t != null) {</span>
-<span class="nc" id="L288">            t.printStackTrace(_logStream);</span>
+<span class="nc" id="L238">        _logStream.print(message);</span>
+<span class="nc" id="L239">        _logStream.print(&quot;:&quot;);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        if (t != null) {</span>
+<span class="nc" id="L241">            t.printStackTrace(_logStream);</span>
         }
-<span class="nc" id="L290">    }</span>
+<span class="nc" id="L243">    }</span>
 
     /**
      * Returns a String containing the real path for a given virtual path. For example, the virtual path &quot;/index.html&quot;
@@ -299,7 +252,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public String getRealPath(String path) {
-<span class="fc" id="L302">        return _application.getResourceFile(path).getAbsolutePath();</span>
+<span class="fc" id="L255">        return _application.getResourceFile(path).getAbsolutePath();</span>
     }
 
     /** The Constant DEFAULT_SERVER_INFO. */
@@ -313,7 +266,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public String getServerInfo() {
-<span class="nc" id="L316">        return DEFAULT_SERVER_INFO;</span>
+<span class="nc" id="L269">        return DEFAULT_SERVER_INFO;</span>
     }
 
     /**
@@ -324,7 +277,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public String getInitParameter(String name) {
-<span class="fc" id="L327">        return (String) getContextParams().get(name);</span>
+<span class="fc" id="L280">        return (String) getContextParams().get(name);</span>
     }
 
     /**
@@ -333,7 +286,7 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public Enumeration&lt;String&gt; getInitParameterNames() {
-<span class="nc" id="L336">        return getContextParams().keys();</span>
+<span class="nc" id="L289">        return java.util.Collections.enumeration(getContextParams().keySet());</span>
     }
 
     /**
@@ -344,32 +297,32 @@ public class ServletUnitServletContext implements ServletContext {
      **/
     @Override
     public Object getAttribute(String name) {
-<span class="fc" id="L347">        return _attributes.get(name);</span>
+<span class="fc" id="L300">        return _attributes.get(name);</span>
     }
 
     @Override
     public Enumeration&lt;String&gt; getAttributeNames() {
-<span class="nc" id="L352">        return _attributes.keys();</span>
+<span class="nc" id="L305">        return java.util.Collections.enumeration(_attributes.keySet());</span>
     }
 
     @Override
     public void setAttribute(String name, Object attribute) {
-<span class="fc bfc" id="L357" title="All 2 branches covered.">        if (!_attributes.containsKey(name)) {</span>
-<span class="fc" id="L358">            _attributes.put(name, attribute);</span>
-<span class="fc" id="L359">            _application.sendAttributeAdded(name, attribute);</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (!_attributes.containsKey(name)) {</span>
+<span class="fc" id="L311">            _attributes.put(name, attribute);</span>
+<span class="fc" id="L312">            _application.sendAttributeAdded(name, attribute);</span>
         } else {
-<span class="fc" id="L361">            Object oldValue = _attributes.get(name);</span>
-<span class="fc" id="L362">            _attributes.put(name, attribute);</span>
-<span class="fc" id="L363">            _application.sendAttributeReplaced(name, oldValue);</span>
+<span class="fc" id="L314">            Object oldValue = _attributes.get(name);</span>
+<span class="fc" id="L315">            _attributes.put(name, attribute);</span>
+<span class="fc" id="L316">            _application.sendAttributeReplaced(name, oldValue);</span>
         }
-<span class="fc" id="L365">    }</span>
+<span class="fc" id="L318">    }</span>
 
     @Override
     public void removeAttribute(String name) {
-<span class="fc" id="L369">        Object oldValue = _attributes.get(name);</span>
-<span class="fc" id="L370">        _attributes.remove(name);</span>
-<span class="fc" id="L371">        _application.sendAttributeRemoved(name, oldValue);</span>
-<span class="fc" id="L372">    }</span>
+<span class="fc" id="L322">        Object oldValue = _attributes.get(name);</span>
+<span class="fc" id="L323">        _attributes.remove(name);</span>
+<span class="fc" id="L324">        _application.sendAttributeRemoved(name, oldValue);</span>
+<span class="fc" id="L325">    }</span>
 
     // ----------------------------- methods added to ServletContext in JSDK 2.3
     // --------------------------------------
@@ -393,7 +346,7 @@ public class ServletUnitServletContext implements ServletContext {
      */
     @Override
     public Set&lt;String&gt; getResourcePaths(String path) {
-<span class="nc" id="L396">        return null;</span>
+<span class="nc" id="L349">        return null;</span>
     }
 
     /**
@@ -404,7 +357,7 @@ public class ServletUnitServletContext implements ServletContext {
      */
     @Override
     public String getServletContextName() {
-<span class="fc" id="L407">        return _application.getDisplayName();</span>
+<span class="fc" id="L360">        return _application.getDisplayName();</span>
     }
 
     // -------------------------------------- servlet-api 2.5 additions
@@ -412,7 +365,7 @@ public class ServletUnitServletContext implements ServletContext {
 
     @Override
     public String getContextPath() {
-<span class="nc" id="L415">        return null;</span>
+<span class="nc" id="L368">        return null;</span>
     }
 
     // ------------------------------------------- package members
@@ -427,8 +380,8 @@ public class ServletUnitServletContext implements ServletContext {
      *            the init parameter
      */
     void setInitParameter(String name, Object initParameter) {
-<span class="nc" id="L430">        getContextParams().put(name, initParameter);</span>
-<span class="nc" id="L431">    }</span>
+<span class="nc" id="L383">        getContextParams().put(name, initParameter);</span>
+<span class="nc" id="L384">    }</span>
 
     /**
      * Removes the init parameter.
@@ -437,14 +390,14 @@ public class ServletUnitServletContext implements ServletContext {
      *            the name
      */
     void removeInitParameter(String name) {
-<span class="nc" id="L440">        getContextParams().remove(name);</span>
-<span class="nc" id="L441">    }</span>
+<span class="nc" id="L393">        getContextParams().remove(name);</span>
+<span class="nc" id="L394">    }</span>
 
     // ------------------------------------------- private members
     // ----------------------------------------------------
 
     /** The attributes. */
-<span class="fc" id="L447">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L400">    private java.util.Map _attributes = new java.util.HashMap&lt;&gt;();</span>
 
     /** The application. */
     private WebApplication _application;
@@ -454,8 +407,8 @@ public class ServletUnitServletContext implements ServletContext {
      *
      * @return the context params
      */
-    private Hashtable getContextParams() {
-<span class="fc" id="L458">        return _application.getContextParameters();</span>
+    private java.util.Map getContextParams() {
+<span class="fc" id="L411">        return _application.getContextParameters();</span>
     }
 
     /**
@@ -467,180 +420,180 @@ public class ServletUnitServletContext implements ServletContext {
      * @see #log(String)
      */
     public void setLogStream(PrintStream logStream) {
-<span class="nc" id="L470">        this._logStream = logStream;</span>
-<span class="nc" id="L471">    }</span>
+<span class="nc" id="L423">        this._logStream = logStream;</span>
+<span class="nc" id="L424">    }</span>
 
     @Override
     public int getEffectiveMajorVersion() {
         // TODO Auto-generated method stub
-<span class="nc" id="L476">        return 0;</span>
+<span class="nc" id="L429">        return 0;</span>
     }
 
     @Override
     public int getEffectiveMinorVersion() {
         // TODO Auto-generated method stub
-<span class="nc" id="L482">        return 0;</span>
+<span class="nc" id="L435">        return 0;</span>
     }
 
     @Override
     public boolean setInitParameter(String name, String value) {
-<span class="nc" id="L487">        getContextParams().put(name, value);</span>
-<span class="nc" id="L488">        return true;</span>
+<span class="nc" id="L440">        getContextParams().put(name, value);</span>
+<span class="nc" id="L441">        return true;</span>
     }
 
     @Override
     public Dynamic addServlet(String servletName, String className) {
-<span class="nc" id="L493">        return null;</span>
+<span class="nc" id="L446">        return null;</span>
     }
 
     @Override
     public Dynamic addServlet(String servletName, Servlet servlet) {
-<span class="nc" id="L498">        return null;</span>
+<span class="nc" id="L451">        return null;</span>
     }
 
     @Override
     public Dynamic addServlet(String servletName, Class&lt;? extends Servlet&gt; servletClass) {
-<span class="nc" id="L503">        return null;</span>
+<span class="nc" id="L456">        return null;</span>
     }
 
     @Override
     public &lt;T extends Servlet&gt; T createServlet(Class&lt;T&gt; clazz) throws ServletException {
-<span class="nc" id="L508">        return null;</span>
+<span class="nc" id="L461">        return null;</span>
     }
 
     @Override
     public ServletRegistration getServletRegistration(String servletName) {
-<span class="nc" id="L513">        return null;</span>
+<span class="nc" id="L466">        return null;</span>
     }
 
     @Override
     public Map&lt;String, ? extends ServletRegistration&gt; getServletRegistrations() {
-<span class="nc" id="L518">        return null;</span>
+<span class="nc" id="L471">        return null;</span>
     }
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, String className) {
-<span class="nc" id="L523">        return null;</span>
+<span class="nc" id="L476">        return null;</span>
     }
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
-<span class="nc" id="L528">        return null;</span>
+<span class="nc" id="L481">        return null;</span>
     }
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Class&lt;? extends Filter&gt; filterClass) {
-<span class="nc" id="L533">        return null;</span>
+<span class="nc" id="L486">        return null;</span>
     }
 
     @Override
     public &lt;T extends Filter&gt; T createFilter(Class&lt;T&gt; clazz) throws ServletException {
-<span class="nc" id="L538">        return null;</span>
+<span class="nc" id="L491">        return null;</span>
     }
 
     @Override
     public FilterRegistration getFilterRegistration(String filterName) {
-<span class="nc" id="L543">        return null;</span>
+<span class="nc" id="L496">        return null;</span>
     }
 
     @Override
     public Map&lt;String, ? extends FilterRegistration&gt; getFilterRegistrations() {
-<span class="nc" id="L548">        return null;</span>
+<span class="nc" id="L501">        return null;</span>
     }
 
     @Override
     public SessionCookieConfig getSessionCookieConfig() {
-<span class="nc" id="L553">        return null;</span>
+<span class="nc" id="L506">        return null;</span>
     }
 
     @Override
     public void setSessionTrackingModes(Set&lt;SessionTrackingMode&gt; sessionTrackingModes) {
 
-<span class="nc" id="L559">    }</span>
+<span class="nc" id="L512">    }</span>
 
     @Override
     public Set&lt;SessionTrackingMode&gt; getDefaultSessionTrackingModes() {
-<span class="nc" id="L563">        return null;</span>
+<span class="nc" id="L516">        return null;</span>
     }
 
     @Override
     public Set&lt;SessionTrackingMode&gt; getEffectiveSessionTrackingModes() {
-<span class="nc" id="L568">        return null;</span>
+<span class="nc" id="L521">        return null;</span>
     }
 
     @Override
     public void addListener(String className) {
 
-<span class="nc" id="L574">    }</span>
+<span class="nc" id="L527">    }</span>
 
     @Override
     public &lt;T extends EventListener&gt; void addListener(T t) {
 
-<span class="nc" id="L579">    }</span>
+<span class="nc" id="L532">    }</span>
 
     @Override
     public void addListener(Class&lt;? extends EventListener&gt; listenerClass) {
 
-<span class="nc" id="L584">    }</span>
+<span class="nc" id="L537">    }</span>
 
     @Override
     public &lt;T extends EventListener&gt; T createListener(Class&lt;T&gt; clazz) throws ServletException {
-<span class="nc" id="L588">        return null;</span>
+<span class="nc" id="L541">        return null;</span>
     }
 
     @Override
     public JspConfigDescriptor getJspConfigDescriptor() {
-<span class="nc" id="L593">        return null;</span>
+<span class="nc" id="L546">        return null;</span>
     }
 
     @Override
     public ClassLoader getClassLoader() {
-<span class="nc" id="L598">        return ServletUnitServletContext.class.getClassLoader();</span>
+<span class="nc" id="L551">        return ServletUnitServletContext.class.getClassLoader();</span>
     }
 
     @Override
     public void declareRoles(String... roleNames) {
 
-<span class="nc" id="L604">    }</span>
+<span class="nc" id="L557">    }</span>
 
     @Override
     public String getVirtualServerName() {
-<span class="nc" id="L608">        return null;</span>
+<span class="nc" id="L561">        return null;</span>
     }
 
     @Override
     public Dynamic addJspFile(String servletName, String jspFile) {
-<span class="nc" id="L613">        return null;</span>
+<span class="nc" id="L566">        return null;</span>
     }
 
     @Override
     public int getSessionTimeout() {
-<span class="nc" id="L618">        return 0;</span>
+<span class="nc" id="L571">        return 0;</span>
     }
 
     @Override
     public void setSessionTimeout(int sessionTimeout) {
 
-<span class="nc" id="L624">    }</span>
+<span class="nc" id="L577">    }</span>
 
     @Override
     public String getRequestCharacterEncoding() {
-<span class="nc" id="L628">        return null;</span>
+<span class="nc" id="L581">        return null;</span>
     }
 
     @Override
     public void setRequestCharacterEncoding(String encoding) {
 
-<span class="nc" id="L634">    }</span>
+<span class="nc" id="L587">    }</span>
 
     @Override
     public String getResponseCharacterEncoding() {
-<span class="nc" id="L638">        return null;</span>
+<span class="nc" id="L591">        return null;</span>
     }
 
     @Override
     public void setResponseCharacterEncoding(String encoding) {
 
-<span class="nc" id="L644">    }</span>
+<span class="nc" id="L597">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

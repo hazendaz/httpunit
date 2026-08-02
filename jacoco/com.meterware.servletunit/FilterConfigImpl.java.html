@@ -3,15 +3,14 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
+import java.util.Enumeration;
 
 /**
  * The Class FilterConfigImpl.
@@ -25,7 +24,7 @@ class FilterConfigImpl implements FilterConfig {
     private ServletContext _servletContext;
 
     /** The init params. */
-    private Hashtable _initParams;
+    private java.util.Map _initParams;
 
     /**
      * Instantiates a new filter config impl.
@@ -37,30 +36,30 @@ class FilterConfigImpl implements FilterConfig {
      * @param initParams
      *            the init params
      */
-<span class="fc" id="L40">    FilterConfigImpl(String name, ServletContext servletContext, Hashtable initParams) {</span>
-<span class="fc" id="L41">        _name = name;</span>
-<span class="fc" id="L42">        _servletContext = servletContext;</span>
-<span class="fc" id="L43">        _initParams = initParams;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L39">    FilterConfigImpl(String name, ServletContext servletContext, java.util.Map initParams) {</span>
+<span class="fc" id="L40">        _name = name;</span>
+<span class="fc" id="L41">        _servletContext = servletContext;</span>
+<span class="fc" id="L42">        _initParams = initParams;</span>
+<span class="fc" id="L43">    }</span>
 
     @Override
     public String getFilterName() {
-<span class="fc" id="L48">        return _name;</span>
+<span class="fc" id="L47">        return _name;</span>
     }
 
     @Override
     public ServletContext getServletContext() {
-<span class="fc" id="L53">        return _servletContext;</span>
+<span class="fc" id="L52">        return _servletContext;</span>
     }
 
     @Override
     public String getInitParameter(String s) {
-<span class="fc" id="L58">        return (String) _initParams.get(s);</span>
+<span class="fc" id="L57">        return (String) _initParams.get(s);</span>
     }
 
     @Override
     public Enumeration getInitParameterNames() {
-<span class="fc" id="L63">        return _initParams.keys();</span>
+<span class="fc" id="L62">        return java.util.Collections.enumeration(_initParams.keySet());</span>
     }
 
 }

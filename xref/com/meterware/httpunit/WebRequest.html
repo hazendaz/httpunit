@@ -11,7 +11,7 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> * See LICENSE file for details.</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Copyright 2000-2026 Russell Gold</em>
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Copyright 2021-2000 hazendaz</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Copyright 2021-2026 hazendaz</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">package</strong> com.meterware.httpunit;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
@@ -811,7 +811,7 @@
 <a class="jxr_linenumber" name="L803" href="#L803">803</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L804" href="#L804">804</a>     Hashtable getHeaderDictionary() {
 <a class="jxr_linenumber" name="L805" href="#L805">805</a>         <strong class="jxr_keyword">if</strong> (_headers == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L806" href="#L806">806</a>             _headers = <strong class="jxr_keyword">new</strong> Hashtable&lt;&gt;();
+<a class="jxr_linenumber" name="L806" href="#L806">806</a>             _headers = <strong class="jxr_keyword">new</strong> WebClient.HeaderDictionary();
 <a class="jxr_linenumber" name="L807" href="#L807">807</a>             <strong class="jxr_keyword">if</strong> (getContentType() != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L808" href="#L808">808</a>                 _headers.put(<span class="jxr_string">"Content-Type"</span>, getContentType());
 <a class="jxr_linenumber" name="L809" href="#L809">809</a>             }

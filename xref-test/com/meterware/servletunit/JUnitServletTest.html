@@ -11,7 +11,7 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> * See LICENSE file for details.</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Copyright 2000-2026 Russell Gold</em>
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Copyright 2021-2000 hazendaz</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * Copyright 2021-2026 hazendaz</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">package</strong> com.meterware.servletunit;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
@@ -26,17 +26,17 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> com.meterware.httpunit.WebResponse;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> com.meterware.httpunit.WebTable;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.net.MalformedURLException;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.Dictionary;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.ServletException;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServlet;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletRequest;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpServletResponse;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> jakarta.servlet.http.HttpSession;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> javax.servlet.ServletException;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServlet;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletRequest;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpServletResponse;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> javax.servlet.http.HttpSession;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.Dictionary;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> javax.xml.parsers.DocumentBuilder;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
@@ -132,7 +132,7 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         assertEquals(3, results[0].length, <span class="jxr_string">"Num columns"</span>);
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         assertEquals(<span class="jxr_string">"3 tests"</span>, results[0][0], <span class="jxr_string">"First header"</span>);
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         assertEquals(<span class="jxr_string">"Problems Occurred"</span>, results[0][2], <span class="jxr_string">"Status"</span>);
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         assertEquals(<span class="jxr_string">"2 failures"</span>, results[1][1], <span class="jxr_string">"Failure header"</span>);
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         assertEquals(<span class="jxr_string">"2 failures:"</span>, results[1][1], <span class="jxr_string">"Failure header"</span>);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         assertEquals(<span class="jxr_string">"1"</span>, results[2][0], <span class="jxr_string">"Failure index 1"</span>);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         assertEquals(<span class="jxr_string">"2"</span>, results[3][0], <span class="jxr_string">"Failure index 2"</span>);
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         assertTrue(results[2][1].indexOf('(' + FailingTests.<strong class="jxr_keyword">class</strong>.getName() + ')') &gt;= 0, <span class="jxr_string">"Test class not found"</span>);
@@ -174,7 +174,7 @@
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         assertEquals(3, results[0].length, <span class="jxr_string">"Num columns"</span>);
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         assertEquals(<span class="jxr_string">"2 tests"</span>, results[0][0], <span class="jxr_string">"First header"</span>);
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         assertEquals(<span class="jxr_string">"Problems Occurred"</span>, results[0][2], <span class="jxr_string">"Status"</span>);
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>         assertEquals(<span class="jxr_string">"1 error"</span>, results[1][1], <span class="jxr_string">"Failure header"</span>);
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         assertEquals(<span class="jxr_string">"1 error:"</span>, results[1][1], <span class="jxr_string">"Failure header"</span>);
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         assertEquals(<span class="jxr_string">"1"</span>, results[2][0], <span class="jxr_string">"Failure index 1"</span>);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         assertTrue(results[2][1].indexOf('(' + ErrorTests.<strong class="jxr_keyword">class</strong>.getName() + ')') &gt;= 0, <span class="jxr_string">"Test class not found"</span>);
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>     }
@@ -221,11 +221,11 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         Element element = document.getDocumentElement();
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         assertEquals(<span class="jxr_string">"testsuite"</span>, element.getNodeName(), <span class="jxr_string">"document element name"</span>);
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>         assertEquals(<span class="jxr_string">"2"</span>, element.getAttribute(<span class="jxr_string">"tests"</span>), <span class="jxr_string">"number of tests"</span>);
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>         assertEquals(<span class="jxr_string">"0"</span>, element.getAttribute(<span class="jxr_string">"failures"</span>), <span class="jxr_string">"number of failures"</span>);
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>         assertEquals(<span class="jxr_string">"1"</span>, element.getAttribute(<span class="jxr_string">"errors"</span>), <span class="jxr_string">"number of errors"</span>);
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>         assertEquals(<span class="jxr_string">"1"</span>, element.getAttribute(<span class="jxr_string">"failures"</span>), <span class="jxr_string">"number of failures"</span>);
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         assertEquals(<span class="jxr_string">"0"</span>, element.getAttribute(<span class="jxr_string">"errors"</span>), <span class="jxr_string">"number of errors"</span>);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         NodeList nl = element.getElementsByTagName(<span class="jxr_string">"testcase"</span>);
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         verifyElementWithNameHasFailureNode(<span class="jxr_string">"testAddition"</span>, nl, <em class="jxr_comment">/* failed */</em> <span class="jxr_string">"error"</span>, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         verifyElementWithNameHasFailureNode(<span class="jxr_string">"testMultiplication"</span>, nl, <em class="jxr_comment">/* failed */</em> <span class="jxr_string">"error"</span>, false);
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         verifyElementWithNameHasFailureNode(<span class="jxr_string">"testAddition"</span>, nl, <em class="jxr_comment">/* failed */</em> <span class="jxr_string">"failure"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         verifyElementWithNameHasFailureNode(<span class="jxr_string">"testMultiplication"</span>, nl, <em class="jxr_comment">/* failed */</em> <span class="jxr_string">"failure"</span>, false);
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>     }
 <a class="jxr_linenumber" name="L222" href="#L222">222</a> 
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>     <em class="jxr_javadoccomment">/**</em>
@@ -344,7 +344,7 @@
 <a class="jxr_linenumber" name="L336" href="#L336">336</a> 
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>         @Override
 <a class="jxr_linenumber" name="L338" href="#L338">338</a>         <strong class="jxr_keyword">public</strong> InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>                 Dictionary clientHeaders, byte[] messageBody) <strong class="jxr_keyword">throws</strong> IOException, MalformedURLException {
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>                 Dictionary clientHeaders, byte[] messageBody) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L340" href="#L340">340</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> InvocationContextImpl(client, _runner, targetFrame, request, clientHeaders, messageBody);
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>         }
 <a class="jxr_linenumber" name="L342" href="#L342">342</a> 

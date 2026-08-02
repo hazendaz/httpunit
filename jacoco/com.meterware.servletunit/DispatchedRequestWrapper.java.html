@@ -3,17 +3,16 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Map;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * This class represents a request dispatched via a RequestDispatcherImpl.
@@ -37,7 +36,7 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
      * @return the http servlet request
      */
     static HttpServletRequest createIncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
-<span class="fc" id="L40">        return new IncludeRequestWrapper(request, dispatcher);</span>
+<span class="fc" id="L39">        return new IncludeRequestWrapper(request, dispatcher);</span>
     }
 
     /**
@@ -51,7 +50,7 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
      * @return the http servlet request
      */
     static HttpServletRequest createForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
-<span class="fc" id="L54">        return new ForwardRequestWrapper(request, dispatcher);</span>
+<span class="fc" id="L53">        return new ForwardRequestWrapper(request, dispatcher);</span>
     }
 
     /**
@@ -63,11 +62,11 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
      *            the dispatcher
      */
     DispatchedRequestWrapper(HttpServletRequest baseRequest, RequestDispatcher dispatcher) {
-<span class="fc" id="L66">        super(baseRequest);</span>
-<span class="fc" id="L67">        _baseRequest = baseRequest;</span>
-<span class="fc" id="L68">        _requestContext = (RequestContext) dispatcher;</span>
-<span class="fc" id="L69">        _requestContext.setParentRequest(baseRequest);</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L65">        super(baseRequest);</span>
+<span class="fc" id="L66">        _baseRequest = baseRequest;</span>
+<span class="fc" id="L67">        _requestContext = (RequestContext) dispatcher;</span>
+<span class="fc" id="L68">        _requestContext.setParentRequest(baseRequest);</span>
+<span class="fc" id="L69">    }</span>
 
     /**
      * Gets the base request.
@@ -75,27 +74,27 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
      * @return the base request
      */
     HttpServletRequest getBaseRequest() {
-<span class="nc" id="L78">        return _baseRequest;</span>
+<span class="nc" id="L77">        return _baseRequest;</span>
     }
 
     @Override
     public String getParameter(String s) {
-<span class="fc" id="L83">        return _requestContext.getParameter(s);</span>
+<span class="fc" id="L82">        return _requestContext.getParameter(s);</span>
     }
 
     @Override
     public Enumeration getParameterNames() {
-<span class="nc" id="L88">        return _requestContext.getParameterNames();</span>
+<span class="nc" id="L87">        return _requestContext.getParameterNames();</span>
     }
 
     @Override
     public String[] getParameterValues(String s) {
-<span class="nc" id="L93">        return _requestContext.getParameterValues(s);</span>
+<span class="nc" id="L92">        return _requestContext.getParameterValues(s);</span>
     }
 
     @Override
     public Map getParameterMap() {
-<span class="nc" id="L98">        return _requestContext.getParameterMap();</span>
+<span class="nc" id="L97">        return _requestContext.getParameterMap();</span>
     }
 
 }
@@ -106,18 +105,18 @@ class DispatchedRequestWrapper extends HttpServletRequestWrapper {
 class IncludeRequestWrapper extends DispatchedRequestWrapper {
 
     /** The request uri. */
-    static final String REQUEST_URI = &quot;javax.servlet.include.request_uri&quot;;
+    static final String REQUEST_URI = &quot;jakarta.servlet.include.request_uri&quot;;
     /** The context path. */
-    static final String CONTEXT_PATH = &quot;javax.servlet.include.context_path&quot;;
+    static final String CONTEXT_PATH = &quot;jakarta.servlet.include.context_path&quot;;
     /** The servlet path. */
-    static final String SERVLET_PATH = &quot;javax.servlet.include.servlet_path&quot;;
+    static final String SERVLET_PATH = &quot;jakarta.servlet.include.servlet_path&quot;;
     /** The path info. */
-    static final String PATH_INFO = &quot;javax.servlet.include.path_info&quot;;
+    static final String PATH_INFO = &quot;jakarta.servlet.include.path_info&quot;;
     /** The query string. */
-    static final String QUERY_STRING = &quot;javax.servlet.include.query_string&quot;;
+    static final String QUERY_STRING = &quot;jakarta.servlet.include.query_string&quot;;
 
     /** The attributes. */
-<span class="fc" id="L120">    private Hashtable _attributes = new Hashtable&lt;&gt;();</span>
+<span class="fc" id="L119">    private java.util.Map _attributes = new java.util.HashMap&lt;&gt;();</span>
 
     /**
      * Instantiates a new include request wrapper.
@@ -128,20 +127,20 @@ class IncludeRequestWrapper extends DispatchedRequestWrapper {
      *            the dispatcher
      */
     IncludeRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
-<span class="fc" id="L131">        super(request, dispatcher);</span>
-<span class="fc" id="L132">        _attributes.put(REQUEST_URI, ((RequestDispatcherImpl) dispatcher).getRequestURI());</span>
-<span class="fc" id="L133">        _attributes.put(CONTEXT_PATH, request.getContextPath());</span>
-<span class="fc" id="L134">        _attributes.put(SERVLET_PATH, ((RequestDispatcherImpl) dispatcher).getServletMetaData().getServletPath());</span>
-<span class="fc" id="L135">        final String pathInfo = ((RequestDispatcherImpl) dispatcher).getServletMetaData().getPathInfo();</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (pathInfo != null) {</span>
-<span class="nc" id="L137">            _attributes.put(PATH_INFO, pathInfo);</span>
+<span class="fc" id="L130">        super(request, dispatcher);</span>
+<span class="fc" id="L131">        _attributes.put(REQUEST_URI, ((RequestDispatcherImpl) dispatcher).getRequestURI());</span>
+<span class="fc" id="L132">        _attributes.put(CONTEXT_PATH, request.getContextPath());</span>
+<span class="fc" id="L133">        _attributes.put(SERVLET_PATH, ((RequestDispatcherImpl) dispatcher).getServletMetaData().getServletPath());</span>
+<span class="fc" id="L134">        final String pathInfo = ((RequestDispatcherImpl) dispatcher).getServletMetaData().getPathInfo();</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (pathInfo != null) {</span>
+<span class="nc" id="L136">            _attributes.put(PATH_INFO, pathInfo);</span>
         }
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L138">    }</span>
 
     @Override
     public Object getAttribute(String s) {
-<span class="fc" id="L143">        Object result = _attributes.get(s);</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">        return result != null ? result : super.getAttribute(s);</span>
+<span class="fc" id="L142">        Object result = _attributes.get(s);</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        return result != null ? result : super.getAttribute(s);</span>
     }
 
 }
@@ -163,28 +162,28 @@ class ForwardRequestWrapper extends DispatchedRequestWrapper {
      *            the dispatcher
      */
     ForwardRequestWrapper(HttpServletRequest request, RequestDispatcher dispatcher) {
-<span class="fc" id="L166">        super(request, dispatcher);</span>
-<span class="fc" id="L167">        _requestContext = (RequestDispatcherImpl) dispatcher;</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L165">        super(request, dispatcher);</span>
+<span class="fc" id="L166">        _requestContext = (RequestDispatcherImpl) dispatcher;</span>
+<span class="fc" id="L167">    }</span>
 
     @Override
     public String getRequestURI() {
-<span class="fc" id="L172">        return _requestContext.getRequestURI();</span>
+<span class="fc" id="L171">        return _requestContext.getRequestURI();</span>
     }
 
     @Override
     public String getQueryString() {
-<span class="nc" id="L177">        return super.getQueryString();</span>
+<span class="nc" id="L176">        return super.getQueryString();</span>
     }
 
     @Override
     public String getServletPath() {
-<span class="fc" id="L182">        return _requestContext.getServletMetaData().getServletPath();</span>
+<span class="fc" id="L181">        return _requestContext.getServletMetaData().getServletPath();</span>
     }
 
     @Override
     public String getPathInfo() {
-<span class="fc" id="L187">        return _requestContext.getServletMetaData().getPathInfo();</span>
+<span class="fc" id="L186">        return _requestContext.getServletMetaData().getPathInfo();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

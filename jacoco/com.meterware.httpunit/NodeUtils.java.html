@@ -3,15 +3,15 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.httpunit;
 
 import com.meterware.httpunit.parsing.HTMLParserFactory;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Stack;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -193,13 +193,16 @@ import org.w3c.dom.NodeList;
     static class PreOrderTraversal {
 
         /** The pending nodes. */
-<span class="fc" id="L196">        private Stack _pendingNodes = new Stack();</span>
+<span class="fc" id="L196">        private final Deque _pendingNodes = new ArrayDeque();</span>
 
         /** The traversal context. */
-<span class="fc" id="L199">        private Stack _traversalContext = new Stack();</span>
+<span class="fc" id="L199">        private final Deque _traversalContext = new ArrayDeque();</span>
 
         /** The Constant POP_CONTEXT. */
 <span class="fc" id="L202">        private static final Object POP_CONTEXT = new Object();</span>
+
+        /** The Constant NULL_CONTEXT. */
+<span class="fc" id="L205">        private static final Object NULL_CONTEXT = new Object();</span>
 
         /**
          * Instantiates a new pre order traversal.
@@ -207,9 +210,9 @@ import org.w3c.dom.NodeList;
          * @param rootNodes
          *            the root nodes
          */
-<span class="fc" id="L210">        public PreOrderTraversal(NodeList rootNodes) {</span>
-<span class="fc" id="L211">            pushNodeList(rootNodes);</span>
-<span class="fc" id="L212">        }</span>
+<span class="fc" id="L213">        public PreOrderTraversal(NodeList rootNodes) {</span>
+<span class="fc" id="L214">            pushNodeList(rootNodes);</span>
+<span class="fc" id="L215">        }</span>
 
         /**
          * Instantiates a new pre order traversal.
@@ -217,9 +220,9 @@ import org.w3c.dom.NodeList;
          * @param rootNode
          *            the root node
          */
-<span class="fc" id="L220">        public PreOrderTraversal(Node rootNode) {</span>
-<span class="fc" id="L221">            pushNodeList(rootNode.getLastChild());</span>
-<span class="fc" id="L222">        }</span>
+<span class="fc" id="L223">        public PreOrderTraversal(Node rootNode) {</span>
+<span class="fc" id="L224">            pushNodeList(rootNode.getLastChild());</span>
+<span class="fc" id="L225">        }</span>
 
         /**
          * Push base context.
@@ -228,8 +231,8 @@ import org.w3c.dom.NodeList;
          *            the context
          */
         public void pushBaseContext(Object context) {
-<span class="fc" id="L231">            _traversalContext.push(context);</span>
-<span class="fc" id="L232">        }</span>
+<span class="fc" id="L234">            _traversalContext.addLast(encodeContext(context));</span>
+<span class="fc" id="L235">        }</span>
 
         /**
          * Push context.
@@ -238,9 +241,9 @@ import org.w3c.dom.NodeList;
          *            the context
          */
         public void pushContext(Object context) {
-<span class="fc" id="L241">            _traversalContext.push(context);</span>
-<span class="fc" id="L242">            _pendingNodes.push(POP_CONTEXT);</span>
-<span class="fc" id="L243">        }</span>
+<span class="fc" id="L244">            _traversalContext.addLast(encodeContext(context));</span>
+<span class="fc" id="L245">            _pendingNodes.addLast(POP_CONTEXT);</span>
+<span class="fc" id="L246">        }</span>
 
         /**
          * Gets the contexts.
@@ -248,8 +251,23 @@ import org.w3c.dom.NodeList;
          * @return the contexts
          */
         public Iterator getContexts() {
-<span class="fc" id="L251">            Stack stack = _traversalContext;</span>
-<span class="fc" id="L252">            return getTopDownIterator(stack);</span>
+<span class="fc" id="L254">            final Iterator iterator = _traversalContext.descendingIterator();</span>
+<span class="fc" id="L255">            return new Iterator() {</span>
+                @Override
+                public boolean hasNext() {
+<span class="fc" id="L258">                    return iterator.hasNext();</span>
+                }
+
+                @Override
+                public Object next() {
+<span class="fc" id="L263">                    return decodeContext(iterator.next());</span>
+                }
+
+                @Override
+                public void remove() {
+<span class="nc" id="L268">                    iterator.remove();</span>
+<span class="nc" id="L269">                }</span>
+            };
         }
 
         /**
@@ -258,7 +276,7 @@ import org.w3c.dom.NodeList;
          * @return the root context
          */
         public Object getRootContext() {
-<span class="nc" id="L261">            return _traversalContext.firstElement();</span>
+<span class="nc" id="L279">            return decodeContext(_traversalContext.peekFirst());</span>
         }
 
         /**
@@ -269,27 +287,6 @@ import org.w3c.dom.NodeList;
          *
          * @return the top down iterator
          */
-        private Iterator getTopDownIterator(final Stack stack) {
-<span class="fc" id="L273">            return new Iterator() {</span>
-<span class="fc" id="L274">                private ListIterator _forwardIterator = stack.listIterator(stack.size());</span>
-
-                @Override
-                public boolean hasNext() {
-<span class="fc" id="L278">                    return _forwardIterator.hasPrevious();</span>
-                }
-
-                @Override
-                public Object next() {
-<span class="fc" id="L283">                    return _forwardIterator.previous();</span>
-                }
-
-                @Override
-                public void remove() {
-<span class="nc" id="L288">                    _forwardIterator.remove();</span>
-<span class="nc" id="L289">                }</span>
-            };
-        }
-
         /**
          * Returns the most recently pushed context which implements the specified class. Will return null if no
          * matching context is found.
@@ -300,13 +297,13 @@ import org.w3c.dom.NodeList;
          * @return the closest context
          */
         public Object getClosestContext(Class matchingClass) {
-<span class="fc bfc" id="L303" title="All 2 branches covered.">            for (int i = _traversalContext.size() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L304">                Object o = _traversalContext.elementAt(i);</span>
-<span class="fc bfc" id="L305" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
-<span class="fc" id="L306">                    return o;</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">            for (Iterator iterator = _traversalContext.descendingIterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L301">                Object o = decodeContext(iterator.next());</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">                if (matchingClass.isInstance(o)) {</span>
+<span class="fc" id="L303">                    return o;</span>
                 }
-            }
-<span class="fc" id="L309">            return null;</span>
+<span class="fc" id="L305">            }</span>
+<span class="fc" id="L306">            return null;</span>
         }
 
         /**
@@ -316,23 +313,23 @@ import org.w3c.dom.NodeList;
          *            the action
          */
         public void perform(NodeAction action) {
-<span class="fc bfc" id="L319" title="All 2 branches covered.">            while (!_pendingNodes.empty()) {</span>
-<span class="fc" id="L320">                final Object object = _pendingNodes.pop();</span>
-<span class="fc bfc" id="L321" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
-<span class="fc" id="L322">                    _traversalContext.pop();</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">            while (!_pendingNodes.isEmpty()) {</span>
+<span class="fc" id="L317">                final Object object = _pendingNodes.removeLast();</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">                if (object == POP_CONTEXT) {</span>
+<span class="fc" id="L319">                    _traversalContext.removeLast();</span>
                 } else {
-<span class="fc" id="L324">                    Node node = (Node) object;</span>
-<span class="fc bfc" id="L325" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
-<span class="fc" id="L326">                        action.processTextNode(this, node);</span>
-<span class="pc bpc" id="L327" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
-<span class="nc" id="L328">                        continue;</span>
+<span class="fc" id="L321">                    Node node = (Node) object;</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">                    if (node.getNodeType() == Node.TEXT_NODE) {</span>
+<span class="fc" id="L323">                        action.processTextNode(this, node);</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">                    } else if (node.getNodeType() != Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L325">                        continue;</span>
                     } else {
-<span class="fc" id="L330">                        action.processElement(this, (Element) node);</span>
+<span class="fc" id="L327">                        action.processElement(this, (Element) node);</span>
                     }
-<span class="fc" id="L332">                    pushNodeList(node.getLastChild());</span>
+<span class="fc" id="L329">                    pushNodeList(node.getLastChild());</span>
                 }
-<span class="fc" id="L334">            }</span>
-<span class="fc" id="L335">        }</span>
+<span class="fc" id="L331">            }</span>
+<span class="fc" id="L332">        }</span>
 
         /**
          * Push node list.
@@ -341,12 +338,12 @@ import org.w3c.dom.NodeList;
          *            the nl
          */
         private void pushNodeList(NodeList nl) {
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">            if (nl != null) {</span>
-<span class="fc bfc" id="L345" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L346">                    _pendingNodes.push(nl.item(i));</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">            if (nl != null) {</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                for (int i = nl.getLength() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L343">                    _pendingNodes.addLast(nl.item(i));</span>
                 }
             }
-<span class="fc" id="L349">        }</span>
+<span class="fc" id="L346">        }</span>
 
         /**
          * Push node list.
@@ -355,10 +352,34 @@ import org.w3c.dom.NodeList;
          *            the last child
          */
         private void pushNodeList(Node lastChild) {
-<span class="fc bfc" id="L358" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
-<span class="fc" id="L359">                _pendingNodes.push(node);</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">            for (Node node = lastChild; node != null; node = node.getPreviousSibling()) {</span>
+<span class="fc" id="L356">                _pendingNodes.addLast(node);</span>
             }
-<span class="fc" id="L361">        }</span>
+<span class="fc" id="L358">        }</span>
+
+        /**
+         * Encode context.
+         *
+         * @param context
+         *            the context
+         *
+         * @return the object
+         */
+        private Object encodeContext(Object context) {
+<span class="fc bfc" id="L369" title="All 2 branches covered.">            return context == null ? NULL_CONTEXT : context;</span>
+        }
+
+        /**
+         * Decode context.
+         *
+         * @param context
+         *            the context
+         *
+         * @return the object
+         */
+        private Object decodeContext(Object context) {
+<span class="fc bfc" id="L381" title="All 2 branches covered.">            return context == NULL_CONTEXT ? null : context;</span>
+        }
     }
 
 }

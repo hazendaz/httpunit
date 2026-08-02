@@ -3,29 +3,17 @@
  * See LICENSE file for details.
  *
  * Copyright 2000-2026 Russell Gold
- * Copyright 2021-2000 hazendaz
+ * Copyright 2021-2026 hazendaz
  */
 package com.meterware.servletunit;
-
-import junit.framework.TestCase;
 
 /**
  * A base class for test cases to be run via {@link JUnitServlet JUnitServlet}.
  **/
-public abstract class ServletTestCase extends TestCase {
+<span class="fc" id="L13">public abstract class ServletTestCase {</span>
 
     /** The invocation context factory. */
     private static InvocationContextFactory _invocationContextFactory;
-
-    /**
-     * construct a ServletTestCase with the given name.
-     *
-     * @param name
-     *            the name
-     */
-    protected ServletTestCase(String name) {
-<span class="fc" id="L27">        super(name);</span>
-<span class="fc" id="L28">    }</span>
 
     /**
      * Returns a client object which can access the servlet context in which this test is running.
@@ -33,11 +21,11 @@ public abstract class ServletTestCase extends TestCase {
      * @return the servlet unit client
      */
     protected final ServletUnitClient newClient() {
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
-<span class="nc" id="L37">            throw new RuntimeException(</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (_invocationContextFactory == null) {</span>
+<span class="nc" id="L25">            throw new IllegalStateException(</span>
                     &quot;ServletTestCase.newClient called before setInvocationContextFactory was called&quot;);
         }
-<span class="fc" id="L40">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
+<span class="fc" id="L28">        return ServletUnitClient.newClient(_invocationContextFactory);</span>
     }
 
     /**
@@ -47,12 +35,12 @@ public abstract class ServletTestCase extends TestCase {
      *            the new invocation context factory
      */
     static void setInvocationContextFactory(InvocationContextFactory invocationContextFactory) {
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
-<span class="nc" id="L51">            throw new RuntimeException(</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (invocationContextFactory == null) {</span>
+<span class="nc" id="L39">            throw new IllegalStateException(</span>
                     &quot;setInvocationContextFactory called with null invocationContextFactory parameter&quot;);
         }
-<span class="fc" id="L54">        _invocationContextFactory = invocationContextFactory;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L42">        _invocationContextFactory = invocationContextFactory;</span>
+<span class="fc" id="L43">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

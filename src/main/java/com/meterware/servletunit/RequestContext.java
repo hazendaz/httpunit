@@ -16,7 +16,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * The Class RequestContext.
@@ -143,13 +142,12 @@ class RequestContext {
         if (queryString.isEmpty()) {
             return;
         }
-        StringTokenizer st = new StringTokenizer(queryString, "&=", /* return tokens */ true);
+        String[] tokens = queryString.split("((?=[&=])|(?<=[&=]))");
         int state = STATE_INITIAL;
         String name = null;
         String value = null;
 
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
+        for (String token : tokens) {
             if (token.equals("&")) {
                 state = STATE_INITIAL;
                 if (name != null && value != null) {

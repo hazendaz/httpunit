@@ -44,7 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * The Class ServletUnitHttpRequest.
@@ -896,12 +895,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             return;
         }
 
-        StringTokenizer st = new StringTokenizer(cookieHeader, ",;=", true);
-        String lastToken = st.nextToken();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            if (token.equals("=") && st.hasMoreTokens()) {
-                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));
+        String[] tokens = cookieHeader.split("((?=[,;=])|(?<=[,;=]))");
+        String lastToken = tokens[0];
+        for (int i = 1; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (token.equals("=") && i + 1 < tokens.length) {
+                addCookie(new Cookie(lastToken.trim(), tokens[++i].trim()));
             }
             lastToken = token;
         }

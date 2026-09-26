@@ -140,7 +140,11 @@ public class ServletUnitServletContext implements ServletContext {
     @Override
     public jakarta.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
-            URL url = new URI("http", null, "localhost", -1, _application.getContextPath() + path, null, null).toURL();
+            String requestPath = _application.getContextPath() + path;
+            int queryIndex = requestPath.indexOf('?');
+            String uriPath = queryIndex < 0 ? requestPath : requestPath.substring(0, queryIndex);
+            String query = queryIndex < 0 ? null : requestPath.substring(queryIndex + 1);
+            URL url = new URI("http", null, "localhost", -1, uriPath, query, null).toURL();
             return new RequestDispatcherImpl(_application, url);
         } catch (ServletException | MalformedURLException | URISyntaxException e) {
             return null;

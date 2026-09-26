@@ -33,7 +33,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.StringTokenizer;
 
 import org.junit.jupiter.api.Test;
 
@@ -595,12 +594,15 @@ class MimeEcho extends PseudoServlet {
      * @return the string
      */
     private String getHeaderAttribute(String headerValue, String attributeName) {
-        StringTokenizer st = new StringTokenizer(headerValue, ";=", /* returnTokens */ true);
+        // Split into tokens, keeping the ";" and "=" delimiters as their own tokens.
+        String[] tokens = headerValue.split("(?<=[;=])|(?=[;=])");
 
         int state = 0;
         String name = "";
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
+        for (String token : tokens) {
+            if (token.isEmpty()) {
+                continue;
+            }
             if (token.equals(";")) {
                 state = 1; // next token is attribute name
             } else if (token.equals("=")) {

@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * A basic simulated web-server for testing user agents without a web server.
@@ -606,9 +605,7 @@ public class PseudoServer {
                 if (request.getURI().startsWith(directory)) {
                     String resourceName = request.getURI().substring(directory.length() + 1);
                     String classPath = System.getProperty("java.class.path");
-                    StringTokenizer st = new StringTokenizer(classPath, ":;,");
-                    while (st.hasMoreTokens()) {
-                        String file = st.nextToken();
+                    for (String file : classPath.split("[:;,]+")) {
                         if (file.endsWith(resourceName)) {
                             Path f = Path.of(file);
                             return new WebResource(Files.newInputStream(f), "application/zip", 200);

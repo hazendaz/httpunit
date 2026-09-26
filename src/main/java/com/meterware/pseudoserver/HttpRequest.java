@@ -11,7 +11,6 @@ import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.StringTokenizer;
 
 /**
  * Represents a single HTTP request, extracted from the input stream.
@@ -45,10 +44,10 @@ public class HttpRequest extends ReceivedHttpMessage {
 
     @Override
     void interpretMessageHeader(String messageHeader) {
-        StringTokenizer st = new StringTokenizer(messageHeader);
-        _command = st.nextToken();
-        _uri = st.nextToken();
-        _protocol = st.nextToken();
+        String[] tokens = messageHeader.trim().split("\\s+");
+        _command = tokens[0];
+        _uri = tokens[1];
+        _protocol = tokens[2];
     }
 
     @Override

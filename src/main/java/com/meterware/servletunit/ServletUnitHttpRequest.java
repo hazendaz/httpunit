@@ -569,11 +569,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             if (languages == null) {
                 _locales.add(Locale.getDefault());
             } else {
-                StringTokenizer st = new StringTokenizer(languages, ",");
                 ArrayList al = new ArrayList<>();
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken();
-                    al.add(new PrioritizedLocale(token));
+                for (String token : languages.split(",")) {
+                    if (!token.isEmpty()) {
+                        al.add(new PrioritizedLocale(token));
+                    }
                 }
                 al.sort(java.util.Comparator.naturalOrder());
                 for (Iterator iterator = al.iterator(); iterator.hasNext();) {
@@ -823,12 +823,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the string[]
      */
     static String[] toArray(String roleList) {
-        StringTokenizer st = new StringTokenizer(roleList, ",");
-        String[] result = new String[st.countTokens()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = st.nextToken();
-        }
-        return result;
+        return roleList.split(",");
     }
 
     /**

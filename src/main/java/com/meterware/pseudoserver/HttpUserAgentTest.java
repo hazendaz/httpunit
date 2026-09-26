@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -393,9 +392,10 @@ public class HttpUserAgentTest {
             }
             _fullString = urlString;
 
-            StringTokenizer st = new StringTokenizer(urlString.substring(urlString.indexOf('?') + 1), "&");
-            while (st.hasMoreTokens()) {
-                _parameters.add(st.nextToken());
+            for (String parameter : urlString.substring(urlString.indexOf('?') + 1).split("&")) {
+                if (!parameter.isEmpty()) {
+                    _parameters.add(parameter);
+                }
             }
         }
 

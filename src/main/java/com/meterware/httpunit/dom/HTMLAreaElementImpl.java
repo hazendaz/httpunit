@@ -33,9 +33,10 @@ public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElem
     @Override
     public String getHref() {
         try {
-            return URI.create(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl().toExternalForm()
-                    .replace(" ", "%20")).resolve(getAttributeWithNoDefault("href").replace(" ", "%20")).toURL()
-                    .toExternalForm();
+            return URI
+                    .create(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl().toExternalForm().replace(" ",
+                            "%20"))
+                    .resolve(getAttributeWithNoDefault("href").replace(" ", "%20")).toURL().toExternalForm();
         } catch (MalformedURLException | IllegalArgumentException e) {
             return e.toString();
         }

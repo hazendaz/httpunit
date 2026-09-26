@@ -18,7 +18,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -202,10 +201,20 @@ public abstract class WebRequest {
      */
     private URL resolveToURL(final URL base, final String spec) throws MalformedURLException {
         try {
-            return base.toURI().resolve(spec).toURL();
-        } catch (IllegalArgumentException | URISyntaxException e) {
+            URI baseUri = URI.create(encodeForUri(base.toExternalForm()));
+            String resolvedSpec = spec.startsWith("#") ? stripQuery(baseUri).toString() + spec : encodeForUri(spec);
+            return baseUri.resolve(resolvedSpec).toURL();
+        } catch (IllegalArgumentException e) {
             throw malformedFrom(e);
         }
+    }
+
+    private URI stripQuery(final URI baseUri) {
+        return URI.create(baseUri.getScheme() + "://" + baseUri.getRawAuthority() + baseUri.getRawPath());
+    }
+
+    private String encodeForUri(final String value) {
+        return value.replace(" ", "%20");
     }
 
     /**

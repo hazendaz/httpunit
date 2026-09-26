@@ -689,11 +689,11 @@ class WebApplication implements SessionListenerDispatcher {
                 }
                 try {
                     _loginURL = new URI("http", null, "localhost", -1,
-                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-login-page"), null, null)
-                            .toURL();
+                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-login-page"), null,
+                            null).toURL();
                     _errorURL = new URI("http", null, "localhost", -1,
-                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-error-page"), null, null)
-                            .toURL();
+                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-error-page"), null,
+                            null).toURL();
                 } catch (URISyntaxException e) {
                     MalformedURLException malformedURLException = new MalformedURLException(e.getMessage());
                     malformedURLException.initCause(e);

@@ -11,7 +11,7 @@ import com.meterware.httpunit.protocol.URLEncodedString;
 import com.meterware.httpunit.scripting.FormScriptable;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -305,8 +305,9 @@ public class HTMLFormElementImpl extends HTMLElementImpl implements HTMLFormElem
             spec.append(parameters.getString());
         }
         try {
-            return getDomWindow().getUrl().toURI().resolve(spec.toString()).toURL().toExternalForm();
-        } catch (URISyntaxException e) {
+            return URI.create(getDomWindow().getUrl().toExternalForm().replace(" ", "%20"))
+                    .resolve(spec.toString().replace(" ", "%20")).toURL().toExternalForm();
+        } catch (IllegalArgumentException e) {
             throw new IOException("Unable to build form URL", e);
         }
     }

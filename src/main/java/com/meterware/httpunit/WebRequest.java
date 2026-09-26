@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -110,7 +112,7 @@ public abstract class WebRequest {
             return newURL(getURLBase(), getURLString());
         }
         final String urlBaseString = getURLBase().toString();
-        URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
+        URL newurlbase = toURL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
         return newURL(newurlbase, getURLString());
     }
 
@@ -140,7 +142,7 @@ public abstract class WebRequest {
             }
             HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));
         }
-        return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
+        return spec.startsWith("?") ? toURL(base + spec) : newCombinedURL(base, spec);
     }
 
     /**
@@ -158,12 +160,66 @@ public abstract class WebRequest {
      */
     private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
         if (base == null) {
-            return new URL(getNormalizedURL(spec));
+            return toURL(getNormalizedURL(spec));
         }
         if (spec.startsWith("..")) {
-            return new URL(getNormalizedURL(getURLDirectory(base) + spec));
+            return toURL(getNormalizedURL(getURLDirectory(base) + spec));
         }
-        return new URL(base, getNormalizedURL(spec));
+        return resolveToURL(base, getNormalizedURL(spec));
+    }
+
+    /**
+     * Converts the specified string to a URL via URI.
+     *
+     * @param spec
+     *            the URL specification
+     *
+     * @return the URL
+     *
+     * @throws MalformedURLException
+     *             when the specification is invalid
+     */
+    private URL toURL(final String spec) throws MalformedURLException {
+        try {
+            return URI.create(spec).toURL();
+        } catch (IllegalArgumentException e) {
+            throw malformedFrom(e);
+        }
+    }
+
+    /**
+     * Resolves a URL against a base URL via URI.
+     *
+     * @param base
+     *            the base URL
+     * @param spec
+     *            the URL specification
+     *
+     * @return the URL
+     *
+     * @throws MalformedURLException
+     *             when the specification is invalid
+     */
+    private URL resolveToURL(final URL base, final String spec) throws MalformedURLException {
+        try {
+            return base.toURI().resolve(spec).toURL();
+        } catch (IllegalArgumentException | URISyntaxException e) {
+            throw malformedFrom(e);
+        }
+    }
+
+    /**
+     * Creates a malformed URL exception with cause.
+     *
+     * @param cause
+     *            the cause
+     *
+     * @return the malformed URL exception
+     */
+    private MalformedURLException malformedFrom(final Exception cause) {
+        MalformedURLException malformedURLException = new MalformedURLException(cause.getMessage());
+        malformedURLException.initCause(cause);
+        return malformedURLException;
     }
 
     /**

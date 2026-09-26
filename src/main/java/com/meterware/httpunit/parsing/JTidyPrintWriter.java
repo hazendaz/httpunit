@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Basic "parser" for the JTidy error output. Will get the line and column number as well as the message. It assumes
@@ -88,15 +87,9 @@ class JTidyPrintWriter extends PrintWriter {
                 log(); // log previous!!!
             }
             _logged = false; // new error....
-            StringTokenizer tok = new StringTokenizer(s);
-            // skip first "line"
-            tok.nextToken();
-            // get line
-            _line = parseInteger(tok.nextToken());
-            // skip second "column"
-            tok.nextToken();
-            // get column
-            _column = parseInteger(tok.nextToken());
+            String[] tokens = s.trim().split("\\s+");
+            _line = parseInteger(tokens[1]);
+            _column = parseInteger(tokens[3]);
         } else if (s.startsWith("Warning")) {
             _error = false;
             _msg = s;

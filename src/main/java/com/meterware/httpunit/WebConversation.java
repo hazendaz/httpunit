@@ -10,6 +10,7 @@ package com.meterware.httpunit;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Dictionary;
@@ -158,8 +159,14 @@ public class WebConversation extends WebClient {
         if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("Rerouting request to :: " + actualHost);
         }
-        return new URL(request.getURL().getProtocol(), actualHost, request.getURL().getPort(),
-                request.getURL().getFile());
+        try {
+            return URI.create(request.getURL().getProtocol() + "://" + actualHost + portPortion + request.getURL().getFile())
+                    .toURL();
+        } catch (IllegalArgumentException e) {
+            MalformedURLException malformedURLException = new MalformedURLException(e.getMessage());
+            malformedURLException.initCause(e);
+            throw malformedURLException;
+        }
     }
 
     // ---------------------------------- private members --------------------------------

@@ -10,6 +10,7 @@ package com.meterware.pseudoserver;
 import com.meterware.httpunit.HttpUnitUtils;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -605,7 +606,7 @@ public class PseudoServer {
                 if (request.getURI().startsWith(directory)) {
                     String resourceName = request.getURI().substring(directory.length() + 1);
                     String classPath = System.getProperty("java.class.path");
-                    for (String file : classPath.split("[:;,]+")) {
+                    for (String file : classPath.split(java.util.regex.Pattern.quote(File.pathSeparator))) {
                         if (file.endsWith(resourceName)) {
                             Path f = Path.of(file);
                             return new WebResource(Files.newInputStream(f), "application/zip", 200);

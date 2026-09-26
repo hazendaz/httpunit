@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -686,10 +687,18 @@ class WebApplication implements SessionListenerDispatcher {
                 if (_authenticationRealm.isEmpty()) {
                     throw new SAXException("No realm specified for FORM Authorization");
                 }
-                _loginURL = URI.create("http://localhost" + _contextPath
-                        + XMLUtils.getChildNodeValue(loginConfigElement, "form-login-page")).toURL();
-                _errorURL = URI.create("http://localhost" + _contextPath
-                        + XMLUtils.getChildNodeValue(loginConfigElement, "form-error-page")).toURL();
+                try {
+                    _loginURL = new URI("http", null, "localhost", -1,
+                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-login-page"), null,
+                            null).toURL();
+                    _errorURL = new URI("http", null, "localhost", -1,
+                            _contextPath + XMLUtils.getChildNodeValue(loginConfigElement, "form-error-page"), null,
+                            null).toURL();
+                } catch (URISyntaxException e) {
+                    MalformedURLException malformedURLException = new MalformedURLException(e.getMessage());
+                    malformedURLException.initCause(e);
+                    throw malformedURLException;
+                }
             }
         }
     }

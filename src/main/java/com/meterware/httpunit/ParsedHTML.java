@@ -1372,6 +1372,9 @@ public class ParsedHTML {
         }
         if (htmlElement.getClassName() != null) {
             for (String token : htmlElement.getClassName().trim().split("\\s+")) {
+                if (token.isEmpty()) {
+                    continue;
+                }
                 if (_elementsByClass.containsKey(token)) {
                     ((ArrayList) _elementsByClass.get(token)).add(htmlElement);
                 } else {

@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,6 +32,9 @@ public class HttpUnitUtils {
 
     /** The Constant DEFAULT_TEXT_BUFFER_SIZE. */
     public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
+    private static final Pattern CONTENT_TYPE_PATTERN = Pattern.compile("^\\s*([^;\\s]+)");
+    private static final Pattern CHARSET_PATTERN =
+            Pattern.compile("(?i)\\bcharset\\s*=\\s*(\"[^\"]*\"|'[^']*'|[^;\\s]+)");
 
     /** set to true to debug Exception handling. */
     private static boolean EXCEPTION_DEBUG = true;
@@ -68,12 +73,13 @@ public class HttpUnitUtils {
     public static String[] parseContentTypeHeader(String header) {
         String[] result = { "text/plain", null };
         if (header.trim().length() > 0) {
-            String[] tokens = header.trim().split("[;= ]+");
-            result[0] = tokens[0];
-            for (int i = 1; i + 1 < tokens.length; i += 2) {
-                if (tokens[i].trim().equalsIgnoreCase("charset")) {
-                    result[1] = stripQuotes(tokens[i + 1]);
-                }
+            Matcher contentTypeMatcher = CONTENT_TYPE_PATTERN.matcher(header);
+            if (contentTypeMatcher.find()) {
+                result[0] = contentTypeMatcher.group(1);
+            }
+            Matcher charsetMatcher = CHARSET_PATTERN.matcher(header);
+            if (charsetMatcher.find()) {
+                result[1] = stripQuotes(charsetMatcher.group(1));
             }
         }
         return result;

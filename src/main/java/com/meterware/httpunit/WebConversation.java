@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Dictionary;
@@ -160,9 +161,10 @@ public class WebConversation extends WebClient {
             System.out.println("Rerouting request to :: " + actualHost);
         }
         try {
-            return URI.create(request.getURL().getProtocol() + "://" + actualHost + portPortion + request.getURL().getFile())
-                    .toURL();
-        } catch (IllegalArgumentException e) {
+            URL requestUrl = request.getURL();
+            return new URI(requestUrl.getProtocol(), null, actualHost, requestUrl.getPort(), requestUrl.getPath(),
+                    requestUrl.getQuery(), requestUrl.getRef()).toURL();
+        } catch (IllegalArgumentException | URISyntaxException e) {
             MalformedURLException malformedURLException = new MalformedURLException(e.getMessage());
             malformedURLException.initCause(e);
             throw malformedURLException;

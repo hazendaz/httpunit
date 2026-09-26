@@ -48,10 +48,11 @@ class EncodingTest extends HttpUnitTest {
     void parseContentHeader() throws Exception {
         String[] headers = { "", "text/plain", "text/html; charset=Cp1252", "text/html; charset=ISO-8859-8",
                 "text/html; charset=EUC-JP", "text/html charset=windows-1251", "text/html; charset=utf-8",
-                "text/html; charset = utf-8", "text/html; charset=\"ISO-8859-8\"" };
+                "text/html; charset = utf-8", "text/html; charset=\"ISO-8859-8\"", "text/html; charset=\"utf 8\"" };
         String[][] expected = { { "text/plain", null }, { "text/plain", null }, { "text/html", "Cp1252" },
                 { "text/html", "ISO-8859-8" }, { "text/html", "EUC-JP" }, { "text/html", "windows-1251" },
-                { "text/html", "utf-8" }, { "text/html", "utf-8" }, { "text/html", "ISO-8859-8" } };
+                { "text/html", "utf-8" }, { "text/html", "utf-8" }, { "text/html", "ISO-8859-8" },
+                { "text/html", "utf 8" } };
         for (int i = 0; i < headers.length; i++) {
             String[] result = HttpUnitUtils.parseContentTypeHeader(headers[i]);
             assertEquals(2, result.length);

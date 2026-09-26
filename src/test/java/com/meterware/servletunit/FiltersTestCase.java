@@ -31,7 +31,7 @@ import jakarta.servlet.http.HttpServletResponseWrapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -79,7 +79,7 @@ class FiltersTestCase {
         WebApplication application = new WebApplication(
                 HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
-        ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
+        ServletMetaData metaData = application.getServletRequest(URI.create("http://localhost/SimpleServlet").toURL());
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(0, filters.length, "number of associated filters");
     }
@@ -98,7 +98,7 @@ class FiltersTestCase {
         WebApplication application = new WebApplication(
                 HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
-        ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/SimpleServlet"));
+        ServletMetaData metaData = application.getServletRequest(URI.create("http://localhost/SimpleServlet").toURL());
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(1, filters.length, "number of associated filters");
         assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");
@@ -250,7 +250,8 @@ class FiltersTestCase {
         WebApplication application = new WebApplication(
                 HttpUnitUtils.newParser().parse(new InputSource(wxs.asInputStream())), null);
 
-        ServletMetaData metaData = application.getServletRequest(new URL("http://localhost/helpMe/SimpleServlet"));
+        ServletMetaData metaData = application
+                .getServletRequest(URI.create("http://localhost/helpMe/SimpleServlet").toURL());
         FilterMetaData[] filters = metaData.getFilters();
         assertEquals(1, filters.length, "number of associated filters");
         assertEquals(TrivialFilter.class, filters[0].getFilter().getClass(), "filter class");

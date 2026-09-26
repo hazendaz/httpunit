@@ -29,6 +29,7 @@ import jakarta.servlet.http.Part;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
@@ -52,7 +53,8 @@ class RequestContextTest extends HttpUnitTest {
      */
     @Test
     void queryStringParsing() throws Exception {
-        RequestContext rc = new RequestContext(new URL("http://localhost/basic?param=red&param1=old&param=blue"));
+        RequestContext rc = new RequestContext(
+                URI.create("http://localhost/basic?param=red&param1=old&param=blue").toURL());
         assertMatchingSet("parameter names", new String[] { "param", "param1" }, rc.getParameterNames());
         assertMatchingSet("param values", new String[] { "red", "blue" }, rc.getParameterValues("param"));
         assertEquals("old", ((String[]) rc.getParameterMap().get("param1"))[0], "param1 value");
@@ -67,8 +69,9 @@ class RequestContextTest extends HttpUnitTest {
     @Test
     void parameterOverride() throws Exception {
         HttpServletRequest request = new DummyHttpServletRequest(
-                new URL("http://localhost/basic?param=red&param1=old&param=blue"));
-        RequestContext context = new RequestContext(new URL("http://localhost/second?param=yellow&param2=fast"));
+                URI.create("http://localhost/basic?param=red&param1=old&param=blue").toURL());
+        RequestContext context = new RequestContext(
+                URI.create("http://localhost/second?param=yellow&param2=fast").toURL());
         context.setParentRequest(request);
         assertMatchingSet("parameter names", new String[] { "param", "param1", "param2" }, context.getParameterNames());
         assertMatchingSet("param values", new String[] { "yellow" }, context.getParameterValues("param"));
@@ -83,7 +86,7 @@ class RequestContextTest extends HttpUnitTest {
      */
     @Test
     void postParameterParsing() throws Exception {
-        RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
+        RequestContext rc = new RequestContext(URI.create("http://localhost/basic").toURL());
         rc.setMessageBody("param=red&param1=old&param=blue".getBytes(StandardCharsets.UTF_8));
         assertMatchingSet("parameter names", new String[] { "param", "param1" }, rc.getParameterNames());
         assertMatchingSet("param values", new String[] { "red", "blue" }, rc.getParameterValues("param"));
@@ -98,7 +101,7 @@ class RequestContextTest extends HttpUnitTest {
      */
     @Test
     void encodedParameterParsing() throws Exception {
-        RequestContext rc = new RequestContext(new URL("http://localhost/basic"));
+        RequestContext rc = new RequestContext(URI.create("http://localhost/basic").toURL());
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         String paramString = "param=red&param1=%E0%E1%E2%E3&param=blue";
         rc.setMessageBody(paramString.getBytes(StandardCharsets.UTF_8));

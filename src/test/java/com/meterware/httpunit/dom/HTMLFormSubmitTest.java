@@ -9,7 +9,7 @@ package com.meterware.httpunit.dom;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,7 +37,7 @@ class HTMLFormSubmitTest extends AbstractHTMLElementTest {
     @BeforeEach
     void setUp() throws Exception {
         TestWindowProxy windowProxy = new TestWindowProxy(_htmlDocument);
-        windowProxy.setUrl(new URL("http://localhost/aux.html"));
+        windowProxy.setUrl(URI.create("http://localhost/aux.html").toURL());
 
         _htmlDocument.getWindow().setProxy(windowProxy);
         HTMLBodyElement body = (HTMLBodyElement) _htmlDocument.createElement("body");

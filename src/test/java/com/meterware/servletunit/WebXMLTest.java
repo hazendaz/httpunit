@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -236,12 +236,12 @@ public class WebXMLTest {
         wxs.addAuthorizedRole("SecureArea1", "supervisor");
 
         WebApplication app = new WebApplication(newDocument(wxs.asText()));
-        assertTrue(app.requiresAuthorization(new URL("http://localhost/SimpleServlet")),
+        assertTrue(app.requiresAuthorization(URI.create("http://localhost/SimpleServlet").toURL()),
                 "Did not require authorization");
-        assertFalse(app.requiresAuthorization(new URL("http://localhost/FreeServlet")),
+        assertFalse(app.requiresAuthorization(URI.create("http://localhost/FreeServlet").toURL()),
                 "Should not require authorization");
 
-        List roles = Arrays.asList(app.getPermittedRoles(new URL("http://localhost/SimpleServlet")));
+        List roles = Arrays.asList(app.getPermittedRoles(URI.create("http://localhost/SimpleServlet").toURL()));
         assertTrue(roles.contains("supervisor"), "Should have access");
         assertFalse(roles.contains("peon"), "Should not have access");
     }

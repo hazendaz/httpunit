@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 import org.mozilla.javascript.Context;
@@ -161,7 +161,7 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     @Test
     void documentLinksCollection() throws Exception {
         TestWindowProxy proxy = new TestWindowProxy(_htmlDocument);
-        proxy.setUrl(new URL("http://localhost"));
+        proxy.setUrl(URI.create("http://localhost").toURL());
         _htmlDocument.getWindow().setProxy(proxy);
         HTMLBodyElement body = addBodyElement();
         appendLink(body, "red", "red.html");

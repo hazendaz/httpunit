@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -579,8 +580,8 @@ class WebPageTest extends HttpUnitTest {
      */
     @Test
     void byteTagParser() throws Exception {
-        final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
-        final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
+        final URL mainBaseURL = URI.create(getHostPath() + "/Main/Base").toURL();
+        final URL targetBaseURL = URI.create(getHostPath() + "/Target/Base").toURL();
         final String targetWindow = "target";
         final String document = "<html><head><title>main</title>\n"
                 + scriptToWriteAnotherDocument(simpleDocument(targetBaseURL), targetWindow) + "<base href=\""
@@ -607,8 +608,8 @@ class WebPageTest extends HttpUnitTest {
      */
     @Test
     void baseTagWithinJavaScriptInHeader() throws Exception {
-        final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
-        final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
+        final URL mainBaseURL = URI.create(getHostPath() + "/Main/Base").toURL();
+        final URL targetBaseURL = URI.create(getHostPath() + "/Target/Base").toURL();
         final String targetWindow = "target";
         defineResource("main.html",
                 "<html><head><title>main</title>\n"
@@ -634,8 +635,8 @@ class WebPageTest extends HttpUnitTest {
      */
     @Test
     void baseTagWithinJavaScriptInBody() throws Exception {
-        final URL mainBaseURL = new URL(getHostPath() + "/Main/Base");
-        final URL targetBaseURL = new URL(getHostPath() + "/Target/Base");
+        final URL mainBaseURL = URI.create(getHostPath() + "/Main/Base").toURL();
+        final URL targetBaseURL = URI.create(getHostPath() + "/Target/Base").toURL();
         final String targetWindow = "target";
         defineResource("main.html", "<html><head><title>main</title>\n" + "<base href=\"" + mainBaseURL.toExternalForm()
                 + "\">\n" + "</head>\n<body>\nThis is a <a href=\"Link\">relative link</a>.\n"

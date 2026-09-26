@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.html.HTMLDocument;
@@ -162,8 +162,8 @@ class DomWindowTest extends AbstractHTMLElementTest {
     @Test
     void windowUrl() throws Exception {
         DomWindow window = createMainWindow();
-        _proxy.setUrl(new URL("http://localhost"));
-        assertEquals(new URL("http://localhost"), window.getUrl(), "Window url");
+        _proxy.setUrl(URI.create("http://localhost").toURL());
+        assertEquals(URI.create("http://localhost").toURL(), window.getUrl(), "Window url");
     }
 
     // todo test getNavigator

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.meterware.pseudoserver.HttpUserAgentTest;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -449,7 +449,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));
         HTMLAnchorElementImpl link = (HTMLAnchorElementImpl) _htmlDocument.createElement("a");
         link.setAttribute("href", "main.html");
-        proxy.setUrl(new URL("http://localhost/aux.html"));
+        proxy.setUrl(URI.create("http://localhost/aux.html").toURL());
         assertEquals("http://localhost/main.html", link.getHref(), "referenced URL");
     }
 
@@ -469,7 +469,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));
         HTMLAnchorElementImpl link = (HTMLAnchorElementImpl) _htmlDocument.createElement("a");
         link.setAttribute("href", "main.html");
-        proxy.setUrl(new URL("http://localhost/aux.html"));
+        proxy.setUrl(URI.create("http://localhost/aux.html").toURL());
         assertEquals("http://meterware.com/httpunit/main.html", link.getHref(), "referenced URL");
     }
 
@@ -486,7 +486,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         _htmlDocument.setBody((HTMLElement) _htmlDocument.createElement("body"));
         HTMLAnchorElementImpl link = (HTMLAnchorElementImpl) _htmlDocument.createElement("a");
         link.setAttribute("href", "javascript:doSomething(123)");
-        proxy.setUrl(new URL("http://localhost/aux.html"));
+        proxy.setUrl(URI.create("http://localhost/aux.html").toURL());
         assertEquals("javascript:doSomething(123)", link.getHref(), "referenced URL");
     }
 
@@ -504,7 +504,7 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
         HTMLAnchorElementImpl link = (HTMLAnchorElementImpl) _htmlDocument.createElement("a");
         link.setAttribute("href", "main.html");
         link.setAttribute("target", "there");
-        proxy.setUrl(new URL("http://localhost/aux.html"));
+        proxy.setUrl(URI.create("http://localhost/aux.html").toURL());
         link.click();
         assertEquals("submitRequest( GET, http://localhost/main.html, there, null )", TestWindowProxy.popProxyCall(),
                 "method invocation");

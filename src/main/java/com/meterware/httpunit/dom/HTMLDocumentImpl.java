@@ -8,6 +8,7 @@
 package com.meterware.httpunit.dom;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -492,8 +493,8 @@ public class HTMLDocumentImpl extends DocumentImpl implements HTMLDocument, HTML
 
         HTMLBaseElement base = (HTMLBaseElement) list.item(0);
         try {
-            return new URL(getWindow().getUrl(), base.getHref());
-        } catch (MalformedURLException e) {
+            return getWindow().getUrl().toURI().resolve(base.getHref()).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             return getWindow().getUrl();
         }
     }

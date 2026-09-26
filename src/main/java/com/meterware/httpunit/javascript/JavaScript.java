@@ -30,6 +30,7 @@ import com.meterware.httpunit.scripting.SelectionOptions;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1228,7 +1229,12 @@ public class JavaScript {
             if (!newPath.startsWith("/")) {
                 newPath = '/' + newPath;
             }
-            URL newURL = new URL(_url, newPath);
+            URL newURL;
+            try {
+                newURL = _url.toURI().resolve(newPath).toURL();
+            } catch (URISyntaxException e) {
+                throw new IOException("Unable to resolve pathname", e);
+            }
             _window.setLocation(newURL.toExternalForm());
         }
 

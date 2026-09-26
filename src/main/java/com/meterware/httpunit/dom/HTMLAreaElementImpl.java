@@ -8,7 +8,7 @@
 package com.meterware.httpunit.dom;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URISyntaxException;
 
 import org.w3c.dom.html.HTMLAreaElement;
 
@@ -33,9 +33,9 @@ public class HTMLAreaElementImpl extends HTMLElementImpl implements HTMLAreaElem
     @Override
     public String getHref() {
         try {
-            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl(),
-                    getAttributeWithNoDefault("href")).toExternalForm();
-        } catch (MalformedURLException e) {
+            return ((HTMLDocumentImpl) getOwnerDocument()).getWindow().getUrl().toURI()
+                    .resolve(getAttributeWithNoDefault("href")).toURL().toExternalForm();
+        } catch (MalformedURLException | URISyntaxException e) {
             return e.toString();
         }
     }

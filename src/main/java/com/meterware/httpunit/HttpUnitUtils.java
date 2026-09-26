@@ -30,7 +30,6 @@ public class HttpUnitUtils {
 
     /** The Constant DEFAULT_TEXT_BUFFER_SIZE. */
     public static final int DEFAULT_TEXT_BUFFER_SIZE = 2048;
-
     /** set to true to debug Exception handling. */
     private static boolean EXCEPTION_DEBUG = true;
 
@@ -67,16 +66,36 @@ public class HttpUnitUtils {
      **/
     public static String[] parseContentTypeHeader(String header) {
         String[] result = { "text/plain", null };
-        if (header.trim().length() > 0) {
-            String[] tokens = header.trim().split("[;= ]+");
-            result[0] = tokens[0];
-            for (int i = 1; i + 1 < tokens.length; i += 2) {
-                if (tokens[i].trim().equalsIgnoreCase("charset")) {
-                    result[1] = stripQuotes(tokens[i + 1]);
+        String trimmedHeader = header.trim();
+        if (trimmedHeader.length() > 0) {
+            int separator = findContentTypeSeparator(trimmedHeader);
+            result[0] = separator < 0 ? trimmedHeader : trimmedHeader.substring(0, separator);
+            if (separator > 0) {
+                String parameterPortion = trimmedHeader.substring(separator).trim();
+                if (parameterPortion.startsWith(";")) {
+                    parameterPortion = parameterPortion.substring(1);
+                }
+                for (String parameter : parameterPortion.split(";")) {
+                    int equals = parameter.indexOf('=');
+                    if (equals > 0 && "charset".equalsIgnoreCase(parameter.substring(0, equals).trim())) {
+                        result[1] = stripQuotes(parameter.substring(equals + 1).trim());
+                    }
                 }
             }
         }
         return result;
+    }
+
+    private static int findContentTypeSeparator(String header) {
+        int semicolon = header.indexOf(';');
+        int whitespace = header.indexOf(' ');
+        if (semicolon < 0) {
+            return whitespace;
+        }
+        if (whitespace < 0) {
+            return semicolon;
+        }
+        return Math.min(semicolon, whitespace);
     }
 
     /**

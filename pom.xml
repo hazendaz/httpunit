@@ -82,7 +82,9 @@
         <java.version>17</java.version>
         <java.release.version>17</java.release.version>
         <javadoc.java.release.version>17</javadoc.java.release.version>
-        <legacyMode>true</legacyMode>
+
+        <!-- Jacoco minimum code coverage -->
+        <jacoco.minimum.coverage>0.73</jacoco.minimum.coverage>
 
         <!-- Automatic Module Name -->
         <module.name>com.meterware.httpunit</module.name>

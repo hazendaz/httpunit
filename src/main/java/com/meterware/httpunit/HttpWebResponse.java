@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * A response from a web server to an Http request.
@@ -252,13 +251,12 @@ class HttpWebResponse extends WebResponse {
                 throw new UnknownHostException(connection.getURL().toExternalForm());
             }
 
-            StringTokenizer st = new StringTokenizer(connection.getHeaderField(0));
-            st.nextToken();
-            if (!st.hasMoreTokens()) {
+            String[] tokens = connection.getHeaderField(0).trim().split("\\s+");
+            if (tokens.length < 2) {
                 setResponseCode(HttpURLConnection.HTTP_OK, "OK");
             } else {
                 try {
-                    setResponseCode(Integer.parseInt(st.nextToken()), getRemainingTokens(st));
+                    setResponseCode(Integer.parseInt(tokens[1]), getRemainingTokens(tokens, 2));
                 } catch (NumberFormatException e) {
                     setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR, "Cannot parse response header");
                 }
@@ -284,10 +282,10 @@ class HttpWebResponse extends WebResponse {
      *
      * @return the remaining tokens
      */
-    private String getRemainingTokens(StringTokenizer st) {
-        StringBuilder messageBuffer = new StringBuilder(st.hasMoreTokens() ? st.nextToken() : "");
-        while (st.hasMoreTokens()) {
-            messageBuffer.append(' ').append(st.nextToken());
+    private String getRemainingTokens(String[] tokens, int firstToken) {
+        StringBuilder messageBuffer = new StringBuilder(firstToken < tokens.length ? tokens[firstToken] : "");
+        for (int i = firstToken + 1; i < tokens.length; i++) {
+            messageBuffer.append(' ').append(tokens[i]);
         }
         return messageBuffer.toString();
     }

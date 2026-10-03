@@ -8,7 +8,7 @@
 package com.meterware.httpunit.dom;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URISyntaxException;
 
 import org.w3c.dom.html.HTMLAnchorElement;
 
@@ -47,8 +47,9 @@ public class HTMLAnchorElementImpl extends HTMLElementImpl implements HTMLAnchor
             return relativeLocation;
         }
         try {
-            return new URL(((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl(), relativeLocation).toExternalForm();
-        } catch (MalformedURLException e) {
+            return ((HTMLDocumentImpl) getOwnerDocument()).getBaseUrl().toURI().resolve(relativeLocation).toURL()
+                    .toExternalForm();
+        } catch (MalformedURLException | URISyntaxException e) {
             return e.toString();
         }
     }

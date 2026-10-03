@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -588,11 +587,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             if (languages == null) {
                 _locales.add(Locale.getDefault());
             } else {
-                StringTokenizer st = new StringTokenizer(languages, ",");
                 ArrayList al = new ArrayList<>();
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken();
-                    al.add(new PrioritizedLocale(token));
+                for (String token : languages.split(",")) {
+                    if (!token.isEmpty()) {
+                        al.add(new PrioritizedLocale(token));
+                    }
                 }
                 al.sort(java.util.Comparator.naturalOrder());
                 for (Iterator iterator = al.iterator(); iterator.hasNext();) {
@@ -842,12 +841,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the string[]
      */
     static String[] toArray(String roleList) {
-        StringTokenizer st = new StringTokenizer(roleList, ",");
-        String[] result = new String[st.countTokens()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = st.nextToken();
-        }
-        return result;
+        return roleList.split(",");
     }
 
     /**
@@ -920,12 +914,12 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             return;
         }
 
-        StringTokenizer st = new StringTokenizer(cookieHeader, ",;=", true);
-        String lastToken = st.nextToken();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            if (token.equals("=") && st.hasMoreTokens()) {
-                addCookie(new Cookie(lastToken.trim(), st.nextToken().trim()));
+        String[] tokens = cookieHeader.split("((?=[,;=])|(?<=[,;=]))");
+        String lastToken = tokens[0];
+        for (int i = 1; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (token.equals("=") && i + 1 < tokens.length) {
+                addCookie(new Cookie(lastToken.trim(), tokens[++i].trim()));
             }
             lastToken = token;
         }

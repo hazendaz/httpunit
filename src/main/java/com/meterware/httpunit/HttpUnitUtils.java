@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,15 +68,11 @@ public class HttpUnitUtils {
     public static String[] parseContentTypeHeader(String header) {
         String[] result = { "text/plain", null };
         if (header.trim().length() > 0) {
-            StringTokenizer st = new StringTokenizer(header, ";= ");
-            result[0] = st.nextToken();
-            while (st.hasMoreTokens()) {
-                String parameter = st.nextToken();
-                if (st.hasMoreTokens()) {
-                    String value = stripQuotes(st.nextToken());
-                    if (parameter.trim().equalsIgnoreCase("charset")) {
-                        result[1] = value;
-                    }
+            String[] tokens = header.trim().split("[;= ]+");
+            result[0] = tokens[0];
+            for (int i = 1; i + 1 < tokens.length; i += 2) {
+                if (tokens[i].trim().equalsIgnoreCase("charset")) {
+                    result[1] = stripQuotes(tokens[i + 1]);
                 }
             }
         }

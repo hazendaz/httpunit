@@ -12,7 +12,6 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.StringTokenizer;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -256,9 +255,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * order in which they are found.
      */
     protected final void loadDestinationParameters() {
-        StringTokenizer st = new StringTokenizer(getParametersString(), PARAM_DELIM);
-        while (st.hasMoreTokens()) {
-            stripOneParameter(st.nextToken());
+        for (String parameter : getParametersString().split(PARAM_DELIM)) {
+            if (!parameter.isEmpty()) {
+                stripOneParameter(parameter);
+            }
         }
     }
 

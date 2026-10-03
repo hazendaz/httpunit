@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -1369,12 +1368,7 @@ public class ParsedHTML {
             addNamedElement(htmlElement.getName(), htmlElement);
         }
         if (htmlElement.getClassName() != null) {
-            StringTokenizer tokenizer = new StringTokenizer(htmlElement.getClassName());
-            String token;
-
-            while (tokenizer.hasMoreElements()) {
-                token = tokenizer.nextToken();
-
+            for (String token : htmlElement.getClassName().trim().split("\\s+")) {
                 if (_elementsByClass.containsKey(token)) {
                     ((ArrayList) _elementsByClass.get(token)).add(htmlElement);
                 } else {

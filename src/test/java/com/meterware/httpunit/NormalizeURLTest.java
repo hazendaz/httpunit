@@ -9,7 +9,7 @@ package com.meterware.httpunit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 
@@ -397,7 +397,7 @@ class NormalizeURLTest extends HttpUnitTest {
      */
     @Test
     void relativePathDotDotFile() throws Exception {
-        WebRequest request = new GetMethodWebRequest(new URL("http://host.name/directory1/file.html"),
+        WebRequest request = new GetMethodWebRequest(URI.create("http://host.name/directory1/file.html").toURL(),
                 "../directory2/file.html");
         assertEquals("http://host.name/directory2/file.html", request.getURL().toExternalForm(), "URL");
     }

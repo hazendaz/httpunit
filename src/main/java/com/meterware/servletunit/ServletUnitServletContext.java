@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -148,7 +149,7 @@ public class ServletUnitServletContext implements ServletContext {
     @Override
     public javax.servlet.RequestDispatcher getRequestDispatcher(String path) {
         try {
-            URL url = new URL("http", "localhost", _application.getContextPath() + path);
+            URL url = URI.create("http://localhost" + _application.getContextPath() + path).toURL();
             return new RequestDispatcherImpl(_application, url);
         } catch (ServletException | MalformedURLException e) {
             return null;

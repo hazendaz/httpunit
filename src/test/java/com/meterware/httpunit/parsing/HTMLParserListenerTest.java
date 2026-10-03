@@ -21,6 +21,7 @@ import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URL;
 
 import org.junit.jupiter.api.Test;
@@ -93,7 +94,7 @@ class HTMLParserListenerTest extends HttpUnitTest {
     @Test
     void jTidyPrintWriterParsing() throws Exception {
         assertDoesNotThrow(() -> {
-            URL url = new URL("http://localhost/blank.html");
+            URL url = URI.create("http://localhost/blank.html").toURL();
             PrintWriter p = new JTidyPrintWriter(url);
             p.print("line 1234 column 1234");
             p.print("line 1,234 column 1,234");

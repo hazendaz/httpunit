@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.meterware.pseudoserver.HttpUserAgentTest;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ class CookieTest {
      */
     @Test
     void simpleCookies() throws Exception {
-        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+        CookieJar jar = new CookieJar(new TestSource(URI.create("http://www.meterware.com").toURL(),
                 new String[] { "Reason=; path=/", "age=12, name= george", "type=short", "funky=ab$==",
                         "p30waco_sso=3.0,en,us,AMERICA,Drew;path=/, PORTAL30_SSO_TEST=X",
                         "SESSION_ID=17585,Dzm5LzbRPnb95QkUyIX+7w5RDT7p6OLuOVZ91AMl4hsDATyZ1ej+FA==; path=/;" }));
@@ -70,7 +71,7 @@ class CookieTest {
      *             the exception
      */
     public void xtestDoubleQuoteCookies() throws Exception {
-        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+        CookieJar jar = new CookieJar(new TestSource(URI.create("http://www.meterware.com").toURL(),
                 new String[] { "NewUniversalCookie=\"mmmmmmmmmmmmmmm==mmmmmmm mmmmmmm\"; Path=/" }));
         Collection cookies = jar.getCookies();
         assertEquals(1, cookies.size(), "There should only be one cookie but there are " + cookies.size());
@@ -86,18 +87,19 @@ class CookieTest {
      */
     @Test
     void cookieMatching() throws Exception {
-        assertTrue(new Cookie("name", "value").mayBeSentTo(new URL("http://httpunit.org/anywhere")),
+        assertTrue(new Cookie("name", "value").mayBeSentTo(URI.create("http://httpunit.org/anywhere").toURL()),
                 "Universal cookie could not be sent");
 
-        checkMatching(1, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+        checkMatching(1, true, URI.create("http://www.meterware.com/servlets/sample").toURL(), "www.meterware.com",
                 "/servlets/sample");
 
-        checkMatching(2, false, new URL("http://www.meterware.com/servlets/sample"), "meterware.com", "/");
-        checkMatching(3, true, new URL("http://www.meterware.com/servlets/sample"), ".meterware.com", "/");
-        checkMatching(4, false, new URL("http://www.meterware.com/servlets/sample"), ".httpunit.org", "/");
+        checkMatching(2, false, URI.create("http://www.meterware.com/servlets/sample").toURL(), "meterware.com", "/");
+        checkMatching(3, true, URI.create("http://www.meterware.com/servlets/sample").toURL(), ".meterware.com", "/");
+        checkMatching(4, false, URI.create("http://www.meterware.com/servlets/sample").toURL(), ".httpunit.org", "/");
 
-        checkMatching(5, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com", "/servlets");
-        checkMatching(6, false, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+        checkMatching(5, true, URI.create("http://www.meterware.com/servlets/sample").toURL(), "www.meterware.com",
+                "/servlets");
+        checkMatching(6, false, URI.create("http://www.meterware.com/servlets/sample").toURL(), "www.meterware.com",
                 "/servlets/sample/data");
     }
 
@@ -177,7 +179,7 @@ class CookieTest {
             Cookie cookie = jar.getCookie("name");
             assertNotNull(cookie, "Rejected cookie " + index + "( " + specifiedDomain + " from " + urlString
                     + ") should have been accepted");
-            URL url = new URL("http://" + urlString);
+            URL url = URI.create("http://" + urlString).toURL();
             assertTrue(cookie.mayBeSentTo(url), "Cookie " + index + " should be sent to the url ");
 
         } else {
@@ -252,7 +254,7 @@ class CookieTest {
             header.append("; path=").append(specifiedPath);
         }
 
-        return new CookieJar(new TestSource(new URL("http://" + urlString), header.toString()));
+        return new CookieJar(new TestSource(URI.create("http://" + urlString).toURL(), header.toString()));
     }
 
     /**
@@ -274,7 +276,7 @@ class CookieTest {
         for (int i = 0; i < ages.length; i++) {
             String cookieName = "cookie" + i;
             String header = cookieName + "=cookievalue;" + ages[i];
-            TestSource source = new TestSource(new URL("http://www.somedomain.com/somepath/"), header);
+            TestSource source = new TestSource(URI.create("http://www.somedomain.com/somepath/").toURL(), header);
             CookieJar jar = new CookieJar(source);
             Cookie cookie = jar.getCookie(cookieName);
             assertNotNull(cookie, cookieName + " not null");
@@ -380,7 +382,7 @@ class CookieTest {
      */
     @Test
     void httpOnlyCookies() throws Exception {
-        CookieJar jar = new CookieJar(new TestSource(new URL("http://www.meterware.com"),
+        CookieJar jar = new CookieJar(new TestSource(URI.create("http://www.meterware.com").toURL(),
                 new String[] { "myStuff=1234; path=/foo; HttpOnly" }));
         assertEquals("1234", jar.getCookieValue("myStuff"), "cookie 'myStuff' value");
         // comment of 2010-04-22
@@ -397,8 +399,8 @@ class CookieTest {
      */
     @Test
     void httpOnlyCookiePath() throws Exception {
-        CookieJar jar = new CookieJar(
-                new TestSource(new URL("http://www.meterware.com"), new String[] { "myStuff=1234; path=/; HttpOnly" }));
+        CookieJar jar = new CookieJar(new TestSource(URI.create("http://www.meterware.com").toURL(),
+                new String[] { "myStuff=1234; path=/; HttpOnly" }));
         Cookie cookie = jar.getCookie("myStuff");
         String expected = "/";
         assertEquals(cookie.getPath(), expected,
@@ -434,7 +436,8 @@ class CookieTest {
      */
     private void checkHeader(int index, CookieJar jar, String expectedHeader, String targetURLString)
             throws MalformedURLException {
-        assertEquals(expectedHeader, jar.getCookieHeaderField(new URL("http://" + targetURLString)), "header " + index);
+        assertEquals(expectedHeader, jar.getCookieHeaderField(URI.create("http://" + targetURLString).toURL()),
+                "header " + index);
     }
 
     /**
@@ -468,7 +471,7 @@ class CookieTest {
      *             the malformed URL exception
      */
     private CookieJar newJar(String urlString, String setCookieHeader) throws MalformedURLException {
-        return new CookieJar(new TestSource(new URL("http://" + urlString), setCookieHeader));
+        return new CookieJar(new TestSource(URI.create("http://" + urlString).toURL(), setCookieHeader));
     }
 
     /**
@@ -488,7 +491,7 @@ class CookieTest {
 
         CookieProperties.setPathMatchingStrict(false);
         checkAcceptance(11, true, "www.meterware.com/servlets/special", ".meterware.com", "/servlets/ordinary");
-        checkMatching(12, true, new URL("http://www.meterware.com/servlets/sample"), "www.meterware.com",
+        checkMatching(12, true, URI.create("http://www.meterware.com/servlets/sample").toURL(), "www.meterware.com",
                 "/servlets/sample/data");
     }
 

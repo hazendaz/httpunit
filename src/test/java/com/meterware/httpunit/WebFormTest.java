@@ -695,7 +695,7 @@ class WebFormTest extends HttpUnitTest {
      */
     @Test
     void postWithEmbeddedSpace() throws Exception {
-        String sessionID = "/ID=03.019c010101010001.00000001.a202000000000019. 0d09";
+        String sessionID = "/ID=03.019c010101010001.00000001.a202000000000019.%200d09";
         defineResource("login", "redirectoring", HttpURLConnection.HTTP_MOVED_PERM);
         super.addResourceHeader("login", "Location: " + getHostPath() + sessionID + "/login");
         defineResource(sessionID + "/login", "<html><head></head>" + "<form method=POST action='SayHello'>"

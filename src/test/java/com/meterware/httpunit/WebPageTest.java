@@ -225,7 +225,7 @@ class WebPageTest extends HttpUnitTest {
         pw.close();
 
         WebConversation wc = new WebConversation();
-        WebRequest request = new GetMethodWebRequest("file:" + file.toFile().getAbsolutePath());
+        WebRequest request = new GetMethodWebRequest(file.toUri().toURL().toExternalForm());
         WebResponse simplePage = wc.getResponse(request);
         assertEquals("A Sample Page", simplePage.getTitle(), "Title");
         assertEquals(Charset.defaultCharset().displayName(), simplePage.getCharacterSet(), "Character set");
@@ -246,7 +246,7 @@ class WebPageTest extends HttpUnitTest {
 
         try {
             WebConversation wc = new WebConversation();
-            WebRequest request = new GetMethodWebRequest("file:" + file.toFile().getAbsolutePath());
+            WebRequest request = new GetMethodWebRequest(file.toUri().toURL().toExternalForm());
             wc.getResponse(request);
             fail("Should have complained about missing file");
         } catch (java.io.FileNotFoundException e) {

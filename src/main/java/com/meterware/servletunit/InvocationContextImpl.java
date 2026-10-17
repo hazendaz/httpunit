@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayDeque;
@@ -215,11 +214,11 @@ class InvocationContextImpl implements InvocationContext {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     InvocationContextImpl(ServletUnitClient client, ServletRunner runner, FrameSelector frame, WebRequest request,
-            Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
+            Dictionary clientHeaders, byte[] messageBody) throws IOException, URISyntaxException {
         _client = client;
         _application = runner.getApplication();
         _frame = frame;

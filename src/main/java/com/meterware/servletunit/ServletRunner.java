@@ -376,7 +376,7 @@ public class ServletRunner {
     private InvocationContextFactory _factory = new InvocationContextFactory() {
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
-                Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
+                Dictionary clientHeaders, byte[] messageBody) throws IOException, URISyntaxException {
             return new InvocationContextImpl(client, ServletRunner.this, targetFrame, request, clientHeaders,
                     messageBody);
         }

@@ -9,6 +9,7 @@ package com.meterware.httpunit;
 
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -96,8 +97,11 @@ class AuthenticationChallenge extends HttpHeader {
      * Creates the authentication header.
      *
      * @return the string
+     *
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    String createAuthenticationHeader() {
+    String createAuthenticationHeader() throws URISyntaxException {
         PasswordAuthentication credentials = getCredentialsForRealm();
         return getAuthenticationStrategy().createAuthenticationHeader(this, credentials.getUserName(),
                 new String(credentials.getPassword()));
@@ -154,8 +158,11 @@ class AuthenticationChallenge extends HttpHeader {
      * Gets the request uri.
      *
      * @return the request uri
+     *
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private String getRequestUri() {
+    private String getRequestUri() throws URISyntaxException {
         try {
             return null == _request ? null : _request.getURL().getFile();
         } catch (MalformedURLException e) {
@@ -179,8 +186,12 @@ class AuthenticationChallenge extends HttpHeader {
          *            the password
          *
          * @return the string
+         *
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        String createAuthenticationHeader(AuthenticationChallenge challenge, String username, String password);
+        String createAuthenticationHeader(AuthenticationChallenge challenge, String username, String password)
+                throws URISyntaxException;
     }
 
     /**
@@ -217,9 +228,12 @@ class AuthenticationChallenge extends HttpHeader {
              *            the user name
              * @param password
              *            the password
+             *
+             * @throws URISyntaxException
+             *             the URI syntax exception
              */
             public void appendParams(StringBuilder sb, AuthenticationChallenge challenge, String userName,
-                    String password) {
+                    String password) throws URISyntaxException {
                 appendDigestParams(sb, challenge.getProperty("realm"), challenge.getProperty("nonce"),
                         challenge.getRequestUri(), userName, password, challenge.getMethod(),
                         challenge.getProperty("opaque"));
@@ -399,7 +413,8 @@ class AuthenticationChallenge extends HttpHeader {
         }
 
         @Override
-        public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password) {
+        public String createAuthenticationHeader(AuthenticationChallenge challenge, String userName, String password)
+                throws URISyntaxException {
             StringBuilder sb = new StringBuilder("Digest ");
             Algorithm algorithm = new Algorithm();
             algorithm.appendParams(sb, challenge, userName, password);

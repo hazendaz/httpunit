@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -557,9 +558,12 @@ public class WebXMLTest {
      *             Signals that an I/O exception has occurred.
      * @throws ServletException
      *             the servlet exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     private void checkMapping(ServletUnitClient wc, final String url, final Class servletClass,
-            final String expectedPath, final String expectedInfo) throws IOException, ServletException {
+            final String expectedPath, final String expectedInfo)
+            throws IOException, ServletException, URISyntaxException {
         InvocationContext ic = wc.newInvocation(url);
         assertTrue(servletClass.isInstance(ic.getServlet()),
                 "selected servlet is " + ic.getServlet() + " rather than " + servletClass);

@@ -1296,8 +1296,10 @@ class WebClientTest extends HttpUnitTest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private void verifyRequestResponsePair(List messageLog, int i) throws MalformedURLException {
+    private void verifyRequestResponsePair(List messageLog, int i) throws MalformedURLException, URISyntaxException {
         assertTrue(messageLog.get(i) instanceof WebRequest,
                 "Logged item " + i + " is not a web request, but " + messageLog.get(i).getClass());
         assertTrue(messageLog.get(i + 1) instanceof WebResponse,

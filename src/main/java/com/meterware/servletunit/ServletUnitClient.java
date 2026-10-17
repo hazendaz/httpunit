@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import org.xml.sax.SAXException;
@@ -71,10 +70,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public InvocationContext newInvocation(String requestString) throws IOException, MalformedURLException {
+    public InvocationContext newInvocation(String requestString) throws IOException, URISyntaxException {
         return newInvocation(new GetMethodWebRequest(requestString));
     }
 
@@ -88,10 +87,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public InvocationContext newInvocation(WebRequest request) throws IOException, MalformedURLException {
+    public InvocationContext newInvocation(WebRequest request) throws IOException, URISyntaxException {
         return newInvocation(request, FrameSelector.TOP_FRAME);
     }
 
@@ -107,10 +106,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
+    InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, URISyntaxException {
         ByteArrayOutputStream baos = getMessageBody(request);
         if (_invocationContextFactory == null) {
             throw new RuntimeException("newInvocation called with null _invocationContextFactory");

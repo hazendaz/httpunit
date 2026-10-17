@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.Dictionary;
 import java.util.Properties;
 
@@ -336,7 +337,7 @@ class JUnitServletTest {
 
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
-                Dictionary clientHeaders, byte[] messageBody) throws IOException {
+                Dictionary clientHeaders, byte[] messageBody) throws IOException, URISyntaxException {
             return new InvocationContextImpl(client, _runner, targetFrame, request, clientHeaders, messageBody);
         }
 

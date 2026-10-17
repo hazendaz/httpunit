@@ -12,6 +12,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -111,8 +112,10 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the retrieved page
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(String urlString) throws IOException, SAXException {
+    public WebResponse getResponse(String urlString) throws IOException, SAXException, URISyntaxException {
         return getResponse(new GetMethodWebRequest(urlString));
     }
 
@@ -128,8 +131,10 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse sendRequest(WebRequest request) throws IOException, SAXException {
+    public WebResponse sendRequest(WebRequest request) throws IOException, SAXException, URISyntaxException {
         return getResponse(request);
     }
 
@@ -146,8 +151,10 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the retrieved page
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
+    public WebResponse getResponse(WebRequest request) throws IOException, SAXException, URISyntaxException {
         // Need to have some sort of ExecuteAroundMethod to ensure that the
         // redirects data structure gets cleared down upon exit - not
         // straightforward, since this could be a recursive call
@@ -188,9 +195,11 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     WebResponse getSubframeResponse(WebRequest request, RequestContext requestContext)
-            throws IOException, SAXException {
+            throws IOException, SAXException, URISyntaxException {
         WebResponse response = getResource(request);
 
         return response == null ? null : updateWindow(request.getTarget(), response, requestContext);
@@ -212,9 +221,11 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     WebResponse updateWindow(String requestTarget, WebResponse response, RequestContext requestContext)
-            throws IOException, SAXException {
+            throws IOException, SAXException, URISyntaxException {
         _client.updateClient(response);
         if (getClient().getClientProperties().isAutoRefresh() && response.getRefreshRequest() != null) {
             WebRequest request = response.getRefreshRequest();
@@ -239,8 +250,10 @@ public class WebWindow {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResource(WebRequest request) throws IOException {
+    public WebResponse getResource(WebRequest request) throws IOException, URISyntaxException {
         _client.tellListeners(request);
 
         WebResponse response = null;
@@ -404,8 +417,11 @@ public class WebWindow {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    void updateFrameContents(WebResponse response, RequestContext requestContext) throws IOException, SAXException {
+    void updateFrameContents(WebResponse response, RequestContext requestContext)
+            throws IOException, SAXException, URISyntaxException {
         response.setWindow(this);
         _frameContents.updateFrames(response, response.getFrame(), requestContext);
     }

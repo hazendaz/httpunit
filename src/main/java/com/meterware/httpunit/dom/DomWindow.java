@@ -10,6 +10,7 @@ package com.meterware.httpunit.dom;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.mozilla.javascript.Scriptable;
@@ -124,7 +125,7 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
             }
             ScriptingHandler result = newWindow.getScriptingHandler();
             return (DomWindow) result;
-        } catch (IOException | SAXException e) {
+        } catch (IOException | SAXException | URISyntaxException e) {
             return null;
         }
     }
@@ -260,9 +261,11 @@ public class DomWindow extends AbstractDomComponent implements Scriptable {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     void submitRequest(HTMLElementImpl sourceElement, String method, String location, String target, byte[] requestBody)
-            throws IOException, SAXException {
+            throws IOException, SAXException, URISyntaxException {
         _proxy.submitRequest(sourceElement, method, location, target, null);
     }
 }

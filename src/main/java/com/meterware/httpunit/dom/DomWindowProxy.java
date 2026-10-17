@@ -11,6 +11,7 @@ import com.meterware.httpunit.protocol.MessageBody;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.xml.sax.SAXException;
@@ -34,8 +35,10 @@ public interface DomWindowProxy {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException;
+    DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException, URISyntaxException;
 
     /**
      * Gets the scripting handler.
@@ -119,7 +122,9 @@ public interface DomWindowProxy {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
-            MessageBody requestBody) throws IOException, SAXException;
+            MessageBody requestBody) throws IOException, SAXException, URISyntaxException;
 }

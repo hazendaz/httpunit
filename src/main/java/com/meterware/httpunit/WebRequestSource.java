@@ -11,6 +11,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.w3c.dom.Element;
@@ -276,8 +277,11 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected WebResponse submitRequest(String event, final WebRequest request) throws IOException, SAXException {
+    protected WebResponse submitRequest(String event, final WebRequest request)
+            throws IOException, SAXException, URISyntaxException {
         WebResponse response = null;
         if (doEventScript(event)) {
             response = submitRequest(request);
@@ -355,8 +359,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException {
+    protected final WebResponse submitRequest(WebRequest request) throws IOException, SAXException, URISyntaxException {
         return getDestination().equals("#") ? _baseResponse : _baseResponse.getWindow().sendRequest(request);
     }
 

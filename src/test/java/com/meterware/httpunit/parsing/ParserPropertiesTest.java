@@ -17,6 +17,7 @@ import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -57,9 +58,11 @@ public class ParserPropertiesTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents,
-            String tagName) throws IOException, SAXException {
+            String tagName) throws IOException, SAXException, URISyntaxException {
         WebResponse simplePage = wc.getResponse(request);
         Document doc = simplePage.getDOM();
         NodeList nlist = doc.getElementsByTagName(tagName);
@@ -83,9 +86,11 @@ public class ParserPropertiesTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     private void verifyMatchingBoldNodes(WebConversation wc, WebRequest request, String[] boldNodeContents)
-            throws IOException, SAXException {
+            throws IOException, SAXException, URISyntaxException {
         verifyMatchingBoldNodes(wc, request, boldNodeContents, "b");
     }
 

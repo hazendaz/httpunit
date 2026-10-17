@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -223,14 +224,14 @@ public class ServletRunner {
      *
      * @return the response
      *
-     * @throws MalformedURLException
-     *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the response
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(WebRequest request) throws MalformedURLException, IOException, SAXException {
+    public WebResponse getResponse(WebRequest request) throws IOException, SAXException, URISyntaxException {
         return getClient().getResponse(request);
     }
 
@@ -242,14 +243,14 @@ public class ServletRunner {
      *
      * @return the response
      *
-     * @throws MalformedURLException
-     *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the response
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(String url) throws MalformedURLException, IOException, SAXException {
+    public WebResponse getResponse(String url) throws IOException, SAXException, URISyntaxException {
         return getClient().getResponse(url);
     }
 

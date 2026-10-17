@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -929,7 +930,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
     }
 
     /**
-     * open a a new Window with the given name and relative URL
+     * open a a new Window with the given name and relative URL.
      *
      * @param name
      *            - the name of the window
@@ -937,9 +938,17 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *            - the relative URL to be used
      *
      * @return the WebResponse as a DomWindowProxy
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Override
-    public DomWindowProxy openNewWindow(String name, String relativeUrl) throws IOException, SAXException {
+    public DomWindowProxy openNewWindow(String name, String relativeUrl)
+            throws IOException, SAXException, URISyntaxException {
         if (relativeUrl == null || relativeUrl.trim().isEmpty()) {
             relativeUrl = "about:";
         }
@@ -949,7 +958,7 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
 
     @Override
     public DomWindowProxy submitRequest(HTMLElementImpl sourceElement, String method, String location, String target,
-            MessageBody requestBody) throws IOException, SAXException {
+            MessageBody requestBody) throws IOException, SAXException, URISyntaxException {
         if (method.equalsIgnoreCase("get")) {
             return getWindow().sendRequest(new GetMethodWebRequest(this, sourceElement, getURL(), location, target));
         }
@@ -1101,9 +1110,11 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
         public Scriptable open(String urlString, String name, String features, boolean replace)
-                throws IOException, SAXException {
+                throws IOException, SAXException, URISyntaxException {
             WebResponse response = (WebResponse) openNewWindow(name, urlString);
             return response == null ? null : response.getScriptableObject();
         }
@@ -1188,8 +1199,10 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void setLocation(String relativeURL) throws IOException, SAXException {
+        public void setLocation(String relativeURL) throws IOException, SAXException, URISyntaxException {
             getWindow().getResponse(new GetMethodWebRequest(_pageURL, relativeURL, _frame.getName()));
         }
 

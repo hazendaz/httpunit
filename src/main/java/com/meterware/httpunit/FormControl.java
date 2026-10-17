@@ -18,6 +18,7 @@ import com.meterware.httpunit.scripting.Input;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -629,10 +630,17 @@ public abstract class FormControl extends HTMLElementBase {
         }
 
         /**
-         * allow calling click for this control
+         * allow calling click for this control.
+         *
+         * @throws IOException
+         *             Signals that an I/O exception has occurred.
+         * @throws SAXException
+         *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
         @Override
-        public void click() throws IOException, SAXException {
+        public void click() throws IOException, SAXException, URISyntaxException {
             // TODO check whether the empty body of this method was correct
             // call onclick event handler
             HTMLElement element = this.get_element();

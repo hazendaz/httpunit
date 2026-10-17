@@ -16,6 +16,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
@@ -74,8 +75,10 @@ public class WebForm extends WebRequestSource {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse submit() throws IOException, SAXException {
+    public WebResponse submit() throws IOException, SAXException, URISyntaxException {
         return submit(getDefaultButton());
     }
 
@@ -93,8 +96,10 @@ public class WebForm extends WebRequestSource {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse submit(SubmitButton button) throws IOException, SAXException {
+    public WebResponse submit(SubmitButton button) throws IOException, SAXException, URISyntaxException {
         return submit(button, 0, 0);
     }
 
@@ -116,8 +121,10 @@ public class WebForm extends WebRequestSource {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException {
+    public WebResponse submit(SubmitButton button, int x, int y) throws IOException, SAXException, URISyntaxException {
         if (button == null) {
             throw new IllegalSubmitButtonException("?", "?");
         }
@@ -135,13 +142,16 @@ public class WebForm extends WebRequestSource {
      *             the SAX exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse submitNoButton() throws SAXException, IOException {
+    public WebResponse submitNoButton() throws SAXException, IOException, URISyntaxException {
         return submit(SubmitButton.createFakeSubmitButton(this /* fake */));
     }
 
     @Override
-    protected WebResponse submitRequest(String event, WebRequest request) throws IOException, SAXException {
+    protected WebResponse submitRequest(String event, WebRequest request)
+            throws IOException, SAXException, URISyntaxException {
         try {
             return super.submitRequest(event, request);
         } catch (UnknownServiceException e) {
@@ -162,8 +172,10 @@ public class WebForm extends WebRequestSource {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    WebResponse doFormSubmit(SubmitButton button) throws IOException, SAXException {
+    WebResponse doFormSubmit(SubmitButton button) throws IOException, SAXException, URISyntaxException {
         return submitRequest(getAttribute("onsubmit"), getRequest(button));
     }
 
@@ -183,8 +195,10 @@ public class WebForm extends WebRequestSource {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    WebResponse doFormSubmit(SubmitButton button, int x, int y) throws IOException, SAXException {
+    WebResponse doFormSubmit(SubmitButton button, int x, int y) throws IOException, SAXException, URISyntaxException {
         return submitRequest(getAttribute("onsubmit"), getRequest(button, x, y));
     }
 
@@ -957,8 +971,10 @@ public class WebForm extends WebRequestSource {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void submit() throws IOException, SAXException {
+        public void submit() throws IOException, SAXException, URISyntaxException {
             submitRequest(getScriptedSubmitRequest());
         }
 

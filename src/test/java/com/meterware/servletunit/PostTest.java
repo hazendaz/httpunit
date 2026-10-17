@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
@@ -57,8 +58,10 @@ public class PostTest {
      *             the SAX exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public void check(WebResponse response) throws SAXException, IOException {
+    public void check(WebResponse response) throws SAXException, IOException, URISyntaxException {
         TestServlet.postCount = 0;
         WebForm form = response.getFormWithID("bug");
         form.setParameter("handle", "steve");

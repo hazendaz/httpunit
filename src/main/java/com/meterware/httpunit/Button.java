@@ -14,6 +14,7 @@ import com.meterware.httpunit.protocol.ParameterProcessor;
 import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.xml.sax.SAXException;
 
@@ -100,8 +101,10 @@ public class Button extends FormControl {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected boolean doOnClickSequence(int x, int y) throws IOException, SAXException {
+    protected boolean doOnClickSequence(int x, int y) throws IOException, SAXException, URISyntaxException {
         verifyButtonEnabled();
         boolean result = doOnClickEvent();
         if (result) {
@@ -119,8 +122,10 @@ public class Button extends FormControl {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public void click() throws IOException, SAXException {
+    public void click() throws IOException, SAXException, URISyntaxException {
         doOnClickSequence(0, 0);
     }
 
@@ -210,8 +215,10 @@ public class Button extends FormControl {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected void doButtonAction(int x, int y) throws IOException, SAXException {
+    protected void doButtonAction(int x, int y) throws IOException, SAXException, URISyntaxException {
         // pseudo - abstract
     }
 
@@ -222,8 +229,10 @@ public class Button extends FormControl {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected void doButtonAction() throws IOException, SAXException {
+    protected void doButtonAction() throws IOException, SAXException, URISyntaxException {
         doButtonAction(0, 0);
     }
 
@@ -258,7 +267,7 @@ public class Button extends FormControl {
     class Scriptable extends FormControl.Scriptable {
 
         @Override
-        public void click() throws IOException, SAXException {
+        public void click() throws IOException, SAXException, URISyntaxException {
             doButtonAction();
         }
     }

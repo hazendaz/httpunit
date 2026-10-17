@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 import org.xml.sax.SAXException;
 
@@ -145,15 +146,14 @@ public class ServletUnitClient extends WebClient {
      *
      * @return the response
      *
-     * @throws MalformedURLException
-     *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(InvocationContext invocation)
-            throws MalformedURLException, IOException, SAXException {
+    public WebResponse getResponse(InvocationContext invocation) throws IOException, SAXException, URISyntaxException {
         updateMainWindow(invocation.getFrame(), invocation.getServletResponse());
         return getFrameContents(invocation.getFrame());
     }

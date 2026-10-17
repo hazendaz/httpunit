@@ -9,6 +9,7 @@ package com.meterware.httpunit;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -283,9 +284,11 @@ class FrameHolder {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     void updateFrames(WebResponse response, FrameSelector frame, RequestContext requestContext)
-            throws MalformedURLException, IOException, SAXException {
+            throws MalformedURLException, IOException, SAXException, URISyntaxException {
         removeSubFrames(frame);
         _contents.put(frame, response);
 

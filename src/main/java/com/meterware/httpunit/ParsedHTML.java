@@ -14,6 +14,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -532,8 +533,10 @@ public class ParsedHTML {
      *
      * @throws IOException
      *             if there is a problem retrieving the script
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    String getIncludedScript(String srcAttribute) throws IOException {
+    String getIncludedScript(String srcAttribute) throws IOException, URISyntaxException {
         WebRequest req = new GetMethodWebRequest(getBaseURL(), srcAttribute);
         WebWindow window = getResponse().getWindow();
         if (window == null) {

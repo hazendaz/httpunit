@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -72,13 +73,17 @@ class XMLPageTest extends HttpUnitTest {
     /**
      * test for BR 2946821.
      *
+     * @return the document element
+     *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Test
-    void getDocumentElement() throws IOException, SAXException {
+    void getDocumentElement() throws IOException, SAXException, URISyntaxException {
         String html = "<html><body></body></html>";
         defineResource("BR2946821.html", html, "text/html");
         WebConversation wc = new WebConversation();

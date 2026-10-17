@@ -11,6 +11,7 @@ import com.meterware.httpunit.dom.HTMLControl;
 import com.meterware.httpunit.protocol.ParameterProcessor;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.xml.sax.SAXException;
 
@@ -49,8 +50,10 @@ public class SubmitButton extends Button {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public void click(int x, int y) throws IOException, SAXException {
+    public void click(int x, int y) throws IOException, SAXException, URISyntaxException {
         if (!isImageButton()) {
             throw new IllegalStateException("May only specify positions for an image button");
         }
@@ -60,15 +63,22 @@ public class SubmitButton extends Button {
     // --------------------------------- Button methods ----------------------------------------------
 
     /**
-     * do the button Action
+     * do the button Action.
      *
      * @param x
      *            - x coordinate
      * @param y
      *            - y coordinate
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Override
-    protected void doButtonAction(int x, int y) throws IOException, SAXException {
+    protected void doButtonAction(int x, int y) throws IOException, SAXException, URISyntaxException {
         getForm().doFormSubmit(this, x, y);
     }
 

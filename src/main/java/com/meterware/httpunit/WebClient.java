@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.SAXException;
 
@@ -48,7 +50,7 @@ public abstract class WebClient {
     private String _proxyAuthorizationString;
 
     /** The credentials. */
-    private java.util.Map _credentials = new java.util.HashMap<>();
+    private Map _credentials = new HashMap<>();
 
     /**
      * Gets the main window.

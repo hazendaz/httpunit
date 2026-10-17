@@ -14,6 +14,7 @@ import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebResponse;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,8 +78,10 @@ class EventHandlingTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private WebResponse getResponse(String name) throws IOException, SAXException {
+    private WebResponse getResponse(String name) throws IOException, SAXException, URISyntaxException {
         return _wc.getResponse(getHostPath() + "/" + name + ".html");
     }
 
@@ -89,9 +92,11 @@ class EventHandlingTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Test
-    void simpleEventHandler() throws IOException, SAXException {
+    void simpleEventHandler() throws IOException, SAXException, URISyntaxException {
         String javaScript = "			function testEventHandler() {\n"
                 + "				if (document.addEventListener) {\n"
                 + "					alert('found addEventListener');\n" + "				}\n" + "			}\n";

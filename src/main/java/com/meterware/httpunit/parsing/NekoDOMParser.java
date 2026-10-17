@@ -11,6 +11,7 @@ import com.meterware.httpunit.dom.HTMLDocumentImpl;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -98,7 +99,7 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
                 domParser.setProperty(AbstractDOMParser.DOCUMENT_CLASS_NAME, HTMLDocumentImpl.class.getName());
             javaScriptFilter.setScriptHandler(domParser);
             return domParser;
-        } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
+        } catch (SAXNotRecognizedException | SAXNotSupportedException | URISyntaxException e) {
             throw new RuntimeException(e.toString());
         }
 
@@ -127,8 +128,11 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
      *            the configuration
      * @param adapter
      *            the adapter
+     *
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) {
+    NekoDOMParser(HTMLConfiguration configuration, DocumentAdapter adapter) throws URISyntaxException {
         super(configuration);
         _documentAdapter = adapter;
     }
@@ -137,6 +141,8 @@ class NekoDOMParser extends DOMParser implements ScriptHandler {
     public String getIncludedScript(String srcAttribute) {
         try {
             return _documentAdapter.getIncludedScript(srcAttribute);
+        } catch (URISyntaxException e) {
+            throw new ScriptException(new IOException(e));
         } catch (IOException e) {
             throw new ScriptException(e);
         }

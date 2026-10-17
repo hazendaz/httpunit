@@ -11,6 +11,7 @@ import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebResponse;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -70,8 +71,10 @@ public interface InvocationContext {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    WebResponse getServletResponse() throws IOException;
+    WebResponse getServletResponse() throws IOException, URISyntaxException;
 
     /**
      * Returns the target frame for the original request.

@@ -14,15 +14,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.SAXException;
 
@@ -48,7 +51,7 @@ public abstract class WebClient {
     private String _proxyAuthorizationString;
 
     /** The credentials. */
-    private java.util.Map _credentials = new java.util.HashMap<>();
+    private Map _credentials = new HashMap<>();
 
     /**
      * Gets the main window.
@@ -114,8 +117,10 @@ public abstract class WebClient {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the retrieved page
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(String urlString) throws IOException, SAXException {
+    public WebResponse getResponse(String urlString) throws IOException, SAXException, URISyntaxException {
         return _mainWindow.getResponse(urlString);
     }
 
@@ -131,8 +136,10 @@ public abstract class WebClient {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse sendRequest(WebRequest request) throws IOException, SAXException {
+    public WebResponse sendRequest(WebRequest request) throws IOException, SAXException, URISyntaxException {
         return _mainWindow.sendRequest(request);
     }
 
@@ -158,8 +165,10 @@ public abstract class WebClient {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             thrown if there is an error parsing the retrieved page
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(WebRequest request) throws IOException, SAXException {
+    public WebResponse getResponse(WebRequest request) throws IOException, SAXException, URISyntaxException {
         return _mainWindow.getResponse(request);
     }
 
@@ -209,8 +218,10 @@ public abstract class WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResource(WebRequest request) throws IOException {
+    public WebResponse getResource(WebRequest request) throws IOException, URISyntaxException {
         return _mainWindow.getResource(request);
     }
 
@@ -576,8 +587,11 @@ public abstract class WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    abstract protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame) throws IOException;
+    protected abstract WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
+            throws IOException, URISyntaxException;
 
     /**
      * Writes the message body for the request.
@@ -648,8 +662,11 @@ public abstract class WebClient {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected final void updateMainWindow(FrameSelector frame, WebResponse response) throws IOException, SAXException {
+    protected final void updateMainWindow(FrameSelector frame, WebResponse response)
+            throws IOException, SAXException, URISyntaxException {
         getMainWindow().updateWindow(frame.getName(), response, new RequestContext());
     }
 
@@ -736,9 +753,11 @@ public abstract class WebClient {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     void updateFrameContents(WebWindow requestWindow, String requestTarget, WebResponse response,
-            RequestContext requestContext) throws IOException, SAXException {
+            RequestContext requestContext) throws IOException, SAXException, URISyntaxException {
         if (response.getFrame() == FrameSelector.NEW_FRAME) {
             WebWindow window = new WebWindow(this, requestWindow.getCurrentPage());
             if (!WebRequest.NEW_WINDOW.equalsIgnoreCase(requestTarget)) {
@@ -943,8 +962,10 @@ public abstract class WebClient {
      *
      * @throws IOException
      *             if an exception (including authorization failure) occurs
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    WebResponse createResponse(WebRequest request, FrameSelector targetFrame) throws IOException {
+    WebResponse createResponse(WebRequest request, FrameSelector targetFrame) throws IOException, URISyntaxException {
         WebResponse response = newResponse(request, targetFrame);
         AuthenticationChallenge challenge = new AuthenticationChallenge(this, request,
                 response.getHeaderField("WWW-Authenticate"));

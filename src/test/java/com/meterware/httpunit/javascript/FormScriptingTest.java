@@ -33,6 +33,7 @@ import com.meterware.pseudoserver.PseudoServlet;
 import com.meterware.pseudoserver.WebResource;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -614,8 +615,11 @@ public class FormScriptingTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private void clickSubmitButtonToProveThatItIsEnabled(WebForm form) throws IOException, SAXException {
+    private void clickSubmitButtonToProveThatItIsEnabled(WebForm form)
+            throws IOException, SAXException, URISyntaxException {
         WebResponse response = form.submit();
         assertNotNull(response);
     }
@@ -632,8 +636,11 @@ public class FormScriptingTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private void clickButtonToProveThatItIsEnabled(WebForm form, String buttonID) throws IOException, SAXException {
+    private void clickButtonToProveThatItIsEnabled(WebForm form, String buttonID)
+            throws IOException, SAXException, URISyntaxException {
         form.getButtonWithID(buttonID).click();
     }
 
@@ -651,9 +658,11 @@ public class FormScriptingTest extends HttpUnitTest {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     private WebForm runJavaScriptToToggleEnabledStateOfButton(WebForm form, WebConversation wc)
-            throws IOException, SAXException {
+            throws IOException, SAXException, URISyntaxException {
         Button enableChange = form.getButtonWithID("enableChange");
         enableChange.click();
         WebResponse currentPage = wc.getCurrentPage();

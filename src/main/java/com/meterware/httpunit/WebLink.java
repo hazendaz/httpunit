@@ -13,6 +13,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.w3c.dom.Node;
@@ -139,7 +140,7 @@ public class WebLink extends FixedURLWebRequestSource {
         private URL getReference() {
             try {
                 return getRequest().getURL();
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException | URISyntaxException e) {
                 return WebLink.this.getBaseURL();
             }
         }

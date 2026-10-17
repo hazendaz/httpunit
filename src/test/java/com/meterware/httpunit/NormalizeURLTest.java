@@ -619,7 +619,7 @@ class NormalizeURLTest extends HttpUnitTest {
      */
     @Test
     void slashesInParameter() throws Exception {
-        String desiredUrl = "http://localhost:8888/bug2295681/TestServlet?abc=abc&aaa=%%%&bbb=---%2d%2F%*%aa&ccc=yahoo@yahoo.com&ddd=aaa/../../&eee=/.";
+        String desiredUrl = "http://localhost:8888/bug2295681/TestServlet?abc=abc&aaa=%25%25%25&bbb=---%2d%2F%25*%aa&ccc=yahoo@yahoo.com&ddd=aaa/../../&eee=/.";
         WebRequest request = new GetMethodWebRequest(desiredUrl);
         assertEquals(desiredUrl, request.getURL().toExternalForm(), "URL");
     }

@@ -14,6 +14,7 @@ import com.meterware.httpunit.scripting.ScriptableDelegate;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -395,7 +396,7 @@ public class HTMLPage extends ParsedHTML {
             }
 
             @Override
-            public String getIncludedScript(String srcAttribute) throws IOException {
+            public String getIncludedScript(String srcAttribute) throws IOException, URISyntaxException {
                 return HTMLPage.this.getIncludedScript(srcAttribute);
             }
 

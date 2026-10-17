@@ -623,8 +623,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsSet_location(String relativeURL) throws IOException, SAXException {
+        public void jsSet_location(String relativeURL) throws IOException, SAXException, URISyntaxException {
             setLocation(relativeURL);
         }
 
@@ -638,8 +640,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        void setLocation(String relativeURL) throws IOException, SAXException {
+        void setLocation(String relativeURL) throws IOException, SAXException, URISyntaxException {
             getDelegate().setLocation(relativeURL);
         }
 
@@ -776,9 +780,11 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
         public Window jsFunction_open(Object url, String name, String features, boolean replace)
-                throws JavaScriptException, EvaluatorException, IOException, SAXException {
+                throws JavaScriptException, EvaluatorException, IOException, SAXException, URISyntaxException {
             WebResponse.Scriptable delegate = getDelegate().open(toStringIfNotUndefined(url), name, features, replace);
             return delegate == null ? null : (Window) toScriptable(delegate);
         }
@@ -965,8 +971,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsSet_location(String urlString) throws IOException, SAXException {
+        public void jsSet_location(String urlString) throws IOException, SAXException, URISyntaxException {
             if (urlString.startsWith("color")) {
                 return;
             }
@@ -1140,8 +1148,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsFunction_replace(String urlString) throws IOException, SAXException {
+        public void jsFunction_replace(String urlString) throws IOException, SAXException, URISyntaxException {
             _window.setLocation(urlString);
         }
 
@@ -1164,8 +1174,10 @@ public class JavaScript {
          *             the SAX exception
          * @throws IOException
          *             Signals that an I/O exception has occurred.
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsSet_href(String urlString) throws SAXException, IOException {
+        public void jsSet_href(String urlString) throws SAXException, IOException, URISyntaxException {
             _window.setLocation(urlString);
         }
 
@@ -1224,8 +1236,10 @@ public class JavaScript {
          *             the SAX exception
          * @throws IOException
          *             Signals that an I/O exception has occurred.
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsSet_pathname(String newPath) throws SAXException, IOException {
+        public void jsSet_pathname(String newPath) throws SAXException, IOException, URISyntaxException {
             if (!newPath.startsWith("/")) {
                 newPath = '/' + newPath;
             }
@@ -1257,8 +1271,10 @@ public class JavaScript {
          *             the SAX exception
          * @throws IOException
          *             Signals that an I/O exception has occurred.
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsSet_search(String newSearch) throws SAXException, IOException {
+        public void jsSet_search(String newSearch) throws SAXException, IOException, URISyntaxException {
             if (!newSearch.startsWith("?")) {
                 newSearch = '?' + newSearch;
             }
@@ -1752,8 +1768,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsFunction_submit() throws IOException, SAXException {
+        public void jsFunction_submit() throws IOException, SAXException, URISyntaxException {
             getDelegate().submit();
         }
 
@@ -1842,8 +1860,10 @@ public class JavaScript {
          *             Signals that an I/O exception has occurred.
          * @throws SAXException
          *             the SAX exception
+         * @throws URISyntaxException
+         *             the URI syntax exception
          */
-        public void jsFunction_click() throws IOException, SAXException {
+        public void jsFunction_click() throws IOException, SAXException, URISyntaxException {
             getDelegate().click();
         }
 

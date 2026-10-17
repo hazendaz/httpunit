@@ -16,7 +16,7 @@ import com.meterware.httpunit.WebResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
@@ -70,10 +70,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public InvocationContext newInvocation(String requestString) throws IOException, MalformedURLException {
+    public InvocationContext newInvocation(String requestString) throws IOException, URISyntaxException {
         return newInvocation(new GetMethodWebRequest(requestString));
     }
 
@@ -87,10 +87,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public InvocationContext newInvocation(WebRequest request) throws IOException, MalformedURLException {
+    public InvocationContext newInvocation(WebRequest request) throws IOException, URISyntaxException {
         return newInvocation(request, FrameSelector.TOP_FRAME);
     }
 
@@ -106,10 +106,10 @@ public class ServletUnitClient extends WebClient {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, MalformedURLException {
+    InvocationContext newInvocation(WebRequest request, FrameSelector frame) throws IOException, URISyntaxException {
         ByteArrayOutputStream baos = getMessageBody(request);
         if (_invocationContextFactory == null) {
             throw new RuntimeException("newInvocation called with null _invocationContextFactory");
@@ -145,15 +145,14 @@ public class ServletUnitClient extends WebClient {
      *
      * @return the response
      *
-     * @throws MalformedURLException
-     *             the malformed URL exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    public WebResponse getResponse(InvocationContext invocation)
-            throws MalformedURLException, IOException, SAXException {
+    public WebResponse getResponse(InvocationContext invocation) throws IOException, SAXException, URISyntaxException {
         updateMainWindow(invocation.getFrame(), invocation.getServletResponse());
         return getFrameContents(invocation.getFrame());
     }
@@ -179,10 +178,22 @@ public class ServletUnitClient extends WebClient {
 
     /**
      * Creates a web response object which represents the response to the specified web request.
-     **/
+     *
+     * @param request
+     *            the request
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
+     */
     @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
-            throws MalformedURLException, IOException {
+            throws IOException, URISyntaxException {
 
         try {
             InvocationContext invocation = newInvocation(request, targetFrame);

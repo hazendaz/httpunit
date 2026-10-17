@@ -10,6 +10,8 @@ package com.meterware.httpunit;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Dictionary;
@@ -44,10 +46,22 @@ public class WebConversation extends WebClient {
 
     /**
      * Creates a web response object which represents the response to the specified web request.
-     **/
+     *
+     * @param request
+     *            the request
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
+     */
     @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
-            throws MalformedURLException, IOException {
+            throws IOException, URISyntaxException {
         Properties savedProperties = (Properties) System.getProperties().clone();
         try {
             if (_proxyHost != null) {
@@ -144,8 +158,9 @@ public class WebConversation extends WebClient {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
      */
-    private URL getRequestURL(WebRequest request) throws MalformedURLException {
+    private URL getRequestURL(WebRequest request) throws MalformedURLException, URISyntaxException {
         DNSListener dnsListener = getClientProperties().getDnsListener();
         if (dnsListener == null) {
             return request.getURL();
@@ -158,8 +173,8 @@ public class WebConversation extends WebClient {
         if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("Rerouting request to :: " + actualHost);
         }
-        return new URL(request.getURL().getProtocol(), actualHost, request.getURL().getPort(),
-                request.getURL().getFile());
+        return new URI(request.getURL().getProtocol(), null, actualHost, request.getURL().getPort(),
+                request.getURL().getPath(), request.getURL().getQuery(), request.getURL().getRef()).toURL();
     }
 
     // ---------------------------------- private members --------------------------------

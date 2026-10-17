@@ -11,7 +11,7 @@ import com.meterware.httpunit.FrameSelector;
 import com.meterware.httpunit.WebRequest;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.Dictionary;
 
 import javax.servlet.http.HttpSession;
@@ -39,11 +39,11 @@ public interface InvocationContextFactory {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
-     * @throws MalformedURLException
-     *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
-            Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException;
+            Dictionary clientHeaders, byte[] messageBody) throws IOException, URISyntaxException;
 
     /**
      * Returns the session with the specified ID; if none exists or the session is invalid, will create a new session if

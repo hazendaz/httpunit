@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -98,9 +99,11 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     ServletUnitHttpRequest(ServletMetaData servletRequest, WebRequest request, ServletUnitContext context,
-            Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException {
+            Dictionary clientHeaders, byte[] messageBody) throws MalformedURLException, URISyntaxException {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -742,7 +745,7 @@ class ServletUnitHttpRequest implements HttpServletRequest {
             url.append(portPortion);
             url.append(_request.getURL().getPath());
             return url;
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new RuntimeException("unable to read URL from request: " + _request);
         }
     }

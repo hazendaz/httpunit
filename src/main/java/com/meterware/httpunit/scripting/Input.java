@@ -8,6 +8,7 @@
 package com.meterware.httpunit.scripting;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.xml.sax.SAXException;
 
@@ -61,8 +62,10 @@ public interface Input extends IdentifiedDelegate, NamedDelegate {
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
      *             the SAX exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    void click() throws IOException, SAXException;
+    void click() throws IOException, SAXException, URISyntaxException;
 
     /**
      * fire a on change event.

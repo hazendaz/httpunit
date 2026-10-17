@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Dictionary;
@@ -555,9 +556,11 @@ class HttpServletRequestTest extends ServletUnitTest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Test
-    void getSessionForFirstTime() throws MalformedURLException {
+    void getSessionForFirstTime() throws MalformedURLException, URISyntaxException {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         ServletUnitContext context = _context;
         assertEquals(0, context.getSessionIDs().size(), "Initial number of sessions in context");
@@ -1066,7 +1069,8 @@ class HttpServletRequestTest extends ServletUnitTest {
     private InvocationContextFactory _dummyfactory = new InvocationContextFactory() {
         @Override
         public InvocationContext newInvocation(ServletUnitClient client, FrameSelector targetFrame, WebRequest request,
-                Dictionary clientHeaders, byte[] messageBody) throws IOException, MalformedURLException {
+                Dictionary clientHeaders, byte[] messageBody)
+                throws IOException, MalformedURLException, URISyntaxException {
             return new InvocationContextImpl(client, null, targetFrame, request, clientHeaders, messageBody);
         }
 

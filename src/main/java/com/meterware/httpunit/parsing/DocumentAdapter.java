@@ -10,6 +10,7 @@ package com.meterware.httpunit.parsing;
 import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.w3c.dom.html.HTMLDocument;
 
@@ -36,8 +37,10 @@ public interface DocumentAdapter {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    String getIncludedScript(String srcAttribute) throws IOException;
+    String getIncludedScript(String srcAttribute) throws IOException, URISyntaxException;
 
     /**
      * Returns the Scriptable object associated with the document.

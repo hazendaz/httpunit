@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -104,13 +106,15 @@ public abstract class WebRequest {
      *
      * @throws MalformedURLException
      *             if the URL is not o.k.
-     **/
-    public URL getURL() throws MalformedURLException {
+     * @throws URISyntaxException
+     *             the URI syntax exception
+     */
+    public URL getURL() throws MalformedURLException, URISyntaxException {
         if (getURLBase() == null || getURLBase().toString().indexOf("?") < 0) {
             return newURL(getURLBase(), getURLString());
         }
         final String urlBaseString = getURLBase().toString();
-        URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
+        URL newurlbase = URI.create(urlBaseString.substring(0, urlBaseString.indexOf("?"))).toURL();
         return newURL(newurlbase, getURLString());
     }
 
@@ -126,8 +130,10 @@ public abstract class WebRequest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private URL newURL(final URL base, final String spec) throws MalformedURLException {
+    private URL newURL(final URL base, final String spec) throws MalformedURLException, URISyntaxException {
         if (spec.toLowerCase(Locale.ENGLISH).startsWith("javascript:")) {
             return new URL("javascript", null, -1, spec.substring("javascript:".length()), JAVASCRIPT_STREAM_HANDLER);
         }
@@ -140,7 +146,7 @@ public abstract class WebRequest {
             }
             HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));
         }
-        return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
+        return spec.startsWith("?") ? URI.create(base + spec).toURL() : newCombinedURL(base, spec);
     }
 
     /**
@@ -155,15 +161,17 @@ public abstract class WebRequest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException {
+    private URL newCombinedURL(final URL base, final String spec) throws MalformedURLException, URISyntaxException {
         if (base == null) {
-            return new URL(getNormalizedURL(spec));
+            return new URI(getNormalizedURL(spec)).toURL();
         }
         if (spec.startsWith("..")) {
-            return new URL(getNormalizedURL(getURLDirectory(base) + spec));
+            return new URI(getNormalizedURL(getURLDirectory(base) + spec)).toURL();
         }
-        return new URL(base, getNormalizedURL(spec));
+        return base.toURI().resolve(getNormalizedURL(spec)).toURL();
     }
 
     /**
@@ -523,8 +531,11 @@ public abstract class WebRequest {
      *
      * @throws MalformedURLException
      *             the malformed URL exception
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    protected WebRequest(WebRequest baseRequest, String urlString, String target) throws MalformedURLException {
+    protected WebRequest(WebRequest baseRequest, String urlString, String target)
+            throws MalformedURLException, URISyntaxException {
         this(baseRequest.getURL(), urlString, target);
     }
 

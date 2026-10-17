@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -110,7 +111,7 @@ public abstract class WebRequest {
             return newURL(getURLBase(), getURLString());
         }
         final String urlBaseString = getURLBase().toString();
-        URL newurlbase = new URL(urlBaseString.substring(0, urlBaseString.indexOf("?")));
+        URL newurlbase = URI.create(urlBaseString.substring(0, urlBaseString.indexOf("?"))).toURL();
         return newURL(newurlbase, getURLString());
     }
 
@@ -140,7 +141,7 @@ public abstract class WebRequest {
             }
             HttpsProtocolSupport.verifyProtocolSupport(getURLString().substring(0, getURLString().indexOf(':')));
         }
-        return spec.startsWith("?") ? new URL(base + spec) : newCombinedURL(base, spec);
+        return spec.startsWith("?") ? URI.create(base + spec).toURL() : newCombinedURL(base, spec);
     }
 
     /**

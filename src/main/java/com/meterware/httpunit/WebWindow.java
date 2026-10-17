@@ -12,6 +12,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -476,9 +477,9 @@ public class WebWindow {
 
         try {
             if (redirectLocation != null) {
-                url = new URL(response.getURL(), redirectLocation);
+                url = response.getURL().toURI().resolve(redirectLocation).toURL();
             }
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             // Fall through and allow existing exception handling code deal
             // with any exception - we don't know at this stage whether it is
             // a redirect instruction, although it is highly likely, given

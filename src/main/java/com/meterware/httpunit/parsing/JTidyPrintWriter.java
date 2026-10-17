@@ -88,8 +88,8 @@ class JTidyPrintWriter extends PrintWriter {
             }
             _logged = false; // new error....
             String[] tokens = s.trim().split("\\s+");
-            _line = parseInteger(tokens[1]);
-            _column = parseInteger(tokens[3]);
+            _line = parseNamedValue(tokens, "line");
+            _column = parseNamedValue(tokens, "column");
         } else if (s.startsWith("Warning")) {
             _error = false;
             _msg = s;
@@ -116,6 +116,15 @@ class JTidyPrintWriter extends PrintWriter {
         } catch (ParseException e) {
             throw new NumberFormatException("Unable to parse integer [int: " + integer + ", error: " + e.getMessage());
         }
+    }
+
+    private int parseNamedValue(String[] tokens, String key) {
+        for (int i = 0; i + 1 < tokens.length; i++) {
+            if (key.equalsIgnoreCase(tokens[i])) {
+                return parseInteger(tokens[i + 1].replaceAll("[^\\d.,]", ""));
+            }
+        }
+        throw new NumberFormatException("Unable to parse " + key + " from tidy output");
     }
 
     @Override

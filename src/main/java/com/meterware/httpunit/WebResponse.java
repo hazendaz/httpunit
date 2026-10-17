@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -1570,7 +1571,13 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      */
     private void processBaseTag(ByteTag tag) throws MalformedURLException {
         if (tag.getAttribute("href") != null) {
-            _baseURL = new URL(getURL(), tag.getAttribute("href"));
+            try {
+                _baseURL = getURL().toURI().resolve(tag.getAttribute("href")).toURL();
+            } catch (URISyntaxException e) {
+                MalformedURLException malformedURLException = new MalformedURLException(e.getMessage());
+                malformedURLException.initCause(e);
+                throw malformedURLException;
+            }
         }
         if (tag.getAttribute("target") != null) {
             _baseTarget = tag.getAttribute("target");

@@ -12,6 +12,7 @@ import com.meterware.httpunit.scripting.ScriptingHandler;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -255,7 +256,7 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
      * order in which they are found.
      */
     protected final void loadDestinationParameters() {
-        for (String parameter : getParametersString().split(PARAM_DELIM)) {
+        for (String parameter : getParametersString().split(Pattern.quote(PARAM_DELIM))) {
             if (!parameter.isEmpty()) {
                 stripOneParameter(parameter);
             }

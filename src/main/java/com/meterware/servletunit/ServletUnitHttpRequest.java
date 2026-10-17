@@ -822,7 +822,13 @@ class ServletUnitHttpRequest implements HttpServletRequest {
      * @return the string[]
      */
     static String[] toArray(String roleList) {
-        return roleList.split(",");
+        List<String> roles = new ArrayList<>();
+        for (String role : roleList.split(",", -1)) {
+            if (!role.isEmpty()) {
+                roles.add(role);
+            }
+        }
+        return roles.toArray(new String[0]);
     }
 
     /**
@@ -896,6 +902,9 @@ class ServletUnitHttpRequest implements HttpServletRequest {
         }
 
         String[] tokens = cookieHeader.split("((?=[,;=])|(?<=[,;=]))");
+        if (tokens.length == 0) {
+            return;
+        }
         String lastToken = tokens[0];
         for (int i = 1; i < tokens.length; i++) {
             String token = tokens[i];

@@ -45,6 +45,9 @@ public class HttpRequest extends ReceivedHttpMessage {
     @Override
     void interpretMessageHeader(String messageHeader) {
         String[] tokens = messageHeader.trim().split("\\s+");
+        if (tokens.length < 3) {
+            throw new java.util.NoSuchElementException();
+        }
         _command = tokens[0];
         _uri = tokens[1];
         _protocol = tokens[2];

@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
@@ -171,8 +172,10 @@ class MessageBodyRequestTest extends HttpUnitTest {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    private byte[] getDownload(WebResponse response) throws IOException {
+    private byte[] getDownload(WebResponse response) throws IOException, URISyntaxException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         InputStream inputStream = response.getInputStream();
 

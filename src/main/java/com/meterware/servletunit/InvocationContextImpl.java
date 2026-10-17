@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -89,9 +90,16 @@ class InvocationContextImpl implements InvocationContext {
     /**
      * Returns the final response from the servlet. Note that this method should only be invoked after all processing
      * has been done to the servlet response.
-     **/
+     *
+     * @return the servlet response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
+     */
     @Override
-    public WebResponse getServletResponse() throws IOException {
+    public WebResponse getServletResponse() throws IOException, URISyntaxException {
         if (_contextStack.size() != 1) {
             throw new IllegalStateException("Have not returned from all request dispatchers");
         }

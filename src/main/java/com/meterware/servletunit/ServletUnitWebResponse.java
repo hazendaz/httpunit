@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -38,9 +39,11 @@ class ServletUnitWebResponse extends WebResponse {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response,
-            boolean throwExceptionOnError) throws IOException {
+            boolean throwExceptionOnError) throws IOException, URISyntaxException {
         super(client, frame, url);
         _response = (ServletUnitHttpResponse) response;
         /** make sure that any IO exception for HTML received page happens here, not later. **/
@@ -66,9 +69,11 @@ class ServletUnitWebResponse extends WebResponse {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     ServletUnitWebResponse(ServletUnitClient client, FrameSelector frame, URL url, HttpServletResponse response)
-            throws IOException {
+            throws IOException, URISyntaxException {
         this(client, frame, url, response, true);
     }
 

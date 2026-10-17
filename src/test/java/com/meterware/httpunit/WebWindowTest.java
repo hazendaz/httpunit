@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -136,7 +137,7 @@ class WebWindowTest extends HttpUnitTest {
             public void windowOpened(WebClient client, WebWindow window) {
                 try {
                     newWindowContents.add(window.getCurrentPage().getText());
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException e) {
                     fail("Error trying to read page");
                 }
             }

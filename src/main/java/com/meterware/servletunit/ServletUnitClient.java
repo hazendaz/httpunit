@@ -179,10 +179,22 @@ public class ServletUnitClient extends WebClient {
 
     /**
      * Creates a web response object which represents the response to the specified web request.
-     **/
+     *
+     * @param request
+     *            the request
+     * @param targetFrame
+     *            the target frame
+     *
+     * @return the web response
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
+     */
     @Override
     protected WebResponse newResponse(WebRequest request, FrameSelector targetFrame)
-            throws MalformedURLException, IOException {
+            throws IOException, URISyntaxException {
 
         try {
             InvocationContext invocation = newInvocation(request, targetFrame);

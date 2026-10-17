@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -85,9 +86,11 @@ class WebClientTest extends HttpUnitTest {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     @Test
-    void undefinedResource() throws IOException {
+    void undefinedResource() throws IOException, URISyntaxException {
         boolean originalState = HttpUnitOptions.getExceptionsThrownOnErrorStatus();
         // try two cases for throwException true on i==0, false on i==1
         for (int i = 0; i < 2; i++) {

@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -45,9 +46,11 @@ class HttpWebResponse extends WebResponse {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     HttpWebResponse(WebConversation client, FrameSelector frame, URL url, URLConnection connection,
-            boolean throwExceptionOnError) throws IOException {
+            boolean throwExceptionOnError) throws IOException, URISyntaxException {
         super(client, frame, url);
         if (HttpUnitOptions.isLoggingHttpHeaders()) {
             System.out.println("\nReceived from " + url);
@@ -81,9 +84,11 @@ class HttpWebResponse extends WebResponse {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
     HttpWebResponse(WebConversation client, FrameSelector frame, WebRequest request, URLConnection connection,
-            boolean throwExceptionOnError) throws IOException {
+            boolean throwExceptionOnError) throws IOException, URISyntaxException {
         this(client, frame, request.getURL(), connection, throwExceptionOnError);
         super.setWithParse(!request.getMethod().equals("HEAD"));
         _referer = request.getReferer();

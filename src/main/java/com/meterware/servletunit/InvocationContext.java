@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * An interface which represents the invocation of a servlet.
@@ -64,8 +65,10 @@ public interface InvocationContext {
      *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws URISyntaxException
+     *             the URI syntax exception
      */
-    WebResponse getServletResponse() throws IOException;
+    WebResponse getServletResponse() throws IOException, URISyntaxException;
 
     /**
      * Returns the target frame for the original request.

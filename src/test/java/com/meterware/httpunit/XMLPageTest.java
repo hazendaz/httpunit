@@ -73,8 +73,6 @@ class XMLPageTest extends HttpUnitTest {
     /**
      * test for BR 2946821.
      *
-     * @return the document element
-     *
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws SAXException
@@ -83,7 +81,7 @@ class XMLPageTest extends HttpUnitTest {
      *             the URI syntax exception
      */
     @Test
-    void getDocumentElement() throws IOException, SAXException, URISyntaxException {
+    void documentElement() throws IOException, SAXException, URISyntaxException {
         String html = "<html><body></body></html>";
         defineResource("BR2946821.html", html, "text/html");
         WebConversation wc = new WebConversation();

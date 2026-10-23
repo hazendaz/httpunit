@@ -87,7 +87,7 @@ class ScriptFilter extends DefaultFilter {
     }
 
     /**
-     * Invoked for a start element. If the element is a <script>, overrides the normal behavior to begin collecting the
+     * Invoked for a start element. If the element is a 'script', overrides the normal behavior to begin collecting the
      * script text.
      */
     @Override

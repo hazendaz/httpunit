@@ -31,13 +31,11 @@ class ServletUnitServletContextTest {
     /**
      * Gets the resource.
      *
-     * @return the resource
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getResource() throws Exception {
+    void resource() throws Exception {
         WebApplication webapp = new WebApplication();
         ServletContext sc = new ServletUnitServletContext(webapp);
 

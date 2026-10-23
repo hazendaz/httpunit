@@ -467,13 +467,11 @@ public class WebXMLTest {
     /**
      * Gets the context path.
      *
-     * @return the context path
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getContextPath() throws Exception {
+    void contextPath() throws Exception {
         WebXMLString wxs = new WebXMLString();
         wxs.addServlet("/SimpleServlet", SimpleGetServlet.class);
 

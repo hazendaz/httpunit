@@ -163,10 +163,13 @@ class FileUploadTest extends HttpUnitTest {
     }
 
     /**
-     * new test for BR 2822957 https://sourceforge.net/tracker/?func=detail&aid=2822957&group_id=6550&atid=106550
+     * Tests for bug report 2822957.
+     *
+     * @see <a href="https://sourceforge.net/tracker/?func=detail&amp;aid=2822957&amp;group_id=6550&amp;atid=106550">Bug
+     *      report 2822957</a>
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     @Test
     void removeFileParameter() throws Exception {

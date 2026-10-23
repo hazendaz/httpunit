@@ -1241,10 +1241,13 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * https://sourceforge.net/forum/forum.php?thread_id=1808696&forum_id=20294 by kauffman81
+     * Regression test for the issue reported by kauffman81.
+     *
+     * @see <a href="https://sourceforge.net/forum/forum.php?thread_id=1808696&amp;forum_id=20294">SourceForge forum
+     *      discussion</a>
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     @Test
     void javaScriptConfirmPopUp() throws Exception {
@@ -1280,10 +1283,13 @@ class ScriptingTest extends AbstractJavaScriptTest {
     }
 
     /**
-     * test for function in external javascript https://sourceforge.net/forum/forum.php?thread_id=1406498&forum_id=20294
+     * Tests function handling in external JavaScript.
+     *
+     * @see <a href="https://sourceforge.net/forum/forum.php?thread_id=1406498&amp;forum_id=20294">SourceForge forum
+     *      discussion</a>
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     // TODO JWL 7/6/2021 Breaks with nekohtml > 1.9.6.2
     @Disabled

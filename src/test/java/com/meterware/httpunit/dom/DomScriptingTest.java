@@ -29,13 +29,11 @@ class DomScriptingTest extends AbstractHTMLElementTest {
     /**
      * Gets the document.
      *
-     * @return the document
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getDocument() throws Exception {
+    void document() throws Exception {
         Element element = createElement("body");
         assertEquals(_htmlDocument, ((Scriptable) element).get("document", null), "Returned document");
     }

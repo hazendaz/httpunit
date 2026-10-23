@@ -905,8 +905,6 @@ public abstract class WebClient {
      *
      * @throws HttpException
      *             the http exception
-     *
-     * @parm response - the response to validate
      */
     private void validateHeaders(WebResponse response) throws HttpException {
         HttpException exception = null;

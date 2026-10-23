@@ -156,13 +156,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the default properties.
      *
-     * @return the default properties
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getDefaultProperties() throws Exception {
+    void defaultProperties() throws Exception {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
                 new com.meterware.httpunit.WebClient.HeaderDictionary(), NO_MESSAGE_BODY);
@@ -366,7 +364,6 @@ class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      *             the exception
      */
-
     public void testGetMethodRequestParametersEncodedWithDefaultCharacterSet_Hebrew() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         // encoded
@@ -384,13 +381,11 @@ class HttpServletRequestTest extends ServletUnitTest {
      * test patch for [ 1705925 ] Bug in URL-decoding of GET-Request-Parameters
      * http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1705925&amp;group_id=6550&amp;atid=106550
      *
-     * @return the method request parameters encoded with default character set UTF 8
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getMethodRequestParametersEncodedWithDefaultCharacterSetUTF8() throws Exception {
+    void methodRequestParametersEncodedWithDefaultCharacterSetUTF8() throws Exception {
         String hebrewValue = "\u05d0\u05d1\u05d2\u05d3";
         // encoded
         HttpUnitOptions.setDefaultCharacterSet("UTF-8");
@@ -409,7 +404,8 @@ class HttpServletRequestTest extends ServletUnitTest {
      * @throws Exception
      *             the exception
      */
-    public void notestInlineQueryString() throws Exception { // TODO make this work
+    public void notestInlineQueryString() throws Exception {
+        // TODO make this work
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple?color=red&color=blue&age=12");
         HttpServletRequest request = new ServletUnitHttpRequest(NULL_SERVLET_REQUEST, wr, _context,
                 new com.meterware.httpunit.WebClient.HeaderDictionary(), NO_MESSAGE_BODY);
@@ -552,15 +548,13 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the session for first time.
      *
-     * @return the session for first time
-     *
      * @throws MalformedURLException
      *             the malformed URL exception
      * @throws URISyntaxException
      *             the URI syntax exception
      */
     @Test
-    void getSessionForFirstTime() throws MalformedURLException, URISyntaxException {
+    void sessionForFirstTime() throws MalformedURLException, URISyntaxException {
         WebRequest wr = new GetMethodWebRequest("http://localhost/simple");
         ServletUnitContext context = _context;
         assertEquals(0, context.getSessionIDs().size(), "Initial number of sessions in context");
@@ -584,13 +578,11 @@ class HttpServletRequestTest extends ServletUnitTest {
      * Test recognition of cookies defined on the client. is test case for [ 1151277 ] httpunit 1.6 breaks Cookie
      * handling for ServletUnitClient by Michael Corum
      *
-     * @return the user cookies
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getUserCookies() throws Exception {
+    void userCookies() throws Exception {
         String FIRST_COOKIE = "RANDOM_COOKIE";
         String SECOND_COOKIE = "ANOTHER_COOKIE";
         String FIRST_COOKIE_VALUE = "cookie1";
@@ -674,7 +666,7 @@ class HttpServletRequestTest extends ServletUnitTest {
 
     /**
      * Verifies that a request for a session when the current one is invalid will result in a new session.
-     * <p/>
+     * <p>
      * Obtains a new session, invalidates it, and verifies that
      *
      * @throws Exception
@@ -711,13 +703,11 @@ class HttpServletRequestTest extends ServletUnitTest {
      * Verifies that a request with a bad session ID causes a new session to be generated only when explicitly
      * requested.
      *
-     * @return the session with bad cookie
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getSessionWithBadCookie() throws Exception {
+    void sessionWithBadCookie() throws Exception {
         ServletUnitContext context = _context;
         HttpSession originalSession = context.newSession();
         String originalID = originalSession.getId();
@@ -772,26 +762,22 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the request URI.
      *
-     * @return the request URI
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getRequestURI() throws Exception {
+    void requestURI() throws Exception {
         testGetRequestURI("http://localhost/simple", "/simple");
     }
 
     /**
      * test for BR 3076917 Missing port number in URL from ServletUnitHttpRequest.
      *
-     * @return the request URI with port
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getRequestURIWithPort() throws Exception {
+    void requestURIWithPort() throws Exception {
         testGetRequestURI("http://localhost:8042/simple8042", "/simple8042");
     }
 
@@ -891,18 +877,14 @@ class HttpServletRequestTest extends ServletUnitTest {
     }
 
     /**
-     * Gets the input stream same object.
-     *
-     * @return the input stream same object
+     * Gets the input stream same object. Test for patch [ 1246438 ] For issue 1221537; ServletUnitHttpRequest.getReader
+     * not impl by Tim
      *
      * @throws Exception
      *             the exception
      */
-    /*
-     * Test for patch [ 1246438 ] For issue 1221537; ServletUnitHttpRequest.getReader not impl by Tim
-     */
     @Test
-    void getInputStreamSameObject() throws Exception {
+    void inputStreamSameObject() throws Exception {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -917,13 +899,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the input stream after get reader.
      *
-     * @return the input stream after get reader
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getInputStreamAfterGetReader() throws Exception {
+    void inputStreamAfterGetReader() throws Exception {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -942,13 +922,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the input stream.
      *
-     * @return the input stream
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getInputStream() throws Exception {
+    void inputStream() throws Exception {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -964,13 +942,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the reader same object.
      *
-     * @return the reader same object
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getReaderSameObject() throws Exception {
+    void readerSameObject() throws Exception {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -985,13 +961,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the reader after get input stream.
      *
-     * @return the reader after get input stream
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getReaderAfterGetInputStream() throws Exception {
+    void readerAfterGetInputStream() throws Exception {
         byte[] bytes = {};
         InputStream stream = new ByteArrayInputStream(bytes);
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");
@@ -1010,13 +984,11 @@ class HttpServletRequestTest extends ServletUnitTest {
     /**
      * Gets the reader default charset.
      *
-     * @return the reader default charset
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getReaderDefaultCharset() throws Exception {
+    void readerDefaultCharset() throws Exception {
         String body = "12345678901234567890";
         InputStream stream = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
         WebRequest wr = new PostMethodWebRequest("http://localhost/simple", stream, "text/plain");

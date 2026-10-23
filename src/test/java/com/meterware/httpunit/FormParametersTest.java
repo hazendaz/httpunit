@@ -124,7 +124,7 @@ class FormParametersTest extends HttpUnitTest {
     }
 
     /**
-     * test for bug [ 1215734 ] another <select> problem by alex.
+     * test for bug [ 1215734 ] another 'select' problem by alex.
      *
      * @throws Exception
      *             the exception

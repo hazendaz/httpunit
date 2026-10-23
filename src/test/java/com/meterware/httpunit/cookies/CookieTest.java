@@ -391,11 +391,13 @@ class CookieTest {
     }
 
     /**
-     * test for bug report [ 2076028 ] Cookies are handled incorrectly should also fit duplicate bug report 2871999
-     * https://sourceforge.net/tracker/?func=detail&aid=2871999&group_id=6550&atid=106550
+     * Tests for bug report [2076028] "Cookies are handled incorrectly" and duplicate bug report [2871999].
+     *
+     * @see <a href="https://sourceforge.net/tracker/?func=detail&amp;aid=2871999&amp;group_id=6550&amp;atid=106550">Bug
+     *      report 2871999</a>
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     @Test
     void httpOnlyCookiePath() throws Exception {
@@ -555,8 +557,6 @@ class CookieTest {
      * implements this interface, and the object created with that class is registered with a component using the
      * component's <code>addMockListener</code> method. When the mock event occurs, that object's appropriate method is
      * invoked.
-     *
-     * @see MockEvent
      */
     private static class MockListener implements CookieListener {
 

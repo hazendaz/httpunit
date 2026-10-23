@@ -22,11 +22,19 @@ import org.xml.sax.SAXException;
 class NekoHTMLParser implements HTMLParser {
 
     /**
-     * parse the given URL with the given pageText using the given document adapter
+     * parse the given URL with the given pageText using the given document adapter.
      *
      * @param pageURL
+     *            the page URL
      * @param pageText
+     *            the page text
      * @param adapter
+     *            the adapter
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     * @throws SAXException
+     *             the SAX exception
      */
     @Override
     public void parse(URL pageURL, String pageText, DocumentAdapter adapter) throws IOException, SAXException {

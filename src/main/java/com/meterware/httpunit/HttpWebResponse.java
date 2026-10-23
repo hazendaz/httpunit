@@ -282,8 +282,10 @@ class HttpWebResponse extends WebResponse {
     /**
      * Gets the remaining tokens.
      *
-     * @param st
-     *            the st
+     * @param tokens
+     *            the tokens
+     * @param firstToken
+     *            the first token
      *
      * @return the remaining tokens
      */

@@ -623,8 +623,6 @@ public class CookieJar {
          *            the source host
          *
          * @return the domain attribute status
-         *
-         * @see http://wp.netscape.com/newsref/std/cookie_spec.html
          */
         private int getDomainAttributeStatus(Cookie cookie, String sourceHost) {
             String domainAttribute = cookie.getDomain();

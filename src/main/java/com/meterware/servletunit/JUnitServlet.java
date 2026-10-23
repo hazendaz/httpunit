@@ -559,6 +559,16 @@ public class JUnitServlet extends HttpServlet {
             }
         }
 
+        /**
+         * Gets the formatted.
+         *
+         * @param count
+         *            the count
+         * @param name
+         *            the name
+         *
+         * @return the formatted
+         */
         private String getFormatted(int count, String name) {
             return count + " " + name + (count == 1 ? "" : "s");
         }

@@ -94,13 +94,11 @@ public class FormScriptingTest extends HttpUnitTest {
     /**
      * test to access attributes from java script.
      *
-     * @return the attribute for body
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getAttributeForBody() throws Exception {
+    void attributeForBody() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;
@@ -136,13 +134,11 @@ public class FormScriptingTest extends HttpUnitTest {
     /**
      * test to access attributes from java script.
      *
-     * @return the attribute for div
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getAttributeForDiv() throws Exception {
+    void attributeForDiv() throws Exception {
         if (HttpUnitOptions.DEFAULT_SCRIPT_ENGINE_FACTORY.equals(HttpUnitOptions.ORIGINAL_SCRIPTING_ENGINE_FACTORY)) {
             // TODO try making this work
             return;

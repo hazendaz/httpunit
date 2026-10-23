@@ -131,9 +131,10 @@ class RequestContext {
 
     /**
      * This method employs a state machine to parse a parameter query string. The transition rules are as follows: State
-     * \ text '=' '&' initial: have_name - initial have_name: - have_equals initial have_equals: have_value - initial
-     * have_value: - initial initial actions occur on the following transitions: initial -> have_name: save token as
-     * name have_equals -> initial: record parameter with null value have_value -> initial: record parameter with value
+     * \ text '=' '&amp;' initial: have_name - initial have_name: - have_equals initial have_equals: have_value -
+     * initial have_value: - initial initial actions occur on the following transitions: initial -> have_name: save
+     * token as name have_equals -> initial: record parameter with null value have_value -> initial: record parameter
+     * with value
      *
      * @param queryString
      *            the query string

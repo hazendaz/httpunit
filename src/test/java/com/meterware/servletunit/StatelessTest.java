@@ -124,13 +124,11 @@ class StatelessTest {
     /**
      * Gets the with set params.
      *
-     * @return the with set params
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getWithSetParams() throws Exception {
+    void withSetParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();
@@ -151,13 +149,11 @@ class StatelessTest {
     /**
      * Gets the with inline params.
      *
-     * @return the with inline params
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getWithInlineParams() throws Exception {
+    void withInlineParams() throws Exception {
         final String resourceName = "something/interesting";
 
         ServletRunner sr = new ServletRunner();

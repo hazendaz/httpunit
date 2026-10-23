@@ -102,13 +102,11 @@ class PseudoServerTest {
     /**
      * This tests simple access to the server without using any client classes.
      *
-     * @return the via socket
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getViaSocket() throws Exception {
+    void viaSocket() throws Exception {
         support.defineResource("sample", "Get this", "text/plain");
         Socket socket = new Socket("localhost", getHostPort());
         OutputStream os = socket.getOutputStream();

@@ -335,24 +335,24 @@ class WebClientTest extends HttpUnitTest {
     /**
      * test for 1799532 ] Patched CookieJar for dealing with empty cookies I had a problem testing a web app that sent
      * empty cookie values to the client.
-     * <p/>
+     * <p>
      * Within the same http response, a cookie was set by the web app twice, once with some non-empty value and the
      * second time with an empty value. The intention of the web app obviously was to delete the cookie, wich actually
      * occurs in IE and Firefox.
-     * <p/>
+     * <p>
      * In HttpUnit though the cookie was stored with the empty value and sent back to the server in the next request.
      * That confused the web app and caused application errors, because it didn't expect that cookie back with the empty
      * value.
-     * <p/>
+     * <p>
      * I cannot really judge if this is actually a bug in HttpUnit or just more strict appliance of protocols than real
      * Browsers do. Of course it is at least an ugly behaviour of the web app, but that wasn't my focus. It also seems
      * from forums that others might have had the same problem.
-     * <p/>
+     * <p>
      * To over come that problem, I had to change the CookieJar class in HttpUnit
-     * <p/>
+     * <p>
      * to not store cookies with empty values, but remove them completely instead. The modified source file is attached
      * (based on HttpUnit 1.6.2).
-     * <p/>
+     * <p>
      * Russel, please check if you want to integrate this modification in a future HttpUnit Release. 2007-12-28:
      * wf@bitplan.com - looked at http://www.ietf.org/rfc/rfc2109.txt there is no statement about empty value handling
      * -the standard asks for opaque handling ... no mocking about with values by the server ...
@@ -905,11 +905,13 @@ class WebClientTest extends HttpUnitTest {
     }
 
     /**
-     * test for BR 2834933 https://sourceforge.net/tracker/?func=detail&aid=2834933&group_id=6550&atid=106550 by
-     * aptivate
+     * Tests for bug report 2834933, reported by aptivate.
+     *
+     * @see <a href="https://sourceforge.net/tracker/?func=detail&amp;aid=2834933&amp;group_id=6550&amp;atid=106550">Bug
+     *      report 2834933</a>
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     @Test
     void maxRedirectsNotExceeded() throws Exception {

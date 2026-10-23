@@ -1788,8 +1788,6 @@ public abstract class WebResponse implements HTMLSegment, CookieSource, DomWindo
      *
      * @throws SAXException
      *             the SAX exception
-     * @throws URISyntaxException
-     *             the URI syntax exception
      */
     HTMLPage getReceivedPage() throws SAXException {
         if (_page == null) {

@@ -360,13 +360,11 @@ class HTMLFormTest extends AbstractHTMLElementTest {
     /**
      * Gets the control by name.
      *
-     * @return the control by name
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getControlByName() throws Exception {
+    void controlByName() throws Exception {
         _form.appendChild(_textField);
         _form.appendChild(_passwordField);
         _form.appendChild(_hiddenField);

@@ -115,13 +115,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieval of the body element.
      *
-     * @return the body
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getBody() throws Exception {
+    void body() throws Exception {
         Element body = createElement("body");
         _htmlElement.appendChild(body);
 
@@ -145,13 +143,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieving elements by their ID attribute.
      *
-     * @return the elements by id
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getElementsById() throws Exception {
+    void elementsById() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
         body.setId("abc");
@@ -173,13 +169,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieving elements by their name attribute.
      *
-     * @return the elements by name
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getElementsByName() throws Exception {
+    void elementsByName() throws Exception {
         assertDoesNotThrow(() -> {
             HTMLElement body = (HTMLElement) createElement("body");
             _htmlDocument.setBody(body);
@@ -233,13 +227,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieval of the collection of links ('img' tags).
      *
-     * @return the images
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getImages() throws Exception {
+    void images() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -267,13 +259,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieval of the collection of links ('area' tags and 'a' tags with 'href' attributes).
      *
-     * @return the links
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getLinks() throws Exception {
+    void links() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -310,13 +300,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieval of the collection of forms.
      *
-     * @return the forms
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getForms() throws Exception {
+    void forms() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 
@@ -350,13 +338,11 @@ class HTMLDocumentTest extends AbstractHTMLElementTest {
     /**
      * Verifies retrieval of the collection of anchors.
      *
-     * @return the anchors
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getAnchors() throws Exception {
+    void anchors() throws Exception {
         HTMLElement body = (HTMLElement) createElement("body");
         _htmlDocument.setBody(body);
 

@@ -59,14 +59,19 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * test for Bug report 1908117 by firebird74 http://www.w3.org/Addressing/URL/url-spec.html says Spaces and control
-     * characters in URLs must be escaped for transmission in HTTP so %20 ist used for space/blank trying out <html>
-     * <body> <a href="http://www.bit plan.com">BITlan blank link</a> </body> </html> in different browers gives
-     * different results. Firefox 2.0.0.13 will not show a link at all Internet Explorer 6.0 will show a link that has
-     * http://www.bit%20plan.com as it's target
+     * Tests for bug report 1908117, reported by firebird74.
+     * <p>
+     * The <a href="https://www.w3.org/Addressing/URL/url-spec.html">W3C URL specification</a> states that spaces and
+     * control characters in URLs must be escaped for transmission in HTTP. A space is therefore represented as
+     * {@code %20}.
+     * <p>
+     * Testing the following HTML in different browsers produces different results:
+     * {@code <html><body><a href="http://www.bit plan.com">BITlan blank link</a></body></html>}. Firefox 2.0.0.13 does
+     * not display a link, whereas Internet Explorer 6.0 displays a link with {@code http://www.bit%20plan.com} as its
+     * target.
      *
      * @throws Exception
-     *             the exception
+     *             if an error occurs
      */
     @Test
     void linkToURLWithBlanks() throws Exception {
@@ -282,12 +287,10 @@ class WebLinkTest extends HttpUnitTest {
     }
 
     /**
-     * Link following.
+     * Link following. [ 1156972 ] isWebLink doesn't recognize all anchor tags for different opinion on weblink count.
      *
      * @throws Exception
      *             the exception
-     *
-     * @see [ 1156972 ] isWebLink doesn't recognize all anchor tags for different opinion on weblink count.
      */
     @Test
     void linkFollowing() throws Exception {

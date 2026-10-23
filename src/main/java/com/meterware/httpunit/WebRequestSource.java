@@ -471,10 +471,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     // -----------------------------------------------
 
     /**
-     * parameter Delimiter for URL parameters bug report [ 1052037 ] Semicolon not supported as URL param delimiter asks
-     * for this to be extended to &;.
+     * The parameter delimiter for URL parameters. Bug report [1052037], "Semicolon not supported as URL param
+     * delimiter," requests extending support to {@code &amp;}.
      *
-     * @see http://www.w3.org/TR/html4/appendix/notes.html#h-B.2 section B2.2
+     * @see <a href="https://www.w3.org/TR/html4/appendix/notes.html#h-B.2">HTML 4, section B.2.2</a>
      */
     private static final String PARAM_DELIM = "&";
 
@@ -532,10 +532,10 @@ public abstract class WebRequestSource extends ParameterHolder implements HTMLEl
     }
 
     /**
-     * Extracts a parameter of the form <name>[=[<value>]].
+     * Extracts a parameter of the form {@code <name>[=[<value>]]}.
      *
      * @param param
-     *            the param
+     *            the parameter to extract
      */
     private void stripOneParameter(String param) {
         final int index = param.indexOf("=");

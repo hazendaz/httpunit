@@ -703,10 +703,12 @@ class HttpResponseStream {
     }
 
     /**
-     * set the response to the given response Code
+     * set the response to the given response Code.
      *
      * @param responseCode
+     *            the response code
      * @param responseText
+     *            the response text
      */
     void setResponse(int responseCode, String responseText) {
         _responseCode = responseCode;

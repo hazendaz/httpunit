@@ -207,10 +207,6 @@ public class JavaScript {
          *             the java script exception
          * @throws EvaluatorException
          *             the evaluator exception
-         *
-         * @parent - the Script Engine to use
-         *
-         * @scriptable - the scriptable object to do the initialization for
          */
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)
                 throws SAXException, JavaScriptException, EvaluatorException {
@@ -649,10 +645,6 @@ public class JavaScript {
 
         /**
          * initialize JavaScript for the given ScriptEngine
-         *
-         * @parent - the Script Engine to use
-         *
-         * @scriptable - the scriptable object to do the initialization for
          */
         @Override
         void initialize(JavaScriptEngine parent, ScriptableDelegate scriptable)

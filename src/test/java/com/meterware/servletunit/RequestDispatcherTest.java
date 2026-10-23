@@ -189,13 +189,11 @@ class RequestDispatcherTest {
     /**
      * test for implementation of getNamedDispatcher as patched up by Izzy Alanis.
      *
-     * @return the named dispatcher
-     *
      * @throws Exception
      *             the exception
      */
     @Test
-    void getNamedDispatcher() throws Exception {
+    void namedDispatcher() throws Exception {
         assertDoesNotThrow(() -> {
             InvocationContext ic = _runner.newClient()
                     .newInvocation("http://localhost/sample/" + this.errorPageServletName);
